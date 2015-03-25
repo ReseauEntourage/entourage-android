@@ -1,6 +1,8 @@
 package com.octo.entourage.api;
 
 import com.octo.entourage.BuildConfig;
+import com.octo.entourage.authentication.AuthenticationController;
+import com.octo.entourage.authentication.AuthenticationInterceptor;
 
 import javax.inject.Singleton;
 
@@ -8,7 +10,9 @@ import dagger.Module;
 import dagger.Provides;
 import retrofit.Endpoint;
 import retrofit.Endpoints;
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 /**
  * Module that provides all the API related dependencies
@@ -27,9 +31,10 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    public RestAdapter providesRestAdapter(final Endpoint endpoint) {
+    public RestAdapter providesRestAdapter(final Endpoint endpoint, final AuthenticationInterceptor interceptor) {
         return new RestAdapter.Builder()
                 .setEndpoint(endpoint)
+                .setRequestInterceptor(interceptor)
                 .build();
     }
 

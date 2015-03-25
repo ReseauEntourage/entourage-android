@@ -1,7 +1,8 @@
 package com.octo.entourage.login;
 
 import com.octo.entourage.api.LoginService;
-import com.octo.entourage.api.model.LoginResponse;
+import com.octo.entourage.api.LoginResponse;
+import com.octo.entourage.authentication.AuthenticationController;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,11 +15,16 @@ import retrofit.client.Response;
 public class LoginPresenter {
     private final LoginActivity activity;
     private final LoginService loginService;
+    private final AuthenticationController authenticationController;
 
     @Inject
-    public LoginPresenter(final LoginActivity activity, final LoginService loginService) {
+    public LoginPresenter(
+            final LoginActivity activity,
+            final LoginService loginService,
+            final AuthenticationController authenticationController) {
         this.activity = activity;
         this.loginService = loginService;
+        this.authenticationController = authenticationController;
     }
 
     public void login(final String email) {

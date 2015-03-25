@@ -3,6 +3,7 @@ package com.octo.entourage;
 import android.app.Application;
 
 import com.octo.entourage.api.ApiModule;
+import com.octo.entourage.authentication.AuthenticationModule;
 
 import javax.inject.Singleton;
 
@@ -14,7 +15,8 @@ import dagger.Provides;
                 EntourageApplication.class
         },
         includes = {
-                ApiModule.class
+                ApiModule.class,
+                AuthenticationModule.class,
         },
         library = true
 )
