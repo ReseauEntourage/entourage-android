@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Entourage</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_time">Hello, world! at %s</string>
+    <string name="hello_time">Hello, world! à %s</string>
 </resources>
