@@ -1,7 +1,5 @@
 package com.octo.entourage.map;
 
-import com.google.android.gms.maps.GoogleMap;
-
 import com.octo.entourage.EntourageActivity;
 import com.octo.entourage.R;
 import com.octo.entourage.model.Encounter;
@@ -69,7 +67,7 @@ public class MapActivity extends EntourageActivity implements ActionBar.TabListe
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.openEncounter();
+        presenter.start();
     }
 
     @Override
@@ -110,21 +108,21 @@ public class MapActivity extends EntourageActivity implements ActionBar.TabListe
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void putEncouter(Encounter encounter) {
+    public void putEncouter(Encounter encounter, MapPresenter.OnEntourageMarkerClickListener onClickListener) {
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.putEncounterOnMap(encounter);
+            mapEntourageFragment.putEncounterOnMap(encounter, onClickListener);
         }
     }
 
-    public void putPoi(Poi poi) {
+    public void putPoi(Poi poi, MapPresenter.OnEntourageMarkerClickListener onClickListener) {
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.putPoiOnMap(poi);
+            mapEntourageFragment.putPoiOnMap(poi, onClickListener);
         }
     }
 
-    public void setOnMarkerCLickListener(GoogleMap.OnMarkerClickListener onMarkerClickListener) {
+    public void setOnMarkerCLickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
             mapEntourageFragment.setOnMarkerClickListener(onMarkerClickListener);

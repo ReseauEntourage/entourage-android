@@ -1,10 +1,10 @@
 package com.octo.entourage.map;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.octo.entourage.R;
@@ -59,13 +59,14 @@ public class MapEntourageFragment extends Fragment {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void setOnMarkerClickListener(GoogleMap.OnMarkerClickListener onMarkerClickListener) {
+    public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().setOnMarkerClickListener(onMarkerClickListener);
         }
     }
 
-    public void putEncounterOnMap(Encounter encounter) {
+    public void putEncounterOnMap(Encounter encounter,
+            MapPresenter.OnEntourageMarkerClickListener onClickListener) {
         double encounterLatitude = encounter.getLatitude();
         double encounterLongitude = encounter.getLongitude();
         LatLng encounterPosition = new LatLng(encounterLatitude, encounterLongitude);
@@ -75,11 +76,12 @@ public class MapEntourageFragment extends Fragment {
                                                          .icon(encounterIcon);
 
         if (mapFragment.getMap() != null) {
-            mapFragment.getMap().addMarker(markerOptions);
+            Marker marker = mapFragment.getMap().addMarker(markerOptions);
+            onClickListener.addEncounterMarker(marker, encounter);
         }
     }
 
-    public void putPoiOnMap(Poi poi) {
+    public void putPoiOnMap(Poi poi, MapPresenter.OnEntourageMarkerClickListener onClickListener) {
         double poiLatitude = poi.getLatitude();
         double poiLongitude = poi.getLongitude();
         LatLng poiPosition = new LatLng(poiLatitude, poiLongitude);
@@ -91,7 +93,8 @@ public class MapEntourageFragment extends Fragment {
                                                          .icon(poiIcon);
 
         if (mapFragment.getMap() != null) {
-            mapFragment.getMap().addMarker(markerOptions);
+            Marker marker = mapFragment.getMap().addMarker(markerOptions);
+            onClickListener.addPoiMarker(marker, poi);
         }
     }
 }
