@@ -1,5 +1,16 @@
 package social.entourage.android.map;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+
+import social.entourage.android.common.Constants;
+import social.entourage.android.api.MapResponse;
+import social.entourage.android.api.MapService;
+import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.encounter.ReadEncounterActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +42,8 @@ public class MapPresenter {
     private final MapActivity activity;
     private final MapService mapService;
 
+    private OnEntourageMarkerClickListener onClickListener;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -46,36 +59,36 @@ public class MapPresenter {
     // ----------------------------------
 
     public void start() {
-        Encounter encounter = new Encounter();
-        encounter.setLatitude(42);
-        encounter.setLongitude(2);
-
-        Poi poi = new Poi();
-        poi.setLatitude(43);
-        poi.setLongitude(2);
-        poi.setCategoryId(4);
-
-        retrieveMapObjects();
-
-        OnEntourageMarkerClickListener onClickListener = new OnEntourageMarkerClickListener();
-
+        onClickListener = new OnEntourageMarkerClickListener();
+        activity.initializeMap();
+        retrieveMapObjects(MapEntourageFragment.INITIAL_LATITUDE, MapEntourageFragment.INITIAL_LONGITUDE);
         activity.setOnMarkerCLickListener(onClickListener);
-        activity.putEncouter(encounter, onClickListener);
-        activity.putPoi(poi, onClickListener);
     }
 
-    public void retrieveMapObjects() {
-        mapService.map("07ee026192ea722e66feb2340a05e3a8", 10, 10, 42.1, 2.1, new Callback<MapResponse>() {
+    public void retrieveMapObjects(double latitude, double longitude) {
+        mapService.map("0cb4507e970462ca0b11320131e96610", 10, 1000, latitude, longitude, new Callback<MapResponse>() {
             @Override
             public void success(MapResponse mapResponse, Response response) {
-                Log.d("Success", "Success");
+                loadObjectsOnMap(mapResponse);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("Failure", "Failure");
+                Log.d("MapActivity", "Impossible to retrieve map objects");
+                error.printStackTrace();
             }
         });
+    }
+
+    private void loadObjectsOnMap(MapResponse mapResponse) {
+        activity.clearMap();
+        for (Encounter encounter : mapResponse.getEncounters()) {
+            activity.putEncouter(encounter, onClickListener);
+        }
+
+        for (Poi poi : mapResponse.getPois()) {
+            activity.putPoi(poi, onClickListener);
+        }
     }
 
     public void openEncounter(Encounter encounter) {
@@ -91,25 +104,26 @@ public class MapPresenter {
     // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
-        Map <Marker, Encounter> encounterMarkerHashMap = new HashMap<Marker, Encounter>();
-        Map<Marker, Poi> poiMarkerHashMap = new HashMap<Marker, Poi>();
+        Map<LatLng, Encounter> encounterMarkerHashMap = new HashMap<LatLng, Encounter>();
+        Map<LatLng, Poi> poiMarkerHashMap = new HashMap<LatLng, Poi>();
 
-        public void addPoiMarker(Marker marker, Poi poi) {
-            poiMarkerHashMap.put(marker, poi);
+        public void addPoiMarker(LatLng markerPosition, Poi poi) {
+            poiMarkerHashMap.put(markerPosition, poi);
         }
 
-        public void addEncounterMarker(Marker marker, Encounter encounter) {
-            encounterMarkerHashMap.put(marker, encounter);
+        public void addEncounterMarker(LatLng markerPosition, Encounter encounter) {
+            encounterMarkerHashMap.put(markerPosition, encounter);
         }
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-            if (encounterMarkerHashMap.get(marker) != null){
-                openEncounter(encounterMarkerHashMap.get(marker));
+            LatLng markerPosition = marker.getPosition();
+            if (encounterMarkerHashMap.get(markerPosition) != null){
+                openEncounter(encounterMarkerHashMap.get(markerPosition));
             }
 
-            if (poiMarkerHashMap.get(marker) != null){
-                Log.d("POI", String.valueOf(poiMarkerHashMap.get(marker).getLatitude()));
+            if (poiMarkerHashMap.get(markerPosition) != null){
+                Log.d("POI", String.valueOf(poiMarkerHashMap.get(markerPosition).getLatitude()));
             }
             return false;
         }

@@ -6,7 +6,12 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -26,6 +31,13 @@ import butterknife.ButterKnife;
 public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener {
 
     // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    private static final long UPDATE_TIMER_MILLIS = 1000;
+    private static final float DISTANCE_BETWEEN_UPDATES_METERS = 10;
+
+    // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
@@ -33,6 +45,10 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     MapPresenter presenter;
 
     private Fragment fragment;
+
+    private Location bestLocation;
+    private boolean isBetterLocationUpdated;
+    private LocationListener locationListener;
 
     // ----------------------------------
     // LIFECYCLE
@@ -48,6 +64,8 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ButterKnife.inject(this);
+
+        initializeLocationService();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(false);
@@ -127,6 +145,91 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
             mapEntourageFragment.setOnMarkerClickListener(onMarkerClickListener);
+        }
+    }
+
+    public void clearMap() {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.clearMap();
+        }
+    }
+
+    private void initializeLocationService() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new CustomLocationListener();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIMER_MILLIS,
+                DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
+    }
+
+    public void initializeMap() {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.initializeMapZoom();
+        }
+    }
+
+    // ----------------------------------
+    // INNER CLASSES
+    // ----------------------------------
+
+    private class CustomLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            if (bestLocation == null || location.getAccuracy() >= bestLocation.getAccuracy()) {
+                bestLocation = location;
+                isBetterLocationUpdated = true;
+            }
+
+            if (isBetterLocationUpdated) {
+                isBetterLocationUpdated = false;
+                presenter.retrieveMapObjects(bestLocation.getLatitude(), bestLocation.getLongitude());
+                if (fragment instanceof MapEntourageFragment) {
+                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+                    mapEntourageFragment.centerMap(bestLocation.getLatitude(), bestLocation.getLongitude());
+                }
+
+                new Handler().postDelayed(new RequestWaiter(bestLocation),
+                        UPDATE_TIMER_MILLIS);
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    }
+
+    /**
+     * This Runnable is executed 3s after each map objects
+     * If during this time, a new better location has been registered, it will call immediately a
+     * new object list, not waiting for a new location from LocationServices.
+     */
+    private class RequestWaiter implements Runnable {
+
+        private final Location locationUsed;
+
+        public RequestWaiter(final Location locationUsed) {
+            this.locationUsed = locationUsed;
+        }
+
+        @Override
+        public void run() {
+            if (bestLocation.getAccuracy() > locationUsed.getAccuracy()) {
+                isBetterLocationUpdated = true;
+                locationListener.onLocationChanged(bestLocation);
+            }
         }
     }
 }
