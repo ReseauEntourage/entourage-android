@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import social.entourage.android.EntourageModule;
 
 /**
  * Module handling all ui related dependencies
@@ -12,7 +13,7 @@ import dagger.Provides;
         injects = {
                 CreateEncounterActivity.class
         },
-        addsTo = CreateEncounterModule.class,
+        addsTo = EntourageModule.class,
         complete = false,
         library = true
 )
@@ -25,7 +26,7 @@ public final class CreateEncounterModule {
 
     @Provides
     @Singleton
-    public CreateEncounterPresenter providesMainPresenter() {
-        return new CreateEncounterPresenter(activity);
+    public CreateEncounterActivity providesActivity() {
+        return activity;
     }
 }
