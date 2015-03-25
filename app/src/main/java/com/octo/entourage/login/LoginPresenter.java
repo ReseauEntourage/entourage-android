@@ -1,16 +1,19 @@
 package com.octo.entourage.login;
 
-/**
- * Created by tda on 25/03/15.
- */
+import com.octo.entourage.api.LoginService;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class LoginPresenter {
     private final LoginActivity activity;
+    private final LoginService loginService;
 
-    public LoginPresenter(final LoginActivity activity) {
+    @Inject
+    public LoginPresenter(final LoginActivity activity, final LoginService loginService) {
         this.activity = activity;
+        this.loginService = loginService;
     }
 
-
-    public void start() {
-    }
 }

@@ -1,8 +1,5 @@
 package com.octo.entourage.login;
 
-/**
- * Created by tda on 25/03/15.
- */
 
 import com.octo.entourage.EntourageModule;
 
@@ -32,7 +29,7 @@ public class LoginModule {
 
     @Provides
     @Singleton
-    public LoginPresenter providesMainPresenter() {
-        return new LoginPresenter(activity);
+    public LoginActivity providesLoginActivity() {
+        return activity;
     }
 }
