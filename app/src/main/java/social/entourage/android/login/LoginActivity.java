@@ -1,5 +1,6 @@
 package social.entourage.android.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import social.entourage.android.map.MapActivity;
 
 public class LoginActivity extends EntourageActivity {
 
@@ -43,11 +45,11 @@ public class LoginActivity extends EntourageActivity {
         loginPresenter.login(emailEditText.getText().toString());
     }
 
-    public void loginSuccess(final String name) {
-        Toast.makeText(this, "Hello " + name, Toast.LENGTH_SHORT).show();
+    public void loginFail() {
+        Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
     }
 
-    public void loginFail() {
-        Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show();
+    public void startMapActivity() {
+        startActivity(new Intent(this, MapActivity.class));
     }
 }
