@@ -4,6 +4,9 @@ import com.octo.entourage.EntourageActivity;
 import com.octo.entourage.R;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,10 +20,13 @@ import butterknife.ButterKnife;
 /**
  * Created by RPR on 25/03/15.
  */
-public class MapActivity extends EntourageActivity {
+public class MapActivity extends EntourageActivity implements
+        ActionBar.TabListener {
 
     @Inject
     MapPresenter presenter;
+
+    private Fragment fragment;
 
     @Override
     protected List<Object> getScopedModules() {
@@ -32,6 +38,15 @@ public class MapActivity extends EntourageActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ButterKnife.inject(this);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(false);
+
+        // TODO: Remove depreceated code : move tabs in toolbar
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_map).setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_liste).setTabListener(this));
     }
 
     @Override
@@ -55,5 +70,28 @@ public class MapActivity extends EntourageActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        switch (tab.getPosition()) {
+            case 0:
+                fragment = MapEntourageFragment.newInstance();
+                break;
+            case 1:
+                fragment = ListFragment.newInstance();
+                break;
+        }
+        fragmentTransaction.replace(R.id.layout_fragment_container, fragment);
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        fragmentTransaction.remove(fragment);
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
     }
 }
