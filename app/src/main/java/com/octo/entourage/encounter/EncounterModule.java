@@ -1,8 +1,4 @@
-package com.octo.entourage.map;
-
-/**
- * Created by RPR on 25/03/15.
- */
+package com.octo.entourage.encounter;
 
 import com.octo.entourage.EntourageModule;
 
@@ -16,22 +12,22 @@ import dagger.Provides;
  */
 @Module(
         injects = {
-                MapActivity.class
+                EncounterActivity.class
         },
         addsTo = EntourageModule.class,
         complete = false,
         library = true
 )
-public final class MapModule {
-    private final MapActivity activity;
+public final class EncounterModule {
+    private final EncounterActivity activity;
 
-    public MapModule(final MapActivity activity) {
+    public EncounterModule(final EncounterActivity activity) {
         this.activity = activity;
     }
 
     @Provides
     @Singleton
-    public MapActivity providesMapActivity() {
-        return activity;
+    public EncounterPresenter providesMainPresenter() {
+        return new EncounterPresenter(activity);
     }
 }
