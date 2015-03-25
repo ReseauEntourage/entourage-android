@@ -14,11 +14,13 @@
     <string name="activity_map_tab_liste">LISTE</string>
 
     <!-- Encounter -->
-    <string name="activity_encounter_title">Rencontre</string>
+    <string name="activity_read_encounter_title">Rencontre</string>
+    <string name="activity_create_encounter_title">Créer une rencontre</string>
     <string name="encounter_label_date">Date de rencontre</string>
     <string name="encounter_label_street_person_name">Personne de la rue</string>
     <string name="encounter_label_person_name">Riverain</string>
     <string name="encounter_label_and">et</string>
     <string name="encounter_encountered">se sont rencontrés ici le %1$s</string>
+    <string name="encouter_add">Ajouter</string>
 
 </resources>

@@ -47,4 +47,10 @@ public class ApiModule {
         return restAdapter.create(MapService.class);
     }
 
+    @Provides
+    @Singleton
+    public EncounterService providesEncounterService(final RestAdapter restAdapter) {
+        return restAdapter.create(EncounterService.class);
+    }
+
 }

@@ -9,6 +9,7 @@ import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.MapService;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.encounter.ReadEncounterActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,16 +82,10 @@ public class MapPresenter {
     }
 
     public void openEncounter(Encounter encounter) {
-        encounter.setCreationDate(new Date());
-        encounter.setId(1);
-        encounter.setStreetPersonName("Jean");
-        encounter.setUserName("Nico");
-
-        Intent intent = new Intent(activity, EncounterActivity.class);
+        Intent intent = new Intent(activity, ReadEncounterActivity.class);
         Bundle extras = new Bundle();
         extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
         intent.putExtras(extras);
-
         activity.startActivity(intent);
     }
 
