@@ -1,7 +1,5 @@
 package social.entourage.android.encounter;
 
-import com.octo.entourage.EntourageModule;
-
 import javax.inject.Singleton;
 
 import dagger.Module;

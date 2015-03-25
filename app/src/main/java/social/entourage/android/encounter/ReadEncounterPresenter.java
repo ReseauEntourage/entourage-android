@@ -1,6 +1,6 @@
 package social.entourage.android.encounter;
 
-import com.octo.entourage.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Encounter;
 
 /**
  * Presenter controlling the main activity

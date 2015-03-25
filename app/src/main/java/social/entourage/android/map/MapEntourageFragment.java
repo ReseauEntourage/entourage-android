@@ -7,16 +7,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-<<<<<<< HEAD:app/src/main/java/social/entourage/android/map/MapEntourageFragment.java
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
-=======
-import com.octo.entourage.R;
-import com.octo.entourage.api.model.map.Encounter;
-import com.octo.entourage.api.model.map.Poi;
-import com.octo.entourage.encounter.CreateEncounterActivity;
->>>>>>> Chained encounter creation activity:app/src/main/java/com/octo/entourage/map/MapEntourageFragment.java
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,6 +23,7 @@ import android.widget.Button;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import social.entourage.android.encounter.CreateEncounterActivity;
 
 /**
  * Created by RPR on 25/03/15.

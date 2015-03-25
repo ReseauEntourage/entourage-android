@@ -1,11 +1,10 @@
 package social.entourage.android.encounter;
 
-import com.octo.entourage.EntourageModule;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import social.entourage.android.EntourageModule;
 
 /**
  * Module handling all ui related dependencies

@@ -6,11 +6,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.octo.entourage.EntourageActivity;
-import com.octo.entourage.R;
-import com.octo.entourage.common.Constants;
-import com.octo.entourage.api.model.map.Encounter;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +13,10 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
+import social.entourage.android.EntourageActivity;
+import social.entourage.android.R;
+import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.common.Constants;
 
 public class ReadEncounterActivity extends EntourageActivity {
 
@@ -78,10 +76,6 @@ public class ReadEncounterActivity extends EntourageActivity {
     public void displayEncounter(Encounter encounter) {
         txtPersonName.setText(encounter.getUserName() + " ");
         edtStreetPersonName.setText(encounter.getStreetPersonName());
-        txtMet.setText(
-                this.getString(
-                        R.string.encounter_encountered,
-                        Constants.FORMATER_DDMMYYYY.print(encounter.getCreationDate()))
-        );
+        txtMet.setText(R.string.encounter_encountered);
     }
 }
