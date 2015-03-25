@@ -7,6 +7,6 @@ import social.entourage.android.api.model.map.Encounter;
 
 public interface EncounterService {
 
-    @POST("/login.json")
+    @POST("/encounters.json")
     void create(@Body Encounter encounter, Callback<EncounterResponse> callback);
 }
