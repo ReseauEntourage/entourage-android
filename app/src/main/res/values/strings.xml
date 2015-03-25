@@ -22,5 +22,6 @@
     <string name="encounter_label_and">et</string>
     <string name="encounter_encountered">se sont rencontrés ici le %1$s</string>
     <string name="encouter_add">Ajouter</string>
+    <string name="login_fail">Erreur de connexion</string>
 
 </resources>
