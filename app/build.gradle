@@ -34,8 +34,9 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         
         buildConfigField 'boolean', 'APPALOOSA_AUTO_UPDATE', 'false'
-        buildConfigField 'long', 'APPALOOSA_STORE_ID', '3949'
+        buildConfigField 'long', 'APPALOOSA_STORE_ID', "3949"
         buildConfigField 'String', 'APPALOOSA_STORE_TOKEN', '"ypt4d26acetzxivf5ynjeeqfisr9p7dr"'
+        buildConfigField 'String', 'ENTOURAGE_URL', '"http://entourage-back-preprod.herokuapp.com"'
     }
 
     signingConfigs {
@@ -48,12 +49,14 @@ android {
     }
 
     buildTypes {
+
         release {
             signingConfig signingConfigs.googleplay
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
-            buildConfigField 'boolean', 'APPALOOSA_AUTO_UPDATE', 'true'
+            debuggable false
+            buildConfigField "boolean", "APPALOOSA_AUTO_UPDATE", "true"
+            buildConfigField 'String', 'ENTOURAGE_URL', '"http://entourage-back.herokuapp.com"'
         }
     }
 

@@ -2,6 +2,8 @@ package com.octo.entourage;
 
 import android.app.Application;
 
+import com.octo.entourage.api.ApiModule;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -10,6 +12,9 @@ import dagger.Provides;
 @Module(
         injects = {
                 EntourageApplication.class
+        },
+        includes = {
+                ApiModule.class
         },
         library = true
 )

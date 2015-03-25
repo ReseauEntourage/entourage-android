@@ -22,7 +22,7 @@ public class MainActivity extends EntourageActivity {
     @Inject
     MainPresenter presenter;
 
-    @InjectView(R.id.textview_hello)
+    @InjectView(R.id.loginview_title)
     TextView helloTextView;
 
     @Override
