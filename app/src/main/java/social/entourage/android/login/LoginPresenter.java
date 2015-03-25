@@ -12,7 +12,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 @Singleton
-public class LoginPresenter {
+public class LoginPresenter implements Callback<LoginResponse> {
     private final LoginActivity activity;
     private final LoginService loginService;
     private final AuthenticationController authenticationController;
@@ -28,16 +28,17 @@ public class LoginPresenter {
     }
 
     public void login(final String email) {
-        loginService.login(email, new Callback<LoginResponse>() {
-            @Override
-            public void success(final LoginResponse loginResponse, final Response response) {
-                activity.loginSuccess(loginResponse.getUser().getFirstName());
-            }
+        loginService.login(email, this);
+    }
 
-            @Override
-            public void failure(final RetrofitError error) {
-                activity.loginFail();
-            }
-        });
+    @Override
+    public void success(final LoginResponse loginResponse, final Response response) {
+        authenticationController.saveUser(loginResponse.getUser());
+        activity.startMapActivity();
+    }
+
+    @Override
+    public void failure(final RetrofitError error) {
+        activity.loginFail();
     }
 }

@@ -1,6 +1,7 @@
 package social.entourage.android.map;
 
 import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by RPR on 25/03/15.
  */
-public class MapActivity extends EntourageActivity implements ActionBar.TabListener {
+public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener {
 
     // ----------------------------------
     // ATTRIBUTES
