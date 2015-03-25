@@ -3,7 +3,6 @@ package social.entourage.android.api.model.map;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Encounter implements Serializable{
 
@@ -12,7 +11,7 @@ public class Encounter implements Serializable{
     // TODO : use Joda to gson deseriallizer
 
     @SerializedName("date")
-    private Date creationDate;
+    private String creationDate;
 
     private double longitude;
 
@@ -40,11 +39,11 @@ public class Encounter implements Serializable{
         this.id = id;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 

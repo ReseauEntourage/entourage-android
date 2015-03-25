@@ -1,5 +1,6 @@
 package social.entourage.android.map;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -29,6 +30,16 @@ import social.entourage.android.encounter.CreateEncounterActivity;
  * Created by RPR on 25/03/15.
  */
 public class MapEntourageFragment extends Fragment {
+
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    public static final double INITIAL_LATITUDE = 48.841636;
+    public static final double INITIAL_LONGITUDE = 2.335899;
+    public static final float INITIAL_CAMERA_FACTOR = 11;
+
+    private static final float DEFAULT_ZOOM_FACTOR = 14;
 
     public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
 
@@ -96,8 +107,8 @@ public class MapEntourageFragment extends Fragment {
                                                          .icon(encounterIcon);
 
         if (mapFragment.getMap() != null) {
-            Marker marker = mapFragment.getMap().addMarker(markerOptions);
-            onClickListener.addEncounterMarker(marker, encounter);
+            mapFragment.getMap().addMarker(markerOptions);
+            onClickListener.addEncounterMarker(encounterPosition, encounter);
         }
     }
 
@@ -114,7 +125,28 @@ public class MapEntourageFragment extends Fragment {
 
         if (mapFragment.getMap() != null) {
             Marker marker = mapFragment.getMap().addMarker(markerOptions);
-            onClickListener.addPoiMarker(marker, poi);
+            onClickListener.addPoiMarker(poiPosition, poi);
+        }
+    }
+
+    public void clearMap() {
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().clear();
+        }
+    }
+
+    public void initializeMapZoom() {
+        centerMap(INITIAL_LATITUDE, INITIAL_LONGITUDE, INITIAL_CAMERA_FACTOR);
+    }
+
+    public void centerMap(double latitude, double longitude) {
+        centerMap(latitude, longitude, DEFAULT_ZOOM_FACTOR);
+    }
+
+    public void centerMap(double latitude, double longitude, float zoomFactor) {
+        if(mapFragment.getMap() != null) {
+            mapFragment.getMap().moveCamera(CameraUpdateFactory
+                    .newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
         }
     }
 }

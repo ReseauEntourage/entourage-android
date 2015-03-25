@@ -10,7 +10,7 @@ public class Poi {
 
     private String description;
 
-    private String address;
+    private String adress;
 
     private String phone;
 
@@ -51,12 +51,12 @@ public class Poi {
         this.description = description;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAdress() {
+        return adress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAdress(String address) {
+        this.adress = address;
     }
 
     public String getPhone() {
