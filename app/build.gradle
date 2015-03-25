@@ -24,18 +24,18 @@ dependencies {
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
-        applicationId "com.octo.entourage"
+        applicationId 'com.octo.entourage'
         minSdkVersion 15
         targetSdkVersion 22
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         
-        buildConfigField "boolean", "APPALOOSA_AUTO_UPDATE", "false"
-        buildConfigField "long", "APPALOOSA_STORE_ID", "3949"
-        buildConfigField "String", "APPALOOSA_STORE_TOKEN", "ypt4d26acetzxivf5ynjeeqfisr9p7dr"
+        buildConfigField 'boolean', 'APPALOOSA_AUTO_UPDATE', 'false'
+        buildConfigField 'long', 'APPALOOSA_STORE_ID', '3949'
+        buildConfigField 'String', 'APPALOOSA_STORE_TOKEN', '"ypt4d26acetzxivf5ynjeeqfisr9p7dr"'
     }
 
     signingConfigs {
@@ -53,7 +53,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
-            buildConfigField "boolean", "APPALOOSA_AUTO_UPDATE", "true"
+            buildConfigField 'boolean', 'APPALOOSA_AUTO_UPDATE', 'true'
         }
     }
 
