@@ -6,8 +6,8 @@ package com.octo.entourage;
 final class Modules {
 
     static Object[] list(EntourageApplication app) {
-        return new Object[] {
-
+        return new Object[]{
+                new EntourageModule(app)
         };
     }
 
