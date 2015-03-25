@@ -1,4 +1,4 @@
-package com.octo.entourage.model;
+package com.octo.entourage.common;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;

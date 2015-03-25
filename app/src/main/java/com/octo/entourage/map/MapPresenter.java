@@ -4,7 +4,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
 import com.octo.entourage.encounter.EncounterActivity;
-import com.octo.entourage.model.Constants;
+import com.octo.entourage.common.Constants;
 import com.octo.entourage.api.model.map.Encounter;
 import com.octo.entourage.api.model.map.Poi;
 

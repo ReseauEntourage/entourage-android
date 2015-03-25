@@ -1,5 +1,7 @@
 package com.octo.entourage.api.model.map;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Poi {
 
     private long id;
@@ -18,6 +20,7 @@ public class Poi {
 
     private String audience;
 
+    @SerializedName("category_id")
     private int categoryId;
 
     private double longitude;
