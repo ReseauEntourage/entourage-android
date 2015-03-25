@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:replace="label">
 
-    <activity
+        <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
@@ -26,11 +26,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- Services -->
+        <service
+            android:name="com.octo.appaloosasdk.async.AppaloosaSpiceService"
+            android:exported="false"/>
     </application>
 
-    <!-- Services -->
-    <service
-        android:name="com.octo.appaloosasdk.async.AppaloosaSpiceService"
-        android:exported="false"/>
 
 </manifest>
