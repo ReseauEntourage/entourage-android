@@ -1,7 +1,5 @@
 package com.octo.entourage.api;
 
-import com.octo.entourage.api.model.LoginResponse;
-
 import retrofit.Callback;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;

@@ -1,4 +1,6 @@
-package com.octo.entourage.api.model;
+package com.octo.entourage.api;
+
+import com.octo.entourage.api.model.User;
 
 /**
  * Response from login WS
