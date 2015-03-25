@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 'git rev-list HEAD --count'.execute().text.trim()
+def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
