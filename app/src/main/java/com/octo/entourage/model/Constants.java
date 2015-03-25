@@ -1,5 +1,10 @@
 package com.octo.entourage.model;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 public class Constants {
-    public static final String KEY_ENCOUNTER_ID = "encounterId";
+    public static final String KEY_ENCOUNTER = "encounter";
+
+    public static final DateTimeFormatter FORMATER_DDMMYYYY = DateTimeFormat.forPattern("dd/MM/yyyy");
 }

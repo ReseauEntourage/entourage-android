@@ -13,44 +13,31 @@
         android:id="@+id/textview_person_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="NICOLAS "
+        android:paddingBottom="5dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/encounter_label_and"
-        android:layout_toRightOf="text"/>
-
-
-    <TextView
-        android:id="@+id/textview_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/encounter_label_date"/>
-
-    <EditText
-        android:id="@+id/edittext_creation_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textview_date"/>
-
-
-    <TextView
-        android:id="@+id/textview_street_person_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/encounter_label_street_person_name"
-        android:layout_below="@id/edittext_creation_date"/>
+        android:layout_toEndOf="@id/textview_person_name"
+        android:layout_toRightOf="@id/textview_person_name"/>
 
     <EditText
         android:id="@+id/edittext_street_person_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textview_street_person_name"/>
+        android:layout_below="@id/textview_person_name"
+        android:paddingBottom="5dp"
+        android:enabled="false"
+        />
 
-    <EditText
-        android:id="@+id/edittext_person_name"
+    <TextView
+        android:id="@+id/textview_met"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textview_person_name"/>
+        android:text="@string/encounter_encountered"
+        android:paddingBottom="10dp"
+        android:layout_below="@id/edittext_street_person_name"/>
 
 </RelativeLayout>

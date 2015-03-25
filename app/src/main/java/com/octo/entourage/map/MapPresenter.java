@@ -62,7 +62,7 @@ public class MapPresenter {
 
         Intent intent = new Intent(activity, EncounterActivity.class);
         Bundle extras = new Bundle();
-        extras.putSerializable(Constants.KEY_ENCOUNTER_ID, encounter);
+        extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
         intent.putExtras(extras);
 
         activity.startActivity(intent);

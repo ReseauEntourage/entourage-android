@@ -27,23 +27,23 @@ public class EncounterActivity extends EntourageActivity {
     @Inject
     EncounterPresenter presenter;
 
-    @InjectView(R.id.edittext_creation_date)
-    EditText edtCreationDate;
-
-    @InjectView(R.id.edittext_person_name)
-    EditText edtPersonName;
+    @InjectView(R.id.textview_person_name)
+    TextView txtPersonName;
 
     @InjectView(R.id.edittext_street_person_name)
     EditText edtStreetPersonName;
 
+    @InjectView(R.id.textview_met)
+    TextView txtMet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_encounter);
+        setContentView(R.layout.activity_encounter_read);
         ButterKnife.inject(this);
 
         Bundle args = getIntent().getExtras();
-        encounter = (Encounter)args.get(Constants.KEY_ENCOUNTER_ID);
+        encounter = (Encounter)args.get(Constants.KEY_ENCOUNTER);
     }
 
     @Override
@@ -76,8 +76,12 @@ public class EncounterActivity extends EntourageActivity {
     }
 
     public void displayEncounter(Encounter encounter) {
-        edtCreationDate.setText(encounter.getCreationDate().toString());
-        edtPersonName.setText(encounter.getUserName());
+        txtPersonName.setText(encounter.getUserName() + " ");
         edtStreetPersonName.setText(encounter.getStreetPersonName());
+        txtMet.setText(
+                this.getString(
+                        R.string.encounter_encountered,
+                        Constants.FORMATER_DDMMYYYY.print(encounter.getCreationDate()))
+        );
     }
 }
