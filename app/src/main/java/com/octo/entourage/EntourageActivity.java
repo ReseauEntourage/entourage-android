@@ -22,6 +22,13 @@ public abstract class EntourageActivity extends ActionBarActivity {
 
         activityGraph = EntourageApplication.get(this).getApplicationGraph().plus(getScopedModules().toArray());
         inject(this);
+
+        if (BuildConfig.APPALOOSA_AUTO_UPDATE) {
+            Appaloosa.getInstance().autoUpdate(
+                    this,
+                    BuildConfig.APPALOOSA_STORE_ID,
+                    BuildConfig.APPALOOSA_STORE_TOKEN);
+        }
     }
 
     @Override
