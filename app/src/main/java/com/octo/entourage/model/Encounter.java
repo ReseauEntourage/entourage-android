@@ -8,9 +8,9 @@ public class Encounter {
 
     private DateTime creationDate;
 
-    private long longitude;
+    private double longitude;
 
-    private long latitude;
+    private double latitude;
 
     private String userId;
 
@@ -38,19 +38,19 @@ public class Encounter {
         this.creationDate = creationDate;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 

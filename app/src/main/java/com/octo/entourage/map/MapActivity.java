@@ -1,7 +1,11 @@
 package com.octo.entourage.map;
 
+import com.google.android.gms.maps.GoogleMap;
+
 import com.octo.entourage.EntourageActivity;
 import com.octo.entourage.R;
+import com.octo.entourage.model.Encounter;
+import com.octo.entourage.model.Poi;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,13 +24,20 @@ import butterknife.ButterKnife;
 /**
  * Created by RPR on 25/03/15.
  */
-public class MapActivity extends EntourageActivity implements
-        ActionBar.TabListener {
+public class MapActivity extends EntourageActivity implements ActionBar.TabListener {
+
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
 
     @Inject
     MapPresenter presenter;
 
     private Fragment fragment;
+
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
 
     @Override
     protected List<Object> getScopedModules() {
@@ -93,5 +104,30 @@ public class MapActivity extends EntourageActivity implements
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public void putEncouter(Encounter encounter) {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.putEncounterOnMap(encounter);
+        }
+    }
+
+    public void putPoi(Poi poi) {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.putPoiOnMap(poi);
+        }
+    }
+
+    public void setOnMarkerCLickListener(GoogleMap.OnMarkerClickListener onMarkerClickListener) {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.setOnMarkerClickListener(onMarkerClickListener);
+        }
     }
 }

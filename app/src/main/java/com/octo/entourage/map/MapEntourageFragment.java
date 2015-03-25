@@ -1,8 +1,15 @@
 package com.octo.entourage.map;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.octo.entourage.R;
+import com.octo.entourage.model.Encounter;
+import com.octo.entourage.model.Poi;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,8 +22,17 @@ import android.view.ViewGroup;
  */
 public class MapEntourageFragment extends Fragment {
 
+    public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
 
-    private Fragment searchMapFragment;
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
+    private SupportMapFragment mapFragment;
+
+    // ----------------------------------
+    // CONSTRUCTOR
+    // ----------------------------------
 
     public static MapEntourageFragment newInstance() {
         MapEntourageFragment fragment = new MapEntourageFragment();
@@ -36,6 +52,46 @@ public class MapEntourageFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        searchMapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.fragment_map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public void setOnMarkerClickListener(GoogleMap.OnMarkerClickListener onMarkerClickListener) {
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().setOnMarkerClickListener(onMarkerClickListener);
+        }
+    }
+
+    public void putEncounterOnMap(Encounter encounter) {
+        double encounterLatitude = encounter.getLatitude();
+        double encounterLongitude = encounter.getLongitude();
+        LatLng encounterPosition = new LatLng(encounterLatitude, encounterLongitude);
+        BitmapDescriptor encounterIcon = BitmapDescriptorFactory.fromResource(R.drawable.rencontre);
+
+        MarkerOptions markerOptions = new MarkerOptions().position(encounterPosition)
+                                                         .icon(encounterIcon);
+
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().addMarker(markerOptions);
+        }
+    }
+
+    public void putPoiOnMap(Poi poi) {
+        double poiLatitude = poi.getLatitude();
+        double poiLongitude = poi.getLongitude();
+        LatLng poiPosition = new LatLng(poiLatitude, poiLongitude);
+
+        int poiIconRessourceId = getActivity().getResources().getIdentifier(POI_DRAWABLE_NAME_PREFIX + poi.getCategoryId(), "drawable", getActivity().getPackageName());
+        BitmapDescriptor poiIcon = BitmapDescriptorFactory.fromResource(poiIconRessourceId);
+
+        MarkerOptions markerOptions = new MarkerOptions().position(poiPosition)
+                                                         .icon(poiIcon);
+
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().addMarker(markerOptions);
+        }
     }
 }
