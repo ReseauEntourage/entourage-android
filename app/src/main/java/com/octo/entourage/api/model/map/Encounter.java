@@ -1,4 +1,6 @@
-package com.octo.entourage.model;
+package com.octo.entourage.api.model.map;
+
+import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.DateTime;
 
@@ -8,20 +10,25 @@ public class Encounter implements Serializable{
 
     private long id;
 
+    @SerializedName("date")
     private DateTime creationDate;
 
     private double longitude;
 
     private double latitude;
 
+    @SerializedName("user_id")
     private String userId;
 
+    @SerializedName("user_name")
     private String userName;
 
+    @SerializedName("street_person_name")
     private String streetPersonName;
 
     private String message;
 
+    @SerializedName("voice_message")
     private String voiceMessageUrl;
 
     public long getId() {

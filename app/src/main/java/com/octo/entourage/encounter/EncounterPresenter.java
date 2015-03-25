@@ -1,11 +1,6 @@
 package com.octo.entourage.encounter;
 
-import com.octo.entourage.model.Encounter;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-
-import java.util.Locale;
+import com.octo.entourage.api.model.map.Encounter;
 
 /**
  * Presenter controlling the main activity

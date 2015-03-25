@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.octo.entourage.EntourageActivity;
 import com.octo.entourage.R;
 import com.octo.entourage.model.Constants;
-import com.octo.entourage.model.Encounter;
+import com.octo.entourage.api.model.map.Encounter;
 
 import java.util.Arrays;
 import java.util.List;

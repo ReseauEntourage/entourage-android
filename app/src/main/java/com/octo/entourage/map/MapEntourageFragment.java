@@ -8,8 +8,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.octo.entourage.R;
-import com.octo.entourage.model.Encounter;
-import com.octo.entourage.model.Poi;
+import com.octo.entourage.api.model.map.Encounter;
+import com.octo.entourage.api.model.map.Poi;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

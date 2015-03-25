@@ -5,8 +5,8 @@ import com.google.android.gms.maps.model.Marker;
 
 import com.octo.entourage.encounter.EncounterActivity;
 import com.octo.entourage.model.Constants;
-import com.octo.entourage.model.Encounter;
-import com.octo.entourage.model.Poi;
+import com.octo.entourage.api.model.map.Encounter;
+import com.octo.entourage.api.model.map.Poi;
 
 import org.joda.time.DateTime;
 

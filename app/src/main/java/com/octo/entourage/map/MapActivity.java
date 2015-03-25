@@ -2,8 +2,8 @@ package com.octo.entourage.map;
 
 import com.octo.entourage.EntourageActivity;
 import com.octo.entourage.R;
-import com.octo.entourage.model.Encounter;
-import com.octo.entourage.model.Poi;
+import com.octo.entourage.api.model.map.Encounter;
+import com.octo.entourage.api.model.map.Poi;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

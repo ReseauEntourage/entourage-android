@@ -1,4 +1,4 @@
-package com.octo.entourage.model;
+package com.octo.entourage.api.model.map;
 
 public class Category {
 
