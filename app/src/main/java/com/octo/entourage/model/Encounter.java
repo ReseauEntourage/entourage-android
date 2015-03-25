@@ -2,7 +2,9 @@ package com.octo.entourage.model;
 
 import org.joda.time.DateTime;
 
-public class Encounter {
+import java.io.Serializable;
+
+public class Encounter implements Serializable{
 
     private long id;
 

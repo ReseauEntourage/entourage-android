@@ -69,7 +69,7 @@ public class MapActivity extends EntourageActivity implements ActionBar.TabListe
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.start();
+        presenter.openEncounter();
     }
 
     @Override

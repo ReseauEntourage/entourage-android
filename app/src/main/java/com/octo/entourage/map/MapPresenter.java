@@ -2,13 +2,15 @@ package com.octo.entourage.map;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
-
 import com.octo.entourage.model.Encounter;
 import com.octo.entourage.model.Poi;
+import android.content.Intent;
+import android.os.Bundle;
+import com.octo.entourage.encounter.EncounterActivity;
+import com.octo.entourage.model.Constants;
 
-/**
- * Created by RPR on 25/03/15.
- */
+import org.joda.time.DateTime;
+
 public class MapPresenter {
     private final MapActivity activity;
 
@@ -37,5 +39,20 @@ public class MapPresenter {
         activity.setOnMarkerCLickListener(onClickListener);
         activity.putEncouter(encounter);
         activity.putPoi(poi);
+    }
+
+    public void openEncounter() {
+        Encounter encounter = new Encounter();
+        encounter.setCreationDate(new DateTime());
+        encounter.setId(1);
+        encounter.setStreetPersonName("Jean");
+        encounter.setUserName("Nico");
+
+        Intent intent = new Intent(activity, EncounterActivity.class);
+        Bundle extras = new Bundle();
+        extras.putSerializable(Constants.KEY_ENCOUNTER_ID, encounter);
+        intent.putExtras(extras);
+
+        activity.startActivity(intent);
     }
 }
