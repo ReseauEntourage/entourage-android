@@ -27,7 +27,7 @@ android {
     buildToolsVersion '22.0.1'
 
     defaultConfig {
-        applicationId 'com.octo.entourage'
+        applicationId 'social.entourage.android'
         minSdkVersion 15
         targetSdkVersion 22
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
