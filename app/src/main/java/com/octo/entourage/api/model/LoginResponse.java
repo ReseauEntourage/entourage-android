@@ -7,8 +7,11 @@ public class LoginResponse {
 
     private final User user;
 
-
     public LoginResponse(final User user) {
         this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
