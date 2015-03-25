@@ -52,7 +52,7 @@ android {
             signingConfig signingConfigs.googleplay
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable false
+            debuggable true
             buildConfigField 'boolean', 'APPALOOSA_AUTO_UPDATE', 'true'
         }
     }

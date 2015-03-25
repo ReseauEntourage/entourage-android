@@ -3,6 +3,8 @@ package com.octo.entourage;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
+import com.octo.appaloosasdk.Appaloosa;
+
 import java.util.List;
 
 import dagger.ObjectGraph;
