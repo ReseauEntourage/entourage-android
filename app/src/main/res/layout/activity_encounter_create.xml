@@ -1,0 +1,61 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textview_person_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NICOLAS "
+        android:paddingBottom="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/encounter_label_and"
+        android:layout_toEndOf="@id/textview_person_name"
+        android:layout_toRightOf="@id/textview_person_name"/>
+
+    <EditText
+        android:id="@+id/edittext_street_person_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_person_name"
+        android:paddingBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/textview_met"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/encounter_encountered"
+        android:paddingBottom="10dp"
+        android:layout_below="@id/edittext_street_person_name"/>
+
+    <EditText
+        android:id="@+id/edittext_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_met"
+        android:lines="4"
+        android:gravity="left|top"
+        android:inputType="textMultiLine"
+        android:paddingBottom="10dp"/>
+
+    <Button
+        android:id="@+id/button_create_encounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/encouter_add"
+        android:minWidth="50dp"
+        android:layout_below="@id/edittext_message"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>

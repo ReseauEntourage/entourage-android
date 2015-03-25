@@ -3,12 +3,19 @@ package social.entourage.android.map;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
+<<<<<<< HEAD:app/src/main/java/social/entourage/android/map/MapPresenter.java
 import social.entourage.android.encounter.EncounterActivity;
 import social.entourage.android.common.Constants;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.MapService;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
+=======
+import social.entourage.android.encounter.ReadEncounterActivity;
+import com.octo.entourage.common.Constants;
+import com.octo.entourage.api.model.map.Encounter;
+import com.octo.entourage.api.model.map.Poi;
+>>>>>>> Chained encounter creation activity:app/src/main/java/com/octo/entourage/map/MapPresenter.java
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,16 +88,19 @@ public class MapPresenter {
     }
 
     public void openEncounter(Encounter encounter) {
+<<<<<<< HEAD:app/src/main/java/social/entourage/android/map/MapPresenter.java
         encounter.setCreationDate(new Date());
         encounter.setId(1);
         encounter.setStreetPersonName("Jean");
         encounter.setUserName("Nico");
 
         Intent intent = new Intent(activity, EncounterActivity.class);
+=======
+        Intent intent = new Intent(activity, ReadEncounterActivity.class);
+>>>>>>> Chained encounter creation activity:app/src/main/java/com/octo/entourage/map/MapPresenter.java
         Bundle extras = new Bundle();
         extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
         intent.putExtras(extras);
-
         activity.startActivity(intent);
     }
 

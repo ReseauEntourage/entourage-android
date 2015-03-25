@@ -7,15 +7,29 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+<<<<<<< HEAD:app/src/main/java/social/entourage/android/map/MapEntourageFragment.java
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
+=======
+import com.octo.entourage.R;
+import com.octo.entourage.api.model.map.Encounter;
+import com.octo.entourage.api.model.map.Poi;
+import com.octo.entourage.encounter.CreateEncounterActivity;
+>>>>>>> Chained encounter creation activity:app/src/main/java/com/octo/entourage/map/MapEntourageFragment.java
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by RPR on 25/03/15.
@@ -46,7 +60,9 @@ public class MapEntourageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
+        ButterKnife.inject(this, toReturn);
+        return toReturn;
     }
 
     @Override
@@ -58,6 +74,16 @@ public class MapEntourageFragment extends Fragment {
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
+
+
+    @OnClick(R.id.button_add_encounter)
+    public void opentCreateEncounter(View view) {
+        Activity parent = this.getActivity();
+        if (parent != null) {
+            Intent intent = new Intent(parent, CreateEncounterActivity.class);
+            parent.startActivity(intent);
+        }
+    }
 
     public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
         if (mapFragment.getMap() != null) {

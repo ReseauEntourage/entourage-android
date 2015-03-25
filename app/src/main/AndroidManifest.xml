@@ -46,8 +46,12 @@
         </activity>
 
         <activity
-            android:name=".encounter.EncounterActivity"
-            android:label="@string/activity_encounter_title">
+            android:name=".encounter.ReadEncounterActivity"
+            android:label="@string/activity_read_encounter_title">
+        </activity>
+        <activity
+            android:name=".encounter.CreateEncounterActivity"
+            android:label="@string/activity_create_encounter_title">
         </activity>
         <!-- Services -->
         <service
