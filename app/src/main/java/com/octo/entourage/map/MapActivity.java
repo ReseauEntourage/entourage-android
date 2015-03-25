@@ -1,10 +1,11 @@
 package com.octo.entourage.map;
 
+import com.octo.entourage.EntourageActivity;
+import com.octo.entourage.R;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.octo.entourage.EntourageActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +30,7 @@ public class MapActivity extends EntourageActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_map);
         ButterKnife.inject(this);
     }
 

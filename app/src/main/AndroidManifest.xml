@@ -29,7 +29,7 @@
         tools:replace="label" >
 
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
-                   android:value="@string/maps_api_key"/>
+                   android:value="@string/map_api_key"/>
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login" >
