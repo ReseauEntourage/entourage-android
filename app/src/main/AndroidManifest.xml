@@ -33,11 +33,6 @@
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login" >
-        </activity>
-
-        <activity
-            android:name=".map.MapActivity"
-            android:label="@string/activity_map_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -52,6 +47,10 @@
         <activity
             android:name=".encounter.CreateEncounterActivity"
             android:label="@string/activity_create_encounter_title">
+        </activity>
+        <activity
+            android:name=".map.MapActivity"
+            android:label="@string/activity_map_title">
         </activity>
         <!-- Services -->
         <service

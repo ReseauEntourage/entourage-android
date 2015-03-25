@@ -6,9 +6,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import social.entourage.android.EntourageActivity;
-import social.entourage.android.R;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +15,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.map.MapActivity;
+import social.entourage.android.EntourageActivity;
+import social.entourage.android.R;
 
 public class LoginActivity extends EntourageActivity {
 
@@ -26,6 +25,8 @@ public class LoginActivity extends EntourageActivity {
 
     @InjectView(R.id.edittext_email)
     EditText emailEditText;
+    @InjectView(R.id.button_login)
+    Button loginButton;
 
     @Override
     protected List<Object> getScopedModules() {
@@ -42,14 +43,27 @@ public class LoginActivity extends EntourageActivity {
 
     @OnClick(R.id.button_login)
     public void onLoginClick(Button loginButton) {
+        startLoader();
         loginPresenter.login(emailEditText.getText().toString());
-    }
-
-    public void loginFail() {
-        Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
     }
 
     public void startMapActivity() {
         startActivity(new Intent(this, MapActivity.class));
+        resetLoginButton();
+    }
+
+    public void loginFail() {
+        resetLoginButton();
+        Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+    }
+
+    private void startLoader() {
+        loginButton.setText("Loading...");
+        loginButton.setEnabled(false);
+    }
+
+    private void resetLoginButton() {
+        loginButton.setText(R.string.login_button_text);
+        loginButton.setEnabled(true);
     }
 }

@@ -4,7 +4,7 @@
     <string name="hello_time">Hello, world! à %s</string>
     <string name="title_activity_login">Se connecter</string>
     <string name="login_hint_email">Email</string>
-    <string name="login_button">Connexion</string>
+    <string name="login_button_text">Connexion</string>
     <string name="hello_world">Hello world!</string>
 
     <!-- Maps -->

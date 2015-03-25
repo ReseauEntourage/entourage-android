@@ -1,21 +1,12 @@
 package social.entourage.android.map;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
-
-import social.entourage.android.encounter.EncounterActivity;
-import social.entourage.android.common.Constants;
-import social.entourage.android.api.MapResponse;
-import social.entourage.android.api.MapService;
-import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Poi;
-import social.entourage.android.encounter.ReadEncounterActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.util.Date;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +15,12 @@ import javax.inject.Inject;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import social.entourage.android.api.MapResponse;
+import social.entourage.android.api.MapService;
+import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.common.Constants;
+import social.entourage.android.encounter.ReadEncounterActivity;
 
 public class MapPresenter {
 

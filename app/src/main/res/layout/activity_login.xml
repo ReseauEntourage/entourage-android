@@ -18,7 +18,8 @@
         android:gravity="center_horizontal"
         android:paddingTop="25dp"
         android:paddingBottom="20dp"
-        android:background="@drawable/login_form">
+        android:background="@drawable/login_form"
+        android:id="@+id/login_form">
 
         <EditText
             android:id="@+id/edittext_email"
@@ -32,9 +33,9 @@
             android:id="@+id/button_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_button"
-            android:text="@string/login_button"
+            android:text="@string/login_button_text"
             android:textSize="20dp"
+            android:background="@drawable/bg_button"
             android:textAllCaps="true"/>
 
     </LinearLayout>
@@ -44,6 +45,7 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
         android:layout_alignParentBottom="true"
+        android:layout_below="@+id/login_form"
         android:layout_centerInParent="true"/>
 
 
