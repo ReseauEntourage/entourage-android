@@ -31,7 +31,7 @@ public final class MapModule {
 
     @Provides
     @Singleton
-    public MapPresenter providesMainPresenter() {
-        return new MapPresenter(activity);
+    public MapActivity providesMapActivity() {
+        return activity;
     }
 }

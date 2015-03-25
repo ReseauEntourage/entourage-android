@@ -39,4 +39,10 @@ public class ApiModule {
         return restAdapter.create(LoginService.class);
     }
 
+    @Provides
+    @Singleton
+    public MapService providesMapService(final RestAdapter restAdapter) {
+        return restAdapter.create(MapService.class);
+    }
+
 }

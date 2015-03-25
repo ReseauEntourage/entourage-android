@@ -1,15 +1,15 @@
 package com.octo.entourage.encounter;
 
+import com.octo.entourage.EntourageActivity;
+import com.octo.entourage.R;
+import com.octo.entourage.api.model.map.Encounter;
+import com.octo.entourage.common.Constants;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.octo.entourage.EntourageActivity;
-import com.octo.entourage.R;
-import com.octo.entourage.common.Constants;
-import com.octo.entourage.api.model.map.Encounter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,7 +81,7 @@ public class EncounterActivity extends EntourageActivity {
         txtMet.setText(
                 this.getString(
                         R.string.encounter_encountered,
-                        Constants.FORMATER_DDMMYYYY.print(encounter.getCreationDate()))
+                        encounter.getCreationDate())
         );
     }
 }

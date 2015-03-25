@@ -5,17 +5,25 @@ import com.google.android.gms.maps.model.Marker;
 
 import com.octo.entourage.encounter.EncounterActivity;
 import com.octo.entourage.common.Constants;
+import com.octo.entourage.api.MapResponse;
+import com.octo.entourage.api.MapService;
 import com.octo.entourage.api.model.map.Encounter;
 import com.octo.entourage.api.model.map.Poi;
-
-import org.joda.time.DateTime;
+import com.octo.entourage.encounter.EncounterActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.inject.Inject;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MapPresenter {
 
@@ -24,13 +32,16 @@ public class MapPresenter {
     // ----------------------------------
 
     private final MapActivity activity;
+    private final MapService mapService;
 
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
-    public MapPresenter(final MapActivity activity) {
+    @Inject
+    public MapPresenter(final MapActivity activity, final MapService mapService) {
         this.activity = activity;
+        this.mapService = mapService;
     }
 
     // ----------------------------------
@@ -47,6 +58,8 @@ public class MapPresenter {
         poi.setLongitude(2);
         poi.setCategoryId(4);
 
+        retrieveMapObjects();
+
         OnEntourageMarkerClickListener onClickListener = new OnEntourageMarkerClickListener();
 
         activity.setOnMarkerCLickListener(onClickListener);
@@ -54,8 +67,22 @@ public class MapPresenter {
         activity.putPoi(poi, onClickListener);
     }
 
+    public void retrieveMapObjects() {
+        mapService.map("07ee026192ea722e66feb2340a05e3a8", 10, 10, 42.1, 2.1, new Callback<MapResponse>() {
+            @Override
+            public void success(MapResponse mapResponse, Response response) {
+                Log.d("Success", "Success");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("Failure", "Failure");
+            }
+        });
+    }
+
     public void openEncounter(Encounter encounter) {
-        encounter.setCreationDate(new DateTime());
+        encounter.setCreationDate(new Date());
         encounter.setId(1);
         encounter.setStreetPersonName("Jean");
         encounter.setUserName("Nico");

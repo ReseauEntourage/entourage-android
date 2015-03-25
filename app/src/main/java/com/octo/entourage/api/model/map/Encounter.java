@@ -2,16 +2,17 @@ package com.octo.entourage.api.model.map;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.joda.time.DateTime;
-
 import java.io.Serializable;
+import java.util.Date;
 
 public class Encounter implements Serializable{
 
     private long id;
 
+    // TODO : use Joda to gson deseriallizer
+
     @SerializedName("date")
-    private DateTime creationDate;
+    private Date creationDate;
 
     private double longitude;
 
@@ -39,11 +40,11 @@ public class Encounter implements Serializable{
         this.id = id;
     }
 
-    public DateTime getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(DateTime creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
