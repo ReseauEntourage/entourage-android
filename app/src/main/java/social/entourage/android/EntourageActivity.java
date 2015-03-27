@@ -2,6 +2,7 @@ package social.entourage.android;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.Toast;
 
 import com.octo.appaloosasdk.Appaloosa;
 
@@ -42,4 +43,14 @@ public abstract class EntourageActivity extends ActionBarActivity {
     }
 
     protected abstract List<Object> getScopedModules();
+
+    public void createEncounterFail(String msg) {
+        Toast.makeText(this, getString(R.string.create_encounter_fail) + ": " + msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public void createEncounterSuccess() {
+        Toast.makeText(this, getString(R.string.create_encounter_success), Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
 }

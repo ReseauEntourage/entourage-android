@@ -25,4 +25,8 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
             finish();
         }
     }
+
+    public AuthenticationController getAuthenticationController() {
+        return authenticationController;
+    }
 }

@@ -8,7 +8,7 @@
     <string name="hello_world">Hello world!</string>
 
     <!-- Maps -->
-    <string name="map_api_key">AIzaSyAdbD0h3_xa9E4U-gRgtLxwic4GHN4Ph-U</string>
+    <string name="map_api_key">AIzaSyCBviWUlE8yrnNanFF3VoWqbDfs4eFOM3o</string>
     <string name="activity_map_title">Rencontres</string>
     <string name="activity_map_tab_map">CARTE</string>
     <string name="activity_map_tab_liste">LISTE</string>
@@ -23,5 +23,7 @@
     <string name="encounter_encountered">se sont rencontrés ici le %1$s</string>
     <string name="encouter_add">Ajouter</string>
     <string name="login_fail">Erreur de connexion</string>
+    <string name="create_encounter_fail">Echec de la création de rencontre</string>
+    <string name="create_encounter_success">Création de la rencontre effectuée</string>
 
 </resources>

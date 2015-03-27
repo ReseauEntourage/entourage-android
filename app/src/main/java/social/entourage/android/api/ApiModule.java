@@ -1,5 +1,9 @@
 package social.entourage.android.api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit.converter.GsonConverter;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.authentication.AuthenticationInterceptor;
 
@@ -29,9 +33,15 @@ public class ApiModule {
     @Provides
     @Singleton
     public RestAdapter providesRestAdapter(final Endpoint endpoint, final AuthenticationInterceptor interceptor) {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                .create();
+
         return new RestAdapter.Builder()
                 .setEndpoint(endpoint)
                 .setRequestInterceptor(interceptor)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(new GsonConverter(gson))
                 .build();
     }
 
