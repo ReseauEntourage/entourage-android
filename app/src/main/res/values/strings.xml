@@ -25,5 +25,6 @@
     <string name="login_fail">Erreur de connexion</string>
     <string name="create_encounter_fail">Echec de la création de rencontre</string>
     <string name="create_encounter_success">Création de la rencontre effectuée</string>
+    <string name="map_add_encounter">Nouvelle rencontre</string>
 
 </resources>
