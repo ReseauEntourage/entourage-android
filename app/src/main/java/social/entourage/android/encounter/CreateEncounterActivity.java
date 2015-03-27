@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
 
@@ -22,6 +23,7 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.common.Constants;
 
 
 public class CreateEncounterActivity extends EntourageSecuredActivity {
@@ -37,11 +39,22 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @InjectView(R.id.edittext_street_person_name)
     EditText edtStreetPersonName;
 
+    @InjectView(R.id.textview_met)
+    TextView txtMet;
+
+    private Bundle args;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encounter_create);
         ButterKnife.inject(this);
+        txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(new Date())));
+        args = getIntent().getExtras();
+
+        if (args == null || args.isEmpty()) {
+            throw new IllegalArgumentException("You must provide latitude and longitude");
+        }
     }
 
     @Override
@@ -74,10 +87,14 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     @OnClick(R.id.button_create_encounter)
     public void createEncounter() {
+
+        double latitude = args.getDouble(Constants.KEY_LATITUDE);
+        double longitude = args.getDouble(Constants.KEY_LONGITUDE);
+
         Encounter encounter = new Encounter();
         encounter.setUserName(getAuthenticationController().getUser().getFirstName());
-        encounter.setLatitude(1.0);
-        encounter.setLongitude(2.0);
+        encounter.setLatitude(latitude);
+        encounter.setLongitude(longitude);
         encounter.setMessage(edtMessage.getText().toString());
         encounter.setStreetPersonName(edtStreetPersonName.getText().toString());
         encounter.setCreationDate(new Date());

@@ -28,6 +28,7 @@ import java.util.Date;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.CreateEncounterActivity;
 
 /**
@@ -90,7 +91,15 @@ public class MapEntourageFragment extends Fragment {
         Activity parent = this.getActivity();
         if (parent != null) {
             Intent intent = new Intent(parent, CreateEncounterActivity.class);
-            parent.startActivity(intent);
+
+            Bundle args = new Bundle();
+            LatLng mapCenter = mapFragment.getMap().getCameraPosition().target;
+            args.putDouble(Constants.KEY_LATITUDE, mapCenter.latitude);
+            args.putDouble(Constants.KEY_LONGITUDE, mapCenter.longitude);
+
+            intent.putExtras(args);
+
+            parent.startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
         }
     }
 

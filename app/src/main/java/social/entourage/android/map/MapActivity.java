@@ -7,6 +7,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,6 +25,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import social.entourage.android.common.Constants;
 
 /**
  * Created by RPR on 25/03/15.
@@ -98,6 +100,15 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_CREATE_ENCOUNTER) {
+            if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK) {
+                presenter.retrieveMapObjects(bestLocation.getLatitude(), bestLocation.getLongitude());
+            }
+        }
     }
 
     @Override

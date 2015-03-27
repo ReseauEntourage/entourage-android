@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -76,6 +77,6 @@ public class ReadEncounterActivity extends EntourageActivity {
     public void displayEncounter(Encounter encounter) {
         txtPersonName.setText(encounter.getUserName() + " ");
         edtStreetPersonName.setText(encounter.getStreetPersonName());
-        txtMet.setText(R.string.encounter_encountered);
-    }
+        txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(encounter.getCreationDate())));
+     }
 }

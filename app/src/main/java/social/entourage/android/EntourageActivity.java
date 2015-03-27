@@ -9,6 +9,7 @@ import com.octo.appaloosasdk.Appaloosa;
 import java.util.List;
 
 import dagger.ObjectGraph;
+import social.entourage.android.common.Constants;
 
 /**
  * Base activity which set up a scoped graph and inject it
@@ -50,6 +51,7 @@ public abstract class EntourageActivity extends ActionBarActivity {
 
     public void createEncounterSuccess() {
         Toast.makeText(this, getString(R.string.create_encounter_success), Toast.LENGTH_SHORT).show();
+        setResult(Constants.RESULT_CREATE_ENCOUNTER_OK);
         finish();
     }
 
