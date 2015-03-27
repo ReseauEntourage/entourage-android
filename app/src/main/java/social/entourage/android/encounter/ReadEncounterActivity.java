@@ -6,6 +6,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +43,7 @@ public class ReadEncounterActivity extends EntourageActivity {
         setContentView(R.layout.activity_encounter_read);
         ButterKnife.inject(this);
 
+        FlurryAgent.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
         Bundle args = getIntent().getExtras();
         encounter = (Encounter)args.get(Constants.KEY_ENCOUNTER);
     }
