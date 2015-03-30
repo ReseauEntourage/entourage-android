@@ -8,7 +8,7 @@
     <string name="hello_world">Hello world!</string>
 
     <!-- Maps -->
-    <string name="map_api_key">AIzaSyCBviWUlE8yrnNanFF3VoWqbDfs4eFOM3o</string>
+    <string name="map_api_key">AIzaSyAFqKD4mIEGQIfgbwQVQloMrlRkrqk9J4M</string>
     <string name="activity_map_title">Rencontres</string>
     <string name="activity_map_tab_map">CARTE</string>
     <string name="activity_map_tab_liste">LISTE</string>
