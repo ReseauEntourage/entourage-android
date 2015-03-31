@@ -58,7 +58,7 @@ public class LoginActivity extends EntourageActivity {
     }
 
     private void startLoader() {
-        loginButton.setText("Loading...");
+        loginButton.setText(R.string.loading_button_text);
         loginButton.setEnabled(false);
     }
 
