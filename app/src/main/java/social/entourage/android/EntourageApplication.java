@@ -24,7 +24,7 @@ public class EntourageApplication extends Application {
         FlurryAgent.setReportLocation(true);
         FlurryAgent.setLogEvents(true);
         FlurryAgent.setLogEnabled(true);
-        FlurryAgent.init(this, "MY_FLURRY_APIKEY");
+        FlurryAgent.init(this, BuildConfig.FLURRY_API_KEY);
     }
 
     public void inject(final Object o) {
