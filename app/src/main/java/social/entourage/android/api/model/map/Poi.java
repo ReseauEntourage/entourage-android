@@ -2,7 +2,9 @@ package social.entourage.android.api.model.map;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Poi {
+import java.io.Serializable;
+
+public class Poi implements Serializable {
 
     private long id;
 

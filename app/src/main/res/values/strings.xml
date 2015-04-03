@@ -28,4 +28,7 @@
     <string name="create_encounter_success">Création de la rencontre effectuée</string>
     <string name="map_add_encounter">Nouvelle rencontre</string>
 
+    <!-- POI -->
+    <string name="activity_read_poi_title">Point d\'intérêt</string>
+
 </resources>

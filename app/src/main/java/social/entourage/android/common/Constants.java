@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 
 public class Constants {
     public static final String KEY_ENCOUNTER = "keyEncounter";
+    public static final String KEY_POI = "keyPoi";
     public static final String KEY_LATITUDE = "keyLatitude";
     public static final String KEY_LONGITUDE = "keyLongitude";
 

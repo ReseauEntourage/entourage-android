@@ -35,6 +35,11 @@
         </activity>
 
         <activity
+            android:name=".poi.ReadPoiActivity"
+            android:label="@string/activity_read_poi_title">
+        </activity>
+
+        <activity
             android:name=".encounter.ReadEncounterActivity"
             android:label="@string/activity_read_encounter_title">
         </activity>

@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;

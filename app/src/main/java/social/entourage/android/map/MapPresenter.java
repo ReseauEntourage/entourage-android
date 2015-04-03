@@ -32,6 +32,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.ReadEncounterActivity;
+import social.entourage.android.poi.ReadPoiActivity;
 
 public class MapPresenter {
 
@@ -99,6 +100,14 @@ public class MapPresenter {
         activity.startActivity(intent);
     }
 
+    public void openPointOfInterest(Poi poi) {
+        Intent intent = new Intent(activity, ReadPoiActivity.class);
+        Bundle extras = new Bundle();
+        extras.putSerializable(Constants.KEY_POI, poi);
+        intent.putExtras(extras);
+        activity.startActivity(intent);
+    }
+
     // ----------------------------------
     // INNER CLASS
     // ----------------------------------
@@ -123,7 +132,7 @@ public class MapPresenter {
             }
 
             if (poiMarkerHashMap.get(markerPosition) != null){
-                Log.d("POI", String.valueOf(poiMarkerHashMap.get(markerPosition).getLatitude()));
+                openPointOfInterest(poiMarkerHashMap.get(markerPosition));
             }
             return false;
         }
