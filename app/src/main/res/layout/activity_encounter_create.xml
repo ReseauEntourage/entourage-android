@@ -38,11 +38,78 @@
         android:paddingBottom="10dp"
         android:layout_below="@id/edittext_street_person_name"/>
 
+    <TextView
+        android:id="@+id/textview_leave_voice_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/encounter_leave_voice_message"
+        android:layout_below="@id/textview_met"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout_player"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_leave_voice_message">
+
+        <ImageButton
+            android:id="@+id/button_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/player_record"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/textview_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:layout_gravity="center_vertical"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:id="@+id/button_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/player_play"/>
+
+        </LinearLayout>
+
+
+
+    <CheckBox
+        android:id="@+id/checkbox_share_on_twitter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_player"
+        android:layout_marginTop="20dp"
+        android:text="@string/encounter_share_on_twitter"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/textview_leave_text_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/encounter_leave_text_message"
+        android:layout_below="@id/checkbox_share_on_twitter"
+        android:layout_marginTop="20dp"/>
+
     <EditText
         android:id="@+id/edittext_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textview_met"
+        android:layout_below="@id/textview_leave_text_message"
         android:lines="4"
         android:gravity="left|top"
         android:inputType="textMultiLine"

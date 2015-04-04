@@ -79,6 +79,12 @@ public class MapEntourageFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().setMyLocationEnabled(true);
+            mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(true);
+        }
+
     }
 
     // ----------------------------------

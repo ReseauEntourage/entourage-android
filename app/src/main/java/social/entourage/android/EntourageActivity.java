@@ -1,5 +1,6 @@
 package social.entourage.android;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
@@ -16,7 +17,11 @@ import social.entourage.android.common.Constants;
  */
 public abstract class EntourageActivity extends ActionBarActivity {
 
+    protected final String logTag = this.getClass().getSimpleName();
+
     private ObjectGraph activityGraph;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -43,16 +48,20 @@ public abstract class EntourageActivity extends ActionBarActivity {
         activityGraph.inject(o);
     }
 
+    public void showProgressDialog(int resid) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(resid);
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+    }
+
+    public void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+
     protected abstract List<Object> getScopedModules();
-
-    public void createEncounterFail(String msg) {
-        Toast.makeText(this, getString(R.string.create_encounter_fail) + ": " + msg, Toast.LENGTH_SHORT).show();
-    }
-
-    public void createEncounterSuccess() {
-        Toast.makeText(this, getString(R.string.create_encounter_success), Toast.LENGTH_SHORT).show();
-        setResult(Constants.RESULT_CREATE_ENCOUNTER_OK);
-        finish();
-    }
-
 }

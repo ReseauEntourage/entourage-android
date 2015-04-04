@@ -62,5 +62,4 @@ public class ApiModule {
     public EncounterService providesEncounterService(final RestAdapter restAdapter) {
         return restAdapter.create(EncounterService.class);
     }
-
 }

@@ -106,7 +106,12 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_CREATE_ENCOUNTER) {
             if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK) {
-                presenter.retrieveMapObjects(bestLocation.getLatitude(), bestLocation.getLongitude());
+                double latitude = data.getExtras().getDouble(Constants.KEY_LATITUDE);
+                double longitude = data.getExtras().getDouble(Constants.KEY_LONGITUDE);
+
+                presenter.retrieveMapObjects(latitude, longitude);
+                // TODO: check centerMap() doesn't work
+                centerMap(latitude, longitude);
             }
         }
     }
@@ -166,10 +171,19 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         }
     }
 
+    public void centerMap(double latitude, double longitude) {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.centerMap(latitude, longitude);
+        }
+    }
+
     private void initializeLocationService() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIMER_MILLIS,
+                DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_TIMER_MILLIS,
                 DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
 
@@ -196,10 +210,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             if (isBetterLocationUpdated) {
                 isBetterLocationUpdated = false;
                 presenter.retrieveMapObjects(bestLocation.getLatitude(), bestLocation.getLongitude());
-                if (fragment instanceof MapEntourageFragment) {
-                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-                    mapEntourageFragment.centerMap(bestLocation.getLatitude(), bestLocation.getLongitude());
-                }
+                centerMap(bestLocation.getLatitude(), bestLocation.getLongitude());
 
                 new Handler().postDelayed(new RequestWaiter(bestLocation),
                         UPDATE_TIMER_MILLIS);
