@@ -64,4 +64,8 @@ public abstract class EntourageActivity extends ActionBarActivity {
     }
 
     protected abstract List<Object> getScopedModules();
+
+    public String getLogTag() {
+        return logTag;
+    }
 }

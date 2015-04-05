@@ -82,7 +82,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     private boolean isPlaying;
 
-    private static String audioFileName;
+    private String audioFileName;
 
     private Bundle arguments;
 
@@ -91,8 +91,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     private long startRecordTime;
 
     long totalRecordTime;
-
-    private Encounter encounter;
 
     private Runnable updateDurationThread = new Runnable() {
 
@@ -148,24 +146,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected List<Object> getScopedModules() {
         return Arrays.<Object>asList(new CreateEncounterModule(this));
     }
 
     @OnClick(R.id.button_create_encounter)
     public void createEncounter() {
-        encounter = new Encounter();
+        Encounter encounter = new Encounter();
         encounter.setUserName(getAuthenticationController().getUser().getFirstName());
         encounter.setLatitude(arguments.getDouble(Constants.KEY_LATITUDE));
         encounter.setLongitude(arguments.getDouble(Constants.KEY_LONGITUDE));
@@ -174,7 +161,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         encounter.setCreationDate(new Date());
 
         if (hasAMessageBeenRecorded) {
-            task.execute();
+            presenter.postTrackOnSoundCloud(encounter, audioFileName);
         } else {
             presenter.createEncounter(encounter);
         }
@@ -225,6 +212,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             });
 
         } catch (IOException e) {
+            Log.e(this.getLogTag(), "MediaPlayer.prepare() failed: " + e.getMessage(), e);
             throw new IllegalStateException("MediaPlayer.prepare() failed: " + e.getMessage(), e);
         }
     }
@@ -244,6 +232,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         try {
             mediaRecorder.prepare();
         } catch (IOException e) {
+            Log.e(this.getLogTag(), "MediaRecorder.prepare() failed: " + e.getMessage(), e);
             throw new IllegalStateException("MediaRecorder.prepare() failed: " + e.getMessage(), e);
         }
 
@@ -260,76 +249,19 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         durationHandler.removeCallbacks(updateDurationThread);
     }
 
-    private AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
-
-        @Override
-        protected void onPreExecute() {
-            showProgressDialog(R.string.creating_encounter);
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            String trackUrl = null;
-            final ApiWrapper wrapper = new ApiWrapper(
-                    BuildConfig.SOUNDCLOUND_ID,
-                    BuildConfig.SOUNDCLOUND_SECRET,
-                    null,
-                    null
-            );
-
-            Token token = null;
-            try {
-                token = wrapper.login(BuildConfig.SOUNDCLOUND_USER, BuildConfig.SOUNDCLOUND_PASS);
-                String title = MessageFormat.format(getString(R.string.soundcloud_track_title),
-                        getAuthenticationController().getUser().getFirstName(),
-                        edtStreetPersonName.getText().toString(),
-                        Constants.FORMATER_DDMMYYYY.format(new Date()),
-                        Constants.FORMATER_HHMM.format(new Date())
-                );
-
-                HttpResponse response = wrapper.post(Request.to(Endpoints.TRACKS)
-                        .add(Params.Track.TITLE, title)
-                        .add(Params.Track.TAG_LIST, "dev")
-                        .withFile(Params.Track.ASSET_DATA, new File(audioFileName))
-                );
-
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-                    JSONObject track = Http.getJSON(response);
-                    Log.d(logTag, track.toString(4));
-                    trackUrl = track.get("uri").toString();
-                } else {
-                    Log.e(logTag, "Invalid status received: " + response.getStatusLine());
-                    trackUrl = null;
-                }
-            } catch (Exception e) {
-                Log.e(logTag, "Problem when uploading to SoundCloud", e);
-                throw new IllegalStateException("Problem when uploading to SoundCloud", e);
-            }
-
-            return trackUrl;
-        }
-
-        @Override
-        protected void onPostExecute(String trackUrl) {
-            if (trackUrl != null) {
-                encounter.setVoiceMessageUrl(trackUrl);
-            }
-            presenter.createEncounter(encounter);
-        }
-    };
-
-    public void createEncounterSuccess() {
+    public void onCreateEncounterFinished(String errorMessage) {
         dismissProgressDialog();
-        Toast.makeText(this, R.string.create_encounter_success, Toast.LENGTH_LONG).show();
-        Intent resultIntent = new Intent();
-        resultIntent.putExtras(arguments);
-        setResult(Constants.RESULT_CREATE_ENCOUNTER_OK, resultIntent);
-        finish();
-    }
-
-    public void createEncounterFail(String errorMessage) {
-        dismissProgressDialog();
-        Toast.makeText(this, getString(R.string.create_encounter_failure) + errorMessage, Toast.LENGTH_LONG).show();
-        Log.e(logTag, getString(R.string.create_encounter_failure) + errorMessage);
+        String message = null;
+        if (errorMessage == null) {
+            message = getString(R.string.create_encounter_success);
+            Intent resultIntent = new Intent();
+            resultIntent.putExtras(arguments);
+            setResult(Constants.RESULT_CREATE_ENCOUNTER_OK, resultIntent);
+            finish();
+        } else {
+            message = getString(R.string.create_encounter_failure, errorMessage);
+            Log.e(logTag, getString(R.string.create_encounter_failure) + errorMessage);
+        }
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
