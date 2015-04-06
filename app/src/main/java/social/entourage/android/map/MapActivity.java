@@ -110,7 +110,8 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
                 double longitude = data.getExtras().getDouble(Constants.KEY_LONGITUDE);
 
                 presenter.retrieveMapObjects(latitude, longitude);
-                // TODO: check centerMap() doesn't work
+
+                // TODO: check why centerMap() doesn't work
                 centerMap(latitude, longitude);
             }
         }

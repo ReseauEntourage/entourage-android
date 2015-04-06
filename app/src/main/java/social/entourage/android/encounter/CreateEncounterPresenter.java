@@ -1,39 +1,22 @@
 package social.entourage.android.encounter;
 
-import android.os.AsyncTask;
-import android.util.Log;
+import android.widget.Toast;
 
-import com.soundcloud.api.ApiWrapper;
-import com.soundcloud.api.Endpoints;
-import com.soundcloud.api.Http;
-import com.soundcloud.api.Params;
-import com.soundcloud.api.Request;
-import com.soundcloud.api.Token;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.MessageFormat;
-import java.util.Date;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
 import javax.inject.Inject;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import social.entourage.android.BuildConfig;
 import social.entourage.android.R;
 import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.EncounterService;
+import social.entourage.android.api.SoundCloudCreateTrackRequest;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.common.Constants;
 
-/**
- * Presenter controlling the main activity
- */
-public class CreateEncounterPresenter implements Callback<EncounterResponse> {
+public class CreateEncounterPresenter {
 
     private final CreateEncounterActivity activity;
 
@@ -48,79 +31,55 @@ public class CreateEncounterPresenter implements Callback<EncounterResponse> {
         this.encounterService = encounterService;
     }
 
-    public void postTrackOnSoundCloud(final Encounter encounter, final String audioFileName) {
-
-        activity.showProgressDialog(R.string.creating_encounter);
-
-        new AsyncTask<Void, Void, String>() {
-
-            @Override
-            protected String doInBackground(Void... voids) {
-                String trackUrl = null;
-                final ApiWrapper wrapper = new ApiWrapper(
-                        BuildConfig.SOUNDCLOUND_ID,
-                        BuildConfig.SOUNDCLOUND_SECRET,
-                        null,
-                        null
-                );
-
-                Token token = null;
-                try {
-                    token = wrapper.login(BuildConfig.SOUNDCLOUND_USER, BuildConfig.SOUNDCLOUND_PASS);
-                    String title = MessageFormat.format(activity.getString(R.string.soundcloud_track_title),
-                            activity.getAuthenticationController().getUser().getFirstName(),
-                            encounter.getStreetPersonName(),
-                            Constants.FORMATER_DDMMYYYY.format(new Date()),
-                            Constants.FORMATER_HHMM.format(new Date())
-                    );
-
-                    HttpResponse response = wrapper.post(Request.to(Endpoints.TRACKS)
-                                    .add(Params.Track.TITLE, title)
-                                    .add(Params.Track.TAG_LIST, "dev")
-                                    .withFile(Params.Track.ASSET_DATA, new File(audioFileName))
-                    );
-
-                    if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-                        JSONObject track = Http.getJSON(response);
-                        Log.d(activity.getLogTag(), track.toString(4));
-                        trackUrl = track.get("uri").toString();
-                    } else {
-                        Log.e(activity.getLogTag(), "Invalid status received: " + response.getStatusLine());
-                        trackUrl = null;
-                    }
-                } catch (Exception e) {
-                    Log.e(activity.getLogTag(), "Problem when uploading to SoundCloud", e);
-                    throw new IllegalStateException("Problem when uploading to SoundCloud", e);
-                }
-
-                return trackUrl;
-            }
-
-            @Override
-            protected void onPostExecute(String trackUrl) {
-                onSoundTrackedPostFinished(encounter, trackUrl);
-            }
-        }.execute();
-    }
-
-    private void onSoundTrackedPostFinished(Encounter encounter, String trackUrl) {
-        if (trackUrl != null) {
-            encounter.setVoiceMessageUrl(trackUrl);
-        }
-        createEncounter(encounter);
+    public void createTrackOnSoundCloud(final Encounter encounter, final String audioFileName) {
+        activity.showProgressDialog(R.string.creating_encounter_audio);
+        SoundCloudCreateTrackRequest request = new SoundCloudCreateTrackRequest(
+                encounter,
+                audioFileName,
+                activity.getString(R.string.soundcloud_track_title)
+        );
+        activity.getSpiceManager().execute(request, new SoundCloudRequestCallback(encounter));
     }
 
     public void createEncounter(Encounter encounter) {
-        encounterService.create(encounter, this);
+        activity.showProgressDialog(R.string.creating_encounter);
+        encounterService.create(encounter, new EncounterRequestCallback());
     }
 
-    @Override
-    public void success(EncounterResponse encounterResponse, Response response) {
-        activity.onCreateEncounterFinished(null);
+    private final class SoundCloudRequestCallback implements RequestListener<Encounter> {
+
+        // this field is added so that it's still possible to create the encounter even if the call to SoundCloud fails
+        // it's the same object as the one received by onRequestSuccess(Encounter)
+        private final Encounter encounter;
+
+        private SoundCloudRequestCallback(final Encounter encounter) {
+            this.encounter = encounter;
+        }
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            Toast.makeText(activity,
+                    "Error creating audio message on SoundCloud: " + spiceException.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+            createEncounter(this.encounter);
+        }
+
+        @Override
+        public void onRequestSuccess(Encounter encounter) {
+            createEncounter(encounter);
+        }
     }
 
-    @Override
-    public void failure(RetrofitError error) {
-        activity.onCreateEncounterFinished(error.toString());
+    private final class EncounterRequestCallback implements Callback<EncounterResponse> {
+
+        @Override
+        public void success(EncounterResponse encounterResponse, Response response) {
+            activity.onCreateEncounterFinished(null);
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            activity.onCreateEncounterFinished(error.toString());
+        }
     }
 }

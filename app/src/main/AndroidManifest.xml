@@ -43,7 +43,8 @@
 
         <activity
             android:name=".encounter.ReadEncounterActivity"
-            android:label="@string/activity_read_encounter_title">
+            android:label="@string/activity_read_encounter_title"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".encounter.CreateEncounterActivity"
@@ -64,6 +65,9 @@
             android:name="com.octo.appaloosasdk.async.AppaloosaSpiceService"
             android:exported="false" />
 
+        <service
+            android:name="com.octo.android.robospice.UncachedSpiceService"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,34 +1,22 @@
 package social.entourage.android.encounter;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.soundcloud.api.ApiWrapper;
-import com.soundcloud.api.Endpoints;
-import com.soundcloud.api.Http;
-import com.soundcloud.api.Params;
-import com.soundcloud.api.Request;
-import com.soundcloud.api.Token;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.json.JSONObject;
+import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.UncachedSpiceService;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -39,11 +27,12 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import social.entourage.android.BuildConfig;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.common.Constants;
+
+
 
 
 public class CreateEncounterActivity extends EntourageSecuredActivity {
@@ -71,6 +60,8 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     @InjectView(R.id.button_play)
     ImageButton btnPlay;
+
+    private SpiceManager spiceManager = new SpiceManager(UncachedSpiceService.class);
 
     private MediaRecorder mediaRecorder;
 
@@ -115,7 +106,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         }
 
         ButterKnife.inject(this);
-        txtPersonName.setText(getAuthenticationController().getUser().getFirstName());
+        txtPersonName.setText(getString(R.string.encounter_label_person_name_and, getAuthenticationController().getUser().getFirstName()));
         txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(new Date())));
         btnPlay.setEnabled(false);
         isPlaying = false;
@@ -139,6 +130,19 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         }
     }
 
+
+    @Override
+    protected void onStart() {
+        spiceManager.start(this);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        spiceManager.shouldStop();
+        super.onStop();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -148,6 +152,10 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @Override
     protected List<Object> getScopedModules() {
         return Arrays.<Object>asList(new CreateEncounterModule(this));
+    }
+
+    public SpiceManager getSpiceManager() {
+        return spiceManager;
     }
 
     @OnClick(R.id.button_create_encounter)
@@ -161,7 +169,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         encounter.setCreationDate(new Date());
 
         if (hasAMessageBeenRecorded) {
-            presenter.postTrackOnSoundCloud(encounter, audioFileName);
+            presenter.createTrackOnSoundCloud(encounter, audioFileName);
         } else {
             presenter.createEncounter(encounter);
         }

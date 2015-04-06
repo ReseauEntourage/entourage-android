@@ -48,12 +48,17 @@ public abstract class EntourageActivity extends ActionBarActivity {
         activityGraph.inject(o);
     }
 
-    public void showProgressDialog(int resid) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle(resid);
-        progressDialog.setCancelable(false);
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
+    public void showProgressDialog(int resId) {
+
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.setTitle(resId);
+        } else {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle(resId);
+            progressDialog.setCancelable(false);
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+        }
     }
 
     public void dismissProgressDialog() {

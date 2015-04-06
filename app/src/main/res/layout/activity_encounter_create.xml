@@ -13,15 +13,8 @@
         android:id="@+id/textview_person_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NICOLAS "
+        android:text="@string/encounter_label_person_name_and"
         android:paddingBottom="5dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/encounter_label_and"
-        android:layout_toEndOf="@id/textview_person_name"
-        android:layout_toRightOf="@id/textview_person_name"/>
 
     <EditText
         android:id="@+id/edittext_street_person_name"
@@ -62,8 +55,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/textview_duration"
@@ -75,8 +67,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/button_play"
@@ -84,7 +75,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/player_play"/>
 
-        </LinearLayout>
+    </LinearLayout>
 
 
 
