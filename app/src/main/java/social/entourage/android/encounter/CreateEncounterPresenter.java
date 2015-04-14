@@ -14,6 +14,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.EncounterService;
 import social.entourage.android.api.SoundCloudCreateTrackRequest;
+import social.entourage.android.api.model.EncounterWrapper;
 import social.entourage.android.api.model.map.Encounter;
 
 public class CreateEncounterPresenter {
@@ -43,7 +44,9 @@ public class CreateEncounterPresenter {
 
     public void createEncounter(Encounter encounter) {
         activity.showProgressDialog(R.string.creating_encounter);
-        encounterService.create(encounter, new EncounterRequestCallback());
+        EncounterWrapper encounterWrapper = new EncounterWrapper();
+        encounterWrapper.setEncounter(encounter);
+        encounterService.create(encounterWrapper, new EncounterRequestCallback());
     }
 
     private final class SoundCloudRequestCallback implements RequestListener<Encounter> {
