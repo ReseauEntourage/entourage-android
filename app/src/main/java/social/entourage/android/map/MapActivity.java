@@ -182,8 +182,8 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     private void initializeLocationService() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIMER_MILLIS,
-                DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIMER_MILLIS,
+//                DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_TIMER_MILLIS,
                 DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }

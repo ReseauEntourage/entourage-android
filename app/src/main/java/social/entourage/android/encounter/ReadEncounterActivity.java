@@ -1,6 +1,7 @@
 package social.entourage.android.encounter;
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,12 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
-import com.octo.android.robospice.SpiceManager;
-import com.octo.android.robospice.UncachedSpiceService;
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +23,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import social.entourage.android.BuildConfig;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
@@ -63,13 +60,9 @@ public class ReadEncounterActivity extends EntourageActivity {
     @InjectView(R.id.button_play)
     ImageButton btnPlay;
 
-    private SpiceManager spiceManager = new SpiceManager(UncachedSpiceService.class);
-
     private MediaPlayer mediaPlayer;
 
     private boolean isPlaying;
-
-    private String audioFileName;
 
     private Handler durationHandler = new Handler();
 
@@ -99,8 +92,6 @@ public class ReadEncounterActivity extends EntourageActivity {
         FlurryAgent.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
         Bundle args = getIntent().getExtras();
         encounter = (Encounter)args.get(Constants.KEY_ENCOUNTER);
-        audioFileName = getFilesDir() + "/encounter_downloaded.aac";
-        new File(audioFileName).delete();
     }
 
     @Override
@@ -111,26 +102,14 @@ public class ReadEncounterActivity extends EntourageActivity {
 
     @Override
     protected void onStart() {
-        spiceManager.start(this);
         super.onStart();
-        presenter.displayEncounter(encounter, audioFileName);
+        presenter.displayEncounter();
 
     }
-
-    @Override
-    protected void onStop() {
-        spiceManager.shouldStop();
-        super.onStop();
-    }
-
 
     @Override
     protected List<Object> getScopedModules() {
         return Arrays.<Object>asList(new ReadEncounterModule(this));
-    }
-
-    public SpiceManager getSpiceManager() {
-        return spiceManager;
     }
 
     @OnClick(R.id.button_play)
@@ -146,48 +125,66 @@ public class ReadEncounterActivity extends EntourageActivity {
     }
 
     private void startPlaying() {
-        mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(audioFileName);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
+        mediaPlayer.start();
 
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    btnPlay.setImageResource(R.drawable.player_play);
-                    durationHandler.removeCallbacks(updateDurationThread);
-                    isPlaying = false;
-                }
-            });
-
-        } catch (IOException e) {
-            Log.e(this.getLogTag(), "MediaPlayer.prepare() failed: " + e.getMessage(), e);
-            throw new IllegalStateException("MediaPlayer.prepare() failed: " + e.getMessage(), e);
-        }
+        startPlayTime = System.currentTimeMillis();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                btnPlay.setImageResource(R.drawable.player_play);
+                durationHandler.removeCallbacks(updateDurationThread);
+                isPlaying = false;
+            }
+        });
 
         durationHandler.postDelayed(updateDurationThread, 0);
     }
 
-    private void stopPlaying() {
+    @Override
+    protected void onStop() {
+        super.onStop();
         mediaPlayer.release();
-        mediaPlayer = null;
+    }
+
+    private void stopPlaying() {
+        mediaPlayer.stop();
+        btnPlay.setEnabled(false);
+        mediaPlayer.prepareAsync();
         durationHandler.removeCallbacks(updateDurationThread);
     }
 
-    public void displayEncounter(Encounter encounter) {
+    public void displayEncounter() {
         txtPersonName.setText(getString(R.string.encounter_label_person_name_and, encounter.getUserName()));
         edtStreetPersonName.setText(encounter.getStreetPersonName());
         edtMessage.setText(encounter.getMessage());
         txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(encounter.getCreationDate())));
-        // tant qu'un message audio n'est pas downloadé le bouton n'est pas utilisable
-        btnPlay.setEnabled(false);
 
         if (encounter.getVoiceMessageUrl() == null) {
             txtListenToMessage.setVisibility(View.GONE);
             layoutPlayer.setVisibility(View.GONE);
+            btnPlay.setEnabled(false);
+        } else {
+            txtListenToMessage.setVisibility(View.VISIBLE);
+            layoutPlayer.setVisibility(View.VISIBLE);
+
+            mediaPlayer = new MediaPlayer();
+            try {
+                mediaPlayer.setDataSource(this, Uri.parse(encounter.getVoiceMessageUrl() + "?client_id=" + BuildConfig.SOUNDCLOUND_ID));
+                mediaPlayer.setOnPreparedListener(trackPreparedListner);
+                mediaPlayer.prepareAsync();
+
+            } catch (IOException e) {
+                Log.e(this.getLogTag(), "MediaPlayer.setDataSource() failed: " + e.getMessage(), e);
+            }
         }
      }
+
+    private MediaPlayer.OnPreparedListener trackPreparedListner = new MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(final MediaPlayer mediaPlayer) {
+            btnPlay.setEnabled(true);
+        }
+    };
 
     public void disablePlayer() {
         txtListenToMessage.setVisibility(View.GONE);
