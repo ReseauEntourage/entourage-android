@@ -31,6 +31,9 @@ public class AuthenticationController {
         builder.withEmail(userSharedPref.getString(PREF_KEY_EMAIL, null));
         builder.withToken(userSharedPref.getString(PREF_KEY_TOKEN, null));
         loggedUser = builder.build();
+        if(loggedUser!=null && loggedUser.getToken()==null) {
+            loggedUser=null;
+        }
         return this;
     }
 
@@ -43,6 +46,16 @@ public class AuthenticationController {
         edit.putString(PREF_KEY_EMAIL, user.getEmail());
         edit.putString(PREF_KEY_TOKEN, user.getToken());
         edit.apply();
+    }
+
+    public void logOutUser() {
+        if(loggedUser!=null) {
+            final SharedPreferences.Editor edit = userSharedPref.edit();
+            //we force token to be null but we keep other information for input
+            edit.putString(PREF_KEY_TOKEN, null);
+            edit.apply();
+        }
+        loggedUser = null;
     }
 
     public boolean isAuthenticated() {

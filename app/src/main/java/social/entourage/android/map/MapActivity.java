@@ -25,7 +25,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.common.Constants;
+import social.entourage.android.login.LoginActivity;
 
 /**
  * Created by RPR on 25/03/15.
@@ -96,6 +98,11 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_logout) {
+            getAuthenticationController().logOutUser();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
             return true;
         }
 

@@ -105,6 +105,10 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             throw new IllegalArgumentException("You must provide latitude and longitude");
         }
 
+        if (!getAuthenticationController().isAuthenticated()) {
+            throw new IllegalArgumentException("You must ne logged in");
+        }
+
         ButterKnife.inject(this);
         txtPersonName.setText(getString(R.string.encounter_label_person_name_and, getAuthenticationController().getUser().getFirstName()));
         txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(new Date())));

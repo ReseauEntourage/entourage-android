@@ -50,6 +50,7 @@ public class LoginActivity extends EntourageActivity {
     public void startMapActivity() {
         startActivity(new Intent(this, MapActivity.class));
         resetLoginButton();
+        finish();
     }
 
     public void loginFail() {
