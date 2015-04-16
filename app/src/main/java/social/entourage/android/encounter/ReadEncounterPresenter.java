@@ -1,7 +1,5 @@
 package social.entourage.android.encounter;
 
-import social.entourage.android.api.model.map.Encounter;
-
 public class ReadEncounterPresenter {
     private final ReadEncounterActivity activity;
 

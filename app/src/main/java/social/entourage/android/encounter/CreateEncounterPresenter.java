@@ -1,9 +1,14 @@
 package social.entourage.android.encounter;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -16,12 +21,15 @@ import social.entourage.android.api.EncounterService;
 import social.entourage.android.api.SoundCloudCreateTrackRequest;
 import social.entourage.android.api.model.EncounterWrapper;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.common.Constants;
 
 public class CreateEncounterPresenter {
 
     private final CreateEncounterActivity activity;
 
     private final EncounterService encounterService;
+
+    public boolean twitterChecked;
 
     @Inject
     public CreateEncounterPresenter(
@@ -49,6 +57,48 @@ public class CreateEncounterPresenter {
         encounterService.create(encounterWrapper, new EncounterRequestCallback());
     }
 
+    public void tweetWithAudioFile(Encounter encounter) {
+        String tweet = String.format(activity.getString(R.string.tweet_with_audio),
+                                     encounter.getStreetPersonName(),
+                                     encounter.getSoundCloudPermalinkUrl(),
+                                     Constants.HASHTAG,
+                                     Constants.TWITTER_ENTOURAGE_ACCOUNT_NAME);
+        sendTweet(tweet);
+    }
+
+    public void tweetWithoutAudioFile(Encounter encounter) {
+        String tweet = String.format(activity.getString(R.string.tweet_without_audio),
+                                     encounter.getStreetPersonName(),
+                                     Constants.HASHTAG,
+                                     Constants.TWITTER_ENTOURAGE_ACCOUNT_NAME);
+        sendTweet(tweet);
+    }
+
+    private void sendTweet(String tweet) {
+        Intent tweetIntent = new Intent(Intent.ACTION_SEND);
+        tweetIntent.putExtra(Intent.EXTRA_TEXT, tweet);
+        tweetIntent.setType("text/plain");
+
+        PackageManager packManager = activity.getPackageManager();
+        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(tweetIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        boolean resolved = false;
+
+        for (ResolveInfo resolveInfo: resolvedInfoList) {
+            if (resolveInfo.activityInfo.packageName.startsWith("com.twitter.android")) {
+                tweetIntent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
+                resolved = true;
+                break;
+            }
+        }
+
+        if (resolved) {
+            activity.startActivity(tweetIntent);
+        } else {
+            Toast.makeText(activity, "Twitter app not found", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private final class SoundCloudRequestCallback implements RequestListener<Encounter> {
 
         // this field is added so that it's still possible to create the encounter even if the call to SoundCloud fails
@@ -65,11 +115,17 @@ public class CreateEncounterPresenter {
                     "Error creating audio message on SoundCloud: " + spiceException.getMessage(), Toast.LENGTH_LONG)
                     .show();
             createEncounter(this.encounter);
+            if(twitterChecked) {
+                tweetWithoutAudioFile(this.encounter);
+            }
         }
 
         @Override
         public void onRequestSuccess(Encounter encounter) {
             createEncounter(encounter);
+            if(twitterChecked) {
+                tweetWithAudioFile(encounter);
+            }
         }
     }
 

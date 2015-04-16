@@ -32,6 +32,8 @@ public class Encounter implements Serializable{
     @SerializedName("voice_message")
     private String voiceMessageUrl;
 
+    private String soundCloudPermalinkUrl;
+
     public long getId() {
         return id;
     }
@@ -102,5 +104,13 @@ public class Encounter implements Serializable{
 
     public void setVoiceMessageUrl(String voiceMessageUrl) {
         this.voiceMessageUrl = voiceMessageUrl;
+    }
+
+    public String getSoundCloudPermalinkUrl() {
+        return soundCloudPermalinkUrl;
+    }
+
+    public void setSoundCloudPermalinkUrl(final String permakink) {
+        this.soundCloudPermalinkUrl = permakink;
     }
 }

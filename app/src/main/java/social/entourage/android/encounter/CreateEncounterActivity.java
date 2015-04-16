@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -60,6 +61,9 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     @InjectView(R.id.button_play)
     ImageButton btnPlay;
+
+    @InjectView(R.id.checkbox_share_on_twitter)
+    CheckBox twitterCheckBox;
 
     private SpiceManager spiceManager = new SpiceManager(UncachedSpiceService.class);
 
@@ -172,10 +176,15 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         encounter.setStreetPersonName(edtStreetPersonName.getText().toString());
         encounter.setCreationDate(new Date());
 
+        presenter.twitterChecked = twitterCheckBox.isChecked();
+
         if (hasAMessageBeenRecorded) {
             presenter.createTrackOnSoundCloud(encounter, audioFileName);
         } else {
             presenter.createEncounter(encounter);
+            if (presenter.twitterChecked) {
+                presenter.tweetWithoutAudioFile(encounter);
+            }
         }
     }
 

@@ -25,6 +25,7 @@ import social.entourage.android.common.Constants;
 public class SoundCloudCreateTrackRequest extends SpiceRequest<Encounter> {
 
     private static final String TRACK_STREAM_URL = "stream_url";
+    private static final String PERMALINK_URL = "permalink_url";
 
     private final Encounter encounter;
 
@@ -52,7 +53,7 @@ public class SoundCloudCreateTrackRequest extends SpiceRequest<Encounter> {
         try {
             token = wrapper.login(BuildConfig.SOUNDCLOUND_USER, BuildConfig.SOUNDCLOUND_PASS);
             String title = MessageFormat.format(soundCloudTrackTitle,
-                    encounter.getStreetPersonName(),
+                    encounter.getUserName(),
                     encounter.getStreetPersonName(),
                     Constants.FORMATER_DDMMYYYY.format(new Date()),
                     Constants.FORMATER_HHMM.format(new Date())
@@ -68,6 +69,7 @@ public class SoundCloudCreateTrackRequest extends SpiceRequest<Encounter> {
                 JSONObject track = Http.getJSON(response);
                 Log.d(this.getClass().getSimpleName(), track.toString(4));
                 encounter.setVoiceMessageUrl(track.get(TRACK_STREAM_URL).toString());
+                encounter.setSoundCloudPermalinkUrl(track.get(PERMALINK_URL).toString());
             } else {
                 Log.e(this.getClass().getSimpleName(), "Invalid status received: " + response.getStatusLine());
                 encounter.setVoiceMessageUrl(null);

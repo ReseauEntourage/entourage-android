@@ -14,6 +14,11 @@ public class Constants {
 
     public static final String KEY_LONGITUDE = "keyLongitude";
 
+    // Twitter
+    public static final String HASHTAG = "#entourage";
+
+    public static final String TWITTER_ENTOURAGE_ACCOUNT_NAME = "@R_Entour";
+
     // Formatters
     public static final DateFormat FORMATER_DDMMYYYY = new SimpleDateFormat("dd/MM/yyyy");
 
