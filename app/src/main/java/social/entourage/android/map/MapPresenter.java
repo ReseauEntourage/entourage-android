@@ -67,7 +67,7 @@ public class MapPresenter {
     }
 
     public void retrieveMapObjects(double latitude, double longitude) {
-        mapService.map("0cb4507e970462ca0b11320131e96610", 10, 1000, latitude, longitude, new Callback<MapResponse>() {
+        mapService.map("0cb4507e970462ca0b11320131e96610", 1000, 10, latitude, longitude, new Callback<MapResponse>() {
             @Override
             public void success(MapResponse mapResponse, Response response) {
                 loadObjectsOnMap(mapResponse);

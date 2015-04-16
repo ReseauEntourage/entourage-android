@@ -42,9 +42,9 @@ public class MapEntourageFragment extends Fragment {
 
     public static final double INITIAL_LATITUDE = 48.841636;
     public static final double INITIAL_LONGITUDE = 2.335899;
-    public static final float INITIAL_CAMERA_FACTOR = 11;
+    public static final float INITIAL_CAMERA_FACTOR = 15;
 
-    private static final float DEFAULT_ZOOM_FACTOR = 14;
+    private static final float DEFAULT_ZOOM_FACTOR = 17;
 
     public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
 
@@ -93,7 +93,7 @@ public class MapEntourageFragment extends Fragment {
 
 
     @OnClick(R.id.button_add_encounter)
-    public void opentCreateEncounter(View view) {
+    public void openCreateEncounter(View view) {
         Activity parent = this.getActivity();
         if (parent != null) {
             Intent intent = new Intent(parent, CreateEncounterActivity.class);

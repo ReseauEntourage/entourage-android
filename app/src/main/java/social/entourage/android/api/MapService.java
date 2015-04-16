@@ -12,7 +12,7 @@ public interface MapService {
     @GET("/map.json")
     void map(  @Query("token") String token,
                @Query("limit") int limit,
-               @Query("distance") int distance,
+               @Query("distance") double distance,
                @Query("latitude") double latitude,
                @Query("longitude") double longitude,
                Callback<MapResponse> callback);
