@@ -125,6 +125,9 @@ public class ReadEncounterActivity extends EntourageActivity {
     }
 
     private void startPlaying() {
+        if(mediaPlayer==null) {
+            return;
+        }
         mediaPlayer.start();
 
         startPlayTime = System.currentTimeMillis();
@@ -143,10 +146,15 @@ public class ReadEncounterActivity extends EntourageActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mediaPlayer.release();
+        if(mediaPlayer!=null) {
+            mediaPlayer.release();
+        }
     }
 
     private void stopPlaying() {
+        if(mediaPlayer==null) {
+            return;
+        }
         mediaPlayer.stop();
         btnPlay.setEnabled(false);
         mediaPlayer.prepareAsync();
