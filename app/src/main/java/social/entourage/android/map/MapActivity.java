@@ -76,9 +76,9 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
         // TODO: Remove depreceated code : move tabs in toolbar
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
         actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_map).setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_liste).setTabListener(this));
+        //TODO: display List Tab here
+        //actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_liste).setTabListener(this));
     }
 
     @Override
