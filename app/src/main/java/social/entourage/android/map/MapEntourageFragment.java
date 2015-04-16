@@ -4,6 +4,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,11 +41,19 @@ public class MapEntourageFragment extends Fragment {
     // CONSTANTS
     // ----------------------------------
 
-    public static final double INITIAL_LATITUDE = 48.841636;
-    public static final double INITIAL_LONGITUDE = 2.335899;
-    public static final float INITIAL_CAMERA_FACTOR = 15;
 
-    private static final float DEFAULT_ZOOM_FACTOR = 17;
+    private static final double INITIAL_LATITUDE = 48.841636;
+    private static final double INITIAL_LONGITUDE = 2.335899;
+    private static final float INITIAL_CAMERA_FACTOR = 15;
+    //private static final float DEFAULT_ZOOM_FACTOR = 17;
+
+    private static CameraPosition lastCameraPosition;
+    public static CameraPosition getLastCameraPosition() {
+        if(lastCameraPosition == null) {
+            lastCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR,0, 0);
+        }
+        return lastCameraPosition;
+    };
 
     public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
 
@@ -98,10 +107,11 @@ public class MapEntourageFragment extends Fragment {
         if (parent != null) {
             Intent intent = new Intent(parent, CreateEncounterActivity.class);
 
+            saveCameraPosition();
+
             Bundle args = new Bundle();
-            LatLng mapCenter = mapFragment.getMap().getCameraPosition().target;
-            args.putDouble(Constants.KEY_LATITUDE, mapCenter.latitude);
-            args.putDouble(Constants.KEY_LONGITUDE, mapCenter.longitude);
+            args.putDouble(Constants.KEY_LATITUDE, lastCameraPosition.target.latitude);
+            args.putDouble(Constants.KEY_LONGITUDE, lastCameraPosition.target.longitude);
 
             intent.putExtras(args);
 
@@ -155,17 +165,24 @@ public class MapEntourageFragment extends Fragment {
     }
 
     public void initializeMapZoom() {
-        centerMap(INITIAL_LATITUDE, INITIAL_LONGITUDE, INITIAL_CAMERA_FACTOR);
+        centerMap(getLastCameraPosition());
     }
 
-    public void centerMap(double latitude, double longitude) {
-        centerMap(latitude, longitude, DEFAULT_ZOOM_FACTOR);
+    public void centerMap(LatLng latLng) {
+        CameraPosition cameraPosition = new CameraPosition(latLng, getLastCameraPosition().zoom,0, 0);
+        centerMap(cameraPosition);
     }
 
-    public void centerMap(double latitude, double longitude, float zoomFactor) {
+    private void centerMap(CameraPosition cameraPosition) {
         if(mapFragment.getMap() != null) {
-            mapFragment.getMap().moveCamera(CameraUpdateFactory
-                    .newLatLngZoom(new LatLng(latitude, longitude), zoomFactor));
+            mapFragment.getMap().moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            saveCameraPosition();
+        }
+    }
+
+    public void saveCameraPosition() {
+        if(mapFragment.getMap() != null) {
+            lastCameraPosition = mapFragment.getMap().getCameraPosition();
         }
     }
 }

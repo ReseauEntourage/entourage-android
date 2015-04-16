@@ -62,12 +62,12 @@ public class MapPresenter {
     public void start() {
         onClickListener = new OnEntourageMarkerClickListener();
         activity.initializeMap();
-        retrieveMapObjects(MapEntourageFragment.INITIAL_LATITUDE, MapEntourageFragment.INITIAL_LONGITUDE);
+        retrieveMapObjects(MapEntourageFragment.getLastCameraPosition().target);
         activity.setOnMarkerCLickListener(onClickListener);
     }
 
-    public void retrieveMapObjects(double latitude, double longitude) {
-        mapService.map("0cb4507e970462ca0b11320131e96610", 1000, 10, latitude, longitude, new Callback<MapResponse>() {
+    public void retrieveMapObjects(LatLng latLng) {
+        mapService.map("0cb4507e970462ca0b11320131e96610", 1000, 10, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
             @Override
             public void success(MapResponse mapResponse, Response response) {
                 loadObjectsOnMap(mapResponse);
@@ -93,6 +93,7 @@ public class MapPresenter {
     }
 
     public void openEncounter(Encounter encounter) {
+        activity.saveCameraPosition();
         Intent intent = new Intent(activity, ReadEncounterActivity.class);
         Bundle extras = new Bundle();
         extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
@@ -101,6 +102,7 @@ public class MapPresenter {
     }
 
     public void openPointOfInterest(Poi poi) {
+        activity.saveCameraPosition();
         Intent intent = new Intent(activity, ReadPoiActivity.class);
         Bundle extras = new Bundle();
         extras.putSerializable(Constants.KEY_POI, poi);

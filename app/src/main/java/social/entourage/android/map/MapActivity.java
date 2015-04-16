@@ -19,6 +19,8 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -113,13 +115,13 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_CREATE_ENCOUNTER) {
             if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK) {
-                double latitude = data.getExtras().getDouble(Constants.KEY_LATITUDE);
-                double longitude = data.getExtras().getDouble(Constants.KEY_LONGITUDE);
+                LatLng latLng = new LatLng(data.getExtras().getDouble(Constants.KEY_LATITUDE),
+                        data.getExtras().getDouble(Constants.KEY_LONGITUDE));
 
-                presenter.retrieveMapObjects(latitude, longitude);
+                presenter.retrieveMapObjects(latLng);
 
                 // TODO: check why centerMap() doesn't work
-                centerMap(latitude, longitude);
+                centerMap(latLng);
             }
         }
     }
@@ -179,10 +181,10 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         }
     }
 
-    public void centerMap(double latitude, double longitude) {
+    public void centerMap(LatLng latLng) {
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.centerMap(latitude, longitude);
+            mapEntourageFragment.centerMap(latLng);
         }
     }
 
@@ -202,6 +204,13 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         }
     }
 
+    public void saveCameraPosition() {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.saveCameraPosition();
+        }
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
@@ -217,8 +226,9 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
             if (isBetterLocationUpdated) {
                 isBetterLocationUpdated = false;
-                presenter.retrieveMapObjects(bestLocation.getLatitude(), bestLocation.getLongitude());
-                centerMap(bestLocation.getLatitude(), bestLocation.getLongitude());
+                LatLng latLng = new LatLng(bestLocation.getLatitude(), bestLocation.getLongitude());
+                presenter.retrieveMapObjects(latLng);
+                centerMap(latLng);
 
                 new Handler().postDelayed(new RequestWaiter(bestLocation),
                         UPDATE_TIMER_MILLIS);
