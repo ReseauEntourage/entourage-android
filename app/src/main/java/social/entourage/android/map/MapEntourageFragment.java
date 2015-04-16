@@ -174,14 +174,14 @@ public class MapEntourageFragment extends Fragment {
     }
 
     private void centerMap(CameraPosition cameraPosition) {
-        if(mapFragment.getMap() != null) {
+        if(mapFragment!= null && mapFragment.getMap() != null) {
             mapFragment.getMap().moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             saveCameraPosition();
         }
     }
 
     public void saveCameraPosition() {
-        if(mapFragment.getMap() != null) {
+        if(mapFragment!= null && mapFragment.getMap() != null) {
             lastCameraPosition = mapFragment.getMap().getCameraPosition();
         }
     }
