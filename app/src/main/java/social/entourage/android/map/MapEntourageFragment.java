@@ -55,6 +55,10 @@ public class MapEntourageFragment extends Fragment {
         return lastCameraPosition;
     };
 
+    public static void resetCameraPosition(LatLng latLng) {
+        lastCameraPosition = new CameraPosition(latLng, INITIAL_CAMERA_FACTOR,0, 0);
+    }
+
     public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
 
     // ----------------------------------

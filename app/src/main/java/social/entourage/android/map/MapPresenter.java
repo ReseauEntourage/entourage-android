@@ -44,6 +44,7 @@ public class MapPresenter {
     private final MapService mapService;
 
     private OnEntourageMarkerClickListener onClickListener;
+    private boolean isStarted = false;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -64,21 +65,27 @@ public class MapPresenter {
         activity.initializeMap();
         retrieveMapObjects(MapEntourageFragment.getLastCameraPosition().target);
         activity.setOnMarkerCLickListener(onClickListener);
+        isStarted = true;
     }
 
     public void retrieveMapObjects(LatLng latLng) {
-        mapService.map("0cb4507e970462ca0b11320131e96610", 1000, 10, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
-            @Override
-            public void success(MapResponse mapResponse, Response response) {
-                loadObjectsOnMap(mapResponse);
-            }
+        if(isStarted) {
+            mapService.map("0cb4507e970462ca0b11320131e96610", 1000, 10, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
+                @Override
+                public void success(MapResponse mapResponse, Response response) {
+                    loadObjectsOnMap(mapResponse);
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("MapActivity", "Impossible to retrieve map objects");
-                error.printStackTrace();
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.d("MapActivity", "Impossible to retrieve map objects");
+                    error.printStackTrace();
+                }
+            });
+        } else {
+            //Map is not initialized so we just store the proper camera location
+            MapEntourageFragment.resetCameraPosition(latLng);
+        }
     }
 
     private void loadObjectsOnMap(MapResponse mapResponse) {
