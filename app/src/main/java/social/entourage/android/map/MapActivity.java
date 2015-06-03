@@ -1,18 +1,11 @@
 package social.entourage.android.map;
 
-import social.entourage.android.EntourageActivity;
-import social.entourage.android.EntourageSecuredActivity;
-import social.entourage.android.R;
-import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Poi;
-
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -27,8 +20,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.EntourageLocation;
+import social.entourage.android.EntourageSecuredActivity;
+import social.entourage.android.R;
+import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
+import social.entourage.android.guide.GuideMapActivity;
 import social.entourage.android.login.LoginActivity;
 
 /**
@@ -52,7 +50,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
     private Fragment fragment;
 
-    private Location bestLocation;
+    //private Location bestLocation;
     private boolean isBetterLocationUpdated;
     private LocationListener locationListener;
 
@@ -85,7 +83,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_encounter, menu);
         return true;
     }
 
@@ -106,6 +104,12 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return true;
+        } else if (id == R.id.action_guide) {
+            saveCameraPosition();
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.removeUpdates(locationListener);
+            startActivity(new Intent(this, GuideMapActivity.class));
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -119,9 +123,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
                         data.getExtras().getDouble(Constants.KEY_LONGITUDE));
 
                 presenter.retrieveMapObjects(latLng);
-
-                // TODO: check why centerMap() doesn't work
-                centerMap(latLng);
             }
         }
     }
@@ -219,19 +220,22 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
         @Override
         public void onLocationChanged(Location location) {
-            if (bestLocation == null || location.getAccuracy() >= bestLocation.getAccuracy()) {
+            Location bestLocation = EntourageLocation.getInstance().getLocation();
+            boolean shouldCenterMap = false;
+            if (bestLocation == null || (location.getAccuracy()>0.0 && bestLocation.getAccuracy()==0.0)) {
+                EntourageLocation.getInstance().saveLocation(location);
                 bestLocation = location;
                 isBetterLocationUpdated = true;
+                shouldCenterMap = true;
             }
 
             if (isBetterLocationUpdated) {
                 isBetterLocationUpdated = false;
-                LatLng latLng = new LatLng(bestLocation.getLatitude(), bestLocation.getLongitude());
+                LatLng latLng = EntourageLocation.getInstance().getLatLng();
                 presenter.retrieveMapObjects(latLng);
-                centerMap(latLng);
-
-                new Handler().postDelayed(new RequestWaiter(bestLocation),
-                        UPDATE_TIMER_MILLIS);
+                if (shouldCenterMap) {
+                    centerMap(latLng);
+                }
             }
         }
 
@@ -266,6 +270,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
         @Override
         public void run() {
+            Location bestLocation = EntourageLocation.getInstance().getLocation();
             if (bestLocation.getAccuracy() > locationUsed.getAccuracy()) {
                 isBetterLocationUpdated = true;
                 locationListener.onLocationChanged(bestLocation);

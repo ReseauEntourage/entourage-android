@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
 import java.util.Arrays;
 import java.util.List;
 import java.lang.Object;
@@ -47,6 +49,7 @@ public class ReadPoiActivity extends EntourageActivity {
         setContentView(R.layout.activity_poi_read);
         ButterKnife.inject(this);
 
+        FlurryAgent.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);
         Bundle args = getIntent().getExtras();
         poi = (Poi) args.get(Constants.KEY_POI);
     }

@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="social.entourage.android.guide.GuideMapActivity">
+    <item android:id="@+id/action_encounters"
+        android:title="@string/action_encounters"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item android:id="@+id/action_logout"
+        android:title="@string/action_logout"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

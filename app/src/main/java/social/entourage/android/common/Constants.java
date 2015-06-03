@@ -31,6 +31,9 @@ public class Constants {
 
     // Flurry events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
+    public static final String EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map";
+    public static final String EVENT_OPEN_SCREEN_FROM_MENU = "Open_Screen_From_Menu";
+    public static final String EVENT_OPEN_GUIDE_FROM_MENU = "Open_Guide_From_Menu";
 
 
 
