@@ -20,10 +20,8 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.MapService;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.ReadEncounterActivity;
-import social.entourage.android.poi.ReadPoiActivity;
 
 public class MapPresenter {
 
@@ -99,26 +97,12 @@ public class MapPresenter {
         activity.startActivity(intent);
     }
 
-    public void openPointOfInterest(Poi poi) {
-        activity.saveCameraPosition();
-        Intent intent = new Intent(activity, ReadPoiActivity.class);
-        Bundle extras = new Bundle();
-        extras.putSerializable(Constants.KEY_POI, poi);
-        intent.putExtras(extras);
-        activity.startActivity(intent);
-    }
-
     // ----------------------------------
     // INNER CLASS
     // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
         Map<LatLng, Encounter> encounterMarkerHashMap = new HashMap<LatLng, Encounter>();
-        Map<LatLng, Poi> poiMarkerHashMap = new HashMap<LatLng, Poi>();
-
-        public void addPoiMarker(LatLng markerPosition, Poi poi) {
-            poiMarkerHashMap.put(markerPosition, poi);
-        }
 
         public void addEncounterMarker(LatLng markerPosition, Encounter encounter) {
             encounterMarkerHashMap.put(markerPosition, encounter);
@@ -129,10 +113,6 @@ public class MapPresenter {
             LatLng markerPosition = marker.getPosition();
             if (encounterMarkerHashMap.get(markerPosition) != null){
                 openEncounter(encounterMarkerHashMap.get(markerPosition));
-            }
-
-            if (poiMarkerHashMap.get(markerPosition) != null){
-                openPointOfInterest(poiMarkerHashMap.get(markerPosition));
             }
             return false;
         }

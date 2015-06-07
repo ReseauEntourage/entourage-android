@@ -24,8 +24,8 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
+import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.guide.GuideMapActivity;
 import social.entourage.android.login.LoginActivity;
 
@@ -109,7 +109,14 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.removeUpdates(locationListener);
             startActivity(new Intent(this, GuideMapActivity.class));
-            return true;
+        } else if (id == R.id.action_new_encounter) {
+            Intent intent = new Intent(this, CreateEncounterActivity.class);
+            saveCameraPosition();
+            Bundle args = new Bundle();
+            args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
+            args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+            intent.putExtras(args);
+            startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
         }
 
         return super.onOptionsItemSelected(item);
@@ -158,13 +165,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
             mapEntourageFragment.putEncounterOnMap(encounter, onClickListener);
-        }
-    }
-
-    public void putPoi(Poi poi, MapPresenter.OnEntourageMarkerClickListener onClickListener) {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.putPoiOnMap(poi, onClickListener);
         }
     }
 

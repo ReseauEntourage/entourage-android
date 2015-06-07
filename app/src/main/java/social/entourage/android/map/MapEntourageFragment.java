@@ -14,7 +14,6 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.ButterKnife;
@@ -22,7 +21,6 @@ import butterknife.OnClick;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.CreateEncounterActivity;
 
@@ -119,23 +117,6 @@ public class MapEntourageFragment extends Fragment {
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().addMarker(markerOptions);
             onClickListener.addEncounterMarker(encounterPosition, encounter);
-        }
-    }
-
-    public void putPoiOnMap(Poi poi, MapPresenter.OnEntourageMarkerClickListener onClickListener) {
-        double poiLatitude = poi.getLatitude();
-        double poiLongitude = poi.getLongitude();
-        LatLng poiPosition = new LatLng(poiLatitude, poiLongitude);
-
-        int poiIconRessourceId = getActivity().getResources().getIdentifier(POI_DRAWABLE_NAME_PREFIX + poi.getCategoryId(), "drawable", getActivity().getPackageName());
-        BitmapDescriptor poiIcon = BitmapDescriptorFactory.fromResource(poiIconRessourceId);
-
-        MarkerOptions markerOptions = new MarkerOptions().position(poiPosition)
-                                                         .icon(poiIcon);
-
-        if (mapFragment.getMap() != null) {
-            Marker marker = mapFragment.getMap().addMarker(markerOptions);
-            onClickListener.addPoiMarker(poiPosition, poi);
         }
     }
 

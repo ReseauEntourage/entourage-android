@@ -2,6 +2,11 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="social.entourage.android.map.MapActivity">
+    <item android:id="@+id/action_new_encounter"
+        android:icon="@drawable/ic_action_new_encounter"
+        android:title="@string/map_add_encounter"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
     <item android:id="@+id/action_guide"
         android:title="@string/action_guide"
         android:orderInCategory="100"
