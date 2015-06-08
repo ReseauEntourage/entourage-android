@@ -67,6 +67,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        setTitle(R.string.activity_map_title);
         ButterKnife.inject(this);
 
         initializeLocationService();
