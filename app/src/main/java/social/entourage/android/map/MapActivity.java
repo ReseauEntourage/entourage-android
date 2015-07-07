@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -41,15 +40,6 @@ import social.entourage.android.tour.TourService;
 public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener, TourService.TourServiceListener {
 
     // ----------------------------------
-    // CONSTANTS
-    // ----------------------------------
-
-    /* passées dans la classe Constants
-    private static final long UPDATE_TIMER_MILLIS = 1000;
-    private static final float DISTANCE_BETWEEN_UPDATES_METERS = 10;
-    */
-
-    // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
@@ -65,13 +55,14 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             tourService = ((TourService.LocalBinder)service).getService();
             tourService.register(MapActivity.this);
             invalidateOptionsMenu();
+            //Toast.makeText(MapActivity.this, R.string.local_service_connected, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             tourService.unregister(MapActivity.this);
             tourService = null;
-            Toast.makeText(MapActivity.this, R.string.local_service_disconnected, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MapActivity.this, R.string.local_service_disconnected, Toast.LENGTH_SHORT).show();
         }
     };
     private boolean isBound = true;
@@ -164,11 +155,11 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
                 if (tourService.isRunning()) {
                     item.setTitle(R.string.start_tour_title);
                     item.setIcon(R.drawable.maraude_record);
-                    tourService.finishTour();
+                    tourService.endTreatment();
                 } else {
                     item.setTitle(R.string.stop_tour_title);
                     item.setIcon(R.drawable.maraude_stop);
-                    tourService.startTour();
+                    tourService.beginTreatment();
                 }
             }
         }
@@ -231,7 +222,10 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
     @Override
     public void onTourUpdated(Tour tour) {
-        // affichage track
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.drawLine(tour.getCoordinates().get(tour.getCoordinates().size()-1));
+        }
     }
 
     // ----------------------------------

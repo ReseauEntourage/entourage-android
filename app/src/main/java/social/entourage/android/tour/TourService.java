@@ -4,18 +4,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,14 +20,10 @@ import dagger.ObjectGraph;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.common.Constants;
 import social.entourage.android.map.MapActivity;
-import social.entourage.android.map.MapModule;
 
 /**
  * Created by NTE on 06/07/15.
- * Service Local de récupération des coordonnées géographique en continu
- * pour le Run-Keeper.
  */
 public class TourService extends Service {
 
@@ -43,11 +32,6 @@ public class TourService extends Service {
     // ----------------------------------
 
     private final IBinder binder = new LocalBinder();
-
-    /* passées dans la classe CONSTANTS
-    private static final long UPDATE_TIMER_MILLIS = 1000;
-    private static final float DISTANCE_BETWEEN_UPDATES_METERS = 10;
-    */
 
     // ----------------------------------
     // ATTRIBUTES
@@ -61,8 +45,6 @@ public class TourService extends Service {
     private List<TourServiceListener> listeners;
 
     private NotificationManager notificationManager;
-    private CustomLocationListener locationListener;
-    private Tour tour;
 
     // ----------------------------------
     // LIFECYCLE
@@ -83,8 +65,6 @@ public class TourService extends Service {
         listeners =  new ArrayList<>();
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -96,8 +76,7 @@ public class TourService extends Service {
     @Override
     public void onDestroy() {
         activityGraph = null;
-        notificationManager.cancel(R.string.local_service_started);
-        Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
+        //endTreatment();
         super.onDestroy();
     }
 
@@ -114,30 +93,28 @@ public class TourService extends Service {
         notificationManager.notify(R.string.local_service_started, notification);
     }
 
+    private void removeNotification() {
+        notificationManager.cancel(R.string.local_service_started);
+    }
+
     // ----------------------------------
     // METHODS
     // ----------------------------------
 
-    private void initializeLocationService() {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new CustomLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
-                Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
+    public void beginTreatment() {
+        if (!isRunning()) {
+            tourServiceManager.startTour();
+            showNotification();
+            Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void startTour() {
-        tour = new Tour();
-        showNotification();
-        initializeLocationService();
-    }
-
-    public void finishTour() {
-        tourServiceManager.sendTour(tour);
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.removeUpdates(locationListener);
-        tour = null;
-        if (listeners.size() == 0) {
-            stopSelf();
+    public void endTreatment() {
+        if (isRunning()) {
+            tourServiceManager.finishTour();
+            removeNotification();
+            if (listeners.size() == 0) stopSelf();
+            Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -153,37 +130,16 @@ public class TourService extends Service {
     }
 
     public boolean isRunning() {
-        return tour != null;
+        return tourServiceManager.isRunning();
+    }
+
+    public void notifyListeners(Tour tour) {
+        for (TourServiceListener listener : listeners) listener.onTourUpdated(tour);
     }
 
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
-
-    private class CustomLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-            //System.out.println("NOUVELLE POSITION : " + location.getLatitude() + ", " + location.getLongitude());
-            tour.updateCoordinates(new LatLng(location.getLatitude(), location.getLongitude()));
-            // envoi des informations à l'activité pour que le fragment affiche la progression de la maraude
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    }
 
     public interface TourServiceListener {
         void onTourUpdated(Tour tour);

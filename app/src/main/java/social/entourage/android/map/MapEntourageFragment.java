@@ -172,13 +172,13 @@ public class MapEntourageFragment extends Fragment {
     }
 
     /** Implémentation du Run-Keeper en cours (NTE) */
-    public void drawLine(Location location) {
+    public void drawLine(LatLng location) {
         if (prevCoord != null) {
             PolylineOptions line = new PolylineOptions();
-            line.add(prevCoord, new LatLng(location.getLatitude(), location.getLongitude()));
+            line.add(prevCoord, location);
             line.width(15).color(Color.BLUE);
             mapFragment.getMap().addPolyline(line);
         }
-        prevCoord = new LatLng(location.getLatitude(), location.getLongitude());
+        prevCoord = location;
     }
 }
