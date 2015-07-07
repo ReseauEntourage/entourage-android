@@ -17,10 +17,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Arrays;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
 import social.entourage.android.map.MapActivity;
+import social.entourage.android.map.MapModule;
 
 /**
  * Created by NTE on 06/07/15.
@@ -44,8 +51,12 @@ public class TourService extends Service {
     // ATTRIBUTES
     // ----------------------------------
 
+    private ObjectGraph activityGraph;
+
+    @Inject
+    TourServiceManager tourServiceManager;
+
     private NotificationManager notificationManager;
-    private int NOTIFICATION = R.string.local_service_started;
     private CustomLocationListener locationListener;
     private Tour tour;
 
@@ -62,7 +73,11 @@ public class TourService extends Service {
     @Override
     public void onCreate() {
         tour = new Tour();
+        activityGraph = EntourageApplication.get(this).getApplicationGraph().plus(Arrays.<Object>asList(new TourModule(this)).toArray());
+        activityGraph.inject(this);
+
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
         showNotification();
         initializeLocationService();
         Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
@@ -76,8 +91,10 @@ public class TourService extends Service {
 
     @Override
     public void onDestroy() {
-        notificationManager.cancel(NOTIFICATION);
+        activityGraph = null;
+        notificationManager.cancel(R.string.local_service_started);
         Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
+        super.onDestroy();
     }
 
     @Override
@@ -90,7 +107,7 @@ public class TourService extends Service {
         Notification notification = new Notification(R.drawable.maraude_record, text, System.currentTimeMillis());
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MapActivity.class), 0);
         notification.setLatestEventInfo(this, getText(R.string.local_service_label), text, contentIntent);
-        notificationManager.notify(NOTIFICATION, notification);
+        notificationManager.notify(R.string.local_service_started, notification);
     }
 
     // ----------------------------------
