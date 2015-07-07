@@ -1,11 +1,14 @@
 package social.entourage.android.map;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -28,6 +31,7 @@ import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.guide.GuideMapActivity;
 import social.entourage.android.login.LoginActivity;
+import social.entourage.android.tour.TourService;
 
 /**
  * Created by RPR on 25/03/15.
@@ -38,8 +42,10 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     // CONSTANTS
     // ----------------------------------
 
+    /* passées dans la classe Constants
     private static final long UPDATE_TIMER_MILLIS = 1000;
     private static final float DISTANCE_BETWEEN_UPDATES_METERS = 10;
+    */
 
     // ----------------------------------
     // ATTRIBUTES
@@ -49,6 +55,22 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     MapPresenter presenter;
 
     private Fragment fragment;
+
+    private TourService maraudeService;
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            maraudeService = ((TourService.LocalBinder)service).getService();
+            //Toast.makeText(MapActivity.this, R.string.local_service_connected, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            maraudeService = null;
+            //Toast.makeText(MapActivity.this, R.string.local_service_disconnected, Toast.LENGTH_SHORT).show();
+        }
+    };
+    private boolean isBound = true;
 
     //private Location bestLocation;
     private boolean isBetterLocationUpdated;
@@ -80,6 +102,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_map).setTabListener(this));
         //TODO: display List Tab here
         //actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_liste).setTabListener(this));
+
     }
 
     @Override
@@ -95,12 +118,18 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        doUnbindService();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_logout) {
+        }else if (id == R.id.action_logout) {
             getAuthenticationController().logOutUser();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -118,6 +147,17 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
             intent.putExtras(args);
             startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
+        } else if (id == R.id.action_maraude) {
+            if (item.getTitle().equals("Enregistrer maraude")) {
+                item.setTitle("Stopper maraude");
+                item.setIcon(R.drawable.maraude_stop);
+                doBindService();
+            } else {
+                item.setTitle("Enregistrer maraude");
+                item.setIcon(R.drawable.maraude_record);
+                doUnbindService();
+                maraudeService.sendMaraude();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -159,6 +199,22 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     }
 
     // ----------------------------------
+    // SERVICE BINDING METHODS
+    // ----------------------------------
+
+    void doBindService() {
+        bindService(new Intent(MapActivity.this, TourService.class), connection, Context.BIND_AUTO_CREATE);
+        isBound = true;
+    }
+
+    void doUnbindService() {
+        if (isBound) {
+            unbindService(connection);
+            isBound = false;
+        }
+    }
+
+    // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
 
@@ -195,8 +251,8 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         locationListener = new CustomLocationListener();
 //        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIMER_MILLIS,
 //                DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_TIMER_MILLIS,
-                DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
+                Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
 
     public void initializeMap() {
@@ -221,6 +277,17 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
         @Override
         public void onLocationChanged(Location location) {
+
+            /** Essai d'appel de la méthode de Run-Tracking (NTE)*/
+
+                if (fragment instanceof MapEntourageFragment) {
+                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+                    mapEntourageFragment.drawLine(location);
+                }
+                //presenter.getCurrentAddress(location);
+
+            /*Fin */
+
             Location bestLocation = EntourageLocation.getInstance().getLocation();
             boolean shouldCenterMap = false;
             if (bestLocation == null || (location.getAccuracy()>0.0 && bestLocation.getAccuracy()==0.0)) {
@@ -278,4 +345,5 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             }
         }
     }
+
 }

@@ -48,4 +48,11 @@
     <string name="tweet_with_audio">Ecoutez le message que j\'ai enregistré avec %1$s via l\'application Entourage : %2$s %3$s %4$s</string>
     <string name="tweet_without_audio">J\'ai rencontré %1$s %2$s %3$s</string>
 
+    <!-- TourService -->
+    <string name="local_service_started">Maraude lancée</string>
+    <string name="local_service_stopped">Maraude terminée</string>
+    <string name="local_service_label">Maraude en cours</string>
+    <string name="local_service_connected">Connecté au GeoService</string>
+    <string name="local_service_disconnected">Déconnecté du GeoService</string>
+
 </resources>

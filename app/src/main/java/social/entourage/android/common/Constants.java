@@ -36,5 +36,18 @@ public class Constants {
     public static final String EVENT_OPEN_GUIDE_FROM_MENU = "Open_Guide_From_Menu";
 
 
+    // GeoCoder (essai pour la récupération des adresses dans le Run-Tracking NTE) ---> à supprimer
+    public static final int SUCCESS_RESULT = 0;
+    public static final int FAILURE_RESULT = 1;
+    public static final String PACKAGE_NAME = "com.google.android.gms.location.sample.locationaddress";
+    public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
+    public static final String RESULT_DATA_KEY = PACKAGE_NAME + ".RESULT_DATA_KEY";
+    public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
+
+    // Geolocation
+    public static final long UPDATE_TIMER_MILLIS = 1000;
+    public static final float DISTANCE_BETWEEN_UPDATES_METERS = 10;
+
+
 
 }

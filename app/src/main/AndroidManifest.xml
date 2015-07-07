@@ -78,6 +78,14 @@
         <service
             android:name="com.octo.android.robospice.UncachedSpiceService"
             android:exported="false" />
+
+        <service
+            android:name=".map.FetchAddressIntentService"
+            android:exported="false"/>
+
+        <service
+            android:name=".tour.TourService"
+            android:exported="false"/>
     </application>
 
 </manifest>

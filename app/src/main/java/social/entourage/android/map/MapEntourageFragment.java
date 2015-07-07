@@ -2,11 +2,15 @@ package social.entourage.android.map;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -15,6 +19,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,10 +34,12 @@ import social.entourage.android.encounter.CreateEncounterActivity;
  */
 public class MapEntourageFragment extends Fragment {
 
+    /** Variabe de test pour le Run Tracking (NTE) */
+    private LatLng prevCoord;
+
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
-
 
     public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
 
@@ -79,7 +86,6 @@ public class MapEntourageFragment extends Fragment {
     // PUBLIC METHODS
     // ----------------------------------
 
-
     @OnClick(R.id.button_add_encounter)
     public void openCreateEncounter(View view) {
         Activity parent = this.getActivity();
@@ -96,6 +102,23 @@ public class MapEntourageFragment extends Fragment {
 
             parent.startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
         }
+    }
+
+    /** Implémentation de l'affichage des maraudes passées en cours (NTE) */
+    @OnClick(R.id.button_show_maraudes)
+    public void showMaraudesList(View view) {
+        PopupMenu popupMenu = new PopupMenu(this.getActivity(), view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_popup_maraudes, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+        popupMenu.show();
+
+        // ici ajouter les maraudes sauvegardées dynamiquement
+        // ...
     }
 
     public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
@@ -146,5 +169,16 @@ public class MapEntourageFragment extends Fragment {
         if(mapFragment!= null && mapFragment.getMap() != null) {
             EntourageLocation.getInstance().saveCameraPosition(mapFragment.getMap().getCameraPosition());
         }
+    }
+
+    /** Implémentation du Run-Tracking en cours (NTE) */
+    public void drawLine(Location location) {
+        if (prevCoord != null) {
+            PolylineOptions line = new PolylineOptions();
+            line.add(prevCoord, new LatLng(location.getLatitude(), location.getLongitude()));
+            line.width(15).color(Color.BLUE);
+            mapFragment.getMap().addPolyline(line);
+        }
+        prevCoord = new LatLng(location.getLatitude(), location.getLongitude());
     }
 }

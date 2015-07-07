@@ -1,13 +1,16 @@
 package social.entourage.android.map;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +23,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.MapService;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.ReadEncounterActivity;
 
@@ -35,6 +39,10 @@ public class MapPresenter {
     private OnEntourageMarkerClickListener onClickListener;
     private boolean isStarted = false;
 
+    // essai NTE
+    private ResultReceiver receiver;
+    private Tour tour;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -43,6 +51,7 @@ public class MapPresenter {
     public MapPresenter(final MapActivity activity, final MapService mapService) {
         this.activity = activity;
         this.mapService = mapService;
+        this.tour = new Tour();
     }
 
     // ----------------------------------
@@ -97,6 +106,19 @@ public class MapPresenter {
         activity.startActivity(intent);
     }
 
+    /* Récupération des adresses en cours NTE */
+    public void getCurrentAddress(Location location) {
+        Intent intent = new Intent(activity, FetchAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, receiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
+        activity.startService(intent);
+    }
+
+    public void updateMaraude(LatLng location, Date time, String street) {
+        tour.updateCoordinates(location);
+        tour.updateHistoric(time, street);
+    }
+
     // ----------------------------------
     // INNER CLASS
     // ----------------------------------
@@ -117,4 +139,5 @@ public class MapPresenter {
             return false;
         }
     }
+
 }
