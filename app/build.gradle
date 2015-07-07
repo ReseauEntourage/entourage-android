@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'sonar-runner'
 
 def versionMajor = 1
 def versionMinor = 0
@@ -93,4 +94,26 @@ android {
     }
 }
 
+sonarRunner {
+    sonarProperties {
+        property "sonar.host.url", cloudbeesSonarUrl
+        property "sonar.login", cloudbeesSonarLogin
+        property "sonar.password", cloudbeesSonarPassword
+        property "sonar.jdbc.url", cloudbeesSonarDBUrl
+        property "sonar.jdbc.driverClassName", cloudbeesSonarDBDriver
+        property "sonar.jdbc.username", cloudbeesSonarDBUsername
+        property "sonar.jdbc.password", cloudbeesSonarDBPassword
 
+        property "sonar.projectKey", "entourage"
+        property "sonar.projectName", "Entourage Android"
+        property "sonar.projectVersion", "${versionMajor}.${versionMinor}.${versionPatch}"
+        property "sonar.profile", "Entourage"
+
+        property "sonar.language", "java"
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/androidTest/java"
+        property "sonar.binaries", "build"
+        property "sonar.junit.reportsPath", "build/outputs/androidTest-results/connected"
+        property "sonar.jacoco.reportPath", "build/outputs/code-coverage/connected/coverage.ec"
+    }
+}
