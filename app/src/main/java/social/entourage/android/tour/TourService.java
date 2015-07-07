@@ -17,7 +17,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -32,7 +34,7 @@ import social.entourage.android.map.MapModule;
 /**
  * Created by NTE on 06/07/15.
  * Service Local de récupération des coordonnées géographique en continu
- * pour le Run-Tracking.
+ * pour le Run-Keeper.
  */
 public class TourService extends Service {
 
@@ -56,6 +58,8 @@ public class TourService extends Service {
     @Inject
     TourServiceManager tourServiceManager;
 
+    private List<TourServiceListener> listeners;
+
     private NotificationManager notificationManager;
     private CustomLocationListener locationListener;
     private Tour tour;
@@ -72,14 +76,14 @@ public class TourService extends Service {
 
     @Override
     public void onCreate() {
-        tour = new Tour();
-        activityGraph = EntourageApplication.get(this).getApplicationGraph().plus(Arrays.<Object>asList(new TourModule(this)).toArray());
+        ObjectGraph applicationGraph = EntourageApplication.get(this).getApplicationGraph();
+        activityGraph = applicationGraph.plus(Arrays.<Object>asList(new TourModule(this)).toArray());
         activityGraph.inject(this);
+
+        listeners =  new ArrayList<>();
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        showNotification();
-        initializeLocationService();
         Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
     }
 
@@ -121,13 +125,35 @@ public class TourService extends Service {
                 Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
 
-    public void sendMaraude() {
-        // traitement (ex : envoi au webservice)
+    public void startTour() {
+        tour = new Tour();
+        showNotification();
+        initializeLocationService();
+    }
 
-        // puis arrêt du listener et du service
+    public void finishTour() {
+        tourServiceManager.sendTour(tour);
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.removeUpdates(locationListener);
-        stopSelf();
+        tour = null;
+        if (listeners.size() == 0) {
+            stopSelf();
+        }
+    }
+
+    public void register(TourServiceListener listener) {
+        listeners.add(listener);
+    }
+
+    public void unregister(TourServiceListener listener) {
+        listeners.remove(listener);
+        if (!isRunning() && listeners.size() == 0) {
+            stopSelf();
+        }
+    }
+
+    public boolean isRunning() {
+        return tour != null;
     }
 
     // ----------------------------------
@@ -138,9 +164,9 @@ public class TourService extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
-            System.out.println("NOUVELLE POSITION : " + location.getLatitude() + ", " + location.getLongitude());
+            //System.out.println("NOUVELLE POSITION : " + location.getLatitude() + ", " + location.getLongitude());
             tour.updateCoordinates(new LatLng(location.getLatitude(), location.getLongitude()));
-            // envoi des informations à l'activité pour que le fragment affiche la progression de la tour
+            // envoi des informations à l'activité pour que le fragment affiche la progression de la maraude
         }
 
         @Override
@@ -157,5 +183,9 @@ public class TourService extends Service {
         public void onProviderDisabled(String provider) {
 
         }
+    }
+
+    public interface TourServiceListener {
+        void onTourUpdated(Tour tour);
     }
 }

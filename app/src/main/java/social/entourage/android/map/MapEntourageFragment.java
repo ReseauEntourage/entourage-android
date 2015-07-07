@@ -105,8 +105,8 @@ public class MapEntourageFragment extends Fragment {
     }
 
     /** Implémentation de l'affichage des maraudes passées en cours (NTE) */
-    @OnClick(R.id.button_show_maraudes)
-    public void showMaraudesList(View view) {
+    @OnClick(R.id.button_show_tours)
+    public void showToursList(View view) {
         PopupMenu popupMenu = new PopupMenu(this.getActivity(), view);
         popupMenu.getMenuInflater().inflate(R.menu.menu_popup_maraudes, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -171,7 +171,7 @@ public class MapEntourageFragment extends Fragment {
         }
     }
 
-    /** Implémentation du Run-Tracking en cours (NTE) */
+    /** Implémentation du Run-Keeper en cours (NTE) */
     public void drawLine(Location location) {
         if (prevCoord != null) {
             PolylineOptions line = new PolylineOptions();
