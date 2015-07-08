@@ -5,7 +5,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -29,6 +28,15 @@ public class TourServiceManager {
     @Inject
     public TourServiceManager(final TourService tourService) {
         this.tourService = tourService;
+    }
+
+    // ----------------------------------
+    // GETTERS AND SETTERS
+    // ----------------------------------
+
+    public Tour getTour() {
+        System.out.println("ICI : " + this.tour.getCoordinates().get(tour.getCoordinates().size()-1));
+        return this.tour;
     }
 
     // ----------------------------------
@@ -78,8 +86,10 @@ public class TourServiceManager {
         @Override
         public void onLocationChanged(Location location) {
             //System.out.println("NOUVELLE POSITION : " + location.getLatitude() + ", " + location.getLongitude());
-            tour.updateCoordinates(new LatLng(location.getLatitude(), location.getLongitude()));
-            tourService.notifyListeners(tour);
+            if (tour != null) {
+                tour.updateCoordinates(new LatLng(location.getLatitude(), location.getLongitude()));
+                tourService.notifyListeners(tour);
+            }
         }
 
         @Override

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -26,6 +27,7 @@ import butterknife.OnClick;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.CreateEncounterActivity;
 
@@ -33,9 +35,6 @@ import social.entourage.android.encounter.CreateEncounterActivity;
  * Created by RPR on 25/03/15.
  */
 public class MapEntourageFragment extends Fragment {
-
-    /** Variabe de test pour le Run Tracking (NTE) */
-    private LatLng prevCoord;
 
     // ----------------------------------
     // CONSTANTS
@@ -48,6 +47,7 @@ public class MapEntourageFragment extends Fragment {
     // ----------------------------------
 
     private SupportMapFragment mapFragment;
+    private LatLng prevCoord;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -146,6 +146,7 @@ public class MapEntourageFragment extends Fragment {
     public void clearMap() {
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().clear();
+            prevCoord = null;
         }
     }
 
@@ -171,8 +172,7 @@ public class MapEntourageFragment extends Fragment {
         }
     }
 
-    /** Implémentation du Run-Keeper en cours (NTE) */
-    public void drawLine(LatLng location) {
+    public void drawLocation(LatLng location) {
         if (prevCoord != null) {
             PolylineOptions line = new PolylineOptions();
             line.add(prevCoord, location);
@@ -180,5 +180,18 @@ public class MapEntourageFragment extends Fragment {
             mapFragment.getMap().addPolyline(line);
         }
         prevCoord = location;
+    }
+
+    public void drawResumedTour(Tour tour) {
+        if (tour != null && !tour.getCoordinates().isEmpty()) {
+            PolylineOptions line = new PolylineOptions();
+            line.width(15).color(Color.BLUE);
+            for (LatLng location : tour.getCoordinates()) {
+                line.add(location);
+            }
+            mapFragment.getMap().addPolyline(line);
+            prevCoord = tour.getCoordinates().get(tour.getCoordinates().size()-1);
+        }
+
     }
 }

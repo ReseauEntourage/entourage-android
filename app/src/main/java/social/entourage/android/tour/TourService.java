@@ -10,6 +10,8 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +26,8 @@ import social.entourage.android.map.MapActivity;
 
 /**
  * Created by NTE on 06/07/15.
+ *
+ * TODO : remove the notification when the app is killed from the recent apps list (doesn't work)
  */
 public class TourService extends Service {
 
@@ -76,7 +80,7 @@ public class TourService extends Service {
     @Override
     public void onDestroy() {
         activityGraph = null;
-        //endTreatment();
+        endTreatment();
         super.onDestroy();
     }
 
@@ -89,7 +93,7 @@ public class TourService extends Service {
         CharSequence text = getText(R.string.local_service_started);
         Notification notification = new Notification(R.drawable.maraude_record, text, System.currentTimeMillis());
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MapActivity.class), 0);
-        notification.setLatestEventInfo(this, getText(R.string.local_service_label), text, contentIntent);
+        notification.setLatestEventInfo(this, getText(R.string.local_service_running), text, contentIntent);
         notificationManager.notify(R.string.local_service_started, notification);
     }
 
@@ -105,7 +109,7 @@ public class TourService extends Service {
         if (!isRunning()) {
             tourServiceManager.startTour();
             showNotification();
-            Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -120,6 +124,9 @@ public class TourService extends Service {
 
     public void register(TourServiceListener listener) {
         listeners.add(listener);
+        if (tourServiceManager.isRunning()) {
+            listener.onTourResumed(tourServiceManager.getTour());
+        }
     }
 
     public void unregister(TourServiceListener listener) {
@@ -143,5 +150,6 @@ public class TourService extends Service {
 
     public interface TourServiceListener {
         void onTourUpdated(Tour tour);
+        void onTourResumed(Tour tour);
     }
 }

@@ -17,6 +17,7 @@ import social.entourage.android.common.Constants;
 
 /**
  * Created by NTE on 03/07/15.
+ * Not used anymore.
  */
 public class FetchAddressIntentService extends IntentService {
 

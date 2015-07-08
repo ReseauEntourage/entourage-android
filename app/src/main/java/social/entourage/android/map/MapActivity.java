@@ -156,6 +156,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
                     item.setTitle(R.string.start_tour_title);
                     item.setIcon(R.drawable.maraude_record);
                     tourService.endTreatment();
+                    clearMap();
                 } else {
                     item.setTitle(R.string.stop_tour_title);
                     item.setIcon(R.drawable.maraude_stop);
@@ -224,7 +225,15 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     public void onTourUpdated(Tour tour) {
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.drawLine(tour.getCoordinates().get(tour.getCoordinates().size()-1));
+            mapEntourageFragment.drawLocation(tour.getCoordinates().get(tour.getCoordinates().size() - 1));
+        }
+    }
+
+    @Override
+    public void onTourResumed(Tour tour) {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.drawResumedTour(tour);
         }
     }
 
@@ -291,17 +300,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
         @Override
         public void onLocationChanged(Location location) {
-
-            /** Essai d'appel de la méthode de Run-Keeper (NTE)
-             * ON UTILISE PLUS CE LISTENER POUR TRACER LA MARAUDE, ON PASSE MAINTENANT PAR LE SERVICE
-
-                if (fragment instanceof MapEntourageFragment) {
-                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-                    mapEntourageFragment.drawLine(location);
-                }
-                presenter.getCurrentAddress(location);
-
-            Fin */
 
             Location bestLocation = EntourageLocation.getInstance().getLocation();
             boolean shouldCenterMap = false;

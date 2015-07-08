@@ -39,10 +39,6 @@ public class MapPresenter {
     private OnEntourageMarkerClickListener onClickListener;
     private boolean isStarted = false;
 
-    // essai NTE
-    private ResultReceiver receiver;
-    private Tour tour;
-
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -51,7 +47,6 @@ public class MapPresenter {
     public MapPresenter(final MapActivity activity, final MapService mapService) {
         this.activity = activity;
         this.mapService = mapService;
-        this.tour = new Tour();
     }
 
     // ----------------------------------
@@ -87,7 +82,7 @@ public class MapPresenter {
     }
 
     private void loadObjectsOnMap(MapResponse mapResponse) {
-        activity.clearMap();
+        //activity.clearMap();
         for (Encounter encounter : mapResponse.getEncounters()) {
             activity.putEncouter(encounter, onClickListener);
         }
@@ -106,18 +101,14 @@ public class MapPresenter {
         activity.startActivity(intent);
     }
 
-    /* Récupération des adresses en cours NTE */
+    /*
     public void getCurrentAddress(Location location) {
         Intent intent = new Intent(activity, FetchAddressIntentService.class);
         intent.putExtra(Constants.RECEIVER, receiver);
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
         activity.startService(intent);
     }
-
-    public void updateMaraude(LatLng location, Date time, String street) {
-        tour.updateCoordinates(location);
-        tour.updateHistoric(time, street);
-    }
+    */
 
     // ----------------------------------
     // INNER CLASS
