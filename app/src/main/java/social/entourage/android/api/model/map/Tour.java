@@ -3,6 +3,8 @@ package social.entourage.android.api.model.map;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,11 +21,11 @@ public class Tour implements Serializable {
 
     private List<LatLng> coordinates;
 
-    private HashMap<Date, String> historic;
+    private HashMap<Date, String> steps;
 
     public Tour() {
         this.coordinates = new ArrayList<LatLng>();
-        this.historic = new HashMap<Date, String>();
+        this.steps = new HashMap<Date, String>();
     }
 
     public long getId() {
@@ -50,19 +52,19 @@ public class Tour implements Serializable {
         this.coordinates = coordinates;
     }
 
-    public HashMap<Date, String> getHistoric() {
-        return historic;
+    public HashMap<Date, String> getSteps() {
+        return steps;
     }
 
-    public void setHistoric(HashMap<Date, String> historic) {
-        this.historic = historic;
+    public void setSteps(HashMap<Date, String> steps) {
+        this.steps = steps;
     }
 
     public void updateCoordinates(LatLng location) {
         this.coordinates.add(location);
     }
 
-    public void updateHistoric(Date time, String comment) {
-        this.historic.put(time, comment);
+    public void updateSteps(Date time, String step) {
+        this.steps.put(time, step);
     }
 }

@@ -6,11 +6,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +38,7 @@ public class TourService extends Service {
     // ----------------------------------
 
     private final IBinder binder = new LocalBinder();
+    private final int NOTIFICATION_ID = 001;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -67,8 +70,6 @@ public class TourService extends Service {
         activityGraph.inject(this);
 
         listeners =  new ArrayList<>();
-
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -89,27 +90,52 @@ public class TourService extends Service {
         return binder;
     }
 
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+
     private void showNotification() {
-        CharSequence text = getText(R.string.local_service_started);
-        Notification notification = new Notification(R.drawable.maraude_record, text, System.currentTimeMillis());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MapActivity.class), 0);
-        notification.setLatestEventInfo(this, getText(R.string.local_service_running), text, contentIntent);
-        notificationManager.notify(R.string.local_service_started, notification);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MapActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent buttonIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, TourService.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.tour_record)
+                .setTicker(getString(R.string.tour_started))
+                .setContentIntent(contentIntent)
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            RemoteViews view = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
+            view.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
+            view.setOnClickPendingIntent(R.id.notification_tour_stop_button, buttonIntent);
+            builder = builder.setContent(view);
+        } else {
+            builder = builder.setContentTitle(getString(R.string.local_service_running))
+                    .setSmallIcon(R.drawable.tour_record);
+        }
+
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
     private void removeNotification() {
-        notificationManager.cancel(R.string.local_service_started);
+        notificationManager.cancel(NOTIFICATION_ID);
     }
 
     // ----------------------------------
-    // METHODS
+    // PUBLIC METHODS
     // ----------------------------------
 
     public void beginTreatment() {
         if (!isRunning()) {
             tourServiceManager.startTour();
             showNotification();
-            //Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
         }
     }
 

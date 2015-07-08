@@ -3,7 +3,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="social.entourage.android.map.MapActivity">
     <item android:id="@+id/action_maraude"
-        android:icon="@drawable/maraude_record"
+        android:icon="@drawable/tour_record"
         android:title="Enregistrer maraude"
         android:orderInCategory="100"
         app:showAsAction="always" />

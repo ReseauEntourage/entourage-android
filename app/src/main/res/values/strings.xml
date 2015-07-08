@@ -48,6 +48,10 @@
     <string name="tweet_with_audio">Ecoutez le message que j\'ai enregistré avec %1$s via l\'application Entourage : %2$s %3$s %4$s</string>
     <string name="tweet_without_audio">J\'ai rencontré %1$s %2$s %3$s</string>
 
+    <!-- Tour -->
+    <string name="tour_started">Départ de la maraude</string>
+    <string name="tour_stopped">Fin de la maraude</string>
+
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>
     <string name="local_service_started">Maraude lancée</string>

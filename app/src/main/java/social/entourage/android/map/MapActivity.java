@@ -105,7 +105,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         getMenuInflater().inflate(R.menu.menu_encounter, menu);
         boolean isRunning = tourService != null && tourService.isRunning();
         MenuItem item = menu.findItem(R.id.action_maraude);
-        item.setIcon(isRunning ? R.drawable.maraude_stop : R.drawable.maraude_record);
+        item.setIcon(isRunning ? R.drawable.tour_stop : R.drawable.tour_record);
         item.setTitle(isRunning ? R.string.stop_tour_title : R.string.start_tour_title);
         return true;
     }
@@ -154,12 +154,12 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             if (tourService != null) {
                 if (tourService.isRunning()) {
                     item.setTitle(R.string.start_tour_title);
-                    item.setIcon(R.drawable.maraude_record);
+                    item.setIcon(R.drawable.tour_record);
                     tourService.endTreatment();
                     clearMap();
                 } else {
                     item.setTitle(R.string.stop_tour_title);
-                    item.setIcon(R.drawable.maraude_stop);
+                    item.setIcon(R.drawable.tour_stop);
                     tourService.beginTreatment();
                 }
             }

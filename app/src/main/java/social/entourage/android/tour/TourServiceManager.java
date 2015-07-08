@@ -8,9 +8,15 @@ import android.os.Bundle;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
 
@@ -20,7 +26,15 @@ import social.entourage.android.common.Constants;
 @Singleton
 public class TourServiceManager {
 
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
     private final TourService tourService;
+
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
 
     private CustomLocationListener locationListener;
     private Tour tour;
@@ -35,42 +49,58 @@ public class TourServiceManager {
     // ----------------------------------
 
     public Tour getTour() {
-        System.out.println("ICI : " + this.tour.getCoordinates().get(tour.getCoordinates().size()-1));
         return this.tour;
     }
 
     // ----------------------------------
-    // PUBLIC METHODS
+    // PRIVATE METHODS
     // ----------------------------------
-
-    public void sendTour() {
-        System.out.println("----- envoi de la maraude au webservice -----");
-        /*
-        if (tour != null) {
-            for (LatLng coord : tour.getCoordinates())
-                System.out.println("coord : " + coord.latitude + ", " + coord.longitude);
-            // ici envoi
-        }
-        */
-    }
-
-    public void startTour() {
-        tour = new Tour();
-        initializeLocationService();
-    }
-
-    public void finishTour() {
-        sendTour();
-        LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.removeUpdates(locationListener);
-        tour = null;
-    }
 
     private void initializeLocationService() {
         LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
                 Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
+    }
+
+    private void sendTour() {
+        System.out.println("----- envoi de la maraude au webservice -----");
+        // TODO : send the tour to the webservice
+
+        /**
+         * TEST OF THE TOUR CONTENT
+         */
+                for (LatLng coord : tour.getCoordinates())
+                    System.out.println("+ " + coord.latitude + ", " + coord.longitude);
+
+                DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
+                for (Date time : tour.getSteps().keySet())
+                    System.out.println(dateFormat.format(time) + " " + tour.getSteps().get(time));
+        /**
+         * END OF THE TEST
+         */
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public void startTour() {
+        tour = new Tour();
+        initializeLocationService();
+        addStep(new Date(), tourService.getString(R.string.tour_started));
+    }
+
+    public void finishTour() {
+        LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.removeUpdates(locationListener);
+        addStep(new Date(), tourService.getString(R.string.tour_stopped));
+        sendTour();
+        tour = null;
+    }
+
+    public void addStep(Date time, String step) {
+        tour.updateSteps(time, step);
     }
 
     public boolean isRunning() {
