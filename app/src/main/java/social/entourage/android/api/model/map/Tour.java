@@ -1,6 +1,9 @@
 package social.entourage.android.api.model.map;
 
+import android.widget.Toast;
+
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -10,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import social.entourage.android.R;
+
 /**
  * Created by NTE on 06/07/15.
  */
@@ -17,11 +22,14 @@ public class Tour implements Serializable {
 
     private long id;
 
-    private Date date;
+    @SerializedName("tour_type")
+    private String  tourType = "social";
 
-    private List<LatLng> coordinates;
+    private transient Date date;
 
-    private HashMap<Date, String> steps;
+    private transient List<LatLng> coordinates;
+
+    private transient HashMap<Date, String> steps;
 
     public Tour() {
         this.coordinates = new ArrayList<LatLng>();
@@ -34,6 +42,14 @@ public class Tour implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getTourType() {
+        return tourType;
+    }
+
+    public void setTourType(String tourType) {
+        this.tourType = tourType;
     }
 
     public Date getDate() {
@@ -67,4 +83,5 @@ public class Tour implements Serializable {
     public void updateSteps(Date time, String step) {
         this.steps.put(time, step);
     }
+
 }

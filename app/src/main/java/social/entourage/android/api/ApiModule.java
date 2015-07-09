@@ -62,4 +62,10 @@ public class ApiModule {
     public EncounterService providesEncounterService(final RestAdapter restAdapter) {
         return restAdapter.create(EncounterService.class);
     }
+
+    @Provides
+    @Singleton
+    public TourRequest providesTourRequest(final RestAdapter restAdapter) {
+        return restAdapter.create(TourRequest.class);
+    }
 }

@@ -5,6 +5,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -16,7 +17,12 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import social.entourage.android.R;
+import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.TourResponse;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
 
@@ -31,6 +37,7 @@ public class TourServiceManager {
     // ----------------------------------
 
     private final TourService tourService;
+    private final TourRequest tourRequest;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -40,8 +47,9 @@ public class TourServiceManager {
     private Tour tour;
 
     @Inject
-    public TourServiceManager(final TourService tourService) {
+    public TourServiceManager(final TourService tourService, final TourRequest tourRequest) {
         this.tourService = tourService;
+        this.tourRequest = tourRequest;
     }
 
     // ----------------------------------
@@ -67,16 +75,26 @@ public class TourServiceManager {
         System.out.println("----- envoi de la maraude au webservice -----");
         // TODO : send the tour to the webservice
 
+        tourRequest.tour(tour, new Callback<TourResponse>() {
+            @Override
+            public void success(TourResponse tourResponse, Response response) {
+                Log.e("Test", tourResponse.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
         /**
          * TEST OF THE TOUR CONTENT
-         */
                 for (LatLng coord : tour.getCoordinates())
                     System.out.println("+ " + coord.latitude + ", " + coord.longitude);
 
                 DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
                 for (Date time : tour.getSteps().keySet())
                     System.out.println(dateFormat.format(time) + " " + tour.getSteps().get(time));
-        /**
          * END OF THE TEST
          */
     }
