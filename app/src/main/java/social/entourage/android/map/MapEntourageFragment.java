@@ -132,7 +132,8 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
 
     @Override
     public void onTourUpdated(Tour tour) {
-        drawLocation(tour.getCoordinates().get(tour.getCoordinates().size() - 1));
+        if (!tour.getCoordinates().isEmpty())
+            drawLocation(tour.getCoordinates().get(tour.getCoordinates().size() - 1));
     }
 
     @Override

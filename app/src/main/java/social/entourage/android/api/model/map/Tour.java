@@ -72,10 +72,6 @@ public class Tour implements Serializable {
         return steps;
     }
 
-    public void setSteps(HashMap<Date, String> steps) {
-        this.steps = steps;
-    }
-
     public void updateCoordinates(LatLng location) {
         this.coordinates.add(location);
     }

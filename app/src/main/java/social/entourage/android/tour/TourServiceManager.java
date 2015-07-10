@@ -9,10 +9,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,10 +17,10 @@ import javax.inject.Singleton;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import social.entourage.android.R;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.TourResponse;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.common.Constants;
 
 /**
@@ -45,6 +42,7 @@ public class TourServiceManager {
 
     private CustomLocationListener locationListener;
     private Tour tour;
+    private long tourId;
 
     @Inject
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest) {
@@ -72,32 +70,31 @@ public class TourServiceManager {
     }
 
     private void sendTour() {
-        System.out.println("----- envoi de la maraude au webservice -----");
-
-        /* à garder
         tourRequest.tour(tour, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
-                Log.e("Test", tourResponse.toString());
+                tourId = tourResponse.getTour().getId();
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.e("Error", error.toString());
             }
         });
-        */
+    }
 
-        /**
-         * TEST OF THE TOUR CONTENT
-                for (LatLng coord : tour.getCoordinates())
-                    System.out.println("+ " + coord.latitude + ", " + coord.longitude);
+    private void updateTourCoordinates(TourPoint point) {
+        tourRequest.tourPoint(tourId, point, new Callback<TourResponse>() {
+            @Override
+            public void success(TourResponse tourResponse, Response response) {
+                Log.e("test", tourResponse.toString());
+            }
 
-                DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
-                for (Date time : tour.getSteps().keySet())
-                    System.out.println(dateFormat.format(time) + " " + tour.getSteps().get(time));
-         * END OF THE TEST
-         */
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Error", error.toString());
+            }
+        });
     }
 
     // ----------------------------------
@@ -106,20 +103,14 @@ public class TourServiceManager {
 
     public void startTour() {
         tour = new Tour();
+        sendTour();
         initializeLocationService();
-        addStep(new Date(), tourService.getString(R.string.tour_started));
     }
 
     public void finishTour() {
         LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
         locationManager.removeUpdates(locationListener);
-        addStep(new Date(), tourService.getString(R.string.tour_stopped));
-        sendTour();
         tour = null;
-    }
-
-    public void addStep(Date time, String step) {
-        tour.updateSteps(time, step);
     }
 
     public boolean isRunning() {
@@ -134,8 +125,11 @@ public class TourServiceManager {
 
         @Override
         public void onLocationChanged(Location location) {
-            //System.out.println("NOUVELLE POSITION : " + location.getLatitude() + ", " + location.getLongitude());
             if (tour != null) {
+                TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
+                // send the new TourPoint to the webservice
+                updateTourCoordinates(point);
+                // update the "local" coordinates of the tour for the drawing on the map
                 tour.updateCoordinates(new LatLng(location.getLatitude(), location.getLongitude()));
                 tourService.notifyListeners(tour);
             }
