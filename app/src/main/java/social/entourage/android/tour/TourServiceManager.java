@@ -73,8 +73,8 @@ public class TourServiceManager {
 
     private void sendTour() {
         System.out.println("----- envoi de la maraude au webservice -----");
-        // TODO : send the tour to the webservice
 
+        /* à garder
         tourRequest.tour(tour, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
@@ -86,6 +86,7 @@ public class TourServiceManager {
 
             }
         });
+        */
 
         /**
          * TEST OF THE TOUR CONTENT

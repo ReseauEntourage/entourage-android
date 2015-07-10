@@ -23,11 +23,24 @@
         android:layout_gravity="center"
         android:paddingBottom="35dp"/>
 
+    <!-- Not used anymore (replaced by button_start_tour
     <Button
         android:text="@string/map_add_encounter"
         android:id="@+id/button_add_encounter"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:alpha="0.5"/>
+    -->
+
+    <Button
+        android:text="@string/tour_start"
+        android:id="@+id/button_start_tour"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="10dp"

@@ -1,14 +1,11 @@
 package social.entourage.android.map;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -27,17 +24,15 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.guide.GuideMapActivity;
 import social.entourage.android.login.LoginActivity;
-import social.entourage.android.tour.TourService;
 
 /**
  * Created by RPR on 25/03/15.
  */
-public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener, TourService.TourServiceListener {
+public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -47,25 +42,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     MapPresenter presenter;
 
     private Fragment fragment;
-
-    private TourService tourService;
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            tourService = ((TourService.LocalBinder)service).getService();
-            tourService.register(MapActivity.this);
-            invalidateOptionsMenu();
-            //Toast.makeText(MapActivity.this, R.string.local_service_connected, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            tourService.unregister(MapActivity.this);
-            tourService = null;
-            //Toast.makeText(MapActivity.this, R.string.local_service_disconnected, Toast.LENGTH_SHORT).show();
-        }
-    };
-    private boolean isBound = true;
 
     //private Location bestLocation;
     private boolean isBetterLocationUpdated;
@@ -103,10 +79,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_encounter, menu);
-        boolean isRunning = tourService != null && tourService.isRunning();
-        MenuItem item = menu.findItem(R.id.action_maraude);
-        item.setIcon(isRunning ? R.drawable.tour_stop : R.drawable.tour_record);
-        item.setTitle(isRunning ? R.string.stop_tour_title : R.string.start_tour_title);
         return true;
     }
 
@@ -114,16 +86,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     protected void onStart() {
         super.onStart();
         presenter.start();
-        doBindService();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (tourService != null) {
-            tourService.unregister(MapActivity.this);
-            doUnbindService();
-        }
     }
 
     @Override
@@ -150,19 +112,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
             intent.putExtras(args);
             startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
-        } else if (id == R.id.action_maraude) {
-            if (tourService != null) {
-                if (tourService.isRunning()) {
-                    item.setTitle(R.string.start_tour_title);
-                    item.setIcon(R.drawable.tour_record);
-                    tourService.endTreatment();
-                    clearMap();
-                } else {
-                    item.setTitle(R.string.stop_tour_title);
-                    item.setIcon(R.drawable.tour_stop);
-                    tourService.beginTreatment();
-                }
-            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -204,40 +153,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     }
 
     // ----------------------------------
-    // SERVICE BINDING METHODS
-    // ----------------------------------
-
-    void doBindService() {
-        Intent intent = new Intent(MapActivity.this, TourService.class);
-        startService(intent);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        isBound = true;
-    }
-
-    void doUnbindService() {
-        if (isBound) {
-            unbindService(connection);
-            isBound = false;
-        }
-    }
-
-    @Override
-    public void onTourUpdated(Tour tour) {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.drawLocation(tour.getCoordinates().get(tour.getCoordinates().size() - 1));
-        }
-    }
-
-    @Override
-    public void onTourResumed(Tour tour) {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.drawResumedTour(tour);
-        }
-    }
-
-    // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
 
@@ -272,8 +187,6 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     private void initializeLocationService() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
-//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIMER_MILLIS,
-//                DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
                 Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }

@@ -25,6 +25,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.map.MapActivity;
+import social.entourage.android.map.MapEntourageFragment;
 
 /**
  * Created by NTE on 06/07/15.
@@ -97,7 +98,7 @@ public class TourService extends Service {
     private void showNotification() {
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MapActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                new Intent(this, MapActivity.class), 0);
 
         PendingIntent buttonIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, TourService.class), PendingIntent.FLAG_UPDATE_CURRENT);

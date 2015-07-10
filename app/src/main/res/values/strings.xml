@@ -49,6 +49,8 @@
     <string name="tweet_without_audio">J\'ai rencontré %1$s %2$s %3$s</string>
 
     <!-- Tour -->
+    <string name="tour_start">Démarrer une maraude</string>
+    <string name="tour_stop">Arrêter la maraude</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>
 

@@ -1,17 +1,19 @@
 package social.entourage.android.map;
 
-import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -28,13 +30,12 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.common.Constants;
-import social.entourage.android.encounter.CreateEncounterActivity;
+import social.entourage.android.tour.TourService;
 
 /**
  * Created by RPR on 25/03/15.
  */
-public class MapEntourageFragment extends Fragment {
+public class MapEntourageFragment extends Fragment implements TourService.TourServiceListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -48,6 +49,27 @@ public class MapEntourageFragment extends Fragment {
 
     private SupportMapFragment mapFragment;
     private LatLng prevCoord;
+
+    private TourService tourService;
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            tourService = ((TourService.LocalBinder)service).getService();
+            tourService.register(MapEntourageFragment.this);
+            boolean isRunning = tourService != null && tourService.isRunning();
+            Button button = (Button) getView().findViewById(R.id.button_start_tour);
+            button.setText(isRunning ? R.string.tour_stop : R.string.tour_start);
+            //Toast.makeText(MapActivity.this, R.string.local_service_connected, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            tourService.unregister(MapEntourageFragment.this);
+            tourService = null;
+            //Toast.makeText(MapActivity.this, R.string.local_service_disconnected, Toast.LENGTH_SHORT).show();
+        }
+    };
+    private boolean isBound = true;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -74,18 +96,57 @@ public class MapEntourageFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
-
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().setMyLocationEnabled(true);
             mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(true);
         }
+        doBindService();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (tourService != null) {
+            tourService.unregister(MapEntourageFragment.this);
+            doUnbindService();
+        }
+    }
+
+    // ----------------------------------
+    // SERVICE BINDING METHODS
+    // ----------------------------------
+
+    void doBindService() {
+        Intent intent = new Intent(getActivity(), TourService.class);
+        getActivity().startService(intent);
+        getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        isBound = true;
+    }
+
+    void doUnbindService() {
+        if (isBound) {
+            getActivity().unbindService(connection);
+            isBound = false;
+        }
+    }
+
+    @Override
+    public void onTourUpdated(Tour tour) {
+        drawLocation(tour.getCoordinates().get(tour.getCoordinates().size() - 1));
+    }
+
+    @Override
+    public void onTourResumed(Tour tour) {
+        drawResumedTour(tour);
     }
 
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
 
+    /**
+     *  Tours not created from this button anymore
+     *
     @OnClick(R.id.button_add_encounter)
     public void openCreateEncounter(View view) {
         Activity parent = this.getActivity();
@@ -101,6 +162,22 @@ public class MapEntourageFragment extends Fragment {
             intent.putExtras(args);
 
             parent.startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
+        }
+    }
+     */
+
+    @OnClick(R.id.button_start_tour)
+    public void startNewTour(View view) {
+        if (tourService != null) {
+            Button button = (Button) view;
+            if (tourService.isRunning()) {
+                button.setText(R.string.tour_start);
+                tourService.endTreatment();
+                clearMap();
+            } else {
+                button.setText(R.string.tour_stop);
+                tourService.beginTreatment();
+            }
         }
     }
 
@@ -194,4 +271,11 @@ public class MapEntourageFragment extends Fragment {
         }
 
     }
+
+    // ----------------------------------
+    // INTERFACES
+    // ----------------------------------
+
+    //public interface
+
 }
