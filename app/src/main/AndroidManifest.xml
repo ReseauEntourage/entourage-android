@@ -71,6 +71,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <!-- Services -->
         <service
             android:name="com.octo.appaloosasdk.async.AppaloosaSpiceService"
@@ -80,9 +81,11 @@
             android:name="com.octo.android.robospice.UncachedSpiceService"
             android:exported="false" />
 
+        <!-- not used anymore
         <service
             android:name=".map.FetchAddressIntentService"
             android:exported="false"/>
+        -->
 
         <service
             android:name=".tour.TourService"

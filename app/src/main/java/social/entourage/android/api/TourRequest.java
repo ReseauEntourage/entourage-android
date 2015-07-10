@@ -19,4 +19,6 @@ public interface TourRequest {
 
     @POST("/tours/{tour_id}/tour_points.json")
     void tourPoint( @Path("tour_id") long tourId, @Body TourPoint point, Callback<TourResponse> callback);
+
+    //@POST("/tours/{tour_id}/encounters")
 }

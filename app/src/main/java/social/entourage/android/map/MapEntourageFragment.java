@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -100,6 +101,11 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
             mapFragment.getMap().setMyLocationEnabled(true);
             mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(true);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         doBindService();
     }
 
@@ -272,11 +278,4 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
 
     }
-
-    // ----------------------------------
-    // INTERFACES
-    // ----------------------------------
-
-    //public interface
-
 }

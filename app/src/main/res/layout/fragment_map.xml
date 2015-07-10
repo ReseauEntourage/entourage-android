@@ -23,7 +23,7 @@
         android:layout_gravity="center"
         android:paddingBottom="35dp"/>
 
-    <!-- Not used anymore (replaced by button_start_tour
+    <!-- Not used anymore (replaced by button_start_tour)
     <Button
         android:text="@string/map_add_encounter"
         android:id="@+id/button_add_encounter"
