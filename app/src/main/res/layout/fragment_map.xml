@@ -17,11 +17,13 @@
         android:alpha="0.5"/>
 
     <ImageView
+        android:id="@+id/fragment_map_pin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/pointer"
         android:layout_gravity="center"
-        android:paddingBottom="35dp"/>
+        android:paddingBottom="35dp"
+        android:visibility="invisible"/>
 
     <!-- Not used anymore (replaced by button_start_tour)
     <Button

@@ -1,5 +1,6 @@
 package social.entourage.android.map;
 
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.Toast;
+import android.widget.RadioButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -176,14 +179,58 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     @OnClick(R.id.button_start_tour)
     public void startNewTour(View view) {
         if (tourService != null) {
-            Button button = (Button) view;
+
+            final Button buttonStartStop = (Button) getView().findViewById(R.id.button_start_tour);
+
             if (tourService.isRunning()) {
-                button.setText(R.string.tour_start);
+                buttonStartStop.setText(R.string.tour_start);
+                getView().findViewById(R.id.fragment_map_pin).setVisibility(View.INVISIBLE);
                 tourService.endTreatment();
                 clearMap();
             } else {
-                button.setText(R.string.tour_stop);
-                tourService.beginTreatment();
+                final Dialog dialog = new Dialog(getActivity());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_tour_start);
+                dialog.setTitle(R.string.tour_start);
+
+                WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+                params.copyFrom(dialog.getWindow().getAttributes());
+                params.width = WindowManager.LayoutParams.MATCH_PARENT;
+                dialog.getWindow().setAttributes(params);
+
+                Button feetButton = (Button) dialog.findViewById(R.id.dialog_tour_feet_button);
+                Button carButton = (Button) dialog.findViewById(R.id.dialog_tour_car_button);
+                Button goButton = (Button) dialog.findViewById(R.id.dialog_tour_go_button);
+
+                feetButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+                carButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+                goButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tourService != null) {
+                            if (!tourService.isRunning()) {
+                                buttonStartStop.setText(R.string.tour_stop);
+                                getView().findViewById(R.id.fragment_map_pin).setVisibility(View.VISIBLE);
+                                tourService.beginTreatment();
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+                });
+
+                dialog.show();
             }
         }
     }

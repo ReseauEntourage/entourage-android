@@ -61,6 +61,10 @@ public class MapPresenter {
         activity.setOnMarkerCLickListener(onClickListener);
     }
 
+    public void retrieveTours() {
+
+    }
+
     public void retrieveMapObjects(LatLng latLng) {
         if(isStarted) {
             mapService.map("0cb4507e970462ca0b11320131e96610", 0, 0, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
