@@ -10,12 +10,10 @@ import android.view.MenuItem;
 
 import com.flurry.android.FlurryAgent;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
@@ -49,14 +47,10 @@ public class GuideMapActivity extends EntourageSecuredActivity implements Action
     // ----------------------------------
 
     @Override
-    protected List<Object> getScopedModules() {
-        return Arrays.<Object>asList(new GuideMapModule(this));
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
+
         ButterKnife.inject(this);
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_MENU);
@@ -69,6 +63,15 @@ public class GuideMapActivity extends EntourageSecuredActivity implements Action
         actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_map).setTabListener(this));
         //TODO: display List Tab here
         //actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_liste).setTabListener(this));
+    }
+
+    @Override
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerGuideMapComponent.builder()
+                .entourageComponent(entourageComponent)
+                .guideMapModule(new GuideMapModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override

@@ -1,16 +1,13 @@
 package social.entourage.android.map;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,10 +17,9 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.EntourageLocation;
+import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
-import social.entourage.android.api.MapService;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.ReadEncounterActivity;
 
@@ -34,7 +30,7 @@ public class MapPresenter {
     // ----------------------------------
 
     private final MapActivity activity;
-    private final MapService mapService;
+    private final MapRequest mapRequest;
 
     private OnEntourageMarkerClickListener onClickListener;
     private boolean isStarted = false;
@@ -44,9 +40,9 @@ public class MapPresenter {
     // ----------------------------------
 
     @Inject
-    public MapPresenter(final MapActivity activity, final MapService mapService) {
+    public MapPresenter(final MapActivity activity, final MapRequest mapRequest) {
         this.activity = activity;
-        this.mapService = mapService;
+        this.mapRequest = mapRequest;
     }
 
     // ----------------------------------
@@ -67,7 +63,7 @@ public class MapPresenter {
 
     public void retrieveMapObjects(LatLng latLng) {
         if(isStarted) {
-            mapService.map("0cb4507e970462ca0b11320131e96610", 0, 0, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
+            mapRequest.map("0cb4507e970462ca0b11320131e96610", 0, 0, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
                 @Override
                 public void success(MapResponse mapResponse, Response response) {
                     loadObjectsOnMap(mapResponse);

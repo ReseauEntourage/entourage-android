@@ -14,13 +14,12 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.ObjectGraph;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.map.MapActivity;
@@ -43,8 +42,6 @@ public class TourService extends Service {
     // ATTRIBUTES
     // ----------------------------------
 
-    private ObjectGraph activityGraph;
-
     @Inject
     TourServiceManager tourServiceManager;
 
@@ -64,11 +61,17 @@ public class TourService extends Service {
 
     @Override
     public void onCreate() {
-        ObjectGraph applicationGraph = EntourageApplication.get(this).getApplicationGraph();
-        activityGraph = applicationGraph.plus(Arrays.<Object>asList(new TourModule(this)).toArray());
-        activityGraph.inject(this);
-
+        super.onCreate();
+        setupComponent(EntourageApplication.get(this).getEntourageComponent());
         listeners =  new ArrayList<>();
+    }
+
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerTourComponent.builder()
+                .entourageComponent(entourageComponent)
+                .tourModule(new TourModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -79,7 +82,6 @@ public class TourService extends Service {
 
     @Override
     public void onDestroy() {
-        activityGraph = null;
         endTreatment();
         super.onDestroy();
     }

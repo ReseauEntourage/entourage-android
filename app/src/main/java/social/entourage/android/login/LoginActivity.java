@@ -6,17 +6,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import social.entourage.android.map.MapActivity;
 import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.map.MapActivity;
 
 public class LoginActivity extends EntourageActivity {
 
@@ -29,16 +27,19 @@ public class LoginActivity extends EntourageActivity {
     Button loginButton;
 
     @Override
-    protected List<Object> getScopedModules() {
-        return Arrays.<Object>asList(new LoginModule(this));
-    }
-
-    @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         ButterKnife.inject(this);
+    }
+
+    @Override
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerLoginComponent.builder()
+                .entourageComponent(entourageComponent)
+                .loginModule(new LoginModule(this))
+                .build()
+                .inject(this);
     }
 
     @OnClick(R.id.button_login)

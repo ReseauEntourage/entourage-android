@@ -12,7 +12,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Date;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -26,7 +25,6 @@ import social.entourage.android.common.Constants;
 /**
  * Created by NTE on 06/07/15.
  */
-@Singleton
 public class TourServiceManager {
 
     // ----------------------------------

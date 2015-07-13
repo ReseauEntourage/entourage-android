@@ -11,17 +11,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-
-import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
@@ -57,11 +53,6 @@ MapLauncherFragment.OnTourStartListener {
     // ----------------------------------
 
     @Override
-    protected List<Object> getScopedModules() {
-        return Arrays.<Object>asList(new MapModule(this));
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
@@ -79,6 +70,15 @@ MapLauncherFragment.OnTourStartListener {
         //TODO: display List Tab here
         //actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_liste).setTabListener(this));
 
+    }
+
+    @Override
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerMapComponent.builder()
+                .entourageComponent(entourageComponent)
+                .mapModule(new MapModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override

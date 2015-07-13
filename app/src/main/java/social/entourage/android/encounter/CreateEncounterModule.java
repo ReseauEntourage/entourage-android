@@ -1,22 +1,12 @@
 package social.entourage.android.encounter;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
-import social.entourage.android.EntourageModule;
 
 /**
  * Module handling all ui related dependencies
  */
-@Module(
-        injects = {
-                CreateEncounterActivity.class
-        },
-        addsTo = EntourageModule.class,
-        complete = false,
-        library = true
-)
+@Module
 public final class CreateEncounterModule {
     private final CreateEncounterActivity activity;
 
@@ -25,7 +15,6 @@ public final class CreateEncounterModule {
     }
 
     @Provides
-    @Singleton
     public CreateEncounterActivity providesActivity() {
         return activity;
     }

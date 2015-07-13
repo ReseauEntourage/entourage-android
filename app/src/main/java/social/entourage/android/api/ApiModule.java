@@ -3,10 +3,6 @@ package social.entourage.android.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import retrofit.converter.GsonConverter;
-import social.entourage.android.BuildConfig;
-import social.entourage.android.authentication.AuthenticationInterceptor;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -14,14 +10,14 @@ import dagger.Provides;
 import retrofit.Endpoint;
 import retrofit.Endpoints;
 import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
+import social.entourage.android.BuildConfig;
+import social.entourage.android.authentication.AuthenticationInterceptor;
 
 /**
  * Module that provides all the API related dependencies
  */
-@Module(
-        library = true,
-        complete = false
-)
+@Module
 public class ApiModule {
 
     @Provides
@@ -47,20 +43,20 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    public LoginService providesLoginService(final RestAdapter restAdapter) {
-        return restAdapter.create(LoginService.class);
+    public LoginRequest providesLoginService(final RestAdapter restAdapter) {
+        return restAdapter.create(LoginRequest.class);
     }
 
     @Provides
     @Singleton
-    public MapService providesMapService(final RestAdapter restAdapter) {
-        return restAdapter.create(MapService.class);
+    public MapRequest providesMapService(final RestAdapter restAdapter) {
+        return restAdapter.create(MapRequest.class);
     }
 
     @Provides
     @Singleton
-    public EncounterService providesEncounterService(final RestAdapter restAdapter) {
-        return restAdapter.create(EncounterService.class);
+    public EncounterRequest providesEncounterService(final RestAdapter restAdapter) {
+        return restAdapter.create(EncounterRequest.class);
     }
 
     @Provides

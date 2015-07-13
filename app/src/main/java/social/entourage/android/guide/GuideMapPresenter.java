@@ -17,8 +17,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.EntourageLocation;
+import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
-import social.entourage.android.api.MapService;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
 import social.entourage.android.poi.ReadPoiActivity;
@@ -30,7 +30,7 @@ public class GuideMapPresenter {
     // ----------------------------------
 
     private final GuideMapActivity activity;
-    private final MapService mapService;
+    private final MapRequest mapRequest;
 
     private OnEntourageMarkerClickListener onClickListener;
     private boolean isStarted = false;
@@ -40,9 +40,9 @@ public class GuideMapPresenter {
     // ----------------------------------
 
     @Inject
-    public GuideMapPresenter(final GuideMapActivity activity, final MapService mapService) {
+    public GuideMapPresenter(final GuideMapActivity activity, final MapRequest mapRequest) {
         this.activity = activity;
-        this.mapService = mapService;
+        this.mapRequest = mapRequest;
     }
 
     // ----------------------------------
@@ -59,7 +59,7 @@ public class GuideMapPresenter {
 
     public void retrieveMapObjects(LatLng latLng) {
         if(isStarted) {
-            mapService.map("0cb4507e970462ca0b11320131e96610", 1000, 10, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
+            mapRequest.map("0cb4507e970462ca0b11320131e96610", 1000, 10, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
                 @Override
                 public void success(MapResponse mapResponse, Response response) {
                     loadObjectsOnMap(mapResponse);

@@ -9,16 +9,12 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
-import java.util.Arrays;
-import java.util.List;
-import java.lang.Object;
-
 import javax.inject.Inject;
-
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
@@ -55,6 +51,15 @@ public class ReadPoiActivity extends EntourageActivity {
     }
 
     @Override
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerReadPoiComponent.builder()
+                .entourageComponent(entourageComponent)
+                .readPoiModule(new ReadPoiModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -76,11 +81,6 @@ public class ReadPoiActivity extends EntourageActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected List<Object> getScopedModules() {
-        return Arrays.<Object>asList(new ReadPoiModule(this));
     }
 
     public void displayPoi(Poi poi, final ReadPoiPresenter.OnAddressClickListener onAddressClickListener) {

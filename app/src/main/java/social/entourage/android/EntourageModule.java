@@ -2,24 +2,12 @@ package social.entourage.android;
 
 import android.app.Application;
 
-import social.entourage.android.api.ApiModule;
-import social.entourage.android.authentication.AuthenticationModule;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 
-@Module(
-        injects = {
-                EntourageApplication.class
-        },
-        includes = {
-                ApiModule.class,
-                AuthenticationModule.class,
-        },
-        library = true
-)
+@Module
 public final class EntourageModule {
 
     private final EntourageApplication app;

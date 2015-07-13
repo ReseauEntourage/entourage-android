@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -25,6 +23,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.common.Constants;
@@ -87,11 +86,21 @@ public class ReadEncounterActivity extends EntourageActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encounter_read);
+
         ButterKnife.inject(this);
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
         Bundle args = getIntent().getExtras();
         encounter = (Encounter)args.get(Constants.KEY_ENCOUNTER);
+    }
+
+    @Override
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerReadEncounterComponent.builder()
+                .entourageComponent(entourageComponent)
+                .readEncounterModule(new ReadEncounterModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -105,11 +114,6 @@ public class ReadEncounterActivity extends EntourageActivity {
         super.onStart();
         presenter.displayEncounter();
 
-    }
-
-    @Override
-    protected List<Object> getScopedModules() {
-        return Arrays.<Object>asList(new ReadEncounterModule(this));
     }
 
     @OnClick(R.id.button_play)

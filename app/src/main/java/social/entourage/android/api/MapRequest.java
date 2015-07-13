@@ -7,7 +7,7 @@ import retrofit.http.Query;
 /**
  * Created by RPR on 25/03/15.
  */
-public interface MapService {
+public interface MapRequest {
 
     @GET("/map.json")
     void map(  @Query("token") String token,

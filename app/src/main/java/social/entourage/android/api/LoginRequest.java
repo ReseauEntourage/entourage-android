@@ -5,7 +5,7 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
 
-public interface LoginService {
+public interface LoginRequest {
 
     @FormUrlEncoded
     @POST("/login.json")

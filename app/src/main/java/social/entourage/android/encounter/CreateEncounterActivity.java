@@ -18,9 +18,7 @@ import com.octo.android.robospice.UncachedSpiceService;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -28,6 +26,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
@@ -114,6 +113,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         }
 
         ButterKnife.inject(this);
+
         txtPersonName.setText(getString(R.string.encounter_label_person_name_and, getAuthenticationController().getUser().getFirstName()));
         txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(new Date())));
         btnPlay.setEnabled(false);
@@ -122,6 +122,15 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         hasAMessageBeenRecorded = false;
         audioFileName = getFilesDir() + "/encounter.aac";
         new File(audioFileName).delete();
+    }
+
+    @Override
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerCreateEncounterComponent.builder()
+                .entourageComponent(entourageComponent)
+                .createEncounterModule(new CreateEncounterModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -155,11 +164,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    protected List<Object> getScopedModules() {
-        return Arrays.<Object>asList(new CreateEncounterModule(this));
     }
 
     public SpiceManager getSpiceManager() {

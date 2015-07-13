@@ -16,8 +16,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.R;
+import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
-import social.entourage.android.api.EncounterService;
 import social.entourage.android.api.SoundCloudCreateTrackRequest;
 import social.entourage.android.api.model.EncounterWrapper;
 import social.entourage.android.api.model.map.Encounter;
@@ -27,17 +27,17 @@ public class CreateEncounterPresenter {
 
     private final CreateEncounterActivity activity;
 
-    private final EncounterService encounterService;
+    private final EncounterRequest encounterRequest;
 
     public boolean twitterChecked;
 
     @Inject
     public CreateEncounterPresenter(
             final CreateEncounterActivity activity,
-            final EncounterService encounterService
+            final EncounterRequest encounterRequest
     ) {
         this.activity = activity;
-        this.encounterService = encounterService;
+        this.encounterRequest = encounterRequest;
     }
 
     public void createTrackOnSoundCloud(final Encounter encounter, final String audioFileName) {
@@ -54,7 +54,7 @@ public class CreateEncounterPresenter {
         activity.showProgressDialog(R.string.creating_encounter);
         EncounterWrapper encounterWrapper = new EncounterWrapper();
         encounterWrapper.setEncounter(encounter);
-        encounterService.create(encounterWrapper, new EncounterRequestCallback());
+        encounterRequest.create(encounterWrapper, new EncounterRequestCallback());
     }
 
     public void tweetWithAudioFile(Encounter encounter) {
