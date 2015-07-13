@@ -1,6 +1,5 @@
 package social.entourage.android.tour;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -25,7 +24,6 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.map.MapActivity;
-import social.entourage.android.map.MapEntourageFragment;
 
 /**
  * Created by NTE on 06/07/15.
@@ -132,9 +130,9 @@ public class TourService extends Service {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void beginTreatment() {
+    public void beginTreatment(String type1, String type2) {
         if (!isRunning()) {
-            tourServiceManager.startTour();
+            tourServiceManager.startTour(type1, type2);
             showNotification();
             Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
         }

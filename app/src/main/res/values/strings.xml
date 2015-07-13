@@ -53,9 +53,10 @@
     <string name="tour_stop">Arrêter la maraude</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>
-    <string name="tour_feet">A pieds</string>
-    <string name="tour_car">En voiture</string>
+    <string name="tour_check_feet">A pieds</string>
+    <string name="tour_check_car">En voiture</string>
     <string name="tour_go">C\'est parti !</string>
+    <string name="tour_type">Type de maraude</string>
     <string name="tour_type_medical">Médicale</string>
     <string name="tour_type_bare_hands">A main nues</string>
     <string name="tour_type_alimentary">Alimentaire</string>

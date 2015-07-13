@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_alignParentBottom="true"
+    android:background="@color/background_material_dark"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/launcher_tour_type_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@+id/launcher_tour_type_feet">
+
+            <RadioButton
+                android:id="@+id/launcher_tour_type_feet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tour_check_feet"
+                android:textColor="@color/abc_primary_text_material_dark"/>
+
+            <RadioButton
+                android:id="@+id/launcher_tour_type_car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tour_check_feet"
+                android:textColor="@color/abc_primary_text_material_dark"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_type"
+            android:textColor="@color/abc_primary_text_material_dark"/>
+
+        <RadioGroup
+            android:id="@+id/launcher_tour_type_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:checkedButton="@+id/launcher_tour_type_medical">
+
+            <RadioButton
+                android:id="@+id/launcher_tour_type_medical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tour_type_medical"
+                android:textColor="@color/abc_primary_text_material_dark"/>
+
+            <RadioButton
+                android:id="@+id/launcher_tour_type_bare_hands"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tour_type_bare_hands"
+                android:textColor="@color/abc_primary_text_material_dark"/>
+
+            <RadioButton
+                android:id="@+id/launcher_tour_type_alimentary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tour_type_alimentary"
+                android:textColor="@color/abc_primary_text_material_dark"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/launcher_tour_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tour_go"/>
+
+</LinearLayout>

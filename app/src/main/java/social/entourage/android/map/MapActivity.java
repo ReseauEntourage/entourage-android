@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -33,7 +34,9 @@ import social.entourage.android.login.LoginActivity;
 /**
  * Created by RPR on 25/03/15.
  */
-public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener {
+public class MapActivity extends EntourageSecuredActivity
+implements ActionBar.TabListener, MapEntourageFragment.OnTourLaunchListener,
+MapLauncherFragment.OnTourStartListener {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -43,6 +46,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     MapPresenter presenter;
 
     private Fragment fragment;
+    private Fragment launcher;
 
     //private Location bestLocation;
     private boolean isBetterLocationUpdated;
@@ -203,6 +207,25 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
             mapEntourageFragment.saveCameraPosition();
+        }
+    }
+
+    // ----------------------------------
+    // FRAGMENT INTERFACES METHODS
+    // ----------------------------------
+
+    @Override
+    public void onTourLaunch() {
+        launcher = MapLauncherFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, launcher).commit();
+    }
+
+    @Override
+    public void onTourStart(String type1, String type2) {
+        if (launcher != null) getSupportFragmentManager().beginTransaction().remove(launcher).commit();
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.startTour(type1, type2);
         }
     }
 
