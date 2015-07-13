@@ -5,9 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by NTE on 10/07/15.
- */
+@SuppressWarnings("unused")
 public class TourPoint implements Serializable {
 
     private double latitude;

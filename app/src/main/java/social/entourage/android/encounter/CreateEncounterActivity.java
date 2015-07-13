@@ -3,6 +3,7 @@ package social.entourage.android.encounter;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -31,9 +32,6 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.common.Constants;
-
-
-
 
 public class CreateEncounterActivity extends EntourageSecuredActivity {
 
@@ -121,7 +119,10 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         isRecording = false;
         hasAMessageBeenRecorded = false;
         audioFileName = getFilesDir() + "/encounter.aac";
-        new File(audioFileName).delete();
+        boolean isDelete = new File(audioFileName).delete();
+        if (isDelete) {
+            Log.v(this.getLogTag(), "no need to delete audio file");
+        }
     }
 
     @Override
@@ -250,9 +251,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     private void startRecording() {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
         mediaRecorder.setOutputFile(audioFileName);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+        }
 
         try {
             mediaRecorder.prepare();
@@ -276,7 +279,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     public void onCreateEncounterFinished(String errorMessage) {
         dismissProgressDialog();
-        String message = null;
+        String message;
         if (errorMessage == null) {
             message = getString(R.string.create_encounter_success);
             Intent resultIntent = new Intent();

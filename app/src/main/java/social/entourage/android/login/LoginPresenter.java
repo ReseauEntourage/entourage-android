@@ -9,6 +9,10 @@ import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.LoginResponse;
 import social.entourage.android.authentication.AuthenticationController;
 
+/**
+ * Presenter controlling the LoginActivity
+ * @see LoginActivity
+ */
 public class LoginPresenter implements Callback<LoginResponse> {
     private final LoginActivity activity;
     private final LoginRequest loginRequest;

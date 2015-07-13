@@ -25,10 +25,9 @@ import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.map.MapActivity;
 
 /**
- * Created by NTE on 06/07/15.
- *
- * TODO : remove the notification when the app is killed from the recent apps list (doesn't work)
+ * Background service for handling location modification in a tour like in "RunKeeper" app
  */
+//TODO : remove the notification when the app is killed from the recent apps list (doesn't work)
 public class TourService extends Service {
 
     // ----------------------------------

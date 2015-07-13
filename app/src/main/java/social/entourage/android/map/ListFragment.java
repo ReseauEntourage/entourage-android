@@ -8,14 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by RPR on 25/03/15.
- */
 public class ListFragment extends Fragment {
 
     public static ListFragment newInstance() {
-        ListFragment fragment = new ListFragment();
-        return fragment;
+        return new ListFragment();
     }
 
     // ----------------------------------

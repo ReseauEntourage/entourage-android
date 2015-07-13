@@ -16,6 +16,9 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.map.MapActivity;
 
+/**
+ * Activity providing a login form
+ */
 public class LoginActivity extends EntourageActivity {
 
     @Inject
@@ -43,7 +46,7 @@ public class LoginActivity extends EntourageActivity {
     }
 
     @OnClick(R.id.button_login)
-    public void onLoginClick(Button loginButton) {
+    public void onLoginClick() {
         startLoader();
         loginPresenter.login(emailEditText.getText().toString());
     }

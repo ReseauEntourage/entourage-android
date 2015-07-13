@@ -9,6 +9,10 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * Module related to Application
+ * Providing Authentication related dependencies
+ */
 @Module
 public class AuthenticationModule {
 

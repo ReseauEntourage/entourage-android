@@ -2,9 +2,6 @@ package social.entourage.android.api.model;
 
 import social.entourage.android.R;
 
-/**
- * Created by NTE on 13/07/15.
- */
 public enum TourType {
     FEET("feet", R.id.launcher_tour_type_feet),
     CAR("car", R.id.launcher_tour_type_car),

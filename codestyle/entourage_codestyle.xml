@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--suppress XmlUnboundNsPrefix -->
 <code_scheme name="entourage_codestyle">
   <option name="GENERATE_FINAL_LOCALS" value="true" />
   <option name="GENERATE_FINAL_PARAMETERS" value="true" />
@@ -168,4 +169,3 @@
     </arrangement>
   </codeStyleSettings>
 </code_scheme>
-

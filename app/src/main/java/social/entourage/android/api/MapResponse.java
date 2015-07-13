@@ -6,9 +6,6 @@ import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Poi;
 
-/**
- * Created by RPR on 25/03/15.
- */
 public class MapResponse {
     private List<Encounter> encounters;
     private List<Poi> pois;

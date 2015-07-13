@@ -13,6 +13,10 @@ import social.entourage.android.api.TourRequest;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
 
+/**
+ * Dagger component on Application Level
+ * Add a get method to provide some object to components that imports this component
+ */
 @Singleton
 @Component(
         modules = {

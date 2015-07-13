@@ -8,14 +8,10 @@ import android.view.ViewGroup;
 
 import social.entourage.android.R;
 
-/**
- * Created by RPR on 25/03/15.
- */
 public class GuideListFragment extends Fragment {
 
     public static GuideListFragment newInstance() {
-        GuideListFragment fragment = new GuideListFragment();
-        return fragment;
+        return new GuideListFragment();
     }
 
     // ----------------------------------

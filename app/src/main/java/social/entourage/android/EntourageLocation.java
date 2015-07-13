@@ -23,17 +23,12 @@ public class EntourageLocation {
     private static final double INITIAL_LATITUDE = 48.841636;
     private static final double INITIAL_LONGITUDE = 2.335899;
     private static final float INITIAL_CAMERA_FACTOR = 15;
-    //private static final float DEFAULT_ZOOM_FACTOR = 17;
 
     private Location lastLocation;
     private CameraPosition lastCameraPosition;
     public CameraPosition getLastCameraPosition() {
         return lastCameraPosition;
-    };
-
-    /*public void resetCameraPosition(LatLng latLng) {
-        lastCameraPosition = new CameraPosition(latLng, INITIAL_CAMERA_FACTOR,0, 0);
-    }*/
+    }
 
     public void saveCameraPosition(CameraPosition newCameraPosition) {
         lastCameraPosition = newCameraPosition;

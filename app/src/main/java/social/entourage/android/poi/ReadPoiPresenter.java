@@ -9,7 +9,8 @@ import java.util.Locale;
 import social.entourage.android.api.model.map.Poi;
 
 /**
- * Presenter controlling the main activity
+ * Presenter controlling the ReadPoiActivity
+ * @see ReadPoiActivity
  */
 public class ReadPoiPresenter {
     private final ReadPoiActivity activity;

@@ -11,6 +11,9 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.authentication.AuthenticationModule;
 
+/**
+ * Application setup for Flurry, JodaTime and Dagger
+ */
 public class EntourageApplication extends Application {
 
     private EntourageComponent component;

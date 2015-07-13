@@ -13,9 +13,9 @@ import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.authentication.AuthenticationInterceptor;
-
 /**
- * Module that provides all the API related dependencies
+ * Module related to Application
+ * Providing API related dependencies
  */
 @Module
 public class ApiModule {

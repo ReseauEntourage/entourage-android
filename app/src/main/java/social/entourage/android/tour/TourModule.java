@@ -3,6 +3,10 @@ package social.entourage.android.tour;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * Module related to TourService
+ * @see TourService
+ */
 @Module
 public class TourModule {
 

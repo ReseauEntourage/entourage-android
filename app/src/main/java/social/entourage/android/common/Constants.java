@@ -2,6 +2,7 @@ package social.entourage.android.common;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Constants {
 
@@ -20,9 +21,8 @@ public class Constants {
     public static final String TWITTER_ENTOURAGE_ACCOUNT_NAME = "@R_Entour";
 
     // Formatters
-    public static final DateFormat FORMATER_DDMMYYYY = new SimpleDateFormat("dd/MM/yyyy");
-
-    public static final DateFormat FORMATER_HHMM = new SimpleDateFormat("hh:mm");
+    public static final DateFormat FORMATER_DDMMYYYY = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+    public static final DateFormat FORMATER_HHMM = new SimpleDateFormat("hh:mm", Locale.US);
 
     // Request and result codes
     public static final int RESULT_CREATE_ENCOUNTER_OK = 2;
@@ -32,7 +32,6 @@ public class Constants {
     // Flurry events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
     public static final String EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map";
-    public static final String EVENT_OPEN_SCREEN_FROM_MENU = "Open_Screen_From_Menu";
     public static final String EVENT_OPEN_GUIDE_FROM_MENU = "Open_Guide_From_Menu";
 
 

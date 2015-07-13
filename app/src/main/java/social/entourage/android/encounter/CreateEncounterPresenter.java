@@ -23,6 +23,10 @@ import social.entourage.android.api.model.EncounterWrapper;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.common.Constants;
 
+/**
+ * Module related to CreateEncounterPresenter
+ * @see CreateEncounterPresenter
+ */
 public class CreateEncounterPresenter {
 
     private final CreateEncounterActivity activity;

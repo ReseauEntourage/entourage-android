@@ -27,12 +27,7 @@ import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.guide.GuideMapActivity;
 import social.entourage.android.login.LoginActivity;
 
-/**
- * Created by RPR on 25/03/15.
- */
-public class MapActivity extends EntourageSecuredActivity
-implements ActionBar.TabListener, MapEntourageFragment.OnTourLaunchListener,
-MapLauncherFragment.OnTourStartListener {
+public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener, MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -175,13 +170,6 @@ MapLauncherFragment.OnTourStartListener {
         }
     }
 
-    public void clearMap() {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.clearMap();
-        }
-    }
-
     public void centerMap(LatLng latLng) {
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
@@ -242,7 +230,6 @@ MapLauncherFragment.OnTourStartListener {
             boolean shouldCenterMap = false;
             if (bestLocation == null || (location.getAccuracy()>0.0 && bestLocation.getAccuracy()==0.0)) {
                 EntourageLocation.getInstance().saveLocation(location);
-                bestLocation = location;
                 isBetterLocationUpdated = true;
                 shouldCenterMap = true;
             }

@@ -1,23 +1,15 @@
 package social.entourage.android.api.model.map;
 
-import android.widget.Toast;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import social.entourage.android.R;
-
-/**
- * Created by NTE on 06/07/15.
- */
+@SuppressWarnings("unused")
 public class Tour implements Serializable {
 
     private long id;
@@ -32,8 +24,8 @@ public class Tour implements Serializable {
     private transient HashMap<Date, String> steps;
 
     public Tour() {
-        this.coordinates = new ArrayList<LatLng>();
-        this.steps = new HashMap<Date, String>();
+        this.coordinates = new ArrayList<>();
+        this.steps = new HashMap<>();
     }
 
     public long getId() {

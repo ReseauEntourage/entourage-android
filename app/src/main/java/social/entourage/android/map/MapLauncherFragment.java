@@ -30,8 +30,7 @@ public class MapLauncherFragment extends Fragment {
     // ----------------------------------
 
     public static MapLauncherFragment newInstance() {
-        MapLauncherFragment fragment = new MapLauncherFragment();
-        return fragment;
+        return new MapLauncherFragment();
     }
 
     // ----------------------------------

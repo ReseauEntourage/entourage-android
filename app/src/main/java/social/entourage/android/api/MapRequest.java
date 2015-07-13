@@ -4,9 +4,6 @@ import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
-/**
- * Created by RPR on 25/03/15.
- */
 public interface MapRequest {
 
     @GET("/map.json")

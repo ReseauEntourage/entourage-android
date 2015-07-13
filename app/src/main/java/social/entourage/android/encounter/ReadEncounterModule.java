@@ -4,7 +4,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module handling all ui related dependencies
+ * Module related to ReadEncounterActivity
+ * @see ReadEncounterActivity
  */
 @Module
 public final class ReadEncounterModule {

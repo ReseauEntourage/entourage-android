@@ -23,6 +23,10 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.ReadEncounterActivity;
 
+/**
+ * Presenter controlling the MapActivity
+ * @see MapActivity
+ */
 public class MapPresenter {
 
     // ----------------------------------

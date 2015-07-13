@@ -12,7 +12,6 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.ButterKnife;
@@ -20,9 +19,6 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
 
-/**
- * Created by RPR on 25/03/15.
- */
 public class GuideMapEntourageFragment extends Fragment {
 
     // ----------------------------------
@@ -42,8 +38,7 @@ public class GuideMapEntourageFragment extends Fragment {
     // ----------------------------------
 
     public static GuideMapEntourageFragment newInstance() {
-        GuideMapEntourageFragment fragment = new GuideMapEntourageFragment();
-        return fragment;
+        return new GuideMapEntourageFragment();
     }
 
     // ----------------------------------
@@ -91,7 +86,7 @@ public class GuideMapEntourageFragment extends Fragment {
                                                          .icon(poiIcon);
 
         if (mapFragment.getMap() != null) {
-            Marker marker = mapFragment.getMap().addMarker(markerOptions);
+            mapFragment.getMap().addMarker(markerOptions);
             onClickListener.addPoiMarker(poiPosition, poi);
         }
     }
@@ -104,11 +99,6 @@ public class GuideMapEntourageFragment extends Fragment {
 
     public void initializeMapZoom() {
         centerMap(EntourageLocation.getInstance().getLastCameraPosition());
-    }
-
-    public void centerMap(LatLng latLng) {
-        CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom,0, 0);
-        centerMap(cameraPosition);
     }
 
     private void centerMap(CameraPosition cameraPosition) {

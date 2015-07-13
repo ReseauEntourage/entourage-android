@@ -23,6 +23,10 @@ import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
 import social.entourage.android.poi.ReadPoiActivity;
 
+/**
+ * Presenter controlling the GuideMapActivity
+ * @see GuideMapActivity
+ */
 public class GuideMapPresenter {
 
     // ----------------------------------
@@ -71,9 +75,6 @@ public class GuideMapPresenter {
                     error.printStackTrace();
                 }
             });
-        } else {
-            //Map is not initialized so we just store the proper camera location
-            //EntourageLocation.getInstance().resetCameraPosition(latLng);
         }
     }
 
@@ -98,7 +99,7 @@ public class GuideMapPresenter {
     // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
-        Map<LatLng, Poi> poiMarkerHashMap = new HashMap<LatLng, Poi>();
+        Map<LatLng, Poi> poiMarkerHashMap = new HashMap<>();
 
         public void addPoiMarker(LatLng markerPosition, Poi poi) {
             poiMarkerHashMap.put(markerPosition, poi);

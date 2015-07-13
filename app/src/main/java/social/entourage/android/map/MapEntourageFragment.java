@@ -79,8 +79,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     // ----------------------------------
 
     public static MapEntourageFragment newInstance() {
-        MapEntourageFragment fragment = new MapEntourageFragment();
-        return fragment;
+        return new MapEntourageFragment();
     }
 
     // ----------------------------------

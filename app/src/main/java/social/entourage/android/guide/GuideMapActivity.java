@@ -21,9 +21,6 @@ import social.entourage.android.common.Constants;
 import social.entourage.android.login.LoginActivity;
 import social.entourage.android.map.MapActivity;
 
-/**
- * Created by RPR on 25/03/15.
- */
 public class GuideMapActivity extends EntourageSecuredActivity implements ActionBar.TabListener {
 
     // ----------------------------------

@@ -23,7 +23,9 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.common.Constants;
 
 /**
- * Created by NTE on 06/07/15.
+ * Manager is like a presenter but for a service
+ * controlling the TourService
+ * @see TourService
  */
 public class TourServiceManager {
 

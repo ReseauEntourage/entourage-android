@@ -19,6 +19,9 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.common.Constants;
 
+/**
+ * Activity showing the detail of a POI
+ */
 public class ReadPoiActivity extends EntourageActivity {
 
     private Poi poi;

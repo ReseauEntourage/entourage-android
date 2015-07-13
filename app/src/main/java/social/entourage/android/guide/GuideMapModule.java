@@ -4,7 +4,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module handling all ui related dependencies
+ * Module related to GuideMapActivity
+ * @see GuideMapActivity
  */
 @Module
 public final class GuideMapModule {

@@ -1,5 +1,9 @@
 package social.entourage.android.encounter;
 
+/**
+ * Presenter controlling the ReadEncounterActivity
+ * @see ReadEncounterActivity
+ */
 public class ReadEncounterPresenter {
     private final ReadEncounterActivity activity;
 
