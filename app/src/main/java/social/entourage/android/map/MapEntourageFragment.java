@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
@@ -60,8 +61,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
             tourService = ((TourService.LocalBinder)service).getService();
             tourService.register(MapEntourageFragment.this);
             boolean isRunning = tourService != null && tourService.isRunning();
-            Button button = (Button) getView().findViewById(R.id.button_start_tour);
-            button.setText(isRunning ? R.string.tour_stop : R.string.tour_start);
+            if (isRunning) callback.onTourResume(tourService.isPaused());
             //Toast.makeText(MapActivity.this, R.string.local_service_connected, Toast.LENGTH_SHORT).show();
         }
 
@@ -73,6 +73,12 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     };
     private boolean isBound = true;
+
+    @InjectView(R.id.fragment_map_pin)
+    View mapPin;
+
+    @InjectView(R.id.button_start_tour_launcher)
+    View buttonStartLauncher;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -185,15 +191,12 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
      */
 
-    @OnClick(R.id.button_start_tour)
+    @OnClick(R.id.button_start_tour_launcher)
     public void startTourLauncher(View view) {
-        Button buttonStartStop = (Button) getView().findViewById(R.id.button_start_tour);
-        if (tourService.isRunning()) {
-            buttonStartStop.setText(R.string.tour_start);
-            getView().findViewById(R.id.fragment_map_pin).setVisibility(View.INVISIBLE);
-            tourService.endTreatment();
-            clearMap();
-        } else callback.onTourLaunch();
+        if (!tourService.isRunning()) {
+            enableStartButton(false);
+            callback.onTourLaunch();
+        }
     }
 
     @OnClick(R.id.button_show_tours)
@@ -215,11 +218,39 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     public void startTour(String type1, String type2) {
         if (tourService != null) {
             if (!tourService.isRunning()) {
-                Button buttonStartStop = (Button) getView().findViewById(R.id.button_start_tour);
-                buttonStartStop.setText(R.string.tour_stop);
-                getView().findViewById(R.id.fragment_map_pin).setVisibility(View.VISIBLE);
+                mapPin.setVisibility(View.VISIBLE);
                 tourService.beginTreatment(type1, type2);
             }
+        }
+    }
+
+    public void pauseTour() {
+        if (tourService != null) {
+            if (tourService.isRunning()) tourService.pauseTreatment();
+        }
+    }
+
+    public void resumeTour() {
+        if (tourService.isRunning()) tourService.resumeTreatment();
+    }
+
+    public void stopTour() {
+        if (tourService.isRunning()) {
+            mapPin.setVisibility(View.INVISIBLE);
+            tourService.endTreatment();
+            clearMap();
+            enableStartButton(true);
+        }
+    }
+
+    public void enableStartButton(boolean enable) {
+        Button buttonStartStop = (Button) buttonStartLauncher;
+        if (enable) {
+            buttonStartStop.setClickable(true);
+            buttonStartStop.setVisibility(View.VISIBLE);
+        } else {
+            buttonStartStop.setClickable(false);
+            buttonStartStop.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -303,5 +334,6 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
 
     public interface OnTourLaunchListener {
         void onTourLaunch();
+        void onTourResume(boolean isPaused);
     }
 }

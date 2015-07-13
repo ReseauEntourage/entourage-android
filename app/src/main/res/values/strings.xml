@@ -50,7 +50,9 @@
 
     <!-- Tour -->
     <string name="tour_start">Démarrer une maraude</string>
-    <string name="tour_stop">Arrêter la maraude</string>
+    <string name="tour_pause">Pause</string>
+    <string name="tour_resume">Reprendre</string>
+    <string name="tour_stop">Stop</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>
     <string name="tour_check_feet">A pieds</string>

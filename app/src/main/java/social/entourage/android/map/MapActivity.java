@@ -27,7 +27,7 @@ import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.guide.GuideMapActivity;
 import social.entourage.android.login.LoginActivity;
 
-public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener, MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener {
+public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener, MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener, MapTourFragment.OnTourActionListener {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -38,6 +38,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
     private Fragment fragment;
     private Fragment launcher;
+    private Fragment tour;
 
     //private Location bestLocation;
     private boolean isBetterLocationUpdated;
@@ -152,6 +153,19 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (launcher != null) {
+            getSupportFragmentManager().beginTransaction().remove(launcher).commit();
+            launcher = null;
+            if (fragment instanceof MapEntourageFragment) {
+                MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+                mapEntourageFragment.enableStartButton(true);
+            }
+        }
+        else super.onBackPressed();
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -209,12 +223,61 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     }
 
     @Override
+    public void onTourResume(boolean isPaused) {
+        tour = MapTourFragment.newInstance();
+        ((MapTourFragment)tour).setIsPaused(isPaused);
+        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tour).commit();
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.enableStartButton(false);
+        }
+    }
+
+    @Override
+    public void onPausedTourResumed() {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.resumeTour();
+        }
+    }
+
+    @Override
     public void onTourStart(String type1, String type2) {
-        if (launcher != null) getSupportFragmentManager().beginTransaction().remove(launcher).commit();
+        if (launcher != null) {
+            getSupportFragmentManager().beginTransaction().remove(launcher).commit();
+            launcher = null;
+        }
+
+        tour = MapTourFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tour).commit();
+
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
             mapEntourageFragment.startTour(type1, type2);
         }
+    }
+
+    @Override
+    public void onTourPaused() {
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.pauseTour();
+        }
+    }
+
+    @Override
+    public void onTourStopped() {
+        getSupportFragmentManager().beginTransaction().remove(tour).commit();
+        tour = null;
+        if (fragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
+            mapEntourageFragment.stopTour();
+        }
+    }
+
+    @Override
+    public void onNewEncounter() {
+
     }
 
     // ----------------------------------

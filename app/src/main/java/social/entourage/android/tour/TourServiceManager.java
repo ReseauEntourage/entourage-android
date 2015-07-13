@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -126,11 +127,10 @@ public class TourServiceManager {
 
         @Override
         public void onLocationChanged(Location location) {
-            if (tour != null) {
+            System.out.println(tourService.isPaused());
+            if (tour != null && !tourService.isPaused()) {
                 TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
-                // send the new TourPoint to the webservice
                 updateTourCoordinates(point);
-                // update the "local" coordinates of the tour for the drawing on the map
                 tour.updateCoordinates(new LatLng(location.getLatitude(), location.getLongitude()));
                 tourService.notifyListeners(tour);
             }

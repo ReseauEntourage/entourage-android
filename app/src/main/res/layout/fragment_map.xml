@@ -40,7 +40,7 @@
 
     <Button
         android:text="@string/tour_start"
-        android:id="@+id/button_start_tour"
+        android:id="@+id/button_start_tour_launcher"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal|bottom"

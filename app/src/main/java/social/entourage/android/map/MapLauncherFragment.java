@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourType;
@@ -24,6 +25,11 @@ public class MapLauncherFragment extends Fragment {
     // ----------------------------------
 
     private OnTourStartListener callback;
+
+    @InjectView(R.id.launcher_tour_type_1)
+    RadioGroup radioGroupType1;
+    @InjectView(R.id.launcher_tour_type_2)
+    RadioGroup radioGroupType2;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -62,10 +68,8 @@ public class MapLauncherFragment extends Fragment {
 
     @OnClick(R.id.launcher_tour_go)
     public void startNewTour(View view) {
-        RadioGroup radioGroup = (RadioGroup)getView().findViewById(R.id.launcher_tour_type_1);
-        TourType tourType1 = TourType.findByRessourceId(radioGroup.getCheckedRadioButtonId());
-        radioGroup = (RadioGroup)getView().findViewById(R.id.launcher_tour_type_2);
-        TourType tourType2 = TourType.findByRessourceId(radioGroup.getCheckedRadioButtonId());
+        TourType tourType1 = TourType.findByRessourceId(radioGroupType1.getCheckedRadioButtonId());
+        TourType tourType2 = TourType.findByRessourceId(radioGroupType2.getCheckedRadioButtonId());
         callback.onTourStart(tourType1.getName(), tourType2.getName());
     }
 
