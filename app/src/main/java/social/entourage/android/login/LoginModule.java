@@ -8,7 +8,7 @@ import dagger.Provides;
  * @see LoginActivity
  */
 @Module
-public class LoginModule {
+class LoginModule {
 
     private final LoginActivity activity;
 

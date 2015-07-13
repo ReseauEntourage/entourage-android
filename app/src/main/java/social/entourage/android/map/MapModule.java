@@ -8,7 +8,7 @@ import dagger.Provides;
  * @see MapActivity
  */
 @Module
-public final class MapModule {
+final class MapModule {
     private final MapActivity activity;
 
     public MapModule(final MapActivity activity) {

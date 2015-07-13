@@ -61,9 +61,9 @@ public class GuideMapPresenter {
         activity.setOnMarkerCLickListener(onClickListener);
     }
 
-    public void retrieveMapObjects(LatLng latLng) {
+    private void retrieveMapObjects(LatLng latLng) {
         if(isStarted) {
-            mapRequest.map("0cb4507e970462ca0b11320131e96610", 1000, 10, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
+            mapRequest.map(Constants.TOKEN, 1000, 10, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
                 @Override
                 public void success(MapResponse mapResponse, Response response) {
                     loadObjectsOnMap(mapResponse);
@@ -85,7 +85,7 @@ public class GuideMapPresenter {
         }
     }
 
-    public void openPointOfInterest(Poi poi) {
+    private void openPointOfInterest(Poi poi) {
         activity.saveCameraPosition();
         Intent intent = new Intent(activity, ReadPoiActivity.class);
         Bundle extras = new Bundle();
@@ -99,7 +99,7 @@ public class GuideMapPresenter {
     // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
-        Map<LatLng, Poi> poiMarkerHashMap = new HashMap<>();
+        final Map<LatLng, Poi> poiMarkerHashMap = new HashMap<>();
 
         public void addPoiMarker(LatLng markerPosition, Poi poi) {
             poiMarkerHashMap.put(markerPosition, poi);

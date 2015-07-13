@@ -25,7 +25,7 @@ public class GuideMapEntourageFragment extends Fragment {
     // CONSTANTS
     // ----------------------------------
 
-    public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
+    private static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
 
     // ----------------------------------
     // ATTRIBUTES

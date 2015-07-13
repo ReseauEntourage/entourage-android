@@ -16,7 +16,7 @@ public class User {
 
     private final String token;
 
-    public User(final int id, final String email, final String firstName, final String lastName, final String token) {
+    private User(final int id, final String email, final String firstName, final String lastName, final String token) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -44,6 +44,7 @@ public class User {
         return token;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
         private int id;
         private String email, firstName, lastName, token;

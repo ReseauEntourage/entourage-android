@@ -61,7 +61,7 @@ public class CreateEncounterPresenter {
         encounterRequest.create(encounterWrapper, new EncounterRequestCallback());
     }
 
-    public void tweetWithAudioFile(Encounter encounter) {
+    private void tweetWithAudioFile(Encounter encounter) {
         String tweet = String.format(activity.getString(R.string.tweet_with_audio),
                                      encounter.getStreetPersonName(),
                                      encounter.getSoundCloudPermalinkUrl(),

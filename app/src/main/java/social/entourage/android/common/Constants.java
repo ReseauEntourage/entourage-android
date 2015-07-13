@@ -6,18 +6,17 @@ import java.util.Locale;
 
 public class Constants {
 
+    // API
+    public static final String TOKEN = "0cb4507e970462ca0b11320131e96610";
+
     // Param keys
     public static final String KEY_ENCOUNTER = "keyEncounter";
-
     public static final String KEY_POI = "keyPoi";
-
     public static final String KEY_LATITUDE = "keyLatitude";
-
     public static final String KEY_LONGITUDE = "keyLongitude";
 
     // Twitter
     public static final String HASHTAG = "#entourage";
-
     public static final String TWITTER_ENTOURAGE_ACCOUNT_NAME = "@R_Entour";
 
     // Formatters
@@ -25,9 +24,8 @@ public class Constants {
     public static final DateFormat FORMATER_HHMM = new SimpleDateFormat("hh:mm", Locale.US);
 
     // Request and result codes
-    public static final int RESULT_CREATE_ENCOUNTER_OK = 2;
-
     public static final int REQUEST_CREATE_ENCOUNTER = 1;
+    public static final int RESULT_CREATE_ENCOUNTER_OK = 2;
 
     // Flurry events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
@@ -38,7 +36,7 @@ public class Constants {
     // GeoCoder (essai pour la récupération des adresses dans le Run-Tracking NTE) ---> à supprimer
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;
-    public static final String PACKAGE_NAME = "com.google.android.gms.location.sample.locationaddress";
+    private static final String PACKAGE_NAME = "com.google.android.gms.location.sample.locationaddress";
     public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
     public static final String RESULT_DATA_KEY = PACKAGE_NAME + ".RESULT_DATA_KEY";
     public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";

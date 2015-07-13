@@ -61,13 +61,9 @@ public class MapPresenter {
         activity.setOnMarkerCLickListener(onClickListener);
     }
 
-    public void retrieveTours() {
-
-    }
-
     public void retrieveMapObjects(LatLng latLng) {
         if(isStarted) {
-            mapRequest.map("0cb4507e970462ca0b11320131e96610", 0, 0, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
+            mapRequest.map(Constants.TOKEN, 0, 0, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
                 @Override
                 public void success(MapResponse mapResponse, Response response) {
                     loadObjectsOnMap(mapResponse);
@@ -79,9 +75,6 @@ public class MapPresenter {
                     error.printStackTrace();
                 }
             });
-        } else {
-            //Map is not initialized so we just store the proper camera location
-            //EntourageLocation.getInstance().resetCameraPosition(latLng);
         }
     }
 
@@ -96,7 +89,7 @@ public class MapPresenter {
         }*/
     }
 
-    public void openEncounter(Encounter encounter) {
+    private void openEncounter(Encounter encounter) {
         activity.saveCameraPosition();
         Intent intent = new Intent(activity, ReadEncounterActivity.class);
         Bundle extras = new Bundle();
@@ -119,7 +112,7 @@ public class MapPresenter {
     // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
-        Map<LatLng, Encounter> encounterMarkerHashMap = new HashMap<LatLng, Encounter>();
+        final Map<LatLng, Encounter> encounterMarkerHashMap = new HashMap<>();
 
         public void addEncounterMarker(LatLng markerPosition, Encounter encounter) {
             encounterMarkerHashMap.put(markerPosition, encounter);

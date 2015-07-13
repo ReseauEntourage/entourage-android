@@ -8,7 +8,7 @@ import dagger.Provides;
  * @see CreateEncounterActivity
  */
 @Module
-public final class CreateEncounterModule {
+final class CreateEncounterModule {
     private final CreateEncounterActivity activity;
 
     public CreateEncounterModule(final CreateEncounterActivity activity) {

@@ -27,6 +27,7 @@ import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.guide.GuideMapActivity;
 import social.entourage.android.login.LoginActivity;
 
+@SuppressWarnings("WeakerAccess")
 public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener, MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener, MapTourFragment.OnTourActionListener {
 
     // ----------------------------------

@@ -30,7 +30,7 @@ public enum TourType {
         return name;
     }
 
-    public int getRessourceId() {
+    private int getRessourceId() {
         return ressourceId;
     }
 }

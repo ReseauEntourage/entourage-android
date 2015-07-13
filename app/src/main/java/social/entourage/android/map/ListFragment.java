@@ -23,11 +23,4 @@ public class ListFragment extends Fragment {
             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list, container, false);
     }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-    }
 }

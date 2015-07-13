@@ -8,7 +8,6 @@ import com.soundcloud.api.Endpoints;
 import com.soundcloud.api.Http;
 import com.soundcloud.api.Params;
 import com.soundcloud.api.Request;
-import com.soundcloud.api.Token;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -49,9 +48,8 @@ public class SoundCloudCreateTrackRequest extends SpiceRequest<Encounter> {
                 null
         );
 
-        Token token = null;
         try {
-            token = wrapper.login(BuildConfig.SOUNDCLOUND_USER, BuildConfig.SOUNDCLOUND_PASS);
+            wrapper.login(BuildConfig.SOUNDCLOUND_USER, BuildConfig.SOUNDCLOUND_PASS);
             String title = MessageFormat.format(soundCloudTrackTitle,
                     encounter.getUserName(),
                     encounter.getStreetPersonName(),

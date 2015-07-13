@@ -9,7 +9,7 @@
     <string name="title_activity_login">Se connecter</string>
     <string name="login_hint_email">Email</string>
     <string name="login_button_text">Connexion</string>
-    <string name="loading_button_text">Loading...</string>
+    <string name="loading_button_text">Loading…</string>
 
     <!-- Maps -->
     <string name="map_api_key">AIzaSyAFqKD4mIEGQIfgbwQVQloMrlRkrqk9J4M</string>
@@ -38,8 +38,8 @@
     <string name="encouter_btn_play">Play</string>
     <string name="encounter_leave_text_message">ou rédigez un message</string>
     <string name="encounter_share_on_twitter">Partager sur Twitter</string>
-    <string name="creating_encounter">Création de la rencontre ...</string>
-    <string name="creating_encounter_audio">Création du message audio ...</string>
+    <string name="creating_encounter">Création de la rencontre …</string>
+    <string name="creating_encounter_audio">Création du message audio …</string>
 
     <!-- POI -->
     <string name="activity_read_poi_title">Point d\'intérêt</string>

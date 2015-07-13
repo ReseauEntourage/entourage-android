@@ -33,6 +33,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.common.Constants;
 
+@SuppressWarnings("WeakerAccess")
 public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     @Inject
@@ -62,7 +63,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @InjectView(R.id.checkbox_share_on_twitter)
     CheckBox twitterCheckBox;
 
-    private SpiceManager spiceManager = new SpiceManager(UncachedSpiceService.class);
+    private final SpiceManager spiceManager = new SpiceManager(UncachedSpiceService.class);
 
     private MediaRecorder mediaRecorder;
 
@@ -78,13 +79,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     private Bundle arguments;
 
-    private Handler durationHandler = new Handler();
+    private final Handler durationHandler = new Handler();
 
     private long startRecordTime;
 
     long totalRecordTime;
 
-    private Runnable updateDurationThread = new Runnable() {
+    private final Runnable updateDurationThread = new Runnable() {
 
         @Override
         public void run() {

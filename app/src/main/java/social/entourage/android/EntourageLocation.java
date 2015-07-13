@@ -5,11 +5,8 @@ import android.location.Location;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by Francois on 02/06/2015.
- */
 public class EntourageLocation {
-    private static EntourageLocation ourInstance = new EntourageLocation();
+    private static final EntourageLocation ourInstance = new EntourageLocation();
 
     public static EntourageLocation getInstance() {
         return ourInstance;

@@ -8,7 +8,7 @@ import dagger.Provides;
  * @see ReadPoiActivity
  */
 @Module
-public final class ReadPoiModule {
+final class ReadPoiModule {
     private final ReadPoiActivity activity;
 
     public ReadPoiModule(final ReadPoiActivity activity) {

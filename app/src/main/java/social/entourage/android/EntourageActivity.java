@@ -9,7 +9,7 @@ import com.octo.appaloosasdk.Appaloosa;
 /**
  * Base activity which set up a scoped graph and inject it
  */
-public class EntourageActivity extends ActionBarActivity {
+public abstract class EntourageActivity extends ActionBarActivity {
 
     protected final String logTag = this.getClass().getSimpleName();
 
@@ -42,14 +42,14 @@ public class EntourageActivity extends ActionBarActivity {
         }
     }
 
-    public void dismissProgressDialog() {
+    protected void dismissProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
             progressDialog = null;
         }
     }
 
-    public String getLogTag() {
+    protected String getLogTag() {
         return logTag;
     }
 

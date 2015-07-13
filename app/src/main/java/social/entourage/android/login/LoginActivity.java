@@ -19,6 +19,7 @@ import social.entourage.android.map.MapActivity;
 /**
  * Activity providing a login form
  */
+@SuppressWarnings("WeakerAccess")
 public class LoginActivity extends EntourageActivity {
 
     @Inject

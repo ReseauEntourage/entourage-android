@@ -21,7 +21,7 @@ public class Tour implements Serializable {
 
     private transient List<LatLng> coordinates;
 
-    private transient HashMap<Date, String> steps;
+    private final transient HashMap<Date, String> steps;
 
     public Tour() {
         this.coordinates = new ArrayList<>();

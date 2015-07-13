@@ -22,6 +22,7 @@ import social.entourage.android.common.Constants;
 /**
  * Activity showing the detail of a POI
  */
+@SuppressWarnings("WeakerAccess")
 public class ReadPoiActivity extends EntourageActivity {
 
     private Poi poi;

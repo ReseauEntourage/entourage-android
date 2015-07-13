@@ -8,7 +8,7 @@ import dagger.Provides;
  * @see GuideMapActivity
  */
 @Module
-public final class GuideMapModule {
+final class GuideMapModule {
     private final GuideMapActivity activity;
 
     public GuideMapModule(final GuideMapActivity activity) {

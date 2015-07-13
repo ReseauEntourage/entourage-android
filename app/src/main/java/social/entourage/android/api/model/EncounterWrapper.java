@@ -4,7 +4,7 @@ import social.entourage.android.api.model.map.Encounter;
 
 public class EncounterWrapper {
 
-    Encounter encounter;
+    private Encounter encounter;
 
     public Encounter getEncounter() {
         return encounter;

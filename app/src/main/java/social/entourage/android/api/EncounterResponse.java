@@ -4,7 +4,7 @@ import social.entourage.android.api.model.map.Encounter;
 
 public class EncounterResponse {
 
-    private Encounter encounter;
+    private final Encounter encounter;
 
     public EncounterResponse(Encounter encounter) {
         this.encounter = encounter;

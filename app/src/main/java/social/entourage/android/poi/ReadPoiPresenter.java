@@ -23,7 +23,7 @@ public class ReadPoiPresenter {
         activity.displayPoi(poi, new OnAddressClickListener(poi.getAdress()));
     }
 
-    public void openExternalMap(Uri geoLocation) {
+    private void openExternalMap(Uri geoLocation) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLocation);
         if (intent.resolveActivity(activity.getPackageManager()) != null) {
@@ -34,7 +34,7 @@ public class ReadPoiPresenter {
 
     public class OnAddressClickListener implements View.OnClickListener {
 
-        private String address;
+        private final String address;
 
         public OnAddressClickListener(final String address) {
             this.address = address;

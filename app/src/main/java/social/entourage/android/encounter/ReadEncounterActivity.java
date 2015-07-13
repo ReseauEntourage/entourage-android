@@ -28,6 +28,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.common.Constants;
 
+@SuppressWarnings("WeakerAccess")
 public class ReadEncounterActivity extends EntourageActivity {
 
     private Encounter encounter;
@@ -63,13 +64,13 @@ public class ReadEncounterActivity extends EntourageActivity {
 
     private boolean isPlaying;
 
-    private Handler durationHandler = new Handler();
+    private final Handler durationHandler = new Handler();
 
     private long startPlayTime;
 
     long totalPlayTime;
 
-    private Runnable updateDurationThread = new Runnable() {
+    private final Runnable updateDurationThread = new Runnable() {
 
         @Override
         public void run() {
@@ -191,7 +192,7 @@ public class ReadEncounterActivity extends EntourageActivity {
         }
      }
 
-    private MediaPlayer.OnPreparedListener trackPreparedListner = new MediaPlayer.OnPreparedListener() {
+    private final MediaPlayer.OnPreparedListener trackPreparedListner = new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(final MediaPlayer mediaPlayer) {
             btnPlay.setEnabled(true);

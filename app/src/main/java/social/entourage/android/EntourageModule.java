@@ -8,7 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public final class EntourageModule {
+final class EntourageModule {
 
     private final EntourageApplication app;
 

@@ -8,7 +8,7 @@ import dagger.Provides;
  * @see TourService
  */
 @Module
-public class TourModule {
+class TourModule {
 
     private final TourService service;
 

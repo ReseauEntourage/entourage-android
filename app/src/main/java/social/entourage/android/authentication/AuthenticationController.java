@@ -9,11 +9,11 @@ import social.entourage.android.api.model.User;
  */
 public class AuthenticationController {
 
-    public static final String PREF_KEY_ID = "id";
-    public static final String PREF_KEY_FIRST_NAME = "firstName";
-    public static final String PREF_KEY_LAST_NAME = "lastName";
-    public static final String PREF_KEY_EMAIL = "email";
-    public static final String PREF_KEY_TOKEN = "token";
+    private static final String PREF_KEY_ID = "id";
+    private static final String PREF_KEY_FIRST_NAME = "firstName";
+    private static final String PREF_KEY_LAST_NAME = "lastName";
+    private static final String PREF_KEY_EMAIL = "email";
+    private static final String PREF_KEY_TOKEN = "token";
 
     private final SharedPreferences userSharedPref;
     private User loggedUser;
