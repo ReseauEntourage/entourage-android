@@ -47,8 +47,12 @@ public class TourService extends Service {
 
     private List<TourServiceListener> listeners;
 
+    NotificationCompat.Builder builder;
+
     private NotificationManager notificationManager;
     private RemoteViews notification;
+    private long timeBase;
+    private Chronometer chronometer;
 
     private boolean isPaused;
 
@@ -68,6 +72,17 @@ public class TourService extends Service {
         setupComponent(EntourageApplication.get(this).getEntourageComponent());
         listeners =  new ArrayList<>();
         isPaused = false;
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MapActivity.class), 0);
+
+        builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.tour_record)
+                .setContentIntent(contentIntent)
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -99,36 +114,57 @@ public class TourService extends Service {
     // PRIVATE METHODS
     // ----------------------------------
 
-    private void showNotification() {
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MapActivity.class), 0);
-
+    private void showNotification(int action) {
         PendingIntent buttonIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, TourService.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.tour_record)
-                .setTicker(getString(R.string.tour_started))
-                .setContentIntent(contentIntent)
-                .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            notification = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
-            notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
-            notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, buttonIntent);
-            builder = builder.setContent(notification);
-        } else {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running))
                     .setSmallIcon(R.drawable.tour_record);
+        } else {
+            notification = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
+            notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, buttonIntent);
+            switch (action) {
+                case 0 :
+                    timeBase = 0;
+                    notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
+                    chronometer.start();
+                    break;
+                case 1 :
+                    notificationManager.cancel(NOTIFICATION_ID);
+                    chronometer.stop();
+                    timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
+                    notification.setChronometer(R.id.notification_tour_chronometer, chronometer.getBase(), null, false);
+                    break;
+                case 2 :
+                    notificationManager.cancel(NOTIFICATION_ID);
+                    notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
+                    chronometer.setBase(SystemClock.elapsedRealtime() + timeBase);
+                    chronometer.start();
+                    break;
+                default :
+                    break;
+            }
+            builder = builder.setContent(notification);
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
+    }
 
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    private void startNotification() {
+        chronometer = new Chronometer(this);
+        showNotification(0);
+    }
+
+    private void pauseNotification() {
+        showNotification(1);
+    }
+
+    private void resumeNotification() {
+        showNotification(2);
     }
 
     private void removeNotification() {
+        chronometer.stop();
+        chronometer = null;
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
@@ -139,7 +175,7 @@ public class TourService extends Service {
     public void beginTreatment(String type1, String type2) {
         if (!isRunning()) {
             tourServiceManager.startTour(type1, type2);
-            showNotification();
+            startNotification();
             //Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
         }
     }
@@ -147,7 +183,7 @@ public class TourService extends Service {
     public void pauseTreatment() {
         if (isRunning()) {
             if (!isPaused) {
-                //notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, false);
+                pauseNotification();
                 isPaused = true;
             }
         }
@@ -156,7 +192,7 @@ public class TourService extends Service {
     public void resumeTreatment() {
         if (isRunning()) {
             if (isPaused) {
-                //notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
+                resumeNotification();
                 isPaused = false;
             }
         }

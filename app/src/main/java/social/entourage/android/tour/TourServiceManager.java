@@ -71,6 +71,7 @@ public class TourServiceManager {
     }
 
     private void sendTour() {
+        /*
         tourRequest.tour(tour, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
@@ -82,9 +83,11 @@ public class TourServiceManager {
                 Log.e("Error", error.toString());
             }
         });
+        */
     }
 
     private void updateTourCoordinates(TourPoint point) {
+        /*
         tourRequest.tourPoint(tourId, point, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
@@ -96,6 +99,7 @@ public class TourServiceManager {
                 Log.e("Error", error.toString());
             }
         });
+        */
     }
 
     // ----------------------------------
