@@ -59,6 +59,18 @@ public class TourService extends Service {
 
     private boolean isPaused;
 
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(getString(R.string.notification_pause_intent)))
+                pauseTreatment();
+            else if (intent.getAction().equals(getString(R.string.notification_resume_intent)))
+                resumeTreatment();
+            else if (intent.getAction().equals(getString(R.string.notification_stop_intent)))
+                endTreatment();
+        }
+    };
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -75,6 +87,12 @@ public class TourService extends Service {
         setupComponent(EntourageApplication.get(this).getEntourageComponent());
         listeners =  new ArrayList<>();
         isPaused = false;
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(getString(R.string.notification_pause_intent));
+        filter.addAction(getString(R.string.notification_resume_intent));
+        filter.addAction(getString(R.string.notification_stop_intent));
+        registerReceiver(receiver, filter);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, MapActivity.class), 0);
@@ -105,6 +123,7 @@ public class TourService extends Service {
     @Override
     public void onDestroy() {
         endTreatment();
+        unregisterReceiver(receiver);
         super.onDestroy();
     }
 
@@ -117,37 +136,39 @@ public class TourService extends Service {
     // PRIVATE METHODS
     // ----------------------------------
 
+    private PendingIntent createPendingIntent(String action) {
+        Intent intent = new Intent(this, NotificationIntentReceiver.class).setAction(action);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        return pendingIntent.getBroadcast(this, 0, intent, 0);
+    }
+
     private void showNotification(int action) {
-
-        Intent intentPause = new Intent(this, NotificationIntentReceiver.class)
-                .setAction(getString(R.string.notification_stop_intent));
-        Intent intentStop = new Intent(this, NotificationIntentReceiver.class)
-                .setAction(getString(R.string.notification_pause_intent));
-
-        PendingIntent buttonPauseIntent = PendingIntent.getActivity(this, 0, intentPause, 0)
-                .getBroadcast(this, 0, intentPause, 0);
-        PendingIntent buttonStopIntent = PendingIntent.getActivity(this, 0, intentStop, 0)
-                .getBroadcast(this, 0, intentStop, 0);
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running))
                     .setSmallIcon(R.drawable.tour_record);
         } else {
+            PendingIntent pause, resume, stop;
+            stop = createPendingIntent(getString(R.string.notification_stop_intent));
             notification = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
-            notification.setOnClickPendingIntent(R.id.notification_tour_pause_button, buttonPauseIntent);
-            notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, buttonStopIntent);
+            notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, stop);
             switch (action) {
                 case 0 :
+                    pause = createPendingIntent(getString(R.string.notification_pause_intent));
+                    notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
                     timeBase = 0;
                     notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
                     chronometer.start();
                     break;
                 case 1 :
+                    resume = createPendingIntent(getString(R.string.notification_resume_intent));
+                    notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, resume);
                     notificationManager.cancel(NOTIFICATION_ID);
                     timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
                     notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false);
                     break;
                 case 2 :
+                    pause = createPendingIntent(getString(R.string.notification_pause_intent));
+                    notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
                     notificationManager.cancel(NOTIFICATION_ID);
                     notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
                     chronometer.setBase(SystemClock.elapsedRealtime() + timeBase);

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import social.entourage.android.R;
+
 /**
  * Created by NTE on 17/07/15.
  */
@@ -12,6 +14,8 @@ public class NotificationIntentReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, intent.getAction(), Toast.LENGTH_SHORT).show();
+        Intent redirectIntent = new Intent();
+        redirectIntent.setAction(intent.getAction());
+        context.sendBroadcast(redirectIntent);
     }
 }
