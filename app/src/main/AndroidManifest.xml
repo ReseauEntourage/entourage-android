@@ -81,15 +81,13 @@
             android:name="com.octo.android.robospice.UncachedSpiceService"
             android:exported="false" />
 
-        <!-- not used anymore
-        <service
-            android:name=".map.FetchAddressIntentService"
-            android:exported="false"/>
-        -->
-
         <service
             android:name=".tour.TourService"
             android:exported="false"/>
+
+        <!-- Receivers -->
+        <receiver android:name=".tour.NotificationIntentReceiver"/>
+
     </application>
 
 </manifest>

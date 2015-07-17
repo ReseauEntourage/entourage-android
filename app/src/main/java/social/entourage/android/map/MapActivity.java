@@ -225,9 +225,11 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
     @Override
     public void onTourResume(boolean isPaused) {
-        tour = MapTourFragment.newInstance();
-        ((MapTourFragment)tour).setIsPaused(isPaused);
-        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tour).commit();
+        if (tour == null) {
+            tour = MapTourFragment.newInstance();
+            ((MapTourFragment)tour).setIsPaused(isPaused);
+            getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tour).commit();
+        }
         if (fragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
             mapEntourageFragment.enableStartButton(false);

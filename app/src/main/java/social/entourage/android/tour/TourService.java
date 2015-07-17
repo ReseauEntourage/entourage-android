@@ -3,7 +3,10 @@ package social.entourage.android.tour;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -115,15 +118,24 @@ public class TourService extends Service {
     // ----------------------------------
 
     private void showNotification(int action) {
-        PendingIntent buttonIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, TourService.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent intentPause = new Intent(this, NotificationIntentReceiver.class)
+                .setAction(getString(R.string.notification_stop_intent));
+        Intent intentStop = new Intent(this, NotificationIntentReceiver.class)
+                .setAction(getString(R.string.notification_pause_intent));
+
+        PendingIntent buttonPauseIntent = PendingIntent.getActivity(this, 0, intentPause, 0)
+                .getBroadcast(this, 0, intentPause, 0);
+        PendingIntent buttonStopIntent = PendingIntent.getActivity(this, 0, intentStop, 0)
+                .getBroadcast(this, 0, intentStop, 0);
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running))
                     .setSmallIcon(R.drawable.tour_record);
         } else {
             notification = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
-            notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, buttonIntent);
-            notification.setOnClickPendingIntent(R.id.notification_tour_pause_button, buttonIntent);
+            notification.setOnClickPendingIntent(R.id.notification_tour_pause_button, buttonPauseIntent);
+            notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, buttonStopIntent);
             switch (action) {
                 case 0 :
                     timeBase = 0;
