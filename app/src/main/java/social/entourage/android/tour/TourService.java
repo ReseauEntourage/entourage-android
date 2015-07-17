@@ -123,6 +123,7 @@ public class TourService extends Service {
         } else {
             notification = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
             notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, buttonIntent);
+            notification.setOnClickPendingIntent(R.id.notification_tour_pause_button, buttonIntent);
             switch (action) {
                 case 0 :
                     timeBase = 0;
@@ -131,15 +132,13 @@ public class TourService extends Service {
                     break;
                 case 1 :
                     notificationManager.cancel(NOTIFICATION_ID);
-                    chronometer.stop();
                     timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
-                    notification.setChronometer(R.id.notification_tour_chronometer, chronometer.getBase(), null, false);
+                    notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false);
                     break;
                 case 2 :
                     notificationManager.cancel(NOTIFICATION_ID);
                     notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
                     chronometer.setBase(SystemClock.elapsedRealtime() + timeBase);
-                    chronometer.start();
                     break;
                 default :
                     break;

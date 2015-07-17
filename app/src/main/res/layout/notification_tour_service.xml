@@ -42,17 +42,26 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="false"
-        android:layout_margin="8dp"
         android:layout_toRightOf="@+id/notification_tour_infos"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/notification_tour_pause_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_margin="8dp"
+            android:text="@string/tour_pause"
+            android:background="@color/button_material_dark" />
 
         <Button
             android:id="@+id/notification_tour_stop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="STOP"
+            android:layout_weight="2"
+            android:layout_margin="8dp"
+            android:text="@string/tour_stop"
             android:background="@color/button_material_dark" />
 
     </LinearLayout>
