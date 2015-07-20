@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="@string/login_button_text"
             android:textSize="20dp"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/login_button"
             android:textAllCaps="true"/>
 
     </LinearLayout>

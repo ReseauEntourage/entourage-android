@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="background">#3D3D3D</color>
+    <color name="background_dark">#191919</color>
+    <color name="background_pressed">#000000</color>
     <color name="login_button">#FFCE55</color>
+    <color name="custom_button_enabled">#FDC444</color>
+    <color name="custom_button_focused">#EFBB38</color>
+    <color name="custom_button_pressed">#C89C2F</color>
+    <color name="custom_button_disabled">#EDD18C</color>
     <color name="login_form">#FFFFFF</color>
     <color name="login_view">#333333</color>
+    <color name="separator">#444444</color>
 </resources>
