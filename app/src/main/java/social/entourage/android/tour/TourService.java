@@ -1,5 +1,6 @@
 package social.entourage.android.tour;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -55,10 +56,9 @@ public class TourService extends Service {
 
     private List<TourServiceListener> listeners;
 
-    NotificationCompat.Builder builder;
-
     private NotificationManager notificationManager;
-    private RemoteViews notification;
+    private Notification notification;
+    private RemoteViews notificationRemoteView;
     private long timeBase;
     private Chronometer chronometer;
 
@@ -103,15 +103,6 @@ public class TourService extends Service {
         filter.addAction(NOTIFICATION_STOP);
         registerReceiver(receiver, filter);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MapActivity.class), 0);
-
-        builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.tour_record)
-                .setContentIntent(contentIntent)
-                .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
-
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
@@ -153,43 +144,62 @@ public class TourService extends Service {
     }
 
     private void showNotification(int action) {
+        if (notification == null) {
+            createNotification();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            configureRemoteView(action);
+        }
+        notificationManager.notify(NOTIFICATION_ID, notification);
+    }
+
+    private void createNotification() {
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MapActivity.class), 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.tour_record)
+                .setContentIntent(contentIntent)
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            builder = builder.setContentTitle(getString(R.string.local_service_running))
-                    .setSmallIcon(R.drawable.tour_record);
+            builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
-            PendingIntent pause, resume, stop;
-            stop = createPendingIntent(NOTIFICATION_STOP);
-            notification = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
-            notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, stop);
-            switch (action) {
-                case 0 :
-                    pause = createPendingIntent(NOTIFICATION_PAUSE);
-                    notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
-                    timeBase = 0;
-                    notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
-                    chronometer.start();
-                    break;
-                case 1 :
-                    notification.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_resume));
-                    resume = createPendingIntent(NOTIFICATION_RESUME);
-                    notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, resume);
-                    notificationManager.cancel(NOTIFICATION_ID);
-                    timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
-                    notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false);
-                    break;
-                case 2 :
-                    notification.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_pause));
-                    pause = createPendingIntent(NOTIFICATION_PAUSE);
-                    notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
-                    notificationManager.cancel(NOTIFICATION_ID);
-                    notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
-                    chronometer.setBase(SystemClock.elapsedRealtime() + timeBase);
-                    break;
-                default :
-                    break;
-            }
-            builder = builder.setContent(notification);
-            notificationManager.notify(NOTIFICATION_ID, builder.build());
+            PendingIntent stop = createPendingIntent(NOTIFICATION_STOP);
+            notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
+            notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, stop);
+            builder = builder.setContent(notificationRemoteView);
+        }
+        notification = builder.build();
+    }
+
+    private void configureRemoteView(int action) {
+        PendingIntent pause, resume;
+        switch (action) {
+            case 0 :
+                pause = createPendingIntent(NOTIFICATION_PAUSE);
+                notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
+                timeBase = 0;
+                notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
+                chronometer.start();
+                break;
+            case 1 :
+                notificationRemoteView.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_resume));
+                resume = createPendingIntent(NOTIFICATION_RESUME);
+                notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, resume);
+                notificationManager.cancel(NOTIFICATION_ID);
+                timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
+                notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false);
+                break;
+            case 2 :
+                notificationRemoteView.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_pause));
+                pause = createPendingIntent(NOTIFICATION_PAUSE);
+                notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
+                notificationManager.cancel(NOTIFICATION_ID);
+                notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
+                chronometer.setBase(SystemClock.elapsedRealtime() + timeBase);
+                break;
+            default :
+                break;
         }
     }
 
