@@ -186,7 +186,6 @@ public class TourService extends Service {
                 notificationRemoteView.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_resume));
                 resume = createPendingIntent(NOTIFICATION_RESUME);
                 notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, resume);
-                notificationManager.cancel(NOTIFICATION_ID);
                 timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
                 notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false);
                 break;
@@ -194,7 +193,6 @@ public class TourService extends Service {
                 notificationRemoteView.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_pause));
                 pause = createPendingIntent(NOTIFICATION_PAUSE);
                 notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
-                notificationManager.cancel(NOTIFICATION_ID);
                 notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
                 chronometer.setBase(SystemClock.elapsedRealtime() + timeBase);
                 break;
