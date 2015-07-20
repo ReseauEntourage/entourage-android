@@ -72,9 +72,6 @@
     <string name="local_service_disconnected">Déconnecté du GeoService</string>
     <string name="start_tour_title">Enregistrer maraude</string>
     <string name="stop_tour_title">Stopper maraude</string>
-    <string name="notification_pause_intent">NOTIFICATION_PAUSE</string>
-    <string name="notification_resume_intent">NOTIFICATION_RESUME</string>
-    <string name="notification_stop_intent">NOTIFICATION_STOP</string>
 
 
 </resources>

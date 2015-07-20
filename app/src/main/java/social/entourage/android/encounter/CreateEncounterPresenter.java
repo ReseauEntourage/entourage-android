@@ -29,11 +29,19 @@ import social.entourage.android.common.Constants;
  */
 public class CreateEncounterPresenter {
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private final CreateEncounterActivity activity;
 
     private final EncounterRequest encounterRequest;
 
     public boolean twitterChecked;
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
 
     @Inject
     public CreateEncounterPresenter(
@@ -78,6 +86,10 @@ public class CreateEncounterPresenter {
         sendTweet(tweet);
     }
 
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+
     private void sendTweet(String tweet) {
         Intent tweetIntent = new Intent(Intent.ACTION_SEND);
         tweetIntent.putExtra(Intent.EXTRA_TEXT, tweet);
@@ -102,6 +114,10 @@ public class CreateEncounterPresenter {
             Toast.makeText(activity, "Twitter app not found", Toast.LENGTH_LONG).show();
         }
     }
+
+    // ----------------------------------
+    // INNER CLASSES
+    // ----------------------------------
 
     private final class SoundCloudRequestCallback implements RequestListener<Encounter> {
 

@@ -102,6 +102,16 @@ public class MapTourFragment extends Fragment {
         callback.onNewEncounter();
     }
 
+    public void switchPauseButton() {
+        if (!isPaused) {
+            pauseButton.setText(R.string.tour_resume);
+            isPaused = true;
+        } else {
+            pauseButton.setText(R.string.tour_pause);
+            isPaused = false;
+        }
+    }
+
     // ----------------------------------
     // INTERFACES
     // ----------------------------------

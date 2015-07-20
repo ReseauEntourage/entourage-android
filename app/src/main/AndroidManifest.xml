@@ -85,9 +85,6 @@
             android:name=".tour.TourService"
             android:exported="false"/>
 
-        <!-- Receivers -->
-        <receiver android:name=".tour.NotificationIntentReceiver"/>
-
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -154,6 +155,10 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
+    // ----------------------------------
+    // SERVICE INTERFACE METHODS
+    // ----------------------------------
+
     @Override
     public void onTourUpdated(Tour tour) {
         if (!tour.getCoordinates().isEmpty())
@@ -163,6 +168,11 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     @Override
     public void onTourResumed(Tour tour) {
         drawResumedTour(tour);
+    }
+
+    @Override
+    public void onNotificationAction(String action) {
+        callback.onNotificationAction(action);
     }
 
     // ----------------------------------
@@ -236,9 +246,20 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
 
     public void stopTour() {
         if (tourService.isRunning()) {
-            mapPin.setVisibility(View.INVISIBLE);
             tourService.endTreatment();
             clearMap();
+            prevCoord = null;
+            switchView();
+        }
+    }
+
+    public void switchView() {
+        clearMap();
+        if (tourService.isRunning()) {
+            mapPin.setVisibility(View.VISIBLE);
+            enableStartButton(false);
+        } else {
+            mapPin.setVisibility(View.INVISIBLE);
             enableStartButton(true);
         }
     }
@@ -277,10 +298,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     public void clearMap() {
-        if (mapFragment.getMap() != null) {
-            mapFragment.getMap().clear();
-            prevCoord = null;
-        }
+        if (mapFragment.getMap() != null) mapFragment.getMap().clear();
     }
 
     public void initializeMapZoom() {
@@ -335,5 +353,6 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     public interface OnTourLaunchListener {
         void onTourLaunch();
         void onTourResume(boolean isPaused);
+        void onNotificationAction(String action);
     }
 }

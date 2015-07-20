@@ -26,6 +26,7 @@ import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.guide.GuideMapActivity;
 import social.entourage.android.login.LoginActivity;
+import social.entourage.android.tour.TourService;
 
 @SuppressWarnings("WeakerAccess")
 public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener, MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener, MapTourFragment.OnTourActionListener {
@@ -106,16 +107,7 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.removeUpdates(locationListener);
             startActivity(new Intent(this, GuideMapActivity.class));
-        } else if (id == R.id.action_new_encounter) {
-            Intent intent = new Intent(this, CreateEncounterActivity.class);
-            saveCameraPosition();
-            Bundle args = new Bundle();
-            args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
-            args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
-            intent.putExtras(args);
-            startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -163,8 +155,9 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
                 MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
                 mapEntourageFragment.enableStartButton(true);
             }
+        } else {
+            super.onBackPressed();
         }
-        else super.onBackPressed();
     }
 
     // ----------------------------------
@@ -279,8 +272,27 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     }
 
     @Override
-    public void onNewEncounter() {
+    public void onNotificationAction(String action) {
+        if (TourService.NOTIFICATION_PAUSE.equals(action) || TourService.NOTIFICATION_RESUME.equals(action)) {
+            ((MapTourFragment)tour).switchPauseButton();
+        } else if (TourService.NOTIFICATION_STOP.equals(action)) {
+            getSupportFragmentManager().beginTransaction().remove(tour).commit();
+            tour = null;
+            if (fragment instanceof MapEntourageFragment) {
+                ((MapEntourageFragment) fragment).switchView();
+            }
+        }
+    }
 
+    @Override
+    public void onNewEncounter() {
+        Intent intent = new Intent(this, CreateEncounterActivity.class);
+        saveCameraPosition();
+        Bundle args = new Bundle();
+        args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
+        args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+        intent.putExtras(args);
+        startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
     }
 
     // ----------------------------------

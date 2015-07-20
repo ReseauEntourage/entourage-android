@@ -32,18 +32,23 @@ import social.entourage.android.map.MapActivity;
  * Background service for handling location modification in a tour like in "RunKeeper" app
  */
 //TODO : remove the notification when the app is killed from the recent apps list (doesn't work)
+//TODO : update the notification (buttons) - no link with the views
 public class TourService extends Service {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
-    private final IBinder binder = new LocalBinder();
-    private final int NOTIFICATION_ID = 1;
+    private static final int NOTIFICATION_ID = 1;
+    public static final String NOTIFICATION_PAUSE = "social.entourage.android.NOTIFICATION_PAUSE";
+    public static final String NOTIFICATION_RESUME = "social.entourage.android.NOTIFICATION_RESUME";
+    public static final String NOTIFICATION_STOP = "social.entourage.android.NOTIFICATION_STOP";
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    private final IBinder binder = new LocalBinder();
 
     @Inject
     TourServiceManager tourServiceManager;
@@ -62,12 +67,16 @@ public class TourService extends Service {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(getString(R.string.notification_pause_intent)))
+            if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
                 pauseTreatment();
-            else if (intent.getAction().equals(getString(R.string.notification_resume_intent)))
+                notifyListenersNotification(NOTIFICATION_PAUSE);
+            } else if (NOTIFICATION_RESUME.equals(intent.getAction())) {
                 resumeTreatment();
-            else if (intent.getAction().equals(getString(R.string.notification_stop_intent)))
+                notifyListenersNotification(NOTIFICATION_RESUME);
+            } else if (NOTIFICATION_STOP.equals(intent.getAction())) {
                 endTreatment();
+                notifyListenersNotification(NOTIFICATION_STOP);
+            }
         }
     };
 
@@ -89,9 +98,9 @@ public class TourService extends Service {
         isPaused = false;
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(getString(R.string.notification_pause_intent));
-        filter.addAction(getString(R.string.notification_resume_intent));
-        filter.addAction(getString(R.string.notification_stop_intent));
+        filter.addAction(NOTIFICATION_PAUSE);
+        filter.addAction(NOTIFICATION_RESUME);
+        filter.addAction(NOTIFICATION_STOP);
         registerReceiver(receiver, filter);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
@@ -137,7 +146,8 @@ public class TourService extends Service {
     // ----------------------------------
 
     private PendingIntent createPendingIntent(String action) {
-        Intent intent = new Intent(this, NotificationIntentReceiver.class).setAction(action);
+        Intent intent = new Intent();
+        intent.setAction(action);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         return pendingIntent.getBroadcast(this, 0, intent, 0);
     }
@@ -148,26 +158,28 @@ public class TourService extends Service {
                     .setSmallIcon(R.drawable.tour_record);
         } else {
             PendingIntent pause, resume, stop;
-            stop = createPendingIntent(getString(R.string.notification_stop_intent));
+            stop = createPendingIntent(NOTIFICATION_STOP);
             notification = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
             notification.setOnClickPendingIntent(R.id.notification_tour_stop_button, stop);
             switch (action) {
                 case 0 :
-                    pause = createPendingIntent(getString(R.string.notification_pause_intent));
+                    pause = createPendingIntent(NOTIFICATION_PAUSE);
                     notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
                     timeBase = 0;
                     notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
                     chronometer.start();
                     break;
                 case 1 :
-                    resume = createPendingIntent(getString(R.string.notification_resume_intent));
+                    notification.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_resume));
+                    resume = createPendingIntent(NOTIFICATION_RESUME);
                     notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, resume);
                     notificationManager.cancel(NOTIFICATION_ID);
                     timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
                     notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false);
                     break;
                 case 2 :
-                    pause = createPendingIntent(getString(R.string.notification_pause_intent));
+                    notification.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_pause));
+                    pause = createPendingIntent(NOTIFICATION_PAUSE);
                     notification.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
                     notificationManager.cancel(NOTIFICATION_ID);
                     notification.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
@@ -265,6 +277,10 @@ public class TourService extends Service {
         for (TourServiceListener listener : listeners) listener.onTourUpdated(tour);
     }
 
+    public void notifyListenersNotification(String action) {
+        for (TourServiceListener listener : listeners) listener.onNotificationAction(action);
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
@@ -272,5 +288,6 @@ public class TourService extends Service {
     public interface TourServiceListener {
         void onTourUpdated(Tour tour);
         void onTourResumed(Tour tour);
+        void onNotificationAction(String action);
     }
 }

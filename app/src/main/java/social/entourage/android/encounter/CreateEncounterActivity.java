@@ -36,6 +36,10 @@ import social.entourage.android.common.Constants;
 @SuppressWarnings("WeakerAccess")
 public class CreateEncounterActivity extends EntourageSecuredActivity {
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     @Inject
     CreateEncounterPresenter presenter;
 
@@ -98,6 +102,10 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         }
     };
 
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +144,12 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     }
 
     @Override
+    protected void onStart() {
+        spiceManager.start(this);
+        super.onStart();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (mediaRecorder != null) {
@@ -149,13 +163,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         }
     }
 
-
-    @Override
-    protected void onStart() {
-        spiceManager.start(this);
-        super.onStart();
-    }
-
     @Override
     protected void onStop() {
         spiceManager.shouldStop();
@@ -167,6 +174,10 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
 
     public SpiceManager getSpiceManager() {
         return spiceManager;
