@@ -9,8 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
+    <include layout="@layout/toolbar"/>
+
     <TextView
         android:id="@+id/textview_person_name"
+        android:layout_below="@+id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/encounter_label_person_name_and"

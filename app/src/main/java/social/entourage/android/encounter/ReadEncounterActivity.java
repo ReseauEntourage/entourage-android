@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -86,8 +87,9 @@ public class ReadEncounterActivity extends EntourageActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_encounter_read);
 
+        setContentView(R.layout.activity_encounter_read);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ButterKnife.inject(this);
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);

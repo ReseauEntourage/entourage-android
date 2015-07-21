@@ -1,6 +1,7 @@
 package social.entourage.android.poi;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +47,9 @@ public class ReadPoiActivity extends EntourageActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_poi_read);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ButterKnife.inject(this);
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);

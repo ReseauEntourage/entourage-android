@@ -7,8 +7,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -29,7 +28,7 @@ import social.entourage.android.login.LoginActivity;
 import social.entourage.android.tour.TourService;
 
 @SuppressWarnings("WeakerAccess")
-public class MapActivity extends EntourageSecuredActivity implements ActionBar.TabListener, MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener, MapTourFragment.OnTourActionListener {
+public class MapActivity extends EntourageSecuredActivity implements MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener, MapTourFragment.OnTourActionListener {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -38,9 +37,9 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     @Inject
     MapPresenter presenter;
 
-    private Fragment fragment;
-    private Fragment launcher;
-    private Fragment tour;
+    private MapEntourageFragment mapFragment;
+    private Fragment launcherFragment;
+    private Fragment tourFragment;
 
     //private Location bestLocation;
     private boolean isBetterLocationUpdated;
@@ -54,20 +53,14 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
         setTitle(R.string.activity_map_title);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ButterKnife.inject(this);
 
+        mapFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
+
         initializeLocationService();
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(false);
-
-        // TODO: Remove depreceated code : move tabs in toolbar
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_map).setTabListener(this));
-        //TODO: display List Tab here
-        //actionBar.addTab(actionBar.newTab().setText(R.string.activity_map_tab_liste).setTabListener(this));
-
     }
 
     @Override
@@ -124,37 +117,11 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        switch (tab.getPosition()) {
-            case 0:
-                fragment = MapEntourageFragment.newInstance();
-                break;
-            case 1:
-                fragment = ListFragment.newInstance();
-                break;
-        }
-        fragmentTransaction.replace(R.id.layout_fragment_container, fragment);
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        fragmentTransaction.remove(fragment);
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
-    @Override
     public void onBackPressed() {
-        if (launcher != null) {
-            getSupportFragmentManager().beginTransaction().remove(launcher).commit();
-            launcher = null;
-            if (fragment instanceof MapEntourageFragment) {
-                MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-                mapEntourageFragment.enableStartButton(true);
-            }
+        if (launcherFragment != null) {
+            getSupportFragmentManager().beginTransaction().remove(launcherFragment).commit();
+            launcherFragment = null;
+            mapFragment.enableStartButton(true);
         } else {
             super.onBackPressed();
         }
@@ -165,24 +132,15 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     // ----------------------------------
 
     public void putEncouter(Encounter encounter, MapPresenter.OnEntourageMarkerClickListener onClickListener) {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.putEncounterOnMap(encounter, onClickListener);
-        }
+        mapFragment.putEncounterOnMap(encounter, onClickListener);
     }
 
     public void setOnMarkerCLickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.setOnMarkerClickListener(onMarkerClickListener);
-        }
+        mapFragment.setOnMarkerClickListener(onMarkerClickListener);
     }
 
     public void centerMap(LatLng latLng) {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.centerMap(latLng);
-        }
+        mapFragment.centerMap(latLng);
     }
 
     private void initializeLocationService() {
@@ -193,17 +151,11 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
     }
 
     public void initializeMap() {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.initializeMapZoom();
-        }
+        mapFragment.initializeMapZoom();
     }
 
     public void saveCameraPosition() {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.saveCameraPosition();
-        }
+        mapFragment.saveCameraPosition();
     }
 
     // ----------------------------------
@@ -212,75 +164,58 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
 
     @Override
     public void onTourLaunch() {
-        launcher = MapLauncherFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, launcher).commit();
+        launcherFragment = MapLauncherFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, launcherFragment).commit();
     }
 
     @Override
     public void onTourResume(boolean isPaused) {
-        if (tour == null) {
-            tour = MapTourFragment.newInstance();
-            ((MapTourFragment)tour).setIsPaused(isPaused);
-            getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tour).commit();
+        if (tourFragment == null) {
+            tourFragment = MapTourFragment.newInstance();
+            ((MapTourFragment) tourFragment).setIsPaused(isPaused);
+            getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
         }
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.enableStartButton(false);
-        }
+        mapFragment.enableStartButton(false);
     }
 
     @Override
     public void onPausedTourResumed() {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.resumeTour();
-        }
+        mapFragment.resumeTour();
     }
 
     @Override
     public void onTourStart(String type1, String type2) {
-        if (launcher != null) {
-            getSupportFragmentManager().beginTransaction().remove(launcher).commit();
-            launcher = null;
+        if (launcherFragment != null) {
+            getSupportFragmentManager().beginTransaction().remove(launcherFragment).commit();
+            launcherFragment = null;
         }
 
-        tour = MapTourFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tour).commit();
+        tourFragment = MapTourFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
 
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.startTour(type1, type2);
-        }
+        mapFragment.startTour(type1, type2);
     }
 
     @Override
     public void onTourPaused() {
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.pauseTour();
-        }
+        mapFragment.pauseTour();
     }
 
     @Override
     public void onTourStopped() {
-        getSupportFragmentManager().beginTransaction().remove(tour).commit();
-        tour = null;
-        if (fragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) fragment;
-            mapEntourageFragment.stopTour();
-        }
+        getSupportFragmentManager().beginTransaction().remove(tourFragment).commit();
+        tourFragment = null;
+        mapFragment.stopTour();
     }
 
     @Override
     public void onNotificationAction(String action) {
         if (TourService.NOTIFICATION_PAUSE.equals(action) || TourService.NOTIFICATION_RESUME.equals(action)) {
-            ((MapTourFragment)tour).switchPauseButton();
+            ((MapTourFragment) tourFragment).switchPauseButton();
         } else if (TourService.NOTIFICATION_STOP.equals(action)) {
-            getSupportFragmentManager().beginTransaction().remove(tour).commit();
-            tour = null;
-            if (fragment instanceof MapEntourageFragment) {
-                ((MapEntourageFragment) fragment).switchView();
-            }
+            getSupportFragmentManager().beginTransaction().remove(tourFragment).commit();
+            tourFragment = null;
+            mapFragment.switchView();
         }
     }
 
@@ -360,5 +295,4 @@ public class MapActivity extends EntourageSecuredActivity implements ActionBar.T
             }
         }
     }
-
 }

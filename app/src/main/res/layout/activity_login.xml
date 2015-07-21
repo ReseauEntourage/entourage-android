@@ -11,9 +11,12 @@
     tools:context="social.entourage.android.login.LoginActivity"
     android:background="@color/login_view">
 
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:paddingTop="25dp"

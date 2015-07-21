@@ -3,8 +3,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <RelativeLayout android:id="@+id/layout_fragment_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+    <include layout="@layout/toolbar"/>
+
+    <fragment
+        android:id="@+id/map_fragment"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="social.entourage.android.map.MapEntourageFragment"/>
+
+    <FrameLayout
+        android:id="@+id/layout_fragment_container"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

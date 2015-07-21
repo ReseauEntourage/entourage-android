@@ -6,6 +6,7 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.CheckBox;
@@ -109,7 +110,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_encounter_create);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        ButterKnife.inject(this);
+
         arguments = getIntent().getExtras();
         if (arguments == null || arguments.isEmpty()) {
             throw new IllegalArgumentException("You must provide latitude and longitude");
@@ -118,8 +123,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         if (!getAuthenticationController().isAuthenticated()) {
             throw new IllegalArgumentException("You must ne logged in");
         }
-
-        ButterKnife.inject(this);
 
         txtPersonName.setText(getString(R.string.encounter_label_person_name_and, getAuthenticationController().getUser().getFirstName()));
         txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(new Date())));
