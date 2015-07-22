@@ -17,16 +17,20 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/tour_pause_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tour_pause"/>
-
-        <Button
             android:id="@+id/tour_stop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tour_stop"/>
+
+        <!-- NOT VISIBLE / CLICKABLE FOR NOW (needs the @InjectView and @OnClick uncommented in MapTourFragment)
+        <Button
+            android:id="@+id/tour_pause_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_pause"
+            android:visibility="invisible"
+            android:clickable="false"/>
+        -->
 
     </LinearLayout>
 

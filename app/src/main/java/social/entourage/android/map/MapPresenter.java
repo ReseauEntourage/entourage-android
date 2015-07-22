@@ -98,15 +98,6 @@ public class MapPresenter {
         activity.startActivity(intent);
     }
 
-    /*
-    public void getCurrentAddress(Location location) {
-        Intent intent = new Intent(activity, FetchAddressIntentService.class);
-        intent.putExtra(Constants.RECEIVER, receiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
-        activity.startService(intent);
-    }
-    */
-
     // ----------------------------------
     // INNER CLASS
     // ----------------------------------

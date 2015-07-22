@@ -18,14 +18,18 @@ import android.widget.Chronometer;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.map.MapActivity;
 
@@ -147,7 +151,6 @@ public class TourService extends Service {
         if (notification == null) {
             createNotification();
         }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             configureRemoteView(action);
         }
@@ -235,6 +238,10 @@ public class TourService extends Service {
     public void pauseTreatment() {
         if (isRunning()) {
             if (!isPaused) {
+                Date duration = new Date(SystemClock.elapsedRealtime() - chronometer.getBase());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                tourServiceManager.setTourDuration(dateFormat.format(duration));
                 pauseNotification();
                 isPaused = true;
             }
@@ -254,6 +261,7 @@ public class TourService extends Service {
         if (isRunning()) {
             tourServiceManager.finishTour();
             removeNotification();
+            isPaused = false;
             if (listeners.size() == 0) stopSelf();
             Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
         }
@@ -279,6 +287,14 @@ public class TourService extends Service {
 
     public boolean isPaused() {
         return isPaused;
+    }
+
+    public Tour getCurrentTour() {
+        return tourServiceManager.getTour();
+    }
+
+    public void addEncounter(Encounter encounter) {
+        tourServiceManager.addEncounter(encounter);
     }
 
     public void notifyListeners(Tour tour) {

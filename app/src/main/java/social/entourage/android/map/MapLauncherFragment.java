@@ -80,7 +80,4 @@ public class MapLauncherFragment extends Fragment {
     public interface OnTourStartListener {
         void onTourStart(String type1, String type2);
     }
-
-
-
 }

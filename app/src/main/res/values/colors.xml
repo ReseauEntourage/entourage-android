@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#3D3D3D</color>
-    <color name="primary_dark">#191919</color>>
+    <color name="primary_dark">#191919</color>
+    <color name="primary_light">#FAFAFA</color>
     <color name="accent">#FDC444</color>
-
     <color name="background">@color/primary</color>
     <color name="background_dark">@color/primary_dark</color>
+    <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
     <color name="login_button">#FFCE55</color>
     <color name="custom_button_enabled">@color/accent</color>
@@ -15,4 +16,5 @@
     <color name="login_form">#FFFFFF</color>
     <color name="login_view">#333333</color>
     <color name="separator">#444444</color>
+    <color name="confirmation_contour">#DADADA</color>
 </resources>

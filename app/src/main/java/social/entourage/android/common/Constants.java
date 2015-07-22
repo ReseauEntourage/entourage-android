@@ -32,7 +32,6 @@ public class Constants {
     public static final String EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map";
     public static final String EVENT_OPEN_GUIDE_FROM_MENU = "Open_Guide_From_Menu";
 
-
     // GeoCoder (essai pour la récupération des adresses dans le Run-Tracking NTE) ---> à supprimer
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;

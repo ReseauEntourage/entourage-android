@@ -62,6 +62,11 @@
     <string name="tour_type_medical">Médicale</string>
     <string name="tour_type_bare_hands">A main nues</string>
     <string name="tour_type_alimentary">Alimentaire</string>
+    <string name="tour_end_confirmation">Veux-tu vraiment arrêter la maraude ?\nUn mail récapitulatif te sera envoyé.</string>
+    <string name="tour_end_encounters">%1$d personnes rencontrées</string>
+    <string name="tour_end_distance">%1$s km parcourus</string>
+    <string name="tour_end_duration">%1$s passées dans la rue</string>
+
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>

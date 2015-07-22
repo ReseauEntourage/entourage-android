@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -53,7 +52,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     private OnTourLaunchListener callback;
 
     private SupportMapFragment mapFragment;
-    private LatLng prevCoord;
+    private LatLng previousCoordinates;
 
     private TourService tourService;
     private ServiceConnection connection = new ServiceConnection() {
@@ -176,7 +175,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     // ----------------------------------
-    // PUBLIC METHODS
+    // PUBLIC METHODS - tours
     // ----------------------------------
 
     /**
@@ -248,10 +247,22 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         if (tourService.isRunning()) {
             tourService.endTreatment();
             clearMap();
-            prevCoord = null;
+            previousCoordinates = null;
             switchView();
         }
     }
+
+    public Tour getCurrentTour() {
+        return tourService.getCurrentTour();
+    }
+
+    public void addEncounter(Encounter encounter) {
+        tourService.addEncounter(encounter);
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS - views
+    // ----------------------------------
 
     public void switchView() {
         clearMap();
@@ -324,13 +335,13 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     public void drawLocation(LatLng location) {
-        if (prevCoord != null) {
+        if (previousCoordinates != null) {
             PolylineOptions line = new PolylineOptions();
-            line.add(prevCoord, location);
+            line.add(previousCoordinates, location);
             line.width(15).color(Color.BLUE);
             mapFragment.getMap().addPolyline(line);
         }
-        prevCoord = location;
+        previousCoordinates = location;
     }
 
     public void drawResumedTour(Tour tour) {
@@ -341,7 +352,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
                 line.add(location);
             }
             mapFragment.getMap().addPolyline(line);
-            prevCoord = tour.getCoordinates().get(tour.getCoordinates().size()-1);
+            previousCoordinates = tour.getCoordinates().get(tour.getCoordinates().size()-1);
         }
 
     }

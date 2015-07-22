@@ -153,12 +153,12 @@ public class CreateEncounterPresenter {
 
         @Override
         public void success(EncounterResponse encounterResponse, Response response) {
-            activity.onCreateEncounterFinished(null);
+            activity.onCreateEncounterFinished(null, encounterResponse.getEncounter());
         }
 
         @Override
         public void failure(RetrofitError error) {
-            activity.onCreateEncounterFinished(error.toString());
+            activity.onCreateEncounterFinished(error.toString(), null);
         }
     }
 }

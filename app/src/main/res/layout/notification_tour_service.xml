@@ -53,16 +53,19 @@
             android:layout_weight="2"
             android:layout_margin="8dp"
             android:text="@string/tour_pause"
-            android:background="@color/button_material_dark" />
+            android:background="@color/button_material_dark"
+            android:visibility="invisible"
+            android:clickable="false"/>
 
+        <!-- NOT VISIBLE / CLICKABLE FOR NOW (needs the layout_weight to fit correctly) -->
         <Button
             android:id="@+id/notification_tour_stop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:layout_margin="8dp"
             android:text="@string/tour_stop"
             android:background="@color/button_material_dark" />
+        <!--android:layout_weight="2"-->
 
     </LinearLayout>
 

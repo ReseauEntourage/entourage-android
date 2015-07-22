@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -21,6 +22,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.guide.GuideMapActivity;
@@ -28,7 +30,7 @@ import social.entourage.android.login.LoginActivity;
 import social.entourage.android.tour.TourService;
 
 @SuppressWarnings("WeakerAccess")
-public class MapActivity extends EntourageSecuredActivity implements MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener, MapTourFragment.OnTourActionListener {
+public class MapActivity extends EntourageSecuredActivity implements MapEntourageFragment.OnTourLaunchListener, MapLauncherFragment.OnTourStartListener, MapTourFragment.OnTourActionListener, MapConfirmationFragment.OnTourConfirmationListener {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -40,6 +42,7 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     private MapEntourageFragment mapFragment;
     private Fragment launcherFragment;
     private Fragment tourFragment;
+    private Fragment confirmationFragment;
 
     //private Location bestLocation;
     private boolean isBetterLocationUpdated;
@@ -108,9 +111,11 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_CREATE_ENCOUNTER) {
             if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK) {
+                Encounter encounter = (Encounter) data.getExtras().getSerializable(Constants.KEY_ENCOUNTER);
+                mapFragment.addEncounter(encounter);
+
                 LatLng latLng = new LatLng(data.getExtras().getDouble(Constants.KEY_LATITUDE),
                         data.getExtras().getDouble(Constants.KEY_LONGITUDE));
-
                 presenter.retrieveMapObjects(latLng);
             }
         }
@@ -169,21 +174,6 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     }
 
     @Override
-    public void onTourResume(boolean isPaused) {
-        if (tourFragment == null) {
-            tourFragment = MapTourFragment.newInstance();
-            ((MapTourFragment) tourFragment).setIsPaused(isPaused);
-            getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
-        }
-        mapFragment.enableStartButton(false);
-    }
-
-    @Override
-    public void onPausedTourResumed() {
-        mapFragment.resumeTour();
-    }
-
-    @Override
     public void onTourStart(String type1, String type2) {
         if (launcherFragment != null) {
             getSupportFragmentManager().beginTransaction().remove(launcherFragment).commit();
@@ -199,13 +189,53 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     @Override
     public void onTourPaused() {
         mapFragment.pauseTour();
+
+        getSupportFragmentManager().beginTransaction().remove(tourFragment).commit();
+        tourFragment = null;
+
+        Bundle bundle = new Bundle();
+        Tour tour = mapFragment.getCurrentTour();
+        bundle.putInt(MapConfirmationFragment.KEY_ENCOUNTERS, tour.getEncounters().size());
+        bundle.putFloat(MapConfirmationFragment.KEY_DISTANCE, tour.getDistance());
+        bundle.putString(MapConfirmationFragment.KEY_DURATION, tour.getDuration());
+
+        confirmationFragment = MapConfirmationFragment.newInstance();
+        confirmationFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, confirmationFragment).commit();
     }
 
     @Override
-    public void onTourStopped() {
-        getSupportFragmentManager().beginTransaction().remove(tourFragment).commit();
-        tourFragment = null;
+    public void onTourConfirmationResume() {
+        tourFragment = MapTourFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
+
+        MapEntourageFragment mapEntourageFragment = mapFragment;
+        mapEntourageFragment.resumeTour();
+
+        getSupportFragmentManager().beginTransaction().remove(confirmationFragment).commit();
+        confirmationFragment = null;
+    }
+
+    @Override
+    public void onTourConfirmationEnd() {
+        getSupportFragmentManager().beginTransaction().remove(confirmationFragment).commit();
+        confirmationFragment = null;
         mapFragment.stopTour();
+    }
+
+    @Override
+    public void onTourResume(boolean isPaused) {
+        if (tourFragment == null) {
+            tourFragment = MapTourFragment.newInstance();
+            ((MapTourFragment) tourFragment).setIsPaused(isPaused);
+            getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
+        }
+        mapFragment.enableStartButton(false);
+    }
+
+    @Override
+    public void onPausedTourResumed() {
+        mapFragment.resumeTour();
     }
 
     @Override

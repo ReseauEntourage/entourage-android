@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.common.Constants;
@@ -37,7 +38,7 @@ public class TourServiceManager {
 
     private CustomLocationListener locationListener;
     private Tour tour;
-    private long tourId;
+    private Location previousLocation;
 
     @Inject
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest) {
@@ -117,6 +118,14 @@ public class TourServiceManager {
         return tour != null;
     }
 
+    public void setTourDuration(String duration) {
+        tour.setDuration(duration);
+    }
+
+    public void addEncounter(Encounter encounter) {
+        tour.addEncounter(encounter);
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
@@ -129,9 +138,13 @@ public class TourServiceManager {
             if (tour != null && !tourService.isPaused()) {
                 TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
                 updateTourCoordinates(point);
-                tour.updateCoordinates(new LatLng(location.getLatitude(), location.getLongitude()));
+                tour.addCoordinate(new LatLng(location.getLatitude(), location.getLongitude()));
                 tourService.notifyListeners(tour);
             }
+            if (previousLocation != null) {
+                tour.updateDistance(location.distanceTo(previousLocation));
+            }
+            previousLocation = location;
         }
 
         @Override

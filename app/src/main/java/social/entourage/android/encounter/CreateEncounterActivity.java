@@ -292,12 +292,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         durationHandler.removeCallbacks(updateDurationThread);
     }
 
-    public void onCreateEncounterFinished(String errorMessage) {
+    public void onCreateEncounterFinished(String errorMessage, Encounter encounterResponse) {
         dismissProgressDialog();
         String message;
         if (errorMessage == null) {
             message = getString(R.string.create_encounter_success);
             Intent resultIntent = new Intent();
+            arguments.putSerializable(Constants.KEY_ENCOUNTER, encounterResponse);
             resultIntent.putExtras(arguments);
             setResult(Constants.RESULT_CREATE_ENCOUNTER_OK, resultIntent);
             finish();

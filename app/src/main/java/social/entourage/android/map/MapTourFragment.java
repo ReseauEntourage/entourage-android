@@ -26,7 +26,7 @@ public class MapTourFragment extends Fragment {
     private OnTourActionListener callback;
     private boolean isPaused;
 
-    @InjectView(R.id.tour_pause_button)
+    //@InjectView(R.id.tour_pause_button)
     Button pauseButton;
 
     // ----------------------------------
@@ -34,8 +34,7 @@ public class MapTourFragment extends Fragment {
     // ----------------------------------
 
     public static MapTourFragment newInstance() {
-        MapTourFragment fragment = new MapTourFragment();
-        return fragment;
+        return new MapTourFragment();
     }
 
     // ----------------------------------
@@ -61,7 +60,7 @@ public class MapTourFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(isPaused) pauseButton.setText(R.string.tour_resume);
+        //if(isPaused) pauseButton.setText(R.string.tour_resume);
     }
 
     @Override
@@ -79,7 +78,7 @@ public class MapTourFragment extends Fragment {
     // PUBLIC METHODS
     // ----------------------------------
 
-    @OnClick(R.id.tour_pause_button)
+    //@OnClick(R.id.tour_pause_button)
     public void pauseTour(View view) {
         if (!isPaused) {
             pauseButton.setText(R.string.tour_resume);
@@ -94,7 +93,8 @@ public class MapTourFragment extends Fragment {
 
     @OnClick(R.id.tour_stop_button)
     public void stopTour(View view) {
-        callback.onTourStopped();
+        //callback.onTourStopped();
+        callback.onTourPaused();
     }
 
     @OnClick(R.id.tour_add_encounter_button)
@@ -119,7 +119,6 @@ public class MapTourFragment extends Fragment {
     public interface OnTourActionListener {
         void onTourPaused();
         void onPausedTourResumed();
-        void onTourStopped();
         void onNewEncounter();
     }
 
