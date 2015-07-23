@@ -13,5 +13,10 @@ public interface MapRequest {
                @Query("latitude") double latitude,
                @Query("longitude") double longitude,
                Callback<MapResponse> callback);
+
+    /**
+     * HERE : update the request to get all the encounters
+     *        related to the current tour
+     */
 }
 

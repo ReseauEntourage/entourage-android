@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -116,6 +115,10 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
 
                 LatLng latLng = new LatLng(data.getExtras().getDouble(Constants.KEY_LATITUDE),
                         data.getExtras().getDouble(Constants.KEY_LONGITUDE));
+                /**
+                 * HERE : update the request to get all the encounters
+                 *        related to the current tour
+                 */
                 presenter.retrieveMapObjects(latLng);
             }
         }
@@ -254,6 +257,7 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
         Intent intent = new Intent(this, CreateEncounterActivity.class);
         saveCameraPosition();
         Bundle args = new Bundle();
+        args.putLong(Constants.KEY_TOUR_ID, mapFragment.getTourId());
         args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
         args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
         intent.putExtras(args);

@@ -6,6 +6,9 @@ import java.util.Locale;
 
 public class Constants {
 
+    // Tour
+    public static final String KEY_TOUR_ID = "tourId";
+
     // API
     public static final String TOKEN = "0cb4507e970462ca0b11320131e96610";
 

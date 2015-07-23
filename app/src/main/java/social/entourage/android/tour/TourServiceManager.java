@@ -5,6 +5,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -12,7 +13,11 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.TourResponse;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -39,11 +44,13 @@ public class TourServiceManager {
     private CustomLocationListener locationListener;
     private Tour tour;
     private Location previousLocation;
+    private long tourId;
 
     @Inject
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest) {
         this.tourService = tourService;
         this.tourRequest = tourRequest;
+        initializeLocationService();
     }
 
     // ----------------------------------
@@ -52,6 +59,10 @@ public class TourServiceManager {
 
     public Tour getTour() {
         return this.tour;
+    }
+
+    public long getTourId() {
+        return tourId;
     }
 
     // ----------------------------------
@@ -66,7 +77,6 @@ public class TourServiceManager {
     }
 
     private void sendTour() {
-        /*
         tourRequest.tour(tour, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
@@ -78,11 +88,9 @@ public class TourServiceManager {
                 Log.e("Error", error.toString());
             }
         });
-        */
     }
 
     private void updateTourCoordinates(TourPoint point) {
-        /*
         tourRequest.tourPoint(tourId, point, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
@@ -94,7 +102,6 @@ public class TourServiceManager {
                 Log.e("Error", error.toString());
             }
         });
-        */
     }
 
     // ----------------------------------
@@ -105,12 +112,11 @@ public class TourServiceManager {
         tour = new Tour();
         tour.setTourType(type2); // social, other, food
         sendTour();
-        initializeLocationService();
     }
 
     public void finishTour() {
-        LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.removeUpdates(locationListener);
+        //LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
+        //locationManager.removeUpdates(locationListener);
         tour = null;
     }
 
@@ -134,17 +140,17 @@ public class TourServiceManager {
 
         @Override
         public void onLocationChanged(Location location) {
-            System.out.println(tourService.isPaused());
+            tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
             if (tour != null && !tourService.isPaused()) {
                 TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
                 updateTourCoordinates(point);
                 tour.addCoordinate(new LatLng(location.getLatitude(), location.getLongitude()));
-                tourService.notifyListeners(tour);
+                tourService.notifyListenersTour(tour);
+                if (previousLocation != null) {
+                    tour.updateDistance(location.distanceTo(previousLocation));
+                }
+                previousLocation = location;
             }
-            if (previousLocation != null) {
-                tour.updateDistance(location.distanceTo(previousLocation));
-            }
-            previousLocation = location;
         }
 
         @Override

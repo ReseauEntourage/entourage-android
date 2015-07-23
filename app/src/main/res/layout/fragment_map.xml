@@ -9,6 +9,11 @@
               android:layout_height="match_parent"
               class="com.google.android.gms.maps.SupportMapFragment"/>
 
+    <FrameLayout
+        android:id="@+id/custom_map_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <Button
         android:text="Mauraudes"
         android:id="@+id/button_show_tours"
@@ -17,6 +22,15 @@
         android:alpha="0.5"
         android:visibility="invisible"
         android:clickable="false"/>
+
+    <ImageButton
+        android:id="@+id/fragment_map_follow_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:alpha="0.5"
+        android:layout_gravity="right|top"
+        android:src="@drawable/ic_my_location_black_24dp"/>
 
     <ImageView
         android:id="@+id/fragment_map_pin"
@@ -28,8 +42,8 @@
         android:visibility="invisible"/>
 
     <Button
-        android:text="@string/tour_start"
         android:id="@+id/button_start_tour_launcher"
+        android:text="@string/tour_start"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
@@ -37,5 +51,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:alpha="0.5"/>
+
+    </FrameLayout>
 
 </FrameLayout>

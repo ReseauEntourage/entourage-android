@@ -57,12 +57,16 @@ public class MapPresenter {
         onClickListener = new OnEntourageMarkerClickListener();
         isStarted = true;
         activity.initializeMap();
-        retrieveMapObjects(EntourageLocation.getInstance().getLastCameraPosition().target);
+        //retrieveMapObjects(EntourageLocation.getInstance().getLastCameraPosition().target);
         activity.setOnMarkerCLickListener(onClickListener);
     }
 
     public void retrieveMapObjects(LatLng latLng) {
         if(isStarted) {
+            /**
+             * HERE : update the request to get all the encounters
+             *        related to the current tour
+             */
             mapRequest.map(Constants.TOKEN, 0, 0, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
                 @Override
                 public void success(MapResponse mapResponse, Response response) {

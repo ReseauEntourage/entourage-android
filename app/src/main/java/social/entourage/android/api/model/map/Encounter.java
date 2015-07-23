@@ -10,6 +10,8 @@ public class Encounter implements Serializable{
 
     private long id;
 
+    private transient long tourId;
+
     @SerializedName("date")
     private Date creationDate;
 
@@ -39,6 +41,14 @@ public class Encounter implements Serializable{
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getTourId() {
+        return tourId;
+    }
+
+    public void setTourId(long tourId) {
+        this.tourId = tourId;
     }
 
     public Date getCreationDate() {

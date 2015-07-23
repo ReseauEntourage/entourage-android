@@ -189,6 +189,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @OnClick(R.id.button_create_encounter)
     public void createEncounter() {
         Encounter encounter = new Encounter();
+        encounter.setTourId(arguments.getLong(Constants.KEY_TOUR_ID));
         encounter.setUserName(getAuthenticationController().getUser().getFirstName());
         encounter.setLatitude(arguments.getDouble(Constants.KEY_LATITUDE));
         encounter.setLongitude(arguments.getDouble(Constants.KEY_LONGITUDE));

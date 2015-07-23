@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_logout">Déconnexion</string>
     <string name="action_guide">Guide</string>
-    <string name="action_encounters">Rencontres</string>
+    <string name="action_encounters">Maraudes</string>
 
     <!-- Login -->
     <string name="title_activity_login">Se connecter</string>
@@ -13,7 +13,7 @@
 
     <!-- Maps -->
     <string name="map_api_key">AIzaSyAFqKD4mIEGQIfgbwQVQloMrlRkrqk9J4M</string>
-    <string name="activity_map_title">Rencontres</string>
+    <string name="activity_map_title">Maraudes</string>
     <string name="activity_map_tab_map">CARTE</string>
     <string name="activity_map_tab_liste">LISTE</string>
 

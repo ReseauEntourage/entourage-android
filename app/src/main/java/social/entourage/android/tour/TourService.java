@@ -18,6 +18,8 @@ import android.widget.Chronometer;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -293,12 +295,24 @@ public class TourService extends Service {
         return tourServiceManager.getTour();
     }
 
+    public long getTourId() {
+        return tourServiceManager.getTourId();
+    }
+
     public void addEncounter(Encounter encounter) {
         tourServiceManager.addEncounter(encounter);
     }
 
-    public void notifyListeners(Tour tour) {
-        for (TourServiceListener listener : listeners) listener.onTourUpdated(tour);
+    public void notifyListenersTour(Tour tour) {
+        for (TourServiceListener listener : listeners) {
+            listener.onTourUpdated(tour);
+        }
+    }
+
+    public void notifyListenersPosition(LatLng location) {
+        for (TourServiceListener listener : listeners) {
+            listener.onLocationUpdated(location);
+        }
     }
 
     public void notifyListenersNotification(String action) {
@@ -312,6 +326,7 @@ public class TourService extends Service {
     public interface TourServiceListener {
         void onTourUpdated(Tour tour);
         void onTourResumed(Tour tour);
+        void onLocationUpdated(LatLng location);
         void onNotificationAction(String action);
     }
 }

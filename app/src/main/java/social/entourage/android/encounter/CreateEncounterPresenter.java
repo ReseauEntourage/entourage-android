@@ -66,7 +66,7 @@ public class CreateEncounterPresenter {
         activity.showProgressDialog(R.string.creating_encounter);
         EncounterWrapper encounterWrapper = new EncounterWrapper();
         encounterWrapper.setEncounter(encounter);
-        encounterRequest.create(encounterWrapper, new EncounterRequestCallback());
+        encounterRequest.create(encounter.getTourId(), encounterWrapper, new EncounterRequestCallback());
     }
 
     private void tweetWithAudioFile(Encounter encounter) {

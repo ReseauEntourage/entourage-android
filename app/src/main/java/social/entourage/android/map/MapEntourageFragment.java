@@ -9,12 +9,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -73,9 +76,16 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     };
     private boolean isBound = true;
+    private boolean isFollowing = true;
+
+    @InjectView(R.id.custom_map_frame)
+    View customFrame;
 
     @InjectView(R.id.fragment_map_pin)
     View mapPin;
+
+    @InjectView(R.id.fragment_map_follow_button)
+    View centerButton;
 
     @InjectView(R.id.button_start_tour_launcher)
     View buttonStartLauncher;
@@ -106,8 +116,17 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().setMyLocationEnabled(true);
-            mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(true);
+            mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
         }
+        customFrame.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    isFollowing = false;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -160,8 +179,9 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
 
     @Override
     public void onTourUpdated(Tour tour) {
-        if (!tour.getCoordinates().isEmpty())
+        if (!tour.getCoordinates().isEmpty()) {
             drawLocation(tour.getCoordinates().get(tour.getCoordinates().size() - 1));
+        }
     }
 
     @Override
@@ -170,12 +190,17 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     @Override
+    public void onLocationUpdated(LatLng location) {
+        centerMap(location);
+    }
+
+    @Override
     public void onNotificationAction(String action) {
         callback.onNotificationAction(action);
     }
 
     // ----------------------------------
-    // PUBLIC METHODS - tours
+    // PUBLIC METHODS (tours)
     // ----------------------------------
 
     /**
@@ -199,6 +224,11 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
      */
+
+    @OnClick(R.id.fragment_map_follow_button)
+    public void followGeolocation(View view) {
+        isFollowing = true;
+    }
 
     @OnClick(R.id.button_start_tour_launcher)
     public void startTourLauncher(View view) {
@@ -256,12 +286,16 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         return tourService.getCurrentTour();
     }
 
+    public long getTourId() {
+        return tourService.getTourId();
+    }
+
     public void addEncounter(Encounter encounter) {
         tourService.addEncounter(encounter);
     }
 
     // ----------------------------------
-    // PUBLIC METHODS - views
+    // PUBLIC METHODS (views)
     // ----------------------------------
 
     public void switchView() {
@@ -317,8 +351,10 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     public void centerMap(LatLng latLng) {
-        CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom,0, 0);
-        centerMap(cameraPosition);
+        if (isFollowing) {
+            CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom, 0, 0);
+            centerMap(cameraPosition);
+        }
     }
 
     private void centerMap(CameraPosition cameraPosition) {

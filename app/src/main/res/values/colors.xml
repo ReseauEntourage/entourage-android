@@ -16,5 +16,5 @@
     <color name="login_form">#FFFFFF</color>
     <color name="login_view">#333333</color>
     <color name="separator">#444444</color>
-    <color name="confirmation_contour">#DADADA</color>
+    <color name="grey_contour">#DADADA</color>
 </resources>
