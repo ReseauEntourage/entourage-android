@@ -4,7 +4,7 @@
     <corners
         android:radius="3dp" />
     <solid
-        android:color="@color/custom_button_focused" />
+        android:color="@color/custom_button_1_enabled" />
     <padding
         android:bottom="7dp"
         android:top="7dp"

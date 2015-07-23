@@ -9,13 +9,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import social.entourage.android.api.model.TourType;
+
 @SuppressWarnings("unused")
 public class Tour implements Serializable {
 
     private long id;
 
     @SerializedName("tour_type")
-    private String  tourType = "social";
+    private String tourType = TourType.SOCIAL.getName();
 
     private transient Date date;
 

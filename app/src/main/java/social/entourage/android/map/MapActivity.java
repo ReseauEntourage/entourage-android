@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -39,9 +40,9 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     MapPresenter presenter;
 
     private MapEntourageFragment mapFragment;
-    private Fragment launcherFragment;
-    private Fragment tourFragment;
-    private Fragment confirmationFragment;
+    private MapLauncherFragment launcherFragment;
+    private MapTourFragment tourFragment;
+    private MapConfirmationFragment confirmationFragment;
 
     //private Location bestLocation;
     private boolean isBetterLocationUpdated;
@@ -230,10 +231,11 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     public void onTourResume(boolean isPaused) {
         if (tourFragment == null) {
             tourFragment = MapTourFragment.newInstance();
-            ((MapTourFragment) tourFragment).setIsPaused(isPaused);
+            tourFragment.setIsPaused(isPaused);
             getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
         }
         mapFragment.enableStartButton(false);
+        mapFragment.enableMapPin(true);
     }
 
     @Override
@@ -244,11 +246,10 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     @Override
     public void onNotificationAction(String action) {
         if (TourService.NOTIFICATION_PAUSE.equals(action) || TourService.NOTIFICATION_RESUME.equals(action)) {
-            ((MapTourFragment) tourFragment).switchPauseButton();
+            tourFragment.switchPauseButton();
         } else if (TourService.NOTIFICATION_STOP.equals(action)) {
             getSupportFragmentManager().beginTransaction().remove(tourFragment).commit();
             tourFragment = null;
-            mapFragment.switchView();
         }
     }
 

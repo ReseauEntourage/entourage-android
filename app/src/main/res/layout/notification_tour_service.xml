@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="false"
-        android:layout_margin="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/notification_tour_image"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -40,32 +40,39 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/notification_tour_infos"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/notification_tour_pause_resume_button"
+            android:id="@+id/notification_tour_stop_button"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_margin="8dp"
-            android:text="@string/tour_pause"
-            android:background="@color/button_material_dark"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/tour_stop"
+            android:textColor="@color/abc_input_method_navigation_guard"
+            android:background="@drawable/custom_button_1" />
+
+
+    </LinearLayout>
+
+    <!-- Former "Pause" button, not visible nor clickable for now -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/notification_tour_pause_resume_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:visibility="invisible"
             android:clickable="false"/>
-
-        <!-- NOT VISIBLE / CLICKABLE FOR NOW (needs the layout_weight to fit correctly) -->
-        <Button
-            android:id="@+id/notification_tour_stop_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/tour_stop"
-            android:background="@color/button_material_dark" />
-        <!--android:layout_weight="2"-->
 
     </LinearLayout>
 

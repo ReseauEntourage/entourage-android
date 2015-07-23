@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -33,6 +31,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.tour.TourService;
@@ -64,7 +63,9 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
             tourService = ((TourService.LocalBinder)service).getService();
             tourService.register(MapEntourageFragment.this);
             boolean isRunning = tourService != null && tourService.isRunning();
-            if (isRunning) callback.onTourResume(tourService.isPaused());
+            if (isRunning) {
+                callback.onTourResume(tourService.isPaused());
+            }
             //Toast.makeText(MapActivity.this, R.string.local_service_connected, Toast.LENGTH_SHORT).show();
         }
 
@@ -77,6 +78,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     };
     private boolean isBound = true;
     private boolean isFollowing = true;
+    private int color;
 
     @InjectView(R.id.custom_map_frame)
     View customFrame;
@@ -88,7 +90,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     View centerButton;
 
     @InjectView(R.id.button_start_tour_launcher)
-    View buttonStartLauncher;
+    Button buttonStartLauncher;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -203,28 +205,6 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     // PUBLIC METHODS (tours)
     // ----------------------------------
 
-    /**
-     *  Tours not created from this button anymore
-     *
-    @OnClick(R.id.button_add_encounter)
-    public void openCreateEncounter(View view) {
-        Activity parent = this.getActivity();
-        if (parent != null) {
-            Intent intent = new Intent(parent, CreateEncounterActivity.class);
-
-            saveCameraPosition();
-
-            Bundle args = new Bundle();
-            args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
-            args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
-
-            intent.putExtras(args);
-
-            parent.startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
-        }
-    }
-     */
-
     @OnClick(R.id.fragment_map_follow_button)
     public void followGeolocation(View view) {
         isFollowing = true;
@@ -255,9 +235,10 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     public void startTour(String type1, String type2) {
+        changeTrackColor(type2);
         if (tourService != null) {
             if (!tourService.isRunning()) {
-                mapPin.setVisibility(View.VISIBLE);
+                enableMapPin(true);
                 tourService.beginTreatment(type1, type2);
             }
         }
@@ -270,15 +251,20 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     public void resumeTour() {
-        if (tourService.isRunning()) tourService.resumeTreatment();
+        if (tourService.isRunning()) {
+            tourService.resumeTreatment();
+            enableStartButton(false);
+            enableMapPin(true);
+        }
     }
 
     public void stopTour() {
         if (tourService.isRunning()) {
             tourService.endTreatment();
-            clearMap();
             previousCoordinates = null;
-            switchView();
+            clearMap();
+            enableMapPin(false);
+            enableStartButton(true);
         }
     }
 
@@ -298,25 +284,33 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     // PUBLIC METHODS (views)
     // ----------------------------------
 
-    public void switchView() {
-        clearMap();
-        if (tourService.isRunning()) {
-            mapPin.setVisibility(View.VISIBLE);
-            enableStartButton(false);
+    public void changeTrackColor(String type) {
+        if (TourType.SOCIAL.getName().equals(type)) {
+            color = Color.GREEN;
+        } else if (TourType.FOOD.getName().equals(type)) {
+            color = Color.BLUE;
+        } else if (TourType.OTHER.getName().equals(type)) {
+            color = Color.RED;
         } else {
-            mapPin.setVisibility(View.INVISIBLE);
-            enableStartButton(true);
+            color = Color.GRAY;
         }
     }
 
     public void enableStartButton(boolean enable) {
-        Button buttonStartStop = (Button) buttonStartLauncher;
         if (enable) {
-            buttonStartStop.setClickable(true);
-            buttonStartStop.setVisibility(View.VISIBLE);
+            buttonStartLauncher.setClickable(true);
+            buttonStartLauncher.setVisibility(View.VISIBLE);
         } else {
-            buttonStartStop.setClickable(false);
-            buttonStartStop.setVisibility(View.INVISIBLE);
+            buttonStartLauncher.setClickable(false);
+            buttonStartLauncher.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void enableMapPin(boolean enable) {
+        if (enable) {
+            mapPin.setVisibility(View.VISIBLE);
+        } else {
+            mapPin.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -374,16 +368,17 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         if (previousCoordinates != null) {
             PolylineOptions line = new PolylineOptions();
             line.add(previousCoordinates, location);
-            line.width(15).color(Color.BLUE);
+            line.width(15).color(color);
             mapFragment.getMap().addPolyline(line);
         }
         previousCoordinates = location;
     }
 
     public void drawResumedTour(Tour tour) {
+        changeTrackColor(tour.getTourType());
         if (tour != null && !tour.getCoordinates().isEmpty()) {
             PolylineOptions line = new PolylineOptions();
-            line.width(15).color(Color.BLUE);
+            line.width(15).color(color);
             for (LatLng location : tour.getCoordinates()) {
                 line.add(location);
             }

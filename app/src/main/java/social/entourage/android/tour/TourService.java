@@ -33,6 +33,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.common.Constants;
 import social.entourage.android.map.MapActivity;
 
 /**
@@ -139,6 +140,18 @@ public class TourService extends Service {
     }
 
     // ----------------------------------
+    // GETTERS AND SETTERS
+    // ----------------------------------
+
+    public Tour getCurrentTour() {
+        return tourServiceManager.getTour();
+    }
+
+    public long getTourId() {
+        return tourServiceManager.getTourId();
+    }
+
+    // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
 
@@ -169,6 +182,11 @@ public class TourService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
+            /*
+            Intent showConfirmationIntent = new Intent(this, MapActivity.class);
+            showConfirmationIntent.setAction(Constants.ACTION_TOUR_PAUSE);
+            PendingIntent stopIntent = PendingIntent.getActivity(this, 0, showConfirmationIntent, 0);
+            */
             PendingIntent stop = createPendingIntent(NOTIFICATION_STOP);
             notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
             notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, stop);
@@ -289,14 +307,6 @@ public class TourService extends Service {
 
     public boolean isPaused() {
         return isPaused;
-    }
-
-    public Tour getCurrentTour() {
-        return tourServiceManager.getTour();
-    }
-
-    public long getTourId() {
-        return tourServiceManager.getTourId();
     }
 
     public void addEncounter(Encounter encounter) {

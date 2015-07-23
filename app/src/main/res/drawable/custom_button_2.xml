@@ -2,16 +2,16 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_enabled="false"
-        android:drawable="@drawable/custom_button_disabled" />
+        android:drawable="@drawable/custom_button_2_disabled" />
     <item
         android:state_pressed="true"
         android:state_enabled="true"
-        android:drawable="@drawable/custom_button_pressed" />
+        android:drawable="@drawable/custom_button_2_pressed" />
     <item
         android:state_focused="true"
         android:state_enabled="true"
-        android:drawable="@drawable/custom_button_focused" />
+        android:drawable="@drawable/custom_button_2_focused" />
     <item
         android:state_enabled="true"
-        android:drawable="@drawable/custom_button_enabled" />
+        android:drawable="@drawable/custom_button_2_enabled" />
 </selector>

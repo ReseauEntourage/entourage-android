@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:text="Reprendre"
             android:layout_margin="2dp"
-            android:background="@drawable/custom_button"/>
+            android:background="@drawable/custom_button_1"/>
 
         <Button
             android:id="@+id/confirmation_end_button"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:text="Terminer"
-            android:background="@drawable/custom_button"/>
+            android:background="@drawable/custom_button_1"/>
 
     </LinearLayout>
 
