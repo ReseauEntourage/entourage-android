@@ -6,18 +6,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -80,9 +82,6 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     private boolean isFollowing = true;
     private int color;
 
-    @InjectView(R.id.custom_map_frame)
-    View customFrame;
-
     @InjectView(R.id.fragment_map_pin)
     View mapPin;
 
@@ -120,13 +119,14 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
             mapFragment.getMap().setMyLocationEnabled(true);
             mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
         }
-        customFrame.setOnTouchListener(new View.OnTouchListener() {
+        mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            public void onCameraChange(CameraPosition cameraPosition) {
+                Location newLocation = cameraPositionToLocation("new",  EntourageLocation.getInstance().getLastCameraPosition());
+                Location prevLocation = cameraPositionToLocation("previous", cameraPosition);
+                if (newLocation.distanceTo(prevLocation) >= 5) {
                     isFollowing = false;
                 }
-                return false;
             }
         });
     }
@@ -199,6 +199,17 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     @Override
     public void onNotificationAction(String action) {
         callback.onNotificationAction(action);
+    }
+
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+
+    private Location cameraPositionToLocation(String provider, CameraPosition cameraPosition) {
+        Location location = new Location(provider);
+        location.setLatitude(cameraPosition.target.latitude);
+        location.setLongitude(cameraPosition.target.longitude);
+        return location;
     }
 
     // ----------------------------------

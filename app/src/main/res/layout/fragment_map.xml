@@ -9,11 +9,6 @@
               android:layout_height="match_parent"
               class="com.google.android.gms.maps.SupportMapFragment"/>
 
-    <FrameLayout
-        android:id="@+id/custom_map_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
     <Button
         android:text="Mauraudes"
         android:id="@+id/button_show_tours"
@@ -53,7 +48,5 @@
         android:background="@drawable/custom_button_2"
         android:textColor="@color/abc_input_method_navigation_guard"
         android:text="@string/tour_start"/>
-
-    </FrameLayout>
 
 </FrameLayout>
