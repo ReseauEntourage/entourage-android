@@ -48,6 +48,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     // ----------------------------------
 
     public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
+    public static final int FOLLOWING_LIMIT = 5;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -124,7 +125,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
             public void onCameraChange(CameraPosition cameraPosition) {
                 Location newLocation = cameraPositionToLocation("new",  EntourageLocation.getInstance().getLastCameraPosition());
                 Location prevLocation = cameraPositionToLocation("previous", cameraPosition);
-                if (newLocation.distanceTo(prevLocation) >= 5) {
+                if (newLocation.distanceTo(prevLocation) >= FOLLOWING_LIMIT) {
                     isFollowing = false;
                 }
             }
@@ -356,14 +357,12 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     public void centerMap(LatLng latLng) {
-        if (isFollowing) {
-            CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom, 0, 0);
-            centerMap(cameraPosition);
-        }
+        CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom, 0, 0);
+        centerMap(cameraPosition);
     }
 
     private void centerMap(CameraPosition cameraPosition) {
-        if(mapFragment!= null && mapFragment.getMap() != null) {
+        if(mapFragment!= null && mapFragment.getMap() != null && isFollowing) {
             mapFragment.getMap().moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             saveCameraPosition();
         }
