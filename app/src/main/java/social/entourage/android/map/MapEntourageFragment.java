@@ -152,6 +152,11 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if (tourService != null) {
             tourService.unregister(MapEntourageFragment.this);
             doUnbindService();

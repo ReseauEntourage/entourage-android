@@ -7,8 +7,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -62,6 +64,13 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
         mapFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
 
         initializeLocationService();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (intent.getBooleanExtra(Constants.ACTION_TOUR_PAUSE, false)) {
+            onTourPaused();
+        }
     }
 
     @Override

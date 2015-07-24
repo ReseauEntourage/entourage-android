@@ -182,14 +182,19 @@ public class TourService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
+            Intent intent = new Intent(this, MapActivity.class);
+            intent.putExtra(Constants.ACTION_TOUR_PAUSE, true);
+            PendingIntent confirmationIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
             /*
             Intent showConfirmationIntent = new Intent(this, MapActivity.class);
             showConfirmationIntent.setAction(Constants.ACTION_TOUR_PAUSE);
             PendingIntent stopIntent = PendingIntent.getActivity(this, 0, showConfirmationIntent, 0);
             */
-            PendingIntent stop = createPendingIntent(NOTIFICATION_STOP);
+
+            //PendingIntent stop = createPendingIntent(NOTIFICATION_STOP);
             notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
-            notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, stop);
+            notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, confirmationIntent);
             builder = builder.setContent(notificationRemoteView);
         }
         notification = builder.build();

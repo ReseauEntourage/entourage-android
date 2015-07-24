@@ -1,6 +1,7 @@
 package social.entourage.android.map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.R;
+import social.entourage.android.common.Constants;
 
 /**
  * Created by NTE on 13/07/15.
@@ -61,6 +64,19 @@ public class MapTourFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //if(isPaused) pauseButton.setText(R.string.tour_resume);
+
+        /**
+         * here : confirmation screen launched but "Reprendre" button doesn't respond
+         */
+        Intent starter = getActivity().getIntent();
+        if (starter != null) {
+            if (starter.getBooleanExtra(Constants.ACTION_TOUR_PAUSE, false)) {
+                callback.onTourPaused();
+            }
+        }
+        /**
+         * ------------------------------------------------------------------------
+         */
     }
 
     @Override
@@ -72,6 +88,11 @@ public class MapTourFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnTourActionListener");
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     // ----------------------------------
