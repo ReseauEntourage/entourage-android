@@ -93,14 +93,6 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     Button buttonStartLauncher;
 
     // ----------------------------------
-    // CONSTRUCTOR
-    // ----------------------------------
-
-    public static MapEntourageFragment newInstance() {
-        return new MapEntourageFragment();
-    }
-
-    // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
 
