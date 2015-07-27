@@ -16,7 +16,6 @@ import javax.inject.Inject;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.model.map.Encounter;
@@ -33,7 +32,7 @@ public class MapPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final MapActivity activity;
+    private final MapEntourageFragment fragment;
     private final MapRequest mapRequest;
 
     private OnEntourageMarkerClickListener onClickListener;
@@ -44,8 +43,8 @@ public class MapPresenter {
     // ----------------------------------
 
     @Inject
-    public MapPresenter(final MapActivity activity, final MapRequest mapRequest) {
-        this.activity = activity;
+    public MapPresenter(final MapEntourageFragment fragment, final MapRequest mapRequest) {
+        this.fragment = fragment;
         this.mapRequest = mapRequest;
     }
 
@@ -56,9 +55,9 @@ public class MapPresenter {
     public void start() {
         onClickListener = new OnEntourageMarkerClickListener();
         isStarted = true;
-        activity.initializeMap();
+        fragment.initializeMapZoom();
         //retrieveMapObjects(EntourageLocation.getInstance().getLastCameraPosition().target);
-        activity.setOnMarkerCLickListener(onClickListener);
+        fragment.setOnMarkerClickListener(onClickListener);
     }
 
     public void retrieveMapObjects(LatLng latLng) {
@@ -83,23 +82,18 @@ public class MapPresenter {
     }
 
     private void loadObjectsOnMap(MapResponse mapResponse) {
-        //activity.clearMap();
         for (Encounter encounter : mapResponse.getEncounters()) {
-            activity.putEncouter(encounter, onClickListener);
+            fragment.putEncounterOnMap(encounter, onClickListener);
         }
-
-        /*for (Poi poi : mapResponse.getPois()) {
-            activity.putPoi(poi, onClickListener);
-        }*/
     }
 
     private void openEncounter(Encounter encounter) {
-        activity.saveCameraPosition();
-        Intent intent = new Intent(activity, ReadEncounterActivity.class);
+        fragment.saveCameraPosition();
+        Intent intent = new Intent(fragment.getActivity(), ReadEncounterActivity.class);
         Bundle extras = new Bundle();
         extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
         intent.putExtras(extras);
-        activity.startActivity(intent);
+        fragment.getActivity().startActivity(intent);
     }
 
     // ----------------------------------

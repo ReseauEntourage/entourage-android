@@ -5,9 +5,9 @@ import social.entourage.android.ActivityScope;
 import social.entourage.android.EntourageComponent;
 
 /**
- * Component linked to MapActivity lifecycle
+ * Component linked to MapEntourageFragment lifecycle
  * Provide a MapPresenter
- * @see MapActivity
+ * @see MapEntourageFragment
  * @see MapPresenter
  */
 @ActivityScope
@@ -17,7 +17,7 @@ import social.entourage.android.EntourageComponent;
 )
 @SuppressWarnings("unused")
 public interface MapComponent {
-    void inject(MapActivity activity);
+    void inject(MapEntourageFragment fragment);
 
     MapPresenter getMapPresenter();
 }

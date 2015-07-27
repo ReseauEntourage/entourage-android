@@ -1,5 +1,6 @@
 package social.entourage.android;
 
+import android.app.Activity;
 import android.app.Application;
 
 import javax.inject.Singleton;
@@ -12,6 +13,7 @@ import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
+import social.entourage.android.map.MapActivity;
 
 /**
  * Dagger component on Application Level
@@ -27,6 +29,7 @@ import social.entourage.android.authentication.AuthenticationModule;
 )
 public interface EntourageComponent {
     void inject(Application application);
+    void inject(MapActivity activity);
 
     AuthenticationController getAuthenticationController();
 

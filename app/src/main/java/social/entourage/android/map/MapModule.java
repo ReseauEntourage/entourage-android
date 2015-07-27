@@ -4,19 +4,19 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module related to MapActivity
- * @see MapActivity
+ * Module related to MapEntourageFragment
+ * @see MapEntourageFragment
  */
 @Module
 final class MapModule {
-    private final MapActivity activity;
+    private final MapEntourageFragment fragment;
 
-    public MapModule(final MapActivity activity) {
-        this.activity = activity;
+    public MapModule(final MapEntourageFragment fragment) {
+        this.fragment = fragment;
     }
 
     @Provides
-    public MapActivity providesMapActivity() {
-        return activity;
+    public MapEntourageFragment providesMapEntourageFragment() {
+        return fragment;
     }
 }

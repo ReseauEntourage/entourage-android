@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
+    <include
+        layout="@layout/toolbar"/>
 
     <fragment
         android:id="@+id/map_fragment"
-        android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/layout_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="social.entourage.android.map.MapEntourageFragment"/>
 
-    <FrameLayout
-        android:id="@+id/layout_fragment_container"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</RelativeLayout>
+</LinearLayout>

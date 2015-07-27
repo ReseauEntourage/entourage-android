@@ -1,23 +1,21 @@
 package social.entourage.android.map;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.Toast;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,63 +27,45 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.common.Constants;
+import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.tour.TourService;
 
-/**
- * Created by RPR on 25/03/15.
- */
 public class MapEntourageFragment extends Fragment implements TourService.TourServiceListener {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
-    public static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
     public static final int FOLLOWING_LIMIT = 5;
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
-    private OnTourLaunchListener callback;
+    @Inject
+    MapPresenter presenter;
 
     private SupportMapFragment mapFragment;
+
+    private boolean isBetterLocationUpdated;
+
     private LatLng previousCoordinates;
 
     private TourService tourService;
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            tourService = ((TourService.LocalBinder)service).getService();
-            tourService.register(MapEntourageFragment.this);
-
-            boolean isRunning = tourService != null && tourService.isRunning();
-            if (isRunning) {
-                callback.onTourResume(tourService.isPaused());
-            }
-
-            Intent intent = getActivity().getIntent();
-            if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
-                callback.onNotificationAction(TourService.NOTIFICATION_PAUSE);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            tourService.unregister(MapEntourageFragment.this);
-            tourService = null;
-            //Toast.makeText(MapActivity.this, R.string.local_service_disconnected, Toast.LENGTH_SHORT).show();
-        }
-    };
+    private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = true;
     private boolean isFollowing = true;
     private int color;
@@ -98,6 +78,36 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
 
     @InjectView(R.id.button_start_tour_launcher)
     Button buttonStartLauncher;
+
+    @InjectView(R.id.layout_map_launcher)
+    View mapLauncherLayout;
+
+    @InjectView(R.id.launcher_tour_type_1)
+    RadioGroup radioGroupType1;
+
+    @InjectView(R.id.launcher_tour_type_2)
+    RadioGroup radioGroupType2;
+
+    @InjectView(R.id.layout_map_tour)
+    View layoutMapTour;
+
+    @InjectView(R.id.layout_map_confirmation)
+    View layoutMapConfirmation;
+
+    @InjectView(R.id.confirmation_encounters)
+    TextView encountersView;
+
+    @InjectView(R.id.confirmation_distance)
+    TextView distanceView;
+
+    @InjectView(R.id.confirmation_duration)
+    TextView durationView;
+
+    @InjectView(R.id.confirmation_resume_button)
+    Button resumeButton;
+
+    @InjectView(R.id.confirmation_end_button)
+    Button endButton;
 
     // ----------------------------------
     // LIFECYCLE
@@ -114,6 +124,9 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().setMyLocationEnabled(true);
@@ -122,7 +135,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                Location newLocation = cameraPositionToLocation("new",  EntourageLocation.getInstance().getLastCameraPosition());
+                Location newLocation = cameraPositionToLocation("new", EntourageLocation.getInstance().getLastCameraPosition());
                 Location prevLocation = cameraPositionToLocation("previous", cameraPosition);
                 if (newLocation.distanceTo(prevLocation) >= FOLLOWING_LIMIT) {
                     isFollowing = false;
@@ -131,26 +144,42 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         });
     }
 
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerMapComponent.builder()
+                .entourageComponent(entourageComponent)
+                .mapModule(new MapModule(this))
+                .build()
+                .inject(this);
+    }
+
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            callback = (OnTourLaunchListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                + " must implement OnTourLaunchListener");
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_CREATE_ENCOUNTER) {
+            if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK) {
+                Encounter encounter = (Encounter) data.getExtras().getSerializable(Constants.KEY_ENCOUNTER);
+                addEncounter(encounter);
+
+                LatLng latLng = new LatLng(data.getExtras().getDouble(Constants.KEY_LATITUDE), data.getExtras().getDouble(Constants.KEY_LONGITUDE));
+                /**
+                 * HERE : update the request to get all the encounters
+                 *        related to the current tour
+                 */
+                presenter.retrieveMapObjects(latLng);
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        initializeLocationService();
         doBindService();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStart() {
+        super.onStart();
+        presenter.start();
     }
 
     @Override
@@ -160,6 +189,42 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
             tourService.unregister(MapEntourageFragment.this);
             doUnbindService();
         }
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public void onNotificationAction(String action) {
+        if (TourService.NOTIFICATION_PAUSE.equals(action)) {
+            showConfirmation();
+        }
+    }
+
+    public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().setOnMarkerClickListener(onMarkerClickListener);
+        }
+    }
+
+    public void putEncounterOnMap(Encounter encounter,
+                                   MapPresenter.OnEntourageMarkerClickListener onClickListener) {
+        double encounterLatitude = encounter.getLatitude();
+        double encounterLongitude = encounter.getLongitude();
+        LatLng encounterPosition = new LatLng(encounterLatitude, encounterLongitude);
+        BitmapDescriptor encounterIcon = BitmapDescriptorFactory.fromResource(R.drawable.rencontre);
+
+        MarkerOptions markerOptions = new MarkerOptions().position(encounterPosition)
+                .icon(encounterIcon);
+
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().addMarker(markerOptions);
+            onClickListener.addEncounterMarker(encounterPosition, encounter);
+        }
+    }
+
+    public void initializeMapZoom() {
+        centerMap(EntourageLocation.getInstance().getLastCameraPosition());
     }
 
     // ----------------------------------
@@ -202,7 +267,66 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     // ----------------------------------
-    // PRIVATE METHODS
+    // CLICK CALLBACKS
+    // ----------------------------------
+
+    @OnClick(R.id.fragment_map_follow_button)
+    void onFollowGeolocation() {
+        isFollowing = true;
+    }
+
+    @OnClick(R.id.button_start_tour_launcher)
+    void onStartTourLauncher() {
+        if (!tourService.isRunning()) {
+            enableStartButton(false);
+            mapLauncherLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @OnClick(R.id.launcher_tour_go)
+    void onStartNewTour() {
+        TourType tourType1 = TourType.findByRessourceId(radioGroupType1.getCheckedRadioButtonId());
+        TourType tourType2 = TourType.findByRessourceId(radioGroupType2.getCheckedRadioButtonId());
+        mapLauncherLayout.setVisibility(View.GONE);
+        layoutMapTour.setVisibility(View.VISIBLE);
+        startTour(tourType1.getName(), tourType2.getName());
+    }
+
+
+    @OnClick(R.id.tour_stop_button)
+    public void onStopTour() {
+        pauseTour();
+        showConfirmation();
+    }
+
+    @OnClick(R.id.tour_add_encounter_button)
+    public void onAddEncounter() {
+        Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
+        saveCameraPosition();
+        Bundle args = new Bundle();
+        args.putLong(Constants.KEY_TOUR_ID, getTourId());
+        args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
+        args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+        intent.putExtras(args);
+        startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
+    }
+
+    @OnClick(R.id.confirmation_resume_button)
+    public void onResumeTour() {
+        layoutMapConfirmation.setVisibility(View.GONE);
+        layoutMapTour.setVisibility(View.VISIBLE);
+        resumeTour();
+    }
+
+    @OnClick(R.id.confirmation_end_button)
+    public void onEndTour() {
+        layoutMapConfirmation.setVisibility(View.GONE);
+        stopTour();
+    }
+
+
+    // ----------------------------------
+    // PRIVATE METHODS (lifecycle)
     // ----------------------------------
 
     private Location cameraPositionToLocation(String provider, CameraPosition cameraPosition) {
@@ -212,40 +336,26 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         return location;
     }
 
+    private void initializeLocationService() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.UPDATE_TIMER_MILLIS, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
+    }
+
+    private void showConfirmation() {
+        layoutMapTour.setVisibility(View.GONE);
+        Tour currentTour = getCurrentTour();
+        encountersView.setText(getString(R.string.tour_end_encounters, currentTour.getEncounters().size()));
+        distanceView.setText(getString(R.string.tour_end_distance, currentTour.getDistance()));
+        distanceView.setText(getString(R.string.tour_end_distance, String.format("%.1f", currentTour.getDistance() / 1000)));
+        durationView.setText(getString(R.string.tour_end_duration, currentTour.getDuration()));
+        layoutMapConfirmation.setVisibility(View.VISIBLE);
+    }
+
     // ----------------------------------
-    // PUBLIC METHODS (tours)
+    // PRIVATE METHODS (tours events)
     // ----------------------------------
 
-    @OnClick(R.id.fragment_map_follow_button)
-    public void followGeolocation(View view) {
-        isFollowing = true;
-    }
-
-    @OnClick(R.id.button_start_tour_launcher)
-    public void startTourLauncher(View view) {
-        if (!tourService.isRunning()) {
-            enableStartButton(false);
-            callback.onTourLaunch();
-        }
-    }
-
-    @OnClick(R.id.button_show_tours)
-    public void showToursList(View view) {
-        PopupMenu popupMenu = new PopupMenu(this.getActivity(), view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_popup_maraudes, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
-        popupMenu.show();
-
-        // here add past tours dynamically
-        // ...
-    }
-
-    public void startTour(String type1, String type2) {
+    private void startTour(String type1, String type2) {
         changeTrackColor(type2);
         if (tourService != null) {
             if (!tourService.isRunning()) {
@@ -255,13 +365,13 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
-    public void pauseTour() {
+    private void pauseTour() {
         if (tourService != null) {
             if (tourService.isRunning()) tourService.pauseTreatment();
         }
     }
 
-    public void resumeTour() {
+    private void resumeTour() {
         if (tourService.isRunning()) {
             tourService.resumeTreatment();
             enableStartButton(false);
@@ -269,7 +379,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
-    public void stopTour() {
+    private void stopTour() {
         if (tourService.isRunning()) {
             tourService.endTreatment();
             previousCoordinates = null;
@@ -279,23 +389,23 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
-    public Tour getCurrentTour() {
+    private Tour getCurrentTour() {
         return tourService.getCurrentTour();
     }
 
-    public long getTourId() {
+    private long getTourId() {
         return tourService.getTourId();
     }
 
-    public void addEncounter(Encounter encounter) {
+    private void addEncounter(Encounter encounter) {
         tourService.addEncounter(encounter);
     }
 
     // ----------------------------------
-    // PUBLIC METHODS (views)
+    // PRIVATE METHODS (views)
     // ----------------------------------
 
-    public void changeTrackColor(String type) {
+    private void changeTrackColor(String type) {
         if (TourType.SOCIAL.getName().equals(type)) {
             color = Color.GREEN;
         } else if (TourType.FOOD.getName().equals(type)) {
@@ -307,7 +417,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
-    public void enableStartButton(boolean enable) {
+    private void enableStartButton(boolean enable) {
         if (enable) {
             buttonStartLauncher.setClickable(true);
             buttonStartLauncher.setVisibility(View.VISIBLE);
@@ -317,7 +427,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
-    public void enableMapPin(boolean enable) {
+    private void enableMapPin(boolean enable) {
         if (enable) {
             mapPin.setVisibility(View.VISIBLE);
         } else {
@@ -325,37 +435,11 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
-    public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
-        if (mapFragment.getMap() != null) {
-            mapFragment.getMap().setOnMarkerClickListener(onMarkerClickListener);
-        }
-    }
-
-    public void putEncounterOnMap(Encounter encounter,
-            MapPresenter.OnEntourageMarkerClickListener onClickListener) {
-        double encounterLatitude = encounter.getLatitude();
-        double encounterLongitude = encounter.getLongitude();
-        LatLng encounterPosition = new LatLng(encounterLatitude, encounterLongitude);
-        BitmapDescriptor encounterIcon = BitmapDescriptorFactory.fromResource(R.drawable.rencontre);
-
-        MarkerOptions markerOptions = new MarkerOptions().position(encounterPosition)
-                                                         .icon(encounterIcon);
-
-        if (mapFragment.getMap() != null) {
-            mapFragment.getMap().addMarker(markerOptions);
-            onClickListener.addEncounterMarker(encounterPosition, encounter);
-        }
-    }
-
-    public void clearMap() {
+    private void clearMap() {
         if (mapFragment.getMap() != null) mapFragment.getMap().clear();
     }
 
-    public void initializeMapZoom() {
-        centerMap(EntourageLocation.getInstance().getLastCameraPosition());
-    }
-
-    public void centerMap(LatLng latLng) {
+    private void centerMap(LatLng latLng) {
         CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom, 0, 0);
         centerMap(cameraPosition);
     }
@@ -373,7 +457,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
-    public void drawLocation(LatLng location) {
+    private void drawLocation(LatLng location) {
         if (previousCoordinates != null) {
             PolylineOptions line = new PolylineOptions();
             line.add(previousCoordinates, location);
@@ -383,9 +467,9 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         previousCoordinates = location;
     }
 
-    public void drawResumedTour(Tour tour) {
+    private void drawResumedTour(Tour tour) {
         changeTrackColor(tour.getTourType());
-        if (tour != null && !tour.getCoordinates().isEmpty()) {
+        if (!tour.getCoordinates().isEmpty()) {
             PolylineOptions line = new PolylineOptions();
             line.width(15).color(color);
             for (LatLng location : tour.getCoordinates()) {
@@ -398,12 +482,71 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     }
 
     // ----------------------------------
-    // INTERFACES
+    // INNER CLASSES
     // ----------------------------------
 
-    public interface OnTourLaunchListener {
-        void onTourLaunch();
-        void onTourResume(boolean isPaused);
-        void onNotificationAction(String action);
+    private class CustomLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+
+            Location bestLocation = EntourageLocation.getInstance().getLocation();
+            boolean shouldCenterMap = false;
+            if (bestLocation == null || (location.getAccuracy()>0.0 && bestLocation.getAccuracy()==0.0)) {
+                EntourageLocation.getInstance().saveLocation(location);
+                isBetterLocationUpdated = true;
+                shouldCenterMap = true;
+            }
+
+            if (isBetterLocationUpdated) {
+                isBetterLocationUpdated = false;
+                LatLng latLng = EntourageLocation.getInstance().getLatLng();
+                presenter.retrieveMapObjects(latLng);
+                if (shouldCenterMap) {
+                    centerMap(latLng);
+                }
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    }
+
+    private class ServiceConnection implements android.content.ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            tourService = ((TourService.LocalBinder)service).getService();
+            tourService.register(MapEntourageFragment.this);
+
+            boolean isRunning = tourService != null && tourService.isRunning();
+            if (isRunning) {
+                layoutMapTour.setVisibility(View.VISIBLE);
+                enableStartButton(false);
+                enableMapPin(true);
+            }
+
+            Intent intent = getActivity().getIntent();
+            if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
+                onNotificationAction(TourService.NOTIFICATION_PAUSE);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            tourService.unregister(MapEntourageFragment.this);
+            tourService = null;
+        }
     }
 }
