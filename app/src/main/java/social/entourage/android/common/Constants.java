@@ -8,7 +8,6 @@ public class Constants {
 
     // Tour
     public static final String KEY_TOUR_ID = "keyTourId";
-    public static final String ACTION_TOUR_PAUSE = "keyTourPause";
 
     // API
     public static final String TOKEN = "0cb4507e970462ca0b11320131e96610";

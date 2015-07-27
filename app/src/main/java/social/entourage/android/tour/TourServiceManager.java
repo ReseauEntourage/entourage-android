@@ -13,11 +13,7 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.model.TourResponse;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -77,6 +73,7 @@ public class TourServiceManager {
     }
 
     private void sendTour() {
+        /*
         tourRequest.tour(tour, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
@@ -88,9 +85,11 @@ public class TourServiceManager {
                 Log.e("Error", error.toString());
             }
         });
+        */
     }
 
     private void updateTourCoordinates(TourPoint point) {
+        /*
         tourRequest.tourPoint(tourId, point, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
@@ -102,6 +101,7 @@ public class TourServiceManager {
                 Log.e("Error", error.toString());
             }
         });
+        */
     }
 
     // ----------------------------------
@@ -115,8 +115,6 @@ public class TourServiceManager {
     }
 
     public void finishTour() {
-        //LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
-        //locationManager.removeUpdates(locationListener);
         tour = null;
     }
 

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,6 +37,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.common.Constants;
 import social.entourage.android.tour.TourService;
 
 /**
@@ -65,11 +67,16 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         public void onServiceConnected(ComponentName name, IBinder service) {
             tourService = ((TourService.LocalBinder)service).getService();
             tourService.register(MapEntourageFragment.this);
+
             boolean isRunning = tourService != null && tourService.isRunning();
             if (isRunning) {
                 callback.onTourResume(tourService.isPaused());
             }
-            //Toast.makeText(MapActivity.this, R.string.local_service_connected, Toast.LENGTH_SHORT).show();
+
+            Intent intent = getActivity().getIntent();
+            if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
+                callback.onNotificationAction(TourService.NOTIFICATION_PAUSE);
+            }
         }
 
         @Override
@@ -192,11 +199,6 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     @Override
     public void onLocationUpdated(LatLng location) {
         centerMap(location);
-    }
-
-    @Override
-    public void onNotificationAction(String action) {
-        callback.onNotificationAction(action);
     }
 
     // ----------------------------------

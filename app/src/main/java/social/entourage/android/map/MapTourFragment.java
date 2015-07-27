@@ -29,9 +29,6 @@ public class MapTourFragment extends Fragment {
     private OnTourActionListener callback;
     private boolean isPaused;
 
-    //@InjectView(R.id.tour_pause_button)
-    Button pauseButton;
-
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -61,25 +58,6 @@ public class MapTourFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //if(isPaused) pauseButton.setText(R.string.tour_resume);
-
-        /**
-         * here : confirmation screen launched but "Reprendre" button doesn't respond
-         */
-        Intent starter = getActivity().getIntent();
-        if (starter != null) {
-            if (starter.getBooleanExtra(Constants.ACTION_TOUR_PAUSE, false)) {
-                callback.onTourPaused();
-            }
-        }
-        /**
-         * ------------------------------------------------------------------------
-         */
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -99,38 +77,14 @@ public class MapTourFragment extends Fragment {
     // PUBLIC METHODS
     // ----------------------------------
 
-    //@OnClick(R.id.tour_pause_button)
-    public void pauseTour(View view) {
-        if (!isPaused) {
-            pauseButton.setText(R.string.tour_resume);
-            isPaused = true;
-            callback.onTourPaused();
-        } else {
-            pauseButton.setText(R.string.tour_pause);
-            isPaused = false;
-            callback.onPausedTourResumed();
-        }
-    }
-
     @OnClick(R.id.tour_stop_button)
     public void stopTour(View view) {
-        //callback.onTourStopped();
         callback.onTourPaused();
     }
 
     @OnClick(R.id.tour_add_encounter_button)
     public void addEncounter(View view) {
         callback.onNewEncounter();
-    }
-
-    public void switchPauseButton() {
-        if (!isPaused) {
-            pauseButton.setText(R.string.tour_resume);
-            isPaused = true;
-        } else {
-            pauseButton.setText(R.string.tour_pause);
-            isPaused = false;
-        }
     }
 
     // ----------------------------------

@@ -7,10 +7,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -68,8 +66,8 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (intent.getBooleanExtra(Constants.ACTION_TOUR_PAUSE, false)) {
-            onTourPaused();
+        if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
+            onNotificationAction(TourService.NOTIFICATION_PAUSE);
         }
     }
 
@@ -174,6 +172,21 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
         mapFragment.saveCameraPosition();
     }
 
+    public void launchConfirmationFragment() {
+        getSupportFragmentManager().beginTransaction().remove(tourFragment).commit();
+        tourFragment = null;
+
+        Bundle bundle = new Bundle();
+        Tour tour = mapFragment.getCurrentTour();
+        bundle.putInt(MapConfirmationFragment.KEY_ENCOUNTERS, tour.getEncounters().size());
+        bundle.putFloat(MapConfirmationFragment.KEY_DISTANCE, tour.getDistance());
+        bundle.putString(MapConfirmationFragment.KEY_DURATION, tour.getDuration());
+
+        confirmationFragment = MapConfirmationFragment.newInstance();
+        confirmationFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, confirmationFragment).commit();
+    }
+
     // ----------------------------------
     // FRAGMENT INTERFACES METHODS
     // ----------------------------------
@@ -192,7 +205,7 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
         }
 
         tourFragment = MapTourFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, tourFragment).commit();
 
         mapFragment.startTour(type1, type2);
     }
@@ -200,25 +213,13 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     @Override
     public void onTourPaused() {
         mapFragment.pauseTour();
-
-        getSupportFragmentManager().beginTransaction().remove(tourFragment).commit();
-        tourFragment = null;
-
-        Bundle bundle = new Bundle();
-        Tour tour = mapFragment.getCurrentTour();
-        bundle.putInt(MapConfirmationFragment.KEY_ENCOUNTERS, tour.getEncounters().size());
-        bundle.putFloat(MapConfirmationFragment.KEY_DISTANCE, tour.getDistance());
-        bundle.putString(MapConfirmationFragment.KEY_DURATION, tour.getDuration());
-
-        confirmationFragment = MapConfirmationFragment.newInstance();
-        confirmationFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, confirmationFragment).commit();
+        launchConfirmationFragment();
     }
 
     @Override
     public void onTourConfirmationResume() {
         tourFragment = MapTourFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, tourFragment).commit();
 
         MapEntourageFragment mapEntourageFragment = mapFragment;
         mapEntourageFragment.resumeTour();
@@ -239,7 +240,7 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
         if (tourFragment == null) {
             tourFragment = MapTourFragment.newInstance();
             tourFragment.setIsPaused(isPaused);
-            getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_container, tourFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, tourFragment).commit();
         }
         mapFragment.enableStartButton(false);
         mapFragment.enableMapPin(true);
@@ -252,11 +253,8 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
 
     @Override
     public void onNotificationAction(String action) {
-        if (TourService.NOTIFICATION_PAUSE.equals(action) || TourService.NOTIFICATION_RESUME.equals(action)) {
-            tourFragment.switchPauseButton();
-        } else if (TourService.NOTIFICATION_STOP.equals(action)) {
-            getSupportFragmentManager().beginTransaction().remove(tourFragment).commit();
-            tourFragment = null;
+        if (TourService.NOTIFICATION_PAUSE.equals(action)) {
+            launchConfirmationFragment();
         }
     }
 

@@ -49,8 +49,6 @@ public class TourService extends Service {
 
     private static final int NOTIFICATION_ID = 1;
     public static final String NOTIFICATION_PAUSE = "social.entourage.android.NOTIFICATION_PAUSE";
-    public static final String NOTIFICATION_RESUME = "social.entourage.android.NOTIFICATION_RESUME";
-    public static final String NOTIFICATION_STOP = "social.entourage.android.NOTIFICATION_STOP";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -76,13 +74,11 @@ public class TourService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
                 pauseTreatment();
-                notifyListenersNotification(NOTIFICATION_PAUSE);
-            } else if (NOTIFICATION_RESUME.equals(intent.getAction())) {
-                resumeTreatment();
-                notifyListenersNotification(NOTIFICATION_RESUME);
-            } else if (NOTIFICATION_STOP.equals(intent.getAction())) {
-                endTreatment();
-                notifyListenersNotification(NOTIFICATION_STOP);
+                Intent pauseIntent = new Intent(context, MapActivity.class);
+                pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                pauseIntent.putExtra(NOTIFICATION_PAUSE, true);
+                startActivity(pauseIntent);
+
             }
         }
     };
@@ -106,8 +102,6 @@ public class TourService extends Service {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(NOTIFICATION_PAUSE);
-        filter.addAction(NOTIFICATION_RESUME);
-        filter.addAction(NOTIFICATION_STOP);
         registerReceiver(receiver, filter);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -173,7 +167,8 @@ public class TourService extends Service {
     }
 
     private void createNotification() {
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MapActivity.class), 0);
+        final Intent notificationIntent = new Intent(this, MapActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.tour_record)
                 .setContentIntent(contentIntent)
@@ -182,45 +177,26 @@ public class TourService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
-            Intent intent = new Intent(this, MapActivity.class);
-            intent.putExtra(Constants.ACTION_TOUR_PAUSE, true);
-            PendingIntent confirmationIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            /*
-            Intent showConfirmationIntent = new Intent(this, MapActivity.class);
-            showConfirmationIntent.setAction(Constants.ACTION_TOUR_PAUSE);
-            PendingIntent stopIntent = PendingIntent.getActivity(this, 0, showConfirmationIntent, 0);
-            */
-
-            //PendingIntent stop = createPendingIntent(NOTIFICATION_STOP);
+            PendingIntent pauseTourIntent = createPendingIntent(NOTIFICATION_PAUSE);
             notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
-            notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, confirmationIntent);
+            notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, pauseTourIntent);
             builder = builder.setContent(notificationRemoteView);
         }
         notification = builder.build();
     }
 
     private void configureRemoteView(int action) {
-        PendingIntent pause, resume;
         switch (action) {
             case 0 :
-                pause = createPendingIntent(NOTIFICATION_PAUSE);
-                notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
                 timeBase = 0;
                 notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
                 chronometer.start();
                 break;
             case 1 :
-                notificationRemoteView.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_resume));
-                resume = createPendingIntent(NOTIFICATION_RESUME);
-                notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, resume);
                 timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
                 notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false);
                 break;
             case 2 :
-                notificationRemoteView.setTextViewText(R.id.notification_tour_pause_resume_button, getText(R.string.tour_pause));
-                pause = createPendingIntent(NOTIFICATION_PAUSE);
-                notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_resume_button, pause);
                 notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
                 chronometer.setBase(SystemClock.elapsedRealtime() + timeBase);
                 break;
@@ -256,7 +232,6 @@ public class TourService extends Service {
         if (!isRunning()) {
             tourServiceManager.startTour(type1, type2);
             startNotification();
-            //Toast.makeText(this, R.string.local_service_started, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -330,10 +305,6 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersNotification(String action) {
-        for (TourServiceListener listener : listeners) listener.onNotificationAction(action);
-    }
-
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
@@ -342,6 +313,5 @@ public class TourService extends Service {
         void onTourUpdated(Tour tour);
         void onTourResumed(Tour tour);
         void onLocationUpdated(LatLng location);
-        void onNotificationAction(String action);
     }
 }
