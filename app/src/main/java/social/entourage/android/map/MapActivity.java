@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,7 +68,13 @@ public class MapActivity extends EntourageSecuredActivity implements MapEntourag
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
-            onNotificationAction(TourService.NOTIFICATION_PAUSE);
+            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onNotificationAction(TourService.NOTIFICATION_PAUSE);
+                }
+            });
         }
     }
 
