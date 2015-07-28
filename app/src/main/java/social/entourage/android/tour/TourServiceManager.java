@@ -108,9 +108,9 @@ public class TourServiceManager {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void startTour(String type1, String type2) {
+    public void startTour(String transportMode, String type) {
         tour = new Tour();
-        tour.setTourType(type2); // social, other, food
+        tour.setTourType(type); // social, other, food
         sendTour();
     }
 

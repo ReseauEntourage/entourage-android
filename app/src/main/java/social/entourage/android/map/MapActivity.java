@@ -53,4 +53,11 @@ public class MapActivity extends EntourageSecuredActivity {
             });
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!mapFragment.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
 }

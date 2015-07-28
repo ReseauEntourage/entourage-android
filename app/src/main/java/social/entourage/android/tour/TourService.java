@@ -228,9 +228,9 @@ public class TourService extends Service {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void beginTreatment(String type1, String type2) {
+    public void beginTreatment(String transportMode, String type) {
         if (!isRunning()) {
-            tourServiceManager.startTour(type1, type2);
+            tourServiceManager.startTour(transportMode, type);
             startNotification();
         }
     }

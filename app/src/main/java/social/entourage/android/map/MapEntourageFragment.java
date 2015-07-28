@@ -32,10 +32,12 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import social.entourage.android.BackPressable;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
@@ -43,7 +45,7 @@ import social.entourage.android.common.Constants;
 import social.entourage.android.encounter.CreateEncounterActivity;
 import social.entourage.android.tour.TourService;
 
-public class MapEntourageFragment extends Fragment implements TourService.TourServiceListener {
+public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -82,11 +84,11 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     @InjectView(R.id.layout_map_launcher)
     View mapLauncherLayout;
 
-    @InjectView(R.id.launcher_tour_type_1)
-    RadioGroup radioGroupType1;
+    @InjectView(R.id.launcher_tour_transport_mode)
+    RadioGroup radioGroupTransportMode;
 
-    @InjectView(R.id.launcher_tour_type_2)
-    RadioGroup radioGroupType2;
+    @InjectView(R.id.launcher_tour_type)
+    RadioGroup radioGroupType;
 
     @InjectView(R.id.layout_map_tour)
     View layoutMapTour;
@@ -180,6 +182,16 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     public void onStart() {
         super.onStart();
         presenter.start();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
+            mapLauncherLayout.setVisibility(View.GONE);
+            buttonStartLauncher.setVisibility(View.VISIBLE);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -278,18 +290,18 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     @OnClick(R.id.button_start_tour_launcher)
     void onStartTourLauncher() {
         if (!tourService.isRunning()) {
-            enableStartButton(false);
+            buttonStartLauncher.setVisibility(View.GONE);
             mapLauncherLayout.setVisibility(View.VISIBLE);
         }
     }
 
     @OnClick(R.id.launcher_tour_go)
     void onStartNewTour() {
-        TourType tourType1 = TourType.findByRessourceId(radioGroupType1.getCheckedRadioButtonId());
-        TourType tourType2 = TourType.findByRessourceId(radioGroupType2.getCheckedRadioButtonId());
+        TourTransportMode tourTransportMode = TourTransportMode.findByRessourceId(radioGroupTransportMode.getCheckedRadioButtonId());
+        TourType tourType = TourType.findByRessourceId(radioGroupType.getCheckedRadioButtonId());
         mapLauncherLayout.setVisibility(View.GONE);
         layoutMapTour.setVisibility(View.VISIBLE);
-        startTour(tourType1.getName(), tourType2.getName());
+        startTour(tourTransportMode.getName(), tourType.getName());
     }
 
 
@@ -355,12 +367,12 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     // PRIVATE METHODS (tours events)
     // ----------------------------------
 
-    private void startTour(String type1, String type2) {
-        changeTrackColor(type2);
+    private void startTour(String transportMode, String type) {
+        changeTrackColor(type);
         if (tourService != null) {
             if (!tourService.isRunning()) {
-                enableMapPin(true);
-                tourService.beginTreatment(type1, type2);
+                mapPin.setVisibility(View.VISIBLE);
+                tourService.beginTreatment(transportMode, type);
             }
         }
     }
@@ -374,8 +386,8 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
     private void resumeTour() {
         if (tourService.isRunning()) {
             tourService.resumeTreatment();
-            enableStartButton(false);
-            enableMapPin(true);
+            buttonStartLauncher.setVisibility(View.GONE);
+            mapPin.setVisibility(View.VISIBLE);
         }
     }
 
@@ -384,8 +396,8 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
             tourService.endTreatment();
             previousCoordinates = null;
             clearMap();
-            enableMapPin(false);
-            enableStartButton(true);
+            mapPin.setVisibility(View.GONE);
+            buttonStartLauncher.setVisibility(View.VISIBLE);
         }
     }
 
@@ -417,26 +429,10 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
         }
     }
 
-    private void enableStartButton(boolean enable) {
-        if (enable) {
-            buttonStartLauncher.setClickable(true);
-            buttonStartLauncher.setVisibility(View.VISIBLE);
-        } else {
-            buttonStartLauncher.setClickable(false);
-            buttonStartLauncher.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void enableMapPin(boolean enable) {
-        if (enable) {
-            mapPin.setVisibility(View.VISIBLE);
-        } else {
-            mapPin.setVisibility(View.INVISIBLE);
-        }
-    }
-
     private void clearMap() {
-        if (mapFragment.getMap() != null) mapFragment.getMap().clear();
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().clear();
+        }
     }
 
     private void centerMap(LatLng latLng) {
@@ -476,7 +472,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
                 line.add(location);
             }
             mapFragment.getMap().addPolyline(line);
-            previousCoordinates = tour.getCoordinates().get(tour.getCoordinates().size()-1);
+            previousCoordinates = tour.getCoordinates().get(tour.getCoordinates().size() - 1);
         }
 
     }
@@ -492,7 +488,7 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
 
             Location bestLocation = EntourageLocation.getInstance().getLocation();
             boolean shouldCenterMap = false;
-            if (bestLocation == null || (location.getAccuracy()>0.0 && bestLocation.getAccuracy()==0.0)) {
+            if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
                 EntourageLocation.getInstance().saveLocation(location);
                 isBetterLocationUpdated = true;
                 shouldCenterMap = true;
@@ -533,8 +529,8 @@ public class MapEntourageFragment extends Fragment implements TourService.TourSe
             boolean isRunning = tourService != null && tourService.isRunning();
             if (isRunning) {
                 layoutMapTour.setVisibility(View.VISIBLE);
-                enableStartButton(false);
-                enableMapPin(true);
+                buttonStartLauncher.setVisibility(View.GONE);
+                mapPin.setVisibility(View.VISIBLE);
             }
 
             Intent intent = getActivity().getIntent();
