@@ -357,10 +357,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void showConfirmation() {
         layoutMapTour.setVisibility(View.GONE);
         Tour currentTour = getCurrentTour();
-        encountersView.setText(getString(R.string.tour_end_encounters, currentTour.getEncounters().size()));
-        distanceView.setText(getString(R.string.tour_end_distance, currentTour.getDistance()));
-        distanceView.setText(getString(R.string.tour_end_distance, String.format("%.1f", currentTour.getDistance() / 1000)));
-        durationView.setText(getString(R.string.tour_end_duration, currentTour.getDuration()));
+        if (currentTour != null) {
+            encountersView.setText(getString(R.string.tour_end_encounters, currentTour.getEncounters().size()));
+            distanceView.setText(getString(R.string.tour_end_distance, currentTour.getDistance()));
+            distanceView.setText(getString(R.string.tour_end_distance, String.format("%.1f", currentTour.getDistance() / 1000)));
+            durationView.setText(getString(R.string.tour_end_duration, currentTour.getDuration()));
+        }
         layoutMapConfirmation.setVisibility(View.VISIBLE);
     }
 
@@ -403,7 +405,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private Tour getCurrentTour() {
-        return tourService.getCurrentTour();
+        return tourService != null ? tourService.getCurrentTour() : null;
     }
 
     private long getTourId() {
@@ -532,6 +534,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 layoutMapTour.setVisibility(View.VISIBLE);
                 buttonStartLauncher.setVisibility(View.GONE);
                 mapPin.setVisibility(View.VISIBLE);
+            }
+
+            if (layoutMapConfirmation.getVisibility() == View.VISIBLE) {
+                showConfirmation();
             }
 
             Intent intent = getActivity().getIntent();

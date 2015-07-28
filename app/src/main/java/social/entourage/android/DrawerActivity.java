@@ -73,16 +73,17 @@ public class DrawerActivity extends EntourageSecuredActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
-            Handler handler = new Handler();
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mainFragment instanceof MapEntourageFragment) {
+            loadFragment(new MapEntourageFragment());
+            if (mainFragment instanceof MapEntourageFragment) {
+                Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
                         MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
                         mapEntourageFragment.onNotificationAction(TourService.NOTIFICATION_PAUSE);
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -129,17 +130,12 @@ public class DrawerActivity extends EntourageSecuredActivity {
     }
 
     private void selectItem(MenuItem menuItem) {
-        FragmentTransaction fragmentTransaction;
         switch (menuItem.getItemId()) {
             case R.id.action_tours:
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_fragment, new MapEntourageFragment());
-                fragmentTransaction.commit();
+                loadFragment(new MapEntourageFragment());
                 break;
             case R.id.action_guide:
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_fragment, new GuideMapEntourageFragment());
-                fragmentTransaction.commit();
+                loadFragment(new GuideMapEntourageFragment());
                 break;
             case R.id.action_logout:
                 logout();
@@ -147,5 +143,12 @@ public class DrawerActivity extends EntourageSecuredActivity {
             default:
                 Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    private void loadFragment(Fragment newFragment) {
+        mainFragment = newFragment;
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_fragment, mainFragment);
+        fragmentTransaction.commit();
     }
 }
