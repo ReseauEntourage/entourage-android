@@ -1,61 +1,51 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <include layout="@layout/toolbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:id="@+id/textview_person_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar"
-            android:text="@string/encounter_label_person_name_and"
-            android:paddingBottom="5dp"/>
-
         <EditText
             android:id="@+id/edittext_street_person_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textview_person_name"
-            android:paddingBottom="5dp"/>
+            android:layout_marginTop="5dp"
+            android:hint="@string/encounter_hint_person_name"
+            android:textIsSelectable="false"/>
 
-        <TextView
-            android:id="@+id/textview_met"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/edittext_message"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/encounter_encountered"
-            android:paddingBottom="10dp"
-            android:layout_below="@id/edittext_street_person_name"/>
-
-        <TextView
-            android:id="@+id/textview_leave_voice_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/encounter_leave_voice_message"
-            android:layout_below="@id/textview_met"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:padding="5dp"
+            android:lines="10"
+            android:gravity="left|top"
+            android:inputType="textMultiLine"
+            android:layout_below="@id/edittext_street_person_name"
+            android:background="@drawable/custom_edit_text_long"
+            android:hint="@string/encounter_hint_notes"/>
 
         <LinearLayout
             android:id="@+id/layout_player"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textview_leave_voice_message">
+            android:layout_below="@id/edittext_message">
 
             <ImageButton
                 android:id="@+id/button_record"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/player_record"/>
+                android:background="@drawable/custom_popup"
+                android:src="@drawable/ic_settings_voice_black_48dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -78,47 +68,22 @@
                 android:id="@+id/button_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/player_play"/>
+                android:background="@drawable/custom_popup"
+                android:src="@drawable/ic_play_arrow_black_48dp"/>
 
         </LinearLayout>
 
-
-
-        <CheckBox
-            android:id="@+id/checkbox_share_on_twitter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layout_player"
-            android:layout_marginTop="20dp"
-            android:text="@string/encounter_share_on_twitter"
-            android:layout_centerHorizontal="true"/>
-
-        <TextView
-            android:id="@+id/textview_leave_text_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/encounter_leave_text_message"
-            android:layout_below="@id/checkbox_share_on_twitter"
-            android:layout_marginTop="20dp"/>
-
-        <EditText
-            android:id="@+id/edittext_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textview_leave_text_message"
-            android:lines="4"
-            android:gravity="left|top"
-            android:inputType="textMultiLine"
-            android:paddingBottom="10dp"/>
-
         <Button
             android:id="@+id/button_create_encounter"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="@string/encouter_add"
             android:minWidth="50dp"
-            android:layout_below="@id/edittext_message"
+            android:layout_below="@id/layout_player"
             android:background="@drawable/custom_button_1"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true" />
+
     </RelativeLayout>
+
 </LinearLayout>

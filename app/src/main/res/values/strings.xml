@@ -22,12 +22,14 @@
 
     <!-- Encounter -->
     <string name="activity_read_encounter_title">Rencontre</string>
-    <string name="activity_create_encounter_title">Créer une rencontre</string>
+    <string name="activity_create_encounter_title">Nouvelle rencontre</string>
+    <string name="encounter_hint_person_name">Nom</string>
+    <string name="encounter_hint_notes">Mes notes</string>
     <string name="encounter_label_date">Date de rencontre</string>
     <string name="encounter_label_street_person_name">Personne de la rue</string>
     <string name="encounter_label_person_name_and">%1$s et</string>
     <string name="encounter_encountered">se sont rencontrés ici le %1$s</string>
-    <string name="encouter_add">Ajouter</string>
+    <string name="encouter_add">Créer la rencontre</string>
     <string name="login_fail">Erreur de connexion</string>
     <string name="create_encounter_failure">Echec de la création de rencontre: %1$s</string>
     <string name="create_encounter_success">Rencontre créée</string>
@@ -61,6 +63,7 @@
     <string name="tour_type_medical">Médicale</string>
     <string name="tour_type_bare_hands">A main nues</string>
     <string name="tour_type_alimentary">Alimentaire</string>
+    <string name="tour_create_encounter_button">Créer une rencontre</string>
     <string name="tour_end_confirmation">Veux-tu vraiment arrêter la maraude ?\nUn mail récapitulatif te sera envoyé.</string>
     <string name="tour_end_encounters">%1$d personnes rencontrées</string>
     <string name="tour_end_distance">%1$s km parcourus</string>

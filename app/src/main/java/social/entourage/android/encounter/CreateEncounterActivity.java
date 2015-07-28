@@ -50,23 +50,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @InjectView(R.id.edittext_street_person_name)
     EditText edtStreetPersonName;
 
-    @InjectView(R.id.textview_person_name)
-    TextView txtPersonName;
-
-    @InjectView(R.id.textview_met)
-    TextView txtMet;
-
-    @InjectView(R.id.textview_duration)
-    TextView txtDuration;
-
     @InjectView(R.id.button_record)
     ImageButton btnStartStopRecording;
 
     @InjectView(R.id.button_play)
     ImageButton btnPlay;
-
-    @InjectView(R.id.checkbox_share_on_twitter)
-    CheckBox twitterCheckBox;
 
     private final SpiceManager spiceManager = new SpiceManager(UncachedSpiceService.class);
 
@@ -95,10 +83,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         @Override
         public void run() {
             totalRecordTime = System.currentTimeMillis() - startRecordTime;
-            String duration = String.format("%02d:%02d",
-                    TimeUnit.MILLISECONDS.toMinutes(totalRecordTime) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(totalRecordTime)),
-                    TimeUnit.MILLISECONDS.toSeconds(totalRecordTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalRecordTime)));
-            txtDuration.setText(duration);
             durationHandler.postDelayed(this, 0);
         }
     };
@@ -112,7 +96,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_encounter_create);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ButterKnife.inject(this);
 
         arguments = getIntent().getExtras();
@@ -124,8 +107,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             throw new IllegalArgumentException("You must ne logged in");
         }
 
-        txtPersonName.setText(getString(R.string.encounter_label_person_name_and, getAuthenticationController().getUser().getFirstName()));
-        txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(new Date())));
         btnPlay.setEnabled(false);
         isPlaying = false;
         isRecording = false;
@@ -197,15 +178,10 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         encounter.setStreetPersonName(edtStreetPersonName.getText().toString());
         encounter.setCreationDate(new Date());
 
-        presenter.twitterChecked = twitterCheckBox.isChecked();
-
         if (hasAMessageBeenRecorded) {
             presenter.createTrackOnSoundCloud(encounter, audioFileName);
         } else {
             presenter.createEncounter(encounter);
-            if (presenter.twitterChecked) {
-                presenter.tweetWithoutAudioFile(encounter);
-            }
         }
     }
 
@@ -213,11 +189,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     public void onClickOnStartStopRecording() {
         if (isRecording) {
             stopRecording();
-            btnStartStopRecording.setImageResource(R.drawable.player_record);
+            btnStartStopRecording.setImageResource(R.drawable.ic_stop_black_48dp);
             btnPlay.setEnabled(true);
         } else {
             startRecording();
-            btnStartStopRecording.setImageResource(R.drawable.player_stop);
+            btnStartStopRecording.setImageResource(R.drawable.ic_stop_black_48dp);
             btnPlay.setEnabled(false);
         }
         isRecording = !isRecording;
@@ -227,11 +203,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     public void onClickOnPlay() {
         if (isPlaying) {
             stopPlaying();
-            btnPlay.setImageResource(R.drawable.player_play);
+            btnPlay.setImageResource(R.drawable.ic_play_arrow_black_48dp);
             btnStartStopRecording.setEnabled(true);
         } else {
             startPlaying();
-            btnPlay.setImageResource(R.drawable.player_stop);
+            btnPlay.setImageResource(R.drawable.ic_stop_black_48dp);
             btnStartStopRecording.setEnabled(false);
         }
         isPlaying = !isPlaying;
@@ -247,7 +223,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-                    btnPlay.setImageResource(R.drawable.player_play);
+                    btnPlay.setImageResource(R.drawable.ic_play_arrow_black_48dp);
                     btnStartStopRecording.setEnabled(true);
                     isPlaying = false;
                 }

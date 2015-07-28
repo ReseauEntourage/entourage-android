@@ -45,12 +45,14 @@
 
         <activity
             android:name=".encounter.ReadEncounterActivity"
+            android:theme="@style/CustomDialogTheme"
             android:label="@string/activity_read_encounter_title"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".encounter.CreateEncounterActivity"
+            android:theme="@style/CustomDialogTheme"
             android:label="@string/activity_create_encounter_title"
             android:screenOrientation="portrait">
         </activity>

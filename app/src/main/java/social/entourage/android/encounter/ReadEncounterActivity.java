@@ -37,20 +37,11 @@ public class ReadEncounterActivity extends EntourageActivity {
     @Inject
     ReadEncounterPresenter presenter;
 
-    @InjectView(R.id.textview_person_name)
-    TextView txtPersonName;
-
     @InjectView(R.id.edittext_street_person_name)
     EditText edtStreetPersonName;
 
-    @InjectView(R.id.textview_met)
-    TextView txtMet;
-
     @InjectView(R.id.edittext_message)
     EditText edtMessage;
-
-    @InjectView(R.id.textview_listen_to_voice_message)
-    View txtListenToMessage;
 
     @InjectView(R.id.layout_player)
     View layoutPlayer;
@@ -89,7 +80,6 @@ public class ReadEncounterActivity extends EntourageActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_encounter_read);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ButterKnife.inject(this);
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
@@ -123,10 +113,10 @@ public class ReadEncounterActivity extends EntourageActivity {
     public void onClickOnPlay() {
         if (isPlaying) {
             stopPlaying();
-            btnPlay.setImageResource(R.drawable.player_play);
+            btnPlay.setImageResource(R.drawable.ic_play_arrow_black_48dp);
         } else {
             startPlaying();
-            btnPlay.setImageResource(R.drawable.player_stop);
+            btnPlay.setImageResource(R.drawable.ic_stop_black_48dp);
         }
         isPlaying = !isPlaying;
     }
@@ -141,7 +131,7 @@ public class ReadEncounterActivity extends EntourageActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                btnPlay.setImageResource(R.drawable.player_play);
+                btnPlay.setImageResource(R.drawable.ic_play_arrow_black_48dp);
                 durationHandler.removeCallbacks(updateDurationThread);
                 isPlaying = false;
             }
@@ -169,17 +159,13 @@ public class ReadEncounterActivity extends EntourageActivity {
     }
 
     public void displayEncounter() {
-        txtPersonName.setText(getString(R.string.encounter_label_person_name_and, encounter.getUserName()));
         edtStreetPersonName.setText(encounter.getStreetPersonName());
         edtMessage.setText(encounter.getMessage());
-        txtMet.setText(getString(R.string.encounter_encountered, Constants.FORMATER_DDMMYYYY.format(encounter.getCreationDate())));
 
         if (encounter.getVoiceMessageUrl() == null) {
-            txtListenToMessage.setVisibility(View.GONE);
             layoutPlayer.setVisibility(View.GONE);
             btnPlay.setEnabled(false);
         } else {
-            txtListenToMessage.setVisibility(View.VISIBLE);
             layoutPlayer.setVisibility(View.VISIBLE);
 
             mediaPlayer = new MediaPlayer();
@@ -202,7 +188,6 @@ public class ReadEncounterActivity extends EntourageActivity {
     };
 
     public void disablePlayer() {
-        txtListenToMessage.setVisibility(View.GONE);
         layoutPlayer.setVisibility(View.GONE);
     }
 

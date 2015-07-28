@@ -33,6 +33,6 @@
         android:background="@drawable/custom_button_2"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/activity_create_encounter_title"/>
+        android:text="@string/tour_create_encounter_button"/>
 
 </LinearLayout>

@@ -37,8 +37,6 @@ public class CreateEncounterPresenter {
 
     private final EncounterRequest encounterRequest;
 
-    public boolean twitterChecked;
-
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -69,52 +67,6 @@ public class CreateEncounterPresenter {
         encounterRequest.create(encounter.getTourId(), encounterWrapper, new EncounterRequestCallback());
     }
 
-    private void tweetWithAudioFile(Encounter encounter) {
-        String tweet = String.format(activity.getString(R.string.tweet_with_audio),
-                                     encounter.getStreetPersonName(),
-                                     encounter.getSoundCloudPermalinkUrl(),
-                                     Constants.HASHTAG,
-                                     Constants.TWITTER_ENTOURAGE_ACCOUNT_NAME);
-        sendTweet(tweet);
-    }
-
-    public void tweetWithoutAudioFile(Encounter encounter) {
-        String tweet = String.format(activity.getString(R.string.tweet_without_audio),
-                                     encounter.getStreetPersonName(),
-                                     Constants.HASHTAG,
-                                     Constants.TWITTER_ENTOURAGE_ACCOUNT_NAME);
-        sendTweet(tweet);
-    }
-
-    // ----------------------------------
-    // PRIVATE METHODS
-    // ----------------------------------
-
-    private void sendTweet(String tweet) {
-        Intent tweetIntent = new Intent(Intent.ACTION_SEND);
-        tweetIntent.putExtra(Intent.EXTRA_TEXT, tweet);
-        tweetIntent.setType("text/plain");
-
-        PackageManager packManager = activity.getPackageManager();
-        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(tweetIntent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        boolean resolved = false;
-
-        for (ResolveInfo resolveInfo: resolvedInfoList) {
-            if (resolveInfo.activityInfo.packageName.startsWith("com.twitter.android")) {
-                tweetIntent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
-                resolved = true;
-                break;
-            }
-        }
-
-        if (resolved) {
-            activity.startActivity(tweetIntent);
-        } else {
-            Toast.makeText(activity, "Twitter app not found", Toast.LENGTH_LONG).show();
-        }
-    }
-
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
@@ -135,17 +87,11 @@ public class CreateEncounterPresenter {
                     "Error creating audio message on SoundCloud: " + spiceException.getMessage(), Toast.LENGTH_LONG)
                     .show();
             createEncounter(this.encounter);
-            if(twitterChecked) {
-                tweetWithoutAudioFile(this.encounter);
-            }
         }
 
         @Override
         public void onRequestSuccess(Encounter encounter) {
             createEncounter(encounter);
-            if(twitterChecked) {
-                tweetWithAudioFile(encounter);
-            }
         }
     }
 

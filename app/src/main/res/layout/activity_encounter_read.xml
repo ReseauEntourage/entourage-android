@@ -1,98 +1,71 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <include layout="@layout/toolbar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_vertical_margin">
 
-    <TextView
-        android:id="@+id/textview_person_name"
-        android:layout_below="@+id/toolbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/encounter_label_person_name_and"
-        android:paddingBottom="5dp"/>
-
-
-    <EditText
+        <EditText
         android:id="@+id/edittext_street_person_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textview_person_name"
         android:paddingBottom="5dp"
-        android:enabled="false"
-        />
+        android:enabled="false" />
 
-    <TextView
-        android:id="@+id/textview_met"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/encounter_encountered"
-        android:paddingBottom="10dp"
-        android:layout_below="@id/edittext_street_person_name"/>
-
-    <TextView
-        android:id="@+id/textview_listen_to_voice_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/encounter_listen_to_voice_message"
-        android:layout_below="@id/textview_met"
-        android:layout_marginTop="20dp"/>
-
-    <LinearLayout
-        android:id="@+id/layout_player"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textview_listen_to_voice_message">
-
-        <ImageButton
-            android:id="@+id/button_play"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/edittext_message"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/player_play"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:padding="5dp"
+            android:lines="10"
+            android:gravity="left|top"
+            android:inputType="textMultiLine"
+            android:layout_below="@id/edittext_street_person_name"
+            android:background="@drawable/custom_edit_text_long"
+            android:paddingBottom="10dp"
+            android:enabled="false"/>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/textview_duration"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/layout_player"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="00:00"
-            android:layout_gravity="center_vertical"/>
+            android:layout_below="@id/edittext_message">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/button_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_popup"
+                android:src="@drawable/ic_play_arrow_black_48dp"/>
 
-    <TextView
-        android:id="@+id/textview_leave_text_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/encounter_text_message"
-        android:layout_below="@id/layout_player"
-        android:layout_marginTop="20dp"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
-    <EditText
-        android:id="@+id/edittext_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textview_leave_text_message"
-        android:lines="4"
-        android:gravity="left|top"
-        android:inputType="textMultiLine"
-        android:paddingBottom="10dp"
-        android:enabled="false"/>
+            <TextView
+                android:id="@+id/textview_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_gravity="center_vertical"/>
 
-</RelativeLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
