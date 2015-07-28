@@ -16,10 +16,6 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import social.entourage.android.BackPressable;
-import social.entourage.android.EntourageComponent;
-import social.entourage.android.EntourageSecuredActivity;
-import social.entourage.android.R;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
@@ -144,6 +140,9 @@ public class DrawerActivity extends EntourageSecuredActivity {
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_fragment, new GuideMapEntourageFragment());
                 fragmentTransaction.commit();
+                break;
+            case R.id.action_logout:
+                logout();
                 break;
             default:
                 Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();

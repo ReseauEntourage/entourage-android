@@ -30,4 +30,10 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
     protected AuthenticationController getAuthenticationController() {
         return authenticationController;
     }
+
+    protected void logout() {
+        authenticationController.logOutUser();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
 }
