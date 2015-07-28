@@ -6,13 +6,10 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.octo.android.robospice.SpiceManager;
@@ -21,7 +18,6 @@ import com.octo.android.robospice.UncachedSpiceService;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -189,11 +185,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     public void onClickOnStartStopRecording() {
         if (isRecording) {
             stopRecording();
-            btnStartStopRecording.setImageResource(R.drawable.ic_stop_black_48dp);
+            btnStartStopRecording.setImageResource(R.drawable.ic_action_stop_sound);
             btnPlay.setEnabled(true);
         } else {
             startRecording();
-            btnStartStopRecording.setImageResource(R.drawable.ic_stop_black_48dp);
+            btnStartStopRecording.setImageResource(R.drawable.ic_action_stop_sound);
             btnPlay.setEnabled(false);
         }
         isRecording = !isRecording;
@@ -203,11 +199,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     public void onClickOnPlay() {
         if (isPlaying) {
             stopPlaying();
-            btnPlay.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+            btnPlay.setImageResource(R.drawable.ic_action_play_sound);
             btnStartStopRecording.setEnabled(true);
         } else {
             startPlaying();
-            btnPlay.setImageResource(R.drawable.ic_stop_black_48dp);
+            btnPlay.setImageResource(R.drawable.ic_action_stop_sound);
             btnStartStopRecording.setEnabled(false);
         }
         isPlaying = !isPlaying;
@@ -223,7 +219,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-                    btnPlay.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+                    btnPlay.setImageResource(R.drawable.ic_action_play_sound);
                     btnStartStopRecording.setEnabled(true);
                     isPlaying = false;
                 }

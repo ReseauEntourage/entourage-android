@@ -1,5 +1,6 @@
 package social.entourage.android.api.model.map;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -10,7 +11,8 @@ public class Encounter implements Serializable{
 
     private long id;
 
-    private transient long tourId;
+    @Expose(serialize = false, deserialize = true)
+    private long tourId;
 
     @SerializedName("date")
     private Date creationDate;

@@ -224,7 +224,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         double encounterLatitude = encounter.getLatitude();
         double encounterLongitude = encounter.getLongitude();
         LatLng encounterPosition = new LatLng(encounterLatitude, encounterLongitude);
-        BitmapDescriptor encounterIcon = BitmapDescriptorFactory.fromResource(R.drawable.rencontre);
+        BitmapDescriptor encounterIcon = BitmapDescriptorFactory.fromResource(R.drawable.encounter);
 
         MarkerOptions markerOptions = new MarkerOptions().position(encounterPosition)
                 .icon(encounterIcon);

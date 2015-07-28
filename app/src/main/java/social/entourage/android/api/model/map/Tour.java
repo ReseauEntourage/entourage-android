@@ -1,6 +1,7 @@
 package social.entourage.android.api.model.map;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -10,26 +11,40 @@ import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.api.model.TourType;
+import social.entourage.android.common.Constants;
 
 @SuppressWarnings("unused")
 public class Tour implements Serializable {
 
+    private static final String TOUR_ON_GOING = "ongoing";
+    private static final String TOUR_CLOSED = "closed";
+
+    @Expose(serialize = false, deserialize = true)
     private long id;
 
     @SerializedName("tour_type")
     private String tourType = TourType.SOCIAL.getName();
 
-    private transient Date date;
+    @SerializedName("status")
+    private String tourStatus = TOUR_ON_GOING;
 
+    @Expose(serialize = false, deserialize = true)
+    private Date date;
+
+    @Expose(serialize = false, deserialize = true)
     private String duration;
 
+    @Expose(serialize = false, deserialize = true)
     private float distance;
 
-    private transient List<LatLng> coordinates;
+    @Expose(serialize = false, deserialize = true)
+    private List<LatLng> coordinates;
 
-    private final transient HashMap<Date, String> steps;
+    @Expose(serialize = false, deserialize = true)
+    private final HashMap<Date, String> steps;
 
-    private final transient List<Encounter> encounters;
+    @Expose(serialize = false, deserialize = true)
+    private final List<Encounter> encounters;
 
     public Tour() {
         this.coordinates = new ArrayList<>();
@@ -47,6 +62,10 @@ public class Tour implements Serializable {
 
     public String getTourType() {
         return tourType;
+    }
+
+    public String getTourStatus() {
+        return tourStatus;
     }
 
     public Date getDate() {
@@ -85,6 +104,10 @@ public class Tour implements Serializable {
         this.tourType = tourType;
     }
 
+    public void setTourStatus(String tourStatus) {
+        this.tourStatus = tourStatus;
+    }
+
     public void setDate(Date date) {
         this.date = date;
     }
@@ -104,6 +127,10 @@ public class Tour implements Serializable {
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
+
+    public void closeTour() {
+        this.tourStatus = TOUR_CLOSED;
+    }
 
     public void updateDistance(float distance) {
         this.distance += distance;

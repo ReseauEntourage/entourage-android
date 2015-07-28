@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Application -->
     <color name="primary">#3D3D3D</color>
     <color name="primary_dark">#191919</color>
     <color name="primary_light">#FAFAFA</color>
     <color name="accent">#FDC444</color>
+
+    <!-- Backgrounds -->
     <color name="background">@color/primary</color>
     <color name="background_dark">@color/primary_dark</color>
     <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
+
+    <!-- Buttons -->
     <color name="login_button">#FFCE55</color>
-    <color name="custom_button_1_enabled">@color/accent</color>
-    <color name="custom_button_1_focused">#EFBB38</color>
-    <color name="custom_button_1_pressed">#C89C2F</color>
-    <color name="custom_button_1_disabled">#EDD18C</color>
-    <color name="custom_button_2_enabled">#FFFFFF</color>
-    <color name="custom_button_2_focused">#D4D4D4</color>
-    <color name="custom_button_2_pressed">#D3D3D3</color>
-    <color name="custom_button_2_disabled">#BABABA</color>
+    <color name="custom_button_yellow_enabled">@color/accent</color>
+    <color name="custom_button_yellow_focused">#EFBB38</color>
+    <color name="custom_button_yellow_pressed">#C89C2F</color>
+    <color name="custom_button_yellow_disabled">#EDD18C</color>
+    <color name="custom_button_white_enabled">#FFFFFF</color>
+    <color name="custom_button_white_focused">#D4D4D4</color>
+    <color name="custom_button_white_pressed">#F4F4F4</color>
+    <color name="custom_button_white_disabled">#FFFFFF</color>
+
+    <!-- EditTexts -->
+    <color name="custom_edittext_short_pressed">#EEEEEE</color>
     <color name="login_form">#FFFFFF</color>
+
+    <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">#444444</color>
     <color name="grey_contour">#DADADA</color>

@@ -4,7 +4,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -113,10 +112,10 @@ public class ReadEncounterActivity extends EntourageActivity {
     public void onClickOnPlay() {
         if (isPlaying) {
             stopPlaying();
-            btnPlay.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+            btnPlay.setImageResource(R.drawable.ic_action_play_sound);
         } else {
             startPlaying();
-            btnPlay.setImageResource(R.drawable.ic_stop_black_48dp);
+            btnPlay.setImageResource(R.drawable.ic_action_stop_sound);
         }
         isPlaying = !isPlaying;
     }
@@ -131,7 +130,7 @@ public class ReadEncounterActivity extends EntourageActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                btnPlay.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+                btnPlay.setImageResource(R.drawable.ic_action_play_sound);
                 durationHandler.removeCallbacks(updateDurationThread);
                 isPlaying = false;
             }

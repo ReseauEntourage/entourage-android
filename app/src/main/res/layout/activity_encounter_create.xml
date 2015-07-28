@@ -17,7 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:hint="@string/encounter_hint_person_name"
-            android:textIsSelectable="false"/>
+            android:textIsSelectable="false"
+            android:textCursorDrawable="@drawable/custom_cursor_color"
+            android:background="@drawable/custom_edit_text"/>
 
         <EditText
             android:id="@+id/edittext_message"
@@ -30,7 +32,8 @@
             android:gravity="left|top"
             android:inputType="textMultiLine"
             android:layout_below="@id/edittext_street_person_name"
-            android:background="@drawable/custom_edit_text_long"
+            android:textCursorDrawable="@drawable/custom_cursor_color"
+            android:background="@drawable/custom_edit_text"
             android:hint="@string/encounter_hint_notes"/>
 
         <LinearLayout
@@ -45,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_popup"
-                android:src="@drawable/ic_settings_voice_black_48dp"/>
+                android:src="@drawable/ic_action_record_sound"/>
 
             <View
                 android:layout_width="0dp"
@@ -69,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_popup"
-                android:src="@drawable/ic_play_arrow_black_48dp"/>
+                android:src="@drawable/ic_action_play_sound"/>
 
         </LinearLayout>
 
@@ -81,7 +84,7 @@
             android:text="@string/encouter_add"
             android:minWidth="50dp"
             android:layout_below="@id/layout_player"
-            android:background="@drawable/custom_button_1"
+            android:background="@drawable/custom_button_yellow"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>

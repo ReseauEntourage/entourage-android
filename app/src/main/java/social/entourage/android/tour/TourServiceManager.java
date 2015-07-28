@@ -90,11 +90,39 @@ public class TourServiceManager {
         });
     }
 
+    private void retrieveTour(long id) {
+        tourRequest.tourRetrieve(id, new Callback<TourResponse>() {
+            @Override
+            public void success(TourResponse tourResponse, Response response) {
+                Log.v("Success", tourResponse.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Error", error.toString());
+            }
+        });
+    }
+
+    private void closeTour() {
+        tourRequest.tourClose(tourId, tour, new Callback<TourResponse>() {
+            @Override
+            public void success(TourResponse tourResponse, Response response) {
+                Log.d("Success", tourResponse.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Error", error.toString());
+            }
+        });
+    }
+
     private void updateTourCoordinates(TourPoint point) {
         tourRequest.tourPoint(tourId, point, new Callback<TourResponse>() {
             @Override
             public void success(TourResponse tourResponse, Response response) {
-                Log.e("test", tourResponse.toString());
+                Log.v("Success", tourResponse.toString());
             }
 
             @Override
@@ -115,6 +143,8 @@ public class TourServiceManager {
     }
 
     public void finishTour() {
+        tour.closeTour();
+        closeTour();
         tour = null;
     }
 

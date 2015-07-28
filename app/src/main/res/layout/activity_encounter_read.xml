@@ -16,22 +16,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
-        android:enabled="false" />
+        android:enabled="false"
+        android:textCursorDrawable="@drawable/custom_cursor_color"
+        android:background="@drawable/custom_edit_text"/>
 
         <EditText
-            android:id="@+id/edittext_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:padding="5dp"
-            android:lines="10"
-            android:gravity="left|top"
-            android:inputType="textMultiLine"
-            android:layout_below="@id/edittext_street_person_name"
-            android:background="@drawable/custom_edit_text_long"
-            android:paddingBottom="10dp"
-            android:enabled="false"/>
+        android:id="@+id/edittext_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:padding="5dp"
+        android:lines="10"
+        android:gravity="left|top"
+        android:inputType="textMultiLine"
+        android:layout_below="@id/edittext_street_person_name"
+        android:paddingBottom="10dp"
+        android:enabled="false"
+        android:textCursorDrawable="@drawable/custom_cursor_color"
+        android:background="@drawable/custom_edit_text"/>
 
         <LinearLayout
             android:id="@+id/layout_player"
@@ -45,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_popup"
-                android:src="@drawable/ic_play_arrow_black_48dp"/>
+                android:src="@drawable/ic_action_play_sound"/>
 
             <View
                 android:layout_width="0dp"

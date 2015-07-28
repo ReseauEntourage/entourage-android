@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.Chronometer;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -73,12 +74,13 @@ public class TourService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
-                pauseTreatment();
-                Intent pauseIntent = new Intent(context, MapActivity.class);
-                pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pauseIntent.putExtra(NOTIFICATION_PAUSE, true);
-                startActivity(pauseIntent);
-
+                if (!isPaused) {
+                    pauseTreatment();
+                    Intent pauseIntent = new Intent(context, MapActivity.class);
+                    pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    pauseIntent.putExtra(NOTIFICATION_PAUSE, true);
+                    startActivity(pauseIntent);
+                }
             }
         }
     };
