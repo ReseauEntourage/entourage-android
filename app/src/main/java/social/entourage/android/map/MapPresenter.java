@@ -19,8 +19,8 @@ import retrofit.client.Response;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.common.Constants;
-import social.entourage.android.encounter.ReadEncounterActivity;
+import social.entourage.android.Constants;
+import social.entourage.android.map.encounter.ReadEncounterActivity;
 
 /**
  * Presenter controlling the MapActivity

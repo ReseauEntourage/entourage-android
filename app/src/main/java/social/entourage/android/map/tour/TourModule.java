@@ -1,4 +1,4 @@
-package social.entourage.android.tour;
+package social.entourage.android.map.tour;
 
 import dagger.Module;
 import dagger.Provides;

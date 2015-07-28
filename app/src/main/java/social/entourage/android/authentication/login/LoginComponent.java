@@ -1,4 +1,4 @@
-package social.entourage.android.login;
+package social.entourage.android.authentication.login;
 
 import dagger.Component;
 import social.entourage.android.ActivityScope;

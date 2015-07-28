@@ -10,7 +10,7 @@ import butterknife.InjectView;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
-import social.entourage.android.tour.TourService;
+import social.entourage.android.map.tour.TourService;
 
 public class MapActivity extends EntourageSecuredActivity {
 

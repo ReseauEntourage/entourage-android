@@ -1,4 +1,4 @@
-package social.entourage.android.common;
+package social.entourage.android;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

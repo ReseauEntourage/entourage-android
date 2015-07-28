@@ -32,26 +32,26 @@
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
                    android:value="@string/map_api_key"/>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".authentication.login.LoginActivity"
             android:label="@string/title_activity_login" >
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".poi.ReadPoiActivity"
+            android:name=".guide.poi.ReadPoiActivity"
             android:label="@string/activity_read_poi_title">
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".encounter.ReadEncounterActivity"
+            android:name=".map.encounter.ReadEncounterActivity"
             android:theme="@style/CustomDialogTheme"
             android:label="@string/activity_read_encounter_title"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".encounter.CreateEncounterActivity"
+            android:name=".map.encounter.CreateEncounterActivity"
             android:theme="@style/CustomDialogTheme"
             android:label="@string/activity_create_encounter_title"
             android:screenOrientation="portrait">
@@ -84,7 +84,7 @@
             android:exported="false" />
 
         <service
-            android:name=".tour.TourService"
+            android:name=".map.tour.TourService"
             android:exported="false"/>
 
     </application>

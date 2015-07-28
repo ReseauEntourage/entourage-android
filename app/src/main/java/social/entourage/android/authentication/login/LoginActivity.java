@@ -1,4 +1,4 @@
-package social.entourage.android.login;
+package social.entourage.android.authentication.login;
 
 import android.content.Intent;
 import android.os.Bundle;

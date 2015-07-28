@@ -20,8 +20,8 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.model.map.Poi;
-import social.entourage.android.common.Constants;
-import social.entourage.android.poi.ReadPoiActivity;
+import social.entourage.android.Constants;
+import social.entourage.android.guide.poi.ReadPoiActivity;
 
 /**
  * Presenter controlling the GuideMapActivity

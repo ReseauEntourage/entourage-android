@@ -1,4 +1,4 @@
-package social.entourage.android.poi;
+package social.entourage.android.guide.poi;
 
 import dagger.Module;
 import dagger.Provides;

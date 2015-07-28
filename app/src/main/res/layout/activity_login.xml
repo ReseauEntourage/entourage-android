@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="100dp"
-    tools:context="social.entourage.android.login.LoginActivity"
+    tools:context="social.entourage.android.authentication.login.LoginActivity"
     android:background="@color/login_view">
 
     <include layout="@layout/toolbar" />

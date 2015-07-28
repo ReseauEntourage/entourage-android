@@ -1,4 +1,4 @@
-package social.entourage.android.poi;
+package social.entourage.android.guide.poi;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +18,7 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
-import social.entourage.android.common.Constants;
+import social.entourage.android.Constants;
 
 /**
  * Activity showing the detail of a POI

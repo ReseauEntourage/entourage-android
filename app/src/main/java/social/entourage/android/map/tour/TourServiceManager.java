@@ -1,4 +1,4 @@
-package social.entourage.android.tour;
+package social.entourage.android.map.tour;
 
 import android.content.Context;
 import android.location.Location;
@@ -21,7 +21,7 @@ import social.entourage.android.api.model.TourResponse;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
-import social.entourage.android.common.Constants;
+import social.entourage.android.Constants;
 
 /**
  * Manager is like a presenter but for a service

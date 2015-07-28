@@ -19,7 +19,7 @@ import java.util.Date;
 
 import social.entourage.android.BuildConfig;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.common.Constants;
+import social.entourage.android.Constants;
 
 public class SoundCloudCreateTrackRequest extends SpiceRequest<Encounter> {
 

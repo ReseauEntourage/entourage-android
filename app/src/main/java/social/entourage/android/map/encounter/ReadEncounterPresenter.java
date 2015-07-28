@@ -1,4 +1,4 @@
-package social.entourage.android.encounter;
+package social.entourage.android.map.encounter;
 
 /**
  * Presenter controlling the ReadEncounterActivity

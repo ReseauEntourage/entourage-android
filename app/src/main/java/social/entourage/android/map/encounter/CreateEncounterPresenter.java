@@ -1,14 +1,9 @@
-package social.entourage.android.encounter;
+package social.entourage.android.map.encounter;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.widget.Toast;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -21,7 +16,6 @@ import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.SoundCloudCreateTrackRequest;
 import social.entourage.android.api.model.EncounterWrapper;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.common.Constants;
 
 /**
  * Module related to CreateEncounterPresenter

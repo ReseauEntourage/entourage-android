@@ -41,9 +41,9 @@ import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.common.Constants;
-import social.entourage.android.encounter.CreateEncounterActivity;
-import social.entourage.android.tour.TourService;
+import social.entourage.android.Constants;
+import social.entourage.android.map.encounter.CreateEncounterActivity;
+import social.entourage.android.map.tour.TourService;
 
 public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener {
 

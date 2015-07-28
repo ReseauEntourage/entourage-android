@@ -15,8 +15,8 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
-import social.entourage.android.common.Constants;
-import social.entourage.android.login.LoginActivity;
+import social.entourage.android.Constants;
+import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.map.MapActivity;
 
 @SuppressWarnings("WeakerAccess")

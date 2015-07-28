@@ -1,4 +1,4 @@
-package social.entourage.android.encounter;
+package social.entourage.android.map.encounter;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -26,7 +26,7 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.common.Constants;
+import social.entourage.android.Constants;
 
 @SuppressWarnings("WeakerAccess")
 public class ReadEncounterActivity extends EntourageActivity {
