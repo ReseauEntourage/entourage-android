@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.api.model.TourType;
-import social.entourage.android.common.Constants;
+import social.entourage.android.Constants;
 
 @SuppressWarnings("unused")
 public class Tour implements Serializable {

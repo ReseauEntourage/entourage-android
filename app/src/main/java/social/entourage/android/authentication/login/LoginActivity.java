@@ -15,7 +15,7 @@ import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
-import social.entourage.android.map.MapActivity;
+import social.entourage.android.DrawerActivity;
 
 /**
  * Activity providing a login form
@@ -56,7 +56,7 @@ public class LoginActivity extends EntourageActivity {
     }
 
     public void startMapActivity() {
-        startActivity(new Intent(this, MapActivity.class));
+        startActivity(new Intent(this, DrawerActivity.class));
         resetLoginButton();
         finish();
     }

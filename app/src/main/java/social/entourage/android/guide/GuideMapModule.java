@@ -9,14 +9,14 @@ import dagger.Provides;
  */
 @Module
 final class GuideMapModule {
-    private final GuideMapActivity activity;
+    private final GuideMapEntourageFragment fragment;
 
-    public GuideMapModule(final GuideMapActivity activity) {
-        this.activity = activity;
+    public GuideMapModule(final GuideMapEntourageFragment fragment) {
+        this.fragment = fragment;
     }
 
     @Provides
-    public GuideMapActivity providesMapActivity() {
-        return activity;
+    public GuideMapEntourageFragment providesGuideMapEntourageFragment() {
+        return fragment;
     }
 }

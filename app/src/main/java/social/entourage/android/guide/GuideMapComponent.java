@@ -17,7 +17,7 @@ import social.entourage.android.EntourageComponent;
 )
 @SuppressWarnings("unused")
 public interface GuideMapComponent {
-    void inject(GuideMapActivity activity);
+    void inject(GuideMapEntourageFragment fragment);
 
     GuideMapPresenter getGuideMapPresenter();
 }

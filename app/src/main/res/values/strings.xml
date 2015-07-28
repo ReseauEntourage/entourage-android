@@ -3,13 +3,16 @@
     <string name="action_settings">Settings</string>
     <string name="action_logout">Déconnexion</string>
     <string name="action_guide">Guide</string>
-    <string name="action_encounters">Maraudes</string>
+    <string name="action_tours">Maraudes</string>
 
     <!-- Login -->
     <string name="title_activity_login">Se connecter</string>
     <string name="login_hint_email">Email</string>
     <string name="login_button_text">Connexion</string>
     <string name="loading_button_text">Loading…</string>
+
+    <!-- Drawer -->
+    <string name="drawer_error">Le menu %1$s n\'est pas encore disponnible</string>
 
     <!-- Maps -->
     <string name="map_api_key">AIzaSyAFqKD4mIEGQIfgbwQVQloMrlRkrqk9J4M</string>

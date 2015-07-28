@@ -14,7 +14,11 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
+import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
@@ -31,15 +35,10 @@ public class GuideMapEntourageFragment extends Fragment {
     // ATTRIBUTES
     // ----------------------------------
 
+    @Inject
+    GuideMapPresenter presenter;
+
     private SupportMapFragment mapFragment;
-
-    // ----------------------------------
-    // CONSTRUCTOR
-    // ----------------------------------
-
-    public static GuideMapEntourageFragment newInstance() {
-        return new GuideMapEntourageFragment();
-    }
 
     // ----------------------------------
     // LIFECYCLE
@@ -48,21 +47,42 @@ public class GuideMapEntourageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View toReturn = inflater.inflate(R.layout.fragment_guide_map, container, false);
-        ButterKnife.inject(this, toReturn);
-        return toReturn;
+        View view = inflater.inflate(R.layout.fragment_guide_map, container, false);
+        ButterKnife.inject(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
 
+        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().setMyLocationEnabled(true);
             mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(true);
         }
+    }
 
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerGuideMapComponent.builder()
+                .entourageComponent(entourageComponent)
+                .guideMapModule(new GuideMapModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.activity_display_guide_title);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.start();
     }
 
     // ----------------------------------

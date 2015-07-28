@@ -14,7 +14,6 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Chronometer;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -34,7 +33,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.map.MapActivity;
+import social.entourage.android.DrawerActivity;
 
 /**
  * Background service for handling location modification in a tour like in "RunKeeper" app
@@ -75,7 +74,7 @@ public class TourService extends Service {
             if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
                 if (!isPaused) {
                     pauseTreatment();
-                    Intent pauseIntent = new Intent(context, MapActivity.class);
+                    Intent pauseIntent = new Intent(context, DrawerActivity.class);
                     pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     pauseIntent.putExtra(NOTIFICATION_PAUSE, true);
                     startActivity(pauseIntent);
@@ -168,7 +167,7 @@ public class TourService extends Service {
     }
 
     private void createNotification() {
-        final Intent notificationIntent = new Intent(this, MapActivity.class);
+        final Intent notificationIntent = new Intent(this, DrawerActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.tour_record)

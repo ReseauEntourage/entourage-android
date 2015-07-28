@@ -174,6 +174,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle(R.string.activity_map_title);
         initializeLocationService();
         doBindService();
     }

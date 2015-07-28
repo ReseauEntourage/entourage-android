@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.model.map.Encounter;
@@ -24,7 +25,7 @@ import social.entourage.android.map.encounter.ReadEncounterActivity;
 
 /**
  * Presenter controlling the MapActivity
- * @see MapActivity
+ * @see DrawerActivity
  */
 public class MapPresenter {
 

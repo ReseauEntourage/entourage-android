@@ -33,7 +33,7 @@ public class GuideMapPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final GuideMapActivity activity;
+    private final GuideMapEntourageFragment fragment;
     private final MapRequest mapRequest;
 
     private OnEntourageMarkerClickListener onClickListener;
@@ -44,8 +44,8 @@ public class GuideMapPresenter {
     // ----------------------------------
 
     @Inject
-    public GuideMapPresenter(final GuideMapActivity activity, final MapRequest mapRequest) {
-        this.activity = activity;
+    public GuideMapPresenter(final GuideMapEntourageFragment fragment, final MapRequest mapRequest) {
+        this.fragment = fragment;
         this.mapRequest = mapRequest;
     }
 
@@ -56,10 +56,14 @@ public class GuideMapPresenter {
     public void start() {
         onClickListener = new OnEntourageMarkerClickListener();
         isStarted = true;
-        activity.initializeMap();
+        fragment.initializeMapZoom();
         retrieveMapObjects(EntourageLocation.getInstance().getLastCameraPosition().target);
-        activity.setOnMarkerCLickListener(onClickListener);
+        fragment.setOnMarkerClickListener(onClickListener);
     }
+
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
 
     private void retrieveMapObjects(LatLng latLng) {
         if(isStarted) {
@@ -71,27 +75,26 @@ public class GuideMapPresenter {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.d("GuideMapActivity", "Impossible to retrieve map objects");
-                    error.printStackTrace();
+                    Log.d("GuideMapActivity", "Impossible to retrieve map objects", error);
                 }
             });
         }
     }
 
     private void loadObjectsOnMap(MapResponse mapResponse) {
-        activity.clearMap();
+        fragment.clearMap();
         for (Poi poi : mapResponse.getPois()) {
-            activity.putPoi(poi, onClickListener);
+            fragment.putPoiOnMap(poi, onClickListener);
         }
     }
 
     private void openPointOfInterest(Poi poi) {
-        activity.saveCameraPosition();
-        Intent intent = new Intent(activity, ReadPoiActivity.class);
+        fragment.saveCameraPosition();
+        Intent intent = new Intent(fragment.getActivity(), ReadPoiActivity.class);
         Bundle extras = new Bundle();
         extras.putSerializable(Constants.KEY_POI, poi);
         intent.putExtras(extras);
-        activity.startActivity(intent);
+        fragment.startActivity(intent);
     }
 
     // ----------------------------------
