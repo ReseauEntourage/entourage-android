@@ -7,7 +7,6 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import social.entourage.android.api.model.TourWrapper;
-import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 
 public interface TourRequest {

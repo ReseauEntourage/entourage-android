@@ -49,7 +49,6 @@ public class ReadPoiActivity extends EntourageActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_poi_read);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ButterKnife.inject(this);
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);

@@ -2,6 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="20dp">
+    android:layout_height="172dp"
+    android:paddingTop="25dp"
+    android:background="@drawable/entourage_header_2">
+
+    <TextView
+        android:id="@+id/drawer_header_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:textSize="25dp"
+        android:textColor="@color/abc_secondary_text_material_dark"
+        android:gravity="right|bottom" />
 
 </LinearLayout>

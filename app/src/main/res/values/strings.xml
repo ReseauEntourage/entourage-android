@@ -12,7 +12,7 @@
     <string name="loading_button_text">Loading…</string>
 
     <!-- Drawer -->
-    <string name="drawer_error">Le menu %1$s n\'est pas encore disponnible</string>
+    <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
 
     <!-- Maps -->
     <string name="map_api_key">AIzaSyAFqKD4mIEGQIfgbwQVQloMrlRkrqk9J4M</string>

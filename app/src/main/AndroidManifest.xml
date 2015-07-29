@@ -51,6 +51,7 @@
 
         <activity
             android:name=".guide.poi.ReadPoiActivity"
+            android:theme="@style/CustomDialogTheme"
             android:label="@string/activity_read_poi_title">
             android:screenOrientation="portrait">
         </activity>

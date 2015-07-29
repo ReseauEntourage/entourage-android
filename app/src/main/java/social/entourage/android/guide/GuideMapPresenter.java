@@ -24,8 +24,8 @@ import social.entourage.android.Constants;
 import social.entourage.android.guide.poi.ReadPoiActivity;
 
 /**
- * Presenter controlling the GuideMapActivity
- * @see GuideMapActivity
+ * Presenter controlling the GuideMapEntourageFragment
+ * @see GuideMapEntourageFragment
  */
 public class GuideMapPresenter {
 

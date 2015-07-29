@@ -27,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-            android:padding="5dp"
             android:lines="10"
             android:gravity="left|top"
             android:inputType="textMultiLine"

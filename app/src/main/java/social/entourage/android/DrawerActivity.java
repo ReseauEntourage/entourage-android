@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -38,6 +39,9 @@ public class DrawerActivity extends EntourageSecuredActivity {
     @InjectView(R.id.content_view)
     View contentView;
 
+    @InjectView(R.id.drawer_header_user)
+    TextView userView;
+
     private Fragment mainFragment;
 
     // ----------------------------------
@@ -49,6 +53,8 @@ public class DrawerActivity extends EntourageSecuredActivity {
         setContentView(R.layout.activity_drawer);
         mainFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         ButterKnife.inject(this);
+
+        userView.setText(getAuthenticationController().getUser().getFirstName());
 
         configureToolbar();
         configureNavigationItem();
