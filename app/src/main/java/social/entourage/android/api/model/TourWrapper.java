@@ -2,7 +2,7 @@ package social.entourage.android.api.model;
 
 import social.entourage.android.api.model.map.Tour;
 
-public class TourResponse {
+public class TourWrapper {
 
     private Tour tour;
 

@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.api.model.TourType;
-import social.entourage.android.Constants;
 
 @SuppressWarnings("unused")
 public class Tour implements Serializable {
@@ -19,7 +18,7 @@ public class Tour implements Serializable {
     private static final String TOUR_ON_GOING = "ongoing";
     private static final String TOUR_CLOSED = "closed";
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private long id;
 
     @SerializedName("tour_type")
@@ -28,22 +27,22 @@ public class Tour implements Serializable {
     @SerializedName("status")
     private String tourStatus = TOUR_ON_GOING;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private Date date;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private String duration;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private float distance;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private List<LatLng> coordinates;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private final HashMap<Date, String> steps;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private final List<Encounter> encounters;
 
     public Tour() {

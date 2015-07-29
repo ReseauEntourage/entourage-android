@@ -11,7 +11,6 @@ public class Encounter implements Serializable{
 
     private long id;
 
-    @Expose(serialize = false, deserialize = true)
     private long tourId;
 
     @SerializedName("date")

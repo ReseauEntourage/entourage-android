@@ -305,7 +305,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         startTour(tourTransportMode.getName(), tourType.getName());
     }
 
-
     @OnClick(R.id.tour_stop_button)
     public void onStopTour() {
         pauseTour();
@@ -336,7 +335,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         layoutMapConfirmation.setVisibility(View.GONE);
         stopTour();
     }
-
 
     // ----------------------------------
     // PRIVATE METHODS (lifecycle)

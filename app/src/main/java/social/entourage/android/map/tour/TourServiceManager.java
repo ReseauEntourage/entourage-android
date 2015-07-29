@@ -17,7 +17,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.model.TourResponse;
+import social.entourage.android.api.model.TourWrapper;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -77,10 +77,12 @@ public class TourServiceManager {
     }
 
     private void sendTour() {
-        tourRequest.tour(tour, new Callback<TourResponse>() {
+        TourWrapper tourWrapper = new TourWrapper();
+        tourWrapper.setTour(tour);
+        tourRequest.tour(tourWrapper, new Callback<TourWrapper>() {
             @Override
-            public void success(TourResponse tourResponse, Response response) {
-                tourId = tourResponse.getTour().getId();
+            public void success(TourWrapper tourWrapper, Response response) {
+                tourId = tourWrapper.getTour().getId();
             }
 
             @Override
@@ -91,10 +93,10 @@ public class TourServiceManager {
     }
 
     private void retrieveTour(long id) {
-        tourRequest.tourRetrieve(id, new Callback<TourResponse>() {
+        tourRequest.tourRetrieve(id, new Callback<TourWrapper>() {
             @Override
-            public void success(TourResponse tourResponse, Response response) {
-                Log.v("Success", tourResponse.toString());
+            public void success(TourWrapper tourWrapper, Response response) {
+                Log.v("Success", tourWrapper.toString());
             }
 
             @Override
@@ -105,10 +107,12 @@ public class TourServiceManager {
     }
 
     private void closeTour() {
-        tourRequest.tourClose(tourId, tour, new Callback<TourResponse>() {
+        final TourWrapper tourWrapper = new TourWrapper();
+        tourWrapper.setTour(tour);
+        tourRequest.tourClose(tourId, tourWrapper, new Callback<TourWrapper>() {
             @Override
-            public void success(TourResponse tourResponse, Response response) {
-                Log.d("Success", tourResponse.toString());
+            public void success(TourWrapper tourWrapper, Response response) {
+                Log.d("Success", tourWrapper.toString());
             }
 
             @Override
@@ -119,10 +123,10 @@ public class TourServiceManager {
     }
 
     private void updateTourCoordinates(TourPoint point) {
-        tourRequest.tourPoint(tourId, point, new Callback<TourResponse>() {
+        tourRequest.tourPoint(tourId, point, new Callback<TourWrapper>() {
             @Override
-            public void success(TourResponse tourResponse, Response response) {
-                Log.v("Success", tourResponse.toString());
+            public void success(TourWrapper tourWrapper, Response response) {
+                Log.v("Success", tourWrapper.toString());
             }
 
             @Override

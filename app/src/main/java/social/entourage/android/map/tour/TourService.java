@@ -39,7 +39,6 @@ import social.entourage.android.DrawerActivity;
  * Background service for handling location modification in a tour like in "RunKeeper" app
  */
 //TODO : remove the notification when the app is killed from the recent apps list (doesn't work)
-//TODO : update the notification (buttons) - no link with the views
 public class TourService extends Service {
 
     // ----------------------------------

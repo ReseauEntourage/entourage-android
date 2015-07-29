@@ -9,22 +9,23 @@
     android:fitsSystemWindows="true"
     tools:context=".DrawerActivity">
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/content_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <include
+            android:id="@+id/toolbar"
             layout="@layout/toolbar"/>
 
         <fragment
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
             android:name="social.entourage.android.map.MapEntourageFragment"/>
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
