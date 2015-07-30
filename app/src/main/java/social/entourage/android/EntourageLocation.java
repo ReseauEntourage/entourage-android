@@ -6,7 +6,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 public class EntourageLocation {
+
+    private static final double INITIAL_LATITUDE = 48.841636;
+    private static final double INITIAL_LONGITUDE = 2.335899;
+    private static final float INITIAL_CAMERA_FACTOR = 15;
+
     private static final EntourageLocation ourInstance = new EntourageLocation();
+
+    private Location lastLocation;
+    private CameraPosition lastCameraPosition;
 
     public static EntourageLocation getInstance() {
         return ourInstance;
@@ -17,29 +25,23 @@ public class EntourageLocation {
         lastLocation = null;
     }
 
-    private static final double INITIAL_LATITUDE = 48.841636;
-    private static final double INITIAL_LONGITUDE = 2.335899;
-    private static final float INITIAL_CAMERA_FACTOR = 15;
+    public Location getLocation() {
+        return lastLocation;
+    }
 
-    private Location lastLocation;
-    private CameraPosition lastCameraPosition;
     public CameraPosition getLastCameraPosition() {
         return lastCameraPosition;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
     }
 
     public void saveCameraPosition(CameraPosition newCameraPosition) {
         lastCameraPosition = newCameraPosition;
     }
 
-    public Location getLocation() {
-        return lastLocation;
-    }
-
     public void saveLocation(Location l) {
         lastLocation = l;
-    }
-
-    public LatLng getLatLng() {
-        return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
     }
 }

@@ -4,16 +4,16 @@
     <group android:checkableBehavior="single">
         <item android:id="@+id/action_tours"
             android:title="@string/action_tours"
-            android:icon="@drawable/ic_map_black_36dp"
+            android:icon="@drawable/ic_map"
             android:checked="true"/>
         <item android:id="@+id/action_guide"
             android:title="@string/action_guide"
-            android:icon="@drawable/ic_explore_black_36dp"/>
+            android:icon="@drawable/ic_explore"/>
         <item android:id="@+id/action_settings"
             android:title="@string/action_settings"
-            android:icon="@drawable/ic_settings_black_36dp"/>
+            android:icon="@drawable/ic_settings"/>
         <item android:id="@+id/action_logout"
             android:title="@string/action_logout"
-            android:icon="@drawable/ic_keyboard_return_black_36dp"/>
+            android:icon="@drawable/ic_logout"/>
     </group>
 </menu>

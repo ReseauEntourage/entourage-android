@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,6 +121,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Bundle savedInstanceState) {
         View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, toReturn);
+
         return toReturn;
     }
 
@@ -137,10 +139,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                Location newLocation = cameraPositionToLocation("new", EntourageLocation.getInstance().getLastCameraPosition());
-                Location prevLocation = cameraPositionToLocation("previous", cameraPosition);
-                if (newLocation.distanceTo(prevLocation) >= FOLLOWING_LIMIT) {
-                    isFollowing = false;
+                if (isFollowing) {
+                    Location newLocation = cameraPositionToLocation("new", EntourageLocation.getInstance().getLastCameraPosition());
+                    Location prevLocation = cameraPositionToLocation("previous", cameraPosition);
+                    if (newLocation.distanceTo(prevLocation) >= FOLLOWING_LIMIT) {
+                        isFollowing = false;
+                    }
                 }
             }
         });
@@ -160,13 +164,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK) {
                 Encounter encounter = (Encounter) data.getExtras().getSerializable(Constants.KEY_ENCOUNTER);
                 addEncounter(encounter);
+                presenter.loadEncounterOnMap(encounter);
 
-                LatLng latLng = new LatLng(data.getExtras().getDouble(Constants.KEY_LATITUDE), data.getExtras().getDouble(Constants.KEY_LONGITUDE));
-                /**
-                 * HERE : update the request to get all the encounters
-                 *        related to the current tour
-                 */
-                presenter.retrieveMapObjects(latLng);
+                //LatLng latLng = new LatLng(data.getExtras().getDouble(Constants.KEY_LATITUDE), data.getExtras().getDouble(Constants.KEY_LONGITUDE));
+                //presenter.retrieveMapObjects(latLng);
             }
         }
     }
@@ -349,7 +350,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void initializeLocationService() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.UPDATE_TIMER_MILLIS, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
     }
 
     private void showConfirmation() {
@@ -444,6 +445,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void centerMap(CameraPosition cameraPosition) {
         if(mapFragment!= null && mapFragment.getMap() != null && isFollowing) {
             mapFragment.getMap().moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            //mapFragment.getMap().animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition)); DOESN'T WORK
             saveCameraPosition();
         }
     }
@@ -498,7 +500,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (isBetterLocationUpdated) {
                 isBetterLocationUpdated = false;
                 LatLng latLng = EntourageLocation.getInstance().getLatLng();
-                presenter.retrieveMapObjects(latLng);
+                //presenter.retrieveMapObjects(latLng);
                 if (shouldCenterMap) {
                     centerMap(latLng);
                 }

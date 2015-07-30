@@ -8,9 +8,6 @@ import social.entourage.android.api.model.EncounterWrapper;
 
 public interface EncounterRequest {
 
-    //@POST("/encounters.json")
-    //void create(@Body EncounterWrapper encounterWrapper, Callback<EncounterResponse> callback);
-
     @POST("/tours/{tour_id}/encounters.json")
     void create( @Path("tour_id") long tourId, @Body EncounterWrapper encounterWrapper, Callback<EncounterResponse> callback);
 }

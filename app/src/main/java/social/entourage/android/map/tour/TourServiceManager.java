@@ -93,7 +93,7 @@ public class TourServiceManager {
     }
 
     private void retrieveTour(long id) {
-        tourRequest.tourRetrieve(id, new Callback<TourWrapper>() {
+        tourRequest.retrieveTourById(id, new Callback<TourWrapper>() {
             @Override
             public void success(TourWrapper tourWrapper, Response response) {
                 Log.v("Success", tourWrapper.toString());
@@ -109,7 +109,7 @@ public class TourServiceManager {
     private void closeTour() {
         final TourWrapper tourWrapper = new TourWrapper();
         tourWrapper.setTour(tour);
-        tourRequest.tourClose(tourId, tourWrapper, new Callback<TourWrapper>() {
+        tourRequest.closeTour(tourId, tourWrapper, new Callback<TourWrapper>() {
             @Override
             public void success(TourWrapper tourWrapper, Response response) {
                 Log.d("Success", tourWrapper.toString());
@@ -142,6 +142,7 @@ public class TourServiceManager {
 
     public void startTour(String transportMode, String type) {
         tour = new Tour();
+        tour.setTourVehiculeType(transportMode); // feet, car
         tour.setTourType(type); // social, other, food
         sendTour();
     }

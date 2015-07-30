@@ -63,10 +63,6 @@ public class MapPresenter {
 
     public void retrieveMapObjects(LatLng latLng) {
         if(isStarted) {
-            /**
-             * HERE : update the request to get all the encounters
-             *        related to the current tour
-             */
             mapRequest.map(Constants.TOKEN, 0, 0, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
                 @Override
                 public void success(MapResponse mapResponse, Response response) {
@@ -80,6 +76,10 @@ public class MapPresenter {
                 }
             });
         }
+    }
+
+    public void loadEncounterOnMap(Encounter encounter) {
+        fragment.putEncounterOnMap(encounter, onClickListener);
     }
 
     private void loadObjectsOnMap(MapResponse mapResponse) {

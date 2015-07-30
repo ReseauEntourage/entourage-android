@@ -17,9 +17,14 @@ public class Tour implements Serializable {
 
     private static final String TOUR_ON_GOING = "ongoing";
     private static final String TOUR_CLOSED = "closed";
+    private static final String TOUR_FEET = "feet";
+    private static final String TOUR_CAR = "car";
 
     @Expose(serialize = false)
     private long id;
+
+    @SerializedName("vehicule_type")
+    private String tourVehiculeType = TOUR_FEET;
 
     @SerializedName("tour_type")
     private String tourType = TourType.SOCIAL.getName();
@@ -57,6 +62,10 @@ public class Tour implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public String getTourVehiculeType() {
+        return tourVehiculeType;
     }
 
     public String getTourType() {
@@ -97,6 +106,10 @@ public class Tour implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setTourVehiculeType(String tourVehiculeType) {
+        this.tourVehiculeType = tourVehiculeType;
     }
 
     public void setTourType(String tourType) {
