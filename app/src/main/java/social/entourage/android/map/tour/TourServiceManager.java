@@ -9,7 +9,9 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -123,6 +125,20 @@ public class TourServiceManager {
     }
 
     private void updateTourCoordinates(TourPoint point) {
+        List<TourPoint> points = new ArrayList<TourPoint>();
+        points.add(point);
+        tourRequest.tourPoints(tourId, points, new Callback<TourWrapper>() {
+            @Override
+            public void success(TourWrapper tourWrapper, Response response) {
+                Log.v("Success", tourWrapper.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Error", error.toString());
+            }
+        });
+        /*
         tourRequest.tourPoint(tourId, point, new Callback<TourWrapper>() {
             @Override
             public void success(TourWrapper tourWrapper, Response response) {
@@ -134,6 +150,7 @@ public class TourServiceManager {
                 Log.e("Error", error.toString());
             }
         });
+        */
     }
 
     // ----------------------------------

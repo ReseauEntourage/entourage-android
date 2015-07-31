@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class RegisterGCMService extends IntentService {
 
-    private final String GCM_SENDER_ID = "1085027645289";
+    private final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences
 
     private final SpiceManager spiceManager;
 
@@ -58,14 +58,15 @@ public class RegisterGCMService extends IntentService {
         int storedVersion = sharedPreferences.getInt("key_app_version", 0);
         int currentVersion = getCurrentCodeVersion();
 
-        //if (storedVersion < currentVersion) {     A REMETTRE
+        // if condition commented during debug - to be uncommented later
+        //if (storedVersion < currentVersion) {
 
             GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
             String registrationId = null;
             try {
-                registrationId = gcm.register(GCM_SENDER_ID); //  à mettre à jour
+                registrationId = gcm.register(GCM_SENDER_ID);
             } catch (IOException e) {
-                // do nothing
+                Log.e("Error", "Can not register Google Cloud Messaging");
             }
 
             if (registrationId != null) {
@@ -82,7 +83,7 @@ public class RegisterGCMService extends IntentService {
             return packageInfo.versionCode;
         }
         catch (PackageManager.NameNotFoundException e) {
-            // do nothing
+            Log.e("Error", "Can not get package info");
         }
         return -1;
     }
