@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:name=".EntourageApplication"
@@ -81,6 +82,10 @@
 
         <service
             android:name=".map.tour.TourService"
+            android:exported="false"/>
+
+        <service
+            android:name=".RegisterGCMService"
             android:exported="false"/>
 
     </application>

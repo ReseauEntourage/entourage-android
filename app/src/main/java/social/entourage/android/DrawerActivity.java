@@ -1,6 +1,9 @@
 package social.entourage.android;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -11,9 +14,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,6 +28,8 @@ import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 
 public class DrawerActivity extends EntourageSecuredActivity {
+
+    private static final String DRIVE_EVENT = "com.google.android.c2dm.intent.RECEIVE";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -44,6 +52,8 @@ public class DrawerActivity extends EntourageSecuredActivity {
 
     private Fragment mainFragment;
 
+    GcmBroadcastReceiver gcmReceiver = new GcmBroadcastReceiver();
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -58,7 +68,11 @@ public class DrawerActivity extends EntourageSecuredActivity {
 
         configureToolbar();
         configureNavigationItem();
+
+        startService(new Intent(this, RegisterGCMService.class));
     }
+
+
 
     @Override
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -104,6 +118,19 @@ public class DrawerActivity extends EntourageSecuredActivity {
             super.onBackPressed();
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(DRIVE_EVENT);
+        registerReceiver(gcmReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(gcmReceiver);
     }
 
     // ----------------------------------
@@ -156,5 +183,22 @@ public class DrawerActivity extends EntourageSecuredActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment, mainFragment);
         fragmentTransaction.commit();
+    }
+
+    // ----------------------------------
+    // INNER CLASSES
+    // ----------------------------------
+
+    private class GcmBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.v("broadcast", "received");
+            Bundle extras = intent.getExtras();
+            GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+            if( GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(gcm.getMessageType(intent)) && !extras.isEmpty()) {
+
+            }
+        }
     }
 }
