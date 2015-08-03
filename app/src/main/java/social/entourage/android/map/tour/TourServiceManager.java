@@ -19,6 +19,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.TourPointWrapper;
 import social.entourage.android.api.model.TourWrapper;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
@@ -125,9 +126,11 @@ public class TourServiceManager {
     }
 
     private void updateTourCoordinates(TourPoint point) {
-        List<TourPoint> points = new ArrayList<TourPoint>();
+        List<TourPoint> points = new ArrayList<>();
         points.add(point);
-        tourRequest.tourPoints(tourId, points, new Callback<TourWrapper>() {
+        final TourPointWrapper tourPointWrapper = new TourPointWrapper();
+        tourPointWrapper.setTourPoints(points);
+        tourRequest.tourPoints(tourId, tourPointWrapper, new Callback<TourWrapper>() {
             @Override
             public void success(TourWrapper tourWrapper, Response response) {
                 Log.v("Success", tourWrapper.toString());
@@ -138,19 +141,6 @@ public class TourServiceManager {
                 Log.e("Error", error.toString());
             }
         });
-        /*
-        tourRequest.tourPoint(tourId, point, new Callback<TourWrapper>() {
-            @Override
-            public void success(TourWrapper tourWrapper, Response response) {
-                Log.v("Success", tourWrapper.toString());
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("Error", error.toString());
-            }
-        });
-        */
     }
 
     // ----------------------------------

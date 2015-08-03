@@ -8,6 +8,7 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
+import social.entourage.android.api.model.TourPointWrapper;
 import social.entourage.android.api.model.TourWrapper;
 import social.entourage.android.api.model.map.TourPoint;
 
@@ -26,7 +27,7 @@ public interface TourRequest {
     //void tourPoint( @Path("tour_id") long tourId, @Body TourPoint point, Callback<TourWrapper> callback);
 
     @POST("/tours/{tour_id}/tour_points.json")
-    void tourPoints( @Path("tour_id") long tourId, @Body List<TourPoint> points, Callback<TourWrapper> callback);
+    void tourPoints( @Path("tour_id") long tourId, @Body TourPointWrapper points, Callback<TourWrapper> callback);
 
     @GET("/tours/blabla.json")
     void retrieveCloseTours();

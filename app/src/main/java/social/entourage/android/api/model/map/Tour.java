@@ -56,10 +56,6 @@ public class Tour implements Serializable {
         this.encounters = new ArrayList<>();
     }
 
-    // ----------------------------------
-    // GETTERS
-    // ----------------------------------
-
     public long getId() {
         return id;
     }
@@ -100,10 +96,6 @@ public class Tour implements Serializable {
         return encounters;
     }
 
-    // ----------------------------------
-    // SETTERS
-    // ----------------------------------
-
     public void setId(long id) {
         this.id = id;
     }
@@ -135,10 +127,6 @@ public class Tour implements Serializable {
     public void setCoordinates(List<LatLng> coordinates) {
         this.coordinates = coordinates;
     }
-
-    // ----------------------------------
-    // PUBLIC METHODS
-    // ----------------------------------
 
     public void closeTour() {
         this.tourStatus = TOUR_CLOSED;
