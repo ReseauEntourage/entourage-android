@@ -37,6 +37,9 @@ public class TourServiceManager {
     // CONSTANTS
     // ----------------------------------
 
+    private static final int POINT_PER_REQUEST = 10;
+    private static final double ALIGNMENT_PRECISION = .000001;
+
     private final TourService tourService;
     private final TourRequest tourRequest;
 
@@ -48,11 +51,17 @@ public class TourServiceManager {
     private Tour tour;
     private Location previousLocation;
     private long tourId;
+    private int pointsNeededForNextRequest;
+
+    private List<TourPoint> pointsToSend;
+
 
     @Inject
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest) {
         this.tourService = tourService;
         this.tourRequest = tourRequest;
+        this.pointsNeededForNextRequest = 1;
+        this.pointsToSend = new ArrayList<>();
         initializeLocationService();
     }
 
@@ -66,6 +75,35 @@ public class TourServiceManager {
 
     public long getTourId() {
         return tourId;
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public void startTour(String transportMode, String type) {
+        tour = new Tour();
+        tour.setTourVehiculeType(transportMode); // feet, car
+        tour.setTourType(type); // social, other, food
+        sendTour();
+    }
+
+    public void finishTour() {
+        tour.closeTour();
+        closeTour();
+        tour = null;
+    }
+
+    public boolean isRunning() {
+        return tour != null;
+    }
+
+    public void setTourDuration(String duration) {
+        tour.setDuration(duration);
+    }
+
+    public void addEncounter(Encounter encounter) {
+        tour.addEncounter(encounter);
     }
 
     // ----------------------------------
@@ -125,14 +163,13 @@ public class TourServiceManager {
         });
     }
 
-    private void updateTourCoordinates(TourPoint point) {
-        List<TourPoint> points = new ArrayList<>();
-        points.add(point);
+    private void updateTourCoordinates() {
         final TourPointWrapper tourPointWrapper = new TourPointWrapper();
-        tourPointWrapper.setTourPoints(points);
+        tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
         tourRequest.tourPoints(tourId, tourPointWrapper, new Callback<TourWrapper>() {
             @Override
             public void success(TourWrapper tourWrapper, Response response) {
+                pointsToSend.removeAll(tourPointWrapper.getTourPoints());
                 Log.v("Success", tourWrapper.toString());
             }
 
@@ -143,33 +180,40 @@ public class TourServiceManager {
         });
     }
 
-    // ----------------------------------
-    // PUBLIC METHODS
-    // ----------------------------------
+    private void onLocationChanged(Location location, TourPoint point) {
+        pointsToSend.add(point);
+        if (pointsToSend.size() >= 3) {
+            TourPoint a = pointsToSend.get(pointsToSend.size() - 3);
+            TourPoint b = pointsToSend.get(pointsToSend.size() - 2);
+            TourPoint c = pointsToSend.get(pointsToSend.size() - 1);
+            if (distanceToLine(a, b, c) < ALIGNMENT_PRECISION) {
+                pointsToSend.remove(b);
+            }
+        }
+        pointsNeededForNextRequest--;
 
-    public void startTour(String transportMode, String type) {
-        tour = new Tour();
-        tour.setTourVehiculeType(transportMode); // feet, car
-        tour.setTourType(type); // social, other, food
-        sendTour();
+        tour.addCoordinate(new LatLng(location.getLatitude(), location.getLongitude()));
+        if (previousLocation != null) {
+            tour.updateDistance(location.distanceTo(previousLocation));
+        }
+        previousLocation = location;
+
+        if (isWebServiceUpdateNeeded()) {
+            pointsNeededForNextRequest = POINT_PER_REQUEST;
+            updateTourCoordinates();
+        }
+        tourService.notifyListenersTour(tour);
     }
 
-    public void finishTour() {
-        tour.closeTour();
-        closeTour();
-        tour = null;
+    private boolean isWebServiceUpdateNeeded() {
+        return pointsNeededForNextRequest <= 0;
     }
 
-    public boolean isRunning() {
-        return tour != null;
-    }
-
-    public void setTourDuration(String duration) {
-        tour.setDuration(duration);
-    }
-
-    public void addEncounter(Encounter encounter) {
-        tour.addEncounter(encounter);
+    private double distanceToLine(TourPoint startPoint, TourPoint middlePoint, TourPoint endPoint) {
+        double scalarProduct = (middlePoint.getLatitude() - startPoint.getLatitude()) * (endPoint.getLatitude() - startPoint.getLatitude()) + (middlePoint.getLongitude() - startPoint.getLongitude()) * (endPoint.getLongitude() - startPoint.getLongitude());
+        double distanceProjection = scalarProduct / Math.sqrt(Math.pow(endPoint.getLatitude() - startPoint.getLatitude(), 2) + Math.pow(endPoint.getLongitude() - startPoint.getLongitude(), 2));
+        double distanceToMiddle = Math.sqrt(Math.pow(middlePoint.getLatitude() - startPoint.getLatitude(), 2) + Math.pow(middlePoint.getLongitude() - startPoint.getLongitude(), 2));
+        return Math.sqrt(Math.pow(distanceToMiddle, 2) - Math.pow(distanceProjection, 2));
     }
 
     // ----------------------------------
@@ -183,13 +227,7 @@ public class TourServiceManager {
             tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
             if (tour != null && !tourService.isPaused()) {
                 TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
-                updateTourCoordinates(point);
-                tour.addCoordinate(new LatLng(location.getLatitude(), location.getLongitude()));
-                tourService.notifyListenersTour(tour);
-                if (previousLocation != null) {
-                    tour.updateDistance(location.distanceTo(previousLocation));
-                }
-                previousLocation = location;
+                TourServiceManager.this.onLocationChanged(location, point);
             }
         }
 
