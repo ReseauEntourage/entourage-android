@@ -23,6 +23,10 @@
     <!-- Guide -->
     <string name="activity_display_guide_title">Guide</string>
 
+    <!-- Message -->
+    <string name="activity_display_message_title">Message</string>
+    <string name="activity_display_message_close">Fermer</string>
+
     <!-- Encounter -->
     <string name="activity_read_encounter_title">Rencontre</string>
     <string name="activity_create_encounter_title">Nouvelle rencontre</string>

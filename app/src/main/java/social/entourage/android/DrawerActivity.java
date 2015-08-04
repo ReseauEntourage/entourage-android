@@ -1,40 +1,28 @@
 package social.entourage.android;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
+import social.entourage.android.message.push.RegisterGCMService;
 
 public class DrawerActivity extends EntourageSecuredActivity {
-
-    private static final String DRIVE_EVENT = "com.google.android.c2dm.intent.RECEIVE";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -56,8 +44,6 @@ public class DrawerActivity extends EntourageSecuredActivity {
     TextView userView;
 
     private Fragment mainFragment;
-
-    GcmBroadcastReceiver gcmReceiver = new GcmBroadcastReceiver();
 
     // ----------------------------------
     // LIFECYCLE
@@ -123,19 +109,6 @@ public class DrawerActivity extends EntourageSecuredActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IntentFilter filter = new IntentFilter(DRIVE_EVENT);
-        registerReceiver(gcmReceiver, filter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(gcmReceiver);
-    }
-
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -188,35 +161,4 @@ public class DrawerActivity extends EntourageSecuredActivity {
         fragmentTransaction.commit();
     }
 
-    // ----------------------------------
-    // INNER CLASSES
-    // ----------------------------------
-
-    private class GcmBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.v("broadcast", "received");
-            Bundle extras = intent.getExtras();
-            GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
-            if( GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(gcm.getMessageType(intent)) && !extras.isEmpty()) {
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-                builder.setSmallIcon(R.drawable.ic_map);
-
-                Intent i = new Intent(Intent.ACTION_VIEW, null);
-                PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
-
-                builder.setContentIntent(pi);
-                builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
-                builder.setContentTitle("Message de l'Entourage");
-                builder.setContentText("Le message");
-                builder.setSubText("Les détails");
-
-                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.notify(001, builder.build());
-
-            }
-        }
-    }
 }

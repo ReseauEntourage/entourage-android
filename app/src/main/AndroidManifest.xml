@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
@@ -71,6 +72,12 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".message.MessageActivity"
+            android:label="@string/activity_display_message_title"
+            android:screenOrientation="portrait">
+        </activity>
+
         <!-- Services -->
         <service
             android:name="com.octo.appaloosasdk.async.AppaloosaSpiceService"
@@ -85,8 +92,19 @@
             android:exported="false"/>
 
         <service
-            android:name=".RegisterGCMService"
+            android:name=".message.push.RegisterGCMService"
             android:exported="false"/>
+
+        <service
+            android:name=".message.push.PushNotificationService"
+            android:exported="false"/>
+
+        <!-- Receivers -->
+        <receiver android:name=".message.push.GcmBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

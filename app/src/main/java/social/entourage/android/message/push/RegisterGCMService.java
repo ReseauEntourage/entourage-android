@@ -1,4 +1,4 @@
-package social.entourage.android;
+package social.entourage.android.message.push;
 
 import android.app.IntentService;
 import android.content.Context;

@@ -5,9 +5,9 @@ import social.entourage.android.ActivityScope;
 import social.entourage.android.EntourageComponent;
 
 /**
- * Component linked to GuideMapActivity lifecycle
+ * Component linked to GuideMapEntourageFragment lifecycle
  * Provide a GuideMapPresenter
- * @see GuideMapActivity
+ * @see GuideMapEntourageFragment
  * @see GuideMapPresenter
  */
 @ActivityScope
