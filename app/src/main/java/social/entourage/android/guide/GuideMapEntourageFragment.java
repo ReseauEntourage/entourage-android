@@ -130,7 +130,7 @@ public class GuideMapEntourageFragment extends Fragment {
 
     public void saveCameraPosition() {
         if(mapFragment!= null && mapFragment.getMap() != null) {
-            EntourageLocation.getInstance().saveCameraPosition(mapFragment.getMap().getCameraPosition());
+            EntourageLocation.getInstance().saveLastCameraPosition(mapFragment.getMap().getCameraPosition());
         }
     }
 }

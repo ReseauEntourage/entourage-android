@@ -1,5 +1,8 @@
 package social.entourage.android.api.model.map;
 
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -47,5 +50,9 @@ public class TourPoint implements Serializable {
 
     public void setPassingTime(Date passingTime) {
         this.passingTime = passingTime;
+    }
+
+    public LatLng getLocation() {
+        return new LatLng(latitude, longitude);
     }
 }

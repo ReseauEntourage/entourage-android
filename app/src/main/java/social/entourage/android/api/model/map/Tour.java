@@ -1,6 +1,5 @@
 package social.entourage.android.api.model.map;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,8 +22,8 @@ public class Tour implements Serializable {
     @Expose(serialize = false)
     private long id;
 
-    @SerializedName("vehicule_type")
-    private String tourVehiculeType = TOUR_FEET;
+    @SerializedName("vehicle_type")
+    private String tourVehicleType = TOUR_FEET;
 
     @SerializedName("tour_type")
     private String tourType = TourType.SOCIAL.getName();
@@ -41,8 +40,9 @@ public class Tour implements Serializable {
     @Expose(serialize = false)
     private float distance;
 
-    @Expose(serialize = false)
-    private List<LatLng> coordinates;
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("tour_points")
+    private List<TourPoint> tourPoints;
 
     @Expose(serialize = false)
     private final HashMap<Date, String> steps;
@@ -51,7 +51,7 @@ public class Tour implements Serializable {
     private final List<Encounter> encounters;
 
     public Tour() {
-        this.coordinates = new ArrayList<>();
+        this.tourPoints = new ArrayList<>();
         this.steps = new HashMap<>();
         this.encounters = new ArrayList<>();
     }
@@ -60,8 +60,8 @@ public class Tour implements Serializable {
         return id;
     }
 
-    public String getTourVehiculeType() {
-        return tourVehiculeType;
+    public String getTourVehicleType() {
+        return tourVehicleType;
     }
 
     public String getTourType() {
@@ -84,8 +84,8 @@ public class Tour implements Serializable {
         return distance;
     }
 
-    public List<LatLng> getCoordinates() {
-        return coordinates;
+    public List<TourPoint> getTourPoints() {
+        return tourPoints;
     }
 
     public HashMap<Date, String> getSteps() {
@@ -100,8 +100,8 @@ public class Tour implements Serializable {
         this.id = id;
     }
 
-    public void setTourVehiculeType(String tourVehiculeType) {
-        this.tourVehiculeType = tourVehiculeType;
+    public void setTourVehicleType(String tourVehicleType) {
+        this.tourVehicleType = tourVehicleType;
     }
 
     public void setTourType(String tourType) {
@@ -124,8 +124,8 @@ public class Tour implements Serializable {
         this.distance = distance;
     }
 
-    public void setCoordinates(List<LatLng> coordinates) {
-        this.coordinates = coordinates;
+    public void setTourPoints(List<TourPoint> tourPoints) {
+        this.tourPoints = tourPoints;
     }
 
     public void closeTour() {
@@ -136,8 +136,8 @@ public class Tour implements Serializable {
         this.distance += distance;
     }
 
-    public void addCoordinate(LatLng location) {
-        this.coordinates.add(location);
+    public void addCoordinate(TourPoint location) {
+        this.tourPoints.add(location);
     }
 
     public void addStep(Date time, String step) {

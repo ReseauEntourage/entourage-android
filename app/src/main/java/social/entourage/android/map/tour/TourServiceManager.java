@@ -12,15 +12,19 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.TourPointWrapper;
 import social.entourage.android.api.model.TourWrapper;
+import social.entourage.android.api.model.ToursWrapper;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -52,9 +56,8 @@ public class TourServiceManager {
     private Location previousLocation;
     private long tourId;
     private int pointsNeededForNextRequest;
-
     private List<TourPoint> pointsToSend;
-
+    private Timer timer;
 
     @Inject
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest) {
@@ -63,6 +66,7 @@ public class TourServiceManager {
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
         initializeLocationService();
+        initializeTimerTask();
     }
 
     // ----------------------------------
@@ -83,8 +87,8 @@ public class TourServiceManager {
 
     public void startTour(String transportMode, String type) {
         tour = new Tour();
-        tour.setTourVehiculeType(transportMode); // feet, car
-        tour.setTourType(type); // social, other, food
+        tour.setTourVehicleType(transportMode);
+        tour.setTourType(type);
         sendTour();
     }
 
@@ -117,6 +121,19 @@ public class TourServiceManager {
                 Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
 
+    private void initializeTimerTask() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                LatLng location = EntourageLocation.getInstance().getCurrentCameraPosition().target;
+                float zoom = EntourageLocation.getInstance().getCurrentCameraPosition().zoom;
+                float distance = 40000f/(float)Math.pow(2f, zoom);
+                retrieveToursNearby(5, null, null, new LatLng(location.latitude, location.longitude), distance);
+            }
+        }, 1000, 5000);
+    }
+
     private void sendTour() {
         TourWrapper tourWrapper = new TourWrapper();
         tourWrapper.setTour(tour);
@@ -124,20 +141,6 @@ public class TourServiceManager {
             @Override
             public void success(TourWrapper tourWrapper, Response response) {
                 tourId = tourWrapper.getTour().getId();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("Error", error.toString());
-            }
-        });
-    }
-
-    private void retrieveTour(long id) {
-        tourRequest.retrieveTourById(id, new Callback<TourWrapper>() {
-            @Override
-            public void success(TourWrapper tourWrapper, Response response) {
-                Log.v("Success", tourWrapper.toString());
             }
 
             @Override
@@ -180,6 +183,31 @@ public class TourServiceManager {
         });
     }
 
+    protected void retrieveToursNearby(int limit, String transportMode, String type, LatLng location, float distance) {
+        tourRequest.retrieveToursNearby(limit, transportMode, type, location.latitude, location.longitude, distance, new Callback<ToursWrapper>() {
+            @Override
+            public void success(ToursWrapper toursWrapper, Response response) {
+                tourService.notifyListenersToursNearby(toursWrapper.getTours());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Error", error.toString());
+            }
+        });
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public void cancelTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
     private void onLocationChanged(Location location, TourPoint point) {
         pointsToSend.add(point);
         if (pointsToSend.size() >= 3) {
@@ -192,7 +220,7 @@ public class TourServiceManager {
         }
         pointsNeededForNextRequest--;
 
-        tour.addCoordinate(new LatLng(location.getLatitude(), location.getLongitude()));
+        tour.addCoordinate(new TourPoint(location.getLatitude(), location.getLongitude(), new Date()));
         if (previousLocation != null) {
             tour.updateDistance(location.distanceTo(previousLocation));
         }

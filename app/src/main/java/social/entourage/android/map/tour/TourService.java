@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -25,11 +26,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
@@ -124,6 +128,7 @@ public class TourService extends Service {
     public void onDestroy() {
         endTreatment();
         unregisterReceiver(receiver);
+        tourServiceManager.cancelTimer();
         super.onDestroy();
     }
 
@@ -304,6 +309,12 @@ public class TourService extends Service {
         }
     }
 
+    public void notifyListenersToursNearby(List<Tour> tours) {
+        for (TourServiceListener listener : listeners) {
+            listener.onRetrieveToursNearby(tours);
+        }
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
@@ -312,5 +323,6 @@ public class TourService extends Service {
         void onTourUpdated(Tour tour);
         void onTourResumed(Tour tour);
         void onLocationUpdated(LatLng location);
+        void onRetrieveToursNearby(List<Tour> tours);
     }
 }

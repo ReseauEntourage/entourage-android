@@ -6,16 +6,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import social.entourage.android.DrawerActivity;
-import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Message;
 import social.entourage.android.message.MessageActivity;
@@ -26,8 +24,7 @@ public class PushNotificationService extends IntentService {
 
     public static final String PUSH_MESSAGE = "social.entourage.android.PUSH_MESSAGE";
 
-    private static final String KEY_MESSAGE = "message";
-    private static final String KEY_FROM = "from";
+    private static final String KEY_SENDER = "sender";
     private static final String KEY_OBJECT = "object";
     private static final String KEY_CONTENT = "content";
 
@@ -37,7 +34,7 @@ public class PushNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        displayPushNotification(getMessageFromNotification(intent));
+        displayPushNotification(getMessageFromNotification(intent.getExtras()));
     }
 
     private void displayPushNotification(Message message) {
@@ -65,18 +62,12 @@ public class PushNotificationService extends IntentService {
     }
 
     @Nullable
-    private Message getMessageFromNotification(Intent pushIntent) {
-        try {
-            JSONObject json = new JSONObject(pushIntent.getExtras().getString(KEY_MESSAGE));
-            return new Message(
-                    json.get(KEY_FROM).toString(),
-                    json.get(KEY_OBJECT).toString(),
-                    json.get(KEY_CONTENT).toString()
-            );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private Message getMessageFromNotification(Bundle args) {
+        return new Message(
+                args.getString(KEY_SENDER),
+                args.getString(KEY_OBJECT),
+                args.getString(KEY_CONTENT)
+        );
     }
 
 }
