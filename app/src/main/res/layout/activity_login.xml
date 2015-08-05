@@ -33,6 +33,15 @@
             android:inputType="textEmailAddress"
             android:layout_marginBottom="20dp"/>
 
+        <EditText
+            android:id="@+id/edittext_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login_hint_password"
+            android:text=""
+            android:inputType="numberPassword"
+            android:layout_marginBottom="20dp"/>
+
         <Button
             android:id="@+id/button_login"
             android:layout_width="wrap_content"

@@ -28,8 +28,8 @@ public class LoginPresenter implements Callback<LoginResponse> {
         this.authenticationController = authenticationController;
     }
 
-    public void login(final String email) {
-        loginRequest.login(email, this);
+    public void login(final String email, final String type, final String id) {
+        loginRequest.login(email, type, id, this);
     }
 
     @Override

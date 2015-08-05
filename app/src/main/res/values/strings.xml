@@ -8,7 +8,9 @@
     <!-- Login -->
     <string name="title_activity_login">Se connecter</string>
     <string name="login_hint_email">Email</string>
+    <string name="login_hint_password">Mot de passe</string>
     <string name="login_button_text">Connexion</string>
+    <string name="login_device_type">android</string>
     <string name="loading_button_text">Loading…</string>
 
     <!-- Drawer -->
@@ -26,6 +28,9 @@
     <!-- Message -->
     <string name="activity_display_message_title">Message</string>
     <string name="activity_display_message_close">Fermer</string>
+    <string name="message_label_from">Nouveau message de :</string>
+    <string name="message_label_object">Objet :</string>
+    <string name="message_label_content">Message :</string>
 
     <!-- Encounter -->
     <string name="activity_read_encounter_title">Rencontre</string>

@@ -11,14 +11,12 @@
         android:layout_margin="15dp"
         android:gravity="center">
 
-        <!-- AUTHOR -->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:textColor="@color/background_dark"
-            android:text="Nouveau message de :"/>
+            android:text="@string/message_label_from"/>
 
         <TextView
             android:id="@+id/message_author"
@@ -27,15 +25,13 @@
             android:background="@drawable/custom_edit_text"
             android:textSize="20dp"/>
 
-        <!-- OBJECT -->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/background_dark"
-            android:text="Objet :"/>
+            android:text="@string/message_label_object"/>
 
         <TextView
             android:id="@+id/message_object"
@@ -44,15 +40,13 @@
             android:background="@drawable/custom_edit_text"
             android:textSize="20dp"/>
 
-        <!-- CONTENT -->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/background_dark"
-            android:text="Message :"/>
+            android:text="@string/message_label_content"/>
 
         <TextView
             android:id="@+id/message_content"

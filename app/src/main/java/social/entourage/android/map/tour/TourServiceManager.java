@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -126,10 +127,13 @@ public class TourServiceManager {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                LatLng location = EntourageLocation.getInstance().getCurrentCameraPosition().target;
-                float zoom = EntourageLocation.getInstance().getCurrentCameraPosition().zoom;
-                float distance = 40000f/(float)Math.pow(2f, zoom);
-                retrieveToursNearby(5, null, null, new LatLng(location.latitude, location.longitude), distance);
+                CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
+                if (currentPosition != null) {
+                    LatLng location = currentPosition.target;
+                    float zoom = currentPosition.zoom;
+                    float distance = 40000f / (float) Math.pow(2f, zoom);
+                    retrieveToursNearby(5, null, null, new LatLng(location.latitude, location.longitude), distance);
+                }
             }
         }, 1000, 5000);
     }
