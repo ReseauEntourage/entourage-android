@@ -41,7 +41,7 @@ public class LoginActivity extends EntourageActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        //setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ButterKnife.inject(this);
     }
 
@@ -83,7 +83,7 @@ public class LoginActivity extends EntourageActivity {
     }
 
     private void resetLoginButton() {
-        loginButton.setText(R.string.login_button_text);
+        loginButton.setText(R.string.login_button_connection_text);
         loginButton.setEnabled(true);
     }
 }

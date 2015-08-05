@@ -16,7 +16,7 @@ import social.entourage.android.EntourageComponent;
 )
 @SuppressWarnings("unused")
 public interface MessageComponent {
-    void inject(MessageActivity fragment);
+    void inject(MessageActivity activity);
 
     MessagePresenter getMessagepPresenter();
 }

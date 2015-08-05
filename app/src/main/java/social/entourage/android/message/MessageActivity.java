@@ -45,7 +45,7 @@ public class MessageActivity extends EntourageSecuredActivity {
         message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
 
         if (!getAuthenticationController().isAuthenticated()) {
-            throw new IllegalArgumentException("You must ne logged in");
+            throw new IllegalArgumentException("You must be logged in");
         }
 
         messageAuthor.setText(message.getAuthor());

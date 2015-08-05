@@ -1,7 +1,6 @@
 package social.entourage.android.guide.poi;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,7 +81,7 @@ public class ReadPoiActivity extends EntourageActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_user) {
             return true;
         }
 

@@ -8,7 +8,7 @@ import dagger.Provides;
  * @see MapEntourageFragment
  */
 @Module
-final class MapModule {
+public class MapModule {
     private final MapEntourageFragment fragment;
 
     public MapModule(final MapEntourageFragment fragment) {

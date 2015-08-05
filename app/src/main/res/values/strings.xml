@@ -1,15 +1,19 @@
 <resources>
     <string name="app_name">Entourage</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_user">Profil</string>
     <string name="action_logout">Déconnexion</string>
     <string name="action_guide">Guide</string>
     <string name="action_tours">Maraudes</string>
 
     <!-- Login -->
     <string name="title_activity_login">Se connecter</string>
+    <string name="login_text_welcome">Bienvenue sur Entourage</string>
+    <string name="login_text_info">Version réservée\nà\nun usage professionnel</string>
+    <string name="login_text_more"><u>En savoir plus</u></string>
     <string name="login_hint_email">Email</string>
-    <string name="login_hint_password">Mot de passe</string>
-    <string name="login_button_text">Connexion</string>
+    <string name="login_hint_password">Code d\'accès</string>
+    <string name="login_button_connection_text">Me connecter</string>
+    <string name="login_button_lost_text">Code d\'accès égaré ?</string>
     <string name="login_device_type">android</string>
     <string name="loading_button_text">Loading…</string>
 
@@ -24,6 +28,13 @@
 
     <!-- Guide -->
     <string name="activity_display_guide_title">Guide</string>
+
+    <!-- User -->
+    <string name="activity_display_user_title">Profil</string>
+    <string name="user_button_change_photo">Changer ma photo</string>
+    <string name="user_button_change_email">Modifier mon email</string>
+    <string name="user_button_change_password">Changer mot de passe</string>
+    <string name="user_button_unsubscribe">Me désinscrire</string>
 
     <!-- Message -->
     <string name="activity_display_message_title">Message</string>
@@ -81,7 +92,6 @@
     <string name="tour_end_distance">%1$s km parcourus</string>
     <string name="tour_end_duration">%1$s passées dans la rue</string>
 
-
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>
     <string name="local_service_started">Maraude lancée</string>
@@ -91,6 +101,5 @@
     <string name="local_service_disconnected">Déconnecté du GeoService</string>
     <string name="start_tour_title">Enregistrer maraude</string>
     <string name="stop_tour_title">Stopper maraude</string>
-
 
 </resources>

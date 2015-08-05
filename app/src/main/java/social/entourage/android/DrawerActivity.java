@@ -17,10 +17,12 @@ import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import social.entourage.android.api.model.User;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.user.UserEntourageFragment;
 
 public class DrawerActivity extends EntourageSecuredActivity {
 
@@ -54,8 +56,6 @@ public class DrawerActivity extends EntourageSecuredActivity {
         setContentView(R.layout.activity_drawer);
         mainFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         ButterKnife.inject(this);
-
-        userView.setText(getAuthenticationController().getUser().getFirstName());
 
         configureToolbar();
         configureNavigationItem();
@@ -109,6 +109,15 @@ public class DrawerActivity extends EntourageSecuredActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        User user = getAuthenticationController().getUser();
+        if (user != null) {
+            userView.setText(user.getFirstName());
+        }
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -146,6 +155,9 @@ public class DrawerActivity extends EntourageSecuredActivity {
             case R.id.action_guide:
                 loadFragment(new GuideMapEntourageFragment());
                 break;
+            case R.id.action_user:
+                loadFragment(new UserEntourageFragment());
+                break;
             case R.id.action_logout:
                 logout();
                 break;
@@ -160,5 +172,4 @@ public class DrawerActivity extends EntourageSecuredActivity {
         fragmentTransaction.replace(R.id.main_fragment, mainFragment);
         fragmentTransaction.commit();
     }
-
 }

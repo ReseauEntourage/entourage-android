@@ -9,9 +9,9 @@
         <item android:id="@+id/action_guide"
             android:title="@string/action_guide"
             android:icon="@drawable/ic_explore"/>
-        <item android:id="@+id/action_settings"
-            android:title="@string/action_settings"
-            android:icon="@drawable/ic_settings"/>
+        <item android:id="@+id/action_user"
+            android:title="@string/action_user"
+            android:icon="@drawable/ic_person_black_36dp"/>
         <item android:id="@+id/action_logout"
             android:title="@string/action_logout"
             android:icon="@drawable/ic_logout"/>
