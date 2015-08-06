@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_light">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+            <!-- INFORMATIONS DE MARAUDEUR -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="INFORMATIONS DE MARAUDEUR"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/background"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/user_photo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_user_photo"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/user_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="17dp"
+                            android:textColor="@color/abc_primary_text_disable_only_material_light"/>
+
+                        <TextView
+                            android:id="@+id/user_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="17dp"
+                            android:textColor="@color/abc_primary_text_disable_only_material_light"/>
+
+                        <TextView
+                            android:id="@+id/user_tours_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="40 maraudes réalisées"
+                            android:textSize="17dp"
+                            android:textColor="@color/abc_primary_text_disable_only_material_light"/>
+
+                        <TextView
+                            android:id="@+id/user_encounters_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="98 personnes rencontrées"
+                            android:textSize="17dp"
+                            android:textColor="@color/abc_primary_text_disable_only_material_light"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            <!-- INFORMATIONS D'ASSOCIATION -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="INFORMATIONS D'ASSOCIATION"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/background"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/association_photo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_croix_rouge"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/user_association"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="La Croix Rouge Française"
+                        android:textSize="20dp"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- INFORMATIONS PRIVEES -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="INFORMATIONS PRIVEES"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/background"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:hint="Entrez votre mot de passe"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:hint="Confirmez votre mot de passe"/>
+
+                    <Button
+                        android:id="@+id/user_button_confirm_changes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_button_confirm_changes"
+                        android:background="@drawable/custom_button_yellow"/>
+
+                </LinearLayout>
+
+            <!-- DESINSCRIPTION -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="DESINSCRIPTION"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/background"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/user_button_unsubscribe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_button_unsubscribe"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/custom_button_yellow"/>
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

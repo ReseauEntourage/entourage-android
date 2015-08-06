@@ -52,6 +52,14 @@
         </activity>
 
         <activity
+            android:name=".user.UserActivity"
+            android:label="@string/activity_display_user_title"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".guide.poi.ReadPoiActivity"
             android:theme="@style/CustomDialogTheme"
             android:label="@string/activity_read_poi_title">

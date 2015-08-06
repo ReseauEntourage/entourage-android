@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -29,6 +30,8 @@ public class LoginActivity extends EntourageActivity {
     @Inject
     LoginPresenter loginPresenter;
 
+    @InjectView(R.id.login_more_text)
+    TextView moreText;
     @InjectView(R.id.edittext_email)
     EditText emailEditText;
     @InjectView(R.id.edittext_password)
@@ -52,6 +55,11 @@ public class LoginActivity extends EntourageActivity {
                 .loginModule(new LoginModule(this))
                 .build()
                 .inject(this);
+    }
+
+    @OnClick(R.id.login_more_text)
+    public void onAskMore() {
+        Toast.makeText(this, "Ask More", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.button_login)

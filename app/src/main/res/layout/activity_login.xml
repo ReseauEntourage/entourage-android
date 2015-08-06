@@ -54,7 +54,7 @@
         android:layout_below="@+id/login_info_text"
         android:layout_marginTop="10dp"
         android:text="@string/login_text_more"
-        android:textColor="@color/background_light"
+        android:textColor="@color/custom_clickable_text"
         android:textSize="15dp"
         android:gravity="center"
         android:clickable="true" />

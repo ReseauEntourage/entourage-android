@@ -3,15 +3,15 @@ package social.entourage.android.user;
 import javax.inject.Inject;
 
 /**
- * Presenter controlling the UserEntourageFragment
- * @see UserEntourageFragment
+ * Presenter controlling the UserActivity
+ * @see UserActivity
  */
 public class UserPresenter {
 
-    private final UserEntourageFragment activity;
+    private final UserActivity activity;
 
     @Inject
-    public UserPresenter(final UserEntourageFragment activity) {
+    public UserPresenter(final UserActivity activity) {
         this.activity = activity;
     }
 }

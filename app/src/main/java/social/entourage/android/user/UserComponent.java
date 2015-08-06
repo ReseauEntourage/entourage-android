@@ -5,9 +5,9 @@ import social.entourage.android.ActivityScope;
 import social.entourage.android.EntourageComponent;
 
 /**
- * Component linked to UserEntourageFragment lifecycle
+ * Component linked to UserActivity lifecycle
  * Provide a UserPresenter
- * @see UserEntourageFragment
+ * @see UserActivity
  * @see social.entourage.android.message.MessagePresenter
  */
 @ActivityScope
@@ -17,7 +17,7 @@ import social.entourage.android.EntourageComponent;
 )
 @SuppressWarnings("unused")
 public interface UserComponent {
-    void inject(UserEntourageFragment fragment);
+    void inject(UserActivity activity);
 
     UserPresenter getUserPresenter();
 }

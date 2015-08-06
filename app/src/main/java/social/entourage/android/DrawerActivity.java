@@ -1,6 +1,7 @@
 package social.entourage.android;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -13,16 +14,22 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.api.model.User;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.message.push.RegisterGCMService;
-import social.entourage.android.user.UserEntourageFragment;
+import social.entourage.android.user.UserActivity;
 
 public class DrawerActivity extends EntourageSecuredActivity {
 
@@ -42,8 +49,11 @@ public class DrawerActivity extends EntourageSecuredActivity {
     @InjectView(R.id.content_view)
     View contentView;
 
-    @InjectView(R.id.drawer_header_user)
-    TextView userView;
+    @InjectView(R.id.drawer_header_user_name)
+    TextView userName;
+
+    @InjectView(R.id.drawer_header_user_photo)
+    ImageView userPhoto;
 
     private Fragment mainFragment;
 
@@ -59,6 +69,10 @@ public class DrawerActivity extends EntourageSecuredActivity {
 
         configureToolbar();
         configureNavigationItem();
+
+        Picasso.with(this).load(R.drawable.ic_user_photo)
+                .transform(new CropCircleTransformation())
+                .into(userPhoto);
 
         startService(new Intent(this, RegisterGCMService.class));
     }
@@ -114,7 +128,7 @@ public class DrawerActivity extends EntourageSecuredActivity {
         super.onResume();
         User user = getAuthenticationController().getUser();
         if (user != null) {
-            userView.setText(user.getFirstName());
+            userName.setText(user.getFirstName());
         }
     }
 
@@ -155,9 +169,6 @@ public class DrawerActivity extends EntourageSecuredActivity {
             case R.id.action_guide:
                 loadFragment(new GuideMapEntourageFragment());
                 break;
-            case R.id.action_user:
-                loadFragment(new UserEntourageFragment());
-                break;
             case R.id.action_logout:
                 logout();
                 break;
@@ -171,5 +182,10 @@ public class DrawerActivity extends EntourageSecuredActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment, mainFragment);
         fragmentTransaction.commit();
+    }
+
+    @OnClick(R.id.drawer_header_user_photo)
+    void openUserProfile() {
+        startActivity(new Intent(this, UserActivity.class));
     }
 }

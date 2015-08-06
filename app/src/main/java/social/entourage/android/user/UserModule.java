@@ -4,19 +4,19 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module related to UserEntourageFragment
- * @see UserEntourageFragment
+ * Module related to UserActivity
+ * @see UserActivity
  */
 @Module
 public class UserModule {
-    private final UserEntourageFragment fragment;
+    private final UserActivity activity;
 
-    public UserModule(final UserEntourageFragment fragment) {
-        this.fragment = fragment;
+    public UserModule(final UserActivity activity) {
+        this.activity = activity;
     }
 
     @Provides
-    public UserEntourageFragment providesUserEntourageFragment() {
-        return fragment;
+    public UserActivity providesUserActivity() {
+        return activity;
     }
 }
