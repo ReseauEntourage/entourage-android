@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -34,6 +38,8 @@ public class LoginActivity extends EntourageActivity {
     TextView moreText;
     @InjectView(R.id.edittext_email)
     EditText emailEditText;
+    @InjectView(R.id.edittext_phone_number)
+    EditText phoneEditText;
     @InjectView(R.id.edittext_password)
     EditText passwordEditText;
     @InjectView(R.id.button_login)
@@ -44,8 +50,13 @@ public class LoginActivity extends EntourageActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-        //setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ButterKnife.inject(this);
+
+        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        String phoneNumber = manager.getLine1Number();
+        if (phoneNumber != null) {
+            phoneEditText.setText(phoneNumber);
+        }
     }
 
     @Override
@@ -64,14 +75,37 @@ public class LoginActivity extends EntourageActivity {
 
     @OnClick(R.id.button_login)
     public void onLoginClick() {
-        startLoader();
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-        loginPresenter.login(
-                emailEditText.getText().toString(),
-                getString(R.string.login_device_type),
-                sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null)
-        );
-        //passwordEditText.getText().toString()
+
+        boolean isFormatValid = false;
+        String phoneNumber = phoneEditText.getText().toString();
+
+        if (phoneNumber.length() == 10) {
+            if (phoneNumber.startsWith("0")) {
+                phoneNumber = "+33" + phoneNumber.substring(1, 10);
+                isFormatValid = true;
+            }
+        }
+        else if (phoneNumber.length() == 12) {
+            if (phoneNumber.startsWith("+33")) {
+                isFormatValid = true;
+            }
+        }
+
+        if (isFormatValid) {
+            Pattern pattern = Pattern.compile("^(\\+33)\\d{9}");
+            Matcher matcher = pattern.matcher(phoneNumber);
+            if (matcher.matches()) {
+                startLoader();
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+                loginPresenter.login(
+                        phoneNumber, passwordEditText.getText().toString(),
+                        getString(R.string.login_device_type),
+                        sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null)
+                );
+            } else {
+                Toast.makeText(this, getString(R.string.login_number_invalid_format), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void startMapActivity() {

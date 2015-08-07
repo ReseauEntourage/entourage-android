@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -458,7 +459,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void centerMap(CameraPosition cameraPosition) {
         if(mapFragment!= null && mapFragment.getMap() != null && isFollowing) {
             mapFragment.getMap().moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            //mapFragment.getMap().animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition)); DOESN'T WORK
             saveCameraPosition();
         }
     }

@@ -78,6 +78,15 @@
             android:hint="@string/login_hint_email"
             android:text=""
             android:inputType="textEmailAddress"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/edittext_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login_hint_phone"
+            android:inputType="phone"
             android:layout_marginBottom="20dp"/>
 
         <EditText

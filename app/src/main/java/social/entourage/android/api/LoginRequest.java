@@ -9,5 +9,8 @@ public interface LoginRequest {
 
     @FormUrlEncoded
     @POST("/login.json")
-    void login(@Field("email") String email, @Field("device_type") String type, @Field("device_id") String id, Callback<LoginResponse> callback);
+    void login(@Field("phone") String phone,
+               @Field("sms_code") String smsCode,
+               @Field("device_type") String type,
+               @Field("device_id") String id, Callback<LoginResponse> callback);
 }

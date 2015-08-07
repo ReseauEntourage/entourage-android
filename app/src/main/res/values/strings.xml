@@ -11,8 +11,10 @@
     <string name="login_text_info">Version réservée\nà\nun usage professionnel</string>
     <string name="login_text_more"><u>En savoir plus</u></string>
     <string name="login_hint_email">Email</string>
+    <string name="login_hint_phone">Numéro de téléphone</string>
     <string name="login_hint_password">Code d\'accès</string>
     <string name="login_button_connection_text">Me connecter</string>
+    <string name="login_number_invalid_format">Format du numéro invalide</string>
     <string name="login_button_lost_text">Code d\'accès égaré ?</string>
     <string name="login_device_type">android</string>
     <string name="loading_button_text">Loading…</string>
