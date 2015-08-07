@@ -4,20 +4,20 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module related to LoginActivity
- * @see LoginActivity
+ * Module related to LoginEntourageFragment
+ * @see LoginEntourageFragment
  */
 @Module
 class LoginModule {
 
-    private final LoginActivity activity;
+    private final LoginEntourageFragment fragment;
 
-    public LoginModule(final LoginActivity activity) {
-        this.activity = activity;
+    public LoginModule(final LoginEntourageFragment fragment) {
+        this.fragment = fragment;
     }
 
     @Provides
-    public LoginActivity providesLoginActivity() {
-        return activity;
+    public LoginEntourageFragment providesLoginEntourageFragment() {
+        return fragment;
     }
 }

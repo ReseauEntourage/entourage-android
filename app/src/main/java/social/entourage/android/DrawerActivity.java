@@ -74,6 +74,11 @@ public class DrawerActivity extends EntourageSecuredActivity {
                 .transform(new CropCircleTransformation())
                 .into(userPhoto);
 
+        User user = getAuthenticationController().getUser();
+        if (user != null) {
+            userName.setText(user.getFirstName());
+        }
+
         startService(new Intent(this, RegisterGCMService.class));
     }
 
@@ -121,15 +126,6 @@ public class DrawerActivity extends EntourageSecuredActivity {
             super.onBackPressed();
         }
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        User user = getAuthenticationController().getUser();
-        if (user != null) {
-            userName.setText(user.getFirstName());
-        }
     }
 
     // ----------------------------------

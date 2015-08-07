@@ -121,11 +121,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, toReturn);
-
         return toReturn;
     }
 
