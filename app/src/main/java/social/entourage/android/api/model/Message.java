@@ -1,10 +1,7 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model;
 
 import java.io.Serializable;
 
-/**
- * Created by NTE on 03/08/15.
- */
 public class Message implements Serializable {
 
     private String author;
@@ -42,5 +39,6 @@ public class Message implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
 
 }

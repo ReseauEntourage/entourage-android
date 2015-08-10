@@ -1,6 +1,8 @@
 package social.entourage.android.message;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,7 +15,8 @@ import butterknife.OnClick;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Message;
+import social.entourage.android.api.model.Message;
+import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.message.push.PushNotificationService;
 
 public class MessageActivity extends EntourageSecuredActivity {
@@ -42,12 +45,12 @@ public class MessageActivity extends EntourageSecuredActivity {
         setContentView(R.layout.activity_message);
         ButterKnife.inject(this);
 
-        message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
-
         if (!getAuthenticationController().isAuthenticated()) {
-            throw new IllegalArgumentException("You must be logged in");
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
+        message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
         messageAuthor.setText(message.getAuthor());
         messageObject.setText(message.getObject());
         messageContent.setText(message.getContent());

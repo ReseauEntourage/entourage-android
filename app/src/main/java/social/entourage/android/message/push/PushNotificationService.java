@@ -9,13 +9,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Message;
+import social.entourage.android.api.model.Message;
 import social.entourage.android.message.MessageActivity;
 
 public class PushNotificationService extends IntentService {
@@ -58,16 +54,13 @@ public class PushNotificationService extends IntentService {
         args.putSerializable(PUSH_MESSAGE, message);
         Intent messageIntent = new Intent(this, MessageActivity.class);
         messageIntent.putExtras(args);
+
         return PendingIntent.getActivity(this, 0, messageIntent, 0);
     }
 
     @Nullable
     private Message getMessageFromNotification(Bundle args) {
-        return new Message(
-                args.getString(KEY_SENDER),
-                args.getString(KEY_OBJECT),
-                args.getString(KEY_CONTENT)
-        );
+        return new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT));
     }
 
 }

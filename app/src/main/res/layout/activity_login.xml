@@ -7,11 +7,16 @@
     tools:context="social.entourage.android.authentication.login.LoginActivity"
     android:background="@color/login_view">
 
-    <fragment
-        android:id="@+id/main_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:name="social.entourage.android.map.MapEntourageFragment"/>
+    <include
+        android:id="@+id/login_signup"
+        layout="@layout/login_signup"/>
+
+    <include
+        android:id="@+id/login_more_information"
+        layout="@layout/login_more_information"/>
+
+    <include
+        android:id="@+id/login_lost_code"
+        layout="@layout/login_lost_code"/>
 
 </RelativeLayout>

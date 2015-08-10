@@ -9,6 +9,7 @@ import dagger.Provides;
  */
 @Module
 public class MessageModule {
+
     private final MessageActivity activity;
 
     public MessageModule(final MessageActivity activity) {

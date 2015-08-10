@@ -16,11 +16,14 @@ public class User {
 
     private final String token;
 
-    private User(final int id, final String email, final String firstName, final String lastName, final String token) {
+    private final Stats stats;
+
+    private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final String token) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.stats = stats;
         this.token = token;
     }
 
@@ -40,14 +43,27 @@ public class User {
         return lastName;
     }
 
+    public Stats getStats() {
+        return stats;
+    }
+
     public String getToken() {
         return token;
+    }
+
+    public void incrementTours() {
+        stats.setTourCount(stats.getTourCount() + 1);
+    }
+
+    public void incrementEncouters() {
+        stats.setEncounterCount(stats.getEncounterCount() + 1);
     }
 
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
         private int id;
         private String email, firstName, lastName, token;
+        private Stats stats;
 
         public Builder() {
         }
@@ -72,6 +88,11 @@ public class User {
             return this;
         }
 
+        public Builder withStats(final Stats stats) {
+            this.stats = stats;
+            return this;
+        }
+
         public Builder withToken(final String token) {
             this.token = token;
             return this;
@@ -90,10 +111,13 @@ public class User {
             if (lastName == null) {
                 return null;
             }
+            if (stats == null) {
+                return null;
+            }
             if (token == null) {
                 return null;
             }
-            return new User(id, email, firstName, lastName, token);
+            return new User(id, email, firstName, lastName, stats, token);
         }
     }
 }

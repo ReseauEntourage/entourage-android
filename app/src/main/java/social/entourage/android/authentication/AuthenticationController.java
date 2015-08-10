@@ -2,6 +2,7 @@ package social.entourage.android.authentication;
 
 import android.content.SharedPreferences;
 
+import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
 
 /**
@@ -13,6 +14,8 @@ public class AuthenticationController {
     private static final String PREF_KEY_FIRST_NAME = "firstName";
     private static final String PREF_KEY_LAST_NAME = "lastName";
     private static final String PREF_KEY_EMAIL = "email";
+    private static final String PREF_KEY_TOURS = "tours";
+    private static final String PREF_KEY_ENCOUTERS = "encounters";
     private static final String PREF_KEY_TOKEN = "token";
 
     private final SharedPreferences userSharedPref;
@@ -29,6 +32,7 @@ public class AuthenticationController {
         builder.withFirstName(userSharedPref.getString(PREF_KEY_FIRST_NAME, null));
         builder.withLastName(userSharedPref.getString(PREF_KEY_LAST_NAME, null));
         builder.withEmail(userSharedPref.getString(PREF_KEY_EMAIL, null));
+        builder.withStats(new Stats(userSharedPref.getInt(PREF_KEY_TOURS, 0), userSharedPref.getInt(PREF_KEY_ENCOUTERS, 0)));
         builder.withToken(userSharedPref.getString(PREF_KEY_TOKEN, null));
         loggedUser = builder.build();
         if(loggedUser!=null && loggedUser.getToken()==null) {
@@ -44,7 +48,23 @@ public class AuthenticationController {
         edit.putString(PREF_KEY_FIRST_NAME, user.getFirstName());
         edit.putString(PREF_KEY_LAST_NAME, user.getLastName());
         edit.putString(PREF_KEY_EMAIL, user.getEmail());
+        edit.putInt(PREF_KEY_TOURS, user.getStats().getTourCount());
+        edit.putInt(PREF_KEY_ENCOUTERS, user.getStats().getEncounterCount());
         edit.putString(PREF_KEY_TOKEN, user.getToken());
+        edit.apply();
+    }
+
+    public void incrementUserToursCount() {
+        loggedUser.incrementTours();
+        final SharedPreferences.Editor edit = userSharedPref.edit();
+        edit.putInt(PREF_KEY_TOURS, loggedUser.getStats().getTourCount());
+        edit.apply();
+    }
+
+    public void incrementUserEncountersCount() {
+        loggedUser.incrementEncouters();
+        final SharedPreferences.Editor edit = userSharedPref.edit();
+        edit.putInt(PREF_KEY_ENCOUTERS, loggedUser.getStats().getEncounterCount());
         edit.apply();
     }
 

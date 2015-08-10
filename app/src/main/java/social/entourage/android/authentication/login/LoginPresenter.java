@@ -10,11 +10,12 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.LoginResponse;
+import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**
- * Presenter controlling the LoginEntourageFragment
- * @see LoginEntourageFragment
+ * Presenter controlling the LoginActivity
+ * @see LoginActivity
  */
 public class LoginPresenter {
 
@@ -22,7 +23,7 @@ public class LoginPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final LoginEntourageFragment fragment;
+    private final LoginActivity activity;
     private final LoginRequest loginRequest;
     private final AuthenticationController authenticationController;
 
@@ -32,10 +33,10 @@ public class LoginPresenter {
 
     @Inject
     public LoginPresenter(
-            final LoginEntourageFragment fragment,
+            final LoginActivity activity,
             final LoginRequest loginRequest,
             final AuthenticationController authenticationController) {
-        this.fragment = fragment;
+        this.activity = activity;
         this.loginRequest = loginRequest;
         this.authenticationController = authenticationController;
     }
@@ -72,21 +73,29 @@ public class LoginPresenter {
     public void login(final String phone, final String smsCode, final String type, final String id) {
         String phoneNumber = checkPhoneNumberFormat(phone);
         if (phoneNumber != null) {
-            fragment.startLoader();
+            activity.startLoader();
             loginRequest.login(phoneNumber, smsCode, type, id, new Callback<LoginResponse>() {
                 @Override
                 public void success(LoginResponse loginResponse, Response response) {
                     authenticationController.saveUser(loginResponse.getUser());
-                    fragment.startMapActivity();
+                    activity.startMapActivity();
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    fragment.loginFail();
+                    activity.loginFail();
                 }
             });
         } else {
-            fragment.displayWrongFormat();
+            activity.displayWrongFormat();
         }
+    }
+
+    public void signupForNewsletter(final String email) {
+
+    }
+
+    public void sendNewCode(final String phone) {
+
     }
 }

@@ -315,6 +315,12 @@ public class TourService extends Service {
         }
     }
 
+    public void notifyListenersToursCountUpdated() {
+        for (TourServiceListener listener : listeners) {
+            listener.onToursCountUpdated();
+        }
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
@@ -324,5 +330,6 @@ public class TourService extends Service {
         void onTourResumed(Tour tour);
         void onLocationUpdated(LatLng location);
         void onRetrieveToursNearby(List<Tour> tours);
+        void onToursCountUpdated();
     }
 }

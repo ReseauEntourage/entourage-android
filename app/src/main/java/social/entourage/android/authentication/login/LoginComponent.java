@@ -5,9 +5,9 @@ import social.entourage.android.ActivityScope;
 import social.entourage.android.EntourageComponent;
 
 /**
- * Component linked to LoginEntourageFragment lifecycle
+ * Component linked to LoginActivity lifecycle
  * Provide a LoginPresenter
- * @see LoginEntourageFragment
+ * @see LoginActivity
  * @see LoginPresenter
  */
 @ActivityScope
@@ -17,7 +17,7 @@ import social.entourage.android.EntourageComponent;
 )
 @SuppressWarnings("unused")
 public interface LoginComponent {
-    void inject(LoginEntourageFragment fragment);
+    void inject(LoginActivity activity);
 
     LoginPresenter getLoginPresenter();
 }

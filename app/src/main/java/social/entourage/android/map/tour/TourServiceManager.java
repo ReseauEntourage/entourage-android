@@ -144,6 +144,7 @@ public class TourServiceManager {
         tourRequest.tour(tourWrapper, new Callback<TourWrapper>() {
             @Override
             public void success(TourWrapper tourWrapper, Response response) {
+                tourService.notifyListenersToursCountUpdated();
                 tourId = tourWrapper.getTour().getId();
             }
 

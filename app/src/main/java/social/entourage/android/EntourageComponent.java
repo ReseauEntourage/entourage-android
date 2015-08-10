@@ -29,7 +29,6 @@ import social.entourage.android.authentication.login.LoginActivity;
 public interface EntourageComponent {
     void inject(Application application);
     void inject(DrawerActivity activity);
-    void inject(LoginActivity activity);
 
     AuthenticationController getAuthenticationController();
 

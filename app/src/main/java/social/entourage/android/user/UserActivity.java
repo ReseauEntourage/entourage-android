@@ -19,6 +19,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.login.LoginActivity;
 
 public class UserActivity extends EntourageSecuredActivity {
 
@@ -58,13 +59,15 @@ public class UserActivity extends EntourageSecuredActivity {
         ButterKnife.inject(this);
 
         if (!getAuthenticationController().isAuthenticated()) {
-            throw new IllegalArgumentException("You must be logged in");
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
         User user = getAuthenticationController().getUser();
         userName.setText(user.getFirstName() + " " + user.getLastName());
         userEmail.setText(user.getEmail());
-
+        userTourCount.setText(getString(R.string.user_tours_count, user.getStats().getTourCount()));
+        userEncountersCount.setText(getString(R.string.user_encounters_count, user.getStats().getEncounterCount()));
     }
 
     @Override

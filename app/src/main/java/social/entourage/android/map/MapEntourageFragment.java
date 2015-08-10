@@ -37,6 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
@@ -289,6 +290,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         for (Tour tour : tours) {
             drawTour(tour);
         }
+    }
+
+    @Override
+    public void onToursCountUpdated() {
+        /**
+         * HERE : update the shared preferences (how to access it ?)
+         */
     }
 
     // ----------------------------------
