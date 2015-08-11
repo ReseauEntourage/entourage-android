@@ -80,7 +80,7 @@
                             android:id="@+id/user_tours_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/user_tours_count"
+                            android:text=""
                             android:textSize="17dp"
                             android:textColor="@color/abc_primary_text_disable_only_material_light"/>
 
@@ -88,7 +88,7 @@
                             android:id="@+id/user_encounters_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/user_encounters_count"
+                            android:text=""
                             android:textSize="17dp"
                             android:textColor="@color/abc_primary_text_disable_only_material_light"/>
 
@@ -178,14 +178,20 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:hint="Entrez votre mot de passe"/>
+                        android:inputType="textWebEmailAddress"
+                        android:hint="@string/login_hint_email"/>
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:hint="Confirmez votre mot de passe"/>
+                        android:hint="@string/user_form_access_code"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:hint="@string/user_form_confirmation"/>
 
                     <Button
                         android:id="@+id/user_button_confirm_changes"

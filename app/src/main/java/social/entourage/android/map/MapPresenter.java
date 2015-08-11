@@ -21,6 +21,7 @@ import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.Constants;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 
 /**
@@ -35,6 +36,7 @@ public class MapPresenter {
 
     private final MapEntourageFragment fragment;
     private final MapRequest mapRequest;
+    private final AuthenticationController authenticationController;
 
     private OnEntourageMarkerClickListener onClickListener;
     private boolean isStarted = false;
@@ -44,9 +46,12 @@ public class MapPresenter {
     // ----------------------------------
 
     @Inject
-    public MapPresenter(final MapEntourageFragment fragment, final MapRequest mapRequest) {
+    public MapPresenter(final MapEntourageFragment fragment,
+                        final MapRequest mapRequest,
+                        final AuthenticationController authenticationController) {
         this.fragment = fragment;
         this.mapRequest = mapRequest;
+        this.authenticationController = authenticationController;
     }
 
     // ----------------------------------
@@ -78,9 +83,17 @@ public class MapPresenter {
         }
     }
 
+    public void incrementUserToursCount() {
+        authenticationController.incrementUserToursCount();
+    }
+
     public void loadEncounterOnMap(Encounter encounter) {
         fragment.putEncounterOnMap(encounter, onClickListener);
     }
+
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
 
     private void loadObjectsOnMap(MapResponse mapResponse) {
         for (Encounter encounter : mapResponse.getEncounters()) {

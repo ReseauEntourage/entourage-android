@@ -45,10 +45,10 @@
     <string name="user_association_label">INFORMATIONS D\'ASSOCIATION</string>
     <string name="user_privacy_label">INFORMATIONS PRIVEES</string>
     <string name="user_unsubscribe_label">DESINSCRIPTION</string>
+    <string name="user_form_access_code">Code d\'accès</string>
+    <string name="user_form_confirmation">Confirmation</string>
     <string name="user_button_confirm_changes">Confirmer les modifications</string>
     <string name="user_button_unsubscribe">Me désinscrire</string>
-    <string name="user_tours_count">%1$d maraudes réalisées</string>
-    <string name="user_encounters_count">%1$d personnes rencontrées</string>
 
     <!-- Message -->
     <string name="activity_display_message_title">Message</string>
@@ -102,8 +102,6 @@
     <string name="tour_type_alimentary">Alimentaire</string>
     <string name="tour_create_encounter_button">Créer une rencontre</string>
     <string name="tour_end_confirmation">Veux-tu vraiment arrêter la maraude ?\nUn mail récapitulatif te sera envoyé.</string>
-    <string name="tour_end_encounters">%1$d personnes rencontrées</string>
-    <string name="tour_end_distance">%1$s km parcourus</string>
     <string name="tour_end_duration">%1$s passées dans la rue</string>
 
     <!-- TourService -->
@@ -115,6 +113,5 @@
     <string name="local_service_disconnected">Déconnecté du GeoService</string>
     <string name="start_tour_title">Enregistrer maraude</string>
     <string name="stop_tour_title">Stopper maraude</string>
-
 
 </resources>

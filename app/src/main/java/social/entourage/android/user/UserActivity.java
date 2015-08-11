@@ -1,6 +1,7 @@
 package social.entourage.android.user;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -60,14 +61,17 @@ public class UserActivity extends EntourageSecuredActivity {
 
         if (!getAuthenticationController().isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));
-            finish();
         }
 
+        Resources res = getResources();
         User user = getAuthenticationController().getUser();
+        int tourCount = user.getStats().getTourCount();
+        int encountersCount = user.getStats().getEncounterCount();
+
         userName.setText(user.getFirstName() + " " + user.getLastName());
         userEmail.setText(user.getEmail());
-        userTourCount.setText(getString(R.string.user_tours_count, user.getStats().getTourCount()));
-        userEncountersCount.setText(getString(R.string.user_encounters_count, user.getStats().getEncounterCount()));
+        userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
+        userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
     }
 
     @Override

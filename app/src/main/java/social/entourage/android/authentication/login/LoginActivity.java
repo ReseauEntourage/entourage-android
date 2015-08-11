@@ -164,7 +164,6 @@ public class LoginActivity extends EntourageActivity {
     public void startMapActivity() {
         resetLoginButton();
         startActivity(new Intent(this, DrawerActivity.class));
-        finish();
     }
 
     public void loginFail() {

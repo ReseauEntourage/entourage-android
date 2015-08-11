@@ -2,6 +2,7 @@ package social.entourage.android.message;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
@@ -17,6 +18,8 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.tour.TourService;
 import social.entourage.android.message.push.PushNotificationService;
 
 public class MessageActivity extends EntourageSecuredActivity {
@@ -36,8 +39,6 @@ public class MessageActivity extends EntourageSecuredActivity {
     @InjectView(R.id.message_close_button)
     Button closeButton;
 
-    private Message message;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +48,12 @@ public class MessageActivity extends EntourageSecuredActivity {
 
         if (!getAuthenticationController().isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));
-            finish();
         }
 
-        message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
-        messageAuthor.setText(message.getAuthor());
-        messageObject.setText(message.getObject());
-        messageContent.setText(message.getContent());
-
+        Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+        if (message != null) {
+            displayMessage(message);
+        }
     }
 
     @Override
@@ -72,9 +71,24 @@ public class MessageActivity extends EntourageSecuredActivity {
         return true;
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+        if (message != null) {
+            Log.d("notification:", message.getAuthor());
+            displayMessage(message);
+        }
+    }
+
     @OnClick(R.id.message_close_button)
     void closeMessage() {
         onBackPressed();
+    }
+
+    private void displayMessage(Message message) {
+        messageAuthor.setText(message.getAuthor());
+        messageObject.setText(message.getObject());
+        messageContent.setText(message.getContent());
     }
 
 }

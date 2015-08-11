@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.location.Location;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -26,14 +25,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
-import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
@@ -128,7 +124,7 @@ public class TourService extends Service {
     public void onDestroy() {
         endTreatment();
         unregisterReceiver(receiver);
-        tourServiceManager.cancelTimer();
+        tourServiceManager.cancelRefreshTimer();
         super.onDestroy();
     }
 

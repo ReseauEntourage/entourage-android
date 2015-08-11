@@ -1,11 +1,15 @@
 package social.entourage.android.map.tour;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -22,6 +26,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.EntourageLocation;
+import social.entourage.android.R;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.TourPointWrapper;
 import social.entourage.android.api.model.TourWrapper;
@@ -44,6 +49,7 @@ public class TourServiceManager {
 
     private static final int POINT_PER_REQUEST = 10;
     private static final double ALIGNMENT_PRECISION = .000001;
+    private static final long VIBRATION_DURATION = 1000;
 
     private final TourService tourService;
     private final TourRequest tourRequest;
@@ -58,7 +64,8 @@ public class TourServiceManager {
     private long tourId;
     private int pointsNeededForNextRequest;
     private List<TourPoint> pointsToSend;
-    private Timer timer;
+    private Timer timerRefresh;
+    private Timer timerFinish;
 
     @Inject
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest) {
@@ -67,7 +74,7 @@ public class TourServiceManager {
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
         initializeLocationService();
-        initializeTimerTask();
+        initializeTimerRefreshTask();
     }
 
     // ----------------------------------
@@ -91,12 +98,14 @@ public class TourServiceManager {
         tour.setTourVehicleType(transportMode);
         tour.setTourType(type);
         sendTour();
+        initializeTimerFinishTask();
     }
 
     public void finishTour() {
         tour.closeTour();
         closeTour();
         tour = null;
+        cancelFinishTimer();
     }
 
     public boolean isRunning() {
@@ -122,9 +131,9 @@ public class TourServiceManager {
                 Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
 
-    private void initializeTimerTask() {
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+    private void initializeTimerRefreshTask() {
+        timerRefresh = new Timer();
+        timerRefresh.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
@@ -136,6 +145,23 @@ public class TourServiceManager {
                 }
             }
         }, 1000, 5000);
+    }
+
+    private void initializeTimerFinishTask() {
+        long duration = 1000 * 60 * 60 * 5;
+        timerFinish = new Timer();
+        timerFinish.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                timeOut();
+            }
+        }, duration, duration);
+    }
+
+    private void timeOut() {
+        Vibrator vibrator = (Vibrator) tourService.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(VIBRATION_DURATION);
+        tourService.sendBroadcast(new Intent(TourService.NOTIFICATION_PAUSE));
     }
 
     private void sendTour() {
@@ -206,10 +232,17 @@ public class TourServiceManager {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void cancelTimer() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
+    public void cancelRefreshTimer() {
+        if (timerRefresh != null) {
+            timerRefresh.cancel();
+            timerRefresh = null;
+        }
+    }
+
+    public void cancelFinishTimer() {
+        if (timerFinish != null) {
+            timerFinish.cancel();
+            timerFinish = null;
         }
     }
 

@@ -3,6 +3,7 @@ package social.entourage.android.map;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,13 +42,16 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
+import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.Constants;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.tour.TourService;
 
@@ -276,8 +280,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onTourResumed(Tour tour) {
-        drawTour(tour);
-        previousCoordinates = tour.getTourPoints().get(tour.getTourPoints().size() - 1).getLocation();
+        if (!tour.getTourPoints().isEmpty()) {
+            drawTour(tour);
+            previousCoordinates = tour.getTourPoints().get(tour.getTourPoints().size() - 1).getLocation();
+        }
     }
 
     @Override
@@ -294,9 +300,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onToursCountUpdated() {
-        /**
-         * HERE : update the shared preferences (how to access it ?)
-         */
+        presenter.incrementUserToursCount();
     }
 
     // ----------------------------------
@@ -377,9 +381,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         layoutMapTour.setVisibility(View.GONE);
         Tour currentTour = getCurrentTour();
         if (currentTour != null) {
-            encountersView.setText(getString(R.string.tour_end_encounters, currentTour.getEncounters().size()));
-            distanceView.setText(getString(R.string.tour_end_distance, currentTour.getDistance()));
-            distanceView.setText(getString(R.string.tour_end_distance, String.format("%.1f", currentTour.getDistance() / 1000)));
+
+            Resources res = getResources();
+            int encountersCount = currentTour.getEncounters().size();
+            int distanceFloat = (int) currentTour.getDistance();
+            String distanceString = String.format("%.1f", currentTour.getDistance() / 1000);
+
+            encountersView.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
+            distanceView.setText(res.getQuantityString(R.plurals.kilometers_count, distanceFloat, distanceString));
             durationView.setText(getString(R.string.tour_end_duration, currentTour.getDuration()));
         }
         layoutMapConfirmation.setVisibility(View.VISIBLE);
@@ -479,7 +488,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (previousCoordinates != null) {
             PolylineOptions line = new PolylineOptions();
             line.add(previousCoordinates, location);
-            line.width(15).color(color);
+            line.width(15).color(0x7F00FF00); //color
             mapFragment.getMap().addPolyline(line);
         }
         previousCoordinates = location;
