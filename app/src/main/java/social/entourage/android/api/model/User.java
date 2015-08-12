@@ -18,12 +18,15 @@ public class User {
 
     private final Stats stats;
 
-    private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final String token) {
+    private final Organization organization;
+
+    private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final Organization organization, final String token) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.stats = stats;
+        this.organization = organization;
         this.token = token;
     }
 
@@ -47,6 +50,10 @@ public class User {
         return stats;
     }
 
+    public Organization getOrganization() {
+        return organization;
+    }
+
     public String getToken() {
         return token;
     }
@@ -64,6 +71,7 @@ public class User {
         private int id;
         private String email, firstName, lastName, token;
         private Stats stats;
+        private Organization organization;
 
         public Builder() {
         }
@@ -93,6 +101,11 @@ public class User {
             return this;
         }
 
+        public Builder withOrganization(final Organization organization) {
+            this.organization = organization;
+            return this;
+        }
+
         public Builder withToken(final String token) {
             this.token = token;
             return this;
@@ -114,10 +127,13 @@ public class User {
             if (stats == null) {
                 return null;
             }
+            if (organization == null) {
+                return null;
+            }
             if (token == null) {
                 return null;
             }
-            return new User(id, email, firstName, lastName, stats, token);
+            return new User(id, email, firstName, lastName, stats, organization, token);
         }
     }
 }

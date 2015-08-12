@@ -28,8 +28,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -75,6 +79,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private boolean isBetterLocationUpdated;
 
     private LatLng previousCoordinates;
+
+    private List<Polyline> drawnTours;
 
     private TourService tourService;
     private ServiceConnection connection = new ServiceConnection();
@@ -129,13 +135,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, toReturn);
+        drawnTours = new ArrayList<>();
         return toReturn;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
@@ -183,7 +189,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(R.string.activity_map_title);
+        if (getActivity() != null) {
+            getActivity().setTitle(R.string.activity_map_title);
+        }
         initializeLocationService();
         doBindService();
     }
@@ -254,14 +262,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     void doBindService() {
-        Intent intent = new Intent(getActivity(), TourService.class);
-        getActivity().startService(intent);
-        getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        isBound = true;
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), TourService.class);
+            getActivity().startService(intent);
+            getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            isBound = true;
+        }
     }
 
     void doUnbindService() {
-        if (isBound) {
+        if (getActivity() != null && isBound) {
             getActivity().unbindService(connection);
             isBound = false;
         }
@@ -293,6 +303,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
+        /*
+        for (Polyline line : drawnTours) {
+            line.remove();
+        }
+        drawnTours.clear();
+        */
         for (Tour tour : tours) {
             drawTour(tour);
         }
@@ -338,14 +354,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.tour_add_encounter_button)
     public void onAddEncounter() {
-        Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
-        saveCameraPosition();
-        Bundle args = new Bundle();
-        args.putLong(Constants.KEY_TOUR_ID, getTourId());
-        args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
-        args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
-        intent.putExtras(args);
-        startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
+            saveCameraPosition();
+            Bundle args = new Bundle();
+            args.putLong(Constants.KEY_TOUR_ID, getTourId());
+            args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
+            args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+            intent.putExtras(args);
+            startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
+        }
     }
 
     @OnClick(R.id.confirmation_resume_button)
@@ -373,25 +391,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void initializeLocationService() {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
+        if (getActivity() != null) {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
+        }
     }
 
     private void showConfirmation() {
-        layoutMapTour.setVisibility(View.GONE);
-        Tour currentTour = getCurrentTour();
-        if (currentTour != null) {
+        if (getActivity() != null) {
+            layoutMapTour.setVisibility(View.GONE);
+            Tour currentTour = getCurrentTour();
+            if (currentTour != null) {
 
-            Resources res = getResources();
-            int encountersCount = currentTour.getEncounters().size();
-            int distanceFloat = (int) currentTour.getDistance();
-            String distanceString = String.format("%.1f", currentTour.getDistance() / 1000);
+                Resources res = getResources();
+                int encountersCount = currentTour.getEncounters().size();
+                int distanceFloat = (int) currentTour.getDistance();
+                String distanceString = String.format("%.1f", currentTour.getDistance() / 1000);
 
-            encountersView.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
-            distanceView.setText(res.getQuantityString(R.plurals.kilometers_count, distanceFloat, distanceString));
-            durationView.setText(getString(R.string.tour_end_duration, currentTour.getDuration()));
+                encountersView.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
+                distanceView.setText(res.getQuantityString(R.plurals.kilometers_count, distanceFloat, distanceString));
+                durationView.setText(getString(R.string.tour_end_duration, currentTour.getDuration()));
+            }
+            layoutMapConfirmation.setVisibility(View.VISIBLE);
         }
-        layoutMapConfirmation.setVisibility(View.VISIBLE);
     }
 
     // ----------------------------------
@@ -399,7 +421,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private void startTour(String transportMode, String type) {
-        color = getTrackColor(type);
+        color = getTrackColor(type, new Date());
         if (tourService != null) {
             if (!tourService.isRunning()) {
                 mapPin.setVisibility(View.VISIBLE);
@@ -448,16 +470,36 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // PRIVATE METHODS (views)
     // ----------------------------------
 
-    private int getTrackColor(String type) {
+    private int getTrackColor(String type, Date date) {
+        int color = Color.GRAY;
         if (TourType.SOCIAL.getName().equals(type)) {
-            return Color.GREEN;
-        } else if (TourType.FOOD.getName().equals(type)) {
-            return Color.BLUE;
-        } else if (TourType.OTHER.getName().equals(type)) {
-            return Color.RED;
-        } else {
-            return Color.GRAY;
+            color = Color.GREEN;
         }
+        else if (TourType.FOOD.getName().equals(type)) {
+            color = Color.BLUE;
+        }
+        else if (TourType.OTHER.getName().equals(type)) {
+            color = Color.RED;
+        }
+        if (!isToday(date)) {
+            color = getTransparentColor(color);
+        }
+        return color;
+    }
+
+    private int getTransparentColor(int color) {
+        return Color.argb(100, Color.red(color), Color.green(color), Color.blue(color));
+    }
+
+    private boolean isToday(Date date) {
+        Date today = new Date();
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(today);
+        cal2.setTime(date);
+        return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR));
     }
 
     private void clearMap() {
@@ -488,7 +530,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (previousCoordinates != null) {
             PolylineOptions line = new PolylineOptions();
             line.add(previousCoordinates, location);
-            line.width(15).color(0x7F00FF00); //color
+            line.width(15).color(color);
             mapFragment.getMap().addPolyline(line);
         }
         previousCoordinates = location;
@@ -497,11 +539,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void drawTour(Tour tour) {
         if (!tour.getTourPoints().isEmpty()) {
             PolylineOptions line = new PolylineOptions();
-            line.width(15).color(getTrackColor(tour.getTourType()));
+            line.width(15).color(getTrackColor(tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
-            mapFragment.getMap().addPolyline(line);
+            //drawnTours.add(mapFragment.getMap().addPolyline(line));
         }
     }
 
@@ -525,7 +567,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (isBetterLocationUpdated) {
                 isBetterLocationUpdated = false;
                 LatLng latLng = EntourageLocation.getInstance().getLatLng();
-                //presenter.retrieveMapObjects(latLng);
                 if (shouldCenterMap) {
                     centerMap(latLng);
                 }
@@ -551,23 +592,25 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private class ServiceConnection implements android.content.ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            tourService = ((TourService.LocalBinder)service).getService();
-            tourService.register(MapEntourageFragment.this);
+            if (getActivity() != null) {
+                tourService = ((TourService.LocalBinder) service).getService();
+                tourService.register(MapEntourageFragment.this);
 
-            boolean isRunning = tourService != null && tourService.isRunning();
-            if (isRunning) {
-                layoutMapTour.setVisibility(View.VISIBLE);
-                buttonStartLauncher.setVisibility(View.GONE);
-                mapPin.setVisibility(View.VISIBLE);
-            }
+                boolean isRunning = tourService != null && tourService.isRunning();
+                if (isRunning) {
+                    layoutMapTour.setVisibility(View.VISIBLE);
+                    buttonStartLauncher.setVisibility(View.GONE);
+                    mapPin.setVisibility(View.VISIBLE);
+                }
 
-            if (layoutMapConfirmation.getVisibility() == View.VISIBLE) {
-                showConfirmation();
-            }
+                if (layoutMapConfirmation.getVisibility() == View.VISIBLE) {
+                    showConfirmation();
+                }
 
-            Intent intent = getActivity().getIntent();
-            if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
-                onNotificationAction(TourService.NOTIFICATION_PAUSE);
+                Intent intent = getActivity().getIntent();
+                if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
+                    onNotificationAction(TourService.NOTIFICATION_PAUSE);
+                }
             }
         }
 

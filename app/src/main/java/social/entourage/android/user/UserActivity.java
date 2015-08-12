@@ -42,8 +42,8 @@ public class UserActivity extends EntourageSecuredActivity {
     @InjectView(R.id.user_encounters_count)
     TextView userEncountersCount;
 
-    @InjectView(R.id.user_association)
-    TextView userAssociation;
+    @InjectView(R.id.user_organization)
+    TextView userOrganization;
 
     @InjectView(R.id.user_button_confirm_changes)
     Button buttonConfirm;
@@ -72,6 +72,7 @@ public class UserActivity extends EntourageSecuredActivity {
         userEmail.setText(user.getEmail());
         userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
         userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
+        userOrganization.setText(user.getOrganization().getName());
     }
 
     @Override
@@ -98,6 +99,12 @@ public class UserActivity extends EntourageSecuredActivity {
     public void onResume() {
         super.onResume();
         setTitle(R.string.activity_display_user_title);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, DrawerActivity.class));
+        super.onBackPressed();
     }
 
     private void configureToolbar() {

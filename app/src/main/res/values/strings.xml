@@ -10,7 +10,7 @@
     <string name="login_title_welcome">Bienvenue sur Entourage</string>
     <string name="login_title_discover">Découvrez Entourage</string>
     <string name="login_title_lost_code">Code égaré</string>
-    <string name="login_text_info">Version réservée\nà\nun usage professionnel</string>
+    <string name="login_text_info">Version réservée\nà\nun usage associatif</string>
     <string name="login_text_more"><u>En savoir plus</u></string>
     <string name="login_text_description">Entourage est un réseau civique en cours de construction, sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
     <string name="login_text_enter_code">Entrez votre numéro de téléphone</string>
@@ -42,7 +42,7 @@
     <!-- User -->
     <string name="activity_display_user_title">Profil</string>
     <string name="user_information_label">INFORMATIONS DE MARAUDEUR</string>
-    <string name="user_association_label">INFORMATIONS D\'ASSOCIATION</string>
+    <string name="user_organization_label">INFORMATIONS D\'ASSOCIATION</string>
     <string name="user_privacy_label">INFORMATIONS PRIVEES</string>
     <string name="user_unsubscribe_label">DESINSCRIPTION</string>
     <string name="user_form_access_code">Code d\'accès</string>

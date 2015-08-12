@@ -76,7 +76,9 @@ public class GuideMapEntourageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(R.string.activity_display_guide_title);
+        if (getActivity() != null) {
+            getActivity().setTitle(R.string.activity_display_guide_title);
+        }
     }
 
     @Override
@@ -95,19 +97,21 @@ public class GuideMapEntourageFragment extends Fragment {
     }
 
     public void putPoiOnMap(Poi poi, GuideMapPresenter.OnEntourageMarkerClickListener onClickListener) {
-        double poiLatitude = poi.getLatitude();
-        double poiLongitude = poi.getLongitude();
-        LatLng poiPosition = new LatLng(poiLatitude, poiLongitude);
+        if (getActivity() != null) {
+            double poiLatitude = poi.getLatitude();
+            double poiLongitude = poi.getLongitude();
+            LatLng poiPosition = new LatLng(poiLatitude, poiLongitude);
 
-        int poiIconRessourceId = getActivity().getResources().getIdentifier(POI_DRAWABLE_NAME_PREFIX + poi.getCategoryId(), "drawable", getActivity().getPackageName());
-        BitmapDescriptor poiIcon = BitmapDescriptorFactory.fromResource(poiIconRessourceId);
+            int poiIconRessourceId = getActivity().getResources().getIdentifier(POI_DRAWABLE_NAME_PREFIX + poi.getCategoryId(), "drawable", getActivity().getPackageName());
+            BitmapDescriptor poiIcon = BitmapDescriptorFactory.fromResource(poiIconRessourceId);
 
-        MarkerOptions markerOptions = new MarkerOptions().position(poiPosition)
-                                                         .icon(poiIcon);
+            MarkerOptions markerOptions = new MarkerOptions().position(poiPosition)
+                    .icon(poiIcon);
 
-        if (mapFragment.getMap() != null) {
-            mapFragment.getMap().addMarker(markerOptions);
-            onClickListener.addPoiMarker(poiPosition, poi);
+            if (mapFragment.getMap() != null) {
+                mapFragment.getMap().addMarker(markerOptions);
+                onClickListener.addPoiMarker(poiPosition, poi);
+            }
         }
     }
 

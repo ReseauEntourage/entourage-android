@@ -141,7 +141,7 @@ public class TourServiceManager {
                     LatLng location = currentPosition.target;
                     float zoom = currentPosition.zoom;
                     float distance = 40000f / (float) Math.pow(2f, zoom);
-                    retrieveToursNearby(5, null, null, new LatLng(location.latitude, location.longitude), distance);
+                    retrieveToursNearby(10, null, null, new LatLng(location.latitude, location.longitude), distance);
                 }
             }
         }, 1000, 5000);
