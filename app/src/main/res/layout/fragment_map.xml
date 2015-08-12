@@ -54,14 +54,6 @@
             android:layout_gravity="bottom"
             android:visibility = "gone" />
 
-        <include
-            layout="@layout/layout_map_confirmation"
-            android:id="@+id/layout_map_confirmation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="25dp"
-            android:visibility = "gone" />
-
     </FrameLayout>
 
     <include

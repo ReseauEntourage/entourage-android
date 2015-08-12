@@ -64,22 +64,32 @@
         <activity
             android:name=".guide.poi.ReadPoiActivity"
             android:theme="@style/CustomDialogTheme"
-            android:label="@string/activity_read_poi_title">
+            android:label="@string/activity_read_poi_title"
             android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".map.confirmation.ConfirmationActivity"
+            android:theme="@style/CustomDialogThemeNoTitle"
+            android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
+            android:noHistory="true">
         </activity>
 
         <activity
             android:name=".map.encounter.ReadEncounterActivity"
             android:theme="@style/CustomDialogTheme"
             android:label="@string/activity_read_encounter_title"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:noHistory="true">
         </activity>
 
         <activity
             android:name=".map.encounter.CreateEncounterActivity"
             android:theme="@style/CustomDialogTheme"
             android:label="@string/activity_create_encounter_title"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:noHistory="true">
         </activity>
 
         <activity

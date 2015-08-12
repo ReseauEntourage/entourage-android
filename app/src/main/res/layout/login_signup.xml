@@ -78,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/login_hint_phone"
                 android:inputType="phone"
+                android:text="0650352569"
                 android:layout_marginBottom="20dp"/>
 
             <EditText
@@ -85,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/login_hint_password"
-                android:text=""
+                android:text="875531"
                 android:inputType="numberPassword"
                 android:layout_marginBottom="20dp"/>
 

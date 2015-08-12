@@ -14,6 +14,7 @@ import social.entourage.android.api.model.TourType;
 @SuppressWarnings("unused")
 public class Tour implements Serializable {
 
+    public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
     private static final String TOUR_ON_GOING = "ongoing";
     private static final String TOUR_CLOSED = "closed";
     private static final String TOUR_FEET = "feet";

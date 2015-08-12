@@ -102,7 +102,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
         if (!getAuthenticationController().isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));
-            finish();
         }
 
         btnPlay.setEnabled(false);

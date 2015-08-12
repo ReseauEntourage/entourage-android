@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.api.model.User;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.user.UserActivity;
@@ -100,17 +102,24 @@ public class DrawerActivity extends EntourageSecuredActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
-            loadFragment(new MapEntourageFragment());
-            if (mainFragment instanceof MapEntourageFragment) {
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                        mapEntourageFragment.onNotificationAction(TourService.NOTIFICATION_PAUSE);
-                    }
-                });
+        Bundle args = intent.getExtras();
+        if (args != null) {
+            if (args.getBoolean(TourService.NOTIFICATION_PAUSE, false)) {
+                loadFragmentWithExtra(TourService.NOTIFICATION_PAUSE);
+            } else if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
+                if (mainFragment instanceof MapEntourageFragment) {
+                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+                    mapEntourageFragment.onNotificationAction(ConfirmationActivity.KEY_RESUME_TOUR);
+                } else {
+                    loadFragmentWithExtra(ConfirmationActivity.KEY_RESUME_TOUR);
+                }
+            } else if (args.getBoolean(ConfirmationActivity.KEY_END_TOUR, false)) {
+                if (mainFragment instanceof MapEntourageFragment) {
+                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+                    mapEntourageFragment.onNotificationAction(ConfirmationActivity.KEY_END_TOUR);
+                } else {
+                    loadFragmentWithExtra(ConfirmationActivity.KEY_END_TOUR);
+                }
             }
         }
     }
@@ -178,6 +187,21 @@ public class DrawerActivity extends EntourageSecuredActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment, mainFragment);
         fragmentTransaction.commit();
+    }
+
+    private void loadFragmentWithExtra(String extra) {
+        final String action = extra;
+        loadFragment(new MapEntourageFragment());
+        if (mainFragment instanceof MapEntourageFragment) {
+            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+                    mapEntourageFragment.onNotificationAction(action);
+                }
+            });
+        }
     }
 
     @OnClick(R.id.drawer_header_user_photo)

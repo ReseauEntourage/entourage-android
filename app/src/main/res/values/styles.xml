@@ -9,10 +9,13 @@
 
     <!-- Dialog activity theme. -->
     <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/background_light</item>
         <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <!-- Dialog activity theme with no title. -->
+    <style name="CustomDialogThemeNoTitle" parent="CustomDialogTheme">
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

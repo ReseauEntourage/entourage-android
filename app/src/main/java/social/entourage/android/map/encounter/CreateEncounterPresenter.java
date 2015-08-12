@@ -18,8 +18,8 @@ import social.entourage.android.api.model.EncounterWrapper;
 import social.entourage.android.api.model.map.Encounter;
 
 /**
- * Module related to CreateEncounterPresenter
- * @see CreateEncounterPresenter
+ * Presenter controlling the CreateEncounterActivity
+ * @see CreateEncounterActivity
  */
 public class CreateEncounterPresenter {
 

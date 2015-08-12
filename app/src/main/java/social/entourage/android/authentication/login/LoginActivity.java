@@ -127,7 +127,7 @@ public class LoginActivity extends EntourageActivity {
         TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         String phoneNumber = manager.getLine1Number();
         if (phoneNumber != null) {
-            phoneEditText.setText(phoneNumber);
+            //phoneEditText.setText(phoneNumber);
         }
     }
 
