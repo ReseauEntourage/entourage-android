@@ -72,7 +72,6 @@
             android:name=".map.confirmation.ConfirmationActivity"
             android:theme="@style/CustomDialogThemeNoTitle"
             android:screenOrientation="portrait"
-            android:launchMode="singleInstance"
             android:noHistory="true">
         </activity>
 

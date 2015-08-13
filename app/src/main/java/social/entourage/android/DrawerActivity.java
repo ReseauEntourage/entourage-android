@@ -104,9 +104,12 @@ public class DrawerActivity extends EntourageSecuredActivity {
     protected void onNewIntent(Intent intent) {
         Bundle args = intent.getExtras();
         if (args != null) {
+            /*
             if (args.getBoolean(TourService.NOTIFICATION_PAUSE, false)) {
                 loadFragmentWithExtra(TourService.NOTIFICATION_PAUSE);
-            } else if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
+            } else
+            */
+            if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
                 if (mainFragment instanceof MapEntourageFragment) {
                     MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
                     mapEntourageFragment.onNotificationAction(ConfirmationActivity.KEY_RESUME_TOUR);
@@ -137,7 +140,7 @@ public class DrawerActivity extends EntourageSecuredActivity {
 
     }
 
-    // ----------------------------------
+     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
 

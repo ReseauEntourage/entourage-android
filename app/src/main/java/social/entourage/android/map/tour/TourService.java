@@ -71,13 +71,11 @@ public class TourService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
-                if (!isPaused) {
                     pauseTreatment();
                     Intent pauseIntent = new Intent(context, DrawerActivity.class);
                     pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    pauseIntent.putExtra(NOTIFICATION_PAUSE, true);
+                //    pauseIntent.putExtra(NOTIFICATION_PAUSE, true);
                     startActivity(pauseIntent);
-                }
             }
         }
     };

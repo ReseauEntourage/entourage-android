@@ -3,7 +3,6 @@ package social.entourage.android.map;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,9 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -31,7 +28,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,20 +38,16 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
-import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
-import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.Constants;
 import social.entourage.android.api.model.map.TourPoint;
-import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.tour.TourService;
@@ -169,12 +161,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.activity_map_title);
-        }
         initializeLocationService();
         doBindService();
     }
+
+    @Override
+    public void onPause() {
+        if (tourService != null) {
+            tourService.unregister(MapEntourageFragment.this);
+            doUnbindService();
+        }
+        super.onPause();
+    }
+
+    /*
+    @Override
+    public void onStop() {
+        if (tourService != null) {
+            tourService.unregister(MapEntourageFragment.this);
+            doUnbindService();
+        }
+        super.onStop();
+    }
+    */
 
     @Override
     public void onStart() {
@@ -190,15 +199,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (tourService != null) {
-            tourService.unregister(MapEntourageFragment.this);
-            doUnbindService();
-        }
     }
 
     // ----------------------------------
@@ -337,11 +337,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         pauseTour();
         layoutMapTour.setVisibility(View.GONE);
         if (getActivity() != null) {
-            Bundle args = new Bundle();
-            args.putSerializable(Tour.KEY_TOUR, getCurrentTour());
-            Intent confirmationIntent = new Intent(getActivity(), ConfirmationActivity.class);
-            confirmationIntent.putExtras(args);
-            getActivity().startActivity(confirmationIntent);
+            launchConfirmationActivity();
         }
     }
 
@@ -415,6 +411,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             layoutMapTour.setVisibility(View.GONE);
             buttonStartLauncher.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void launchConfirmationActivity() {
+        Bundle args = new Bundle();
+        args.putSerializable(Tour.KEY_TOUR, getCurrentTour());
+        Intent confirmationIntent = new Intent(getActivity(), ConfirmationActivity.class);
+        confirmationIntent.putExtras(args);
+        getActivity().startActivity(confirmationIntent);
     }
 
     private Tour getCurrentTour() {
@@ -562,15 +566,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 boolean isRunning = tourService != null && tourService.isRunning();
                 if (isRunning) {
                     buttonStartLauncher.setVisibility(View.GONE);
-                    mapPin.setVisibility(View.VISIBLE);
-                    layoutMapTour.setVisibility(View.VISIBLE);
+                    if (tourService.isPaused()) {
+                        layoutMapTour.setVisibility(View.GONE);
+                        launchConfirmationActivity();
+                    } else {
+                        mapPin.setVisibility(View.VISIBLE);
+                        layoutMapTour.setVisibility(View.VISIBLE);
+                    }
                 }
-
-                /*
-                if (layoutMapConfirmation.getVisibility() == View.VISIBLE) {
-                    showConfirmation();
-                }
-                */
 
                 Intent intent = getActivity().getIntent();
                 if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {

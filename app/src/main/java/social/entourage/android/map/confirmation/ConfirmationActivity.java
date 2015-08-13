@@ -3,6 +3,7 @@ package social.entourage.android.map.confirmation;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
