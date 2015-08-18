@@ -1,11 +1,13 @@
 package social.entourage.android.api.model.map;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
+import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.Serializable;
 
 @SuppressWarnings("unused")
-public class Poi implements Serializable {
+public class Poi implements Serializable, ClusterItem {
 
     private long id;
 
@@ -116,5 +118,10 @@ public class Poi implements Serializable {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    @Override
+    public LatLng getPosition() {
+        return new LatLng(latitude, longitude);
     }
 }

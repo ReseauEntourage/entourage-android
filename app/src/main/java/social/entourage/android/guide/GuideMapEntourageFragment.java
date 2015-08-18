@@ -1,5 +1,6 @@
 package social.entourage.android.guide;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,28 +9,23 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
+
+import java.util.Collection;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.guide.poi.ReadPoiActivity;
 
 public class GuideMapEntourageFragment extends Fragment {
-
-    // ----------------------------------
-    // CONSTANTS
-    // ----------------------------------
-
-    private static final String POI_DRAWABLE_NAME_PREFIX = "poi_category_";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -39,6 +35,7 @@ public class GuideMapEntourageFragment extends Fragment {
     GuideMapPresenter presenter;
 
     private SupportMapFragment mapFragment;
+    private ClusterManager<Poi> clusterManager;
 
     // ----------------------------------
     // LIFECYCLE
@@ -57,11 +54,16 @@ public class GuideMapEntourageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+
         if (mapFragment.getMap() != null) {
+            clusterManager = new ClusterManager(getActivity(), mapFragment.getMap());
+            clusterManager.setRenderer(new PoiRenderer(getActivity(), mapFragment.getMap(), clusterManager));
+            mapFragment.getMap().setOnCameraChangeListener(clusterManager);
+            mapFragment.getMap().setOnMarkerClickListener(clusterManager);
             mapFragment.getMap().setMyLocationEnabled(true);
             mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(true);
+            clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
         }
     }
 
@@ -90,27 +92,11 @@ public class GuideMapEntourageFragment extends Fragment {
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    public void setOnMarkerClickListener(GuideMapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
-        if (mapFragment.getMap() != null) {
-            mapFragment.getMap().setOnMarkerClickListener(onMarkerClickListener);
-        }
-    }
 
-    public void putPoiOnMap(Poi poi, GuideMapPresenter.OnEntourageMarkerClickListener onClickListener) {
+    public void putPoiOnMap(Collection<Poi> pois) {
         if (getActivity() != null) {
-            double poiLatitude = poi.getLatitude();
-            double poiLongitude = poi.getLongitude();
-            LatLng poiPosition = new LatLng(poiLatitude, poiLongitude);
-
-            int poiIconRessourceId = getActivity().getResources().getIdentifier(POI_DRAWABLE_NAME_PREFIX + poi.getCategoryId(), "drawable", getActivity().getPackageName());
-            BitmapDescriptor poiIcon = BitmapDescriptorFactory.fromResource(poiIconRessourceId);
-
-            MarkerOptions markerOptions = new MarkerOptions().position(poiPosition)
-                    .icon(poiIcon);
-
             if (mapFragment.getMap() != null) {
-                mapFragment.getMap().addMarker(markerOptions);
-                onClickListener.addPoiMarker(poiPosition, poi);
+                clusterManager.addItems(pois);
             }
         }
     }
@@ -137,4 +123,23 @@ public class GuideMapEntourageFragment extends Fragment {
             EntourageLocation.getInstance().saveLastCameraPosition(mapFragment.getMap().getCameraPosition());
         }
     }
+
+    // ----------------------------------
+    // INNER CLASS
+    // ----------------------------------
+
+    public class OnEntourageMarkerClickListener implements ClusterManager.OnClusterItemClickListener<Poi> {
+        @Override
+        public boolean onClusterItemClick(Poi poi) {
+            saveCameraPosition();
+            Intent intent = new Intent(getActivity(), ReadPoiActivity.class);
+            Bundle extras = new Bundle();
+            extras.putSerializable(Constants.KEY_POI, poi);
+            intent.putExtras(extras);
+            startActivity(intent);
+            return false;
+        }
+    }
+
+
 }
