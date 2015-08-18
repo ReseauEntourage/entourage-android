@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -74,7 +75,6 @@ public class TourService extends Service {
                     pauseTreatment();
                     Intent pauseIntent = new Intent(context, DrawerActivity.class);
                     pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //    pauseIntent.putExtra(NOTIFICATION_PAUSE, true);
                     startActivity(pauseIntent);
             }
         }
@@ -150,8 +150,7 @@ public class TourService extends Service {
     private PendingIntent createPendingIntent(String action) {
         Intent intent = new Intent();
         intent.setAction(action);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        return pendingIntent.getBroadcast(this, 0, intent, 0);
+        return PendingIntent.getBroadcast(this, 0, intent, 0);
     }
 
     private void showNotification(int action) {
@@ -237,7 +236,7 @@ public class TourService extends Service {
         if (isRunning()) {
             if (!isPaused) {
                 Date duration = new Date(SystemClock.elapsedRealtime() - chronometer.getBase());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
                 dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 tourServiceManager.setTourDuration(dateFormat.format(duration));
                 pauseNotification();

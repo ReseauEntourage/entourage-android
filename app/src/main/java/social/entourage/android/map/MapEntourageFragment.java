@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Calendar;
@@ -73,8 +71,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private LatLng previousCoordinates;
 
-    private List<Polyline> drawnTours;
-
     private TourService tourService;
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = true;
@@ -110,7 +106,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, toReturn);
-        //drawnTours = new ArrayList<>();
         return toReturn;
     }
 
@@ -173,17 +168,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         super.onPause();
     }
-
-    /*
-    @Override
-    public void onStop() {
-        if (tourService != null) {
-            tourService.unregister(MapEntourageFragment.this);
-            doUnbindService();
-        }
-        super.onStop();
-    }
-    */
 
     @Override
     public void onStart() {

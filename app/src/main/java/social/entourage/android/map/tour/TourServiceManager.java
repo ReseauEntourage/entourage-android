@@ -1,6 +1,5 @@
 package social.entourage.android.map.tour;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -9,7 +8,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,7 +24,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.EntourageLocation;
-import social.entourage.android.R;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.TourPointWrapper;
 import social.entourage.android.api.model.TourWrapper;
@@ -58,7 +55,6 @@ public class TourServiceManager {
     // ATTRIBUTES
     // ----------------------------------
 
-    private CustomLocationListener locationListener;
     private Tour tour;
     private Location previousLocation;
     private long tourId;
@@ -126,7 +122,7 @@ public class TourServiceManager {
 
     private void initializeLocationService() {
         LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new CustomLocationListener();
+        CustomLocationListener locationListener = new CustomLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
                 Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
