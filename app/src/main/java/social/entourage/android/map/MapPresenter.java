@@ -25,8 +25,8 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 
 /**
- * Presenter controlling the MapActivity
- * @see DrawerActivity
+ * Presenter controlling the MapEntourageFragment
+ * @see MapEntourageFragment
  */
 public class MapPresenter {
 

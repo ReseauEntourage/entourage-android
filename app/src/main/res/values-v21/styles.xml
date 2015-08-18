@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Custom TextView theme with letter spacing (large) -->
+    <style name="SpacedTextViewLarge" parent="android:Widget.TextView">
+        <item name="android:letterSpacing">0.9</item>
+    </style>
+
+    <!-- Custom TextView theme with letter spacing (small) -->
+    <style name="SpacedTextViewSmall" parent="android:Widget.TextView">
+        <item name="android:letterSpacing">0.4</item>
+    </style>
+
+</resources>

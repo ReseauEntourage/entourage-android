@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:enabled="false"
-        android:textCursorDrawable="@drawable/custom_cursor_color"
+        android:textCursorDrawable="@drawable/custom_cursor_yellow"
         android:background="@drawable/custom_edit_text"/>
 
         <EditText
@@ -33,7 +33,7 @@
         android:layout_below="@id/edittext_street_person_name"
         android:paddingBottom="10dp"
         android:enabled="false"
-        android:textCursorDrawable="@drawable/custom_cursor_color"
+        android:textCursorDrawable="@drawable/custom_cursor_yellow"
         android:background="@drawable/custom_edit_text"/>
 
         <LinearLayout

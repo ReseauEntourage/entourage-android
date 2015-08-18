@@ -13,6 +13,11 @@
     <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
 
+    <!-- Login -->
+    <color name="background_login_light">#E2E2E2</color>
+    <color name="background_login_grey">#696969</color>
+    <color name="text_dark">#2E2E2E</color>
+
     <!-- Buttons -->
     <color name="login_button">#FFCE55</color>
     <color name="custom_button_yellow_enabled">@color/accent</color>
@@ -23,14 +28,21 @@
     <color name="custom_button_white_focused">#D4D4D4</color>
     <color name="custom_button_white_pressed">#F4F4F4</color>
     <color name="custom_button_white_disabled">#FFFFFF</color>
+    <color name="custom_button_grey_enabled">#CBCBCB</color>
+    <color name="custom_button_grey_focused">#D4D4D4</color>
+    <color name="custom_button_grey_pressed">#9C9C9C</color>
+    <color name="custom_button_grey_disabled">#959595</color>
 
     <!-- EditTexts -->
     <color name="custom_edittext_short_pressed">#EEEEEE</color>
     <color name="login_form">#FFFFFF</color>
+    <color name="login_edittext">#F0F0F0</color>
+    <color name="login_edittext_hint">#8D8D8D</color>
 
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">#444444</color>
     <color name="grey_contour">#DADADA</color>
+    <color name="black">#000000</color>
 
 </resources>

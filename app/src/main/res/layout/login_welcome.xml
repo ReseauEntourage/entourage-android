@@ -22,114 +22,80 @@
         android:layout_below="@+id/toolbar"/>
 
     <TextView
-        android:id="@+id/login_title_welcome"
+        android:id="@+id/login_title_welcome_pro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/login_logo"
         android:layout_marginTop="10dp"
-        android:text="@string/login_title_lost_code"
+        android:text="@string/login_title_welcome_pro"
         android:textColor="@color/background_light"
         android:textSize="20dp"
         android:textStyle="bold"
         android:gravity="center"/>
 
-    <RelativeLayout
-        android:id="@+id/login_welcome_block"
+    <TextView
+        android:id="@+id/login_text_fill_in_profile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/login_title_lost_code">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/login_title_welcome_pro"
+        android:text="@string/login_text_fill_in_profile"
+        android:textColor="@color/background_light"
+        android:gravity="center"/>
 
-        <TextView
-            android:id="@+id/login_text_welcome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="Merci de compléter votre profil\n\nVotre adresse nous servira à vous envoyer vos comptes rendus de maraudes"
-            android:textColor="@color/background_light"
-            android:gravity="center"/>
+    <EditText
+        android:id="@+id/login_edit_email_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/login_text_fill_in_profile"
+        android:background="@drawable/login_signup_form"
+        android:inputType="textWebEmailAddress"
+        android:hint="@string/login_hint_email"
+        android:gravity="center"
+        android:layout_centerHorizontal="true" />
 
-        <EditText
-            android:id="@+id/login_welcome_mail"
+    <LinearLayout
+        android:id="@+id/login_block_add_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_edit_email_profile"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/login_user_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_below="@id/login_text_welcome"
-            android:background="@drawable/login_form"
-            android:inputType="phone"
-            android:hint="@string/login_hint_email"
-            android:gravity="center"
-            android:layout_centerHorizontal="true" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <Button
-                android:id="@+id/login_button_add_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_marginTop="30dp"
-                android:layout_below="@id/login_welcome_mail"
-                android:layout_centerHorizontal="true"
-                android:text="Ajouter une photo"
-                android:textSize="13dp"
-                android:background="@drawable/login_button"
-                android:textAllCaps="true"/>
-
-        </LinearLayout>
+            android:src="@drawable/ic_user_photo"
+            android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/login_button_lets_go"
+            android:id="@+id/login_button_add_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_below="@id/login_welcome_mail"
-            android:layout_centerHorizontal="true"
-            android:text="C'est parti"
+            android:layout_weight="2"
+            android:layout_marginLeft="20dp"
+            android:text="@string/login_button_add_photo"
             android:textSize="13dp"
             android:background="@drawable/login_button"
             android:textAllCaps="true"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/login_lost_code_confirmation_block"
+    <Button
+        android:id="@+id/login_button_go"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/login_title_lost_code"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/login_text_confirmation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="Votre code vient de vous être envoyé"
-            android:textColor="@color/background_light"
-            android:gravity="center"/>
-
-        <Button
-            android:id="@+id/login_button_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_below="@id/login_text_confirmation"
-            android:layout_centerHorizontal="true"
-            android:text="Retour à l'accueil"
-            android:textSize="13dp"
-            android:background="@drawable/login_button"
-            android:textAllCaps="true"/>
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/login_block_add_photo"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_button_go"
+        android:textSize="13dp"
+        android:background="@drawable/login_button"
+        android:textAllCaps="true"/>
 
 
 </RelativeLayout>

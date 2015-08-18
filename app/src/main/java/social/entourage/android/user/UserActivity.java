@@ -22,6 +22,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.login.LoginActivity;
 
+@SuppressWarnings("WeakerAccess")
 public class UserActivity extends EntourageSecuredActivity {
 
     @Inject

@@ -8,7 +8,7 @@ import social.entourage.android.EntourageComponent;
  * Component linked to UserActivity lifecycle
  * Provide a UserPresenter
  * @see UserActivity
- * @see social.entourage.android.message.MessagePresenter
+ * @see UserPresenter
  */
 @ActivityScope
 @Component(

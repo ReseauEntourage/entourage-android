@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="16dp"
+    tools:context="social.entourage.android.authentication.login.LoginActivity"
+    android:background="@color/login_view">
+
+    <ImageView
+        android:id="@+id/login_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/toolbar"/>
+
+    <TextView
+        android:id="@+id/login_title_tutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/login_logo"
+        android:layout_marginTop="10dp"
+        android:text="@string/login_title_tutorial"
+        android:textColor="@color/background_light"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/login_text_tutorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/login_title_tutorial"
+        android:text="@string/login_text_tutorial"
+        android:textColor="@color/background_light"
+        android:gravity="center"/>
+
+
+    <Button
+        android:id="@+id/login_button_finish_tutorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/login_text_tutorial"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_button_finish_tutorial"
+        android:textSize="13dp"
+        android:background="@drawable/login_button"
+        android:textAllCaps="true"/>
+
+
+</RelativeLayout>

@@ -3,13 +3,14 @@ package social.entourage.android.authentication.login;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,24 +23,27 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.User;
 import social.entourage.android.message.push.RegisterGCMService;
 
 /**
  * Activity providing the login steps
  */
 @SuppressWarnings("WeakerAccess")
-public class LoginActivity extends EntourageActivity {
+public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnInformationFragmentFinish {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
-    private final String FACEBOOK = "https://www.facebook.com/EntourageReseauCivique";
-    private final String TWITTER = "https://twitter.com/R_Entour";
+    private final String ANDROID_DEVICE = "android";
+    private final String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    LoginInformationFragment informationFragment;
 
     @Inject
     LoginPresenter loginPresenter;
@@ -48,60 +52,41 @@ public class LoginActivity extends EntourageActivity {
      * Signup View
      ************************/
 
-    @InjectView(R.id.login_signup)
+    @InjectView(R.id.login_include_signup)
     View loginSignup;
 
-    @InjectView(R.id.login_more_text)
+    @InjectView(R.id.login_text_more)
     TextView moreText;
 
-    @InjectView(R.id.edittext_phone_number)
+    @InjectView(R.id.login_edit_phone)
     EditText phoneEditText;
 
-    @InjectView(R.id.edittext_password)
+    @InjectView(R.id.login_edit_code)
     EditText passwordEditText;
 
-    @InjectView(R.id.button_login)
+    @InjectView(R.id.login_button_signup)
     Button loginButton;
 
-    @InjectView(R.id.login_button_lost_password)
-    Button lostCodeButton;
-
-    /************************
-     * More Information View
-     ************************/
-
-    @InjectView(R.id.login_more_information)
-    View loginMoreInformation;
-
-    @InjectView(R.id.login_button_facebook)
-    ImageButton facebookButton;
-
-    @InjectView(R.id.login_button_twitter)
-    ImageButton twitterButton;
-
-    @InjectView(R.id.login_form_email)
-    EditText emailEdiText;
-
-    @InjectView(R.id.login_button_newsletter)
-    Button newsletterButton;
+    @InjectView(R.id.login_text_lost_code)
+    TextView lostCodeText;
 
     /************************
      * Lost Code View
      ************************/
 
-    @InjectView(R.id.login_lost_code)
+    @InjectView(R.id.login_include_lost_code)
     View loginLostCode;
 
-    @InjectView(R.id.login_welcome_mail)
+    @InjectView(R.id.login_edit_phone_lost_code)
     EditText lostCodePhone;
 
-    @InjectView(R.id.login_button_add_picture)
+    @InjectView(R.id.login_button_ask_code)
     Button receiveCodeButton;
 
-    @InjectView(R.id.login_welcome_block)
+    @InjectView(R.id.login_block_code_form)
     View enterCodeBlock;
 
-    @InjectView(R.id.login_lost_code_confirmation_block)
+    @InjectView(R.id.login_block_lost_code_confirmation)
     View confirmationBlock;
 
     @InjectView(R.id.login_text_confirmation)
@@ -109,6 +94,35 @@ public class LoginActivity extends EntourageActivity {
 
     @InjectView(R.id.login_button_home)
     Button homeButton;
+
+    /************************
+     * Welcome View
+     ************************/
+
+    @InjectView(R.id.login_include_welcome)
+    View loginWelcome;
+
+    @InjectView(R.id.login_edit_email_profile)
+    EditText profileEmail;
+
+    @InjectView(R.id.login_user_photo)
+    ImageView profilePhoto;
+
+    @InjectView(R.id.login_button_add_photo)
+    Button addPhotoButton;
+
+    @InjectView(R.id.login_button_go)
+    Button goButton;
+
+    /************************
+     * Tutorial View
+     ************************/
+
+    @InjectView(R.id.login_include_tutorial)
+    View loginTutorial;
+
+    @InjectView(R.id.login_button_finish_tutorial)
+    Button finishTutorial;
 
     // ----------------------------------
     // LIFECYCLE
@@ -121,13 +135,14 @@ public class LoginActivity extends EntourageActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
 
-        loginMoreInformation.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.GONE);
+        loginWelcome.setVisibility(View.GONE);
+        loginTutorial.setVisibility(View.GONE);
 
         TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         String phoneNumber = manager.getLine1Number();
         if (phoneNumber != null) {
-            //phoneEditText.setText(phoneNumber);
+            phoneEditText.setText(phoneNumber);
         }
     }
 
@@ -142,15 +157,22 @@ public class LoginActivity extends EntourageActivity {
 
     @Override
     public void onBackPressed() {
+        /*
         if (loginMoreInformation.getVisibility() == View.VISIBLE) {
-            emailEdiText.setText("");
+            emailEditText.setText("");
             loginMoreInformation.setVisibility(View.GONE);
             loginSignup.setVisibility(View.VISIBLE);
         }
-        else if (loginLostCode.getVisibility() == View.VISIBLE) {
+        else
+        */
+        if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);
             loginSignup.setVisibility(View.VISIBLE);
+        }
+        else if (loginTutorial.getVisibility() == View.VISIBLE) {
+            loginTutorial.setVisibility(View.GONE);
+            loginWelcome.setVisibility(View.VISIBLE);
         }
         else {
             super.onBackPressed();
@@ -171,18 +193,38 @@ public class LoginActivity extends EntourageActivity {
         Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
     }
 
-    public void displayWrongFormat() {
-        Toast.makeText(this, getString(R.string.login_number_invalid_format), Toast.LENGTH_SHORT).show();
+    public void displayToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     public void startLoader() {
-        loginButton.setText(R.string.loading_button_text);
+        loginButton.setText(R.string.login_button_loading);
         loginButton.setEnabled(false);
     }
 
     public void resetLoginButton() {
-        loginButton.setText(R.string.login_button_connection_text);
+        loginButton.setText(R.string.login_button_signup);
         loginButton.setEnabled(true);
+    }
+
+    public void launchFillInProfileView(User user) {
+        loginSignup.setVisibility(View.GONE);
+        loginWelcome.setVisibility(View.VISIBLE);
+        if (user.getEmail() != null) {
+            profileEmail.setText(user.getEmail());
+        }
+    }
+
+    // ----------------------------------
+    // INTERFACES CALLBACKS
+    // ----------------------------------
+
+    @Override
+    public void closeInformationFragment() {
+        if (informationFragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().remove(informationFragment).commit();
+        }
     }
 
     // ----------------------------------
@@ -193,58 +235,36 @@ public class LoginActivity extends EntourageActivity {
      * Signup View
      ************************/
 
-    @OnClick(R.id.login_more_text)
+    @OnClick(R.id.login_text_more)
     void onAskMore() {
-        loginSignup.setVisibility(View.GONE);
-        loginMoreInformation.setVisibility(View.VISIBLE);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        informationFragment = new LoginInformationFragment();
+        informationFragment.show(fragmentManager, "fragment_login_information");
     }
 
-    @OnClick(R.id.button_login)
+    @OnClick(R.id.login_button_signup)
     void onLoginClick() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         loginPresenter.login(
                 phoneEditText.getText().toString(),
                 passwordEditText.getText().toString(),
-                getString(R.string.login_device_type),
-                sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null)
+                ANDROID_DEVICE,
+                sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null),
+                sharedPreferences.getBoolean(KEY_TUTORIAL_DONE, false)
         );
     }
 
-    @OnClick(R.id.login_button_lost_password)
+    @OnClick(R.id.login_text_lost_code)
     void onLostCodeClick() {
         loginSignup.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.VISIBLE);
     }
 
     /************************
-     * More Information View
-     ************************/
-
-    @OnClick(R.id.login_button_facebook)
-    void facebookButton() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK));
-        startActivity(browserIntent);
-    }
-
-    @OnClick(R.id.login_button_twitter)
-    void twitterButton() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TWITTER));
-        startActivity(browserIntent);
-    }
-
-    @OnClick(R.id.login_button_newsletter)
-    void newsletterButton() {
-        emailEdiText.setText("");
-        loginPresenter.signupForNewsletter(emailEdiText.getText().toString());
-        loginMoreInformation.setVisibility(View.GONE);
-        loginSignup.setVisibility(View.VISIBLE);
-    }
-
-    /************************
      * Lost Code View
      ************************/
 
-    @OnClick(R.id.login_button_add_picture)
+    @OnClick(R.id.login_button_ask_code)
     void sendNewCode() {
         loginPresenter.sendNewCode(lostCodePhone.getText().toString());
         /**
@@ -266,4 +286,30 @@ public class LoginActivity extends EntourageActivity {
         loginSignup.setVisibility(View.VISIBLE);
     }
 
+    /************************
+     * Welcome View
+     ************************/
+
+    @OnClick(R.id.login_button_add_photo)
+    void addPhoto() {
+        Snackbar.make(loginWelcome, getString(R.string.login_photo_error), Snackbar.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.login_button_go)
+    void startTutorial() {
+        loginPresenter.updateUserEmail(profileEmail.getText().toString());
+        loginWelcome.setVisibility(View.GONE);
+        loginTutorial.setVisibility(View.VISIBLE);
+    }
+
+    /************************
+     * Tutorial View
+     ************************/
+
+    @OnClick(R.id.login_button_finish_tutorial)
+    void finishTutorial() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).commit();
+        startActivity(new Intent(this, DrawerActivity.class));
+    }
 }

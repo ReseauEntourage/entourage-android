@@ -3,25 +3,30 @@ package social.entourage.android.api;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import social.entourage.android.api.model.TourPointWrapper;
-import social.entourage.android.api.model.TourWrapper;
-import social.entourage.android.api.model.ToursWrapper;
+import social.entourage.android.api.wrapper.TourPointWrapper;
+import social.entourage.android.api.wrapper.TourWrapper;
+import social.entourage.android.api.wrapper.ToursWrapper;
 
 public interface TourRequest {
 
+    @Headers({"Accept: application/json"})
     @POST("/tours.json")
     void tour( @Body TourWrapper tourWrapper, Callback<TourWrapper> callback);
 
+    @Headers({"Accept: application/json"})
     @POST("/tours/{tour_id}/tour_points.json")
     void tourPoints( @Path("tour_id") long tourId, @Body TourPointWrapper points, Callback<TourWrapper> callback);
 
+    @Headers({"Accept: application/json"})
     @PUT("/tours/{id}.json")
     void closeTour(@Path("id") long tourId, @Body TourWrapper tourWrapper, Callback<TourWrapper> callback);
 
+    @Headers({"Accept: application/json"})
     @GET("/tours.json")
     void retrieveToursNearby(@Query("limit") int limit,
                              @Query("type") String type,

@@ -35,13 +35,13 @@
         android:gravity="center"/>
 
     <RelativeLayout
-        android:id="@+id/login_welcome_block"
+        android:id="@+id/login_block_code_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/login_title_lost_code">
 
         <TextView
-            android:id="@+id/login_text_welcome"
+            android:id="@+id/login_text_enter_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
@@ -50,25 +50,25 @@
             android:gravity="center"/>
 
         <EditText
-            android:id="@+id/login_welcome_mail"
+            android:id="@+id/login_edit_phone_lost_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:layout_below="@id/login_text_welcome"
-            android:background="@drawable/login_form"
+            android:layout_below="@id/login_text_enter_code"
+            android:background="@drawable/login_signup_form"
             android:inputType="phone"
             android:hint="@string/login_hint_phone"
             android:gravity="center"
             android:layout_centerHorizontal="true" />
 
         <Button
-            android:id="@+id/login_button_add_picture"
+            android:id="@+id/login_button_ask_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:layout_below="@id/login_welcome_mail"
+            android:layout_below="@id/login_edit_phone_lost_code"
             android:layout_centerHorizontal="true"
-            android:text="@string/login_button_receive_code"
+            android:text="@string/login_button_ask_code"
             android:textSize="13dp"
             android:background="@drawable/login_button"
             android:textAllCaps="true"/>
@@ -76,7 +76,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/login_lost_code_confirmation_block"
+        android:id="@+id/login_block_lost_code_confirmation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/login_title_lost_code"
@@ -87,7 +87,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="Votre code vient de vous être envoyé"
             android:textColor="@color/background_light"
             android:gravity="center"/>
 
@@ -98,7 +97,7 @@
             android:layout_marginTop="30dp"
             android:layout_below="@id/login_text_confirmation"
             android:layout_centerHorizontal="true"
-            android:text="Retour à l'accueil"
+            android:text="@string/login_button_home"
             android:textSize="13dp"
             android:background="@drawable/login_button"
             android:textAllCaps="true"/>

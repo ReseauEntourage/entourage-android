@@ -17,7 +17,7 @@
             android:layout_marginTop="5dp"
             android:hint="@string/encounter_hint_person_name"
             android:textIsSelectable="false"
-            android:textCursorDrawable="@drawable/custom_cursor_color"
+            android:textCursorDrawable="@drawable/custom_cursor_yellow"
             android:background="@drawable/custom_edit_text"/>
 
         <EditText
@@ -30,7 +30,7 @@
             android:gravity="left|top"
             android:inputType="textMultiLine"
             android:layout_below="@id/edittext_street_person_name"
-            android:textCursorDrawable="@drawable/custom_cursor_color"
+            android:textCursorDrawable="@drawable/custom_cursor_yellow"
             android:background="@drawable/custom_edit_text"
             android:hint="@string/encounter_hint_notes"/>
 

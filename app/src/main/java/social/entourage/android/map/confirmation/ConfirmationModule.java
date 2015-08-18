@@ -9,6 +9,7 @@ import dagger.Provides;
  */
 @Module
 final class ConfirmationModule {
+
     private final ConfirmationActivity activity;
 
     public ConfirmationModule(final ConfirmationActivity activity) {

@@ -1,4 +1,4 @@
-package social.entourage.android.api.model;
+package social.entourage.android.api.wrapper;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,9 +6,6 @@ import java.util.List;
 
 import social.entourage.android.api.model.map.TourPoint;
 
-/**
- * Created by NTE on 03/08/15.
- */
 public class TourPointWrapper {
 
     @SerializedName("tour_points")

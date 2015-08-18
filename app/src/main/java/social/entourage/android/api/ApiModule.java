@@ -88,4 +88,10 @@ public class ApiModule {
     public TourRequest providesTourRequest(final RestAdapter restAdapter) {
         return restAdapter.create(TourRequest.class);
     }
+
+    @Provides
+    @Singleton
+    public UserRequest providesUserRequest(final RestAdapter restAdapter) {
+        return restAdapter.create(UserRequest.class);
+    }
 }

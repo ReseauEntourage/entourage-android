@@ -1,4 +1,4 @@
-package social.entourage.android.api.model;
+package social.entourage.android.api.wrapper;
 
 import social.entourage.android.api.model.map.Encounter;
 

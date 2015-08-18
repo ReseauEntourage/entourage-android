@@ -1,12 +1,16 @@
 package social.entourage.android.api.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
 
     private final int id;
 
-    private final String email;
+    private String email;
+
+    @Expose(serialize = false, deserialize = false)
+    private String phone;
 
     @SerializedName("first_name")
     private final String firstName;
@@ -16,8 +20,10 @@ public class User {
 
     private final String token;
 
+    @Expose(serialize = false, deserialize = true)
     private final Stats stats;
 
+    @Expose(serialize = false, deserialize = true)
     private final Organization organization;
 
     private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final Organization organization, final String token) {
@@ -38,6 +44,10 @@ public class User {
         return email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -56,6 +66,14 @@ public class User {
 
     public String getToken() {
         return token;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void incrementTours() {

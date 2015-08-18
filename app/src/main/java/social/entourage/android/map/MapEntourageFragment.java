@@ -75,6 +75,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = true;
     private boolean isFollowing = true;
+
     private int color;
 
     @InjectView(R.id.fragment_map_pin)
@@ -190,10 +191,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     public void onNotificationAction(String action) {
+        /*
         if (TourService.NOTIFICATION_PAUSE.equals(action)) {
             onStopTour();
         }
-        else if (ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
+        else
+        */
+        if (ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
             resumeTour();
         }
         else if (ConfirmationActivity.KEY_END_TOUR.equals(action)) {
@@ -494,6 +498,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
+            mapFragment.getMap().addPolyline(line);
             //drawnTours.add(mapFragment.getMap().addPolyline(line));
         }
     }

@@ -35,7 +35,7 @@
         android:gravity="center"/>
 
     <LinearLayout
-        android:id="@+id/login_social_networks"
+        android:id="@+id/login_block_social_networks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -70,23 +70,23 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/login_description"
+        android:id="@+id/login_text_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:layout_below="@id/login_social_networks"
+        android:layout_below="@id/login_block_social_networks"
         android:text="@string/login_text_description"
         android:textColor="@color/background_light"
         android:textStyle="italic"
         android:gravity="center"/>
 
     <EditText
-        android:id="@+id/login_form_email"
+        android:id="@+id/login_edit_email_ask_more"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:layout_below="@id/login_description"
-        android:background="@drawable/login_form"
+        android:layout_below="@id/login_text_description"
+        android:background="@drawable/login_signup_form"
         android:inputType="textWebEmailAddress"
         android:hint="@string/login_hint_email"
         android:gravity="center"/>
@@ -96,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_below="@id/login_form_email"
+        android:layout_below="@id/login_edit_email_ask_more"
         android:layout_centerHorizontal="true"
         android:text="@string/login_button_newsletter"
         android:textSize="13dp"

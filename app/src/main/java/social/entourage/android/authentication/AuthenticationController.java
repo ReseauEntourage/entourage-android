@@ -31,6 +31,12 @@ public class AuthenticationController {
         userSharedPref.commit();
     }
 
+    public void saveUserPhone(String phone) {
+        loggedUser.setPhone(phone);
+        userSharedPref.putObject(PREF_KEY_USER, loggedUser);
+        userSharedPref.commit();
+    }
+
     public void incrementUserToursCount() {
         loggedUser.incrementTours();
         userSharedPref.putObject(PREF_KEY_USER, loggedUser);

@@ -8,7 +8,8 @@ import dagger.Provides;
  * @see UserActivity
  */
 @Module
-public class UserModule {
+final class UserModule {
+
     private final UserActivity activity;
 
     public UserModule(final UserActivity activity) {
@@ -16,7 +17,7 @@ public class UserModule {
     }
 
     @Provides
-    public UserActivity providesUserActivity() {
+    public UserActivity providesActivity() {
         return activity;
     }
 }

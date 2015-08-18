@@ -10,9 +10,9 @@ import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.UserRequest;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
-import social.entourage.android.authentication.login.LoginActivity;
 
 /**
  * Dagger component on Application Level
@@ -33,7 +33,8 @@ public interface EntourageComponent {
     AuthenticationController getAuthenticationController();
 
     EncounterRequest getEncounterRequest();
-    MapRequest getMapRequest();
     LoginRequest getLoginRequest();
+    MapRequest getMapRequest();
     TourRequest getTourRequest();
+    UserRequest getUserRequest();
 }

@@ -8,15 +8,19 @@
     android:background="@color/login_view">
 
     <include
-        android:id="@+id/login_signup"
+        android:id="@+id/login_include_signup"
         layout="@layout/login_signup"/>
 
     <include
-        android:id="@+id/login_more_information"
-        layout="@layout/login_more_information"/>
+        android:id="@+id/login_include_lost_code"
+        layout="@layout/login_lost_code"/>
 
     <include
-        android:id="@+id/login_lost_code"
-        layout="@layout/login_lost_code"/>
+        android:id="@+id/login_include_welcome"
+        layout="@layout/login_welcome"/>
+
+    <include
+        android:id="@+id/login_include_tutorial"
+        layout="@layout/login_tutorial"/>
 
 </RelativeLayout>
