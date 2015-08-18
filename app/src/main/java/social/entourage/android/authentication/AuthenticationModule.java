@@ -18,13 +18,13 @@ public class AuthenticationModule {
 
     @Provides
     @Singleton
-    public AuthenticationController providesAuthenticationController(SharedPreferences userSharedPref) {
+    public AuthenticationController providesAuthenticationController(ComplexPreferences userSharedPref) {
         return new AuthenticationController(userSharedPref).init();
     }
 
     @Provides
     @Singleton
-    public SharedPreferences providesUserSharedPreferences(Application application) {
-        return application.getSharedPreferences("userPref", Context.MODE_PRIVATE);
+    public ComplexPreferences providesUserSharedPreferences(Application application) {
+        return ComplexPreferences.getComplexPreferences(application, "userPref", Context.MODE_PRIVATE);
     }
 }

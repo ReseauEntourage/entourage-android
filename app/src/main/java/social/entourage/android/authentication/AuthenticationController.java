@@ -1,8 +1,5 @@
 package social.entourage.android.authentication;
 
-import android.content.SharedPreferences;
-
-import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
 
 /**
@@ -10,70 +7,46 @@ import social.entourage.android.api.model.User;
  */
 public class AuthenticationController {
 
-    private static final String PREF_KEY_ID = "id";
-    private static final String PREF_KEY_FIRST_NAME = "firstName";
-    private static final String PREF_KEY_LAST_NAME = "lastName";
-    private static final String PREF_KEY_EMAIL = "email";
-    private static final String PREF_KEY_TOURS = "tours";
-    private static final String PREF_KEY_ENCOUTERS = "encounters";
-    private static final String PREF_KEY_TOKEN = "token";
+    private static final String PREF_KEY_USER = "user";
 
-    private final SharedPreferences userSharedPref;
+    private final ComplexPreferences userSharedPref;
     private User loggedUser;
 
-    public AuthenticationController(SharedPreferences userSharedPref) {
+    public AuthenticationController(ComplexPreferences userSharedPref) {
         this.userSharedPref = userSharedPref;
         loggedUser = null;
     }
 
     public AuthenticationController init() {
-        User.Builder builder = new User.Builder();
-        builder.withId(userSharedPref.getInt(PREF_KEY_ID, -1));
-        builder.withFirstName(userSharedPref.getString(PREF_KEY_FIRST_NAME, null));
-        builder.withLastName(userSharedPref.getString(PREF_KEY_LAST_NAME, null));
-        builder.withEmail(userSharedPref.getString(PREF_KEY_EMAIL, null));
-        builder.withStats(new Stats(userSharedPref.getInt(PREF_KEY_TOURS, 0), userSharedPref.getInt(PREF_KEY_ENCOUTERS, 0)));
-        builder.withToken(userSharedPref.getString(PREF_KEY_TOKEN, null));
-        loggedUser = builder.build();
-        if(loggedUser!=null && loggedUser.getToken()==null) {
-            loggedUser=null;
+        loggedUser = userSharedPref.getObject(PREF_KEY_USER, User.class);
+        if(loggedUser != null && loggedUser.getToken() == null) {
+            loggedUser = null;
         }
         return this;
     }
 
     public void saveUser(User user) {
         loggedUser = user;
-        final SharedPreferences.Editor edit = userSharedPref.edit();
-        edit.putInt(PREF_KEY_ID, user.getId());
-        edit.putString(PREF_KEY_FIRST_NAME, user.getFirstName());
-        edit.putString(PREF_KEY_LAST_NAME, user.getLastName());
-        edit.putString(PREF_KEY_EMAIL, user.getEmail());
-        edit.putInt(PREF_KEY_TOURS, user.getStats().getTourCount());
-        edit.putInt(PREF_KEY_ENCOUTERS, user.getStats().getEncounterCount());
-        edit.putString(PREF_KEY_TOKEN, user.getToken());
-        edit.apply();
+        userSharedPref.putObject(PREF_KEY_USER, user);
+        userSharedPref.commit();
     }
 
     public void incrementUserToursCount() {
         loggedUser.incrementTours();
-        final SharedPreferences.Editor edit = userSharedPref.edit();
-        edit.putInt(PREF_KEY_TOURS, loggedUser.getStats().getTourCount());
-        edit.apply();
+        userSharedPref.putObject(PREF_KEY_USER, loggedUser);
+        userSharedPref.commit();
     }
 
     public void incrementUserEncountersCount() {
         loggedUser.incrementEncouters();
-        final SharedPreferences.Editor edit = userSharedPref.edit();
-        edit.putInt(PREF_KEY_ENCOUTERS, loggedUser.getStats().getEncounterCount());
-        edit.apply();
+        userSharedPref.putObject(PREF_KEY_USER, loggedUser);
+        userSharedPref.commit();
     }
 
     public void logOutUser() {
-        if(loggedUser!=null) {
-            final SharedPreferences.Editor edit = userSharedPref.edit();
-            //we force token to be null but we keep other information for input
-            edit.putString(PREF_KEY_TOKEN, null);
-            edit.apply();
+        if(loggedUser != null) {
+            userSharedPref.putObject(PREF_KEY_USER, null);
+            userSharedPref.commit();
         }
         loggedUser = null;
     }
