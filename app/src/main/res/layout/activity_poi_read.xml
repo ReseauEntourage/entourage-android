@@ -20,7 +20,7 @@
                 android:id="@+id/textview_poi_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:background="@drawable/custom_edit_text"/>
 
             <TextView
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:textSize="15dp"/>
+                android:textSize="15sp"/>
 
             <Button
                 android:id="@+id/button_poi_phone"

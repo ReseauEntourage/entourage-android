@@ -30,7 +30,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/login_title_discover"
         android:textColor="@color/background_light"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"/>
 
@@ -99,7 +99,7 @@
         android:layout_below="@id/login_edit_email_ask_more"
         android:layout_centerHorizontal="true"
         android:text="@string/login_button_newsletter"
-        android:textSize="13dp"
+        android:textSize="13sp"
         android:background="@drawable/login_button"
         android:textAllCaps="true"/>
 

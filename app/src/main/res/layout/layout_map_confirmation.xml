@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="17dp"
+        android:textSize="17sp"
         android:textStyle="bold"
         android:text="@string/tour_end_confirmation"/>
 
@@ -30,7 +30,7 @@
             android:id="@+id/confirmation_encounters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:text=""/>
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:text=""/>
 
         <TextView
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:text="@string/tour_end_duration"/>
 
     </LinearLayout>
@@ -60,7 +60,7 @@
             android:id="@+id/confirmation_resume_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reprendre"
+            android:text="@string/tour_resume"
             android:layout_margin="5dp"
             android:background="@drawable/custom_button_yellow"/>
 
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Terminer"
+            android:text="@string/tour_finish"
             android:background="@drawable/custom_button_yellow"/>
 
     </LinearLayout>

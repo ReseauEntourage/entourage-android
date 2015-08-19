@@ -11,14 +11,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
@@ -108,9 +112,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @InjectView(R.id.login_user_photo)
     ImageView profilePhoto;
 
-    @InjectView(R.id.login_button_add_photo)
-    Button addPhotoButton;
-
     @InjectView(R.id.login_button_go)
     Button goButton;
 
@@ -144,6 +145,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (phoneNumber != null) {
             phoneEditText.setText(phoneNumber);
         }
+
+        Picasso.with(this).load(R.drawable.ic_user_photo)
+                .transform(new CropCircleTransformation())
+                .into(profilePhoto);
     }
 
     @Override
@@ -290,9 +295,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Welcome View
      ************************/
 
-    @OnClick(R.id.login_button_add_photo)
+    @OnClick(R.id.login_user_photo)
     void addPhoto() {
-        Snackbar.make(loginWelcome, getString(R.string.login_photo_error), Snackbar.LENGTH_LONG).show();
+
     }
 
     @OnClick(R.id.login_button_go)

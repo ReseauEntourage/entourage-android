@@ -1,9 +1,11 @@
 package social.entourage.android.authentication.login;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -93,6 +95,28 @@ public class LoginInformationFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragment;
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public void startLoader() {
+        closeButton.setClickable(false);
+        newsletterButton.setText(R.string.login_button_loading);
+        newsletterButton.setEnabled(false);
+    }
+
+    public void resetNewsletterButton() {
+        closeButton.setClickable(true);
+        newsletterButton.setText(R.string.login_button_newsletter);
+        newsletterButton.setEnabled(true);
+    }
+
     // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
@@ -125,6 +149,7 @@ public class LoginInformationFragment extends DialogFragment {
     // ----------------------------------
 
     public void newsletterResult(boolean success) {
+        resetNewsletterButton();
         if (getActivity() != null) {
             if (success) {
                 Toast.makeText(getActivity(), R.string.login_text_newsletter_success, Toast.LENGTH_SHORT).show();

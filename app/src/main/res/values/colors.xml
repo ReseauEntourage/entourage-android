@@ -16,7 +16,7 @@
     <!-- Login -->
     <color name="background_login_light">#E2E2E2</color>
     <color name="background_login_grey">#696969</color>
-    <color name="text_dark">#2E2E2E</color>
+    <color name="text_dark">#4F4F4F</color>
 
     <!-- Buttons -->
     <color name="login_button">#FFCE55</color>

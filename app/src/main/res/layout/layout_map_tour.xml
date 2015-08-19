@@ -5,14 +5,14 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:layout_marginBottom="5dp"
-    android:keepScreenOn="true">>
+    android:keepScreenOn="true">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/local_service_running"
         android:textColor="@color/abc_input_method_navigation_guard"
-        android:textSize="20dp"/>
+        android:textSize="20sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

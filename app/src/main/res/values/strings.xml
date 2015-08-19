@@ -8,10 +8,10 @@
     <!-- Login -->
     <string name="title_activity_login">Se connecter</string>
     <string name="login_title_welcome"><![CDATA[<font color=\"#FDC444\">B</font>IENVENUE SUR<br/><font color=\"#FDC444\">E</font>NTOURAGE]]></string>
-    <string name="login_title_welcome_pro">Bienvenue sur Entourage Pro</string>
+    <string name="login_title_welcome_pro"><![CDATA[<font color=\"#FDC444\">B</font>IENVENUE SUR<br/><font color=\"#FDC444\">E</font>NTOURAGE <font color=\"#FDC444\">P</font>RO]]></string>
     <string name="login_title_discover"><![CDATA[<font color=\"#FDC444\">D</font>ÉCOUVREZ <font color=\"#FDC444\">E</font>NTOURAGE]]></string>
-    <string name="login_title_lost_code">Code égaré</string>
-    <string name="login_title_tutorial">Tutoriel de bienvenue</string>
+    <string name="login_title_lost_code"><![CDATA[<font color=\"#FDC444\">C</font>ODE <font color=\"#FDC444\">É</font>GARÉ]]></string>
+    <string name="login_title_tutorial"><![CDATA[<font color=\"#FDC444\">T</font>UTORIEL DE <font color=\"#FDC444\">B</font>IENVENUE]]></string>
     <string name="login_text_info">Version réservée\nà un usage associatif</string>
     <string name="login_text_more"><u>En savoir plus</u></string>
     <string name="login_text_description">Entourage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
@@ -24,16 +24,15 @@
     <string name="login_text_email_update_success">Mise à jour de l\'email effectué</string>
     <string name="login_text_email_update_fail">Mise à jour de l\'email impossible</string>
     <string name="login_text_fill_in_profile">Merci de compléter votre profil\n\nVotre adresse nous servira à vous envoyer vos comptes-rendus de maraudes</string>
-    <string name="login_text_tutorial">Découvre Entourage</string>
+    <string name="login_text_tutorial">En cours de construction...</string>
     <string name="login_text_lost_code">"Code d\'accès égaré ?</string>
     <string name="login_hint_phone">Numéro de téléphone</string>
     <string name="login_hint_code">Code d\'accès</string>
     <string name="login_hint_email">Adresse e-mail</string>
     <string name="login_button_signup">Me connecter</string>
-    <string name="login_button_loading">Loading…</string>
+    <string name="login_button_loading">Chargement…</string>
     <string name="login_button_newsletter">Me tenir informé !</string>
     <string name="login_button_ask_code">Recevoir mon code</string>
-    <string name="login_button_add_photo">Ajouter une photo</string>
     <string name="login_button_go">C\'est parti !</string>
     <string name="login_button_home">Retour à l\'accueil</string>
     <string name="login_button_finish_tutorial">J\'ai compris !</string>
@@ -95,6 +94,7 @@
     <string name="encounter_share_on_twitter">Partager sur Twitter</string>
     <string name="creating_encounter">Création de la rencontre …</string>
     <string name="creating_encounter_audio">Création du message audio …</string>
+    <string name="encounter_record_timer">00:00</string>
 
     <!-- POI -->
     <string name="activity_read_poi_title">Point d\'intérêt</string>
@@ -106,6 +106,7 @@
     <!-- Tour -->
     <string name="tour_start">Démarrer une maraude</string>
     <string name="tour_resume">Reprendre</string>
+    <string name="tour_finish">Terminer</string>
     <string name="tour_stop">Stop</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>

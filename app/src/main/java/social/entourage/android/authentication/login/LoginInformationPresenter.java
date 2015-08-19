@@ -37,7 +37,8 @@ public class LoginInformationPresenter {
     // ----------------------------------
 
     public void subscribeToNewsletter(final String email, final boolean active) {
-        if (active && email != null) {
+        if (active && email != null && !email.equals("")) {
+            fragment.startLoader();
             Newsletter newsletter = new Newsletter(email, active);
             Newsletter.NewsletterWrapper newsletterWrapper = new Newsletter.NewsletterWrapper(newsletter);
             loginRequest.subscribeToNewsletter(newsletterWrapper, new ResponseCallback() {

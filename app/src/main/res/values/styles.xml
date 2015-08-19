@@ -26,14 +26,21 @@
     </style>
 
     <!-- Dialog activity theme. -->
-    <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    <style name="CustomDialogActivityTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:background">@color/background_light</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
     <!-- Dialog activity theme with no title. -->
-    <style name="CustomDialogThemeNoTitle" parent="CustomDialogTheme">
+    <style name="CustomDialogThemeNoTitle" parent="CustomDialogActivityTheme">
         <item name="windowNoTitle">true</item>
     </style>
+
+    <!-- Dialog fragment theme with animation. -->
+    <style name="CustomDialogFragment" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
+    </style>
+
 
 </resources>

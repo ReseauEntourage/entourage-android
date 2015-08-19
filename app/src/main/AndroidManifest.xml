@@ -50,7 +50,7 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:noHistory="true"
-            android:configChanges="keyboardHidden|orientation">
+            android:configChanges="keyboardHidden">
         </activity>
 
         <activity
@@ -64,7 +64,7 @@
 
         <activity
             android:name=".guide.poi.ReadPoiActivity"
-            android:theme="@style/CustomDialogTheme"
+            android:theme="@style/CustomDialogActivityTheme"
             android:label="@string/activity_read_poi_title"
             android:screenOrientation="portrait">
         </activity>
@@ -78,7 +78,7 @@
 
         <activity
             android:name=".map.encounter.ReadEncounterActivity"
-            android:theme="@style/CustomDialogTheme"
+            android:theme="@style/CustomDialogActivityTheme"
             android:label="@string/activity_read_encounter_title"
             android:screenOrientation="portrait"
             android:noHistory="true">
@@ -86,7 +86,7 @@
 
         <activity
             android:name=".map.encounter.CreateEncounterActivity"
-            android:theme="@style/CustomDialogTheme"
+            android:theme="@style/CustomDialogActivityTheme"
             android:label="@string/activity_create_encounter_title"
             android:screenOrientation="portrait"
             android:noHistory="true">

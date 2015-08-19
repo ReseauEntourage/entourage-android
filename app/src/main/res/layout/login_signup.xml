@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_button_signup"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:background="@drawable/login_button"
                 android:textAllCaps="true"/>
 
