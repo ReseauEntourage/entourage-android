@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private final int id;
 
     private String email;
@@ -26,6 +30,10 @@ public class User {
     @Expose(serialize = false, deserialize = true)
     private final Organization organization;
 
+    // ----------------------------------
+    // CONSTRUCTOR
+    // ----------------------------------
+
     private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final Organization organization, final String token) {
         this.id = id;
         this.email = email;
@@ -35,6 +43,10 @@ public class User {
         this.organization = organization;
         this.token = token;
     }
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public int getId() {
         return id;
@@ -56,16 +68,16 @@ public class User {
         return lastName;
     }
 
+    public String getToken() {
+        return token;
+    }
+
     public Stats getStats() {
         return stats;
     }
 
     public Organization getOrganization() {
         return organization;
-    }
-
-    public String getToken() {
-        return token;
     }
 
     public void setEmail(String email) {
@@ -83,6 +95,10 @@ public class User {
     public void incrementEncouters() {
         stats.setEncounterCount(stats.getEncounterCount() + 1);
     }
+
+    // ----------------------------------
+    // BUILDER
+    // ----------------------------------
 
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
@@ -152,6 +168,27 @@ public class User {
                 return null;
             }
             return new User(id, email, firstName, lastName, stats, organization, token);
+        }
+    }
+
+    // ----------------------------------
+    // WRAPPER
+    // ----------------------------------
+
+    public static class UserWrapper {
+
+        private User user;
+
+        public UserWrapper(User user) {
+            this.user = user;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
         }
     }
 }

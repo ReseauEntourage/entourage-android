@@ -9,6 +9,10 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 public class Poi implements Serializable, ClusterItem {
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private long id;
 
     private String name;
@@ -31,6 +35,10 @@ public class Poi implements Serializable, ClusterItem {
     private double longitude;
 
     private double latitude;
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public long getId() {
         return id;

@@ -2,6 +2,7 @@ package social.entourage.android.authentication.login;
 
 import android.util.Log;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,8 +16,6 @@ import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.LoginResponse;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
-import social.entourage.android.api.model.User;
-import social.entourage.android.api.wrapper.UserWrapper;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**
@@ -102,6 +101,7 @@ public class LoginPresenter {
                     }
                 });
             } else {
+                activity.resetLoginButton();
                 activity.displayToast(activity.getString(R.string.login_text_invalid_format));
             }
         }
@@ -112,20 +112,21 @@ public class LoginPresenter {
     }
 
     public void updateUserEmail(final String email) {
-        if (activity != null && email != null) {
-            final UserWrapper userWrapper = new UserWrapper(authenticationController.getUser());
-            userWrapper.getUser().setEmail(email);
-            userRequest.updateUser(userWrapper, new Callback<UserResponse>() {
+        if (activity != null) {
+            activity.startLoader();
+            HashMap<String, String> user = new HashMap<>();
+            user.put("email", email);
+            userRequest.updateUser(user, new Callback<UserResponse>() {
                 @Override
                 public void success(UserResponse userResponse, Response response) {
-                    authenticationController.saveUser(userWrapper.getUser());
-                    Log.d("update:", "success");
+                    Log.d("login update:", "success");
+                    authenticationController.getUser().setEmail(email);
                     activity.displayToast(activity.getString(R.string.login_text_email_update_success));
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.d("update:", "failure");
+                    Log.d("login update:", "failure");
                     activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
                 }
             });

@@ -2,6 +2,10 @@ package social.entourage.android.api.model;
 
 public class Organization {
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private String name;
 
     private String description;
@@ -10,12 +14,20 @@ public class Organization {
 
     private String address;
 
+    // ----------------------------------
+    // CONSTRUCTOR
+    // ----------------------------------
+
     public Organization(String name, String description, String phone, String address) {
         this.name = name;
         this.description = description;
         this.phone = phone;
         this.address = address;
     }
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public String getName() {
         return name;

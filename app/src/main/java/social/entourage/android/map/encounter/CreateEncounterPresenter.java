@@ -14,7 +14,6 @@ import social.entourage.android.R;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.SoundCloudCreateTrackRequest;
-import social.entourage.android.api.wrapper.EncounterWrapper;
 import social.entourage.android.api.model.map.Encounter;
 
 /**
@@ -56,7 +55,7 @@ public class CreateEncounterPresenter {
 
     public void createEncounter(Encounter encounter) {
         activity.showProgressDialog(R.string.creating_encounter);
-        EncounterWrapper encounterWrapper = new EncounterWrapper();
+        Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
         encounterWrapper.setEncounter(encounter);
         encounterRequest.create(encounter.getTourId(), encounterWrapper, new EncounterRequestCallback());
     }

@@ -18,6 +18,10 @@
     <color name="background_login_grey">#696969</color>
     <color name="text_dark">#4F4F4F</color>
 
+    <!-- Profile -->
+    <color name="background_user_category">#DFDFDF</color>
+    <color name="background_user_content">@color/white</color>
+
     <!-- Buttons -->
     <color name="login_button">#FFCE55</color>
     <color name="custom_button_yellow_enabled">@color/accent</color>
@@ -44,5 +48,6 @@
     <color name="separator">#444444</color>
     <color name="grey_contour">#DADADA</color>
     <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>

@@ -2,9 +2,17 @@ package social.entourage.android.api.model.map;
 
 public class Category {
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private long id;
 
     private String name;
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public long getId() {
         return id;

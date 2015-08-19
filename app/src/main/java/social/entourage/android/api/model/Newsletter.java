@@ -4,14 +4,26 @@ import com.google.gson.annotations.SerializedName;
 
 public class Newsletter {
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private String email;
 
     private boolean active;
+
+    // ----------------------------------
+    // CONSTRUCTOR
+    // ----------------------------------
 
     public Newsletter(String email, boolean active) {
         this.email = email;
         this.active = active;
     }
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public String getEmail() {
         return email;
@@ -28,6 +40,10 @@ public class Newsletter {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    // ----------------------------------
+    // WRAPPER
+    // ----------------------------------
 
     public static class NewsletterWrapper {
 

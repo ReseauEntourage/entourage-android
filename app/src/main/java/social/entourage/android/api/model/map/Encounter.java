@@ -9,6 +9,10 @@ import java.util.Date;
 @SuppressWarnings("unused")
 public class Encounter implements Serializable{
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private long id;
 
     private long tourId;
@@ -35,6 +39,10 @@ public class Encounter implements Serializable{
     private String voiceMessageUrl;
 
     private String soundCloudPermalinkUrl;
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public long getId() {
         return id;
@@ -122,5 +130,22 @@ public class Encounter implements Serializable{
 
     public void setSoundCloudPermalinkUrl(final String permakink) {
         this.soundCloudPermalinkUrl = permakink;
+    }
+
+    // ----------------------------------
+    // WRAPPER
+    // ----------------------------------
+
+    public static class EncounterWrapper {
+
+        private Encounter encounter;
+
+        public Encounter getEncounter() {
+            return encounter;
+        }
+
+        public void setEncounter(final Encounter encounter) {
+            this.encounter = encounter;
+        }
     }
 }

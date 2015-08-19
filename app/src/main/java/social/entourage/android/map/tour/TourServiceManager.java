@@ -25,9 +25,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.wrapper.TourPointWrapper;
-import social.entourage.android.api.wrapper.TourWrapper;
-import social.entourage.android.api.wrapper.ToursWrapper;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -161,11 +158,11 @@ public class TourServiceManager {
     }
 
     private void sendTour() {
-        TourWrapper tourWrapper = new TourWrapper();
+        Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
-        tourRequest.tour(tourWrapper, new Callback<TourWrapper>() {
+        tourRequest.tour(tourWrapper, new Callback<Tour.TourWrapper>() {
             @Override
-            public void success(TourWrapper tourWrapper, Response response) {
+            public void success(Tour.TourWrapper tourWrapper, Response response) {
                 tourService.notifyListenersToursCountUpdated();
                 tourId = tourWrapper.getTour().getId();
             }
@@ -178,11 +175,11 @@ public class TourServiceManager {
     }
 
     private void closeTour() {
-        final TourWrapper tourWrapper = new TourWrapper();
+        final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
-        tourRequest.closeTour(tourId, tourWrapper, new Callback<TourWrapper>() {
+        tourRequest.closeTour(tourId, tourWrapper, new Callback<Tour.TourWrapper>() {
             @Override
-            public void success(TourWrapper tourWrapper, Response response) {
+            public void success(Tour.TourWrapper tourWrapper, Response response) {
                 Log.d("Success", tourWrapper.toString());
             }
 
@@ -194,11 +191,11 @@ public class TourServiceManager {
     }
 
     private void updateTourCoordinates() {
-        final TourPointWrapper tourPointWrapper = new TourPointWrapper();
+        final TourPoint.TourPointWrapper tourPointWrapper = new TourPoint.TourPointWrapper();
         tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
-        tourRequest.tourPoints(tourId, tourPointWrapper, new Callback<TourWrapper>() {
+        tourRequest.tourPoints(tourId, tourPointWrapper, new Callback<Tour.TourWrapper>() {
             @Override
-            public void success(TourWrapper tourWrapper, Response response) {
+            public void success(Tour.TourWrapper tourWrapper, Response response) {
                 pointsToSend.removeAll(tourPointWrapper.getTourPoints());
                 Log.v("Success", tourWrapper.toString());
             }
@@ -211,9 +208,9 @@ public class TourServiceManager {
     }
 
     protected void retrieveToursNearby(int limit, String transportMode, String type, LatLng location, float distance) {
-        tourRequest.retrieveToursNearby(limit, transportMode, type, location.latitude, location.longitude, distance, new Callback<ToursWrapper>() {
+        tourRequest.retrieveToursNearby(limit, transportMode, type, location.latitude, location.longitude, distance, new Callback<Tour.ToursWrapper>() {
             @Override
-            public void success(ToursWrapper toursWrapper, Response response) {
+            public void success(Tour.ToursWrapper toursWrapper, Response response) {
                 tourService.notifyListenersToursNearby(toursWrapper.getTours());
             }
 

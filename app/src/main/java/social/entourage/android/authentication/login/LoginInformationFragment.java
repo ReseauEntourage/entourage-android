@@ -1,11 +1,9 @@
 package social.entourage.android.authentication.login;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -107,7 +105,7 @@ public class LoginInformationFragment extends DialogFragment {
 
     public void startLoader() {
         closeButton.setClickable(false);
-        newsletterButton.setText(R.string.login_button_loading);
+        newsletterButton.setText(R.string.button_loading);
         newsletterButton.setEnabled(false);
     }
 

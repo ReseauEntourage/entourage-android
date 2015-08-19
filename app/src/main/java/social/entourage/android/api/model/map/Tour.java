@@ -14,11 +14,19 @@ import social.entourage.android.api.model.TourType;
 @SuppressWarnings("unused")
 public class Tour implements Serializable {
 
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
     private static final String TOUR_ON_GOING = "ongoing";
     private static final String TOUR_CLOSED = "closed";
     private static final String TOUR_FEET = "feet";
     private static final String TOUR_CAR = "car";
+
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
 
     @Expose(serialize = false)
     private long id;
@@ -51,11 +59,19 @@ public class Tour implements Serializable {
     @Expose(serialize = false)
     private final List<Encounter> encounters;
 
+    // ----------------------------------
+    // CONSTRUCTOR
+    // ----------------------------------
+
     public Tour() {
         this.tourPoints = new ArrayList<>();
         this.steps = new HashMap<>();
         this.encounters = new ArrayList<>();
     }
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public long getId() {
         return id;
@@ -129,6 +145,10 @@ public class Tour implements Serializable {
         this.tourPoints = tourPoints;
     }
 
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
     public void closeTour() {
         this.tourStatus = TOUR_CLOSED;
     }
@@ -149,4 +169,34 @@ public class Tour implements Serializable {
         this.encounters.add(encounter);
     }
 
+    // ----------------------------------
+    // WRAPPERS
+    // ----------------------------------
+
+    public static class TourWrapper {
+
+        private Tour tour;
+
+        public Tour getTour() {
+            return tour;
+        }
+
+        public void setTour(Tour tour) {
+            this.tour = tour;
+        }
+    }
+
+    public static class ToursWrapper {
+
+        private List<Tour> tours;
+
+        public List<Tour> getTours() {
+            return tours;
+        }
+
+        public void setTours(List<Tour> tours) {
+            this.tours = tours;
+        }
+
+    }
 }

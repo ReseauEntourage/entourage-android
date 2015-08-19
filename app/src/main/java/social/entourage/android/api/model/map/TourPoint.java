@@ -7,9 +7,14 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class TourPoint implements Serializable {
+
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
 
     private double latitude;
 
@@ -17,6 +22,10 @@ public class TourPoint implements Serializable {
 
     @SerializedName("passing_time")
     private Date passingTime;
+
+    // ----------------------------------
+    // CONSTRUCTORS
+    // ----------------------------------
 
     public TourPoint(double latitude, double longitude, Date passingTime) {
         this.latitude = latitude;
@@ -27,6 +36,10 @@ public class TourPoint implements Serializable {
     public TourPoint() {
 
     }
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public double getLatitude() {
         return latitude;
@@ -54,5 +67,23 @@ public class TourPoint implements Serializable {
 
     public LatLng getLocation() {
         return new LatLng(latitude, longitude);
+    }
+
+    // ----------------------------------
+    // WRAPPER
+    // ----------------------------------
+
+    public static class TourPointWrapper {
+
+        @SerializedName("tour_points")
+        private List<TourPoint> tourPoints;
+
+        public List<TourPoint> getTourPoints() {
+            return tourPoints;
+        }
+
+        public void setTourPoints(List<TourPoint> tourPoint) {
+            this.tourPoints = tourPoint;
+        }
     }
 }

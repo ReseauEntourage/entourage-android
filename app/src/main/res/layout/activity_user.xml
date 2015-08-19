@@ -2,40 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@color/background_user_content">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@+id/toolbar">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
             <!-- USER INFORMATION -->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/user_information_label"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/background"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/background_user_category">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/user_information_label"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,28 +54,28 @@
                             android:id="@+id/user_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="17sp"
+                            android:textSize="16sp"
                             android:textColor="@color/abc_primary_text_disable_only_material_light"/>
 
                         <TextView
                             android:id="@+id/user_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="17sp"
+                            android:textSize="16sp"
                             android:textColor="@color/abc_primary_text_disable_only_material_light"/>
 
                         <TextView
                             android:id="@+id/user_tours_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="17sp"
+                            android:textSize="16sp"
                             android:textColor="@color/abc_primary_text_disable_only_material_light"/>
 
                         <TextView
                             android:id="@+id/user_encounters_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="17sp"
+                            android:textSize="16sp"
                             android:textColor="@color/abc_primary_text_disable_only_material_light"/>
 
                     </LinearLayout>
@@ -94,21 +84,19 @@
 
             <!-- ORGANIZATION INFORMATION -->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/user_organization_label"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/background"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/background_user_category">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/user_organization_label"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,7 +125,9 @@
                         android:id="@+id/user_organization"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:textSize="20sp"
+                        android:text="coucou"
                         android:textColor="@color/abc_primary_text_disable_only_material_light"/>
 
                 </LinearLayout>
@@ -146,52 +136,66 @@
 
             <!-- PRIVATE INFORMATION -->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/user_privacy_label"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/background"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/background_user_category">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/user_privacy_label"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
+                    android:padding="20dp"
+                    android:layout_margin="20dp"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="@color/background_user_category">
 
                     <EditText
+                        android:id="@+id/user_edit_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textWebEmailAddress"
-                        android:hint="@string/login_hint_email"/>
+                        android:hint="@string/login_hint_email"
+                        android:textSize="16sp"
+                        android:textColor="@color/primary"
+                        style="@style/CustomEditTextTheme"/>
 
                     <EditText
+                        android:id="@+id/user_edit_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:hint="@string/user_form_access_code"/>
+                        android:maxLength="6"
+                        android:hint="@string/user_form_access_code"
+                        android:textSize="16sp"
+                        android:textColor="@color/primary"
+                        style="@style/CustomEditTextTheme"/>
 
                     <EditText
+                        android:id="@+id/user_edit_confirmation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:hint="@string/user_form_confirmation"/>
+                        android:maxLength="6"
+                        android:hint="@string/user_form_confirmation"
+                        android:textSize="16sp"
+                        android:textColor="@color/primary"
+                        style="@style/CustomEditTextTheme"/>
 
                     <Button
                         android:id="@+id/user_button_confirm_changes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:text="@string/user_button_confirm_changes"
                         android:background="@drawable/custom_button_yellow"/>
 
@@ -199,22 +203,19 @@
 
             <!-- UNSUBSCRIPTION -->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/user_unsubscribe_label"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@color/background"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/background_user_category">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/user_unsubscribe_label"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -228,14 +229,13 @@
                         android:id="@+id/user_button_unsubscribe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
                         android:text="@string/user_button_unsubscribe"
-                        android:layout_margin="10dp"
                         android:background="@drawable/custom_button_yellow"/>
 
                 </LinearLayout>
 
         </LinearLayout>
-
     </ScrollView>
 
 </RelativeLayout>

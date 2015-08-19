@@ -82,6 +82,7 @@
                 android:inputType="phone"
                 android:hint="@string/login_hint_phone"
                 android:textColorHint="@color/login_edittext_hint"
+                android:maxLength="12"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 style="@style/CustomEditTextTheme"/>
@@ -92,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/login_hint_code"
                 android:textColorHint="@color/login_edittext_hint"
+                android:maxLength="6"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"

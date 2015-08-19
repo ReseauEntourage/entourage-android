@@ -4,6 +4,7 @@
     <string name="action_logout">Déconnexion</string>
     <string name="action_guide">Guide</string>
     <string name="action_tours">Maraudes</string>
+    <string name="button_loading">Chargement…</string>
 
     <!-- Login -->
     <string name="title_activity_login">Se connecter</string>
@@ -30,7 +31,6 @@
     <string name="login_hint_code">Code d\'accès</string>
     <string name="login_hint_email">Adresse e-mail</string>
     <string name="login_button_signup">Me connecter</string>
-    <string name="login_button_loading">Chargement…</string>
     <string name="login_button_newsletter">Me tenir informé !</string>
     <string name="login_button_ask_code">Recevoir mon code</string>
     <string name="login_button_go">C\'est parti !</string>
@@ -51,15 +51,17 @@
     <string name="activity_display_guide_title">Guide</string>
 
     <!-- User -->
-    <string name="activity_display_user_title">Profil</string>
-    <string name="user_information_label">INFORMATIONS DE MARAUDEUR</string>
-    <string name="user_organization_label">INFORMATIONS D\'ASSOCIATION</string>
-    <string name="user_privacy_label">INFORMATIONS PRIVEES</string>
-    <string name="user_unsubscribe_label">DESINSCRIPTION</string>
+    <string name="activity_display_user_title">Mon Profil</string>
+    <string name="user_information_label">Informations de maraudeur</string>
+    <string name="user_organization_label">Informations d\'association</string>
+    <string name="user_privacy_label">Informations privées</string>
+    <string name="user_unsubscribe_label">Désinscription</string>
     <string name="user_form_access_code">Code d\'accès</string>
     <string name="user_form_confirmation">Confirmation</string>
-    <string name="user_button_confirm_changes">Confirmer les modifications</string>
+    <string name="user_button_confirm_changes">Confirmer</string>
     <string name="user_button_unsubscribe">Me désinscrire</string>
+    <string name="user_text_update_ok">Profil mis à jour</string>
+    <string name="user_text_update_ko">Erreur de mise à jour</string>
 
     <!-- Message -->
     <string name="activity_display_message_title">Message</string>

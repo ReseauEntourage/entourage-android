@@ -4,17 +4,29 @@ import java.io.Serializable;
 
 public class Message implements Serializable {
 
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private String author;
 
     private String object;
 
     private String content;
 
+    // ----------------------------------
+    // CONSTRUCTOR
+    // ----------------------------------
+
     public Message(String author, String object, String content) {
         this.author = author;
         this.object = object;
         this.content = content;
     }
+
+    // ----------------------------------
+    // GETTERS & SETTERS
+    // ----------------------------------
 
     public String getAuthor() {
         return author;
