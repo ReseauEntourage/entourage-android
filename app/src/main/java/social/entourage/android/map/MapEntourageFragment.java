@@ -24,8 +24,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -78,6 +80,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private int color;
 
+    private List<Polyline> drawnTours;
+
     @InjectView(R.id.fragment_map_pin)
     View mapPin;
 
@@ -107,6 +111,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, toReturn);
+        drawnTours = new ArrayList<>();
         return toReturn;
     }
 
@@ -191,12 +196,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     public void onNotificationAction(String action) {
-        /*
-        if (TourService.NOTIFICATION_PAUSE.equals(action)) {
-            onStopTour();
-        }
-        else
-        */
         if (ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
             resumeTour();
         }
@@ -277,12 +276,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
-        /*
         for (Polyline line : drawnTours) {
             line.remove();
         }
         drawnTours.clear();
-        */
         for (Tour tour : tours) {
             drawTour(tour);
         }
@@ -499,7 +496,32 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 line.add(tourPoint.getLocation());
             }
             mapFragment.getMap().addPolyline(line);
-            //drawnTours.add(mapFragment.getMap().addPolyline(line));
+            if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+                drawnTours.add(mapFragment.getMap().addPolyline(line));
+                addTourHead(tour);
+            }
+        }
+    }
+
+    private void addTourHead(Tour tour) {
+        TourPoint lastPoint = tour.getTourPoints().get(tour.getTourPoints().size() - 1);
+        double latitude = lastPoint.getLatitude();
+        double longitude = lastPoint.getLongitude();
+        LatLng position = new LatLng(latitude, longitude);
+
+        BitmapDescriptor icon = null;
+        if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
+            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_feet);
+        }
+        else if (tour.getTourVehicleType().equals(TourTransportMode.CAR.getName())) {
+            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_car);
+        }
+
+        MarkerOptions markerOptions = new MarkerOptions().position(position).icon(icon);
+
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().addMarker(markerOptions);
+            presenter.getOnClickListener().addTourMarker(position, tour);
         }
     }
 

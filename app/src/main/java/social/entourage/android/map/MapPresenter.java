@@ -3,6 +3,7 @@ package social.entourage.android.map;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,6 +21,7 @@ import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.Constants;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 
@@ -56,6 +58,11 @@ public class MapPresenter {
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
+
+
+    public OnEntourageMarkerClickListener getOnClickListener() {
+        return onClickListener;
+    }
 
     public void start() {
         onClickListener = new OnEntourageMarkerClickListener();
@@ -109,22 +116,35 @@ public class MapPresenter {
         fragment.getActivity().startActivity(intent);
     }
 
+    private void openTour(Tour tour) {
+        Toast.makeText(fragment.getActivity(), "résumé de maraude", Toast.LENGTH_SHORT).show();
+    }
+
     // ----------------------------------
     // INNER CLASS
     // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
         final Map<LatLng, Encounter> encounterMarkerHashMap = new HashMap<>();
+        final Map<LatLng, Tour> tourMarkerHashMap = new HashMap<>();
 
         public void addEncounterMarker(LatLng markerPosition, Encounter encounter) {
             encounterMarkerHashMap.put(markerPosition, encounter);
         }
 
+        public void addTourMarker(LatLng markerPosition, Tour tour) {
+            tourMarkerHashMap.put(markerPosition, tour);
+        }
+
         @Override
         public boolean onMarkerClick(Marker marker) {
             LatLng markerPosition = marker.getPosition();
+            // TODO : if an encounter and a tour are in the same location
             if (encounterMarkerHashMap.get(markerPosition) != null){
                 openEncounter(encounterMarkerHashMap.get(markerPosition));
+            }
+            if (tourMarkerHashMap.get(markerPosition) != null){
+                openTour(tourMarkerHashMap.get(markerPosition));
             }
             return false;
         }
