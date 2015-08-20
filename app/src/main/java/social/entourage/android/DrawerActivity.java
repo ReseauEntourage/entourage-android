@@ -1,25 +1,23 @@
 package social.entourage.android;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,11 +27,11 @@ import social.entourage.android.api.model.User;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
-import social.entourage.android.map.tour.TourService;
+import social.entourage.android.map.tour.TourInformationFragment;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.user.UserActivity;
 
-public class DrawerActivity extends EntourageSecuredActivity {
+public class DrawerActivity extends EntourageSecuredActivity implements TourInformationFragment.OnTourInformationFragmentFinish {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -103,11 +101,6 @@ public class DrawerActivity extends EntourageSecuredActivity {
     protected void onNewIntent(Intent intent) {
         Bundle args = intent.getExtras();
         if (args != null) {
-            /*
-            if (args.getBoolean(TourService.NOTIFICATION_PAUSE, false)) {
-                loadFragmentWithExtra(TourService.NOTIFICATION_PAUSE);
-            } else
-            */
             if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
                 if (mainFragment instanceof MapEntourageFragment) {
                     MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
@@ -139,7 +132,7 @@ public class DrawerActivity extends EntourageSecuredActivity {
 
     }
 
-     // ----------------------------------
+    // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
 
@@ -206,9 +199,23 @@ public class DrawerActivity extends EntourageSecuredActivity {
         }
     }
 
+    // ----------------------------------
+    // ONCLICK CALLBACKS
+    // ----------------------------------
+
     @OnClick(R.id.drawer_header_user_photo)
     void openUserProfile() {
         startActivity(new Intent(this, UserActivity.class));
         drawerLayout.closeDrawers();
+    }
+
+    // ----------------------------------
+    // INTERFACES CALLBACKS
+    // ----------------------------------
+
+    @Override
+    public void closeTourInformationFragment(TourInformationFragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(fragment).commit();
     }
 }

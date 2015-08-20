@@ -32,7 +32,7 @@ import social.entourage.android.message.push.RegisterGCMService;
  * Activity providing the login steps
  */
 @SuppressWarnings("WeakerAccess")
-public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnInformationFragmentFinish {
+public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish {
 
     // ----------------------------------
     // CONSTANTS
@@ -223,7 +223,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // ----------------------------------
 
     @Override
-    public void closeInformationFragment() {
+    public void closeEntourageInformationFragment() {
         if (informationFragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().remove(informationFragment).commit();

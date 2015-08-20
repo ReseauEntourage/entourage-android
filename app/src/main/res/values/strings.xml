@@ -119,7 +119,15 @@
     <string name="tour_type_medical">Médicale</string>
     <string name="tour_type_bare_hands">A main nues</string>
     <string name="tour_type_alimentary">Alimentaire</string>
+    <string name="tour_status_ongoing">En cours</string>
+    <string name="tour_status_closed">Terminée</string>
     <string name="tour_create_encounter_button">Créer une rencontre</string>
+
+    <!-- Tour info -->
+    <string name="tour_info_text_transport">Type de transport : %1s</string>
+    <string name="tour_info_text_type">Type de maraude : %1s</string>
+    <string name="tour_info_text_status">Status de la maraude : %1s</string>
+    <string name="tour_info_button_close">Fermer</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>

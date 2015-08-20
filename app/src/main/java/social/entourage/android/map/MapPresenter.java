@@ -2,6 +2,7 @@ package social.entourage.android.map;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
+import social.entourage.android.map.tour.TourInformationFragment;
 
 /**
  * Presenter controlling the MapEntourageFragment
@@ -108,16 +110,22 @@ public class MapPresenter {
     }
 
     private void openEncounter(Encounter encounter) {
-        fragment.saveCameraPosition();
-        Intent intent = new Intent(fragment.getActivity(), ReadEncounterActivity.class);
-        Bundle extras = new Bundle();
-        extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
-        intent.putExtras(extras);
-        fragment.getActivity().startActivity(intent);
+        if (fragment.getActivity() != null) {
+            fragment.saveCameraPosition();
+            Intent intent = new Intent(fragment.getActivity(), ReadEncounterActivity.class);
+            Bundle extras = new Bundle();
+            extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
+            intent.putExtras(extras);
+            fragment.getActivity().startActivity(intent);
+        }
     }
 
     private void openTour(Tour tour) {
-        Toast.makeText(fragment.getActivity(), "résumé de maraude", Toast.LENGTH_SHORT).show();
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tour);
+            tourInformationFragment.show(fragmentManager, "fragment_tour_information");
+        }
     }
 
     // ----------------------------------

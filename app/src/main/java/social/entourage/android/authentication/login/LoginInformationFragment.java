@@ -88,15 +88,15 @@ public class LoginInformationFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (!(activity instanceof OnInformationFragmentFinish)) {
-            throw new ClassCastException(activity.toString()  + " must implement OnInformationFragmentFinish");
+        if (!(activity instanceof OnEntourageInformationFragmentFinish)) {
+            throw new ClassCastException(activity.toString()  + " must implement OnEntourageInformationFragmentFinish");
         }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragment;
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
     }
 
     // ----------------------------------
@@ -121,7 +121,7 @@ public class LoginInformationFragment extends DialogFragment {
 
     @OnClick(R.id.login_button_close_info)
     void closeFragment() {
-        getOnInformationFragmentFinish().closeInformationFragment();
+        getOnInformationFragmentFinish().closeEntourageInformationFragment();
     }
 
     @OnClick(R.id.login_button_facebook)
@@ -155,20 +155,20 @@ public class LoginInformationFragment extends DialogFragment {
             } else {
                 Toast.makeText(getActivity(), R.string.login_text_newsletter_fail, Toast.LENGTH_SHORT).show();
             }
-            getOnInformationFragmentFinish().closeInformationFragment();
+            getOnInformationFragmentFinish().closeEntourageInformationFragment();
         }
     }
 
-    private OnInformationFragmentFinish getOnInformationFragmentFinish() {
+    private OnEntourageInformationFragmentFinish getOnInformationFragmentFinish() {
         final Activity activity = getActivity();
-        return activity != null ? (OnInformationFragmentFinish) activity : null;
+        return activity != null ? (OnEntourageInformationFragmentFinish) activity : null;
     }
 
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
 
-    public interface OnInformationFragmentFinish {
-        void closeInformationFragment();
+    public interface OnEntourageInformationFragmentFinish {
+        void closeEntourageInformationFragment();
     }
 }

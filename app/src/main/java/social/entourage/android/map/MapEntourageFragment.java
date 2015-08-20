@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -489,14 +490,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void drawTour(Tour tour) {
-        if (!tour.getTourPoints().isEmpty()) {
+        if (tour != null && !tour.getTourPoints().isEmpty()) {
             PolylineOptions line = new PolylineOptions();
             line.width(15).color(getTrackColor(tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
             mapFragment.getMap().addPolyline(line);
-            if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+            String tourStatus = tour.getTourStatus();
+            if (tourStatus != null && tourStatus.equals(Tour.TOUR_CLOSED)) {
                 drawnTours.add(mapFragment.getMap().addPolyline(line));
                 addTourHead(tour);
             }

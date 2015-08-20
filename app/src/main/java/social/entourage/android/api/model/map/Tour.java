@@ -20,7 +20,7 @@ public class Tour implements Serializable {
 
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
     public static final String TOUR_CLOSED = "closed";
-    private static final String TOUR_ON_GOING = "ongoing";
+    public static final String TOUR_ON_GOING = "ongoing";
     private static final String TOUR_FEET = "feet";
     private static final String TOUR_CAR = "car";
 

@@ -6,7 +6,7 @@ import social.entourage.android.EntourageComponent;
 
 /**
  * Component linked to LoginInformationFragment lifecycle
- * Provide a LoginInformationPresenter
+ * Provides a LoginInformationPresenter
  * @see LoginInformationFragment
  * @see LoginInformationPresenter
  */

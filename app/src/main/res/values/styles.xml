@@ -36,10 +36,16 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Dialog fragment theme with animation. -->
-    <style name="CustomDialogFragment" parent="Theme.AppCompat.Light.Dialog">
+    <!-- Dialog fragment theme with slide animation. -->
+    <style name="CustomDialogFragmentSlide" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
+    </style>
+
+    <!-- Dialog fragment theme with fade animation. -->
+    <style name="CustomDialogFragmentFade" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowEnterAnimation">@anim/abc_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/abc_fade_out</item>
     </style>
 
 
