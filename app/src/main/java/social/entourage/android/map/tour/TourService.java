@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -225,7 +226,11 @@ public class TourService extends Service {
     // ----------------------------------
 
     public void updateNearbyTours() {
-        tourServiceManager.retrieveToursNearby();
+        tourServiceManager.retrieveToursNearbyLarge();
+    }
+
+    public void searchToursFromPoint(LatLng point) {
+        tourServiceManager.retrieveToursNearbySmall(point);
     }
 
     public void beginTreatment(String transportMode, String type) {
@@ -317,6 +322,12 @@ public class TourService extends Service {
         }
     }
 
+    public void nofitfyListenersToursFound(Map<Long, Tour> tours) {
+        for (TourServiceListener listener : listeners) {
+            listener.onToursFound(tours);
+        }
+    }
+
     public void notifyListenersToursCountUpdated() {
         for (TourServiceListener listener : listeners) {
             listener.onToursCountUpdated();
@@ -333,6 +344,7 @@ public class TourService extends Service {
         void onTourResumed(Tour tour);
         void onLocationUpdated(LatLng location);
         void onRetrieveToursNearby(List<Tour> tours);
+        void onToursFound(Map<Long, Tour> tours);
         void onToursCountUpdated();
     }
 }

@@ -129,6 +129,7 @@
     <string name="tour_info_text_ongoing"><![CDATA[<font color=\"#00E11E\">En cours</font>]]></string>
     <string name="tour_info_text_closed"><![CDATA[<font color=\"#F60000\">Terminée</font>]]></string>
     <string name="tour_info_button_close">Fermer</string>
+    <string name="tour_info_nothing_found">Aucune maraude récente trouvée</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>

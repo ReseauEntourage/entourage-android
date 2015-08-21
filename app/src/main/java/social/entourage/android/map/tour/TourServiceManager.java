@@ -14,7 +14,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -190,7 +192,7 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveToursNearby() {
+    protected void retrieveToursNearbyLarge() {
         CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
@@ -200,6 +202,26 @@ public class TourServiceManager {
                 @Override
                 public void success(Tour.ToursWrapper toursWrapper, Response response) {
                     tourService.notifyListenersToursNearby(toursWrapper.getTours());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("Error", error.toString());
+                }
+            });
+        }
+    }
+
+    protected void retrieveToursNearbySmall(LatLng point) {
+        if (point != null) {
+            tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, 0.03, new Callback<Tour.ToursWrapper>() {
+                @Override
+                public void success(Tour.ToursWrapper toursWrapper, Response response) {
+                    Map<Long, Tour> toursMap = new HashMap<>();
+                    for (Tour tour : toursWrapper.getTours()) {
+                        toursMap.put(tour.getId(), tour);
+                    }
+                    tourService.nofitfyListenersToursFound(toursMap);
                 }
 
                 @Override

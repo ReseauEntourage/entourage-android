@@ -99,6 +99,14 @@ public class MapPresenter {
         fragment.putEncounterOnMap(encounter, onClickListener);
     }
 
+    public void openTour(Tour tour) {
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tour);
+            tourInformationFragment.show(fragmentManager, "fragment_tour_information");
+        }
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -117,14 +125,6 @@ public class MapPresenter {
             extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
             intent.putExtras(extras);
             fragment.getActivity().startActivity(intent);
-        }
-    }
-
-    private void openTour(Tour tour) {
-        if (fragment.getActivity() != null) {
-            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tour);
-            tourInformationFragment.show(fragmentManager, "fragment_tour_information");
         }
     }
 

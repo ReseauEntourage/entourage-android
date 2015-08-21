@@ -1,7 +1,9 @@
 package social.entourage.android.map;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -10,11 +12,13 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -85,6 +89,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private int color;
 
+    private int selected;
+
     private long currentTourId;
     private List<Polyline> currentTourLines;
     private Map<Long, Polyline> drawnToursMap;
@@ -124,10 +130,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         drawnToursMap = new HashMap<>();
         markersMap = new HashMap<>();
 
-        /*
-        drawnTours = new ArrayList<>();
-        markers = new ArrayList<>();
-        */
         previousCameraLocation = cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         return toReturn;
     }
@@ -136,31 +138,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
-        if (mapFragment.getMap() != null) {
-            mapFragment.getMap().setMyLocationEnabled(true);
-            mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
-        }
-        mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
-                Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-                Location newLocation = cameraPositionToLocation(null, cameraPosition);
-
-                if (newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
-                    previousCameraLocation = newLocation;
-                    tourService.updateNearbyTours();
-                }
-
-                if (isFollowing && currentLocation != null) {
-                    if (currentLocation.distanceTo(newLocation) > 1) {
-                        isFollowing = false;
-                    }
-                }
-            }
-        });
+        initializeMap();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -311,6 +289,53 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
+    public void onToursFound(final Map<Long, Tour> tours) {
+        if (getActivity() != null) {
+            if (tours.isEmpty()){
+                Toast.makeText(getActivity(), tourService.getString(R.string.tour_info_nothing_found), Toast.LENGTH_SHORT).show();
+            } else {
+                if (tours.size() > 1) {
+                    selected = 0;
+                    int index = 0;
+                    final CharSequence[] choices = new CharSequence[tours.size()];
+                    for (Map.Entry<Long, Tour> tour : tours.entrySet()) {
+                        choices[index++] = String.valueOf(tour.getKey());
+                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setCancelable(false);
+                    builder.setSingleChoiceItems(choices, selected, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            selected = which;
+                        }
+                    });
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            long id = Long.parseLong(choices[selected].toString());
+                            Tour tour = tours.get(id);
+                            presenter.openTour(tour);
+                        }
+                    });
+                    builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog choicesDialog = builder.create();
+                    choicesDialog.show();
+                } else {
+                    for (Map.Entry<Long, Tour> tour : tours.entrySet()) {
+                        presenter.openTour(tour.getValue());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void onToursCountUpdated() {
         presenter.incrementUserToursCount();
     }
@@ -381,6 +406,39 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
         }
+    }
+
+    private void initializeMap() {
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+        if (mapFragment.getMap() != null) {
+            mapFragment.getMap().setMyLocationEnabled(true);
+            mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
+        }
+        mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
+                Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                Location newLocation = cameraPositionToLocation(null, cameraPosition);
+
+                if (newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                    previousCameraLocation = newLocation;
+                    tourService.updateNearbyTours();
+                }
+
+                if (isFollowing && currentLocation != null) {
+                    if (currentLocation.distanceTo(newLocation) > 1) {
+                        isFollowing = false;
+                    }
+                }
+            }
+        });
+        mapFragment.getMap().setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                tourService.searchToursFromPoint(latLng);
+            }
+        });
     }
 
     // ----------------------------------
