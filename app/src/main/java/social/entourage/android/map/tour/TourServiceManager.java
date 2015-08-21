@@ -57,7 +57,6 @@ public class TourServiceManager {
     private long tourId;
     private int pointsNeededForNextRequest;
     private List<TourPoint> pointsToSend;
-    private Timer timerRefresh;
     private Timer timerFinish;
 
     @Inject
@@ -67,7 +66,6 @@ public class TourServiceManager {
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
         initializeLocationService();
-        initializeTimerRefreshTask();
     }
 
     // ----------------------------------
@@ -124,22 +122,6 @@ public class TourServiceManager {
                 Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
 
-    private void initializeTimerRefreshTask() {
-        timerRefresh = new Timer();
-        timerRefresh.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
-                if (currentPosition != null) {
-                    LatLng location = currentPosition.target;
-                    float zoom = currentPosition.zoom;
-                    float distance = 40000f / (float) Math.pow(2f, zoom);
-                    retrieveToursNearby(10, null, null, new LatLng(location.latitude, location.longitude), distance);
-                }
-            }
-        }, 1000, 5000);
-    }
-
     private void initializeTimerFinishTask() {
         long duration = 1000 * 60 * 60 * 5;
         timerFinish = new Timer();
@@ -163,8 +145,9 @@ public class TourServiceManager {
         tourRequest.tour(tourWrapper, new Callback<Tour.TourWrapper>() {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {
-                tourService.notifyListenersToursCountUpdated();
                 tourId = tourWrapper.getTour().getId();
+                tourService.notifyListenersTourCreated(tourId);
+                tourService.notifyListenersToursCountUpdated();
             }
 
             @Override
@@ -207,30 +190,29 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveToursNearby(int limit, String transportMode, String type, LatLng location, float distance) {
-        tourRequest.retrieveToursNearby(limit, transportMode, type, location.latitude, location.longitude, distance, new Callback<Tour.ToursWrapper>() {
-            @Override
-            public void success(Tour.ToursWrapper toursWrapper, Response response) {
-                tourService.notifyListenersToursNearby(toursWrapper.getTours());
-            }
+    protected void retrieveToursNearby() {
+        CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
+        if (currentPosition != null) {
+            LatLng location = currentPosition.target;
+            float zoom = currentPosition.zoom;
+            float distance = 40000f / (float) Math.pow(2f, zoom);
+            tourRequest.retrieveToursNearby(10, null, null, location.latitude, location.longitude, distance, new Callback<Tour.ToursWrapper>() {
+                @Override
+                public void success(Tour.ToursWrapper toursWrapper, Response response) {
+                    tourService.notifyListenersToursNearby(toursWrapper.getTours());
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("Error", error.toString());
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("Error", error.toString());
+                }
+            });
+        }
     }
 
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-
-    public void cancelRefreshTimer() {
-        if (timerRefresh != null) {
-            timerRefresh.cancel();
-            timerRefresh = null;
-        }
-    }
 
     public void cancelFinishTimer() {
         if (timerFinish != null) {
@@ -261,7 +243,7 @@ public class TourServiceManager {
             pointsNeededForNextRequest = POINT_PER_REQUEST;
             updateTourCoordinates();
         }
-        tourService.notifyListenersTour(tour);
+        tourService.notifyListenersTourUpdated(tour);
     }
 
     private boolean isWebServiceUpdateNeeded() {

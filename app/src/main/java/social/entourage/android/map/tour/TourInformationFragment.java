@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -36,14 +39,20 @@ public class TourInformationFragment extends DialogFragment {
     @InjectView(R.id.tour_info_icon)
     ImageView tourIcon;
 
+    @InjectView(R.id.tour_info_date)
+    TextView tourDate;
+
     @InjectView(R.id.tour_info_transport)
     TextView tourTransport;
 
     @InjectView(R.id.tour_info_type)
     TextView tourType;
 
-    @InjectView(R.id.tour_info_status)
-    TextView tourStatus;
+    @InjectView(R.id.tour_info_status_ongoing)
+    TextView tourStatusOnGoing;
+
+    @InjectView(R.id.tour_info_status_closed)
+    TextView tourStatusClosed;
 
     @InjectView(R.id.tour_info_button_close)
     Button closeButton;
@@ -119,6 +128,11 @@ public class TourInformationFragment extends DialogFragment {
         String type = tour.getTourType();
         String status = tour.getTourStatus();
 
+        if (!tour.getTourPoints().isEmpty()) {
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String date = dateFormat.format(tour.getTourPoints().get(0).getPassingTime());
+            tourDate.setText(date);
+        }
 
         if (vehicule.equals(TourTransportMode.FEET.getName())) {
             tourIcon.setImageResource(R.drawable.ic_feet);
@@ -140,10 +154,10 @@ public class TourInformationFragment extends DialogFragment {
         }
 
         if (status.equals(Tour.TOUR_ON_GOING)) {
-            tourStatus.setText(res.getString(R.string.tour_info_text_status, getString(R.string.tour_status_ongoing)));
+            tourStatusClosed.setVisibility(View.GONE);
         }
         else if (status.equals(Tour.TOUR_CLOSED)) {
-            tourStatus.setText(res.getString(R.string.tour_info_text_status, getString(R.string.tour_status_closed)));
+            tourStatusOnGoing.setVisibility(View.GONE);
         }
     }
 

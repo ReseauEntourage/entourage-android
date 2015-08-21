@@ -144,10 +144,18 @@ public class MapPresenter {
             tourMarkerHashMap.put(markerPosition, tour);
         }
 
+        public void removeMarker(long tourId) {
+            tourMarkerHashMap.remove(tourId);
+        }
+
+        public void clearTourMarkers() {
+            tourMarkerHashMap.clear();
+        }
+
         @Override
         public boolean onMarkerClick(Marker marker) {
             LatLng markerPosition = marker.getPosition();
-            // TODO : if an encounter and a tour are in the same location
+            // TODO : case where an encounter and a tour are in the same location
             if (encounterMarkerHashMap.get(markerPosition) != null){
                 openEncounter(encounterMarkerHashMap.get(markerPosition));
             }

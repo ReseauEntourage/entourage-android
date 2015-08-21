@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -31,7 +31,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -59,7 +62,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // CONSTANTS
     // ----------------------------------
 
-    public static final int FOLLOWING_LIMIT = 5;
+    public static final int REDRAW_LIMIT = 300;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -73,6 +76,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private boolean isBetterLocationUpdated;
 
     private LatLng previousCoordinates;
+    private Location previousCameraLocation;
 
     private TourService tourService;
     private ServiceConnection connection = new ServiceConnection();
@@ -81,7 +85,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private int color;
 
-    private List<Polyline> drawnTours;
+    private long currentTourId;
+    private List<Polyline> currentTourLines;
+    private Map<Long, Polyline> drawnToursMap;
+    private Map<Long, Marker> markersMap;
 
     @InjectView(R.id.fragment_map_pin)
     View mapPin;
@@ -112,7 +119,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, toReturn);
+
+        currentTourLines = new ArrayList<>();
+        drawnToursMap = new HashMap<>();
+        markersMap = new HashMap<>();
+
+        /*
         drawnTours = new ArrayList<>();
+        markers = new ArrayList<>();
+        */
+        previousCameraLocation = cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         return toReturn;
     }
 
@@ -129,14 +145,20 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                if (isFollowing) {
-                    Location newLocation = cameraPositionToLocation("new", EntourageLocation.getInstance().getLastCameraPosition());
-                    Location prevLocation = cameraPositionToLocation("previous", cameraPosition);
-                    if (newLocation.distanceTo(prevLocation) >= FOLLOWING_LIMIT) {
+                EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
+                Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                Location newLocation = cameraPositionToLocation(null, cameraPosition);
+
+                if (newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                    previousCameraLocation = newLocation;
+                    tourService.updateNearbyTours();
+                }
+
+                if (isFollowing && currentLocation != null) {
+                    if (currentLocation.distanceTo(newLocation) > 1) {
                         isFollowing = false;
                     }
                 }
-                EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
             }
         });
     }
@@ -256,16 +278,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     @Override
+    public void onTourCreated(long tourId) {
+        currentTourId = tourId;
+    }
+
+    @Override
     public void onTourUpdated(Tour tour) {
         if (!tour.getTourPoints().isEmpty()) {
-            drawLocation(tour.getTourPoints().get(tour.getTourPoints().size() - 1).getLocation());
+            drawCurrentLocation(tour.getTourPoints().get(tour.getTourPoints().size() - 1).getLocation());
         }
     }
 
     @Override
     public void onTourResumed(Tour tour) {
         if (!tour.getTourPoints().isEmpty()) {
-            drawTour(tour);
+            drawCurrentTour(tour);
             previousCoordinates = tour.getTourPoints().get(tour.getTourPoints().size() - 1).getLocation();
         }
     }
@@ -277,12 +304,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
-        for (Polyline line : drawnTours) {
-            line.remove();
-        }
-        drawnTours.clear();
-        for (Tour tour : tours) {
-            drawTour(tour);
+        removeDeprecatedTours(tours);
+        for (Tour tour : removeRedundantTours(tours)) {
+            drawNearbyTour(tour);
         }
     }
 
@@ -389,6 +413,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void stopTour() {
+        for (Polyline line : currentTourLines) {
+            line.remove();
+        }
+        currentTourLines.clear();
         if (tourService.isRunning()) {
             tourService.endTreatment();
             previousCoordinates = null;
@@ -422,6 +450,39 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
     // PRIVATE METHODS (views)
     // ----------------------------------
+
+    private void removeDeprecatedTours(List<Tour> tours) {
+        boolean found;
+        Iterator iteratorLines = drawnToursMap.entrySet().iterator();
+        while (iteratorLines.hasNext()) {
+            found = false;
+            Map.Entry pair = (Map.Entry) iteratorLines.next();
+            for (Tour tour : tours) {
+                if (pair.getKey() == tour.getId()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                drawnToursMap.get(pair.getKey()).remove();
+                iteratorLines.remove();
+                markersMap.get(pair.getKey()).remove();
+                markersMap.remove(pair.getKey());
+                presenter.getOnClickListener().removeMarker((long)pair.getKey());
+            }
+        }
+    }
+
+    private List<Tour> removeRedundantTours(List<Tour> tours) {
+        Iterator iteratorTours = tours.iterator();
+        while (iteratorTours.hasNext()) {
+            Tour tour = (Tour) iteratorTours.next();
+            if (drawnToursMap.containsKey(tour.getId())) {
+                iteratorTours.remove();
+            }
+        }
+        return tours;
+    }
 
     private int getTrackColor(String type, Date date) {
         int color = Color.GRAY;
@@ -479,29 +540,39 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private void drawLocation(LatLng location) {
+    private void drawCurrentLocation(LatLng location) {
         if (previousCoordinates != null) {
             PolylineOptions line = new PolylineOptions();
             line.add(previousCoordinates, location);
             line.width(15).color(color);
-            mapFragment.getMap().addPolyline(line);
+            currentTourLines.add(mapFragment.getMap().addPolyline(line));
         }
         previousCoordinates = location;
     }
 
-    private void drawTour(Tour tour) {
+    private void drawCurrentTour(Tour tour) {
         if (tour != null && !tour.getTourPoints().isEmpty()) {
             PolylineOptions line = new PolylineOptions();
             line.width(15).color(getTrackColor(tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
-            mapFragment.getMap().addPolyline(line);
-            String tourStatus = tour.getTourStatus();
-            if (tourStatus != null && tourStatus.equals(Tour.TOUR_CLOSED)) {
-                drawnTours.add(mapFragment.getMap().addPolyline(line));
-                addTourHead(tour);
+            currentTourLines.add(mapFragment.getMap().addPolyline(line));
+        }
+    }
+
+    private void drawNearbyTour(Tour tour) {
+        if (tour != null && !tour.getTourPoints().isEmpty()) {
+            PolylineOptions line = new PolylineOptions();
+            line.width(15).color(getTrackColor(tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
+            for (TourPoint tourPoint : tour.getTourPoints()) {
+                line.add(tourPoint.getLocation());
             }
+            drawnToursMap.put(tour.getId(), mapFragment.getMap().addPolyline(line));
+            if (tour.getTourStatus() == null) {
+                tour.setTourStatus(Tour.TOUR_CLOSED);
+            }
+            addTourHead(tour);
         }
     }
 
@@ -522,7 +593,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         MarkerOptions markerOptions = new MarkerOptions().position(position).icon(icon);
 
         if (mapFragment.getMap() != null) {
-            mapFragment.getMap().addMarker(markerOptions);
+            markersMap.put(tour.getId(), mapFragment.getMap().addMarker(markerOptions));
             presenter.getOnClickListener().addTourMarker(position, tour);
         }
     }
@@ -535,6 +606,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         @Override
         public void onLocationChanged(Location location) {
+
+            EntourageLocation.getInstance().saveCurrentLocation(location);
 
             Location bestLocation = EntourageLocation.getInstance().getLocation();
             boolean shouldCenterMap = false;
@@ -575,6 +648,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (getActivity() != null) {
                 tourService = ((TourService.LocalBinder) service).getService();
                 tourService.register(MapEntourageFragment.this);
+                tourService.updateNearbyTours();
 
                 boolean isRunning = tourService != null && tourService.isRunning();
                 if (isRunning) {

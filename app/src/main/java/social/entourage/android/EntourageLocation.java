@@ -14,6 +14,7 @@ public class EntourageLocation {
     private static final EntourageLocation ourInstance = new EntourageLocation();
 
     private Location lastLocation;
+    private Location currentLocation;
     private CameraPosition lastCameraPosition;
     private CameraPosition currentCameraPosition;
 
@@ -24,11 +25,14 @@ public class EntourageLocation {
     private EntourageLocation() {
         lastCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR,0, 0);
         currentCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR,0, 0);
-        currentCameraPosition = null;
     }
 
     public Location getLocation() {
         return lastLocation;
+    }
+
+    public Location getCurrentLocation() {
+        return currentLocation;
     }
 
     public CameraPosition getLastCameraPosition() {
@@ -43,15 +47,19 @@ public class EntourageLocation {
         return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
     }
 
+    public void saveLocation(Location l) {
+        lastLocation = l;
+    }
+
+    public void saveCurrentLocation(Location l) {
+        currentLocation = l;
+    }
+
     public void saveLastCameraPosition(CameraPosition newCameraPosition) {
         lastCameraPosition = newCameraPosition;
     }
 
     public void saveCurrentCameraPosition(CameraPosition newCameraPosition) {
         currentCameraPosition = newCameraPosition;
-    }
-
-    public void saveLocation(Location l) {
-        lastLocation = l;
     }
 }

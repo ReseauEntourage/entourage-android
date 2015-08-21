@@ -122,7 +122,6 @@ public class TourService extends Service {
     public void onDestroy() {
         endTreatment();
         unregisterReceiver(receiver);
-        tourServiceManager.cancelRefreshTimer();
         super.onDestroy();
     }
 
@@ -225,6 +224,10 @@ public class TourService extends Service {
     // PUBLIC METHODS
     // ----------------------------------
 
+    public void updateNearbyTours() {
+        tourServiceManager.retrieveToursNearby();
+    }
+
     public void beginTreatment(String transportMode, String type) {
         if (!isRunning()) {
             tourServiceManager.startTour(transportMode, type);
@@ -290,7 +293,13 @@ public class TourService extends Service {
         tourServiceManager.addEncounter(encounter);
     }
 
-    public void notifyListenersTour(Tour tour) {
+    public void notifyListenersTourCreated(long id) {
+        for (TourServiceListener listener : listeners) {
+            listener.onTourCreated(id);
+        }
+    }
+
+    public void notifyListenersTourUpdated(Tour tour) {
         for (TourServiceListener listener : listeners) {
             listener.onTourUpdated(tour);
         }
@@ -319,6 +328,7 @@ public class TourService extends Service {
     // ----------------------------------
 
     public interface TourServiceListener {
+        void onTourCreated(long tourId);
         void onTourUpdated(Tour tour);
         void onTourResumed(Tour tour);
         void onLocationUpdated(LatLng location);
