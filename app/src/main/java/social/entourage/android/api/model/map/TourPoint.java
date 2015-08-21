@@ -53,7 +53,7 @@ public class TourPoint implements Serializable {
         return passingTime;
     }
 
-     public void setLatitude(double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
@@ -78,12 +78,18 @@ public class TourPoint implements Serializable {
         @SerializedName("tour_points")
         private List<TourPoint> tourPoints;
 
+        private float distance;
+
         public List<TourPoint> getTourPoints() {
             return tourPoints;
         }
 
         public void setTourPoints(List<TourPoint> tourPoint) {
             this.tourPoints = tourPoint;
+        }
+
+        public void setDistance(float distance) {
+            this.distance = distance;
         }
     }
 }

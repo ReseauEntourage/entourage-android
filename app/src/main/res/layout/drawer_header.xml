@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="15dp"
                 android:clickable="true"
-                android:src="@drawable/ic_user_photo"/>
+                android:src="@drawable/custom_user_image_button"/>
 
         </LinearLayout>
 

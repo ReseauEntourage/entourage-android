@@ -12,7 +12,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -292,39 +291,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onToursFound(final Map<Long, Tour> tours) {
         if (getActivity() != null) {
             if (tours.isEmpty()){
-                Toast.makeText(getActivity(), tourService.getString(R.string.tour_info_nothing_found), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), tourService.getString(R.string.tour_info_text_nothing_found), Toast.LENGTH_SHORT).show();
             } else {
                 if (tours.size() > 1) {
-                    selected = 0;
-                    int index = 0;
-                    final CharSequence[] choices = new CharSequence[tours.size()];
-                    for (Map.Entry<Long, Tour> tour : tours.entrySet()) {
-                        choices[index++] = String.valueOf(tour.getKey());
-                    }
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setCancelable(false);
-                    builder.setSingleChoiceItems(choices, selected, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            selected = which;
-                        }
-                    });
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            long id = Long.parseLong(choices[selected].toString());
-                            Tour tour = tours.get(id);
-                            presenter.openTour(tour);
-                        }
-                    });
-                    builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog choicesDialog = builder.create();
-                    choicesDialog.show();
+                    createTourSelectionDialog(tours);
                 } else {
                     for (Map.Entry<Long, Tour> tour : tours.entrySet()) {
                         presenter.openTour(tour.getValue());
@@ -503,6 +473,39 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void addEncounter(Encounter encounter) {
         tourService.addEncounter(encounter);
+    }
+
+    private void createTourSelectionDialog(final Map<Long, Tour> tours) {
+        selected = 0;
+        int index = 0;
+        final CharSequence[] choices = new CharSequence[tours.size()];
+        for (Map.Entry<Long, Tour> tour : tours.entrySet()) {
+            choices[index++] = String.valueOf(tour.getKey());
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        builder.setSingleChoiceItems(choices, selected, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selected = which;
+            }
+        });
+        builder.setPositiveButton(tourService.getString(R.string.tour_info_text_choose), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                long id = Long.parseLong(choices[selected].toString());
+                Tour tour = tours.get(id);
+                presenter.openTour(tour);
+            }
+        });
+        builder.setNegativeButton(tourService.getString(R.string.tour_info_text_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog choicesDialog = builder.create();
+        choicesDialog.show();
     }
 
     // ----------------------------------

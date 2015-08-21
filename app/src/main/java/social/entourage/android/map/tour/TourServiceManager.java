@@ -178,6 +178,7 @@ public class TourServiceManager {
     private void updateTourCoordinates() {
         final TourPoint.TourPointWrapper tourPointWrapper = new TourPoint.TourPointWrapper();
         tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
+        tourPointWrapper.setDistance(tour.getDistance());
         tourRequest.tourPoints(tourId, tourPointWrapper, new Callback<Tour.TourWrapper>() {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {

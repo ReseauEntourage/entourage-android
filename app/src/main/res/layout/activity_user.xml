@@ -41,7 +41,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_user_photo"/>
+                        android:clickable="true"
+                        android:src="@drawable/custom_user_image_button"/>
 
                     <LinearLayout
                         android:layout_width="0dp"
