@@ -24,14 +24,16 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.tour.TourInformationFragment;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.user.UserActivity;
 
-public class DrawerActivity extends EntourageSecuredActivity implements TourInformationFragment.OnTourInformationFragmentFinish {
+public class DrawerActivity extends EntourageSecuredActivity implements TourInformationFragment.OnTourInformationFragmentFinish, ChoiceFragment.OnChoiceFragmentFinish {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -217,5 +219,17 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void closeTourInformationFragment(TourInformationFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
+    }
+
+    @Override
+    public void closeChoiceFragment(ChoiceFragment fragment, Tour tour) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(fragment).commit();
+        if (tour != null) {
+            if (mainFragment instanceof MapEntourageFragment) {
+                MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+                mapEntourageFragment.displayChosenTour(tour);
+            }
+        }
     }
 }

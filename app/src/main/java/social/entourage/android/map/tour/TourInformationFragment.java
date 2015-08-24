@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourTransportMode;
@@ -84,6 +85,7 @@ public class TourInformationFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -134,29 +136,37 @@ public class TourInformationFragment extends DialogFragment {
             tourDate.setText(date);
         }
 
-        if (vehicule.equals(TourTransportMode.FEET.getName())) {
-            tourIcon.setImageResource(R.drawable.ic_feet);
-            tourTransport.setText(res.getString(R.string.tour_info_text_transport, getString(R.string.tour_check_feet)));
-        }
-        else if (vehicule.equals(TourTransportMode.CAR.getName())) {
-            tourIcon.setImageResource(R.drawable.ic_car);
-            tourTransport.setText(res.getString(R.string.tour_info_text_transport, getString(R.string.tour_check_car)));
-        }
-
-        if (type.equals(TourType.SOCIAL.getName())) {
-            tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_bare_hands)));
-        }
-        else if (type.equals(TourType.FOOD.getName())) {
-            tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
-        }
-        else if (type.equals(TourType.OTHER.getName())) {
-            tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
+        if (vehicule != null) {
+            if (vehicule.equals(TourTransportMode.FEET.getName())) {
+                tourIcon.setImageResource(R.drawable.ic_feet);
+                tourTransport.setText(res.getString(R.string.tour_info_text_transport, getString(R.string.tour_check_feet)));
+            } else if (vehicule.equals(TourTransportMode.CAR.getName())) {
+                tourIcon.setImageResource(R.drawable.ic_car);
+                tourTransport.setText(res.getString(R.string.tour_info_text_transport, getString(R.string.tour_check_car)));
+            }
+        } else {
+            tourTransport.setText(res.getString(R.string.tour_info_text_transport, getString(R.string.tour_info_unknown)));
         }
 
-        if (status.equals(Tour.TOUR_ON_GOING)) {
-            tourStatusClosed.setVisibility(View.GONE);
+        if (type != null) {
+            if (type.equals(TourType.SOCIAL.getName())) {
+                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_bare_hands)));
+            } else if (type.equals(TourType.FOOD.getName())) {
+                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
+            } else if (type.equals(TourType.OTHER.getName())) {
+                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
+            }
+        } else {
+            tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_info_unknown)));
         }
-        else if (status.equals(Tour.TOUR_CLOSED)) {
+
+        if (status != null) {
+            if (status.equals(Tour.TOUR_ON_GOING)) {
+                tourStatusClosed.setVisibility(View.GONE);
+            } else if (status.equals(Tour.TOUR_CLOSED)) {
+                tourStatusOnGoing.setVisibility(View.GONE);
+            }
+        } else {
             tourStatusOnGoing.setVisibility(View.GONE);
         }
     }

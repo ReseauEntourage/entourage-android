@@ -19,6 +19,7 @@ public class Tour implements Serializable {
     // ----------------------------------
 
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
+    public static final String KEY_TOURS = "social.entourage.android.KEY_TOURS";
     public static final String TOUR_CLOSED = "closed";
     public static final String TOUR_ON_GOING = "ongoing";
     private static final String TOUR_FEET = "feet";
@@ -167,6 +168,23 @@ public class Tour implements Serializable {
 
     public void addEncounter(Encounter encounter) {
         this.encounters.add(encounter);
+    }
+
+    // ----------------------------------
+    // INNER CLASSES
+    // ----------------------------------
+
+    public static class Tours implements Serializable {
+
+        private List<Tour> tours;
+
+        public Tours(List<Tour> tours) {
+            this.tours = tours;
+        }
+
+        public List<Tour> getTours() {
+            return tours;
+        }
     }
 
     // ----------------------------------
