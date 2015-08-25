@@ -508,8 +508,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (!found) {
                 drawnToursMap.get(pair.getKey()).remove();
                 iteratorLines.remove();
-                markersMap.get(pair.getKey()).remove();
-                markersMap.remove(pair.getKey());
+                if (markersMap.containsKey(pair.getKey())) {
+                    markersMap.get(pair.getKey()).remove();
+                    markersMap.remove(pair.getKey());
+                }
                 presenter.getOnClickListener().removeMarker((long)pair.getKey());
             }
         }
@@ -614,7 +616,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (tour.getTourStatus() == null) {
                 tour.setTourStatus(Tour.TOUR_CLOSED);
             }
-            addTourHead(tour);
+            if (tour.getTourStatus() == Tour.TOUR_ON_GOING) {
+                addTourHead(tour);
+            }
         }
     }
 

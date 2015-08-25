@@ -127,7 +127,7 @@
     <string name="tour_info_date">--/--/-----</string>
     <string name="tour_info_text_transport">Type de transport : %1s</string>
     <string name="tour_info_text_type">Type de maraude : %1s</string>
-    <string name="tour_info_text_status">Status de la maraude :</string>
+    <string name="tour_info_text_status">Statut de la maraude :</string>
     <string name="tour_info_text_ongoing"><![CDATA[<font color=\"#00E11E\">En cours</font>]]></string>
     <string name="tour_info_text_closed"><![CDATA[<font color=\"#F60000\">Terminée</font>]]></string>
     <string name="tour_info_text_choose">Choisir</string>
