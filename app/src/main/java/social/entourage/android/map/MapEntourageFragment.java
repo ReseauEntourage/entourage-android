@@ -1,9 +1,7 @@
 package social.entourage.android.map;
 
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -35,10 +33,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 
@@ -90,9 +88,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private int color;
 
-    private int selected;
-
-    private long currentTourId;
     private List<Polyline> currentTourLines;
     private Map<Long, Polyline> drawnToursMap;
     private Map<Long, Marker> markersMap;
@@ -128,8 +123,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         ButterKnife.inject(this, toReturn);
 
         currentTourLines = new ArrayList<>();
-        drawnToursMap = new HashMap<>();
-        markersMap = new HashMap<>();
+        drawnToursMap = new TreeMap<>();
+        markersMap = new TreeMap<>();
 
         previousCameraLocation = cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         return toReturn;
@@ -262,7 +257,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onTourCreated(long tourId) {
-        currentTourId = tourId;
+
     }
 
     @Override
@@ -300,7 +295,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 Toast.makeText(getActivity(), tourService.getString(R.string.tour_info_text_nothing_found), Toast.LENGTH_SHORT).show();
             } else {
                 if (tours.size() > 1) {
-                    //createTourSelectionDialog(tours);
                     List<Tour> tempList = new ArrayList<>();
                     for (Map.Entry<Long, Tour> entry : tours.entrySet()) {
                         tempList.add(entry.getValue());
@@ -310,10 +304,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     ChoiceFragment choiceFragment = ChoiceFragment.newInstance(toursList);
                     choiceFragment.show(fragmentManager, "fragment_choice");
                 } else {
-                    for (Map.Entry<Long, Tour> tour : tours.entrySet()) {
-                        presenter.openTour(tour.getValue());
-                        break;
-                    }
+                    TreeMap<Long, Tour> toursTree = new TreeMap<>(tours);
+                    presenter.openTour(toursTree.firstEntry().getValue());
                 }
             }
         }
@@ -499,20 +491,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         while (iteratorLines.hasNext()) {
             found = false;
             Map.Entry pair = (Map.Entry) iteratorLines.next();
+            Long key = (Long) pair.getKey();
             for (Tour tour : tours) {
-                if (pair.getKey() == tour.getId()) {
+                if (key == tour.getId()) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                drawnToursMap.get(pair.getKey()).remove();
+                drawnToursMap.get(key).remove();
                 iteratorLines.remove();
-                if (markersMap.containsKey(pair.getKey())) {
-                    markersMap.get(pair.getKey()).remove();
-                    markersMap.remove(pair.getKey());
+                if (markersMap.containsKey(key)) {
+                    markersMap.get(key).remove();
+                    markersMap.remove(key);
                 }
-                presenter.getOnClickListener().removeMarker((long)pair.getKey());
+                presenter.getOnClickListener().removeMarker(key);
             }
         }
     }
@@ -616,7 +609,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (tour.getTourStatus() == null) {
                 tour.setTourStatus(Tour.TOUR_CLOSED);
             }
-            if (tour.getTourStatus() == Tour.TOUR_ON_GOING) {
+            if (Tour.TOUR_ON_GOING.equalsIgnoreCase(tour.getTourStatus())) {
                 addTourHead(tour);
             }
         }
