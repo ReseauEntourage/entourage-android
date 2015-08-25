@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -184,6 +185,19 @@ public class Tour implements Serializable {
 
         public List<Tour> getTours() {
             return tours;
+        }
+    }
+
+    public static class TourComparator implements Comparator<Tour> {
+        @Override
+        public int compare(Tour tour1, Tour tour2) {
+            if (!tour1.getTourPoints().isEmpty() && !tour2.getTourPoints().isEmpty()) {
+                Date date1 = tour1.getTourPoints().get(0).getPassingTime();
+                Date date2 = tour2.getTourPoints().get(0).getPassingTime();
+                return date2.compareTo(date1);
+            } else {
+                return 0;
+            }
         }
     }
 

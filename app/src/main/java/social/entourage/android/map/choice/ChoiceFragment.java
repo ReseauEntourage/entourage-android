@@ -15,6 +15,8 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
         ButterKnife.inject(this, toReturn);
 
         tours = ((Tour.Tours) getArguments().getSerializable(Tour.KEY_TOURS)).getTours();
-        sortToursByDate();
+        Collections.sort(tours, new Tour.TourComparator());
         initializeView();
 
         return toReturn;
@@ -98,11 +100,6 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
-
-    private void sortToursByDate() {
-        List<Tour> sortedTours = new ArrayList<>();
-        // TODO : sort the tours by date
-    }
 
     private void initializeView() {
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
