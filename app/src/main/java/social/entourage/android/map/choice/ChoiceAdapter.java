@@ -37,7 +37,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
 
     @Override
     public ChoiceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tour_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.choice_tour_card, parent, false);
         ChoiceViewHolder choiceViewHolder = new ChoiceViewHolder(view);
         return choiceViewHolder;
     }
@@ -64,6 +64,8 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String date = dateFormat.format(tour.getTourPoints().get(0).getPassingTime());
         holder.cardTextDate.setText(date);
+
+        holder.cardTextOrganization.setText(tour.getOrganizationName());
     }
 
     @Override
@@ -77,6 +79,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
 
         CardView cardView;
         ImageView cardImage;
+        TextView cardTextOrganization;
         TextView cardTextDate;
         TextView cardTextType;
 
@@ -84,6 +87,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
             super(itemView);
             cardView = ((CardView)itemView.findViewById(R.id.choice_card_view));
             cardImage = ((ImageView)itemView.findViewById(R.id.choice_card_image));
+            cardTextOrganization = ((TextView)itemView.findViewById(R.id.choice_card_organization));
             cardTextDate = ((TextView)itemView.findViewById(R.id.choice_card_date));
             cardTextType = ((TextView)itemView.findViewById(R.id.choice_card_type));
             cardView.setOnClickListener(this);

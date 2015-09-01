@@ -57,7 +57,17 @@ public class CreateEncounterPresenter {
         activity.showProgressDialog(R.string.creating_encounter);
         Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
         encounterWrapper.setEncounter(encounter);
-        encounterRequest.create(encounter.getTourId(), encounterWrapper, new EncounterRequestCallback());
+        encounterRequest.create(encounter.getTourId(), encounterWrapper, new Callback<EncounterResponse>() {
+            @Override
+            public void success(EncounterResponse encounterResponse, Response response) {
+                activity.onCreateEncounterFinished(null, encounterResponse.getEncounter());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                activity.onCreateEncounterFinished(error.toString(), null);
+            }
+        });
     }
 
     // ----------------------------------
@@ -85,19 +95,6 @@ public class CreateEncounterPresenter {
         @Override
         public void onRequestSuccess(Encounter encounter) {
             createEncounter(encounter);
-        }
-    }
-
-    private final class EncounterRequestCallback implements Callback<EncounterResponse> {
-
-        @Override
-        public void success(EncounterResponse encounterResponse, Response response) {
-            activity.onCreateEncounterFinished(null, encounterResponse.getEncounter());
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            activity.onCreateEncounterFinished(error.toString(), null);
         }
     }
 }

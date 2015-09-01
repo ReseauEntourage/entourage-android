@@ -55,6 +55,14 @@ public class Tour implements Serializable {
     @SerializedName("tour_points")
     private List<TourPoint> tourPoints;
 
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("organization_name")
+    private String organizationName;
+
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("organization_description")
+    private String organizationDescription;
+
     @Expose(serialize = false)
     private final HashMap<Date, String> steps;
 
@@ -105,6 +113,14 @@ public class Tour implements Serializable {
 
     public List<TourPoint> getTourPoints() {
         return tourPoints;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public String getOrganizationDescription() {
+        return organizationDescription;
     }
 
     public HashMap<Date, String> getSteps() {

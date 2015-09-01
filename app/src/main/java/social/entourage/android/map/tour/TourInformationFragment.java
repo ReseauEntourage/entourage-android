@@ -43,6 +43,9 @@ public class TourInformationFragment extends DialogFragment {
     @InjectView(R.id.tour_info_date)
     TextView tourDate;
 
+    @InjectView(R.id.tour_info_organization)
+    TextView tourOrganization;
+
     @InjectView(R.id.tour_info_transport)
     TextView tourTransport;
 
@@ -136,6 +139,8 @@ public class TourInformationFragment extends DialogFragment {
             tourDate.setText(date);
         }
 
+        tourOrganization.setText(res.getString(R.string.tour_info_text_organization, tour.getOrganizationName()));
+
         if (vehicule != null) {
             if (vehicule.equals(TourTransportMode.FEET.getName())) {
                 tourIcon.setImageResource(R.drawable.ic_feet);
@@ -154,7 +159,7 @@ public class TourInformationFragment extends DialogFragment {
             } else if (type.equals(TourType.FOOD.getName())) {
                 tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
             } else if (type.equals(TourType.OTHER.getName())) {
-                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
+                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_medical)));
             }
         } else {
             tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_info_unknown)));

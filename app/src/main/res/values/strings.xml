@@ -125,6 +125,7 @@
 
     <!-- Tour info -->
     <string name="tour_info_date">--/--/-----</string>
+    <string name="tour_info_text_organization">Organisation : %1s</string>
     <string name="tour_info_text_transport">Type de transport : %1s</string>
     <string name="tour_info_text_type">Type de maraude : %1s</string>
     <string name="tour_info_text_status">Statut de la maraude :</string>

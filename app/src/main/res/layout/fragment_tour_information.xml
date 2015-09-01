@@ -34,6 +34,14 @@
             android:textColor="@color/black"/>
 
         <TextView
+            android:id="@+id/tour_info_organization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/tour_info_text_organization"
+            android:textColor="@color/black"/>
+
+        <TextView
             android:id="@+id/tour_info_transport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

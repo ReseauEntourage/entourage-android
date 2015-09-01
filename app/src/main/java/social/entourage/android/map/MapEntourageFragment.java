@@ -389,6 +389,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().setMyLocationEnabled(true);
             mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
+            mapFragment.getMap().getUiSettings().setMapToolbarEnabled(false);
         }
         mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override

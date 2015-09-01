@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -281,6 +282,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             message = getString(R.string.create_encounter_failure, errorMessage);
             Log.e(logTag, getString(R.string.create_encounter_failure) + errorMessage);
         }
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }
