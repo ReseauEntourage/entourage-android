@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private boolean isBound = true;
     private boolean isFollowing = true;
 
+    private long currentTourId;
     private int color;
 
     private List<Polyline> currentTourLines;
@@ -257,22 +259,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onTourCreated(long tourId) {
-
+        currentTourId = tourId;
     }
 
     @Override
-    public void onTourUpdated(Tour tour) {
-        if (!tour.getTourPoints().isEmpty()) {
-            drawCurrentLocation(tour.getTourPoints().get(tour.getTourPoints().size() - 1).getLocation());
+    public void onTourUpdated(LatLng newPoint) {
+        drawCurrentLocation(newPoint);
+    }
+
+    @Override
+    public void onTourResumed(List<TourPoint> pointsToDraw, String tourType) {
+        if (!pointsToDraw.isEmpty()) {
+            drawCurrentTour(pointsToDraw, tourType);
+            previousCoordinates = pointsToDraw.get(pointsToDraw.size() - 1).getLocation();
+
+            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+            centerMap(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            isFollowing = true;
         }
     }
 
     @Override
-    public void onTourResumed(Tour tour) {
-        if (!tour.getTourPoints().isEmpty()) {
-            drawCurrentTour(tour);
-            previousCoordinates = tour.getTourPoints().get(tour.getTourPoints().size() - 1).getLocation();
-        }
+    public void onTourStopped() {
+        currentTourId = -1;
     }
 
     @Override
@@ -284,7 +293,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onRetrieveToursNearby(List<Tour> tours) {
         removeDeprecatedTours(tours);
         for (Tour tour : removeRedundantTours(tours)) {
-            drawNearbyTour(tour);
+            if (currentTourId != tour.getId()) {
+                drawNearbyTour(tour);
+            }
         }
     }
 
@@ -475,7 +486,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private long getTourId() {
-        return tourService.getTourId();
+        return tourService.getCurrentTourId();
     }
 
     private void addEncounter(Encounter encounter) {
@@ -588,11 +599,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         previousCoordinates = location;
     }
 
-    private void drawCurrentTour(Tour tour) {
-        if (tour != null && !tour.getTourPoints().isEmpty()) {
+    private void drawCurrentTour(List<TourPoint> pointsToDraw, String tourType) {
+        if (!pointsToDraw.isEmpty()) {
             PolylineOptions line = new PolylineOptions();
-            line.width(15).color(getTrackColor(tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
-            for (TourPoint tourPoint : tour.getTourPoints()) {
+            color = getTrackColor(tourType, pointsToDraw.get(0).getPassingTime());
+            line.width(15).color(color);
+            for (TourPoint tourPoint : pointsToDraw) {
                 line.add(tourPoint.getLocation());
             }
             currentTourLines.add(mapFragment.getMap().addPolyline(line));
@@ -688,7 +700,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (getActivity() != null) {
                 tourService = ((TourService.LocalBinder) service).getService();
                 tourService.register(MapEntourageFragment.this);
-                tourService.updateNearbyTours();
 
                 boolean isRunning = tourService != null && tourService.isRunning();
                 if (isRunning) {
@@ -697,10 +708,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         layoutMapTour.setVisibility(View.GONE);
                         launchConfirmationActivity();
                     } else {
+                        currentTourId = tourService.getCurrentTourId();
                         mapPin.setVisibility(View.VISIBLE);
                         layoutMapTour.setVisibility(View.VISIBLE);
                     }
                 }
+                tourService.updateNearbyTours();
 
                 Intent intent = getActivity().getIntent();
                 if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {

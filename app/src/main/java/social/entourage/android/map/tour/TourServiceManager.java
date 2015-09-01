@@ -59,6 +59,7 @@ public class TourServiceManager {
     private long tourId;
     private int pointsNeededForNextRequest;
     private List<TourPoint> pointsToSend;
+    private List<TourPoint> pointsToDraw;
     private Timer timerFinish;
 
     @Inject
@@ -67,6 +68,7 @@ public class TourServiceManager {
         this.tourRequest = tourRequest;
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
+        this.pointsToDraw = new ArrayList<>();
         initializeLocationService();
     }
 
@@ -80,6 +82,10 @@ public class TourServiceManager {
 
     public long getTourId() {
         return tourId;
+    }
+
+    public List<TourPoint> getPointsToDraw() {
+        return pointsToDraw;
     }
 
     // ----------------------------------
@@ -245,6 +251,7 @@ public class TourServiceManager {
     }
 
     private void onLocationChanged(Location location, TourPoint point) {
+        pointsToDraw.add(point);
         pointsToSend.add(point);
         if (pointsToSend.size() >= 3) {
             TourPoint a = pointsToSend.get(pointsToSend.size() - 3);
@@ -266,7 +273,7 @@ public class TourServiceManager {
             pointsNeededForNextRequest = POINT_PER_REQUEST;
             updateTourCoordinates();
         }
-        tourService.notifyListenersTourUpdated(tour);
+        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
     private boolean isWebServiceUpdateNeeded() {

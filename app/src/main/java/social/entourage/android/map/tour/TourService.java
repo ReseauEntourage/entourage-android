@@ -33,9 +33,11 @@ import javax.inject.Inject;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.DrawerActivity;
+import social.entourage.android.api.model.map.TourPoint;
 
 /**
  * Background service for handling location modification in a tour like in "RunKeeper" app
@@ -139,7 +141,7 @@ public class TourService extends Service {
         return tourServiceManager.getTour();
     }
 
-    public long getTourId() {
+    public long getCurrentTourId() {
         return tourServiceManager.getTourId();
     }
 
@@ -268,6 +270,11 @@ public class TourService extends Service {
             removeNotification();
             isPaused = false;
             if (listeners.size() == 0) stopSelf();
+            else {
+                for (TourServiceListener listener : listeners) {
+                    listener.onTourStopped();
+                }
+            }
             Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
         }
     }
@@ -275,7 +282,7 @@ public class TourService extends Service {
     public void register(TourServiceListener listener) {
         listeners.add(listener);
         if (tourServiceManager.isRunning()) {
-            listener.onTourResumed(tourServiceManager.getTour());
+            listener.onTourResumed(tourServiceManager.getPointsToDraw(), tourServiceManager.getTour().getTourType());
         }
     }
 
@@ -304,9 +311,9 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersTourUpdated(Tour tour) {
+    public void notifyListenersTourUpdated(LatLng newPoint) {
         for (TourServiceListener listener : listeners) {
-            listener.onTourUpdated(tour);
+            listener.onTourUpdated(newPoint);
         }
     }
 
@@ -340,8 +347,9 @@ public class TourService extends Service {
 
     public interface TourServiceListener {
         void onTourCreated(long tourId);
-        void onTourUpdated(Tour tour);
-        void onTourResumed(Tour tour);
+        void onTourUpdated(LatLng newPoint);
+        void onTourResumed(List<TourPoint> pointsToDraw, String tourType);
+        void onTourStopped();
         void onLocationUpdated(LatLng location);
         void onRetrieveToursNearby(List<Tour> tours);
         void onToursFound(Map<Long, Tour> tours);
