@@ -204,13 +204,26 @@ public class Tour implements Serializable {
         }
     }
 
-    public static class TourComparator implements Comparator<Tour> {
+    public static class TourComparatorNewToOld implements Comparator<Tour> {
         @Override
         public int compare(Tour tour1, Tour tour2) {
             if (!tour1.getTourPoints().isEmpty() && !tour2.getTourPoints().isEmpty()) {
                 Date date1 = tour1.getTourPoints().get(0).getPassingTime();
                 Date date2 = tour2.getTourPoints().get(0).getPassingTime();
                 return date2.compareTo(date1);
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    public static class TourComparatorOldToNew implements Comparator<Tour> {
+        @Override
+        public int compare(Tour tour1, Tour tour2) {
+            if (!tour1.getTourPoints().isEmpty() && !tour2.getTourPoints().isEmpty()) {
+                Date date1 = tour1.getTourPoints().get(0).getPassingTime();
+                Date date2 = tour2.getTourPoints().get(0).getPassingTime();
+                return date1.compareTo(date2);
             } else {
                 return 0;
             }

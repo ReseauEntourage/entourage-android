@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -292,7 +293,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
         removeDeprecatedTours(tours);
-        for (Tour tour : removeRedundantTours(tours)) {
+        tours = removeRedundantTours(tours);
+        Collections.sort(tours, new Tour.TourComparatorOldToNew());
+        for (Tour tour : tours) {
             if (currentTourId != tour.getId()) {
                 drawNearbyTour(tour);
             }
@@ -401,32 +404,32 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             mapFragment.getMap().setMyLocationEnabled(true);
             mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
             mapFragment.getMap().getUiSettings().setMapToolbarEnabled(false);
-        }
-        mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
-                Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-                Location newLocation = cameraPositionToLocation(null, cameraPosition);
+            mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                @Override
+                public void onCameraChange(CameraPosition cameraPosition) {
+                    EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
+                    Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                    Location newLocation = cameraPositionToLocation(null, cameraPosition);
 
-                if (newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
-                    previousCameraLocation = newLocation;
-                    tourService.updateNearbyTours();
-                }
+                    if (newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                        previousCameraLocation = newLocation;
+                        tourService.updateNearbyTours();
+                    }
 
-                if (isFollowing && currentLocation != null) {
-                    if (currentLocation.distanceTo(newLocation) > 1) {
-                        isFollowing = false;
+                    if (isFollowing && currentLocation != null) {
+                        if (currentLocation.distanceTo(newLocation) > 1) {
+                            isFollowing = false;
+                        }
                     }
                 }
-            }
-        });
-        mapFragment.getMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                tourService.searchToursFromPoint(latLng);
-            }
-        });
+            });
+            mapFragment.getMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    tourService.searchToursFromPoint(latLng);
+                }
+            });
+        }
     }
 
     // ----------------------------------
@@ -612,7 +615,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void drawNearbyTour(Tour tour) {
-        if (tour != null && !tour.getTourPoints().isEmpty()) {
+        if (mapFragment != null && mapFragment.getMap() != null && drawnToursMap != null && tour != null && !tour.getTourPoints().isEmpty()) {
             PolylineOptions line = new PolylineOptions();
             line.width(15).color(getTrackColor(tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
             for (TourPoint tourPoint : tour.getTourPoints()) {

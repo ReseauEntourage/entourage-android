@@ -14,10 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -63,7 +60,7 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
         ButterKnife.inject(this, toReturn);
 
         tours = ((Tour.Tours) getArguments().getSerializable(Tour.KEY_TOURS)).getTours();
-        Collections.sort(tours, new Tour.TourComparator());
+        Collections.sort(tours, new Tour.TourComparatorNewToOld());
         initializeView();
 
         return toReturn;

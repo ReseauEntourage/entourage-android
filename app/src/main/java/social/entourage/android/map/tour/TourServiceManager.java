@@ -204,7 +204,7 @@ public class TourServiceManager {
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
             float zoom = currentPosition.zoom;
-            float distance = 40000f / (float) Math.pow(2f, zoom) / 2;
+            float distance = 40000f / (float) Math.pow(2f, zoom) / 2.5f;
             tourRequest.retrieveToursNearby(10, null, null, location.latitude, location.longitude, distance, new Callback<Tour.ToursWrapper>() {
                 @Override
                 public void success(Tour.ToursWrapper toursWrapper, Response response) {
@@ -221,7 +221,7 @@ public class TourServiceManager {
 
     protected void retrieveToursNearbySmall(LatLng point) {
         if (point != null) {
-            tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, 0.03, new Callback<Tour.ToursWrapper>() {
+            tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, 0.04, new Callback<Tour.ToursWrapper>() {
                 @Override
                 public void success(Tour.ToursWrapper toursWrapper, Response response) {
                     Map<Long, Tour> toursMap = new HashMap<>();
