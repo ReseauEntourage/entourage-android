@@ -42,7 +42,6 @@ public class MapPresenter {
     private final AuthenticationController authenticationController;
 
     private OnEntourageMarkerClickListener onClickListener;
-    private boolean isStarted = false;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -68,27 +67,8 @@ public class MapPresenter {
 
     public void start() {
         onClickListener = new OnEntourageMarkerClickListener();
-        isStarted = true;
         fragment.initializeMapZoom();
-        //retrieveMapObjects(EntourageLocation.getInstance().getLastCameraPosition().target);
         fragment.setOnMarkerClickListener(onClickListener);
-    }
-
-    public void retrieveMapObjects(LatLng latLng) {
-        if(isStarted) {
-            mapRequest.map(Constants.TOKEN, 0, 0, latLng.latitude, latLng.longitude, new Callback<MapResponse>() {
-                @Override
-                public void success(MapResponse mapResponse, Response response) {
-                    loadObjectsOnMap(mapResponse);
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.d("MapActivity", "Impossible to retrieve map objects");
-                    error.printStackTrace();
-                }
-            });
-        }
     }
 
     public void incrementUserToursCount() {
@@ -110,12 +90,6 @@ public class MapPresenter {
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
-
-    private void loadObjectsOnMap(MapResponse mapResponse) {
-        for (Encounter encounter : mapResponse.getEncounters()) {
-            fragment.putEncounterOnMap(encounter, onClickListener);
-        }
-    }
 
     private void openEncounter(Encounter encounter) {
         if (fragment.getActivity() != null) {
@@ -146,10 +120,6 @@ public class MapPresenter {
 
         public void removeMarker(long tourId) {
             tourMarkerHashMap.remove(tourId);
-        }
-
-        public void clearTourMarkers() {
-            tourMarkerHashMap.clear();
         }
 
         @Override

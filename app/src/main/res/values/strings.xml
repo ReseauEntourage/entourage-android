@@ -107,9 +107,11 @@
 
     <!-- Tour -->
     <string name="tour_start">Démarrer une maraude</string>
+    <string name="tour_creation_fail">Echec de l\'envoi de maraude</string>
     <string name="tour_resume">Reprendre</string>
     <string name="tour_finish">Terminer</string>
     <string name="tour_stop">Stop</string>
+    <string name="tour_close_fail">Echec de la fermeture de maraude</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>
     <string name="tour_check_feet">A pieds</string>
@@ -145,5 +147,7 @@
     <string name="local_service_disconnected">Déconnecté du GeoService</string>
     <string name="start_tour_title">Enregistrer maraude</string>
     <string name="stop_tour_title">Stopper maraude</string>
+    <string name="loader_title_tour_finish">Arrêt de la maraude</string>
+    <string name="loader_title_tour_search">Recherche de maraudes récentes</string>
 
 </resources>

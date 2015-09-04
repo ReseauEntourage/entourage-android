@@ -16,11 +16,11 @@ import com.octo.android.robospice.UncachedSpiceService;
 import java.io.IOException;
 
 /**
- * Created by NTE on 31/07/15.
+ * Service providing the registration to Google Cloud Messaging
  */
 public class RegisterGCMService extends IntentService {
 
-    private final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences
+    private final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences ?
     private final String GCM_SCOPE = "GCM";
     public static final String SHARED_PREFERENCES_FILE = "ENTOURAGE_GCM_DATA";
     private static final String KEY_APPLICATION_VERSION = "ENTOURAGE_APPLICATION_VERSION";
@@ -66,7 +66,6 @@ public class RegisterGCMService extends IntentService {
 
         if (storedVersion < currentVersion) {
 
-            GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
             String registrationId = null;
             try {
                 registrationId = InstanceID.getInstance(this).getToken(GCM_SENDER_ID, GCM_SCOPE);

@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -88,31 +89,26 @@ public class TourServiceManager {
         return pointsToDraw;
     }
 
+    public void setTourDuration(String duration) {
+        tour.setDuration(duration);
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
 
     public void startTour(String transportMode, String type) {
-        tour = new Tour();
-        tour.setTourVehicleType(transportMode);
-        tour.setTourType(type);
+        tour = new Tour(transportMode, type);
         sendTour();
-        initializeTimerFinishTask();
     }
 
     public void finishTour() {
-        tour.closeTour();
+        addLastTourPoint();
         closeTour();
-        tour = null;
-        cancelFinishTimer();
     }
 
     public boolean isRunning() {
         return tour != null;
-    }
-
-    public void setTourDuration(String duration) {
-        tour.setDuration(duration);
     }
 
     public void addEncounter(Encounter encounter) {
@@ -147,36 +143,54 @@ public class TourServiceManager {
         tourService.sendBroadcast(new Intent(TourService.NOTIFICATION_PAUSE));
     }
 
+    private void addLastTourPoint() {
+        Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+        TourPoint lastPoint = new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude(), new Date());
+        pointsToSend.add(lastPoint);
+        updateTourCoordinates();
+    }
+
     private void sendTour() {
         Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
         tourRequest.tour(tourWrapper, new Callback<Tour.TourWrapper>() {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {
+                initializeTimerFinishTask();
                 tourId = tourWrapper.getTour().getId();
-                tourService.notifyListenersTourCreated(tourId);
-                tourService.notifyListenersToursCountUpdated();
+                tour.setId(tourId);
+                tourService.notifyListenersTourCreated(true, tourId);
+
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.e("Error", error.toString());
+                tour = null;
+                tourService.notifyListenersTourCreated(false, -1);
             }
         });
     }
 
     private void closeTour() {
+        tour.setTourStatus(Tour.TOUR_CLOSED);
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
         tourRequest.closeTour(tourId, tourWrapper, new Callback<Tour.TourWrapper>() {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {
                 Log.d("Success", tourWrapper.toString());
+                tourService.notifyListenersTourClosed(true);
+                tour = null;
+                pointsToSend.clear();
+                pointsToDraw.clear();
+                cancelFinishTimer();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.e("Error", error.toString());
+                tourService.notifyListenersTourClosed(false);
             }
         });
     }

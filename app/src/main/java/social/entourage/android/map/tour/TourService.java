@@ -40,9 +40,10 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.api.model.map.TourPoint;
 
 /**
- * Background service for handling location modification in a tour like in "RunKeeper" app
+ * Background service handling location updates
+ * and tours request
  */
-//TODO : remove the notification when the app is killed from the recent apps list (doesn't work)
+//TODO : remove the service notification when the app is killed from the recent apps list (doesn't work)
 public class TourService extends Service {
 
     // ----------------------------------
@@ -238,7 +239,6 @@ public class TourService extends Service {
     public void beginTreatment(String transportMode, String type) {
         if (!isRunning()) {
             tourServiceManager.startTour(transportMode, type);
-            startNotification();
         }
     }
 
@@ -267,15 +267,6 @@ public class TourService extends Service {
     public void endTreatment() {
         if (isRunning()) {
             tourServiceManager.finishTour();
-            removeNotification();
-            isPaused = false;
-            if (listeners.size() == 0) stopSelf();
-            else {
-                for (TourServiceListener listener : listeners) {
-                    listener.onTourStopped();
-                }
-            }
-            Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -305,9 +296,22 @@ public class TourService extends Service {
         tourServiceManager.addEncounter(encounter);
     }
 
-    public void notifyListenersTourCreated(long id) {
+    public void notifyListenersTourCreated(boolean created, long id) {
+        if (created) {
+            startNotification();
+        }
         for (TourServiceListener listener : listeners) {
-            listener.onTourCreated(id);
+            listener.onTourCreated(created, id);
+        }
+    }
+
+    public void notifyListenersTourClosed(boolean closed) {
+        if (closed) {
+            removeNotification();
+            isPaused = false;
+        }
+        for (TourServiceListener listener : listeners) {
+            listener.onTourClosed(closed);
         }
     }
 
@@ -335,24 +339,17 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersToursCountUpdated() {
-        for (TourServiceListener listener : listeners) {
-            listener.onToursCountUpdated();
-        }
-    }
-
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
 
     public interface TourServiceListener {
-        void onTourCreated(long tourId);
+        void onTourCreated(boolean created, long tourId);
         void onTourUpdated(LatLng newPoint);
         void onTourResumed(List<TourPoint> pointsToDraw, String tourType);
-        void onTourStopped();
         void onLocationUpdated(LatLng location);
         void onRetrieveToursNearby(List<Tour> tours);
         void onToursFound(Map<Long, Tour> tours);
-        void onToursCountUpdated();
+        void onTourClosed(boolean closed);
     }
 }

@@ -33,10 +33,6 @@ public class TourPoint implements Serializable {
         this.passingTime = passingTime;
     }
 
-    public TourPoint() {
-
-    }
-
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------

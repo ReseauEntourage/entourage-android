@@ -30,7 +30,7 @@ public class Tour implements Serializable {
     // ATTRIBUTES
     // ----------------------------------
 
-    @Expose(serialize = false)
+    @Expose(serialize = false, deserialize = true)
     private long id;
 
     @SerializedName("vehicle_type")
@@ -42,13 +42,13 @@ public class Tour implements Serializable {
     @SerializedName("status")
     private String tourStatus = TOUR_ON_GOING;
 
-    @Expose(serialize = false)
+    @Expose(serialize = false, deserialize = false)
     private Date date;
 
-    @Expose(serialize = false)
+    @Expose(serialize = false, deserialize = false)
     private String duration;
 
-    @Expose(serialize = false)
+    @Expose(serialize = false, deserialize = false)
     private float distance;
 
     @Expose(serialize = false, deserialize = true)
@@ -64,18 +64,21 @@ public class Tour implements Serializable {
     private String organizationDescription;
 
     @Expose(serialize = false)
-    private final HashMap<Date, String> steps;
-
-    @Expose(serialize = false)
     private final List<Encounter> encounters;
 
     // ----------------------------------
-    // CONSTRUCTOR
+    // CONSTRUCTORS
     // ----------------------------------
 
     public Tour() {
         this.tourPoints = new ArrayList<>();
-        this.steps = new HashMap<>();
+        this.encounters = new ArrayList<>();
+    }
+
+    public Tour(String tourVehicleType, String tourType) {
+        this.tourVehicleType = tourVehicleType;
+        this.tourType = tourType;
+        this.tourPoints = new ArrayList<>();
         this.encounters = new ArrayList<>();
     }
 
@@ -123,10 +126,6 @@ public class Tour implements Serializable {
         return organizationDescription;
     }
 
-    public HashMap<Date, String> getSteps() {
-        return steps;
-    }
-
     public List<Encounter> getEncounters() {
         return encounters;
     }
@@ -163,13 +162,14 @@ public class Tour implements Serializable {
         this.tourPoints = tourPoints;
     }
 
+    @Override
+    public String toString() {
+        return "tour : " + id + ", vehicule : " + tourVehicleType + ", type : " + tourType + ", status : " + tourStatus + ", points : " + tourPoints.size();
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-
-    public void closeTour() {
-        this.tourStatus = TOUR_CLOSED;
-    }
 
     public void updateDistance(float distance) {
         this.distance += distance;
@@ -177,10 +177,6 @@ public class Tour implements Serializable {
 
     public void addCoordinate(TourPoint location) {
         this.tourPoints.add(location);
-    }
-
-    public void addStep(Date time, String step) {
-        this.steps.put(time, step);
     }
 
     public void addEncounter(Encounter encounter) {
