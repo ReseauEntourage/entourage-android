@@ -1,18 +1,26 @@
 package social.entourage.android.guide;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 
@@ -28,6 +36,12 @@ import social.entourage.android.guide.poi.ReadPoiActivity;
 public class GuideMapEntourageFragment extends Fragment {
 
     // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    public static final int REDRAW_LIMIT = 300;
+
+    // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
@@ -35,15 +49,16 @@ public class GuideMapEntourageFragment extends Fragment {
     GuideMapPresenter presenter;
 
     private SupportMapFragment mapFragment;
+    private Location previousCameraLocation;
     private ClusterManager<Poi> clusterManager;
+    private Map<Long, Poi> poisMap;
 
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guide_map, container, false);
         ButterKnife.inject(this, view);
         return view;
@@ -55,15 +70,29 @@ public class GuideMapEntourageFragment extends Fragment {
 
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+        poisMap = new TreeMap<>();
+        previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
 
         if (mapFragment.getMap() != null) {
             clusterManager = new ClusterManager(getActivity(), mapFragment.getMap());
             clusterManager.setRenderer(new PoiRenderer(getActivity(), mapFragment.getMap(), clusterManager));
-            mapFragment.getMap().setOnCameraChangeListener(clusterManager);
+            clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
             mapFragment.getMap().setOnMarkerClickListener(clusterManager);
             mapFragment.getMap().setMyLocationEnabled(true);
             mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(true);
-            clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
+            mapFragment.getMap().getUiSettings().setMapToolbarEnabled(false);
+            mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                @Override
+                public void onCameraChange(CameraPosition cameraPosition) {
+                    clusterManager.onCameraChange(cameraPosition);
+                    EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
+                    Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
+                    if (newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                        previousCameraLocation = newLocation;
+                        presenter.updatePoisNearby();
+                    }
+                }
+            });
         }
     }
 
@@ -96,14 +125,9 @@ public class GuideMapEntourageFragment extends Fragment {
     public void putPoiOnMap(Collection<Poi> pois) {
         if (getActivity() != null) {
             if (mapFragment.getMap() != null) {
-                clusterManager.addItems(pois);
+                clusterManager.addItems(removeRedundantPois(pois));
+                clusterManager.cluster();
             }
-        }
-    }
-
-    public void clearMap() {
-        if (mapFragment.getMap() != null) {
-            mapFragment.getMap().clear();
         }
     }
 
@@ -125,6 +149,23 @@ public class GuideMapEntourageFragment extends Fragment {
     }
 
     // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+
+    private Collection<Poi> removeRedundantPois(Collection<Poi> pois) {
+        Iterator iterator = pois.iterator();
+        while (iterator.hasNext()) {
+            Poi poi = (Poi) iterator.next();
+            if (!poisMap.containsKey(poi.getId())) {
+                poisMap.put(poi.getId(), poi);
+            } else {
+                iterator.remove();
+            }
+        }
+        return pois;
+    }
+
+    // ----------------------------------
     // INNER CLASS
     // ----------------------------------
 
@@ -140,6 +181,4 @@ public class GuideMapEntourageFragment extends Fragment {
             return false;
         }
     }
-
-
 }

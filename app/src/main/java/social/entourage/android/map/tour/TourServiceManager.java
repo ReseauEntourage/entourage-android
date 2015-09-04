@@ -145,8 +145,10 @@ public class TourServiceManager {
 
     private void addLastTourPoint() {
         Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-        TourPoint lastPoint = new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude(), new Date());
-        pointsToSend.add(lastPoint);
+        if (currentLocation != null) {
+            TourPoint lastPoint = new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude(), new Date());
+            pointsToSend.add(lastPoint);
+        }
         updateTourCoordinates();
     }
 

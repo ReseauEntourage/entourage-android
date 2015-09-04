@@ -62,4 +62,11 @@ public class EntourageLocation {
     public void saveCurrentCameraPosition(CameraPosition newCameraPosition) {
         currentCameraPosition = newCameraPosition;
     }
+
+    public static Location cameraPositionToLocation(String provider, CameraPosition cameraPosition) {
+        Location location = new Location(provider);
+        location.setLatitude(cameraPosition.target.latitude);
+        location.setLongitude(cameraPosition.target.longitude);
+        return location;
+    }
 }

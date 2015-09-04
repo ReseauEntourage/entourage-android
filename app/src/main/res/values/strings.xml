@@ -106,6 +106,7 @@
     <string name="tweet_without_audio">J\'ai rencontré %1$s %2$s %3$s</string>
 
     <!-- Tour -->
+    <string name="activity_tours_title">Maraudes</string>
     <string name="tour_start">Démarrer une maraude</string>
     <string name="tour_creation_fail">Echec de l\'envoi de maraude</string>
     <string name="tour_resume">Reprendre</string>

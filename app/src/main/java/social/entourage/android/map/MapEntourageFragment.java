@@ -139,7 +139,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         currentTourLines = new ArrayList<>();
         drawnToursMap = new TreeMap<>();
         markersMap = new TreeMap<>();
-        previousCameraLocation = cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
+        previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
 
         View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, toReturn);
@@ -176,6 +176,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onStart() {
         super.onStart();
         presenter.start();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() != null) {
+            getActivity().setTitle(R.string.activity_tours_title);
+        }
     }
 
     @Override
@@ -427,13 +435,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // PRIVATE METHODS (lifecycle)
     // ----------------------------------
 
-    private Location cameraPositionToLocation(String provider, CameraPosition cameraPosition) {
-        Location location = new Location(provider);
-        location.setLatitude(cameraPosition.target.latitude);
-        location.setLongitude(cameraPosition.target.longitude);
-        return location;
-    }
-
     private void initializeLocationService() {
         if (getActivity() != null) {
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -452,7 +453,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 public void onCameraChange(CameraPosition cameraPosition) {
                     EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
                     Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-                    Location newLocation = cameraPositionToLocation(null, cameraPosition);
+                    Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
 
                     if (tourService != null && newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
                         previousCameraLocation = newLocation;
