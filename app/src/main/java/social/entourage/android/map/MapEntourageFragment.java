@@ -387,7 +387,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @OnClick(R.id.fragment_map_follow_button)
     void onFollowGeolocation() {
         Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-        centerMap(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+        if (currentLocation != null) {
+            centerMap(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+        }
         isFollowing = true;
     }
 
