@@ -1,5 +1,6 @@
 package social.entourage.android.map.choice;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Canvas;
 import android.os.Build;
@@ -109,7 +110,7 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
         recyclerView.setAdapter(new ChoiceAdapter(this, tours));
         recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            @SuppressWarnings("deprecation")
+            @TargetApi(16)
             public void onGlobalLayout() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
