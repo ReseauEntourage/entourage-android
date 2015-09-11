@@ -114,6 +114,9 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         if (isDelete) {
             Log.v(this.getLogTag(), "no need to delete audio file");
         }
+
+        btnStartStopRecording.setEnabled(false);
+        btnPlay.setEnabled(false);
     }
 
     @Override

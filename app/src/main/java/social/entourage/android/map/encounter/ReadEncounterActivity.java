@@ -84,6 +84,8 @@ public class ReadEncounterActivity extends EntourageActivity {
         FlurryAgent.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
         Bundle args = getIntent().getExtras();
         encounter = (Encounter)args.get(Constants.KEY_ENCOUNTER);
+
+        btnPlay.setEnabled(false);
     }
 
     @Override
