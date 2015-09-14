@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,8 +60,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         ButterKnife.bind(this);
 
         Bundle arguments = getIntent().getExtras();
+
         if (arguments == null || arguments.isEmpty()) {
             throw new IllegalArgumentException("You must provide latitude and longitude");
+        } else {
+            presenter.setTourId(arguments.getLong(Constants.KEY_TOUR_ID));
+            presenter.setLatitude(arguments.getDouble(Constants.KEY_LATITUDE));
+            presenter.setLongitude(arguments.getDouble(Constants.KEY_LONGITUDE));
         }
     }
 
@@ -100,17 +104,8 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     @OnClick(R.id.button_create_encounter)
     public void createEncounter() {
-        Encounter encounter = new Encounter();
-        Bundle arguments = getIntent().getExtras();
-        encounter.setTourId(arguments.getLong(Constants.KEY_TOUR_ID));
-        encounter.setUserName(getAuthenticationController().getUser().getFirstName());
-        encounter.setLatitude(arguments.getDouble(Constants.KEY_LATITUDE));
-        encounter.setLongitude(arguments.getDouble(Constants.KEY_LONGITUDE));
-        encounter.setMessage(messageEditText.getText().toString());
-        encounter.setStreetPersonName(streetPersonNameEditText.getText().toString());
-        encounter.setCreationDate(new Date());
-
-        presenter.createEncounter(encounter);
+        showProgressDialog(R.string.creating_encounter);
+        presenter.createEncounter(messageEditText.getText().toString(), streetPersonNameEditText.getText().toString());
     }
 
     @OnClick(R.id.button_record)
@@ -141,7 +136,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             finish();
         } else {
             message = getString(R.string.create_encounter_failure, errorMessage);
-            Log.e(logTag, getString(R.string.create_encounter_failure) + errorMessage);
+            Log.e(logTag, message);
         }
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
