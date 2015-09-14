@@ -22,8 +22,17 @@ import social.entourage.android.Constants;
 /**
  * Activity showing the detail of a POI
  */
-@SuppressWarnings("WeakerAccess")
 public class ReadPoiActivity extends EntourageActivity {
+
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    public static final String BUNDLE_KEY_POI = "BUNDLE_KEY_POI";
+
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
 
     private Poi poi;
 
@@ -43,6 +52,10 @@ public class ReadPoiActivity extends EntourageActivity {
     @Bind(R.id.button_poi_address)
     Button btnPoiAddress;
 
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +64,8 @@ public class ReadPoiActivity extends EntourageActivity {
         ButterKnife.bind(this);
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);
-        Bundle args = getIntent().getExtras();
-        poi = (Poi) args.get(Constants.KEY_POI);
+        Bundle extras = getIntent().getExtras();
+        poi = (Poi) extras.get(BUNDLE_KEY_POI);
     }
 
     @Override

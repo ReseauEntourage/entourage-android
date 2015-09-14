@@ -26,6 +26,16 @@ import social.entourage.android.Constants;
 @SuppressWarnings("WeakerAccess")
 public class ReadEncounterActivity extends EntourageActivity {
 
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    public static final String BUNDLE_KEY_ENCOUNTER = "BUNDLE_KEY_ENCOUNTER";
+
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+
     private Encounter encounter;
 
     @Inject
@@ -37,6 +47,10 @@ public class ReadEncounterActivity extends EntourageActivity {
     @Bind(R.id.edittext_message)
     EditText messageEditText;
 
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +60,7 @@ public class ReadEncounterActivity extends EntourageActivity {
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
         Bundle args = getIntent().getExtras();
-        encounter = (Encounter)args.get(Constants.KEY_ENCOUNTER);
+        encounter = (Encounter)args.get(BUNDLE_KEY_ENCOUNTER);
     }
 
     @Override
@@ -70,6 +84,10 @@ public class ReadEncounterActivity extends EntourageActivity {
         presenter.displayEncounter();
 
     }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
 
     public void displayEncounter() {
         streetPersonNameEditText.setText(encounter.getStreetPersonName());

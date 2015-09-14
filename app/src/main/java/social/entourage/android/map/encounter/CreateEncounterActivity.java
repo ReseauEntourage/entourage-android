@@ -30,6 +30,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     // CONSTANTS
     // ----------------------------------
 
+    public static final String BUNDLE_KEY_TOUR_ID = "BUNDLE_KEY_ENCOUNTER";
+    public static final String BUNDLE_KEY_ENCOUNTER = "BUNDLE_KEY_ENCOUNTER";
+    public static final String BUNDLE_KEY_LATITUDE = "BUNDLE_KEY_LATITUDE";
+    public static final String BUNDLE_KEY_LONGITUDE = "BUNDLE_KEY_LONGITUDE";
+
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1;
 
     // ----------------------------------
@@ -64,9 +69,9 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         if (arguments == null || arguments.isEmpty()) {
             throw new IllegalArgumentException("You must provide latitude and longitude");
         } else {
-            presenter.setTourId(arguments.getLong(Constants.KEY_TOUR_ID));
-            presenter.setLatitude(arguments.getDouble(Constants.KEY_LATITUDE));
-            presenter.setLongitude(arguments.getDouble(Constants.KEY_LONGITUDE));
+            presenter.setTourId(arguments.getLong(BUNDLE_KEY_TOUR_ID));
+            presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE));
+            presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
         }
     }
 
@@ -130,7 +135,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             message = getString(R.string.create_encounter_success);
             Intent resultIntent = new Intent();
             Bundle arguments = getIntent().getExtras();
-            arguments.putSerializable(Constants.KEY_ENCOUNTER, encounterResponse);
+            arguments.putSerializable(BUNDLE_KEY_ENCOUNTER, encounterResponse);
             resultIntent.putExtras(arguments);
             setResult(Constants.RESULT_CREATE_ENCOUNTER_OK, resultIntent);
             finish();

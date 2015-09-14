@@ -96,7 +96,7 @@ public class MapPresenter {
             fragment.saveCameraPosition();
             Intent intent = new Intent(fragment.getActivity(), ReadEncounterActivity.class);
             Bundle extras = new Bundle();
-            extras.putSerializable(Constants.KEY_ENCOUNTER, encounter);
+            extras.putSerializable(ReadEncounterActivity.BUNDLE_KEY_ENCOUNTER, encounter);
             intent.putExtras(extras);
             fragment.getActivity().startActivity(intent);
         }
@@ -125,7 +125,6 @@ public class MapPresenter {
         @Override
         public boolean onMarkerClick(Marker marker) {
             LatLng markerPosition = marker.getPosition();
-            // TODO : case where an encounter and a tour are in the same location
             if (encounterMarkerHashMap.get(markerPosition) != null){
                 openEncounter(encounterMarkerHashMap.get(markerPosition));
             }

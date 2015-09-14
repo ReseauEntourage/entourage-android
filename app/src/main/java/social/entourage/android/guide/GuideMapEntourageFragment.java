@@ -175,7 +175,7 @@ public class GuideMapEntourageFragment extends Fragment {
             saveCameraPosition();
             Intent intent = new Intent(getActivity(), ReadPoiActivity.class);
             Bundle extras = new Bundle();
-            extras.putSerializable(Constants.KEY_POI, poi);
+            extras.putSerializable(ReadPoiActivity.BUNDLE_KEY_POI, poi);
             intent.putExtras(extras);
             startActivity(intent);
             return false;

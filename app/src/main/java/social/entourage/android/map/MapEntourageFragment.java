@@ -1,9 +1,11 @@
 package social.entourage.android.map;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.PermissionChecker;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,7 +168,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_CREATE_ENCOUNTER) {
             if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK) {
-                Encounter encounter = (Encounter) data.getExtras().getSerializable(Constants.KEY_ENCOUNTER);
+                Encounter encounter = (Encounter) data.getExtras().getSerializable(CreateEncounterActivity.BUNDLE_KEY_ENCOUNTER);
                 addEncounter(encounter);
                 presenter.loadEncounterOnMap(encounter);
             }
@@ -205,6 +208,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         return false;
     }
 
+    private int checkSelfPermission(String permision) {
+        return PermissionChecker.checkSelfPermission(getActivity(), permision);
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -212,8 +219,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onNotificationAction(String action) {
         if (ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
             resumeTour();
-        }
-        else if (ConfirmationActivity.KEY_END_TOUR.equals(action)) {
+        } else if (ConfirmationActivity.KEY_END_TOUR.equals(action)) {
             stopTour();
         }
     }
@@ -225,7 +231,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void putEncounterOnMap(Encounter encounter,
-                                   MapPresenter.OnEntourageMarkerClickListener onClickListener) {
+                                  MapPresenter.OnEntourageMarkerClickListener onClickListener) {
         double encounterLatitude = encounter.getLatitude();
         double encounterLongitude = encounter.getLongitude();
         LatLng encounterPosition = new LatLng(encounterLatitude, encounterLongitude);
@@ -331,7 +337,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             loaderSearchTours = null;
         }
         if (getActivity() != null) {
-            if (tours.isEmpty()){
+            if (tours.isEmpty()) {
                 Toast.makeText(getActivity(), tourService.getString(R.string.tour_info_text_nothing_found), Toast.LENGTH_SHORT).show();
             } else {
                 if (tours.size() > 1) {
@@ -425,9 +431,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
             saveCameraPosition();
             Bundle args = new Bundle();
-            args.putLong(Constants.KEY_TOUR_ID, currentTourId);
-            args.putDouble(Constants.KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
-            args.putDouble(Constants.KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+            args.putLong(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourId);
+            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
+            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
             intent.putExtras(args);
             startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
         }
@@ -440,6 +446,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void initializeLocationService() {
         if (getActivity() != null) {
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
         }
     }
