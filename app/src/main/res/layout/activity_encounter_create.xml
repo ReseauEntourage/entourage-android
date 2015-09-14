@@ -34,45 +34,14 @@
             android:background="@drawable/custom_edit_text"
             android:hint="@string/encounter_hint_notes"/>
 
-        <LinearLayout
-            android:id="@+id/layout_player"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/button_record"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edittext_message">
-
-            <ImageButton
-                android:id="@+id/button_record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_popup"
-                android:src="@drawable/ic_action_record_sound"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/textview_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/encounter_record_timer"
-                android:layout_gravity="center_vertical"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <ImageButton
-                android:id="@+id/button_play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_popup"
-                android:src="@drawable/ic_action_play_sound"/>
-
-        </LinearLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/edittext_message"
+            android:background="@drawable/custom_popup"
+            android:src="@drawable/ic_action_record_sound"/>
 
         <Button
             android:id="@+id/button_create_encounter"
@@ -81,7 +50,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/encouter_add"
             android:minWidth="50dp"
-            android:layout_below="@id/layout_player"
+            android:layout_below="@id/button_record"
             android:background="@drawable/custom_button_yellow"
             android:layout_centerHorizontal="true" />
 

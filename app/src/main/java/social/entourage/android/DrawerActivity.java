@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.api.model.User;
@@ -39,22 +39,22 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     // ATTRIBUTES
     // ----------------------------------
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @InjectView(R.id.drawer_layout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    @InjectView(R.id.navigation_view)
+    @Bind(R.id.navigation_view)
     NavigationView navigationView;
 
-    @InjectView(R.id.content_view)
+    @Bind(R.id.content_view)
     View contentView;
 
-    @InjectView(R.id.drawer_header_user_name)
+    @Bind(R.id.drawer_header_user_name)
     TextView userName;
 
-    @InjectView(R.id.drawer_header_user_photo)
+    @Bind(R.id.drawer_header_user_photo)
     ImageView userPhoto;
 
     private Fragment mainFragment;
@@ -67,7 +67,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         mainFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         configureToolbar();
         configureNavigationItem();

@@ -1,39 +1,37 @@
 package social.entourage.android.map.encounter;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.octo.android.robospice.SpiceManager;
-import com.octo.android.robospice.UncachedSpiceService;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.Constants;
-import social.entourage.android.authentication.login.LoginActivity;
 
-@SuppressWarnings("WeakerAccess")
 public class CreateEncounterActivity extends EntourageSecuredActivity {
+
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    private static final int VOICE_RECOGNITION_REQUEST_CODE = 1;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -42,48 +40,14 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @Inject
     CreateEncounterPresenter presenter;
 
-    @InjectView(R.id.edittext_message)
-    EditText edtMessage;
+    @Bind(R.id.edittext_message)
+    EditText messageEditText;
 
-    @InjectView(R.id.edittext_street_person_name)
-    EditText edtStreetPersonName;
+    @Bind(R.id.edittext_street_person_name)
+    EditText streetPersonNameEditText;
 
-    @InjectView(R.id.button_record)
-    ImageButton btnStartStopRecording;
-
-    @InjectView(R.id.button_play)
-    ImageButton btnPlay;
-
-    private final SpiceManager spiceManager = new SpiceManager(UncachedSpiceService.class);
-
-    private MediaRecorder mediaRecorder;
-
-    private boolean isRecording;
-
-    private boolean hasAMessageBeenRecorded;
-
-    private MediaPlayer mediaPlayer;
-
-    private boolean isPlaying;
-
-    private String audioFileName;
-
-    private Bundle arguments;
-
-    private final Handler durationHandler = new Handler();
-
-    private long startRecordTime;
-
-    long totalRecordTime;
-
-    private final Runnable updateDurationThread = new Runnable() {
-
-        @Override
-        public void run() {
-            totalRecordTime = System.currentTimeMillis() - startRecordTime;
-            durationHandler.postDelayed(this, 0);
-        }
-    };
+    @Bind(R.id.button_record)
+    ImageButton recordButton;
 
     // ----------------------------------
     // LIFECYCLE
@@ -94,29 +58,12 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_encounter_create);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
-        arguments = getIntent().getExtras();
+        Bundle arguments = getIntent().getExtras();
         if (arguments == null || arguments.isEmpty()) {
             throw new IllegalArgumentException("You must provide latitude and longitude");
         }
-
-        if (!getAuthenticationController().isAuthenticated()) {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-
-        btnPlay.setEnabled(false);
-        isPlaying = false;
-        isRecording = false;
-        hasAMessageBeenRecorded = false;
-        audioFileName = getFilesDir() + "/encounter.aac";
-        boolean isDelete = new File(audioFileName).delete();
-        if (isDelete) {
-            Log.v(this.getLogTag(), "no need to delete audio file");
-        }
-
-        btnStartStopRecording.setEnabled(false);
-        btnPlay.setEnabled(false);
     }
 
     @Override
@@ -129,145 +76,55 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     }
 
     @Override
-    protected void onStart() {
-        spiceManager.start(this);
-        super.onStart();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mediaRecorder != null) {
-            mediaRecorder.release();
-            mediaRecorder = null;
-        }
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        spiceManager.shouldStop();
-        super.onStop();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.drawer, menu);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (!textMatchList.isEmpty()) {
+                    messageEditText.setText(textMatchList.get(0));
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
 
-    public SpiceManager getSpiceManager() {
-        return spiceManager;
-    }
-
     @OnClick(R.id.button_create_encounter)
     public void createEncounter() {
         Encounter encounter = new Encounter();
+        Bundle arguments = getIntent().getExtras();
         encounter.setTourId(arguments.getLong(Constants.KEY_TOUR_ID));
         encounter.setUserName(getAuthenticationController().getUser().getFirstName());
         encounter.setLatitude(arguments.getDouble(Constants.KEY_LATITUDE));
         encounter.setLongitude(arguments.getDouble(Constants.KEY_LONGITUDE));
-        encounter.setMessage(edtMessage.getText().toString());
-        encounter.setStreetPersonName(edtStreetPersonName.getText().toString());
+        encounter.setMessage(messageEditText.getText().toString());
+        encounter.setStreetPersonName(streetPersonNameEditText.getText().toString());
         encounter.setCreationDate(new Date());
 
-        if (hasAMessageBeenRecorded) {
-            presenter.createTrackOnSoundCloud(encounter, audioFileName);
-        } else {
-            presenter.createEncounter(encounter);
-        }
+        presenter.createEncounter(encounter);
     }
 
     @OnClick(R.id.button_record)
-    public void onClickOnStartStopRecording() {
-        if (isRecording) {
-            stopRecording();
-            btnStartStopRecording.setImageResource(R.drawable.ic_action_stop_sound);
-            btnPlay.setEnabled(true);
-        } else {
-            startRecording();
-            btnStartStopRecording.setImageResource(R.drawable.ic_action_stop_sound);
-            btnPlay.setEnabled(false);
-        }
-        isRecording = !isRecording;
-    }
-
-    @OnClick(R.id.button_play)
-    public void onClickOnPlay() {
-        if (isPlaying) {
-            stopPlaying();
-            btnPlay.setImageResource(R.drawable.ic_action_play_sound);
-            btnStartStopRecording.setEnabled(true);
-        } else {
-            startPlaying();
-            btnPlay.setImageResource(R.drawable.ic_action_stop_sound);
-            btnStartStopRecording.setEnabled(false);
-        }
-        isPlaying = !isPlaying;
-    }
-
-    private void startPlaying() {
-        mediaPlayer = new MediaPlayer();
+    public void onRecord() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message));
         try {
-            mediaPlayer.setDataSource(audioFileName);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    btnPlay.setImageResource(R.drawable.ic_action_play_sound);
-                    btnStartStopRecording.setEnabled(true);
-                    isPlaying = false;
-                }
-            });
-
-        } catch (IOException e) {
-            Log.e(this.getLogTag(), "MediaPlayer.prepare() failed: " + e.getMessage(), e);
-            throw new IllegalStateException("MediaPlayer.prepare() failed: " + e.getMessage(), e);
+            startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), getString(R.string.encounter_voice_message_not_supported), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void stopPlaying() {
-        mediaPlayer.release();
-        mediaPlayer = null;
-    }
-
-    private void startRecording() {
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFile(audioFileName);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
-        }
-
-        try {
-            mediaRecorder.prepare();
-        } catch (IOException e) {
-            Log.e(this.getLogTag(), "MediaRecorder.prepare() failed: " + e.getMessage(), e);
-            throw new IllegalStateException("MediaRecorder.prepare() failed: " + e.getMessage(), e);
-        }
-
-        mediaRecorder.start();
-        startRecordTime = System.currentTimeMillis();
-        durationHandler.postDelayed(updateDurationThread, 0);
-    }
-
-    private void stopRecording() {
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        mediaRecorder = null;
-        hasAMessageBeenRecorded = true;
-        durationHandler.removeCallbacks(updateDurationThread);
     }
 
     public void onCreateEncounterFinished(String errorMessage, Encounter encounterResponse) {
@@ -277,6 +134,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             getAuthenticationController().incrementUserEncountersCount();
             message = getString(R.string.create_encounter_success);
             Intent resultIntent = new Intent();
+            Bundle arguments = getIntent().getExtras();
             arguments.putSerializable(Constants.KEY_ENCOUNTER, encounterResponse);
             resultIntent.putExtras(arguments);
             setResult(Constants.RESULT_CREATE_ENCOUNTER_OK, resultIntent);

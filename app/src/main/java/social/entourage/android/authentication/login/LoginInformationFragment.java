@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -40,19 +40,19 @@ public class LoginInformationFragment extends DialogFragment {
     @Inject
     LoginInformationPresenter presenter;
 
-    @InjectView(R.id.login_button_close_info)
+    @Bind(R.id.login_button_close_info)
     ImageButton closeButton;
 
-    @InjectView(R.id.login_button_facebook)
+    @Bind(R.id.login_button_facebook)
     ImageButton facebookButton;
 
-    @InjectView(R.id.login_button_twitter)
+    @Bind(R.id.login_button_twitter)
     ImageButton twitterButton;
 
-    @InjectView(R.id.login_edit_email_ask_more)
+    @Bind(R.id.login_edit_email_ask_more)
     EditText emailEditText;
 
-    @InjectView(R.id.login_button_newsletter)
+    @Bind(R.id.login_button_newsletter)
     Button newsletterButton;
 
     // ----------------------------------
@@ -67,7 +67,7 @@ public class LoginInformationFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View toReturn = inflater.inflate(R.layout.fragment_login_information, container, false);
-        ButterKnife.inject(this, toReturn);
+        ButterKnife.bind(this, toReturn);
         return toReturn;
     }
 

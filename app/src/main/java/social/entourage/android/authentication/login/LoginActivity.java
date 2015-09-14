@@ -17,8 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.DrawerActivity;
@@ -54,73 +54,73 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Signup View
      ************************/
 
-    @InjectView(R.id.login_include_signup)
+    @Bind(R.id.login_include_signup)
     View loginSignup;
 
-    @InjectView(R.id.login_text_more)
+    @Bind(R.id.login_text_more)
     TextView moreText;
 
-    @InjectView(R.id.login_edit_phone)
+    @Bind(R.id.login_edit_phone)
     EditText phoneEditText;
 
-    @InjectView(R.id.login_edit_code)
+    @Bind(R.id.login_edit_code)
     EditText passwordEditText;
 
-    @InjectView(R.id.login_button_signup)
+    @Bind(R.id.login_button_signup)
     Button loginButton;
 
-    @InjectView(R.id.login_text_lost_code)
+    @Bind(R.id.login_text_lost_code)
     TextView lostCodeText;
 
     /************************
      * Lost Code View
      ************************/
 
-    @InjectView(R.id.login_include_lost_code)
+    @Bind(R.id.login_include_lost_code)
     View loginLostCode;
 
-    @InjectView(R.id.login_edit_phone_lost_code)
+    @Bind(R.id.login_edit_phone_lost_code)
     EditText lostCodePhone;
 
-    @InjectView(R.id.login_button_ask_code)
+    @Bind(R.id.login_button_ask_code)
     Button receiveCodeButton;
 
-    @InjectView(R.id.login_block_code_form)
+    @Bind(R.id.login_block_code_form)
     View enterCodeBlock;
 
-    @InjectView(R.id.login_block_lost_code_confirmation)
+    @Bind(R.id.login_block_lost_code_confirmation)
     View confirmationBlock;
 
-    @InjectView(R.id.login_text_confirmation)
+    @Bind(R.id.login_text_confirmation)
     TextView codeConfirmation;
 
-    @InjectView(R.id.login_button_home)
+    @Bind(R.id.login_button_home)
     Button homeButton;
 
     /************************
      * Welcome View
      ************************/
 
-    @InjectView(R.id.login_include_welcome)
+    @Bind(R.id.login_include_welcome)
     View loginWelcome;
 
-    @InjectView(R.id.login_edit_email_profile)
+    @Bind(R.id.login_edit_email_profile)
     EditText profileEmail;
 
-    @InjectView(R.id.login_user_photo)
+    @Bind(R.id.login_user_photo)
     ImageView profilePhoto;
 
-    @InjectView(R.id.login_button_go)
+    @Bind(R.id.login_button_go)
     Button goButton;
 
     /************************
      * Tutorial View
      ************************/
 
-    @InjectView(R.id.login_include_tutorial)
+    @Bind(R.id.login_include_tutorial)
     View loginTutorial;
 
-    @InjectView(R.id.login_button_finish_tutorial)
+    @Bind(R.id.login_button_finish_tutorial)
     Button finishTutorial;
 
     // ----------------------------------
@@ -132,7 +132,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         loginLostCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);

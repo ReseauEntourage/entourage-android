@@ -52,10 +52,6 @@ public abstract class EntourageActivity extends AppCompatActivity {
         }
     }
 
-    protected String getLogTag() {
-        return logTag;
-    }
-
     protected void setupComponent(EntourageComponent entourageComponent) {
 
     }

@@ -42,8 +42,8 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
@@ -97,28 +97,28 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private Map<Long, Polyline> drawnToursMap;
     private Map<Long, Marker> markersMap;
 
-    @InjectView(R.id.fragment_map_pin)
+    @Bind(R.id.fragment_map_pin)
     View mapPin;
 
-    @InjectView(R.id.fragment_map_follow_button)
+    @Bind(R.id.fragment_map_follow_button)
     View centerButton;
 
-    @InjectView(R.id.button_start_tour_launcher)
+    @Bind(R.id.button_start_tour_launcher)
     Button buttonStartLauncher;
 
-    @InjectView(R.id.layout_map_launcher)
+    @Bind(R.id.layout_map_launcher)
     View mapLauncherLayout;
 
-    @InjectView(R.id.launcher_tour_go)
+    @Bind(R.id.launcher_tour_go)
     Button buttonLaunchTour;
 
-    @InjectView(R.id.launcher_tour_transport_mode)
+    @Bind(R.id.launcher_tour_transport_mode)
     RadioGroup radioGroupTransportMode;
 
-    @InjectView(R.id.launcher_tour_type)
+    @Bind(R.id.launcher_tour_type)
     RadioGroup radioGroupType;
 
-    @InjectView(R.id.layout_map_tour)
+    @Bind(R.id.layout_map_tour)
     View layoutMapTour;
 
     // ----------------------------------
@@ -142,7 +142,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
 
         View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
-        ButterKnife.inject(this, toReturn);
+        ButterKnife.bind(this, toReturn);
         return toReturn;
     }
 

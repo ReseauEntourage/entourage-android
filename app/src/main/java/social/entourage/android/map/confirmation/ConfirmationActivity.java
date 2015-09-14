@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageComponent;
@@ -36,19 +36,19 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
     @Inject
     ConfirmationPresenter presenter;
 
-    @InjectView(R.id.confirmation_encounters)
+    @Bind(R.id.confirmation_encounters)
     TextView encountersView;
 
-    @InjectView(R.id.confirmation_distance)
+    @Bind(R.id.confirmation_distance)
     TextView distanceView;
 
-    @InjectView(R.id.confirmation_duration)
+    @Bind(R.id.confirmation_duration)
     TextView durationView;
 
-    @InjectView(R.id.confirmation_resume_button)
+    @Bind(R.id.confirmation_resume_button)
     Button resumeButton;
 
-    @InjectView(R.id.confirmation_end_button)
+    @Bind(R.id.confirmation_end_button)
     Button endButton;
 
     private Tour tour;
@@ -63,7 +63,7 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
         setFinishOnTouchOutside(false);
 
         setContentView(R.layout.layout_map_confirmation);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         if (!getAuthenticationController().isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));

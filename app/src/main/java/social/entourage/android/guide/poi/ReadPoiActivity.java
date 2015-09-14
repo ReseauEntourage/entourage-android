@@ -11,8 +11,8 @@ import com.flurry.android.FlurryAgent;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -30,17 +30,17 @@ public class ReadPoiActivity extends EntourageActivity {
     @Inject
     ReadPoiPresenter presenter;
 
-    @InjectView(R.id.textview_poi_name)
+    @Bind(R.id.textview_poi_name)
     TextView txtPoiName;
-    @InjectView(R.id.textview_poi_description)
+    @Bind(R.id.textview_poi_description)
     TextView txtPoiDesc;
-    @InjectView(R.id.button_poi_phone)
+    @Bind(R.id.button_poi_phone)
     Button btnPoiPhone;
-    @InjectView(R.id.button_poi_mail)
+    @Bind(R.id.button_poi_mail)
     Button btnPoiMail;
-    @InjectView(R.id.button_poi_web)
+    @Bind(R.id.button_poi_web)
     Button btnPoiWeb;
-    @InjectView(R.id.button_poi_address)
+    @Bind(R.id.button_poi_address)
     Button btnPoiAddress;
 
     @Override
@@ -48,7 +48,7 @@ public class ReadPoiActivity extends EntourageActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_poi_read);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);
         Bundle args = getIntent().getExtras();

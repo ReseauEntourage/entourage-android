@@ -5,9 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,8 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.DrawerActivity;
@@ -39,40 +37,40 @@ public class UserActivity extends EntourageSecuredActivity {
     @Inject
     UserPresenter presenter;
 
-    @InjectView(R.id.user_photo)
+    @Bind(R.id.user_photo)
     ImageView userPhoto;
 
-    @InjectView(R.id.user_name)
+    @Bind(R.id.user_name)
     TextView userName;
 
-    @InjectView(R.id.user_email)
+    @Bind(R.id.user_email)
     TextView userEmail;
 
-    @InjectView(R.id.user_tours_count)
+    @Bind(R.id.user_tours_count)
     TextView userTourCount;
 
-    @InjectView(R.id.user_encounters_count)
+    @Bind(R.id.user_encounters_count)
     TextView userEncountersCount;
 
-    @InjectView(R.id.organization_photo)
+    @Bind(R.id.organization_photo)
     ImageView organizationPhoto;
 
-    @InjectView(R.id.user_organization)
+    @Bind(R.id.user_organization)
     TextView userOrganization;
 
-    @InjectView(R.id.user_edit_email)
+    @Bind(R.id.user_edit_email)
     EditText userEditEmail;
 
-    @InjectView(R.id.user_edit_code)
+    @Bind(R.id.user_edit_code)
     EditText userEditCode;
 
-    @InjectView(R.id.user_edit_confirmation)
+    @Bind(R.id.user_edit_confirmation)
     EditText userEditConfirmation;
 
-    @InjectView(R.id.user_button_confirm_changes)
+    @Bind(R.id.user_button_confirm_changes)
     Button buttonConfirmChanges;
 
-    @InjectView(R.id.user_button_unsubscribe)
+    @Bind(R.id.user_button_unsubscribe)
     Button buttonUnsubscribe;
 
     // ----------------------------------
@@ -85,7 +83,7 @@ public class UserActivity extends EntourageSecuredActivity {
 
         setContentView(R.layout.activity_user);
         configureToolbar();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         if (!getAuthenticationController().isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));

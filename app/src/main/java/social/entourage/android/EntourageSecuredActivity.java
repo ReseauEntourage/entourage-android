@@ -11,7 +11,6 @@ import social.entourage.android.authentication.login.LoginActivity;
 /**
  * Base Activity that only runs if the user is currently logged
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class EntourageSecuredActivity extends EntourageActivity {
 
     @Inject

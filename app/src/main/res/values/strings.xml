@@ -89,14 +89,14 @@
     <string name="create_encounter_success">Rencontre créée</string>
     <string name="map_add_encounter">Nouvelle rencontre</string>
     <string name="soundcloud_track_title">{0} a rencontré {1}, le {2} à {3}</string>
-    <string name="encounter_leave_voice_message">Enregistrez un message vocal</string>
     <string name="encouter_btn_record">Record</string>
-    <string name="encouter_btn_play">Play</string>
     <string name="encounter_leave_text_message">ou rédigez un message</string>
     <string name="encounter_share_on_twitter">Partager sur Twitter</string>
     <string name="creating_encounter">Création de la rencontre …</string>
     <string name="creating_encounter_audio">Création du message audio …</string>
     <string name="encounter_record_timer">00:00</string>
+    <string name="encounter_leave_voice_message">Enregistrez un message vocal</string>
+    <string name="encounter_voice_message_not_supported">La reconnaissance vocale n\'est pas supportée sur votre téléphone.</string>
 
     <!-- POI -->
     <string name="activity_read_poi_title">Point d\'intérêt</string>

@@ -2,7 +2,6 @@ package social.entourage.android.message;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
@@ -10,16 +9,14 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.authentication.login.LoginActivity;
-import social.entourage.android.map.MapEntourageFragment;
-import social.entourage.android.map.tour.TourService;
 import social.entourage.android.message.push.PushNotificationService;
 
 public class MessageActivity extends EntourageSecuredActivity {
@@ -27,16 +24,16 @@ public class MessageActivity extends EntourageSecuredActivity {
     @Inject
     MessagePresenter presenter;
 
-    @InjectView(R.id.message_author)
+    @Bind(R.id.message_author)
     TextView messageAuthor;
 
-    @InjectView(R.id.message_object)
+    @Bind(R.id.message_object)
     TextView messageObject;
 
-    @InjectView(R.id.message_content)
+    @Bind(R.id.message_content)
     TextView messageContent;
 
-    @InjectView(R.id.message_close_button)
+    @Bind(R.id.message_close_button)
     Button closeButton;
 
     @Override
@@ -44,7 +41,7 @@ public class MessageActivity extends EntourageSecuredActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_message);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         if (!getAuthenticationController().isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));

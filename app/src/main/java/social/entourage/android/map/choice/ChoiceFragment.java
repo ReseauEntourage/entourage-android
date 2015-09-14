@@ -20,8 +20,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -36,7 +36,7 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
     @Inject
     ChoicePresenter presenter;
 
-    @InjectView(R.id.choice_recycler_view)
+    @Bind(R.id.choice_recycler_view)
     RecyclerView recyclerView;
 
     private List<Tour> tours;
@@ -58,7 +58,7 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View toReturn = inflater.inflate(R.layout.fragment_choice, container, false);
-        ButterKnife.inject(this, toReturn);
+        ButterKnife.bind(this, toReturn);
 
         tours = ((Tour.Tours) getArguments().getSerializable(Tour.KEY_TOURS)).getTours();
         Collections.sort(tours, new Tour.TourComparatorNewToOld());

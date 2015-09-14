@@ -18,8 +18,8 @@ import java.text.SimpleDateFormat;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -37,28 +37,28 @@ public class TourInformationFragment extends DialogFragment {
     @Inject
     TourInformationPresenter presenter;
 
-    @InjectView(R.id.tour_info_icon)
+    @Bind(R.id.tour_info_icon)
     ImageView tourIcon;
 
-    @InjectView(R.id.tour_info_date)
+    @Bind(R.id.tour_info_date)
     TextView tourDate;
 
-    @InjectView(R.id.tour_info_organization)
+    @Bind(R.id.tour_info_organization)
     TextView tourOrganization;
 
-    @InjectView(R.id.tour_info_transport)
+    @Bind(R.id.tour_info_transport)
     TextView tourTransport;
 
-    @InjectView(R.id.tour_info_type)
+    @Bind(R.id.tour_info_type)
     TextView tourType;
 
-    @InjectView(R.id.tour_info_status_ongoing)
+    @Bind(R.id.tour_info_status_ongoing)
     TextView tourStatusOnGoing;
 
-    @InjectView(R.id.tour_info_status_closed)
+    @Bind(R.id.tour_info_status_closed)
     TextView tourStatusClosed;
 
-    @InjectView(R.id.tour_info_button_close)
+    @Bind(R.id.tour_info_button_close)
     Button closeButton;
 
     Tour tour;
@@ -80,7 +80,7 @@ public class TourInformationFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View toReturn = inflater.inflate(R.layout.fragment_tour_information, container, false);
-        ButterKnife.inject(this, toReturn);
+        ButterKnife.bind(this, toReturn);
         initializeView();
         return toReturn;
     }

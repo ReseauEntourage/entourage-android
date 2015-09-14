@@ -36,39 +36,6 @@
         android:textCursorDrawable="@drawable/custom_cursor_yellow"
         android:background="@drawable/custom_edit_text"/>
 
-        <LinearLayout
-            android:id="@+id/layout_player"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edittext_message">
-
-            <ImageButton
-                android:id="@+id/button_play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_popup"
-                android:src="@drawable/ic_action_play_sound"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/textview_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/encounter_record_timer"
-                android:layout_gravity="center_vertical"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
     </RelativeLayout>
 
 </LinearLayout>
