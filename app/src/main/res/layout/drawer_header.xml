@@ -2,49 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="172dp"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:layout_marginTop="20dp"
     android:paddingTop="25dp"
     android:background="@drawable/entourage_header">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="end"
-        android:weightSum="2">
+    <ImageView
+        android:id="@+id/drawer_header_user_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:paddingTop="15dp"
+        android:clickable="true"
+        android:src="@drawable/bg_user_image_button"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="top">
+    <TextView
+        android:id="@+id/drawer_header_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="25sp"
+        android:textColor="@android:color/black"/>
 
-            <ImageView
-                android:id="@+id/drawer_header_user_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:clickable="true"
-                android:src="@drawable/bg_user_image_button"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="bottom">
-
-            <TextView
-                android:id="@+id/drawer_header_user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:textSize="25sp"
-                android:textColor="@android:color/black"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </LinearLayout>

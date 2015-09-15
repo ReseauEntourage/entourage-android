@@ -2,8 +2,8 @@
 <resources>
 
     <!-- Application -->
-    <color name="primary">#3D3D3D</color>
-    <color name="primary_dark">#191919</color>
+    <color name="primary">#B5B5B5</color>
+    <color name="primary_dark">#717171</color>
     <color name="primary_light">#FAFAFA</color>
     <color name="accent">#EF662F</color>
 

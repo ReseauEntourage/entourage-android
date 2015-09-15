@@ -99,14 +99,6 @@
             android:launchMode="singleInstance">
         </activity>
 
-        <!-- Services -->
-        <service
-            android:name="com.octo.appaloosasdk.async.AppaloosaSpiceService"
-            android:exported="false" />
-
-        <service
-            android:name="com.octo.android.robospice.UncachedSpiceService"
-            android:exported="false" />
 
         <service
             android:name=".map.tour.TourService"
