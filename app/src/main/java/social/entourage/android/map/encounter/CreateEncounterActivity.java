@@ -22,6 +22,7 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.Constants;
+import social.entourage.android.authentication.login.LoginActivity;
 
 public class CreateEncounterActivity extends EntourageSecuredActivity {
 
@@ -69,6 +70,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE));
             presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
