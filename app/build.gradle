@@ -74,8 +74,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
-            // buildConfigField 'boolean', 'APPALOOSA_AUTO_UPDATE', 'true'
-            // buildConfigField 'String', 'ENTOURAGE_URL', '"http://entourage-back.herokuapp.com"'
+            buildConfigField 'String', 'ENTOURAGE_URL', '"http://entourage-back.herokuapp.com"'
+        }
+        preprod {
+            signingConfig signingConfigs.debug
+            applicationIdSuffix '.preprod'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
         }
         debug {
             signingConfig signingConfigs.debug
