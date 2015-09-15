@@ -23,8 +23,14 @@ public class EntourageLocation {
     }
 
     private EntourageLocation() {
-        lastCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR,0, 0);
-        currentCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR,0, 0);
+        lastCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR, 0, 0);
+        currentCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR, 0, 0);
+    }
+
+    public void setInitialLocation(Location initialLocation) {
+        saveCurrentLocation(initialLocation);
+        currentCameraPosition = new CameraPosition(new LatLng(initialLocation.getLatitude(), initialLocation.getLongitude()), INITIAL_CAMERA_FACTOR, 0, 0);
+        lastCameraPosition = currentCameraPosition;
     }
 
     public Location getLocation() {

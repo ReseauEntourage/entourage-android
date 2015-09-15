@@ -90,7 +90,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private ServiceConnection connection = new ServiceConnection();
     private ProgressDialog loaderStop;
     private ProgressDialog loaderSearchTours;
-    private boolean isBound;// = true;
+    private boolean isBound;
     private boolean isFollowing = true;
 
     private long currentTourId;
@@ -450,6 +450,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastKnownLocation == null) {
+                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+            if (lastKnownLocation != null) {
+                EntourageLocation.getInstance().setInitialLocation(lastKnownLocation);
+            }
         }
     }
 
