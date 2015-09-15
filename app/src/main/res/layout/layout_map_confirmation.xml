@@ -7,7 +7,7 @@
     android:paddingBottom="20dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="@drawable/custom_popup"
+    android:background="@drawable/bg_popup"
     android:gravity="center">
 
     <TextView
@@ -57,20 +57,20 @@
         android:orientation="vertical">
 
         <Button
+            style="@style/AccentButton"
             android:id="@+id/confirmation_resume_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/tour_resume"
-            android:layout_margin="5dp"
-            android:background="@drawable/custom_button_yellow"/>
+            android:layout_margin="5dp"/>
 
         <Button
+            style="@style/AccentButton"
             android:id="@+id/confirmation_end_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@string/tour_finish"
-            android:background="@drawable/custom_button_yellow"/>
+            android:text="@string/tour_finish"/>
 
     </LinearLayout>
 

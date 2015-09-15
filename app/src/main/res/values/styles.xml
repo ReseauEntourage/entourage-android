@@ -12,8 +12,8 @@
         <item name="android:textSelectHandle">@drawable/text_select_handle_middle_login</item>
         <item name="android:textSelectHandleLeft">@drawable/text_select_handle_left_login</item>
         <item name="android:textSelectHandleRight">@drawable/text_select_handle_right_login</item>
-        <item name="android:textCursorDrawable">@drawable/custom_cursor_white</item>
-        <item name="android:background">@drawable/customedittext_edit_text_holo_light</item>
+        <item name="android:textCursorDrawable">@drawable/bg_cursor_white</item>
+        <item name="android:background">@drawable/bg_edit_text_holo_light</item>
         <item name="android:textColor">@color/login_edittext</item>
     </style>
 
@@ -48,5 +48,17 @@
         <item name="android:windowExitAnimation">@anim/abc_fade_out</item>
     </style>
 
+    <style name="AccentButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_accent</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="GreyButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_grey</item>
+    </style>
+
+    <style name="WhiteButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_white</item>
+    </style>
 
 </resources>

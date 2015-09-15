@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:background="@drawable/custom_edit_text"/>
+                android:background="@drawable/bg_edit_text"/>
 
             <TextView
                 android:id="@+id/textview_poi_description"
@@ -32,39 +32,39 @@
                 android:textSize="15sp"/>
 
             <Button
+                style="@style/AccentButton"
                 android:id="@+id/button_poi_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="phone"
                 android:visibility="gone"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/custom_button_yellow"/>
+                android:layout_marginTop="10dp" />
 
             <Button
+                style="@style/AccentButton"
                 android:id="@+id/button_poi_mail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="email"
                 android:visibility="gone"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/custom_button_yellow"/>
+                android:layout_marginTop="10dp" />
 
             <Button
+                style="@style/AccentButton"
                 android:id="@+id/button_poi_web"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:visibility="gone"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/custom_button_yellow"/>
+                android:layout_marginTop="10dp" />
 
             <Button
+                style="@style/AccentButton"
                 android:id="@+id/button_poi_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/custom_button_yellow"/>
+                android:layout_marginTop="10dp" />
 
         </LinearLayout>
     </LinearLayout>

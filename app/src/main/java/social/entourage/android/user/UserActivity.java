@@ -27,7 +27,6 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.login.LoginActivity;
 
-@SuppressWarnings("WeakerAccess")
 public class UserActivity extends EntourageSecuredActivity {
 
     // ----------------------------------
@@ -98,7 +97,7 @@ public class UserActivity extends EntourageSecuredActivity {
                 .transform(new CropCircleTransformation())
                 .into(userPhoto);
 
-        Picasso.with(this).load(R.drawable.ic_croix_rouge)
+        Picasso.with(this).load(R.drawable.ic_organisation_notfound)
                 .transform(new CropCircleTransformation())
                 .into(organizationPhoto);
 
@@ -144,8 +143,10 @@ public class UserActivity extends EntourageSecuredActivity {
     private void configureToolbar() {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         final ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     // ----------------------------------

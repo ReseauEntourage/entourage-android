@@ -88,11 +88,11 @@
     </LinearLayout>
 
     <Button
+        style="@style/AccentButton"
         android:id="@+id/tour_info_button_close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/tour_info_button_close"
-        android:background="@drawable/custom_button_yellow"/>
+        android:text="@string/tour_info_button_close" />
 
 </LinearLayout>

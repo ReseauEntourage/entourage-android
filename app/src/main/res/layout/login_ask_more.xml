@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src="@drawable/custom_facebook_button"
+            android:src="@drawable/bg_facebook_button"
             android:background="@color/login_view"/>
 
         <ImageButton
@@ -64,7 +64,7 @@
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src="@drawable/custom_twitter_button"
+            android:src="@drawable/bg_twitter_button"
             android:background="@color/login_view"/>
 
     </LinearLayout>

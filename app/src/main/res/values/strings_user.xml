@@ -12,5 +12,6 @@
     <string name="user_button_unsubscribe">Me désinscrire</string>
     <string name="user_text_update_ok">Profil mis à jour</string>
     <string name="user_text_update_ko">Erreur de mise à jour</string>
+    <string name="user_image_add_photo">Ajouter une photo</string>
 
 </resources>

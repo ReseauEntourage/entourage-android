@@ -17,18 +17,18 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Non focused states -->
     <item android:state_focused="false" android:state_checked="false" android:state_pressed="false" android:drawable="@color/background_dark"/>
-    <item android:state_focused="false" android:state_checked="true"  android:state_pressed="false" android:drawable="@color/custom_button_yellow_enabled" />
+    <item android:state_focused="false" android:state_checked="true"  android:state_pressed="false" android:drawable="@color/custom_button_accent_enabled" />
 
     <!-- Focused states -->
     <item android:state_focused="true" android:state_checked="false" android:state_pressed="false" android:drawable="@color/background_dark" />
-    <item android:state_focused="true" android:state_checked="true"  android:state_pressed="false" android:drawable="@color/custom_button_yellow_enabled" />
+    <item android:state_focused="true" android:state_checked="true"  android:state_pressed="false" android:drawable="@color/custom_button_accent_enabled" />
 
     <!-- Pressed -->
     <!--    Non focused states -->
     <item android:state_focused="false" android:state_checked="false" android:state_pressed="true" android:drawable="@color/background_pressed" />
-    <item android:state_focused="false" android:state_checked="true"  android:state_pressed="true" android:drawable="@color/custom_button_yellow_focused" />
+    <item android:state_focused="false" android:state_checked="true"  android:state_pressed="true" android:drawable="@color/custom_button_accent_focused" />
 
     <!--    Focused states -->
     <item android:state_focused="true" android:state_checked="false" android:state_pressed="true" android:drawable="@color/background_pressed" />
-    <item android:state_focused="true" android:state_checked="true"  android:state_pressed="true" android:drawable="@color/custom_button_yellow_focused" />
+    <item android:state_focused="true" android:state_checked="true"  android:state_pressed="true" android:drawable="@color/custom_button_accent_focused" />
 </selector>

@@ -34,6 +34,7 @@
             android:visibility="invisible"/>
 
         <Button
+            style="@style/WhiteButton"
             android:id="@+id/button_start_tour_launcher"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -42,7 +43,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:alpha="0.8"
-            android:background="@drawable/custom_button_white"
             android:textColor="@color/abc_input_method_navigation_guard"
             android:text="@string/tour_start"/>
 

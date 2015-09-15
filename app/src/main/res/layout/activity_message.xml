@@ -22,7 +22,7 @@
             android:id="@+id/message_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_edit_text"
+            android:background="@drawable/bg_edit_text"
             android:textSize="20sp"/>
 
         <TextView
@@ -37,7 +37,7 @@
             android:id="@+id/message_object"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_edit_text"
+            android:background="@drawable/bg_edit_text"
             android:textSize="20sp"/>
 
         <TextView
@@ -52,15 +52,15 @@
             android:id="@+id/message_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_edit_text"
+            android:background="@drawable/bg_edit_text"
             android:textSize="20sp"/>
 
         <Button
+            style="@style/AccentButton"
             android:id="@+id/message_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/custom_button_yellow"
             android:text="@string/activity_display_message_close"/>
 
     </LinearLayout>

@@ -20,7 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="false"
+        android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_toEndOf="@+id/notification_tour_image"
         android:layout_toRightOf="@+id/notification_tour_image"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -42,11 +44,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/notification_tour_infos"
         android:layout_toRightOf="@+id/notification_tour_infos"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
+            style="@style/AccentButton"
             android:id="@+id/notification_tour_stop_button"
             android:minHeight="0dp"
             android:minWidth="0dp"
@@ -55,8 +59,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/tour_stop"
-            android:textColor="@color/abc_input_method_navigation_guard"
-            android:background="@drawable/custom_button_yellow" />
+            android:textColor="@android:color/black" />
 
 
     </LinearLayout>

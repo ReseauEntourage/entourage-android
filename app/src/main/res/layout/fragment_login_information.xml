@@ -13,7 +13,9 @@
         android:id="@+id/login_button_close_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="@color/background_login_light"
         android:src="@drawable/ic_close"/>
@@ -66,7 +68,7 @@
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="@color/background_login_grey"
-                android:src="@drawable/custom_facebook_button"/>
+                android:src="@drawable/bg_facebook_button"/>
 
             <ImageButton
                 android:id="@+id/login_button_twitter"
@@ -78,7 +80,7 @@
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:background="@color/background_login_grey"
-                android:src="@drawable/custom_twitter_button"/>
+                android:src="@drawable/bg_twitter_button"/>
 
         </LinearLayout>
 
@@ -90,7 +92,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/login_text_description"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textColor="@color/background_light"
             android:textStyle="italic"
             android:gravity="center"
@@ -114,6 +116,7 @@
         android:textColor="@color/background_login_grey"/>
 
     <Button
+        style="@style/GreyButton"
         android:id="@+id/login_button_newsletter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -125,7 +128,6 @@
         android:text="@string/login_button_newsletter"
         android:textSize="13sp"
         android:textColor="@color/text_dark"
-        android:background="@drawable/custom_button_grey"
         android:textAllCaps="true"/>
 
 </RelativeLayout>

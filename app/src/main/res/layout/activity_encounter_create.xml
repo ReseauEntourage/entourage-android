@@ -17,8 +17,8 @@
             android:layout_marginTop="5dp"
             android:hint="@string/encounter_hint_person_name"
             android:textIsSelectable="false"
-            android:textCursorDrawable="@drawable/custom_cursor_yellow"
-            android:background="@drawable/custom_edit_text"/>
+            android:textCursorDrawable="@drawable/bg_cursor_yellow"
+            android:background="@drawable/bg_edit_text"/>
 
         <EditText
             android:id="@+id/edittext_message"
@@ -30,8 +30,8 @@
             android:gravity="left|top"
             android:inputType="textMultiLine"
             android:layout_below="@id/edittext_street_person_name"
-            android:textCursorDrawable="@drawable/custom_cursor_yellow"
-            android:background="@drawable/custom_edit_text"
+            android:textCursorDrawable="@drawable/bg_cursor_yellow"
+            android:background="@drawable/bg_edit_text"
             android:hint="@string/encounter_hint_notes"/>
 
         <ImageButton
@@ -40,11 +40,12 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/edittext_message"
-            android:background="@drawable/custom_popup"
+            android:background="@drawable/bg_popup"
             android:src="@drawable/ic_action_record_sound"
             android:contentDescription="@string/encounter_voice_message_button" />
 
         <Button
+            style="@style/AccentButton"
             android:id="@+id/button_create_encounter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,7 +53,6 @@
             android:text="@string/encouter_add"
             android:minWidth="50dp"
             android:layout_below="@id/button_record"
-            android:background="@drawable/custom_button_yellow"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>

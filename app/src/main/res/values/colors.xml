@@ -5,7 +5,7 @@
     <color name="primary">#3D3D3D</color>
     <color name="primary_dark">#191919</color>
     <color name="primary_light">#FAFAFA</color>
-    <color name="accent">#FDC444</color>
+    <color name="accent">#EF662F</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
@@ -23,11 +23,10 @@
     <color name="background_user_content">@color/white</color>
 
     <!-- Buttons -->
-    <color name="login_button">#FFCE55</color>
-    <color name="custom_button_yellow_enabled">@color/accent</color>
-    <color name="custom_button_yellow_focused">#EFBB38</color>
-    <color name="custom_button_yellow_pressed">#C89C2F</color>
-    <color name="custom_button_yellow_disabled">#EDD18C</color>
+    <color name="custom_button_accent_enabled">@color/accent</color>
+    <color name="custom_button_accent_focused">#ED5517</color>
+    <color name="custom_button_accent_pressed">#ff5a19</color>
+    <color name="custom_button_accent_disabled">#813619</color>
     <color name="custom_button_white_enabled">#FFFFFF</color>
     <color name="custom_button_white_focused">#D4D4D4</color>
     <color name="custom_button_white_pressed">#F4F4F4</color>
