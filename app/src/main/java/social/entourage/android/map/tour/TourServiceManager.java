@@ -1,14 +1,15 @@
 package social.entourage.android.map.tour;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,6 +33,8 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.Constants;
+
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 /**
  * Manager is like a presenter but for a service
@@ -122,6 +125,9 @@ public class TourServiceManager {
     private void initializeLocationService() {
         LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
         CustomLocationListener locationListener = new CustomLocationListener();
+        if (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
                 Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
