@@ -33,7 +33,6 @@ dependencies {
     compile 'jp.wasabeef:picasso-transformations:1.0.5'
 
     compile 'net.danlew:android.joda:2.7.1'
-    compile 'com.appaloosa-store:appaloosa-android-sdk:1.0.4'
     compile files('libs/FlurryAnalytics-5.3.0.jar')
 
     testCompile 'junit:junit:4.12'
@@ -51,9 +50,6 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-        buildConfigField 'boolean', 'APPALOOSA_AUTO_UPDATE', 'false'
-        buildConfigField 'long', 'APPALOOSA_STORE_ID', "3949"
-        buildConfigField 'String', 'APPALOOSA_STORE_TOKEN', '"ypt4d26acetzxivf5ynjeeqfisr9p7dr"'
         buildConfigField 'String', 'ENTOURAGE_URL', '"http://entourage-back-preprod.herokuapp.com"'
         buildConfigField 'String', 'FLURRY_API_KEY', "\"${flurryApiKey}\""
     }

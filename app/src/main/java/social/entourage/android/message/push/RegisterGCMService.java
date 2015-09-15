@@ -8,10 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
-import com.octo.android.robospice.SpiceManager;
-import com.octo.android.robospice.UncachedSpiceService;
 
 import java.io.IOException;
 
@@ -27,29 +24,8 @@ public class RegisterGCMService extends IntentService {
     public static final String KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID";
     private static final int ENTOURAGE_MIN_VERSION = 0;
 
-    private final SpiceManager spiceManager;
-
     public RegisterGCMService() {
         super("RegisterGCMService");
-        spiceManager = new SpiceManager(UncachedSpiceService.class);
-    }
-
-    // ----------------------------------
-    // LIFECYCLE
-    // ----------------------------------
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
-        spiceManager.start(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        if (spiceManager.isStarted()) {
-            spiceManager.shouldStop();
-        }
-        super.onDestroy();
     }
 
     // ----------------------------------
