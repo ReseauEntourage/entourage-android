@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_display_user_title">Mon Profil</string>
+    <string name="user_information_label">Informations de maraudeur</string>
+    <string name="user_organization_label">Informations d\'association</string>
+    <string name="user_privacy_label">Informations privées</string>
+    <string name="user_unsubscribe_label">Désinscription</string>
+    <string name="user_form_access_code">Code d\'accès</string>
+    <string name="user_form_confirmation">Confirmation</string>
+    <string name="user_button_confirm_changes">Confirmer</string>
+    <string name="user_button_unsubscribe">Me désinscrire</string>
+    <string name="user_text_update_ok">Profil mis à jour</string>
+    <string name="user_text_update_ko">Erreur de mise à jour</string>
+
+</resources>

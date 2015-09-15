@@ -41,7 +41,8 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@id/edittext_message"
             android:background="@drawable/custom_popup"
-            android:src="@drawable/ic_action_record_sound"/>
+            android:src="@drawable/ic_action_record_sound"
+            android:contentDescription="@string/encounter_voice_message_button" />
 
         <Button
             android:id="@+id/button_create_encounter"

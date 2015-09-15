@@ -7,7 +7,6 @@ import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.List;
@@ -49,9 +48,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     @Bind(R.id.edittext_street_person_name)
     EditText streetPersonNameEditText;
-
-    @Bind(R.id.button_record)
-    ImageButton recordButton;
 
     // ----------------------------------
     // LIFECYCLE

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Tour -->
+    <string name="activity_tours_title">Maraudes</string>
+    <string name="tour_start">Démarrer une maraude</string>
+    <string name="tour_creation_fail">Echec de l\'envoi de maraude</string>
+    <string name="tour_resume">Reprendre</string>
+    <string name="tour_finish">Terminer</string>
+    <string name="tour_stop">Stop</string>
+    <string name="tour_close_fail">Echec de la fermeture de maraude</string>
+    <string name="tour_started">Départ de la maraude</string>
+    <string name="tour_stopped">Fin de la maraude</string>
+    <string name="tour_check_feet">A pieds</string>
+    <string name="tour_check_car">En voiture</string>
+    <string name="tour_info_unknown">Inconnu</string>
+    <string name="tour_go">C\'est parti !</string>
+    <string name="tour_type">Type de maraude</string>
+    <string name="tour_type_medical">Médicale</string>
+    <string name="tour_type_bare_hands">A main nues</string>
+    <string name="tour_type_alimentary">Alimentaire</string>
+    <string name="tour_create_encounter_button">Créer une rencontre</string>
+    <string name="tour_text_separator">-</string>
+
+    <!-- Tour info -->
+    <string name="tour_info_date">--/--/-----</string>
+    <string name="tour_info_text_organization">Organisation : %1s</string>
+    <string name="tour_info_text_transport">Type de transport : %1s</string>
+    <string name="tour_info_text_type">Type de maraude : %1s</string>
+    <string name="tour_info_text_status">Statut de la maraude :</string>
+    <string name="tour_info_text_ongoing"><![CDATA[<font color=\"#00E11E\">En cours</font>]]></string>
+    <string name="tour_info_text_closed"><![CDATA[<font color=\"#F60000\">Terminée</font>]]></string>
+    <string name="tour_info_text_choose">Choisir</string>
+    <string name="tour_info_text_nothing_found">Aucune maraude récente trouvée</string>
+    <string name="tour_info_text_cancel">Annuler</string>
+    <string name="tour_info_button_close">Fermer</string>
+
+    <!-- TourService -->
+    <string name="tour_sent">Maraude sauvegardée</string>
+    <string name="local_service_started">Maraude lancée</string>
+    <string name="local_service_stopped">Maraude terminée</string>
+    <string name="local_service_running">Maraude en cours</string>
+    <string name="local_service_connected">Connecté au GeoService</string>
+    <string name="local_service_disconnected">Déconnecté du GeoService</string>
+    <string name="start_tour_title">Enregistrer maraude</string>
+    <string name="stop_tour_title">Stopper maraude</string>
+    <string name="loader_title_tour_finish">Arrêt de la maraude</string>
+    <string name="loader_title_tour_search">Recherche de maraudes récentes</string>
+
+    <!-- Confirmation -->
+    <string name="tour_end_confirmation">Veux-tu vraiment arrêter la maraude ?\nUn mail récapitulatif te sera envoyé.</string>
+    <string name="tour_end_duration">%1$s passées dans la rue</string>
+
+</resources>

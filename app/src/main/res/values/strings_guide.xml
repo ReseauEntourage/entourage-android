@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Guide -->
+    <string name="activity_display_guide_title">Guide</string>
+
+    <!-- POI -->
+    <string name="activity_read_poi_title">Point d\'intérêt</string>
+    <string name="encounter_text_message">Message</string>
+    <string name="encounter_listen_to_voice_message">Ecoutez leur message vocal</string>
+    <string name="tweet_with_audio">Ecoutez le message que j\'ai enregistré avec %1$s via l\'application Entourage : %2$s %3$s %4$s</string>
+    <string name="tweet_without_audio">J\'ai rencontré %1$s %2$s %3$s</string>
+
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="activity_read_encounter_title">Rencontre</string>
+    <string name="activity_create_encounter_title">Nouvelle rencontre</string>
+    <string name="encounter_hint_person_name">Nom</string>
+    <string name="encounter_hint_notes">Mes notes</string>
+    <string name="encounter_label_date">Date de rencontre</string>
+    <string name="encounter_label_street_person_name">Personne de la rue</string>
+    <string name="encounter_label_person_name_and">%1$s et</string>
+    <string name="encounter_encountered">se sont rencontrés ici le %1$s</string>
+    <string name="encouter_add">Créer la rencontre</string>
+    <string name="login_fail">Erreur de connexion</string>
+    <string name="create_encounter_failure">Echec de la création de rencontre: %1$s</string>
+    <string name="create_encounter_success">Rencontre créée</string>
+    <string name="map_add_encounter">Nouvelle rencontre</string>
+    <string name="soundcloud_track_title">{0} a rencontré {1}, le {2} à {3}</string>
+    <string name="encouter_btn_record">Record</string>
+    <string name="encounter_leave_text_message">ou rédigez un message</string>
+    <string name="encounter_share_on_twitter">Partager sur Twitter</string>
+    <string name="creating_encounter">Création de la rencontre …</string>
+    <string name="creating_encounter_audio">Création du message audio …</string>
+    <string name="encounter_record_timer">00:00</string>
+    <string name="encounter_leave_voice_message">Enregistrez un message vocal</string>
+    <string name="encounter_voice_message_button">Lancer la reconnaissance vocale</string>
+    <string name="encounter_voice_message_not_supported">La reconnaissance vocale n\'est pas supportée sur votre téléphone.</string>
+
+</resources>
