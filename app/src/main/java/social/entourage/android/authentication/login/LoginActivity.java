@@ -31,15 +31,14 @@ import social.entourage.android.message.push.RegisterGCMService;
 /**
  * Activity providing the login steps
  */
-@SuppressWarnings("WeakerAccess")
 public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
-    private final String ANDROID_DEVICE = "android";
-    private final String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
+    private final static String ANDROID_DEVICE = "android";
+    private final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -312,7 +311,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_button_finish_tutorial)
     void finishTutorial() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).commit();
+        sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
         startActivity(new Intent(this, DrawerActivity.class));
     }
 }
