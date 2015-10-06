@@ -26,7 +26,7 @@
             android:gravity="center"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textAllCaps="true" />
 
         <View
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textAllCaps="true" />
 
     </RadioGroup>
@@ -68,7 +68,7 @@
             android:background="@color/background_dark"
             android:text="@string/tour_type"
             android:padding="10dp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="12sp"
             android:textAllCaps="true" />
@@ -98,7 +98,7 @@
                 android:padding="10dp"
                 android:layout_marginBottom="0.5dp"
                 android:textSize="12sp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/white"/>
 
             <RadioButton
                 android:id="@+id/launcher_tour_type_bare_hands"
@@ -110,7 +110,7 @@
                 android:padding="10dp"
                 android:layout_marginBottom="0.5dp"
                 android:textSize="12sp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/white"/>
 
             <RadioButton
                 android:id="@+id/launcher_tour_type_alimentary"
@@ -121,7 +121,7 @@
                 android:button="@null"
                 android:padding="10dp"
                 android:textSize="12sp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/white"/>
 
         </RadioGroup>
 

@@ -43,7 +43,6 @@ import social.entourage.android.api.model.map.TourPoint;
  * Background service handling location updates
  * and tours request
  */
-//TODO : remove the service notification when the app is killed from the recent apps list (doesn't work)
 public class TourService extends Service {
 
     // ----------------------------------
