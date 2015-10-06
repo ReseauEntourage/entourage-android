@@ -30,6 +30,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.guide.poi.ReadPoiActivity;
 
@@ -54,6 +55,7 @@ public class GuideMapEntourageFragment extends Fragment {
     private float previousCameraZoom = 1.0f;
     private ClusterManager<Poi> clusterManager;
     private Map<Long, Poi> poisMap;
+    private PoiRenderer poiRenderer;
 
     // ----------------------------------
     // LIFECYCLE
@@ -77,7 +79,8 @@ public class GuideMapEntourageFragment extends Fragment {
 
         if (mapFragment.getMap() != null) {
             clusterManager = new ClusterManager(getActivity(), mapFragment.getMap());
-            clusterManager.setRenderer(new PoiRenderer(getActivity(), mapFragment.getMap(), clusterManager));
+            poiRenderer = new PoiRenderer(getActivity(), mapFragment.getMap(), clusterManager);
+            clusterManager.setRenderer(poiRenderer);
             clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
             mapFragment.getMap().setOnMarkerClickListener(clusterManager);
             mapFragment.getMap().setMyLocationEnabled(true);
@@ -126,8 +129,9 @@ public class GuideMapEntourageFragment extends Fragment {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void putPoiOnMap(Collection<Poi> pois) {
+    public void putPoiOnMap(List<Category> categories, Collection<Poi> pois) {
         if (getActivity() != null) {
+            poiRenderer.setCategories(categories);
             if (mapFragment.getMap() != null) {
                 clusterManager.addItems(removeRedundantPois(pois));
                 clusterManager.cluster();

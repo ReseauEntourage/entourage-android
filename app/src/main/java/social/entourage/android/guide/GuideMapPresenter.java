@@ -70,7 +70,7 @@ public class GuideMapPresenter {
             mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance, new Callback<MapResponse>() {
                 @Override
                 public void success(MapResponse mapResponse, Response response) {
-                    fragment.putPoiOnMap(mapResponse.getPois());
+                    fragment.putPoiOnMap(mapResponse.getCategories(), mapResponse.getPois());
                 }
 
                 @Override
