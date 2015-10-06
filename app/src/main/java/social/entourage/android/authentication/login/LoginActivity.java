@@ -159,14 +159,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void onBackPressed() {
-        /*
-        if (loginMoreInformation.getVisibility() == View.VISIBLE) {
-            emailEditText.setText("");
-            loginMoreInformation.setVisibility(View.GONE);
-            loginSignup.setVisibility(View.VISIBLE);
-        }
-        else
-        */
         if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);

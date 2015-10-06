@@ -1,57 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
+    tools:context="social.entourage.android.authentication.login.LoginActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="social.entourage.android.authentication.login.LoginActivity"
-    android:background="@color/login_view">
+    android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/login_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:src="@drawable/ic_entourage"/>
-
-    <social.entourage.android.view.HtmlTextView
-        style="@style/SpacedTextViewLarge"
-        android:id="@+id/login_title_tutorial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:htmlText="@string/login_title_tutorial"
-        android:textColor="@color/background_light"
-        android:lineSpacingExtra="11.5sp"
-        android:textSize="16sp"
-        android:gravity="center"/>
-
-    <social.entourage.android.view.FontTextView
-        android:id="@+id/login_text_tutorial"
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="@string/login_text_tutorial"
-        android:textStyle="italic"
-        android:textColor="@color/background_light"
-        android:gravity="center"
-        app:fontName="fonts/Blokletters-Balpen.ttf"/>
+        android:background="@color/login_view">
 
+        <ImageView
+            android:id="@+id/login_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:src="@drawable/ic_entourage"/>
 
-    <Button
-        android:id="@+id/login_button_finish_tutorial"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="@string/login_button_finish_tutorial"
-        android:textSize="13sp"
-        android:background="@drawable/login_button"
-        android:textAllCaps="true"/>
+        <social.entourage.android.view.HtmlTextView
+            style="@style/SpacedTextViewLarge"
+            android:id="@+id/login_title_tutorial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:htmlText="@string/login_title_tutorial"
+            android:textColor="@color/background_light"
+            android:lineSpacingExtra="11.5sp"
+            android:textSize="16sp"
+            android:gravity="center"/>
 
+        <social.entourage.android.view.FontTextView
+            android:id="@+id/login_text_tutorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="@string/login_text_tutorial"
+            android:textStyle="italic"
+            android:textColor="@color/background_light"
+            android:gravity="center"
+            app:fontName="fonts/Blokletters-Balpen.ttf"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/login_button_finish_tutorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/login_button_finish_tutorial"
+            android:textSize="13sp"
+            android:background="@drawable/login_button"
+            android:textAllCaps="true"/>
+
+    </LinearLayout>
+</ScrollView>
