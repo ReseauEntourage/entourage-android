@@ -39,6 +39,7 @@ public class GuideMapEntourageFragment extends Fragment {
     // CONSTANTS
     // ----------------------------------
 
+    public static final float ZOOM_REDRAW_LIMIT = 1.1f;
     public static final int REDRAW_LIMIT = 300;
 
     // ----------------------------------
@@ -50,6 +51,7 @@ public class GuideMapEntourageFragment extends Fragment {
 
     private SupportMapFragment mapFragment;
     private Location previousCameraLocation;
+    private float previousCameraZoom = 1.0f;
     private ClusterManager<Poi> clusterManager;
     private Map<Long, Poi> poisMap;
 
@@ -87,7 +89,9 @@ public class GuideMapEntourageFragment extends Fragment {
                     clusterManager.onCameraChange(cameraPosition);
                     EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
                     Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
-                    if (newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                    float newZoom = cameraPosition.zoom;
+                    if (newZoom/previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                        previousCameraZoom = newZoom;
                         previousCameraLocation = newLocation;
                         presenter.updatePoisNearby();
                     }
