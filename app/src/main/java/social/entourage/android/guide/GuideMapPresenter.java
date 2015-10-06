@@ -66,6 +66,7 @@ public class GuideMapPresenter {
             LatLng location = currentPosition.target;
             float zoom = currentPosition.zoom;
             float distance = 40000f / (float) Math.pow(2f, zoom) / 2.5f;
+            distance = Math.max(1, distance);
             mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance, new Callback<MapResponse>() {
                 @Override
                 public void success(MapResponse mapResponse, Response response) {
