@@ -171,6 +171,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             case R.id.action_guide:
                 loadFragment(new GuideMapEntourageFragment());
                 break;
+            case R.id.action_user:
+                startActivity(new Intent(this, UserActivity.class));
+                break;
             case R.id.action_logout:
                 logout();
                 break;

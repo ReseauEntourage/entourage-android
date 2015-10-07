@@ -73,6 +73,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // CONSTANTS
     // ----------------------------------
 
+    public static final float ZOOM_REDRAW_LIMIT = 1.1f;
     private static final int REDRAW_LIMIT = 300;
     private static final int PERMISSIONS_REQUEST_LOCATION = 1;
 
@@ -89,6 +90,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private LatLng previousCoordinates;
     private Location previousCameraLocation;
+    private float previousCameraZoom = 1.0f;
 
     private TourService tourService;
     private ServiceConnection connection = new ServiceConnection();
@@ -498,8 +500,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
                     Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
                     Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
+                    float newZoom = cameraPosition.zoom;
 
-                    if (tourService != null && newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                    if (tourService != null && (newZoom/previousCameraZoom >= ZOOM_REDRAW_LIMIT ||  newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+                        previousCameraZoom = newZoom;
                         previousCameraLocation = newLocation;
                         tourService.updateNearbyTours();
                     }
