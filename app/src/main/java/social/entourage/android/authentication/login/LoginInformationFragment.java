@@ -15,11 +15,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -151,9 +154,10 @@ public class LoginInformationFragment extends DialogFragment {
         if (getActivity() != null) {
             if (success) {
                 Toast.makeText(getActivity(), R.string.login_text_newsletter_success, Toast.LENGTH_SHORT).show();
-
+                FlurryAgent.logEvent(Constants.EVENT_NEWSLETTER_INSCRIPTION_OK);
             } else {
                 Toast.makeText(getActivity(), R.string.login_text_newsletter_fail, Toast.LENGTH_SHORT).show();
+                FlurryAgent.logEvent(Constants.EVENT_NEWSLETTER_INSCRIPTION_FAILED);
             }
             getOnInformationFragmentFinish().closeEntourageInformationFragment();
         }

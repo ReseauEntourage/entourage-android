@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
@@ -133,6 +135,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        FlurryAgent.logEvent(Constants.EVENT_LOGIN_START);
+
         loginLostCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
@@ -179,11 +183,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     public void startMapActivity() {
         resetLoginButton();
+        FlurryAgent.logEvent(Constants.EVENT_LOGIN_OK);
         startActivity(new Intent(this, DrawerActivity.class));
     }
 
     public void loginFail() {
         resetLoginButton();
+        FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
         Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
     }
 
@@ -261,6 +267,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_button_ask_code)
     void sendNewCode() {
         loginPresenter.sendNewCode(lostCodePhone.getText().toString());
+        FlurryAgent.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
+        /* TODO: implement this */
         /**
          * here :
          * if code sent : R.string.login_text_code_ok
@@ -291,6 +299,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_go)
     void startTutorial() {
+        FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_START);
         loginPresenter.updateUserEmail(profileEmail.getText().toString());
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.VISIBLE);
@@ -302,6 +311,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_finish_tutorial)
     void finishTutorial() {
+        FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_END);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
         startActivity(new Intent(this, DrawerActivity.class));

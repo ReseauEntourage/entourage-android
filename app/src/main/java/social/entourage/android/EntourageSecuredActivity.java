@@ -3,6 +3,8 @@ package social.entourage.android;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.flurry.android.FlurryAgent;
+
 import javax.inject.Inject;
 
 import social.entourage.android.authentication.AuthenticationController;
@@ -32,6 +34,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
 
     protected void logout() {
         authenticationController.logOutUser();
+        FlurryAgent.logEvent(Constants.EVENT_LOGOUT);
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -141,6 +142,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (!isBound) {
             doBindService();
         }
+        FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
     }
 
     @Override
@@ -416,6 +418,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @OnClick(R.id.button_start_tour_launcher)
     void onStartTourLauncher() {
         if (!tourService.isRunning()) {
+            FlurryAgent.logEvent(Constants.EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP);
             buttonStartLauncher.setVisibility(View.GONE);
             mapLauncherLayout.setVisibility(View.VISIBLE);
         }
@@ -428,6 +431,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         TourTransportMode tourTransportMode = TourTransportMode.findByRessourceId(radioGroupTransportMode.getCheckedRadioButtonId());
         TourType tourType = TourType.findByRessourceId(radioGroupType.getCheckedRadioButtonId());
         startTour(tourTransportMode.getName(), tourType.getName());
+        FlurryAgent.logEvent(Constants.EVENT_START_TOUR);
     }
 
     @OnClick(R.id.tour_stop_button)
@@ -560,6 +564,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                 loaderStop.setCancelable(true);
                 tourService.endTreatment();
+                FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
             }
         }
     }

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
@@ -87,6 +89,8 @@ public class UserActivity extends EntourageSecuredActivity {
         if (!getAuthenticationController().isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));
         }
+
+        FlurryAgent.logEvent(Constants.EVENT_PROFILE_FROM_MENU);
 
         Resources res = getResources();
         User user = getAuthenticationController().getUser();
