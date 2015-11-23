@@ -3,6 +3,7 @@ package social.entourage.android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -68,12 +70,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
-        mainFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-        mapEntourageFragment = (MapEntourageFragment) mainFragment;
         ButterKnife.bind(this);
 
         configureToolbar();
         configureNavigationItem();
+
+        selectItem(R.id.action_tours);
 
         Picasso.with(this).load(R.drawable.ic_user_photo)
                 .transform(new CropCircleTransformation())
@@ -157,7 +159,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                     @Override
                     public void onDrawerClosed(View drawerView) {
                         super.onDrawerClosed(drawerView);
-                        selectItem(menuItem);
+                        selectItem(menuItem.getItemId());
                     }
                 });
                 drawerLayout.closeDrawers();
@@ -166,8 +168,8 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         });
     }
 
-    private void selectItem(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
+    private void selectItem(@IdRes int menuId) {
+        switch (menuId) {
             case R.id.action_tours:
                 if (mapEntourageFragment == null) {
                     mapEntourageFragment = new MapEntourageFragment();
@@ -187,7 +189,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 logout();
                 break;
             default:
-                Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
+                //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -195,6 +197,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         mainFragment = newFragment;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment, mainFragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

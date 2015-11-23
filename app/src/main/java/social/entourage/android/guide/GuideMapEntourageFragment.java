@@ -51,6 +51,8 @@ public class GuideMapEntourageFragment extends Fragment {
     @Inject
     GuideMapPresenter presenter;
 
+    private View toReturn;
+
     private SupportMapFragment mapFragment;
     private Location previousCameraLocation;
     private float previousCameraZoom = 1.0f;
@@ -64,10 +66,12 @@ public class GuideMapEntourageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_guide_map, container, false);
-        ButterKnife.bind(this, view);
+        if (toReturn == null) {
+            toReturn = inflater.inflate(R.layout.fragment_guide_map, container, false);
+        }
+        ButterKnife.bind(this, toReturn);
         FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_MENU);
-        return view;
+        return toReturn;
     }
 
     @Override

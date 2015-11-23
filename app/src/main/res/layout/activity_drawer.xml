@@ -18,12 +18,11 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar"/>
 
-        <fragment
+        <FrameLayout
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:name="social.entourage.android.map.MapEntourageFragment"/>
+            android:layout_below="@+id/toolbar"/>
 
     </RelativeLayout>
 

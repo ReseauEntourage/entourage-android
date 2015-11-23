@@ -87,6 +87,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Inject
     MapPresenter presenter;
 
+    private View toReturn;
+
     private SupportMapFragment mapFragment;
 
     private boolean isBetterLocationUpdated;
@@ -137,10 +139,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // LIFECYCLE
     // ----------------------------------
 
-    public MapEntourageFragment() {
-        Log.e("TAG", "foo");
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +156,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         markersMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
 
-        View toReturn = inflater.inflate(R.layout.fragment_map, container, false);
+        if (toReturn == null) {
+            toReturn = inflater.inflate(R.layout.fragment_map, container, false);
+        }
         ButterKnife.bind(this, toReturn);
         return toReturn;
     }
