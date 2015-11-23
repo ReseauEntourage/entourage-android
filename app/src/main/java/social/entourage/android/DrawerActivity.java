@@ -58,6 +58,8 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     ImageView userPhoto;
 
     private Fragment mainFragment;
+    private MapEntourageFragment mapEntourageFragment;
+    private GuideMapEntourageFragment guideMapEntourageFragment;
 
     // ----------------------------------
     // LIFECYCLE
@@ -67,6 +69,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         mainFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        mapEntourageFragment = (MapEntourageFragment) mainFragment;
         ButterKnife.bind(this);
 
         configureToolbar();
@@ -105,14 +108,14 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (args != null) {
             if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
                 if (mainFragment instanceof MapEntourageFragment) {
-                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+                    mapEntourageFragment = (MapEntourageFragment) mainFragment;
                     mapEntourageFragment.onNotificationAction(ConfirmationActivity.KEY_RESUME_TOUR);
                 } else {
                     loadFragmentWithExtra(ConfirmationActivity.KEY_RESUME_TOUR);
                 }
             } else if (args.getBoolean(ConfirmationActivity.KEY_END_TOUR, false)) {
                 if (mainFragment instanceof MapEntourageFragment) {
-                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+                    mapEntourageFragment = (MapEntourageFragment) mainFragment;
                     mapEntourageFragment.onNotificationAction(ConfirmationActivity.KEY_END_TOUR);
                 } else {
                     loadFragmentWithExtra(ConfirmationActivity.KEY_END_TOUR);
@@ -166,10 +169,16 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     private void selectItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_tours:
-                loadFragment(new MapEntourageFragment());
+                if (mapEntourageFragment == null) {
+                    mapEntourageFragment = new MapEntourageFragment();
+                }
+                loadFragment(mapEntourageFragment);
                 break;
             case R.id.action_guide:
-                loadFragment(new GuideMapEntourageFragment());
+                if (guideMapEntourageFragment == null) {
+                    guideMapEntourageFragment = new GuideMapEntourageFragment();
+                }
+                loadFragment(guideMapEntourageFragment);
                 break;
             case R.id.action_user:
                 startActivity(new Intent(this, UserActivity.class));

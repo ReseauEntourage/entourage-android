@@ -18,6 +18,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +136,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
+
+    public MapEntourageFragment() {
+        Log.e("TAG", "foo");
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -336,7 +342,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
-        removeDeprecatedTours(tours);
+        //removeDeprecatedTours(tours);
         tours = removeRedundantTours(tours);
         Collections.sort(tours, new Tour.TourComparatorOldToNew());
         for (Tour tour : tours) {
@@ -660,6 +666,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void clearMap() {
         if (mapFragment.getMap() != null) {
             mapFragment.getMap().clear();
+        }
+    }
+
+    private void clearDrawnTours() {
+        for (Long key : drawnToursMap.keySet()) {
+            drawnToursMap.get(key).remove();
+            if (markersMap.containsKey(key)) {
+                markersMap.get(key).remove();
+                markersMap.remove(key);
+            }
+            presenter.getOnClickListener().removeMarker(key);
         }
     }
 
