@@ -146,16 +146,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (!isBound) {
             doBindService();
         }
+        
+        currentTourLines = new ArrayList<>();
+        drawnToursMap = new TreeMap<>();
+        markersMap = new TreeMap<>();
+
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        currentTourLines = new ArrayList<>();
-        drawnToursMap = new TreeMap<>();
-        markersMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
-
         if (toReturn == null) {
             toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         }
