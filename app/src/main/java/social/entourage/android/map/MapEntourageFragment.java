@@ -146,7 +146,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (!isBound) {
             doBindService();
         }
-        
+
         currentTourLines = new ArrayList<>();
         drawnToursMap = new TreeMap<>();
         markersMap = new TreeMap<>();

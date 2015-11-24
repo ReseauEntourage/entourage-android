@@ -100,7 +100,12 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             if (resultCode == RESULT_OK) {
                 List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 if (!textMatchList.isEmpty()) {
-                    messageEditText.setText(textMatchList.get(0));
+                    // TODO: test this block
+                    if (messageEditText.getText().equals("")) {
+                        messageEditText.setText(textMatchList.get(0));
+                    } else {
+                        messageEditText.setText(messageEditText.getText() + " " + textMatchList.get(0));
+                    }
                     FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK);
                 }
             }
