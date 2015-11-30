@@ -7,12 +7,16 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,11 +32,16 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.EntourageLocation;
+import social.entourage.android.api.EncounterRequest;
+import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.Constants;
+import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
+import social.entourage.android.api.tape.EncounterTaskResult;
+import social.entourage.android.tools.BusProvider;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
@@ -53,6 +62,7 @@ public class TourServiceManager {
 
     private final TourService tourService;
     private final TourRequest tourRequest;
+    private final EncounterRequest encounterRequest;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -65,14 +75,18 @@ public class TourServiceManager {
     private List<TourPoint> pointsToSend;
     private List<TourPoint> pointsToDraw;
     private Timer timerFinish;
+    private ConnectivityManager connectivityManager;
 
-    @Inject
-    public TourServiceManager(final TourService tourService, final TourRequest tourRequest) {
+    public TourServiceManager(final TourService tourService, final TourRequest tourRequest, final EncounterRequest encounterRequest) {
+        Log.i("TourServiceManager", "constructor");
         this.tourService = tourService;
         this.tourRequest = tourRequest;
+        this.encounterRequest = encounterRequest;
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
         this.pointsToDraw = new ArrayList<>();
+        this.connectivityManager = (ConnectivityManager) this.tourService.getSystemService(Context.CONNECTIVITY_SERVICE);
+        BusProvider.getInstance().register(this);
         initializeLocationService();
     }
 
@@ -116,6 +130,10 @@ public class TourServiceManager {
 
     public void addEncounter(Encounter encounter) {
         tour.addEncounter(encounter);
+    }
+
+    public void unregisterFromBus() {
+        BusProvider.getInstance().unregister(this);
     }
 
     // ----------------------------------
@@ -261,6 +279,33 @@ public class TourServiceManager {
         }
     }
 
+    protected void sendEncounter(Encounter encounter) {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
+            encounterWrapper.setEncounter(encounter);
+            encounterRequest.create(encounter.getTourId(), encounterWrapper, new Callback<EncounterResponse>() {
+                @Override
+                public void success(EncounterResponse encounterResponse, Response response) {
+                    Log.d("tape:", "success");
+                    BusProvider.getInstance().post(new EncounterTaskResult(true));
+                    Toast.makeText(tourService, "envoyé", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.d("tape:", "failure");
+                    BusProvider.getInstance().post(new EncounterTaskResult(false));
+                    Toast.makeText(tourService, "erreur", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Log.d("tape:", "no network");
+            BusProvider.getInstance().post(new EncounterTaskResult(false));
+            Toast.makeText(tourService, "pas de réseau", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -307,6 +352,15 @@ public class TourServiceManager {
         double distanceProjection = scalarProduct / Math.sqrt(Math.pow(endPoint.getLatitude() - startPoint.getLatitude(), 2) + Math.pow(endPoint.getLongitude() - startPoint.getLongitude(), 2));
         double distanceToMiddle = Math.sqrt(Math.pow(middlePoint.getLatitude() - startPoint.getLatitude(), 2) + Math.pow(middlePoint.getLongitude() - startPoint.getLongitude(), 2));
         return Math.sqrt(Math.pow(distanceToMiddle, 2) - Math.pow(distanceProjection, 2));
+    }
+
+    // ----------------------------------
+    // BUS LISTENERS
+    // ----------------------------------
+
+    @Subscribe
+    public void encounterToSend(EncounterUploadTask task) {
+        sendEncounter(task.getEncounter());
     }
 
     // ----------------------------------

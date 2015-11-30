@@ -148,4 +148,5 @@ public class Encounter implements Serializable{
             this.encounter = encounter;
         }
     }
+
 }

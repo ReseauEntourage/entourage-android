@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,7 +12,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -131,10 +129,10 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (mainFragment instanceof BackPressable) {
             BackPressable backPressable = (BackPressable) mainFragment;
             if (!backPressable.onBackPressed()) {
-                super.onBackPressed();
+                finish();
             }
         } else {
-            super.onBackPressed();
+            finish();
         }
 
     }

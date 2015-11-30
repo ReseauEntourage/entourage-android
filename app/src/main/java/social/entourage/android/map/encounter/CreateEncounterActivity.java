@@ -19,11 +19,11 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.Constants;
 
 public class CreateEncounterActivity extends EntourageSecuredActivity {
 
@@ -100,7 +100,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             if (resultCode == RESULT_OK) {
                 List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 if (!textMatchList.isEmpty()) {
-                    // TODO: test this block
                     if (messageEditText.getText().equals("")) {
                         messageEditText.setText(textMatchList.get(0));
                     } else {
@@ -154,7 +153,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             finish();
             FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
         } else {
-            message = getString(R.string.create_encounter_failure, errorMessage);
+            message = getString(R.string.create_encounter_failure);
             Log.e(logTag, message);
             FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
 

@@ -1,10 +1,16 @@
 package social.entourage.android.api;
 
+import android.app.Application;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.squareup.tape.FileObjectQueue;
+
+import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Singleton;
 
@@ -15,7 +21,11 @@ import retrofit.Endpoints;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 import social.entourage.android.BuildConfig;
+import social.entourage.android.Constants;
 import social.entourage.android.authentication.AuthenticationInterceptor;
+import social.entourage.android.map.encounter.CreateEncounterPresenter;
+import social.entourage.android.api.tape.EncounterTapeTaskQueue;
+
 /**
  * Module related to Application
  * Providing API related dependencies
@@ -93,5 +103,23 @@ public class ApiModule {
     @Singleton
     public UserRequest providesUserRequest(final RestAdapter restAdapter) {
         return restAdapter.create(UserRequest.class);
+    }
+
+    @Provides
+    @Singleton
+    public EncounterTapeTaskQueue providesEncounterTapeTaskQueue(Application application) {
+        Gson gson = new GsonBuilder().create();
+        FileObjectQueue.Converter<CreateEncounterPresenter.EncounterUploadTask> converter = new social.entourage.android.tools.GsonConverter<>(gson, CreateEncounterPresenter.EncounterUploadTask.class);
+
+        File queueFile = new File(application.getApplicationContext().getFilesDir(), Constants.FILENAME);
+        FileObjectQueue<CreateEncounterPresenter.EncounterUploadTask> delegate = null;
+
+        try {
+            delegate = new FileObjectQueue<>(queueFile, converter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new EncounterTapeTaskQueue(delegate, application.getApplicationContext());
     }
 }

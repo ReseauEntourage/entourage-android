@@ -105,6 +105,10 @@
             android:exported="false"/>
 
         <service
+            android:name=".api.tape.EncounterTapeService"
+            android:exported="false"/>
+
+        <service
             android:name=".message.push.RegisterGCMService"
             android:exported="false"/>
 

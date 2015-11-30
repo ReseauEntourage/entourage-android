@@ -16,7 +16,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -33,7 +32,8 @@ import javax.inject.Inject;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
-import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.EncounterRequest;
+import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.DrawerActivity;
@@ -59,7 +59,11 @@ public class TourService extends Service {
     private final IBinder binder = new LocalBinder();
 
     @Inject
-    TourServiceManager tourServiceManager;
+    TourRequest tourRequest;
+    @Inject
+    EncounterRequest encounterRequest;
+
+    private TourServiceManager tourServiceManager;
 
     private List<TourServiceListener> listeners;
 
@@ -96,7 +100,10 @@ public class TourService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        setupComponent(EntourageApplication.get(this).getEntourageComponent());
+        EntourageApplication.get(this).getEntourageComponent().inject(this);
+
+        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest);
+
         listeners =  new ArrayList<>();
         isPaused = false;
 
@@ -107,24 +114,19 @@ public class TourService extends Service {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
-    protected void setupComponent(EntourageComponent entourageComponent) {
-        DaggerTourComponent.builder()
-                .entourageComponent(entourageComponent)
-                .tourModule(new TourModule(this))
-                .build()
-                .inject(this);
-    }
-
+    /*
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LocalService", "Received Start id " + startId + ": " + intent);
         return START_STICKY;
     }
+    */
 
     @Override
     public void onDestroy() {
         endTreatment();
         unregisterReceiver(receiver);
+
         super.onDestroy();
     }
 
@@ -223,6 +225,11 @@ public class TourService extends Service {
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
+    private void stopService() {
+        tourServiceManager.unregisterFromBus();
+        stopSelf();
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -279,7 +286,7 @@ public class TourService extends Service {
     public void unregister(TourServiceListener listener) {
         listeners.remove(listener);
         if (!isRunning() && listeners.size() == 0) {
-            stopSelf();
+            stopService();
         }
     }
 

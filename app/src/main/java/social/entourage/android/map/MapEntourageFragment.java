@@ -2,6 +2,7 @@ package social.entourage.android.map;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;

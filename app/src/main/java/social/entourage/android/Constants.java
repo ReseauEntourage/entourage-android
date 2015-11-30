@@ -2,6 +2,9 @@ package social.entourage.android;
 
 public class Constants {
 
+    // Filenames
+    public static final String FILENAME = "encounters_queue";
+
     // Request and result codes
     public static final int REQUEST_CREATE_ENCOUNTER = 1;
     public static final int RESULT_CREATE_ENCOUNTER_OK = 2;

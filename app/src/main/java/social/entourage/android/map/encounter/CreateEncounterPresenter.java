@@ -1,18 +1,18 @@
 package social.entourage.android.map.encounter;
 
+import com.squareup.otto.Subscribe;
+import com.squareup.tape.Task;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.inject.Inject;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import social.entourage.android.Constants;
-import social.entourage.android.api.EncounterRequest;
-import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.api.tape.EncounterTaskResult;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Presenter controlling the CreateEncounterActivity
@@ -24,9 +24,14 @@ public class CreateEncounterPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
+    public interface EncounterUploadCallback {
+        void onSuccess();
+        void onFailure();
+    }
+
     private final CreateEncounterActivity activity;
-    private final EncounterRequest encounterRequest;
     private final AuthenticationController authenticationController;
+    private final EncounterTapeTaskQueue queue;
 
     private long tourId;
     private double latitude;
@@ -37,13 +42,14 @@ public class CreateEncounterPresenter {
     // ----------------------------------
 
     @Inject
-    public CreateEncounterPresenter(final CreateEncounterActivity activity, final EncounterRequest encounterRequest, final AuthenticationController authenticationController) {
+    public CreateEncounterPresenter(final CreateEncounterActivity activity, final AuthenticationController authenticationController, final EncounterTapeTaskQueue queue) {
         this.activity = activity;
-        this.encounterRequest = encounterRequest;
         this.authenticationController = authenticationController;
+        this.queue = queue;
     }
 
     public void createEncounter(String message, String streetPersonName) {
+
         Encounter encounter = new Encounter();
         encounter.setUserName(authenticationController.getUser().getFirstName());
         encounter.setMessage(message);
@@ -53,19 +59,9 @@ public class CreateEncounterPresenter {
         encounter.setLatitude(latitude);
         encounter.setLongitude(longitude);
 
-        Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
-        encounterWrapper.setEncounter(encounter);
-        encounterRequest.create(encounter.getTourId(), encounterWrapper, new Callback<EncounterResponse>() {
-            @Override
-            public void success(EncounterResponse encounterResponse, Response response) {
-                activity.onCreateEncounterFinished(null, encounterResponse.getEncounter());
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                activity.onCreateEncounterFinished(error.toString(), null);
-            }
-        });
+        queue.add(new EncounterUploadTask(encounter));
+        activity.onCreateEncounterFinished(null, encounter);
     }
 
     public void setTourId(long tourId) {
@@ -78,5 +74,40 @@ public class CreateEncounterPresenter {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    // ----------------------------------
+    // INNER CLASSES
+    // ----------------------------------
+
+    public class EncounterUploadTask implements Task<EncounterUploadCallback>, Serializable {
+
+        private Encounter encounter;
+        private EncounterUploadCallback callback;
+
+        public EncounterUploadTask(Encounter encounter) {
+            this.encounter = encounter;
+        }
+
+        @Override
+        public void execute(final EncounterUploadCallback callback) {
+            this.callback = callback;
+            BusProvider.getInstance().post(this);
+            BusProvider.getInstance().register(this);
+        }
+
+        @Subscribe
+        public void taskResult(EncounterTaskResult result) {
+            BusProvider.getInstance().unregister(this);
+            if (result.isSuccess()) {
+                callback.onSuccess();
+            } else {
+                callback.onFailure();
+            }
+        }
+
+        public Encounter getEncounter() {
+            return encounter;
+        }
     }
 }

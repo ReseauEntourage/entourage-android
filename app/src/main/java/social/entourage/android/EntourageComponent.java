@@ -11,8 +11,11 @@ import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.UserRequest;
+import social.entourage.android.api.tape.EncounterTapeService;
+import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
+import social.entourage.android.map.tour.TourService;
 
 /**
  * Dagger component on Application Level
@@ -29,8 +32,12 @@ import social.entourage.android.authentication.AuthenticationModule;
 public interface EntourageComponent {
     void inject(Application application);
     void inject(DrawerActivity activity);
+    void inject(TourService service);
+    void inject(EncounterTapeService service);
 
     AuthenticationController getAuthenticationController();
+
+    EncounterTapeTaskQueue getEncounterTapeTaskQueue();
 
     EncounterRequest getEncounterRequest();
     LoginRequest getLoginRequest();

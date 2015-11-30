@@ -11,7 +11,7 @@
     <string name="encounter_encountered">se sont rencontrés ici le %1$s</string>
     <string name="encouter_add">Créer la rencontre</string>
     <string name="login_fail">Erreur de connexion</string>
-    <string name="create_encounter_failure">Echec de la création de rencontre: %1$s</string>
+    <string name="create_encounter_failure">Echec de la création de rencontre</string>
     <string name="create_encounter_success">Rencontre créée</string>
     <string name="map_add_encounter">Nouvelle rencontre</string>
     <string name="soundcloud_track_title">{0} a rencontré {1}, le {2} à {3}</string>
