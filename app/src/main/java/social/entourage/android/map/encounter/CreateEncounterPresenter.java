@@ -99,8 +99,13 @@ public class CreateEncounterPresenter {
         @Subscribe
         public void taskResult(EncounterTaskResult result) {
             BusProvider.getInstance().unregister(this);
-            if (result.isSuccess()) {
-                callback.onSuccess();
+            Encounter resultEncounter = result.getEncounter();
+            if (resultEncounter != null && encounter.getCreationDate().equals(resultEncounter.getCreationDate())) {
+                if (result.isSuccess()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure();
+                }
             } else {
                 callback.onFailure();
             }

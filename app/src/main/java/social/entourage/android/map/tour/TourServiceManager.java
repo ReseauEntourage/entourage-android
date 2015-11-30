@@ -279,7 +279,7 @@ public class TourServiceManager {
         }
     }
 
-    protected void sendEncounter(Encounter encounter) {
+    protected void sendEncounter(final Encounter encounter) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
             Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
@@ -288,20 +288,20 @@ public class TourServiceManager {
                 @Override
                 public void success(EncounterResponse encounterResponse, Response response) {
                     Log.d("tape:", "success");
-                    BusProvider.getInstance().post(new EncounterTaskResult(true));
+                    BusProvider.getInstance().post(new EncounterTaskResult(true, encounter));
                     //Toast.makeText(tourService, "envoyé", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
                     Log.d("tape:", "failure");
-                    BusProvider.getInstance().post(new EncounterTaskResult(false));
+                    BusProvider.getInstance().post(new EncounterTaskResult(false, null));
                     //Toast.makeText(tourService, "erreur", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
             Log.d("tape:", "no network");
-            BusProvider.getInstance().post(new EncounterTaskResult(false));
+            BusProvider.getInstance().post(new EncounterTaskResult(false, null));
             //Toast.makeText(tourService, "pas de réseau", Toast.LENGTH_SHORT).show();
         }
     }
