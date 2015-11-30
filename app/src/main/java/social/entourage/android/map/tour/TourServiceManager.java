@@ -289,20 +289,20 @@ public class TourServiceManager {
                 public void success(EncounterResponse encounterResponse, Response response) {
                     Log.d("tape:", "success");
                     BusProvider.getInstance().post(new EncounterTaskResult(true));
-                    Toast.makeText(tourService, "envoyé", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(tourService, "envoyé", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
                     Log.d("tape:", "failure");
                     BusProvider.getInstance().post(new EncounterTaskResult(false));
-                    Toast.makeText(tourService, "erreur", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(tourService, "erreur", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
             Log.d("tape:", "no network");
             BusProvider.getInstance().post(new EncounterTaskResult(false));
-            Toast.makeText(tourService, "pas de réseau", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(tourService, "pas de réseau", Toast.LENGTH_SHORT).show();
         }
     }
 

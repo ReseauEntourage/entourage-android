@@ -24,5 +24,6 @@
     <string name="encounter_leave_voice_message">Enregistrez un message vocal</string>
     <string name="encounter_voice_message_button">Lancer la reconnaissance vocale</string>
     <string name="encounter_voice_message_not_supported">La reconnaissance vocale n\'est pas supportée sur votre téléphone.</string>
+    <string name="encounter_empty_fields">Veuillez remplir les champs</string>
 
 </resources>

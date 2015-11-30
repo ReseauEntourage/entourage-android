@@ -92,8 +92,8 @@ public class CreateEncounterPresenter {
         @Override
         public void execute(final EncounterUploadCallback callback) {
             this.callback = callback;
-            BusProvider.getInstance().post(this);
             BusProvider.getInstance().register(this);
+            BusProvider.getInstance().post(this);
         }
 
         @Subscribe
