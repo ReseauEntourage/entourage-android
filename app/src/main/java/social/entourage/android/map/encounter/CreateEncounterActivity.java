@@ -105,6 +105,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
                     } else {
                         messageEditText.setText(messageEditText.getText() + " " + textMatchList.get(0));
                     }
+                    messageEditText.setSelection(messageEditText.getText().length());
                     FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK);
                 }
             }
