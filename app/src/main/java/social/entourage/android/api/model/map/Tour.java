@@ -48,7 +48,7 @@ public class Tour implements Serializable {
     @Expose(serialize = false, deserialize = false)
     private String duration;
 
-    @Expose(serialize = false, deserialize = false)
+    @Expose(serialize = true, deserialize = true)
     private float distance;
 
     @Expose(serialize = false, deserialize = true)
