@@ -105,20 +105,22 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Override
     protected void onNewIntent(Intent intent) {
         Bundle args = intent.getExtras();
+        int userId = getAuthenticationController().getUser().getId();
+        boolean choice = getAuthenticationController().isUserToursOnly();
         if (args != null) {
             if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
                 if (mainFragment instanceof MapEntourageFragment) {
                     mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                    mapEntourageFragment.onNotificationAction(ConfirmationActivity.KEY_RESUME_TOUR);
+                    mapEntourageFragment.onNotificationExtras(userId, choice, ConfirmationActivity.KEY_RESUME_TOUR);
                 } else {
-                    loadFragmentWithExtra(ConfirmationActivity.KEY_RESUME_TOUR);
+                    loadFragmentWithExtras(ConfirmationActivity.KEY_RESUME_TOUR);
                 }
             } else if (args.getBoolean(ConfirmationActivity.KEY_END_TOUR, false)) {
                 if (mainFragment instanceof MapEntourageFragment) {
                     mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                    mapEntourageFragment.onNotificationAction(ConfirmationActivity.KEY_END_TOUR);
+                    mapEntourageFragment.onNotificationExtras(userId, choice, ConfirmationActivity.KEY_END_TOUR);
                 } else {
-                    loadFragmentWithExtra(ConfirmationActivity.KEY_END_TOUR);
+                    loadFragmentWithExtras(ConfirmationActivity.KEY_END_TOUR);
                 }
             }
         }
@@ -172,7 +174,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 if (mapEntourageFragment == null) {
                     mapEntourageFragment = new MapEntourageFragment();
                 }
-                loadFragment(mapEntourageFragment);
+                loadFragmentWithExtras(null);
                 break;
             case R.id.action_guide:
                 if (guideMapEntourageFragment == null) {
@@ -199,16 +201,17 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         fragmentTransaction.commit();
     }
 
-    private void loadFragmentWithExtra(String extra) {
-        final String action = extra;
+    private void loadFragmentWithExtras(final String action) {
         loadFragment(new MapEntourageFragment());
+        final int userId = getAuthenticationController().getUser().getId();
+        final boolean choice = getAuthenticationController().isUserToursOnly();
         if (mainFragment instanceof MapEntourageFragment) {
             Handler handler = new Handler();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                    mapEntourageFragment.onNotificationAction(action);
+                    mapEntourageFragment.onNotificationExtras(userId, choice, action);
                 }
             });
         }

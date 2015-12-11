@@ -33,6 +33,10 @@ public class Tour implements Serializable {
     @Expose(serialize = false, deserialize = true)
     private long id;
 
+    @SerializedName("user_id")
+    @Expose(serialize = false, deserialize = true)
+    private int userId;
+
     @SerializedName("vehicle_type")
     private String tourVehicleType = TOUR_FEET;
 
@@ -90,6 +94,10 @@ public class Tour implements Serializable {
         return id;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
     public String getTourVehicleType() {
         return tourVehicleType;
     }
@@ -132,6 +140,10 @@ public class Tour implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setTourVehicleType(String tourVehicleType) {

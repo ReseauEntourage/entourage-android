@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,10 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.UserChoiceEvent;
 
 public class UserActivity extends EntourageSecuredActivity {
 
@@ -52,6 +56,9 @@ public class UserActivity extends EntourageSecuredActivity {
 
     @Bind(R.id.user_encounters_count)
     TextView userEncountersCount;
+
+    @Bind(R.id.user_tours_switch)
+    Switch userToursSwitch;
 
     @Bind(R.id.organization_photo)
     ImageView organizationPhoto;
@@ -91,6 +98,7 @@ public class UserActivity extends EntourageSecuredActivity {
         }
 
         FlurryAgent.logEvent(Constants.EVENT_PROFILE_FROM_MENU);
+        BusProvider.getInstance().register(this);
 
         Resources res = getResources();
         User user = getAuthenticationController().getUser();
@@ -110,6 +118,9 @@ public class UserActivity extends EntourageSecuredActivity {
         userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
         userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
         userOrganization.setText(user.getOrganization().getName());
+        if (getAuthenticationController().isUserToursOnly()) {
+            userToursSwitch.setChecked(true);
+        }
     }
 
     @Override
@@ -183,6 +194,17 @@ public class UserActivity extends EntourageSecuredActivity {
     // ONCLICK CALLBACKS
     // ----------------------------------
 
+    @OnClick(R.id.user_tours_switch)
+    void setUsersToursOnly() {
+        if (userToursSwitch.isChecked()) {
+            getAuthenticationController().saveUserToursOnly(true);
+            BusProvider.getInstance().post(new UserChoiceEvent(true));
+        } else {
+            getAuthenticationController().saveUserToursOnly(false);
+            BusProvider.getInstance().post(new UserChoiceEvent(false));
+        }
+    }
+
     @OnClick(R.id.user_button_confirm_changes)
     void confirmChanges() {
 
@@ -212,8 +234,6 @@ public class UserActivity extends EntourageSecuredActivity {
     }
 
     @OnClick(R.id.user_button_unsubscribe)
-    void unsubscribe() {
-
-    }
+    void unsubscribe() {}
 
 }

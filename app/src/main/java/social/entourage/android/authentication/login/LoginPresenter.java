@@ -88,6 +88,7 @@ public class LoginPresenter {
                     public void success(LoginResponse loginResponse, Response response) {
                         authenticationController.saveUser(loginResponse.getUser());
                         authenticationController.saveUserPhone(phoneNumber);
+                        authenticationController.saveUserToursOnly(false);
                         if (isTutorialDone) {
                             activity.startMapActivity();
                         } else {
