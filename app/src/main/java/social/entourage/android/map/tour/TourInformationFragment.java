@@ -154,12 +154,12 @@ public class TourInformationFragment extends DialogFragment {
         }
 
         if (type != null) {
-            if (type.equals(TourType.SOCIAL.getName())) {
-                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_bare_hands)));
-            } else if (type.equals(TourType.FOOD.getName())) {
-                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
-            } else if (type.equals(TourType.OTHER.getName())) {
+            if (type.equals(TourType.MEDICAL.getName())) {
                 tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_medical)));
+            } else if (type.equals(TourType.ALIMENTARY.getName())) {
+                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
+            } else if (type.equals(TourType.BARE_HANDS.getName())) {
+                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_bare_hands)));
             }
         } else {
             tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_info_unknown)));

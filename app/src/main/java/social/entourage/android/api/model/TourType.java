@@ -8,9 +8,9 @@ public enum TourType {
     // CONSTANTS
     // ----------------------------------
 
-    SOCIAL("social", R.id.launcher_tour_type_bare_hands),
-    OTHER("other", R.id.launcher_tour_type_bare_hands),
-    FOOD("food", R.id.launcher_tour_type_alimentary);
+    MEDICAL("medical", R.id.launcher_tour_type_medical),
+    BARE_HANDS("barehands", R.id.launcher_tour_type_bare_hands),
+    ALIMENTARY("alimentary", R.id.launcher_tour_type_alimentary);
 
     // ----------------------------------
     // ATTRIBUTES
@@ -46,7 +46,7 @@ public enum TourType {
                 return tourType;
             }
         }
-        return OTHER;
+        return BARE_HANDS;
     }
 
     public String getName() {

@@ -203,17 +203,19 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
     private void loadFragmentWithExtras(final String action) {
         loadFragment(new MapEntourageFragment());
-        final int userId = getAuthenticationController().getUser().getId();
-        final boolean choice = getAuthenticationController().isUserToursOnly();
-        if (mainFragment instanceof MapEntourageFragment) {
-            Handler handler = new Handler();
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                    mapEntourageFragment.onNotificationExtras(userId, choice, action);
-                }
-            });
+        if (getAuthenticationController().getUser() != null) {
+            final int userId = getAuthenticationController().getUser().getId();
+            final boolean choice = getAuthenticationController().isUserToursOnly();
+            if (mainFragment instanceof MapEntourageFragment) {
+                Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+                        mapEntourageFragment.onNotificationExtras(userId, choice, action);
+                    }
+                });
+            }
         }
     }
 

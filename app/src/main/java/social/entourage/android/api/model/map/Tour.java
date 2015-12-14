@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.api.model.TourType;
@@ -41,7 +40,7 @@ public class Tour implements Serializable {
     private String tourVehicleType = TOUR_FEET;
 
     @SerializedName("tour_type")
-    private String tourType = TourType.SOCIAL.getName();
+    private String tourType = TourType.BARE_HANDS.getName();
 
     @SerializedName("status")
     private String tourStatus = TOUR_ON_GOING;

@@ -1,133 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="social.entourage.android.authentication.login.LoginActivity"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_login_light">
+    tools:context="social.entourage.android.authentication.login.LoginActivity"
+    android:fillViewport="true">
 
-    <ImageButton
-        android:id="@+id/login_button_close_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:background="@color/background_login_light"
-        android:src="@drawable/ic_close"/>
-
-    <ImageView
-        android:id="@+id/login_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="90dp"
-        android:layout_margin="15dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_entourage"/>
-
-    <LinearLayout
-        android:id="@+id/login_block_information"
+    <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_logo"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingBottom="20dp"
-        android:background="@color/background_login_grey">
+        android:background="@color/background_login_light">
 
-        <social.entourage.android.view.HtmlTextView
-            style="@style/SpacedTextViewSmall"
-            android:id="@+id/login_title_welcome"
+        <ImageButton
+            android:id="@+id/login_button_close_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            app:htmlText="@string/login_title_discover"
-            android:textSize="13sp"
-            android:textColor="@color/background_light"
-            android:gravity="center"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/background_login_light"
+            android:src="@drawable/ic_close"/>
+
+        <ImageView
+            android:id="@+id/login_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+            android:layout_margin="15dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_entourage"/>
 
         <LinearLayout
-            android:id="@+id/login_block_social_networks"
+            android:id="@+id/login_block_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
+            android:layout_below="@id/login_logo"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
             android:background="@color/background_login_grey">
 
-            <ImageButton
-                android:id="@+id/login_button_facebook"
+            <social.entourage.android.view.HtmlTextView
+                style="@style/SpacedTextViewSmall"
+                android:id="@+id/login_title_welcome"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:paddingLeft="40dp"
-                android:paddingRight="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:background="@color/background_login_grey"
-                android:src="@drawable/bg_facebook_button"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:htmlText="@string/login_title_discover"
+                android:textSize="13sp"
+                android:textColor="@color/background_light"
+                android:gravity="center"/>
 
-            <ImageButton
-                android:id="@+id/login_button_twitter"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
+            <LinearLayout
+                android:id="@+id/login_block_social_networks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:background="@color/background_login_grey">
+
+                <ImageButton
+                    android:id="@+id/login_button_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="10dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:background="@color/background_login_grey"
+                    android:src="@drawable/bg_facebook_button"/>
+
+                <ImageButton
+                    android:id="@+id/login_button_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:background="@color/background_login_grey"
+                    android:src="@drawable/bg_twitter_button"/>
+
+            </LinearLayout>
+
+            <social.entourage.android.view.FontTextView
+                android:id="@+id/login_text_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
                 android:paddingLeft="10dp"
-                android:paddingRight="40dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:background="@color/background_login_grey"
-                android:src="@drawable/bg_twitter_button"/>
+                android:paddingRight="10dp"
+                android:text="@string/login_text_description"
+                android:textSize="12sp"
+                android:textColor="@color/background_light"
+                android:textStyle="italic"
+                android:gravity="center"
+                app:fontName="fonts/Blokletters-Balpen.ttf"/>
+
 
         </LinearLayout>
 
-        <social.entourage.android.view.FontTextView
-            android:id="@+id/login_text_description"
+        <EditText
+            android:id="@+id/login_edit_email_ask_more"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/login_text_description"
-            android:textSize="12sp"
-            android:textColor="@color/background_light"
-            android:textStyle="italic"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@id/login_block_information"
+            android:inputType="textWebEmailAddress"
+            android:hint="@string/login_hint_email"
             android:gravity="center"
-            app:fontName="fonts/Blokletters-Balpen.ttf"/>
+            style="@style/CustomEditTextTheme"
+            android:textColor="@color/background_login_grey"/>
 
+        <Button
+            style="@style/GreyButton"
+            android:id="@+id/login_button_newsletter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@id/login_edit_email_ask_more"
+            android:layout_centerHorizontal="true"
+            android:text="@string/login_button_newsletter"
+            android:textSize="13sp"
+            android:textColor="@color/text_dark"
+            android:textAllCaps="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <EditText
-        android:id="@+id/login_edit_email_ask_more"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_below="@id/login_block_information"
-        android:inputType="textWebEmailAddress"
-        android:hint="@string/login_hint_email"
-        android:gravity="center"
-        style="@style/CustomEditTextTheme"
-        android:textColor="@color/background_login_grey"/>
-
-    <Button
-        style="@style/GreyButton"
-        android:id="@+id/login_button_newsletter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@id/login_edit_email_ask_more"
-        android:layout_centerHorizontal="true"
-        android:text="@string/login_button_newsletter"
-        android:textSize="13sp"
-        android:textColor="@color/text_dark"
-        android:textAllCaps="true"/>
-
-</RelativeLayout>
+</ScrollView>

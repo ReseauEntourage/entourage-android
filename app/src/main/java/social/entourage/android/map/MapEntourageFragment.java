@@ -12,7 +12,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.DropBoxManager;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -379,12 +378,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onToursFound(final Map<Long, Tour> tours) {
+    public void onToursFound(Map<Long, Tour> tours) {
         if (loaderSearchTours != null) {
             loaderSearchTours.dismiss();
             loaderSearchTours = null;
         }
         if (getActivity() != null) {
+            if (userToursOnly && !tours.isEmpty()) {
+                tours = removeOtherstours(tours);
+            }
             if (tours.isEmpty()) {
                 Toast.makeText(getActivity(), tourService.getString(R.string.tour_info_text_nothing_found), Toast.LENGTH_SHORT).show();
             } else {
@@ -657,16 +659,27 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         return tours;
     }
 
+    private Map<Long, Tour> removeOtherstours(Map<Long, Tour> tours) {
+        Iterator iteratorTours = tours.values().iterator();
+        while (iteratorTours.hasNext()) {
+            Tour tour = (Tour) iteratorTours.next();
+            if (tour.getUserId() != userId) {
+                iteratorTours.remove();
+            }
+        }
+        return tours;
+    }
+
     private int getTrackColor(int id, String type, Date date) {
         int color = Color.GRAY;
-        if (TourType.SOCIAL.getName().equals(type)) {
+        if (TourType.MEDICAL.getName().equals(type)) {
+            color = Color.RED;
+        }
+        else if (TourType.ALIMENTARY.getName().equals(type)) {
             color = Color.GREEN;
         }
-        else if (TourType.FOOD.getName().equals(type)) {
+        else if (TourType.BARE_HANDS.getName().equals(type)) {
             color = Color.BLUE;
-        }
-        else if (TourType.OTHER.getName().equals(type)) {
-            color = Color.RED;
         }
         if (!isToday(date)) {
             color = getTransparentColor(color);
@@ -688,7 +701,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Tour tour = (Tour) pair.getValue();
             if (tour.getUserId() != userId) {
                 Polyline line = drawnToursMap.get(tour.getId());
-                int color = line.getColor();
                 line.setColor(getTrackColor(tour.getUserId(), tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
             }
         }
