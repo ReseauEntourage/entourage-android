@@ -32,4 +32,7 @@
     <string name="login_button_finish_tutorial">J\'ai compris !</string>
     <string name="login_photo_error">La photo de profil n\'est pas encore disponible</string>
 
+    <string name="login_permission_title">Entourage doit accéder l\'état de votre téléphone</string>
+    <string name="login_permission_description">Permet d\'afficher votre numéro de téléphone.</string>
+
 </resources>

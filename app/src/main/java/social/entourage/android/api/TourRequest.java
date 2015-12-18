@@ -34,4 +34,11 @@ public interface TourRequest {
                              @Query("longitude") double longitude,
                              @Query("distance") double distance,
                              Callback<Tour.ToursWrapper> callback);
+
+    @Headers({"Accept: application/json"})
+    @GET("/users/{user_id}/tours.json")
+    void retrieveToursByUserId(@Path("user_id") int userId,
+                               @Query("page") int page,
+                               @Query("per") int per,
+                               Callback<Tour.ToursWrapper> callback);
 }

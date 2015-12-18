@@ -1,10 +1,17 @@
 package social.entourage.android.authentication.login;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.PermissionChecker;
+import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +48,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     private final static String ANDROID_DEVICE = "android";
     private final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
+    private static final int PERMISSIONS_REQUEST_PHONE_STATE = 1;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -131,6 +139,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //checkPermissions();
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -140,12 +149,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginLostCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
-
-        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        String phoneNumber = manager.getLine1Number();
-        if (phoneNumber != null) {
-            phoneEditText.setText(phoneNumber);
-        }
 
         Picasso.with(this).load(R.drawable.ic_user_photo)
                 .transform(new CropCircleTransformation())
@@ -162,6 +165,18 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_PHONE_STATE) {
+            for (int index = 0; index < permissions.length; index++) {
+                if (permissions[index].equalsIgnoreCase(Manifest.permission.READ_PHONE_STATE) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                    checkPermissions();
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
     public void onBackPressed() {
         if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
@@ -174,6 +189,36 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
         else {
             super.onBackPressed();
+        }
+    }
+
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+
+    @TargetApi(23)
+    private void checkPermissions() {
+        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.login_permission_title)
+                        .setMessage(R.string.login_permission_description)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                requestPermissions(new String[]{ Manifest.permission.READ_PHONE_STATE }, PERMISSIONS_REQUEST_PHONE_STATE);
+                            }
+                        }).show();
+            } else {
+                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_PHONE_STATE);
+            }
+            return;
+        } else {
+            TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            String phoneNumber = manager.getLine1Number();
+            if (phoneNumber != null) {
+                phoneEditText.setText(phoneNumber);
+            }
         }
     }
 

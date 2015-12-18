@@ -2,13 +2,13 @@ package social.entourage.android.tools;
 
 public class UserChoiceEvent {
 
-    private boolean userToursOnly;
+    private boolean userHistory;
 
-    public UserChoiceEvent(boolean userToursOnly) {
-        this.userToursOnly = userToursOnly;
+    public UserChoiceEvent(boolean userHistory) {
+        this.userHistory = userHistory;
     }
 
-    public boolean isUserToursOnly() {
-        return userToursOnly;
+    public boolean isUserHistory() {
+        return userHistory;
     }
 }

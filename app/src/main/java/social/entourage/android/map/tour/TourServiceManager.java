@@ -12,7 +12,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.inject.Inject;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -268,7 +265,7 @@ public class TourServiceManager {
                     for (Tour tour : toursWrapper.getTours()) {
                         toursMap.put(tour.getId(), tour);
                     }
-                    tourService.nofitfyListenersToursFound(toursMap);
+                    tourService.notifyListenersToursFound(toursMap);
                 }
 
                 @Override
@@ -277,6 +274,20 @@ public class TourServiceManager {
                 }
             });
         }
+    }
+
+    protected void retrieveToursByUserId(int userId, int page, int per) {
+        tourRequest.retrieveToursByUserId(userId, page, per, new Callback<Tour.ToursWrapper>() {
+            @Override
+            public void success(Tour.ToursWrapper toursWrapper, Response response) {
+                tourService.notifyListenersUserToursFound(toursWrapper.getTours());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Error", error.toString());
+            }
+        });
     }
 
     protected void sendEncounter(final Encounter encounter) {

@@ -89,7 +89,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     MapPresenter presenter;
 
     private int userId;
-    private boolean userToursOnly;
+    private boolean userHistory;
 
     private View toReturn;
 
@@ -113,8 +113,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private List<Polyline> currentTourLines;
     private Map<Long, Polyline> drawnToursMap;
+    private Map<Long, Polyline> drawnUserHistory;
     private Map<Long, Marker> markersMap;
     private Map<Long, Tour> retrievedTours;
+    private Map<Long, Tour> retrievedHistory;
 
     @Bind(R.id.fragment_map_pin)
     View mapPin;
@@ -154,8 +156,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         currentTourLines = new ArrayList<>();
         drawnToursMap = new TreeMap<>();
+        drawnUserHistory = new TreeMap<>();
         markersMap = new TreeMap<>();
         retrievedTours = new TreeMap<>();
+        retrievedHistory = new TreeMap<>();
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
         BusProvider.getInstance().register(this);
@@ -248,7 +252,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     public void onNotificationExtras(int id, boolean choice, String action) {
         userId = id;
-        userToursOnly = choice;
+        userHistory = choice;
         if (action != null) {
             if (ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
                 resumeTour();
@@ -294,11 +298,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Subscribe
     public void onUserChoiceChanged(UserChoiceEvent event) {
-        userToursOnly = event.isUserToursOnly();
-        if (userToursOnly) {
-            hideOthersTours();
+        userHistory = event.isUserHistory();
+        if (userHistory) {
+            tourService.updateUserHistory(userId, 1, 500);
+        }
+        if (userHistory) {
+            showUserHistory();
         } else {
-            showOthersTours();
+            hideUserHistory();
         }
     }
 
@@ -368,11 +375,23 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
-        tours = removeRedundantTours(tours);
+        tours = removeRedundantTours(tours, false);
         Collections.sort(tours, new Tour.TourComparatorOldToNew());
         for (Tour tour : tours) {
             if (currentTourId != tour.getId()) {
-                drawNearbyTour(tour);
+                drawNearbyTour(tour, false);
+            }
+        }
+    }
+
+    @Override
+    public void onRetrieveToursByUserId(List<Tour> tours) {
+        tours = removeRedundantTours(tours, true);
+        tours = removeRecentTours(tours);
+        Collections.sort(tours, new Tour.TourComparatorOldToNew());
+        for (Tour tour : tours) {
+            if (currentTourId != tour.getId()) {
+                drawNearbyTour(tour, true);
             }
         }
     }
@@ -384,9 +403,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             loaderSearchTours = null;
         }
         if (getActivity() != null) {
-            if (userToursOnly && !tours.isEmpty()) {
-                tours = removeOtherstours(tours);
-            }
             if (tours.isEmpty()) {
                 Toast.makeText(getActivity(), tourService.getString(R.string.tour_info_text_nothing_found), Toast.LENGTH_SHORT).show();
             } else {
@@ -423,6 +439,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 currentTourId = -1;
                 tourService.updateNearbyTours();
+                if (userHistory) {
+                    tourService.updateUserHistory(userId, 1, 1);
+                }
 
                 Toast.makeText(getActivity(), R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
             } else {
@@ -540,10 +559,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
                     float newZoom = cameraPosition.zoom;
 
-                    if (tourService != null && (newZoom/previousCameraZoom >= ZOOM_REDRAW_LIMIT ||  newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+                    if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
                         previousCameraZoom = newZoom;
                         previousCameraLocation = newLocation;
                         tourService.updateNearbyTours();
+                        if (userHistory) {
+                            tourService.updateUserHistory(userId, 1, 500);
+                        }
                     }
 
                     if (isFollowing && currentLocation != null) {
@@ -572,7 +594,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void startTour(String transportMode, String type) {
         if (tourService != null && !tourService.isRunning()) {
-            color = getTrackColor(userId, type, new Date());
+            color = getTrackColor(true, type, new Date());
             tourService.beginTreatment(transportMode, type);
         }
     }
@@ -648,29 +670,35 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private List<Tour> removeRedundantTours(List<Tour> tours) {
+    private List<Tour> removeRedundantTours(List<Tour> tours, boolean isHistory) {
         Iterator iteratorTours = tours.iterator();
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
-            if (drawnToursMap.containsKey(tour.getId())) {
-                iteratorTours.remove();
+            if (!isHistory) {
+                if (drawnToursMap.containsKey(tour.getId())) {
+                    iteratorTours.remove();
+                }
+            } else {
+                if (drawnUserHistory.containsKey(tour.getId())) {
+                    iteratorTours.remove();
+                }
             }
         }
         return tours;
     }
 
-    private Map<Long, Tour> removeOtherstours(Map<Long, Tour> tours) {
-        Iterator iteratorTours = tours.values().iterator();
+    private List<Tour> removeRecentTours(List<Tour> tours) {
+        Iterator iteratorTours = tours.iterator();
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
-            if (tour.getUserId() != userId) {
+            if (retrievedTours.containsValue(tour)) {
                 iteratorTours.remove();
             }
         }
         return tours;
     }
 
-    private int getTrackColor(int id, String type, Date date) {
+    private int getTrackColor(boolean isHistory, String type, Date date) {
         int color = Color.GRAY;
         if (TourType.MEDICAL.getName().equals(type)) {
             color = Color.RED;
@@ -684,8 +712,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (!isToday(date)) {
             color = getTransparentColor(color);
         }
-        if (userToursOnly && id != userId) {
-            return Color.argb(0, Color.red(color), Color.green(color), Color.blue(color));
+        if (isHistory) {
+            if (!userHistory) {
+                return Color.argb(0, Color.red(color), Color.green(color), Color.blue(color));
+            } else {
+                return Color.argb(255, Color.red(color), Color.green(color), Color.blue(color));
+            }
         }
         return color;
     }
@@ -694,25 +726,23 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         return Color.argb(100, Color.red(color), Color.green(color), Color.blue(color));
     }
 
-    private void hideOthersTours() {
-        Iterator iteratorTours = retrievedTours.entrySet().iterator();
+    private void hideUserHistory() {
+        Iterator iteratorTours = retrievedHistory.entrySet().iterator();
         while (iteratorTours.hasNext()) {
             Map.Entry pair = (Map.Entry) iteratorTours.next();
             Tour tour = (Tour) pair.getValue();
-            if (tour.getUserId() != userId) {
-                Polyline line = drawnToursMap.get(tour.getId());
-                line.setColor(getTrackColor(tour.getUserId(), tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
-            }
+            Polyline line = drawnUserHistory.get(tour.getId());
+            line.setColor(getTrackColor(true, tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
         }
     }
 
-    private void showOthersTours() {
-        Iterator iteratorLines = drawnToursMap.entrySet().iterator();
+    private void showUserHistory() {
+        Iterator iteratorLines = drawnUserHistory.entrySet().iterator();
         while (iteratorLines.hasNext()) {
             Map.Entry pair = (Map.Entry) iteratorLines.next();
-            Tour tour = retrievedTours.get(pair.getKey());
+            Tour tour = retrievedHistory.get(pair.getKey());
             Polyline line = (Polyline) pair.getValue();
-            line.setColor(getTrackColor(tour.getUserId(), tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
+            line.setColor(getTrackColor(true, tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
         }
     }
 
@@ -787,7 +817,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void drawCurrentTour(List<TourPoint> pointsToDraw, String tourType) {
         if (!pointsToDraw.isEmpty()) {
             PolylineOptions line = new PolylineOptions();
-            color = getTrackColor(userId, tourType, pointsToDraw.get(0).getPassingTime());
+            color = getTrackColor(true, tourType, pointsToDraw.get(0).getPassingTime());
             line.zIndex(2f);
             line.width(15);
             line.color(color);
@@ -798,8 +828,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private void drawNearbyTour(Tour tour) {
-        if (mapFragment != null && mapFragment.getMap() != null && drawnToursMap != null && tour != null && !tour.getTourPoints().isEmpty()) {
+    private void drawNearbyTour(Tour tour, boolean isHistory) {
+        if (mapFragment != null && mapFragment.getMap() != null && drawnToursMap != null && drawnUserHistory != null && tour != null && !tour.getTourPoints().isEmpty()) {
             PolylineOptions line = new PolylineOptions();
             if (isToday(tour.getTourPoints().get(0).getPassingTime())) {
                 line.zIndex(1f);
@@ -807,12 +837,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 line.zIndex(0f);
             }
             line.width(15);
-            line.color(getTrackColor(tour.getUserId(), tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
+            line.color(getTrackColor(isHistory, tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
-            retrievedTours.put(tour.getId(), tour);
-            drawnToursMap.put(tour.getId(), mapFragment.getMap().addPolyline(line));
+            if (isHistory) {
+                retrievedHistory.put(tour.getId(), tour);
+                drawnUserHistory.put(tour.getId(), mapFragment.getMap().addPolyline(line));
+            } else {
+                retrievedTours.put(tour.getId(), tour);
+                drawnToursMap.put(tour.getId(), mapFragment.getMap().addPolyline(line));
+            }
             if (tour.getTourStatus() == null) {
                 tour.setTourStatus(Tour.TOUR_CLOSED);
             }
@@ -909,10 +944,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
                 tourService.updateNearbyTours();
+                if (userHistory) {
+                    tourService.updateUserHistory(userId, 1, 500);
+                }
 
                 Intent intent = getActivity().getIntent();
                 if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
-                    onNotificationExtras(userId, userToursOnly,TourService.NOTIFICATION_PAUSE);
+                    onNotificationExtras(userId, userHistory,TourService.NOTIFICATION_PAUSE);
                 }
             }
         }
