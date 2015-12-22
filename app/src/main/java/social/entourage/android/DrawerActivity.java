@@ -171,16 +171,22 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     private void selectItem(@IdRes int menuId) {
         switch (menuId) {
             case R.id.action_tours:
-                if (mapEntourageFragment == null) {
-                    mapEntourageFragment = new MapEntourageFragment();
-                }
+                //if (mapEntourageFragment == null) {
+                    mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag("fragment_map");
+                    if (mapEntourageFragment == null) {
+                        mapEntourageFragment = new MapEntourageFragment();
+                    }
+                //}
                 loadFragmentWithExtras(null);
                 break;
             case R.id.action_guide:
-                if (guideMapEntourageFragment == null) {
-                    guideMapEntourageFragment = new GuideMapEntourageFragment();
-                }
-                loadFragment(guideMapEntourageFragment);
+                //if (guideMapEntourageFragment == null) {
+                    guideMapEntourageFragment = (GuideMapEntourageFragment) getSupportFragmentManager().findFragmentByTag("fragment_guide");
+                    if (guideMapEntourageFragment == null) {
+                        guideMapEntourageFragment = new GuideMapEntourageFragment();
+                    }
+                //}
+                loadFragment(guideMapEntourageFragment, "fragment_guide");
                 break;
             case R.id.action_user:
                 startActivity(new Intent(this, UserActivity.class));
@@ -193,16 +199,20 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         }
     }
 
-    private void loadFragment(Fragment newFragment) {
+    private void loadFragment(Fragment newFragment, String tag) {
         mainFragment = newFragment;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment, mainFragment);
+        fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
     private void loadFragmentWithExtras(final String action) {
-        loadFragment(new MapEntourageFragment());
+        MapEntourageFragment fragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag("fragment_map");
+        if (fragment == null) {
+            fragment = new MapEntourageFragment();
+        }
+        loadFragment(fragment, "fragment_map");
         if (getAuthenticationController().getUser() != null) {
             final int userId = getAuthenticationController().getUser().getId();
             final boolean choice = getAuthenticationController().isUserToursOnly();

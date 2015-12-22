@@ -238,6 +238,10 @@ public class TourService extends Service {
         tourServiceManager.retrieveToursNearbyLarge();
     }
 
+    public void updateUserHistory(int userId, int page, int per) {
+        tourServiceManager.retrieveToursByUserId(userId, page, per);
+    }
+
     public void searchToursFromPoint(LatLng point) {
         tourServiceManager.retrieveToursNearbySmall(point);
     }
@@ -339,7 +343,13 @@ public class TourService extends Service {
         }
     }
 
-    public void nofitfyListenersToursFound(Map<Long, Tour> tours) {
+    public void notifyListenersUserToursFound(List<Tour> tours) {
+        for (TourServiceListener listener : listeners) {
+            listener.onRetrieveToursByUserId(tours);
+        }
+    }
+
+    public void notifyListenersToursFound(Map<Long, Tour> tours) {
         for (TourServiceListener listener : listeners) {
             listener.onToursFound(tours);
         }
@@ -355,6 +365,7 @@ public class TourService extends Service {
         void onTourResumed(List<TourPoint> pointsToDraw, String tourType);
         void onLocationUpdated(LatLng location);
         void onRetrieveToursNearby(List<Tour> tours);
+        void onRetrieveToursByUserId(List<Tour> tours);
         void onToursFound(Map<Long, Tour> tours);
         void onTourClosed(boolean closed);
     }
