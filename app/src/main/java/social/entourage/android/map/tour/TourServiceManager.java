@@ -229,12 +229,12 @@ public class TourServiceManager {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {
                 pointsToSend.removeAll(tourPointWrapper.getTourPoints());
-                Log.v("Success", tourWrapper.toString());
+                Log.v(this.getClass().getSimpleName(), tourWrapper.toString());
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("Error", error.toString());
+                Log.e(this.getClass().getSimpleName(), error.toString());
             }
         });
     }
