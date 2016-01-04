@@ -18,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,6 +118,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private Map<Long, Marker> markersMap;
     private Map<Long, Tour> retrievedTours;
     private Map<Long, Tour> retrievedHistory;
+    private List<Marker> markers;
 
     @Bind(R.id.fragment_map_pin)
     View mapPin;
@@ -160,6 +162,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         markersMap = new TreeMap<>();
         retrievedTours = new TreeMap<>();
         retrievedHistory = new TreeMap<>();
+        markers = new ArrayList<>();
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
         BusProvider.getInstance().register(this);
@@ -279,7 +282,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 .icon(encounterIcon);
 
         if (mapFragment.getMap() != null) {
-            mapFragment.getMap().addMarker(markerOptions);
+            markers.add(mapFragment.getMap().addMarker(markerOptions));
             onClickListener.addEncounterMarker(encounterPosition, encounter);
         }
     }
@@ -427,15 +430,18 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onTourClosed(boolean closed) {
         if (getActivity() != null) {
             if (closed) {
-                for (Polyline line : currentTourLines) {
-                    line.remove();
-                }
+
+                mapFragment.getMap().clear();
+
                 currentTourLines.clear();
+                drawnToursMap.clear();
+                drawnUserHistory.clear();
+                retrievedTours.clear();
+
                 previousCoordinates = null;
 
                 mapPin.setVisibility(View.GONE);
                 buttonStartLauncher.setVisibility(View.VISIBLE);
-                clearMap();
 
                 currentTourId = -1;
                 tourService.updateNearbyTours();
@@ -444,6 +450,31 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
 
                 Toast.makeText(getActivity(), R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
+
+                /*
+                for (Polyline line : currentTourLines) {
+                    line.remove();
+                }
+
+                currentTourLines.clear();
+                previousCoordinates = null;
+
+                mapPin.setVisibility(View.GONE);
+                buttonStartLauncher.setVisibility(View.VISIBLE);
+
+                for (Marker marker : markers) {
+                    marker.remove();
+                }
+                markers.clear();
+
+                currentTourId = -1;
+                tourService.updateNearbyTours();
+                if (userHistory) {
+                    tourService.updateUserHistory(userId, 1, 1);
+                }
+
+                Toast.makeText(getActivity(), R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
+                */
             } else {
                 layoutMapTour.setVisibility((View.VISIBLE));
                 Toast.makeText(getActivity(), R.string.tour_close_fail, Toast.LENGTH_SHORT).show();
@@ -594,7 +625,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void startTour(String transportMode, String type) {
         if (tourService != null && !tourService.isRunning()) {
-            color = getTrackColor(true, type, new Date());
+            color = getTrackColor(false, type, new Date());
             tourService.beginTreatment(transportMode, type);
         }
     }

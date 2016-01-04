@@ -48,6 +48,14 @@ public class Tour implements Serializable {
     @Expose(serialize = false, deserialize = false)
     private Date date;
 
+    @SerializedName("start_time")
+    @Expose(serialize = false, deserialize = true)
+    private Date startTime;
+
+    @SerializedName("end_time")
+    @Expose(serialize = false, deserialize = true)
+    private Date endTime;
+
     @Expose(serialize = false, deserialize = false)
     private String duration;
 
@@ -113,6 +121,14 @@ public class Tour implements Serializable {
         return date;
     }
 
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
     public String getDuration() {
         return duration;
     }
@@ -159,6 +175,14 @@ public class Tour implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public void setDuration(String duration) {
