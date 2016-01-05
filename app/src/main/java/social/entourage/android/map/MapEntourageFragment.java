@@ -118,7 +118,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private Map<Long, Marker> markersMap;
     private Map<Long, Tour> retrievedTours;
     private Map<Long, Tour> retrievedHistory;
-    private List<Marker> markers;
 
     @Bind(R.id.fragment_map_pin)
     View mapPin;
@@ -162,7 +161,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         markersMap = new TreeMap<>();
         retrievedTours = new TreeMap<>();
         retrievedHistory = new TreeMap<>();
-        markers = new ArrayList<>();
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
         BusProvider.getInstance().register(this);
@@ -282,7 +280,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 .icon(encounterIcon);
 
         if (mapFragment.getMap() != null) {
-            markers.add(mapFragment.getMap().addMarker(markerOptions));
+            mapFragment.getMap().addMarker(markerOptions);
             onClickListener.addEncounterMarker(encounterPosition, encounter);
         }
     }
@@ -430,7 +428,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onTourClosed(boolean closed) {
         if (getActivity() != null) {
             if (closed) {
-
                 mapFragment.getMap().clear();
 
                 currentTourLines.clear();
@@ -450,31 +447,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
 
                 Toast.makeText(getActivity(), R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
-
-                /*
-                for (Polyline line : currentTourLines) {
-                    line.remove();
-                }
-
-                currentTourLines.clear();
-                previousCoordinates = null;
-
-                mapPin.setVisibility(View.GONE);
-                buttonStartLauncher.setVisibility(View.VISIBLE);
-
-                for (Marker marker : markers) {
-                    marker.remove();
-                }
-                markers.clear();
-
-                currentTourId = -1;
-                tourService.updateNearbyTours();
-                if (userHistory) {
-                    tourService.updateUserHistory(userId, 1, 1);
-                }
-
-                Toast.makeText(getActivity(), R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
-                */
             } else {
                 layoutMapTour.setVisibility((View.VISIBLE));
                 Toast.makeText(getActivity(), R.string.tour_close_fail, Toast.LENGTH_SHORT).show();

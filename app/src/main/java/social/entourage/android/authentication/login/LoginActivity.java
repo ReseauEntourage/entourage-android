@@ -227,13 +227,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // ----------------------------------
 
     public void startMapActivity() {
-        resetLoginButton();
+        stopLoader();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_OK);
         startActivity(new Intent(this, DrawerActivity.class));
     }
 
     public void loginFail() {
-        resetLoginButton();
+        stopLoader();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
         Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
     }
@@ -245,11 +245,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void startLoader() {
         loginButton.setText(R.string.button_loading);
         loginButton.setEnabled(false);
+        receiveCodeButton.setText(R.string.button_loading);
+        receiveCodeButton.setEnabled(false);
+        lostCodePhone.setEnabled(false);
     }
 
-    public void resetLoginButton() {
+    public void stopLoader() {
         loginButton.setText(R.string.login_button_signup);
         loginButton.setEnabled(true);
+        receiveCodeButton.setText(R.string.login_button_ask_code);
+        receiveCodeButton.setEnabled(true);
+        lostCodePhone.setEnabled(true);
     }
 
     public void launchFillInProfileView(User user) {
@@ -311,17 +317,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_ask_code)
     void sendNewCode() {
+        startLoader();
         loginPresenter.sendNewCode(lostCodePhone.getText().toString());
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
-        /* TODO: implement this */
-        /**
-         * here :
-         * if code sent : R.string.login_text_code_ok
-         * else         : R.string.login_text_code_ko
-         */
-        codeConfirmation.setText(R.string.login_text_lost_code_ko);
-        enterCodeBlock.setVisibility(View.GONE);
-        confirmationBlock.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.login_button_home)
@@ -331,6 +329,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.GONE);
         loginSignup.setVisibility(View.VISIBLE);
+    }
+
+    void newCodeAsked(User user) {
+        stopLoader();
+        if (user != null) {
+            codeConfirmation.setText(R.string.login_text_lost_code_ok);
+        } else {
+            codeConfirmation.setText(R.string.login_text_lost_code_ko);
+        }
+        enterCodeBlock.setVisibility(View.GONE);
+        confirmationBlock.setVisibility(View.VISIBLE);
     }
 
     /************************
