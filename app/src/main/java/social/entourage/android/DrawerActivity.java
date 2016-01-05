@@ -139,6 +139,17 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mainFragment instanceof MapEntourageFragment) {
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
+        else if (mainFragment instanceof GuideMapEntourageFragment) {
+            navigationView.getMenu().getItem(1).setChecked(true);
+        }
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
