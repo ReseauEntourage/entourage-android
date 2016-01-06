@@ -2,6 +2,7 @@ package social.entourage.android.user;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -28,12 +29,17 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
-import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.UserChoiceEvent;
 
 public class UserActivity extends EntourageSecuredActivity {
+
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    private final String TERMS_AND_CONDITIONS_URL= "http://www.entourage.social/cgu";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -235,5 +241,11 @@ public class UserActivity extends EntourageSecuredActivity {
 
     @OnClick(R.id.user_button_unsubscribe)
     void unsubscribe() {}
+
+    @OnClick(R.id.user_terms_and_conditions)
+    void displayTermsAndConditions() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_AND_CONDITIONS_URL));
+        startActivity(browserIntent);
+    }
 
 }

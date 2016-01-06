@@ -14,5 +14,6 @@
     <string name="user_text_update_ko">Erreur de mise à jour</string>
     <string name="user_image_add_photo">Ajouter une photo</string>
     <string name="user_switch_label">Afficher toutes mes maraudes</string>
+    <string name="user_terms_and_conditions"><u>Conditions Générales d\'Utilisation</u></string>
 
 </resources>

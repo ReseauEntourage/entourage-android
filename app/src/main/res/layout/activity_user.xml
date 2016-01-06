@@ -296,6 +296,14 @@
                     android:layout_margin="20dp"
                     android:text="@string/user_button_unsubscribe" />
 
+                <TextView
+                    android:id="@+id/user_terms_and_conditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/user_terms_and_conditions"/>
+
             </LinearLayout>
 
         </LinearLayout>
