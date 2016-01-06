@@ -351,6 +351,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     }
 
+    //TODO: remove this when the tutorial content is ready
+    @OnClick(R.id.login_button_go)
+    void finishTutorial() {
+        loginPresenter.updateUserEmail(profileEmail.getText().toString());
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
+        startActivity(new Intent(this, DrawerActivity.class));
+    }
+
+    /*
+    TODO: put this back when the tutorial content is ready
     @OnClick(R.id.login_button_go)
     void startTutorial() {
         FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_START);
@@ -358,11 +369,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.VISIBLE);
     }
+    */
 
     /************************
      * Tutorial View
      ************************/
 
+    /*
+    TODO: put this back when the tutorial content is ready
     @OnClick(R.id.login_button_finish_tutorial)
     void finishTutorial() {
         FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_END);
@@ -370,4 +384,5 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
         startActivity(new Intent(this, DrawerActivity.class));
     }
+    */
 }

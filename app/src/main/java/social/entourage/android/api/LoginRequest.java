@@ -11,7 +11,7 @@ import social.entourage.android.api.model.Newsletter;
 
 public interface LoginRequest {
 
-    @Headers({"Accept: application/json"})
+    //@Headers({"Accept: application/json"})
     @FormUrlEncoded
     @POST("/login.json")
     void login(@Field("phone") String phone,
@@ -19,7 +19,7 @@ public interface LoginRequest {
                @Field("device_type") String type,
                @Field("device_id") String id, Callback<LoginResponse> callback);
 
-    @Headers({"Accept: application/json"})
+    //@Headers({"Accept: application/json"})
     @POST("/newsletter_subscriptions.json")
     void subscribeToNewsletter(@Body Newsletter.NewsletterWrapper newsletterWrapper, ResponseCallback callback);
 }

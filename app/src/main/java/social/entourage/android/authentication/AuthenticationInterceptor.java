@@ -20,6 +20,8 @@ public class AuthenticationInterceptor implements RequestInterceptor {
 
     @Override
     public void intercept(final RequestFacade request) {
+        request.addHeader("Accept", "application/json");
+        request.addHeader("X-API-Key", "(required, string, `32e2ced9df89`)");
         if (authenticationController.isAuthenticated()) {
             request.addEncodedQueryParam("token", authenticationController.getUser().getToken());
         }
