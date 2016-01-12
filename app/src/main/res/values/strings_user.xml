@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="activity_display_user_title">Mon Profil</string>
+    <string name="activity_display_user_title">PROFIL</string>
     <string name="user_information_label">Informations de maraudeur</string>
     <string name="user_organization_label">Informations d\'association</string>
     <string name="user_privacy_label">Informations privées</string>

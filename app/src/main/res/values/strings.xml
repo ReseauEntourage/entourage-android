@@ -1,11 +1,12 @@
 <resources>
 
     <string name="app_name">Entourage</string>
-    <string name="action_settings">Profil</string>
-    <string name="action_logout">Déconnexion</string>
-    <string name="action_guide">Guide</string>
-    <string name="action_tours">Maraudes</string>
+    <string name="action_settings">PROFIL</string>
+    <string name="action_logout">DECONNEXION</string>
+    <string name="action_guide">GUIDE</string>
+    <string name="action_tours">MARAUDES</string>
     <string name="button_loading">Chargement…</string>
     <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
+    <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
 
 </resources>

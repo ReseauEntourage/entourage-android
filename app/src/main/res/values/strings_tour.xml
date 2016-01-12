@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Tour -->
-    <string name="activity_tours_title">Maraudes</string>
+    <string name="activity_tours_title">MARAUDES</string>
     <string name="tour_start">Démarrer une maraude</string>
     <string name="tour_creation_fail">Echec de l\'envoi de maraude</string>
     <string name="tour_resume">Reprendre</string>
@@ -24,12 +24,14 @@
 
     <!-- Tour info -->
     <string name="tour_info_date">--/--/-----</string>
-    <string name="tour_info_text_organization">Organisation : %1s</string>
-    <string name="tour_info_text_transport">Type de transport : %1s</string>
-    <string name="tour_info_text_type">Type de maraude : %1s</string>
+    <string name="tour_info_text_duration">%1$s - %2$s</string>
+    <string name="tour_info_text_organization_title">Organisation :</string>
+    <string name="tour_info_text_organization">%1s</string>
+    <string name="tour_info_text_transport_title">Type de transport :</string>
+    <string name="tour_info_text_type_title">Type de maraude :</string>
     <string name="tour_info_text_status">Statut de la maraude :</string>
-    <string name="tour_info_text_ongoing"><![CDATA[<font color=\"#00E11E\">En cours</font>]]></string>
-    <string name="tour_info_text_closed"><![CDATA[<font color=\"#F60000\">Terminée</font>]]></string>
+    <string name="tour_info_text_ongoing">En cours</string>
+    <string name="tour_info_text_closed">Terminée</string>
     <string name="tour_info_text_choose">Choisir</string>
     <string name="tour_info_text_nothing_found">Aucune maraude récente trouvée</string>
     <string name="tour_info_text_cancel">Annuler</string>

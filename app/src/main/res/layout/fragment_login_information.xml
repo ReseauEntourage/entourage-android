@@ -5,21 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="social.entourage.android.authentication.login.LoginActivity"
-    android:fillViewport="true">
+    android:padding="30dp"
+    android:background="@android:color/transparent"
+    tools:context="social.entourage.android.authentication.login.LoginActivity">
 
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background_login_light">
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_borders_grey_light">
 
         <ImageButton
             android:id="@+id/login_button_close_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@color/background_login_light"
@@ -58,7 +59,7 @@
             <LinearLayout
                 android:id="@+id/login_block_social_networks"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 android:background="@color/background_login_grey">
@@ -66,7 +67,7 @@
                 <ImageButton
                     android:id="@+id/login_button_facebook"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:paddingLeft="40dp"
                     android:paddingRight="10dp"
                     android:layout_weight="1"
@@ -78,7 +79,7 @@
                 <ImageButton
                     android:id="@+id/login_button_twitter"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:paddingRight="40dp"
                     android:layout_weight="1"
@@ -106,34 +107,46 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/login_edit_email_ask_more"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_below="@id/login_block_information"
-            android:inputType="textWebEmailAddress"
-            android:hint="@string/login_hint_email"
+            android:minHeight="60dp"
+            android:orientation="vertical"
             android:gravity="center"
-            style="@style/CustomEditTextTheme"
-            android:textColor="@color/background_login_grey"/>
+            android:paddingTop="5dp"
+            android:paddingBottom="15dp"
+            android:layout_below="@+id/login_block_information">
 
-        <Button
-            style="@style/GreyButton"
-            android:id="@+id/login_button_newsletter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="20dp"
-            android:layout_below="@id/login_edit_email_ask_more"
-            android:layout_centerHorizontal="true"
-            android:text="@string/login_button_newsletter"
-            android:textSize="13sp"
-            android:textColor="@color/text_dark"
-            android:textAllCaps="true"/>
+            <EditText
+                android:id="@+id/login_edit_email_ask_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_below="@id/login_block_information"
+                android:inputType="textWebEmailAddress"
+                android:gravity="center"
+                android:hint="@string/login_hint_email"
+                style="@style/CustomEditTextTheme"
+                android:textColor="@color/background_login_grey"/>
+
+            <Button
+                style="@style/GreyButton"
+                android:id="@+id/login_button_newsletter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_below="@id/login_edit_email_ask_more"
+                android:layout_centerHorizontal="true"
+                android:text="@string/login_button_newsletter"
+                android:textSize="13sp"
+                android:textColor="@color/text_dark"
+                android:textAllCaps="true"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

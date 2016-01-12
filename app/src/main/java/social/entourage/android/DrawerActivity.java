@@ -245,16 +245,6 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     // ----------------------------------
-    // ONCLICK CALLBACKS
-    // ----------------------------------
-
-    @OnClick(R.id.drawer_header_user_photo)
-    void openUserProfile() {
-        startActivity(new Intent(this, UserActivity.class));
-        drawerLayout.closeDrawers();
-    }
-
-    // ----------------------------------
     // INTERFACES CALLBACKS
     // ----------------------------------
 

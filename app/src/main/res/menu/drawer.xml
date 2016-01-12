@@ -5,7 +5,7 @@
         <item android:id="@+id/action_tours"
             android:title="@string/action_tours"
             android:icon="@drawable/ic_map"
-            android:checked="true"/>
+            android:checked="true" />
         <item android:id="@+id/action_guide"
             android:title="@string/action_guide"
             android:icon="@drawable/ic_explore"/>

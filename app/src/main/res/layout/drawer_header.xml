@@ -13,7 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:paddingTop="15dp"
-        android:clickable="true"
         android:src="@drawable/bg_user_image_button"/>
 
     <TextView

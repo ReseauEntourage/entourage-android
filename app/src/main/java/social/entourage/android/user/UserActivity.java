@@ -2,11 +2,15 @@ package social.entourage.android.user;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +26,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
@@ -87,6 +92,9 @@ public class UserActivity extends EntourageSecuredActivity {
     @Bind(R.id.user_button_unsubscribe)
     Button buttonUnsubscribe;
 
+    @Bind(R.id.user_terms_and_conditions)
+    TextView termsAndConditions;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -106,27 +114,8 @@ public class UserActivity extends EntourageSecuredActivity {
         FlurryAgent.logEvent(Constants.EVENT_PROFILE_FROM_MENU);
         BusProvider.getInstance().register(this);
 
-        Resources res = getResources();
-        User user = getAuthenticationController().getUser();
-        int tourCount = user.getStats().getTourCount();
-        int encountersCount = user.getStats().getEncounterCount();
+        configureView();
 
-        Picasso.with(this).load(R.drawable.ic_user_photo)
-                .transform(new CropCircleTransformation())
-                .into(userPhoto);
-
-        Picasso.with(this).load(R.drawable.ic_organisation_notfound)
-                .transform(new CropCircleTransformation())
-                .into(organizationPhoto);
-
-        userName.setText(user.getFirstName() + " " + user.getLastName());
-        userEmail.setText(user.getEmail());
-        userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
-        userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
-        userOrganization.setText(user.getOrganization().getName());
-        if (getAuthenticationController().isUserToursOnly()) {
-            userToursSwitch.setChecked(true);
-        }
     }
 
     @Override
@@ -161,6 +150,10 @@ public class UserActivity extends EntourageSecuredActivity {
         super.onBackPressed();
     }
 
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+
     private void configureToolbar() {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         final ActionBar actionBar = getSupportActionBar();
@@ -168,6 +161,31 @@ public class UserActivity extends EntourageSecuredActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void configureView() {
+        Resources res = getResources();
+        User user = getAuthenticationController().getUser();
+        int tourCount = user.getStats().getTourCount();
+        int encountersCount = user.getStats().getEncounterCount();
+
+        Picasso.with(this).load(R.drawable.ic_user_photo)
+                .transform(new CropCircleTransformation())
+                .into(userPhoto);
+
+        Picasso.with(this).load(R.drawable.ic_organisation_notfound)
+                .transform(new CropCircleTransformation())
+                .into(organizationPhoto);
+
+        userName.setText(user.getFirstName() + " " + user.getLastName());
+        userEmail.setText(user.getEmail());
+        userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
+        userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
+        userOrganization.setText(user.getOrganization().getName());
+        if (getAuthenticationController().isUserToursOnly()) {
+            userToursSwitch.setChecked(true);
+        }
+        userEditEmail.setText(user.getEmail());
     }
 
     // ----------------------------------
@@ -184,6 +202,7 @@ public class UserActivity extends EntourageSecuredActivity {
         userEditEmail.setText("");
         userEditCode.setText("");
         userEditConfirmation.setText("");
+        userEditEmail.setText(email);
     }
 
     public void startLoader() {
@@ -240,12 +259,13 @@ public class UserActivity extends EntourageSecuredActivity {
     }
 
     @OnClick(R.id.user_button_unsubscribe)
-    void unsubscribe() {}
+    void unsubscribe() {
+        Snackbar.make(getCurrentFocus(), getResources().getString(R.string.unsubscribe_error), Snackbar.LENGTH_LONG).show();
+    }
 
     @OnClick(R.id.user_terms_and_conditions)
     void displayTermsAndConditions() {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_AND_CONDITIONS_URL));
         startActivity(browserIntent);
     }
-
 }

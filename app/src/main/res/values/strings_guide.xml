@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Guide -->
-    <string name="activity_display_guide_title">Guide</string>
+    <string name="activity_display_guide_title">GUIDE</string>
 
     <!-- POI -->
     <string name="activity_read_poi_title">Point d\'intérêt</string>
