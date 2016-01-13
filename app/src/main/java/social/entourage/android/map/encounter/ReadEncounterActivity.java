@@ -1,5 +1,7 @@
 package social.entourage.android.map.encounter;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -81,8 +84,9 @@ public class ReadEncounterActivity extends EntourageActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         presenter.displayEncounter();
-
     }
 
     // ----------------------------------

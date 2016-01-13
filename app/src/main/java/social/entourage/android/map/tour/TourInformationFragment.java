@@ -93,6 +93,7 @@ public class TourInformationFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onCreateView(inflater, container, savedInstanceState);
         View toReturn = inflater.inflate(R.layout.fragment_tour_information, container, false);
         ButterKnife.bind(this, toReturn);
         initializeView();

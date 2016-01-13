@@ -7,7 +7,8 @@
     android:paddingBottom="20dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="@drawable/bg_popup"
+    android:background="@drawable/rounded_borders_white"
+    android:layout_margin="20dp"
     android:gravity="center">
 
     <TextView
