@@ -2,15 +2,14 @@ package social.entourage.android.user;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.MotionEvent;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,19 +25,16 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTouch;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
-import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
-import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.UserChoiceEvent;
 
-public class UserActivity extends EntourageSecuredActivity {
+public class UserFragment extends Fragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -49,6 +45,8 @@ public class UserActivity extends EntourageSecuredActivity {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    private View toReturn;
 
     @Inject
     UserPresenter presenter;
@@ -100,25 +98,23 @@ public class UserActivity extends EntourageSecuredActivity {
     // ----------------------------------
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_user);
-        configureToolbar();
-        ButterKnife.bind(this);
-
-        if (!getAuthenticationController().isAuthenticated()) {
-            startActivity(new Intent(this, LoginActivity.class));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        if (toReturn == null) {
+            toReturn = inflater.inflate(R.layout.fragment_user, container, false);
         }
-
+        ButterKnife.bind(this, toReturn);
         FlurryAgent.logEvent(Constants.EVENT_PROFILE_FROM_MENU);
-        BusProvider.getInstance().register(this);
-
-        configureView();
-
+        return toReturn;
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        configureView();
+    }
+
     protected void setupComponent(EntourageComponent entourageComponent) {
         DaggerUserComponent.builder()
                 .entourageComponent(entourageComponent)
@@ -128,64 +124,42 @@ public class UserActivity extends EntourageSecuredActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                startActivity(new Intent(this, DrawerActivity.class));
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        setTitle(R.string.activity_display_user_title);
-    }
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, DrawerActivity.class));
-        super.onBackPressed();
+        if (getActivity() != null) {
+            getActivity().setTitle(R.string.activity_display_user_title);
+        }
     }
 
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
 
-    private void configureToolbar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        final ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
     private void configureView() {
-        Resources res = getResources();
-        User user = getAuthenticationController().getUser();
-        int tourCount = user.getStats().getTourCount();
-        int encountersCount = user.getStats().getEncounterCount();
+        if (getActivity() != null) {
+            Resources res = getResources();
+            User user = presenter.getUser();
+            int tourCount = user.getStats().getTourCount();
+            int encountersCount = user.getStats().getEncounterCount();
 
-        Picasso.with(this).load(R.drawable.ic_user_photo)
-                .transform(new CropCircleTransformation())
-                .into(userPhoto);
+            Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
+                    .transform(new CropCircleTransformation())
+                    .into(userPhoto);
 
-        Picasso.with(this).load(R.drawable.ic_organisation_notfound)
-                .transform(new CropCircleTransformation())
-                .into(organizationPhoto);
+            Picasso.with(getActivity()).load(R.drawable.ic_organisation_notfound)
+                    .transform(new CropCircleTransformation())
+                    .into(organizationPhoto);
 
-        userName.setText(user.getFirstName() + " " + user.getLastName());
-        userEmail.setText(user.getEmail());
-        userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
-        userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
-        userOrganization.setText(user.getOrganization().getName());
-        if (getAuthenticationController().isUserToursOnly()) {
-            userToursSwitch.setChecked(true);
+            userName.setText(user.getFirstName() + " " + user.getLastName());
+            userEmail.setText(user.getEmail());
+            userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
+            userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
+            userOrganization.setText(user.getOrganization().getName());
+            if (presenter.isUserToursOnly()) {
+                userToursSwitch.setChecked(true);
+            }
+            userEditEmail.setText(user.getEmail());
         }
-        userEditEmail.setText(user.getEmail());
     }
 
     // ----------------------------------
@@ -193,7 +167,9 @@ public class UserActivity extends EntourageSecuredActivity {
     // ----------------------------------
 
     public void displayToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void updateView(String email) {
@@ -222,10 +198,10 @@ public class UserActivity extends EntourageSecuredActivity {
     @OnClick(R.id.user_tours_switch)
     void setUsersToursOnly() {
         if (userToursSwitch.isChecked()) {
-            getAuthenticationController().saveUserToursOnly(true);
+            presenter.saveUserToursOnly(true);
             BusProvider.getInstance().post(new UserChoiceEvent(true));
         } else {
-            getAuthenticationController().saveUserToursOnly(false);
+            presenter.saveUserToursOnly(false);
             BusProvider.getInstance().post(new UserChoiceEvent(false));
         }
     }
@@ -245,11 +221,11 @@ public class UserActivity extends EntourageSecuredActivity {
         }
 
         if ((!codeEdit.equals("") && codeEdit.length() == 6) &&
-            (!confirmationEdit.equals("") && confirmationEdit.length() == 6)) {
+                (!confirmationEdit.equals("") && confirmationEdit.length() == 6)) {
             if (codeEdit.equals(confirmationEdit)) {
                 code = codeEdit;
             } else {
-                Toast.makeText(this, "Erreur de confirmation du code", Toast.LENGTH_SHORT).show();
+                displayToast("Erreur de confirmation du code");
             }
         }
 
@@ -260,7 +236,9 @@ public class UserActivity extends EntourageSecuredActivity {
 
     @OnClick(R.id.user_button_unsubscribe)
     void unsubscribe() {
-        Snackbar.make(getCurrentFocus(), getResources().getString(R.string.unsubscribe_error), Snackbar.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            Snackbar.make(getActivity().getCurrentFocus(), getResources().getString(R.string.unsubscribe_error), Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @OnClick(R.id.user_terms_and_conditions)

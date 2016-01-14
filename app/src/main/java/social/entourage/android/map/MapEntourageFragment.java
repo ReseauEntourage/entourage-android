@@ -259,6 +259,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 resumeTour();
             } else if (ConfirmationActivity.KEY_END_TOUR.equals(action)) {
                 stopTour();
+            } else if (TourService.NOTIFICATION_PAUSE.equals(action)) {
+                buttonStartLauncher.setVisibility(View.GONE);
+                layoutMapTour.setVisibility(View.GONE);
+                launchConfirmationActivity();
             }
         }
     }
@@ -936,6 +940,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 boolean isRunning = tourService != null && tourService.isRunning();
                 if (isRunning) {
                     buttonStartLauncher.setVisibility(View.GONE);
+
                     if (tourService.isPaused()) {
                         layoutMapTour.setVisibility(View.GONE);
                         launchConfirmationActivity();
@@ -946,6 +951,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         addCurrentTourEncounters();
                     }
                 }
+
                 tourService.updateNearbyTours();
                 if (userHistory) {
                     tourService.updateUserHistory(userId, 1, 500);

@@ -54,15 +54,6 @@
         </activity>
 
         <activity
-            android:name=".user.UserActivity"
-            android:label="@string/activity_display_user_title"
-            android:configChanges="keyboardHidden"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait"
-            android:noHistory="true">
-        </activity>
-
-        <activity
             android:name=".guide.poi.ReadPoiActivity"
             android:theme="@style/CustomDialogActivityTheme"
             android:label="@string/activity_read_poi_title"

@@ -81,6 +81,7 @@ public class TourService extends Service {
             if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
                     pauseTreatment();
                     Intent pauseIntent = new Intent(context, DrawerActivity.class);
+                    pauseIntent.setAction(NOTIFICATION_PAUSE);
                     pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(pauseIntent);
             }
@@ -114,14 +115,6 @@ public class TourService extends Service {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
-    /*
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("LocalService", "Received Start id " + startId + ": " + intent);
-        return START_STICKY;
-    }
-    */
-
     @Override
     public void onDestroy() {
         endTreatment();
@@ -133,6 +126,12 @@ public class TourService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        removeNotification();
     }
 
     // ----------------------------------
