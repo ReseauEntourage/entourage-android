@@ -132,6 +132,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_button_finish_tutorial)
     Button finishTutorial;
 
+    /************************
+     * Startup View
+     ************************/
+
+    @Bind(R.id.login_include_startup)
+    View loginStartup;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -146,6 +153,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_START);
 
+        loginSignup.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
@@ -178,7 +186,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void onBackPressed() {
-        if (loginLostCode.getVisibility() == View.VISIBLE) {
+        if (loginSignup.getVisibility() == View.VISIBLE) {
+            phoneEditText.setText("");
+            passwordEditText.setText("");
+            loginSignup.setVisibility(View.GONE);
+            loginStartup.setVisibility(View.VISIBLE);
+        }
+        else if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);
             loginSignup.setVisibility(View.VISIBLE);
@@ -385,4 +399,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         startActivity(new Intent(this, DrawerActivity.class));
     }
     */
+
+    /************************
+     * Startup View
+     ************************/
+
+    @OnClick(R.id.login_button_login)
+    void showLoginScreen() {
+        loginStartup.setVisibility(View.GONE);
+        loginSignup.setVisibility(View.VISIBLE);
+    }
+
+
 }

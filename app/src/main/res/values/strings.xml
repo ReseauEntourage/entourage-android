@@ -8,5 +8,7 @@
     <string name="button_loading">Chargement…</string>
     <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
     <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
+    <string name="login_button_register">Inscription</string>
+    <string name="login_button_login">Connexion</string>
 
 </resources>
