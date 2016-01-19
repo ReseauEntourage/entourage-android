@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_user_content">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,18 +22,18 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background_user_category">
 
-                <TextView
+                <social.entourage.android.view.FontTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="13dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="13dp"
-                    android:gravity="center|start"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:text="@string/user_information_label"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -53,47 +50,93 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="10dp"
                     android:clickable="true"
                     android:src="@drawable/bg_user_image_button"
                     android:contentDescription="@string/user_image_add_photo" />
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_weight="2"
+                    android:layout_weight="4"
+                    android:padding="20dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <social.entourage.android.view.FontTextView
                         android:id="@+id/user_name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="17sp"
+                        app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
 
-                    <TextView
+                    <social.entourage.android.view.FontTextView
                         android:id="@+id/user_email"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="17sp"
+                        app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
 
-                    <TextView
+                    <social.entourage.android.view.FontTextView
                         android:id="@+id/user_tours_count"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="17sp"
+                        app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
 
-                    <TextView
+                    <social.entourage.android.view.FontTextView
                         android:id="@+id/user_encounters_count"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="17sp"
+                        app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
 
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <Switch
+                        android:id="@+id/user_tours_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <social.entourage.android.view.FontTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/user_switch_label"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
 
             </LinearLayout>
 
@@ -104,18 +147,17 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background_user_category">
 
-                <TextView
+                <social.entourage.android.view.FontTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="13dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="13dp"
-                    android:gravity="center|start"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:text="@string/user_organization_label"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
             </LinearLayout>
 
             <LinearLayout
@@ -142,13 +184,14 @@
                     android:layout_weight="2"
                     android:orientation="vertical">
 
-                    <TextView
+                    <social.entourage.android.view.FontTextView
                         android:id="@+id/user_organization"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textColor="@android:color/black"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
 
                 </LinearLayout>
 
@@ -161,59 +204,60 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background_user_category">
 
-                <TextView
+                <social.entourage.android.view.FontTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="13dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="13dp"
-                    android:gravity="center|start"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:text="@string/user_privacy_label"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="20dp"
-                android:background="@color/background_user_category"
+                android:background="@drawable/rounded_borders_grey"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="10dp">
 
                 <EditText
                     android:id="@+id/user_edit_email"
-                    style="@style/CustomEditTextTheme"
+                    android:background="@drawable/bg_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_hint_email"
                     android:inputType="textWebEmailAddress"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/user_edit_code"
-                    style="@style/CustomEditTextTheme"
+                    android:background="@drawable/bg_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:hint="@string/user_form_access_code"
-                    android:inputType="textPassword"
+                    android:inputType="numberPassword"
                     android:maxLength="6"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/user_edit_confirmation"
-                    style="@style/CustomEditTextTheme"
+                    android:background="@drawable/bg_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:hint="@string/user_form_confirmation"
-                    android:inputType="textPassword"
+                    android:inputType="numberPassword"
                     android:maxLength="6"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <Button
@@ -222,7 +266,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/user_button_confirm_changes" />
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/user_button_confirm_changes"
+                    android:textSize="17sp"/>
 
             </LinearLayout>
 
@@ -233,18 +279,17 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background_user_category">
 
-                <TextView
+                <social.entourage.android.view.FontTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="13dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="13dp"
-                    android:gravity="center|start"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:text="@string/user_unsubscribe_label"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
             </LinearLayout>
 
             <LinearLayout
@@ -256,11 +301,23 @@
                 android:paddingRight="20dp">
 
                 <Button
+                    style="@style/AccentButton"
                     android:id="@+id/user_button_unsubscribe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:text="@string/user_button_unsubscribe" />
+                    android:layout_marginTop="20dp"
+                    android:text="@string/user_button_unsubscribe"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/user_terms_and_conditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/custom_clickable_text_grey"
+                    android:text="@string/user_terms_and_conditions"/>
 
             </LinearLayout>
 

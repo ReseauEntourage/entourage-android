@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.api.model.TourType;
@@ -33,11 +32,15 @@ public class Tour implements Serializable {
     @Expose(serialize = false, deserialize = true)
     private long id;
 
+    @SerializedName("user_id")
+    @Expose(serialize = false, deserialize = true)
+    private int userId;
+
     @SerializedName("vehicle_type")
     private String tourVehicleType = TOUR_FEET;
 
     @SerializedName("tour_type")
-    private String tourType = TourType.SOCIAL.getName();
+    private String tourType = TourType.BARE_HANDS.getName();
 
     @SerializedName("status")
     private String tourStatus = TOUR_ON_GOING;
@@ -45,10 +48,18 @@ public class Tour implements Serializable {
     @Expose(serialize = false, deserialize = false)
     private Date date;
 
+    @SerializedName("start_time")
+    @Expose(serialize = false, deserialize = true)
+    private Date startTime;
+
+    @SerializedName("end_time")
+    @Expose(serialize = false, deserialize = true)
+    private Date endTime;
+
     @Expose(serialize = false, deserialize = false)
     private String duration;
 
-    @Expose(serialize = false, deserialize = false)
+    @Expose(serialize = true, deserialize = true)
     private float distance;
 
     @Expose(serialize = false, deserialize = true)
@@ -90,6 +101,10 @@ public class Tour implements Serializable {
         return id;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
     public String getTourVehicleType() {
         return tourVehicleType;
     }
@@ -104,6 +119,14 @@ public class Tour implements Serializable {
 
     public Date getDate() {
         return date;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
     }
 
     public String getDuration() {
@@ -134,6 +157,10 @@ public class Tour implements Serializable {
         this.id = id;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public void setTourVehicleType(String tourVehicleType) {
         this.tourVehicleType = tourVehicleType;
     }
@@ -148,6 +175,14 @@ public class Tour implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public void setDuration(String duration) {

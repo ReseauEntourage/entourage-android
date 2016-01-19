@@ -8,9 +8,11 @@ import social.entourage.android.api.model.User;
 public class AuthenticationController {
 
     private static final String PREF_KEY_USER = "user";
+    private static final String PREF_KEY_USER_TOURS_ONLY = "user_tours_only";
 
     private final ComplexPreferences userSharedPref;
     private User loggedUser;
+    private boolean userToursOnly;
 
     public AuthenticationController(ComplexPreferences userSharedPref) {
         this.userSharedPref = userSharedPref;
@@ -65,4 +67,12 @@ public class AuthenticationController {
         return loggedUser;
     }
 
+    public void saveUserToursOnly(boolean choice) {
+        this.userToursOnly = choice;
+        userSharedPref.putObject(PREF_KEY_USER_TOURS_ONLY, userToursOnly);
+    }
+
+    public boolean isUserToursOnly() {
+        return userToursOnly;
+    }
 }

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="map_api_key">AIzaSyAFqKD4mIEGQIfgbwQVQloMrlRkrqk9J4M</string>
-    <string name="activity_map_title">Maraudes</string>
+    <string name="activity_map_title">MARAUDES</string>
     <string name="activity_map_tab_map">CARTE</string>
     <string name="activity_map_tab_liste">LISTE</string>
 

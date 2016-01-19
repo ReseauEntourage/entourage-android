@@ -1,9 +1,6 @@
 package social.entourage.android.user;
 
-import android.util.Log;
-
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -13,11 +10,12 @@ import retrofit.client.Response;
 import social.entourage.android.R;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
+import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**
- * Presenter controlling the UserActivity
- * @see UserActivity
+ * Presenter controlling the UserFragment
+ * @see UserFragment
  */
 public class UserPresenter {
 
@@ -25,7 +23,7 @@ public class UserPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final UserActivity activity;
+    private final UserFragment fragment;
     private final UserRequest userRequest;
     private final AuthenticationController authenticationController;
 
@@ -34,10 +32,10 @@ public class UserPresenter {
     // ----------------------------------
 
     @Inject
-    public UserPresenter(final UserActivity activity,
+    public UserPresenter(final UserFragment fragment,
                          final UserRequest userRequest,
                          final AuthenticationController authenticationController) {
-        this.activity = activity;
+        this.fragment = fragment;
         this.userRequest = userRequest;
         this.authenticationController = authenticationController;
     }
@@ -46,9 +44,21 @@ public class UserPresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
+    public User getUser() {
+        return authenticationController.getUser();
+    }
+
+    public boolean isUserToursOnly() {
+        return authenticationController.isUserToursOnly();
+    }
+
+    public void saveUserToursOnly(boolean choice) {
+        authenticationController.saveUserToursOnly(choice);
+    }
+
     public void updateUser(final String email, final String code) {
-        if (activity != null) {
-            activity.startLoader();
+        if (fragment != null) {
+            fragment.startLoader();
             HashMap<String, String> user = new HashMap<>();
             if (email != null) {
                 user.put("email", email);
@@ -59,14 +69,14 @@ public class UserPresenter {
             userRequest.updateUser(user, new Callback<UserResponse>() {
                 @Override
                 public void success(UserResponse userResponse, Response response) {
-                    activity.displayToast(activity.getString(R.string.user_text_update_ok));
-                    activity.updateView(userResponse.getUser().getEmail());
+                    fragment.displayToast(fragment.getString(R.string.user_text_update_ok));
+                    fragment.updateView(userResponse.getUser().getEmail());
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    activity.displayToast(activity.getString(R.string.user_text_update_ko));
-                    activity.resetLoginButton();
+                    fragment.displayToast(fragment.getString(R.string.user_text_update_ko));
+                    fragment.resetLoginButton();
                 }
             });
         }

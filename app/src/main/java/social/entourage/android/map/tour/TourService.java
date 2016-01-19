@@ -81,6 +81,7 @@ public class TourService extends Service {
             if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
                     pauseTreatment();
                     Intent pauseIntent = new Intent(context, DrawerActivity.class);
+                    pauseIntent.setAction(NOTIFICATION_PAUSE);
                     pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(pauseIntent);
             }
@@ -114,14 +115,6 @@ public class TourService extends Service {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
-    /*
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("LocalService", "Received Start id " + startId + ": " + intent);
-        return START_STICKY;
-    }
-    */
-
     @Override
     public void onDestroy() {
         endTreatment();
@@ -133,6 +126,12 @@ public class TourService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        removeNotification();
     }
 
     // ----------------------------------
@@ -238,6 +237,10 @@ public class TourService extends Service {
         tourServiceManager.retrieveToursNearbyLarge();
     }
 
+    public void updateUserHistory(int userId, int page, int per) {
+        tourServiceManager.retrieveToursByUserId(userId, page, per);
+    }
+
     public void searchToursFromPoint(LatLng point) {
         tourServiceManager.retrieveToursNearbySmall(point);
     }
@@ -339,7 +342,13 @@ public class TourService extends Service {
         }
     }
 
-    public void nofitfyListenersToursFound(Map<Long, Tour> tours) {
+    public void notifyListenersUserToursFound(List<Tour> tours) {
+        for (TourServiceListener listener : listeners) {
+            listener.onRetrieveToursByUserId(tours);
+        }
+    }
+
+    public void notifyListenersToursFound(Map<Long, Tour> tours) {
         for (TourServiceListener listener : listeners) {
             listener.onToursFound(tours);
         }
@@ -355,6 +364,7 @@ public class TourService extends Service {
         void onTourResumed(List<TourPoint> pointsToDraw, String tourType);
         void onLocationUpdated(LatLng location);
         void onRetrieveToursNearby(List<Tour> tours);
+        void onRetrieveToursByUserId(List<Tour> tours);
         void onToursFound(Map<Long, Tour> tours);
         void onTourClosed(boolean closed);
     }

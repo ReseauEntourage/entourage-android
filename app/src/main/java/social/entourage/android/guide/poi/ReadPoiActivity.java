@@ -1,9 +1,13 @@
 package social.entourage.android.guide.poi;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -87,8 +91,9 @@ public class ReadPoiActivity extends EntourageActivity {
     protected void onStart() {
         super.onStart();
         presenter.displayPoi(poi);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

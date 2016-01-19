@@ -1,10 +1,17 @@
 package social.entourage.android.authentication.login;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.PermissionChecker;
+import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +48,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     private final static String ANDROID_DEVICE = "android";
     private final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
+    private static final int PERMISSIONS_REQUEST_PHONE_STATE = 1;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -131,6 +139,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //checkPermissions();
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -140,12 +149,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginLostCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
-
-        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        String phoneNumber = manager.getLine1Number();
-        if (phoneNumber != null) {
-            phoneEditText.setText(phoneNumber);
-        }
 
         Picasso.with(this).load(R.drawable.ic_user_photo)
                 .transform(new CropCircleTransformation())
@@ -159,6 +162,18 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 .loginModule(new LoginModule(this))
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_PHONE_STATE) {
+            for (int index = 0; index < permissions.length; index++) {
+                if (permissions[index].equalsIgnoreCase(Manifest.permission.READ_PHONE_STATE) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                    checkPermissions();
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -178,17 +193,47 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+
+    @TargetApi(23)
+    private void checkPermissions() {
+        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.login_permission_title)
+                        .setMessage(R.string.login_permission_description)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                requestPermissions(new String[]{ Manifest.permission.READ_PHONE_STATE }, PERMISSIONS_REQUEST_PHONE_STATE);
+                            }
+                        }).show();
+            } else {
+                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_PHONE_STATE);
+            }
+            return;
+        } else {
+            TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            String phoneNumber = manager.getLine1Number();
+            if (phoneNumber != null) {
+                phoneEditText.setText(phoneNumber);
+            }
+        }
+    }
+
+    // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
 
     public void startMapActivity() {
-        resetLoginButton();
+        stopLoader();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_OK);
         startActivity(new Intent(this, DrawerActivity.class));
     }
 
     public void loginFail() {
-        resetLoginButton();
+        stopLoader();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
         Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
     }
@@ -200,11 +245,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void startLoader() {
         loginButton.setText(R.string.button_loading);
         loginButton.setEnabled(false);
+        receiveCodeButton.setText(R.string.button_loading);
+        receiveCodeButton.setEnabled(false);
+        lostCodePhone.setEnabled(false);
     }
 
-    public void resetLoginButton() {
+    public void stopLoader() {
         loginButton.setText(R.string.login_button_signup);
         loginButton.setEnabled(true);
+        receiveCodeButton.setText(R.string.login_button_ask_code);
+        receiveCodeButton.setEnabled(true);
+        lostCodePhone.setEnabled(true);
     }
 
     public void launchFillInProfileView(User user) {
@@ -266,17 +317,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_ask_code)
     void sendNewCode() {
+        startLoader();
         loginPresenter.sendNewCode(lostCodePhone.getText().toString());
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
-        /* TODO: implement this */
-        /**
-         * here :
-         * if code sent : R.string.login_text_code_ok
-         * else         : R.string.login_text_code_ko
-         */
-        codeConfirmation.setText(R.string.login_text_lost_code_ko);
-        enterCodeBlock.setVisibility(View.GONE);
-        confirmationBlock.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.login_button_home)
@@ -288,6 +331,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginSignup.setVisibility(View.VISIBLE);
     }
 
+    void newCodeAsked(User user) {
+        stopLoader();
+        if (user != null) {
+            codeConfirmation.setText(R.string.login_text_lost_code_ok);
+        } else {
+            codeConfirmation.setText(R.string.login_text_lost_code_ko);
+        }
+        enterCodeBlock.setVisibility(View.GONE);
+        confirmationBlock.setVisibility(View.VISIBLE);
+    }
+
     /************************
      * Welcome View
      ************************/
@@ -297,6 +351,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     }
 
+    //TODO: remove this when the tutorial content is ready
+    @OnClick(R.id.login_button_go)
+    void finishTutorial() {
+        loginPresenter.updateUserEmail(profileEmail.getText().toString());
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
+        startActivity(new Intent(this, DrawerActivity.class));
+    }
+
+    /*
+    TODO: put this back when the tutorial content is ready
     @OnClick(R.id.login_button_go)
     void startTutorial() {
         FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_START);
@@ -304,11 +369,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.VISIBLE);
     }
+    */
 
     /************************
      * Tutorial View
      ************************/
 
+    /*
+    TODO: put this back when the tutorial content is ready
     @OnClick(R.id.login_button_finish_tutorial)
     void finishTutorial() {
         FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_END);
@@ -316,4 +384,5 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
         startActivity(new Intent(this, DrawerActivity.class));
     }
+    */
 }

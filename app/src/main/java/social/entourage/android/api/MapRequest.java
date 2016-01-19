@@ -7,7 +7,7 @@ import retrofit.http.Query;
 
 public interface MapRequest {
 
-    @Headers({"Accept: application/json"})
+    //@Headers({"Accept: application/json"})
     @GET("/pois.json")
     void retrievePoisNearby(@Query("latitude") double latitude,
                             @Query("longitude") double longitude,

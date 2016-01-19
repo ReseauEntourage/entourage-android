@@ -2,7 +2,10 @@ package social.entourage.android.map.tour;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -13,8 +16,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -42,6 +53,9 @@ public class TourInformationFragment extends DialogFragment {
 
     @Bind(R.id.tour_info_date)
     TextView tourDate;
+
+    @Bind(R.id.tour_info_duration)
+    TextView tourDuration;
 
     @Bind(R.id.tour_info_organization)
     TextView tourOrganization;
@@ -79,6 +93,7 @@ public class TourInformationFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onCreateView(inflater, container, savedInstanceState);
         View toReturn = inflater.inflate(R.layout.fragment_tour_information, container, false);
         ButterKnife.bind(this, toReturn);
         initializeView();
@@ -113,6 +128,13 @@ public class TourInformationFragment extends DialogFragment {
         getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentFade;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -139,30 +161,36 @@ public class TourInformationFragment extends DialogFragment {
             tourDate.setText(date);
         }
 
-        tourOrganization.setText(res.getString(R.string.tour_info_text_organization, tour.getOrganizationName()));
+        if (tour.getStartTime() != null && tour.getEndTime() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+            tourDuration.setText(res.getString(R.string.tour_info_text_duration, dateFormat.format(tour.getStartTime()), dateFormat.format(tour.getEndTime())));
+        } else {
+            tourDuration.setText(res.getString(R.string.tour_info_text_duration, "", ""));
+        }
+
+        tourOrganization.setText(tour.getOrganizationName());
 
         if (vehicule != null) {
             if (vehicule.equals(TourTransportMode.FEET.getName())) {
-                tourIcon.setImageResource(R.drawable.ic_feet);
-                tourTransport.setText(res.getString(R.string.tour_info_text_transport, getString(R.string.tour_check_feet)));
+                tourTransport.setText(getString(R.string.tour_check_feet));
             } else if (vehicule.equals(TourTransportMode.CAR.getName())) {
-                tourIcon.setImageResource(R.drawable.ic_car);
-                tourTransport.setText(res.getString(R.string.tour_info_text_transport, getString(R.string.tour_check_car)));
+                tourTransport.setText(getString(R.string.tour_check_car));
             }
         } else {
-            tourTransport.setText(res.getString(R.string.tour_info_text_transport, getString(R.string.tour_info_unknown)));
+            tourTransport.setText(getString(R.string.tour_info_unknown));
         }
 
         if (type != null) {
-            if (type.equals(TourType.SOCIAL.getName())) {
-                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_bare_hands)));
-            } else if (type.equals(TourType.FOOD.getName())) {
-                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_alimentary)));
-            } else if (type.equals(TourType.OTHER.getName())) {
-                tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_type_medical)));
+            if (type.equals(TourType.MEDICAL.getName())) {
+                tourType.setText(getString(R.string.tour_type_medical));
+            } else if (type.equals(TourType.ALIMENTARY.getName())) {
+                tourType.setText(getString(R.string.tour_type_alimentary));
+            } else if (type.equals(TourType.BARE_HANDS.getName())) {
+                tourType.setText(getString(R.string.tour_type_bare_hands));
             }
         } else {
-            tourType.setText(res.getString(R.string.tour_info_text_type, getString(R.string.tour_info_unknown)));
+            tourType.setText(getString(R.string.tour_info_unknown));
         }
 
         if (status != null) {

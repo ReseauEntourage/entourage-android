@@ -27,7 +27,7 @@
 
     <!-- Dialog activity theme. -->
     <style name="CustomDialogActivityTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:background">@color/background_light</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
@@ -50,6 +50,11 @@
 
     <style name="AccentButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@drawable/bg_button_accent</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AccentButtonStraightTop" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_accent_straight_top</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 

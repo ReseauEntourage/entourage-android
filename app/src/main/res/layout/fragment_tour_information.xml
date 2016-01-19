@@ -1,98 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    tools:context="social.entourage.android.DrawerActivity"
-    android:background="@color/background_login_light">
-
-    <ImageView
-        android:id="@+id/tour_info_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+    android:padding="30dp"
+    android:background="@android:color/transparent"
+    tools:context="social.entourage.android.DrawerActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        android:background="@color/background_light">
+        android:background="@drawable/rounded_borders_white"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tour_info_date"
+        <ImageView
+            android:id="@+id/tour_info_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:text="@string/tour_info_date"
-            android:textStyle="italic"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/tour_info_organization"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/tour_info_text_organization"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/tour_info_transport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/tour_info_text_transport"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/tour_info_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/tour_info_text_type"
-            android:textColor="@color/black"/>
+            android:layout_marginTop="15dp"
+            android:src="@drawable/entourage_logo_black"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <social.entourage.android.view.FontTextView
+                android:id="@+id/tour_info_date"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tour_info_text_status"
-                android:textColor="@color/black"/>
+                android:gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:text="@string/tour_info_date"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
 
-            <social.entourage.android.view.HtmlTextView
-                android:id="@+id/tour_info_status_ongoing"
-                android:layout_width="wrap_content"
+            <social.entourage.android.view.FontTextView
+                android:id="@+id/tour_info_duration"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                app:htmlText="@string/tour_info_text_ongoing"/>
+                android:gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:text="@string/tour_info_text_duration"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
 
-            <social.entourage.android.view.HtmlTextView
-                android:id="@+id/tour_info_status_closed"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                app:htmlText="@string/tour_info_text_closed"/>
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <social.entourage.android.view.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tour_info_text_organization_title"
+                    android:textColor="@color/accent"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+                <social.entourage.android.view.FontTextView
+                    android:id="@+id/tour_info_organization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <social.entourage.android.view.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tour_info_text_transport_title"
+                    android:textColor="@color/accent"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+                <social.entourage.android.view.FontTextView
+                    android:id="@+id/tour_info_transport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <social.entourage.android.view.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tour_info_text_type_title"
+                    android:textColor="@color/accent"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+                <social.entourage.android.view.FontTextView
+                    android:id="@+id/tour_info_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <social.entourage.android.view.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tour_info_text_status"
+                    android:textColor="@color/accent"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+                <social.entourage.android.view.FontTextView
+                    android:id="@+id/tour_info_status_ongoing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/tour_info_text_ongoing"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+                <social.entourage.android.view.FontTextView
+                    android:id="@+id/tour_info_status_closed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/tour_info_text_closed"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:fontName="fonts/DINMittelschrift-Regular.ttf"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <Button
+            style="@style/AccentButtonStraightTop"
+            android:id="@+id/tour_info_button_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:text="@string/tour_info_button_close" />
+
     </LinearLayout>
 
-    <Button
-        style="@style/AccentButton"
-        android:id="@+id/tour_info_button_close"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/tour_info_button_close" />
-
-</LinearLayout>
+</ScrollView>

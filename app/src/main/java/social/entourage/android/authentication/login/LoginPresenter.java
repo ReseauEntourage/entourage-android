@@ -1,8 +1,10 @@
 package social.entourage.android.authentication.login;
 
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,6 +90,7 @@ public class LoginPresenter {
                     public void success(LoginResponse loginResponse, Response response) {
                         authenticationController.saveUser(loginResponse.getUser());
                         authenticationController.saveUserPhone(phoneNumber);
+                        authenticationController.saveUserToursOnly(false);
                         if (isTutorialDone) {
                             activity.startMapActivity();
                         } else {
@@ -101,14 +104,39 @@ public class LoginPresenter {
                     }
                 });
             } else {
-                activity.resetLoginButton();
+                activity.stopLoader();
                 activity.displayToast(activity.getString(R.string.login_text_invalid_format));
             }
         }
     }
 
     public void sendNewCode(final String phone) {
+        if (activity != null) {
+            if (phone != null) {
 
+                Map<String, String> user = new ArrayMap<>();
+                user.put("phone", phone);
+
+                Map<String, String> code = new ArrayMap<>();
+                code.put("action", "regenerate");
+
+                ArrayMap<String, Object> request = new ArrayMap<>();
+                request.put("user", user);
+                request.put("code", code);
+
+                userRequest.regenerateSecretCode(request, new Callback<UserResponse>() {
+                    @Override
+                    public void success(UserResponse userResponse, Response response) {
+                        activity.newCodeAsked(userResponse.getUser());
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        activity.newCodeAsked(null);
+                    }
+                });
+            }
+        }
     }
 
     public void updateUserEmail(final String email) {

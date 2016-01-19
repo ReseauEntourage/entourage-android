@@ -4,20 +4,19 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module related to UserActivity
- * @see UserActivity
+ * Module related to UserFragment
+ * @see UserFragment
  */
 @Module
-final class UserModule {
+public class UserModule {
+    private final UserFragment fragment;
 
-    private final UserActivity activity;
-
-    public UserModule(final UserActivity activity) {
-        this.activity = activity;
+    public UserModule(final UserFragment fragment) {
+        this.fragment = fragment;
     }
 
     @Provides
-    public UserActivity providesActivity() {
-        return activity;
+    public UserFragment providesUserFragment() {
+        return fragment;
     }
 }

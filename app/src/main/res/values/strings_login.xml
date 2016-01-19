@@ -2,11 +2,11 @@
 <resources>
 
     <string name="title_activity_login">Se connecter</string>
-    <string name="login_title_welcome"><![CDATA[<font color=\"#FDC444\">B</font>IENVENUE SUR<br/><font color=\"#FDC444\">E</font>NTOURAGE]]></string>
-    <string name="login_title_welcome_pro"><![CDATA[<font color=\"#FDC444\">B</font>IENVENUE SUR<br/><font color=\"#FDC444\">E</font>NTOURAGE <font color=\"#FDC444\">P</font>RO]]></string>
-    <string name="login_title_discover"><![CDATA[<font color=\"#FDC444\">D</font>ÉCOUVREZ <font color=\"#FDC444\">E</font>NTOURAGE]]></string>
-    <string name="login_title_lost_code"><![CDATA[<font color=\"#FDC444\">C</font>ODE <font color=\"#FDC444\">É</font>GARÉ]]></string>
-    <string name="login_title_tutorial"><![CDATA[<font color=\"#FDC444\">T</font>UTORIEL DE <font color=\"#FDC444\">B</font>IENVENUE]]></string>
+    <string name="login_title_welcome"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE]]></string>
+    <string name="login_title_welcome_pro"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE <font color=\"#FF6907\">P</font>RO]]></string>
+    <string name="login_title_discover"><![CDATA[<font color=\"#FF6907\">D</font>ÉCOUVREZ <font color=\"#FF6907\">E</font>NTOURAGE]]></string>
+    <string name="login_title_lost_code"><![CDATA[<font color=\"#FF6907\">C</font>ODE <font color=\"#FF6907\">É</font>GARÉ]]></string>
+    <string name="login_title_tutorial"><![CDATA[<font color=\"#FF6907\">T</font>UTORIEL DE <font color=\"#FF6907\">B</font>IENVENUE]]></string>
     <string name="login_text_info">Version réservée\nà un usage associatif</string>
     <string name="login_text_more"><u>En savoir plus</u></string>
     <string name="login_text_description">Entourage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
@@ -31,5 +31,8 @@
     <string name="login_button_home">Retour à l\'accueil</string>
     <string name="login_button_finish_tutorial">J\'ai compris !</string>
     <string name="login_photo_error">La photo de profil n\'est pas encore disponible</string>
+
+    <string name="login_permission_title">Entourage doit accéder l\'état de votre téléphone</string>
+    <string name="login_permission_description">Permet d\'afficher votre numéro de téléphone.</string>
 
 </resources>

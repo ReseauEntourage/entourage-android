@@ -2,10 +2,13 @@ package social.entourage.android.map.encounter;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Menu;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -72,6 +75,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
         }
         FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_START);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
