@@ -226,7 +226,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             } else {
                 requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_PHONE_STATE);
             }
-            return;
         } else {
             TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
             String phoneNumber = manager.getLine1Number();
