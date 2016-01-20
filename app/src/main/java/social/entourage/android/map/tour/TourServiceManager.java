@@ -161,7 +161,7 @@ public class TourServiceManager {
     private void timeOut() {
         Vibrator vibrator = (Vibrator) tourService.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(VIBRATION_DURATION);
-        tourService.sendBroadcast(new Intent(TourService.NOTIFICATION_PAUSE));
+        tourService.sendBroadcast(new Intent(TourService.KEY_NOTIFICATION_PAUSE_TOUR));
     }
 
     private void addLastTourPoint() {

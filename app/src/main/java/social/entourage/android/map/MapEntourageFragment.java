@@ -18,7 +18,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +55,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
@@ -65,12 +65,13 @@ import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.tape.event.CheckIntentActionEvent;
+import social.entourage.android.api.tape.event.UserChoiceEvent;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.tools.UserChoiceEvent;
 
 public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener {
 
@@ -107,6 +108,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private ProgressDialog loaderStop;
     private ProgressDialog loaderSearchTours;
     private boolean isBound;
+    private boolean isMapLoaded;
     private boolean isFollowing = true;
 
     private long currentTourId;
@@ -225,7 +227,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         super.onResume();
         if (getActivity() != null) {
             getActivity().setTitle(R.string.activity_tours_title);
+            if (isMapLoaded) {
+                BusProvider.getInstance().post(new CheckIntentActionEvent());
+            }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -251,20 +261,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void onNotificationExtras(int id, boolean choice, String action) {
+    public void onNotificationExtras(int id, boolean choice) {
         userId = id;
         userHistory = choice;
-        if (action != null) {
-            if (ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
-                resumeTour();
-            } else if (ConfirmationActivity.KEY_END_TOUR.equals(action)) {
-                stopTour();
-            } else if (TourService.NOTIFICATION_PAUSE.equals(action)) {
-                buttonStartLauncher.setVisibility(View.GONE);
-                layoutMapTour.setVisibility(View.GONE);
-                launchConfirmationActivity();
-            }
-        }
     }
 
     public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
@@ -297,6 +296,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         presenter.openTour(tour);
     }
 
+    public void checkAction(String action) {
+        if (getActivity() != null && isBound) {
+            // 1 : Check if should Resume tour
+            if (action != null && ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
+                resumeTour();
+            }
+            // 2 : Check if should End tour
+            else if (action != null && ConfirmationActivity.KEY_END_TOUR.equals(action)) {
+                stopTour();
+            }
+            // 3 : Check if tour is already paused
+            else if (tourService.isPaused()) {
+                //TODO: check if confirmation screen is already launched
+                launchConfirmationActivity();
+            }
+            // 4 : Check if should pause tour
+            else if (action != null && TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
+                //TODO: check if confirmation screen is already launched
+                launchConfirmationActivity();
+            }
+        }
+    }
+
     // ----------------------------------
     // BUS LISTENERS
     // ----------------------------------
@@ -323,7 +345,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Intent intent = new Intent(getActivity(), TourService.class);
             getActivity().startService(intent);
             getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
-            isBound = true;
+            //isBound = true;
         }
     }
 
@@ -592,12 +614,23 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
             });
+            mapFragment.getMap().setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    isMapLoaded = true;
+                    BusProvider.getInstance().post(new CheckIntentActionEvent());
+                }
+            });
         }
     }
 
     // ----------------------------------
     // PRIVATE METHODS (tours events)
     // ----------------------------------
+
+    private Tour getCurrentTour() {
+        return tourService != null ? tourService.getCurrentTour() : null;
+    }
 
     private void startTour(String transportMode, String type) {
         if (tourService != null && !tourService.isRunning()) {
@@ -633,15 +666,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void launchConfirmationActivity() {
+        pauseTour();
+        buttonStartLauncher.setVisibility(View.GONE);
+        layoutMapTour.setVisibility(View.GONE);
         Bundle args = new Bundle();
         args.putSerializable(Tour.KEY_TOUR, getCurrentTour());
         Intent confirmationIntent = new Intent(getActivity(), ConfirmationActivity.class);
         confirmationIntent.putExtras(args);
         getActivity().startActivity(confirmationIntent);
-    }
-
-    private Tour getCurrentTour() {
-        return tourService != null ? tourService.getCurrentTour() : null;
     }
 
     private void addEncounter(Encounter encounter) {
@@ -651,31 +683,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
     // PRIVATE METHODS (views)
     // ----------------------------------
-
-    private void removeDeprecatedTours(List<Tour> tours) {
-        boolean found;
-        Iterator iteratorLines = drawnToursMap.entrySet().iterator();
-        while (iteratorLines.hasNext()) {
-            found = false;
-            Map.Entry pair = (Map.Entry) iteratorLines.next();
-            Long key = (Long) pair.getKey();
-            for (Tour tour : tours) {
-                if (key == tour.getId()) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                drawnToursMap.get(key).remove();
-                iteratorLines.remove();
-                if (markersMap.containsKey(key)) {
-                    markersMap.get(key).remove();
-                    markersMap.remove(key);
-                }
-                presenter.getOnClickListener().removeMarker(key);
-            }
-        }
-    }
 
     private List<Tour> removeRedundantTours(List<Tour> tours, boolean isHistory) {
         Iterator iteratorTours = tours.iterator();
@@ -762,24 +769,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR));
-    }
-
-    private void clearMap() {
-        if (mapFragment.getMap() != null) {
-            mapFragment.getMap().clear();
-        }
-    }
-
-    private void clearDrawnTours() {
-        for (Long key : drawnToursMap.keySet()) {
-            retrievedTours.clear();
-            drawnToursMap.get(key).remove();
-            if (markersMap.containsKey(key)) {
-                markersMap.get(key).remove();
-                markersMap.remove(key);
-            }
-            presenter.getOnClickListener().removeMarker(key);
-        }
     }
 
     private void centerMap(LatLng latLng) {
@@ -941,27 +930,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 if (isRunning) {
                     buttonStartLauncher.setVisibility(View.GONE);
 
-                    if (tourService.isPaused()) {
-                        layoutMapTour.setVisibility(View.GONE);
-                        launchConfirmationActivity();
-                    } else {
-                        currentTourId = tourService.getCurrentTourId();
-                        mapPin.setVisibility(View.VISIBLE);
-                        layoutMapTour.setVisibility(View.VISIBLE);
-                        addCurrentTourEncounters();
-                    }
+                    currentTourId = tourService.getCurrentTourId();
+                    mapPin.setVisibility(View.VISIBLE);
+                    layoutMapTour.setVisibility(View.VISIBLE);
+
+                    addCurrentTourEncounters();
                 }
 
                 tourService.updateNearbyTours();
                 if (userHistory) {
                     tourService.updateUserHistory(userId, 1, 500);
                 }
-
-                Intent intent = getActivity().getIntent();
-                if (intent.getBooleanExtra(TourService.NOTIFICATION_PAUSE, false)) {
-                    onNotificationExtras(userId, userHistory,TourService.NOTIFICATION_PAUSE);
-                }
             }
+            isBound = true;
         }
 
         @Override

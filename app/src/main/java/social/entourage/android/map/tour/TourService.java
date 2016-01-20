@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.RemoteViews;
 
@@ -30,7 +29,6 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
-import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.TourRequest;
@@ -50,7 +48,7 @@ public class TourService extends Service {
     // ----------------------------------
 
     private static final int NOTIFICATION_ID = 1;
-    public static final String NOTIFICATION_PAUSE = "social.entourage.android.NOTIFICATION_PAUSE";
+    public static final String KEY_NOTIFICATION_PAUSE_TOUR = "social.entourage.android.KEY_NOTIFICATION_PAUSE_TOUR";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -78,10 +76,10 @@ public class TourService extends Service {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
-                    pauseTreatment();
+            if (KEY_NOTIFICATION_PAUSE_TOUR.equals(intent.getAction())) {
+                    //pauseTreatment();
                     Intent pauseIntent = new Intent(context, DrawerActivity.class);
-                    pauseIntent.setAction(NOTIFICATION_PAUSE);
+                    pauseIntent.setAction(KEY_NOTIFICATION_PAUSE_TOUR);
                     pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(pauseIntent);
             }
@@ -109,7 +107,7 @@ public class TourService extends Service {
         isPaused = false;
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(NOTIFICATION_PAUSE);
+        filter.addAction(KEY_NOTIFICATION_PAUSE_TOUR);
         registerReceiver(receiver, filter);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -177,7 +175,7 @@ public class TourService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
-            PendingIntent pauseTourIntent = createPendingIntent(NOTIFICATION_PAUSE);
+            PendingIntent pauseTourIntent = createPendingIntent(KEY_NOTIFICATION_PAUSE_TOUR);
             notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
             notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, pauseTourIntent);
             builder = builder.setContent(notificationRemoteView);

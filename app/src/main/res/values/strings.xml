@@ -8,5 +8,6 @@
     <string name="button_loading">Chargement…</string>
     <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
     <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
+    <string name="error_end_tour_before_logout">Terminez la maraude avant de vous déconnecter</string>
 
 </resources>

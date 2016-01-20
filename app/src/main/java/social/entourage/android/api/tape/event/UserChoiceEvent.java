@@ -1,4 +1,4 @@
-package social.entourage.android.tools;
+package social.entourage.android.api.tape.event;
 
 public class UserChoiceEvent {
 
