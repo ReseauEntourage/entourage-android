@@ -10,5 +10,7 @@
     <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
     <string name="login_button_register">Inscription</string>
     <string name="login_button_login">Connexion</string>
+    <string name="entourage_title">Entourage</string>
+    <string name="entourage_slogan">Un peau de chaleur humaine</string>
 
 </resources>

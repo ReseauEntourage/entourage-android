@@ -410,5 +410,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginSignup.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.login_button_register)
+    void showRegisterScreen() {
+        //TODO: Show the register screen
+    }
 
 }
