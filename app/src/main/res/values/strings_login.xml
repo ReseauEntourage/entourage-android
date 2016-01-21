@@ -2,7 +2,8 @@
 <resources>
 
     <string name="title_activity_login">Se connecter</string>
-    <string name="login_title_welcome"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE]]></string>
+    <string name="login_title_welcome_html"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE]]></string>
+    <string name="login_title_welcome">Bienvenue sur Entourage</string>
     <string name="login_title_welcome_pro"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE <font color=\"#FF6907\">P</font>RO]]></string>
     <string name="login_title_discover"><![CDATA[<font color=\"#FF6907\">D</font>ÉCOUVREZ <font color=\"#FF6907\">E</font>NTOURAGE]]></string>
     <string name="login_title_lost_code"><![CDATA[<font color=\"#FF6907\">C</font>ODE <font color=\"#FF6907\">É</font>GARÉ]]></string>
@@ -20,11 +21,13 @@
     <string name="login_text_email_update_fail">Mise à jour de l\'email impossible</string>
     <string name="login_text_fill_in_profile">Merci de compléter votre profil\n\nVotre adresse nous servira à vous envoyer vos comptes-rendus de maraudes</string>
     <string name="login_text_tutorial">En cours de construction…</string>
-    <string name="login_text_lost_code">"Code d\'accès égaré ?</string>
-    <string name="login_hint_phone">Numéro de téléphone</string>
-    <string name="login_hint_code">Code d\'accès</string>
+    <string name="login_text_lost_code">Redemander un code</string>
+    <string name="login_text_phone">Numéro de téléphone</string>
+    <string name="login_text_code">Code d\'accès</string>
+    <string name="login_hint_phone">Saisir numéro</string>
+    <string name="login_hint_code">Saisir le code</string>
     <string name="login_hint_email">Adresse e-mail</string>
-    <string name="login_button_signup">Me connecter</string>
+    <string name="login_button_signup">Se connecter</string>
     <string name="login_button_newsletter">Me tenir informé !</string>
     <string name="login_button_ask_code">Recevoir mon code</string>
     <string name="login_button_go">C\'est parti !</string>
@@ -34,5 +37,8 @@
 
     <string name="login_permission_title">Entourage doit accéder l\'état de votre téléphone</string>
     <string name="login_permission_description">Permet d\'afficher votre numéro de téléphone.</string>
+
+    <string name="login_button_register">Inscription</string>
+    <string name="login_button_login">Connexion</string>
 
 </resources>

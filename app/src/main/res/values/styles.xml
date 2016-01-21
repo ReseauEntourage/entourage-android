@@ -12,8 +12,8 @@
         <item name="android:textSelectHandle">@drawable/text_select_handle_middle_login</item>
         <item name="android:textSelectHandleLeft">@drawable/text_select_handle_left_login</item>
         <item name="android:textSelectHandleRight">@drawable/text_select_handle_right_login</item>
-        <item name="android:textCursorDrawable">@drawable/bg_cursor_white</item>
-        <item name="android:background">@drawable/bg_edit_text_holo_light</item>
+        <item name="android:textCursorDrawable">@drawable/bg_cursor_yellow</item>
+        <item name="android:background">@drawable/bg_edit_text_transparent</item>
         <item name="android:textColor">@color/login_edittext</item>
     </style>
 

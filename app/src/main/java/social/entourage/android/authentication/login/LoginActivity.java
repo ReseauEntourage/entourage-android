@@ -66,9 +66,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_include_signup)
     View loginSignup;
 
-    @Bind(R.id.login_text_more)
-    TextView moreText;
-
     @Bind(R.id.login_edit_phone)
     EditText phoneEditText;
 
@@ -299,12 +296,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Signup View
      ************************/
 
+    /*
     @OnClick(R.id.login_text_more)
     void onAskMore() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         informationFragment = new LoginInformationFragment();
         informationFragment.show(fragmentManager, "fragment_login_information");
     }
+    */
 
     @OnClick(R.id.login_button_signup)
     void onLoginClick() {
