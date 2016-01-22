@@ -6,7 +6,7 @@
     <string name="login_title_welcome">Bienvenue sur Entourage</string>
     <string name="login_title_welcome_pro"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE <font color=\"#FF6907\">P</font>RO]]></string>
     <string name="login_title_discover"><![CDATA[<font color=\"#FF6907\">D</font>ÉCOUVREZ <font color=\"#FF6907\">E</font>NTOURAGE]]></string>
-    <string name="login_title_lost_code">Vérification de votre téléphone</string>
+    <string name="login_title_lost_code">Vérification\n de votre téléphone</string>
     <string name="login_title_lost_code_html"><![CDATA[<font color=\"#FF6907\">C</font>ODE <font color=\"#FF6907\">É</font>GARÉ]]></string>
     <string name="login_title_tutorial"><![CDATA[<font color=\"#FF6907\">T</font>UTORIEL DE <font color=\"#FF6907\">B</font>IENVENUE]]></string>
     <string name="login_text_info">Version réservée\nà un usage associatif</string>
@@ -27,13 +27,14 @@
     <string name="login_text_code">Code d\'accès</string>
     <string name="login_text_country_code">Code pays</string>
     <string name="login_text_default_country_code">+33</string>
+    <string name="login_hint_name">Saisissez votre prénom et votre nom</string>
     <string name="login_hint_phone">Saisir numéro</string>
     <string name="login_hint_code">Saisir le code</string>
-    <string name="login_hint_email">Adresse e-mail</string>
+    <string name="login_hint_email">Saisissez votre email</string>
     <string name="login_button_signup">Se connecter</string>
     <string name="login_button_newsletter">Me tenir informé !</string>
     <string name="login_button_ask_code">Vérifier cet appareil</string>
-    <string name="login_button_go">C\'est parti !</string>
+    <string name="login_button_go">Valider</string>
     <string name="login_button_home">Retour à l\'accueil</string>
     <string name="login_button_finish_tutorial">J\'ai compris !</string>
     <string name="login_photo_error">La photo de profil n\'est pas encore disponible</string>

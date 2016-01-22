@@ -116,6 +116,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_edit_email_profile)
     EditText profileEmail;
 
+    @Bind(R.id.login_edit_name_profile)
+    EditText profileName;
+
     @Bind(R.id.login_user_photo)
     ImageView profilePhoto;
 
