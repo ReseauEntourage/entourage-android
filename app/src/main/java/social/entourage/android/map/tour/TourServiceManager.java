@@ -114,12 +114,10 @@ public class TourServiceManager {
     // ----------------------------------
 
     public void stopLocationService() {
-        if (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (checkPermission()) {
+            locationManager.removeUpdates(locationListener);
+            locationManager = null;
         }
-        locationManager.removeUpdates(locationListener);
-        locationManager = null;
     }
 
     public void startTour(String transportMode, String type) {
@@ -148,15 +146,18 @@ public class TourServiceManager {
     // PRIVATE METHODS
     // ----------------------------------
 
+    private boolean checkPermission() {
+        return (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
     private void initializeLocationService() {
         locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
-        if (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (checkPermission()) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
+                    Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
-                Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
 
     private void initializeTimerFinishTask() {
@@ -196,6 +197,17 @@ public class TourServiceManager {
                 tour.setId(tourId);
                 tourService.notifyListenersTourCreated(true, tourId);
 
+                if (checkPermission()) {
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
+                    //TourServiceManager.this.onLocationChanged(location, point);
+
+                    pointsToDraw.add(point);
+                    pointsToSend.add(point);
+                    previousLocation = location;
+                    updateTourCoordinates();
+                    tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+                }
             }
 
             @Override
