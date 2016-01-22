@@ -23,6 +23,9 @@ import android.widget.Toast;
 import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashSet;
+import java.util.TreeSet;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -47,12 +50,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // ----------------------------------
 
     private final static String ANDROID_DEVICE = "android";
-    private final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
     private static final int PERMISSIONS_REQUEST_PHONE_STATE = 1;
+    public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    private String loggedPhoneNumber;
 
     LoginInformationFragment informationFragment;
 
@@ -235,7 +240,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void loginFail() {
         stopLoader();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
-        Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+        displayToast(getString(R.string.login_fail));
     }
 
     public void displayToast(String message) {
@@ -258,7 +263,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         lostCodePhone.setEnabled(true);
     }
 
-    public void launchFillInProfileView(User user) {
+    public void launchFillInProfileView(String phoneNumber, User user) {
+        loggedPhoneNumber = phoneNumber;
         loginSignup.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.VISIBLE);
         if (user.getEmail() != null) {
@@ -295,13 +301,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_signup)
     void onLoginClick() {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         loginPresenter.login(
                 phoneEditText.getText().toString(),
                 passwordEditText.getText().toString(),
                 ANDROID_DEVICE,
-                sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null),
-                sharedPreferences.getBoolean(KEY_TUTORIAL_DONE, false)
+                sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null)
         );
     }
 
@@ -355,8 +360,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_button_go)
     void finishTutorial() {
         loginPresenter.updateUserEmail(profileEmail.getText().toString());
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        HashSet<String>loggedNumbers = (HashSet) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
+        loggedNumbers.add(loggedPhoneNumber);
+        sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
         startActivity(new Intent(this, DrawerActivity.class));
     }
 
@@ -380,7 +387,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_button_finish_tutorial)
     void finishTutorial() {
         FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_END);
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
         startActivity(new Intent(this, DrawerActivity.class));
     }

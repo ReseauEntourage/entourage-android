@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
@@ -208,7 +209,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
-                if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                if ((permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) ||
+                    (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED)) {
                     initializeLocationService();
                 }
             }
@@ -558,6 +560,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             }).show();
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                }
+                return;
+            }
+            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.map_permission_title)
+                            .setMessage(R.string.map_permission_description)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    requestPermissions(new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION }, PERMISSIONS_REQUEST_LOCATION);
+                                }
+                            }).show();
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
                 return;
             }

@@ -1,5 +1,6 @@
 package social.entourage.android.map.tour;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,10 +9,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Chronometer;
 import android.widget.RemoteViews;
@@ -49,6 +52,7 @@ public class TourService extends Service {
 
     private static final int NOTIFICATION_ID = 1;
     public static final String KEY_NOTIFICATION_PAUSE_TOUR = "social.entourage.android.KEY_NOTIFICATION_PAUSE_TOUR";
+    public static final String KEY_GPS_DISABLED = "social.entourage.android.KEY_GPS_DISABLED";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -76,12 +80,12 @@ public class TourService extends Service {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (KEY_NOTIFICATION_PAUSE_TOUR.equals(intent.getAction())) {
-                    //pauseTreatment();
-                    Intent pauseIntent = new Intent(context, DrawerActivity.class);
-                    pauseIntent.setAction(KEY_NOTIFICATION_PAUSE_TOUR);
-                    pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(pauseIntent);
+            String action = intent.getAction();
+            if (KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || KEY_GPS_DISABLED.equals(action)) {
+                Intent newIntent = new Intent(context, DrawerActivity.class);
+                newIntent.setAction(action);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
             }
         }
     };
@@ -108,6 +112,7 @@ public class TourService extends Service {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(KEY_NOTIFICATION_PAUSE_TOUR);
+        filter.addAction(KEY_GPS_DISABLED);
         registerReceiver(receiver, filter);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -117,7 +122,6 @@ public class TourService extends Service {
     public void onDestroy() {
         endTreatment();
         unregisterReceiver(receiver);
-
         super.onDestroy();
     }
 
@@ -217,12 +221,15 @@ public class TourService extends Service {
     }
 
     private void removeNotification() {
-        chronometer.stop();
+        if (chronometer != null) {
+            chronometer.stop();
+        }
         chronometer = null;
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
     private void stopService() {
+        tourServiceManager.stopLocationService();
         tourServiceManager.unregisterFromBus();
         stopSelf();
     }

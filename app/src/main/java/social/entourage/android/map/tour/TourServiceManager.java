@@ -73,6 +73,8 @@ public class TourServiceManager {
     private List<TourPoint> pointsToDraw;
     private Timer timerFinish;
     private ConnectivityManager connectivityManager;
+    private LocationManager locationManager;
+    private CustomLocationListener locationListener;
 
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest, final EncounterRequest encounterRequest) {
         Log.i("TourServiceManager", "constructor");
@@ -111,6 +113,15 @@ public class TourServiceManager {
     // PUBLIC METHODS
     // ----------------------------------
 
+    public void stopLocationService() {
+        if (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.removeUpdates(locationListener);
+        locationManager = null;
+    }
+
     public void startTour(String transportMode, String type) {
         tour = new Tour(transportMode, type);
         sendTour();
@@ -138,9 +149,10 @@ public class TourServiceManager {
     // ----------------------------------
 
     private void initializeLocationService() {
-        LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
-        CustomLocationListener locationListener = new CustomLocationListener();
-        if (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new CustomLocationListener();
+        if (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
@@ -396,12 +408,13 @@ public class TourServiceManager {
 
         @Override
         public void onProviderEnabled(String provider) {
-
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-
+            Intent intent = new Intent();
+            intent.setAction(TourService.KEY_GPS_DISABLED);
+            TourServiceManager.this.tourService.sendBroadcast(intent);
         }
     }
 }

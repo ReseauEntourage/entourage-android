@@ -19,7 +19,7 @@ public class RegisterGCMService extends IntentService {
 
     private final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences ?
     private final String GCM_SCOPE = "GCM";
-    public static final String SHARED_PREFERENCES_FILE = "ENTOURAGE_GCM_DATA";
+    public static final String SHARED_PREFERENCES_FILE_GCM = "ENTOURAGE_GCM_DATA";
     private static final String KEY_APPLICATION_VERSION = "ENTOURAGE_APPLICATION_VERSION";
     public static final String KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID";
     private static final int ENTOURAGE_MIN_VERSION = 0;
@@ -35,7 +35,7 @@ public class RegisterGCMService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
         int storedVersion = sharedPreferences.getInt(KEY_APPLICATION_VERSION, ENTOURAGE_MIN_VERSION);
         int currentVersion = getCurrentCodeVersion();

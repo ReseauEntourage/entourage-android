@@ -1,8 +1,14 @@
 package social.entourage.android;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -135,6 +141,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                     case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
                         sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                         break;
+                    case TourService.KEY_GPS_DISABLED:
+                        displayAlertNoGps();
+                        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                     default:
                         break;
                 }
@@ -159,15 +168,46 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     protected void onResume() {
         super.onResume();
         highlightCurrentMenuItem();
+
         String action = getIntent().getAction();
-        if (action != null && TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
-            sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        if (action != null) {
+            if (TourService.KEY_GPS_DISABLED.equals(action)) {
+                displayAlertNoGps();
+                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+            }
+            else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
+                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+            }
         }
     }
 
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
+
+    private void displayAlertNoGps() {
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.error_dialog_disabled))
+                    .setCancelable(false)
+                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            DrawerActivity.this.finish();
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+    }
 
     private void sendMapFragmentExtras() {
         int userId = getAuthenticationController().getUser().getId();
@@ -186,9 +226,14 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 intentAction = ConfirmationActivity.KEY_END_TOUR;
             }
         }
-        else if (action != null && TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
-            intentAction = TourService.KEY_NOTIFICATION_PAUSE_TOUR;
+        else if (action != null) {
             getIntent().setAction(null);
+            if (TourService.KEY_GPS_DISABLED.equals(action)) {
+                intentAction = TourService.KEY_GPS_DISABLED;
+            }
+            else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
+                intentAction = TourService.KEY_NOTIFICATION_PAUSE_TOUR;
+            }
         }
     }
 
