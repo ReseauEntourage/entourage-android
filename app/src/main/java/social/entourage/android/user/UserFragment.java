@@ -32,7 +32,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.tools.UserChoiceEvent;
+import social.entourage.android.api.tape.event.UserChoiceEvent;
 
 public class UserFragment extends Fragment {
 

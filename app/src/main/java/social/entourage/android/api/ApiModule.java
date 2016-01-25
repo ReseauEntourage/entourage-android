@@ -111,7 +111,7 @@ public class ApiModule {
         Gson gson = new GsonBuilder().create();
         FileObjectQueue.Converter<CreateEncounterPresenter.EncounterUploadTask> converter = new social.entourage.android.tools.GsonConverter<>(gson, CreateEncounterPresenter.EncounterUploadTask.class);
 
-        File queueFile = new File(application.getApplicationContext().getFilesDir(), Constants.FILENAME);
+        File queueFile = new File(application.getApplicationContext().getFilesDir(), Constants.FILENAME_TAPE_QUEUE);
         FileObjectQueue<CreateEncounterPresenter.EncounterUploadTask> delegate = null;
 
         try {

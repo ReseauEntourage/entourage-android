@@ -3,7 +3,8 @@ package social.entourage.android;
 public class Constants {
 
     // Filenames
-    public static final String FILENAME = "encounters_queue";
+    public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
+    public static final String FILENAME_TAPE_QUEUE = "encounters_queue";
 
     // Request and result codes
     public static final int REQUEST_CREATE_ENCOUNTER = 1;

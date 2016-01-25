@@ -73,6 +73,8 @@ public class TourServiceManager {
     private List<TourPoint> pointsToDraw;
     private Timer timerFinish;
     private ConnectivityManager connectivityManager;
+    private LocationManager locationManager;
+    private CustomLocationListener locationListener;
 
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest, final EncounterRequest encounterRequest) {
         Log.i("TourServiceManager", "constructor");
@@ -111,6 +113,13 @@ public class TourServiceManager {
     // PUBLIC METHODS
     // ----------------------------------
 
+    public void stopLocationService() {
+        if (checkPermission()) {
+            locationManager.removeUpdates(locationListener);
+            locationManager = null;
+        }
+    }
+
     public void startTour(String transportMode, String type) {
         tour = new Tour(transportMode, type);
         sendTour();
@@ -137,14 +146,18 @@ public class TourServiceManager {
     // PRIVATE METHODS
     // ----------------------------------
 
+    private boolean checkPermission() {
+        return (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
     private void initializeLocationService() {
-        LocationManager locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
-        CustomLocationListener locationListener = new CustomLocationListener();
-        if (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new CustomLocationListener();
+        if (checkPermission()) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
+                    Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
-                Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
     }
 
     private void initializeTimerFinishTask() {
@@ -161,7 +174,7 @@ public class TourServiceManager {
     private void timeOut() {
         Vibrator vibrator = (Vibrator) tourService.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(VIBRATION_DURATION);
-        tourService.sendBroadcast(new Intent(TourService.NOTIFICATION_PAUSE));
+        tourService.sendBroadcast(new Intent(TourService.KEY_NOTIFICATION_PAUSE_TOUR));
     }
 
     private void addLastTourPoint() {
@@ -184,6 +197,17 @@ public class TourServiceManager {
                 tour.setId(tourId);
                 tourService.notifyListenersTourCreated(true, tourId);
 
+                if (checkPermission()) {
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
+                    //TourServiceManager.this.onLocationChanged(location, point);
+
+                    pointsToDraw.add(point);
+                    pointsToSend.add(point);
+                    previousLocation = location;
+                    updateTourCoordinates();
+                    tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+                }
             }
 
             @Override
@@ -396,12 +420,13 @@ public class TourServiceManager {
 
         @Override
         public void onProviderEnabled(String provider) {
-
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-
+            Intent intent = new Intent();
+            intent.setAction(TourService.KEY_GPS_DISABLED);
+            TourServiceManager.this.tourService.sendBroadcast(intent);
         }
     }
 }

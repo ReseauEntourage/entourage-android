@@ -1,5 +1,6 @@
 package social.entourage.android.map.tour;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,12 +9,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.RemoteViews;
 
@@ -30,7 +32,6 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
-import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.TourRequest;
@@ -50,7 +51,8 @@ public class TourService extends Service {
     // ----------------------------------
 
     private static final int NOTIFICATION_ID = 1;
-    public static final String NOTIFICATION_PAUSE = "social.entourage.android.NOTIFICATION_PAUSE";
+    public static final String KEY_NOTIFICATION_PAUSE_TOUR = "social.entourage.android.KEY_NOTIFICATION_PAUSE_TOUR";
+    public static final String KEY_GPS_DISABLED = "social.entourage.android.KEY_GPS_DISABLED";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -78,12 +80,12 @@ public class TourService extends Service {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (NOTIFICATION_PAUSE.equals(intent.getAction())) {
-                    pauseTreatment();
-                    Intent pauseIntent = new Intent(context, DrawerActivity.class);
-                    pauseIntent.setAction(NOTIFICATION_PAUSE);
-                    pauseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(pauseIntent);
+            String action = intent.getAction();
+            if (KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || KEY_GPS_DISABLED.equals(action)) {
+                Intent newIntent = new Intent(context, DrawerActivity.class);
+                newIntent.setAction(action);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
             }
         }
     };
@@ -109,7 +111,8 @@ public class TourService extends Service {
         isPaused = false;
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(NOTIFICATION_PAUSE);
+        filter.addAction(KEY_NOTIFICATION_PAUSE_TOUR);
+        filter.addAction(KEY_GPS_DISABLED);
         registerReceiver(receiver, filter);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -119,7 +122,6 @@ public class TourService extends Service {
     public void onDestroy() {
         endTreatment();
         unregisterReceiver(receiver);
-
         super.onDestroy();
     }
 
@@ -177,7 +179,7 @@ public class TourService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
-            PendingIntent pauseTourIntent = createPendingIntent(NOTIFICATION_PAUSE);
+            PendingIntent pauseTourIntent = createPendingIntent(KEY_NOTIFICATION_PAUSE_TOUR);
             notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
             notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, pauseTourIntent);
             builder = builder.setContent(notificationRemoteView);
@@ -219,12 +221,15 @@ public class TourService extends Service {
     }
 
     private void removeNotification() {
-        chronometer.stop();
+        if (chronometer != null) {
+            chronometer.stop();
+        }
         chronometer = null;
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
     private void stopService() {
+        tourServiceManager.stopLocationService();
         tourServiceManager.unregisterFromBus();
         stopSelf();
     }

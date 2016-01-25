@@ -1,4 +1,4 @@
-package social.entourage.android.api.tape;
+package social.entourage.android.api.tape.event;
 
 public class ConnectionChangedEvent {
 
