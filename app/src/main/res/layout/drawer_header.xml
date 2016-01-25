@@ -5,23 +5,36 @@
     android:layout_height="wrap_content"
     android:gravity="end"
     android:layout_marginTop="20dp"
-    android:paddingTop="25dp"
-    android:background="@drawable/entourage_header">
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/drawer_button_messages"
+            android:background="@drawable/ic_message"/>
+
+        <TextView
+            android:id="@+id/drawer_header_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"/>
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/drawer_header_user_photo"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:paddingTop="15dp"
-        android:src="@drawable/bg_user_image_button"/>
-
-    <TextView
-        android:id="@+id/drawer_header_user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textSize="25sp"
-        android:textColor="@android:color/black"/>
+        android:src="@drawable/bg_user_image_button"
+        android:layout_gravity="center_horizontal"/>
 
 
 </LinearLayout>

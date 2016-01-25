@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
@@ -311,6 +312,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
         }
     }
 

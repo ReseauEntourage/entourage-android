@@ -1,15 +1,17 @@
 <resources>
 
     <string name="app_name">Entourage</string>
-    <string name="action_settings">PROFIL</string>
+    <string name="action_settings">Settings</string>
     <string name="action_logout">DECONNEXION</string>
-    <string name="action_guide">GUIDE</string>
+    <string name="action_guide">Guide de solidarité</string>
     <string name="action_tours">MARAUDES</string>
+    <string name="action_profile">PROFIL</string>
     <string name="button_loading">Chargement…</string>
     <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
     <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
     <string name="entourage_title">Entourage</string>
     <string name="entourage_slogan">Un peu de chaleur humaine</string>
     <string name="error_end_tour_before_logout">Terminez la maraude avant de vous déconnecter</string>
+    <string name="error_not_yet_implemented">Not Yet Implemented</string>
 
 </resources>
