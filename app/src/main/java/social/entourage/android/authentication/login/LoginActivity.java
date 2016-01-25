@@ -66,9 +66,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_include_signup)
     View loginSignup;
 
-    @Bind(R.id.login_text_more)
-    TextView moreText;
-
     @Bind(R.id.login_edit_phone)
     EditText phoneEditText;
 
@@ -97,6 +94,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_block_code_form)
     View enterCodeBlock;
 
+    @Bind(R.id.login_block_lost_code_button)
+    View lostCodeButtonBlock;
+
     @Bind(R.id.login_block_lost_code_confirmation)
     View confirmationBlock;
 
@@ -116,6 +116,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_edit_email_profile)
     EditText profileEmail;
 
+    @Bind(R.id.login_edit_name_profile)
+    EditText profileName;
+
     @Bind(R.id.login_user_photo)
     ImageView profilePhoto;
 
@@ -132,6 +135,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_button_finish_tutorial)
     Button finishTutorial;
 
+    /************************
+     * Startup View
+     ************************/
+
+    @Bind(R.id.login_include_startup)
+    View loginStartup;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -146,6 +156,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_START);
 
+        loginSignup.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
@@ -178,7 +189,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void onBackPressed() {
-        if (loginLostCode.getVisibility() == View.VISIBLE) {
+        if (loginSignup.getVisibility() == View.VISIBLE) {
+            phoneEditText.setText("");
+            passwordEditText.setText("");
+            loginSignup.setVisibility(View.GONE);
+            loginStartup.setVisibility(View.VISIBLE);
+        }
+        else if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);
             loginSignup.setVisibility(View.VISIBLE);
@@ -212,7 +229,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             } else {
                 requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_PHONE_STATE);
             }
-            return;
         } else {
             TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
             String phoneNumber = manager.getLine1Number();
@@ -228,6 +244,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     public void startMapActivity() {
         stopLoader();
+        hideKeyboard();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_OK);
         startActivity(new Intent(this, DrawerActivity.class));
     }
@@ -286,12 +303,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Signup View
      ************************/
 
+    /*
     @OnClick(R.id.login_text_more)
     void onAskMore() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         informationFragment = new LoginInformationFragment();
         informationFragment.show(fragmentManager, "fragment_login_information");
     }
+    */
 
     @OnClick(R.id.login_button_signup)
     void onLoginClick() {
@@ -307,8 +326,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_text_lost_code)
     void onLostCodeClick() {
+        hideKeyboard();
         loginSignup.setVisibility(View.GONE);
+        enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.VISIBLE);
+        lostCodeButtonBlock.setVisibility(View.VISIBLE);
+        confirmationBlock.setVisibility(View.GONE);
     }
 
     /************************
@@ -339,6 +362,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             codeConfirmation.setText(R.string.login_text_lost_code_ko);
         }
         enterCodeBlock.setVisibility(View.GONE);
+        lostCodeButtonBlock.setVisibility(View.GONE);
         confirmationBlock.setVisibility(View.VISIBLE);
     }
 
@@ -385,4 +409,20 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         startActivity(new Intent(this, DrawerActivity.class));
     }
     */
+
+    /************************
+     * Startup View
+     ************************/
+
+    @OnClick(R.id.login_button_login)
+    void showLoginScreen() {
+        loginStartup.setVisibility(View.GONE);
+        loginSignup.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.login_button_register)
+    void showRegisterScreen() {
+        //TODO: Show the register screen
+    }
+
 }

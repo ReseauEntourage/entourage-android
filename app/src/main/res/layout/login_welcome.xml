@@ -8,59 +8,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="social.entourage.android.authentication.login.LoginActivity"
-    android:background="@color/login_view">
+    android:background="@color/background_login_grey"
+    android:weightSum="8">
 
-    <social.entourage.android.view.HtmlTextView
-        style="@style/SpacedTextViewLarge"
-        android:id="@+id/login_title_welcome_pro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        app:htmlText="@string/login_title_welcome_pro"
-        android:textColor="@color/background_light"
-        android:lineSpacingExtra="11.5sp"
-        android:textSize="16sp"
-        android:gravity="center"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3">
 
-    <social.entourage.android.view.FontTextView
-        android:id="@+id/login_text_fill_in_profile"
+        <ImageView
+            android:id="@+id/login_user_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_user_photo"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="@string/login_text_fill_in_profile"
-        android:textSize="15sp"
-        android:textColor="@color/background_light"
-        android:gravity="center"
-        app:fontName="fonts/Blokletters-Balpen.ttf"/>
+        android:background="@color/background_login_light">
 
-    <ImageView
-        android:id="@+id/login_user_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/ic_user_photo"/>
+        <EditText
+            android:id="@+id/login_edit_name_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login_hint_name"
+            android:textColorHint="@color/login_edittext_hint"
+            android:gravity="center"
+            style="@style/CustomEditTextTheme"
+            android:textColor="@color/black"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:inputType="textCapWords"
+            android:visibility="gone"/>
 
-    <EditText
-        android:id="@+id/login_edit_email_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:inputType="textWebEmailAddress"
-        android:hint="@string/login_hint_email"
-        android:textColorHint="@color/login_edittext_hint"
-        android:gravity="center"
-        style="@style/CustomEditTextTheme"/>
+        <EditText
+            style="@style/CustomEditTextTheme"
+            android:id="@+id/login_edit_email_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textWebEmailAddress"
+            android:hint="@string/login_hint_email"
+            android:textColorHint="@color/login_edittext_hint"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
+    </LinearLayout>
 
     <Button
         android:id="@+id/login_button_go"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
         android:text="@string/login_button_go"
-        android:textSize="13sp"
+        android:textSize="20sp"
         android:background="@drawable/login_button"
-        android:textAllCaps="true"/>
+        android:textAllCaps="true"
+        android:textColor="@color/white"/>
 
 </LinearLayout>

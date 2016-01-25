@@ -14,9 +14,10 @@
     <color name="background_pressed">#000000</color>
 
     <!-- Login -->
-    <color name="background_login_light">#E2E2E2</color>
-    <color name="background_login_grey">#696969</color>
+    <color name="background_login_light">#FFFFFF</color>
+    <color name="background_login_grey">#F7F7F7</color>
     <color name="text_dark">#4F4F4F</color>
+    <color name="login_divider">#797979</color>
 
     <!-- Profile -->
     <color name="background_user_category">#CFCFCF</color>
@@ -39,7 +40,7 @@
     <!-- EditTexts -->
     <color name="custom_edittext_short_pressed">#EEEEEE</color>
     <color name="login_form">#FFFFFF</color>
-    <color name="login_edittext">#F0F0F0</color>
+    <color name="login_edittext">#000000</color>
     <color name="login_edittext_hint">#8D8D8D</color>
 
     <!-- Others -->
