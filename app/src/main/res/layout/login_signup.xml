@@ -62,7 +62,8 @@
                     android:hint="@string/login_hint_phone"
                     android:textColorHint="@color/login_edittext_hint"
                     android:maxLength="12"
-                    style="@style/CustomEditTextTheme"/>
+                    style="@style/CustomEditTextTheme"
+                    android:gravity="right"/>
             </TableRow>
 
             <TableRow
@@ -87,7 +88,8 @@
                     android:textColorHint="@color/login_edittext_hint"
                     android:maxLength="6"
                     android:inputType="numberPassword"
-                    style="@style/CustomEditTextTheme"/>
+                    style="@style/CustomEditTextTheme"
+                    android:gravity="right"/>
             </TableRow>
 
             <TableRow
