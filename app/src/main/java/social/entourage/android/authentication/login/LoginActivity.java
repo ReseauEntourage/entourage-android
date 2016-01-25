@@ -244,6 +244,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     public void startMapActivity() {
         stopLoader();
+        hideKeyboard();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_OK);
         startActivity(new Intent(this, DrawerActivity.class));
     }
@@ -325,6 +326,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_text_lost_code)
     void onLostCodeClick() {
+        hideKeyboard();
         loginSignup.setVisibility(View.GONE);
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.VISIBLE);
