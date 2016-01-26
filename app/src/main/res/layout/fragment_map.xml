@@ -9,10 +9,35 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/layout_map_launcher">
 
-        <fragment android:id="@+id/fragment_map"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            class="com.google.android.gms.maps.SupportMapFragment"/>
+            android:weightSum="8">
+
+            <fragment android:id="@+id/fragment_map"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                      android:layout_weight="2"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/scrollView"
+                android:layout_weight="5">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layout_tours"
+                    android:paddingBottom="5dp">
+
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/fragment_map_follow_button"
@@ -33,17 +58,14 @@
             android:visibility="invisible"/>
 
         <Button
-            style="@style/WhiteButton"
+            style="@style/AccentButton"
             android:id="@+id/button_start_tour_launcher"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:alpha="0.8"
-            android:textColor="@color/abc_input_method_navigation_guard"
-            android:text="@string/tour_start"/>
+            android:text="@string/tour_create"/>
 
         <include
             layout="@layout/layout_map_tour"

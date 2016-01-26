@@ -3,6 +3,7 @@
 
     <!-- Tour -->
     <string name="activity_tours_title">MARAUDES</string>
+    <string name="tour_create">Créer une maraude</string>
     <string name="tour_start">Démarrer une maraude</string>
     <string name="tour_creation_fail">Echec de l\'envoi de maraude</string>
     <string name="tour_resume">Reprendre</string>
@@ -52,5 +53,10 @@
     <!-- Confirmation -->
     <string name="tour_end_confirmation">Veux-tu vraiment arrêter la maraude ?\nUn mail récapitulatif te sera envoyé.</string>
     <string name="tour_end_duration">%1$s passées dans la rue</string>
+
+    <!-- Tour Cell -->
+    <string name="tour_cell_title">Maraude %1$s</string>
+    <string name="tour_cell_author">par %1$s</string>
+    <string name="tour_cell_location">%1$d%2$s - %3$s</string>
 
 </resources>

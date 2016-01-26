@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -23,7 +24,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -40,6 +46,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.squareup.otto.Subscribe;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -49,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -122,6 +131,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private Map<Long, Tour> retrievedTours;
     private Map<Long, Tour> retrievedHistory;
 
+    private LayoutInflater inflater;
+
     @Bind(R.id.fragment_map_pin)
     View mapPin;
 
@@ -145,6 +156,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.layout_map_tour)
     View layoutMapTour;
+
+    @Bind(R.id.layout_tours)
+    LinearLayout layoutTours;
 
     // ----------------------------------
     // LIFECYCLE
@@ -176,6 +190,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         }
         ButterKnife.bind(this, toReturn);
+        this.inflater = inflater;
         return toReturn;
     }
 
@@ -861,6 +876,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             } else {
                 retrievedTours.put(tour.getId(), tour);
                 drawnToursMap.put(tour.getId(), mapFragment.getMap().addPolyline(line));
+                addTourCell(tour);
             }
             if (tour.getTourStatus() == null) {
                 tour.setTourStatus(Tour.TOUR_CLOSED);
@@ -869,6 +885,52 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 addTourHead(tour);
             }
         }
+    }
+
+    private void addTourCell(Tour tour) {
+        //create the cell
+        View tourCell = inflater.inflate(R.layout.layout_tour_cell, null, false);
+
+        //configure the cell
+        Resources res = getResources();
+
+        //title i.e Maraude Croix
+        TextView tourTitle = (TextView)tourCell.findViewById(R.id.tour_cell_title);
+        tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), tour.getOrganizationName()));
+
+        //author photo - no data yet
+
+        //author i.e par Mihai
+        TextView tourAuthor = (TextView)tourCell.findViewById(R.id.tour_cell_author);
+        tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getUserId()));
+
+        //date and location i.e 1h - Arc de Triomphe
+        TextView tourLocation = (TextView)tourCell.findViewById(R.id.tour_cell_location);
+        long startHours = tour.getStartTime().getTime()/1000/60/60;
+        long currentHours = System.currentTimeMillis()/1000/60/60;
+        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), (currentHours - startHours), "h", "Some Location"));
+
+        //tour type
+        ImageView tourTypeView = (ImageView)tourCell.findViewById(R.id.tour_cell_type);
+        String tourType = tour.getTourType();
+        if (tourType != null) {
+            if (tourType.equals(TourType.MEDICAL.getName())) {
+                tourTypeView.setImageDrawable(res.getDrawable(R.drawable.ic_medical));
+            } else if (tourType.equals(TourType.ALIMENTARY.getName())) {
+                tourTypeView.setImageDrawable(res.getDrawable(R.drawable.ic_alimentary));
+            } else if (tourType.equals(TourType.BARE_HANDS.getName())) {
+                tourTypeView.setImageDrawable(res.getDrawable(R.drawable.ic_bare_hands));
+            }
+        } else {
+            tourTypeView.setImageDrawable(null);
+        }
+
+        //tour members - No data yet
+
+        //add the cell to the layout
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(10, 0, 10 ,0);
+        layoutTours.addView(tourCell, lp);
     }
 
     private void addTourHead(Tour tour) {
