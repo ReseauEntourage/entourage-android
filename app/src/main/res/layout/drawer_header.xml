@@ -12,12 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/drawer_button_messages"
-            android:background="@drawable/ic_message"/>
-
         <TextView
             android:id="@+id/drawer_header_user_name"
             android:layout_width="wrap_content"
@@ -25,7 +19,8 @@
             android:textSize="15sp"
             android:textColor="@android:color/black"
             android:layout_marginLeft="5dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_marginRight="5dp"/>
     </LinearLayout>
 
     <ImageView
