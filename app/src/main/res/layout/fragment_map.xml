@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +13,12 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="8">
+            android:weightSum="8"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:layout_above="@+id/button_start_tour_launcher">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -32,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:id="@+id/scrollview_tours"
-                android:layout_weight="5">
+                android:layout_weight="6">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -50,10 +55,13 @@
             android:id="@+id/fragment_map_follow_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:alpha="0.5"
             android:layout_gravity="end|top"
-            android:src="@drawable/ic_action_center_map"/>
+            android:src="@drawable/ic_action_center_map"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentRight="true"/>
 
         <ImageView
             android:id="@+id/fragment_map_pin"
@@ -62,7 +70,11 @@
             android:src="@drawable/pointer"
             android:layout_gravity="center"
             android:paddingBottom="35dp"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="212dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="320dp"/>
 
         <Button
             style="@style/AccentButton"
@@ -71,7 +83,8 @@
             android:layout_width="match_parent"
             android:layout_gravity="center_horizontal|bottom"
             android:alpha="0.8"
-            android:text="@string/tour_create"/>
+            android:text="@string/tour_create"
+            android:layout_alignParentBottom="true"/>
 
         <include
             layout="@layout/layout_map_tour"
@@ -79,9 +92,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:visibility = "gone" />
+            android:visibility = "gone"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"/>
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <include
         layout="@layout/layout_map_launcher"
