@@ -38,7 +38,7 @@
         android:text="Small Text"
         android:id="@+id/tour_cell_location"
         android:layout_columnSpan="3"
-        />
+        android:lines="1"/>
 
     <LinearLayout
         android:orientation="horizontal"

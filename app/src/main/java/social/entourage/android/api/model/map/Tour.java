@@ -1,5 +1,7 @@
 package social.entourage.android.api.model.map;
 
+import android.location.Address;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -77,6 +79,9 @@ public class Tour implements Serializable {
     @Expose(serialize = false)
     private final List<Encounter> encounters;
 
+    @Expose(serialize = false)
+    private Address startAddress;
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -153,6 +158,10 @@ public class Tour implements Serializable {
         return encounters;
     }
 
+    public Address getStartAddress() {
+        return startAddress;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -196,6 +205,8 @@ public class Tour implements Serializable {
     public void setTourPoints(List<TourPoint> tourPoints) {
         this.tourPoints = tourPoints;
     }
+
+    public void setStartAddress(final Address startAddress) { this.startAddress = startAddress; }
 
     @Override
     public String toString() {

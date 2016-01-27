@@ -199,6 +199,7 @@ public class TourServiceManager {
 
                 if (checkPermission()) {
                     Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (location == null) return;
                     TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
                     //TourServiceManager.this.onLocationChanged(location, point);
 

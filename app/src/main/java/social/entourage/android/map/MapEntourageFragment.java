@@ -9,9 +9,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -20,13 +23,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -48,12 +54,14 @@ import com.squareup.otto.Subscribe;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -157,8 +165,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.layout_map_tour)
     View layoutMapTour;
 
+    @Bind(R.id.scrollview_tours)
+    ScrollView scrollviewTours;
+
     @Bind(R.id.layout_tours)
     LinearLayout layoutTours;
+
+    @Bind(R.id.layout_map)
+    FrameLayout layoutMapMain;
 
     // ----------------------------------
     // LIFECYCLE
@@ -269,6 +283,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
             mapLauncherLayout.setVisibility(View.GONE);
             buttonStartLauncher.setVisibility(View.VISIBLE);
+            return true;
+        }
+        if (scrollviewTours.getVisibility() == View.GONE) {
+            scrollviewTours.setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
+            lp.weight = 2;
+            layoutMapMain.setLayoutParams(lp);
             return true;
         }
         return false;
@@ -641,9 +662,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 @Override
                 public void onMapClick(LatLng latLng) {
                     if (getActivity() != null) {
-                        loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
-                        loaderSearchTours.setCancelable(true);
-                        tourService.searchToursFromPoint(latLng);
+                        if (scrollviewTours.getVisibility() == View.VISIBLE) {
+                            scrollviewTours.setVisibility(View.GONE);
+                            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                            lp.weight = 8;
+                            layoutMapMain.setLayoutParams(lp);
+                            loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
+                            loaderSearchTours.setCancelable(true);
+                            tourService.searchToursFromPoint(latLng);
+                        }
                     }
                 }
             });
@@ -877,6 +904,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 retrievedTours.put(tour.getId(), tour);
                 drawnToursMap.put(tour.getId(), mapFragment.getMap().addPolyline(line));
                 addTourCell(tour);
+                new GeocoderTask().execute(tour);
             }
             if (tour.getTourStatus() == null) {
                 tour.setTourStatus(Tour.TOUR_CLOSED);
@@ -890,6 +918,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void addTourCell(Tour tour) {
         //create the cell
         View tourCell = inflater.inflate(R.layout.layout_tour_cell, null, false);
+        tourCell.setTag(new Long(tour.getId()));
 
         //configure the cell
         Resources res = getResources();
@@ -908,7 +937,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         TextView tourLocation = (TextView)tourCell.findViewById(R.id.tour_cell_location);
         long startHours = tour.getStartTime().getTime()/1000/60/60;
         long currentHours = System.currentTimeMillis()/1000/60/60;
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), (currentHours - startHours), "h", "Some Location"));
+        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), (currentHours - startHours), "h", ""));
 
         //tour type
         ImageView tourTypeView = (ImageView)tourCell.findViewById(R.id.tour_cell_type);
@@ -931,6 +960,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(10, 0, 10 ,0);
         layoutTours.addView(tourCell, lp);
+    }
+
+    private void updateTourCellStartingPoint(Tour tour) {
+        if (tour == null || tour.getStartAddress() == null) return;
+        View tourCell = layoutTours.findViewWithTag(new Long(tour.getId()));
+        if (tourCell == null) return;
+        TextView tourLocation = (TextView)tourCell.findViewById(R.id.tour_cell_location);
+        long startHours = tour.getStartTime().getTime()/1000/60/60;
+        long currentHours = System.currentTimeMillis()/1000/60/60;
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), (currentHours - startHours), "h", tour.getStartAddress().getAddressLine(0)));
     }
 
     private void addTourHead(Tour tour) {
@@ -1029,6 +1068,33 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         public void onServiceDisconnected(ComponentName name) {
             tourService.unregister(MapEntourageFragment.this);
             tourService = null;
+        }
+    }
+
+    private class GeocoderTask extends AsyncTask<Tour, Void, Tour> {
+
+        @Override
+        protected Tour doInBackground(final Tour... params) {
+            try {
+                Geocoder geoCoder = new Geocoder(getContext(), Locale.getDefault());
+                Tour tour = params[0];
+                if (tour.getTourPoints().isEmpty()) return null;
+                TourPoint tourPoint = tour.getTourPoints().get(0);
+                List<Address> addresses = geoCoder.getFromLocation(tourPoint.getLatitude(), tourPoint.getLongitude(), 1);
+                if (addresses.size() > 0) {
+                    tour.setStartAddress(addresses.get(0));
+                }
+                return tour;
+            }
+            catch (IOException e) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Tour tour) {
+            updateTourCellStartingPoint(tour);
         }
     }
 }
