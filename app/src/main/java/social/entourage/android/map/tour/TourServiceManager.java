@@ -199,14 +199,21 @@ public class TourServiceManager {
 
                 if (checkPermission()) {
                     Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
-                    //TourServiceManager.this.onLocationChanged(location, point);
+                    if(location==null) {
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                    if(location!=null) {
+                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
+                        //TourServiceManager.this.onLocationChanged(location, point);
 
-                    pointsToDraw.add(point);
-                    pointsToSend.add(point);
-                    previousLocation = location;
-                    updateTourCoordinates();
-                    tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+                        pointsToDraw.add(point);
+                        pointsToSend.add(point);
+                        previousLocation = location;
+                        updateTourCoordinates();
+                        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+                    } else {
+                        Log.e(this.getClass().getSimpleName(), "no location provided");
+                    }
                 }
             }
 
