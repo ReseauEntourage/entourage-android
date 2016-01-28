@@ -659,11 +659,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 public void onMapClick(LatLng latLng) {
                     if (getActivity() != null) {
                         if (scrollviewTours.getVisibility() == View.VISIBLE) {
+                            hideToursList();
+                        } else {
                             loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
                             loaderSearchTours.setCancelable(true);
                             tourService.searchToursFromPoint(latLng);
-
-                            hideToursList();
                         }
                     }
                 }
@@ -994,6 +994,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         originalMapLayoutWeight = lp.weight;
         lp.weight = layoutMain.getWeightSum();
         layoutMapMain.setLayoutParams(lp);
+        layoutMain.forceLayout();
     }
 
     private void showToursList() {
