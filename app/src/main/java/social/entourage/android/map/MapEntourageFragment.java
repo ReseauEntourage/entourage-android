@@ -493,6 +493,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 drawnUserHistory.clear();
                 retrievedTours.clear();
 
+                layoutTours.removeAllViews();
+
                 previousCoordinates = null;
 
                 mapPin.setVisibility(View.GONE);

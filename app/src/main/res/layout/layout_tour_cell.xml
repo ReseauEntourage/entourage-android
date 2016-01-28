@@ -4,7 +4,7 @@
              android:layout_height="wrap_content"
             android:rowCount="5"
             android:columnCount="3"
-    >
+            android:paddingBottom="5dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,7 +44,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="5">
+        android:weightSum="5"
+        android:layout_columnSpan="3">
 
         <LinearLayout
             android:orientation="vertical"
@@ -120,5 +121,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:id="@+id/tour_cell_divider"
+        android:layout_columnSpan="3"
+        android:background="@color/login_divider"
+        android:layout_gravity="fill"
+        android:layout_marginTop="2dp"/>
 
 </GridLayout>
