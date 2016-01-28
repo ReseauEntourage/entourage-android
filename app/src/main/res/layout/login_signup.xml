@@ -138,7 +138,8 @@
             android:textSize="15sp"
             android:textColor="@color/custom_clickable_text_yellow"
             android:textAllCaps="false"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 
 </LinearLayout>
