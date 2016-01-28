@@ -18,12 +18,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,8 +48,6 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.squareup.otto.Subscribe;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,7 +59,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -73,7 +66,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
@@ -141,6 +133,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private LayoutInflater inflater;
 
+    private float originalMapLayoutWeight;
+
     @Bind(R.id.fragment_map_pin)
     View mapPin;
 
@@ -173,6 +167,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.layout_map)
     FrameLayout layoutMapMain;
+
+    @Bind(R.id.fragment_map_main_layout)
+    LinearLayout layoutMain;
 
     // ----------------------------------
     // LIFECYCLE
@@ -286,10 +283,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return true;
         }
         if (scrollviewTours.getVisibility() == View.GONE) {
-            scrollviewTours.setVisibility(View.VISIBLE);
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
-            lp.weight = 2;
-            layoutMapMain.setLayoutParams(lp);
+            showToursList();
             return true;
         }
         return false;
@@ -663,13 +657,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 public void onMapClick(LatLng latLng) {
                     if (getActivity() != null) {
                         if (scrollviewTours.getVisibility() == View.VISIBLE) {
-                            scrollviewTours.setVisibility(View.GONE);
-                            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                            lp.weight = 8;
-                            layoutMapMain.setLayoutParams(lp);
                             loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
                             loaderSearchTours.setCancelable(true);
                             tourService.searchToursFromPoint(latLng);
+
+                            hideToursList();
                         }
                     }
                 }
@@ -992,6 +984,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             markersMap.put(tour.getId(), mapFragment.getMap().addMarker(markerOptions));
             presenter.getOnClickListener().addTourMarker(position, tour);
         }
+    }
+
+    private void hideToursList() {
+        scrollviewTours.setVisibility(View.GONE);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
+        originalMapLayoutWeight = lp.weight;
+        lp.weight = layoutMain.getWeightSum();
+        layoutMapMain.setLayoutParams(lp);
+    }
+
+    private void showToursList() {
+        scrollviewTours.setVisibility(View.VISIBLE);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
+        lp.weight = originalMapLayoutWeight;
+        layoutMapMain.setLayoutParams(lp);
     }
 
     // ----------------------------------

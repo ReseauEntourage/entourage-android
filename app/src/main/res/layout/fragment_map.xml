@@ -18,7 +18,8 @@
             android:layout_marginLeft="0dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
-            android:layout_above="@+id/button_start_tour_launcher">
+            android:layout_above="@+id/button_start_tour_launcher"
+            android:id="@+id/fragment_map_main_layout">
 
             <FrameLayout
                 android:layout_width="match_parent"
