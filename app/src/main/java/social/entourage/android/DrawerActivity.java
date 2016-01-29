@@ -106,7 +106,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
         User user = getAuthenticationController().getUser();
         if (user != null) {
-            userName.setText(user.getFirstName());
+            userName.setText(user.getFullName());
         }
 
         BusProvider.getInstance().register(this);

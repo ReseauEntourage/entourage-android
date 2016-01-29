@@ -60,12 +60,20 @@ public class User {
         return phone;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getFirstName() { return firstName;}
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getFullName() {
+        StringBuilder fullname = new StringBuilder();
+        if (firstName != null) fullname.append(firstName);
+        if (lastName != null) {
+            if (fullname.length() > 0) fullname.append(' ');
+            fullname.append(lastName);
+        }
+        return fullname.toString();
     }
 
     public String getToken() {
