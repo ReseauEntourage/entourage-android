@@ -66,4 +66,8 @@
         <item name="android:background">@drawable/bg_button_white</item>
     </style>
 
+    <style name="ActButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_act</item>
+    </style>
+
 </resources>

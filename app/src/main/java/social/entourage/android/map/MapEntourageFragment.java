@@ -80,6 +80,7 @@ import social.entourage.android.api.tape.event.UserChoiceEvent;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
+import social.entourage.android.map.tour.TourListItemView;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 
@@ -326,6 +327,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     public void displayChosenTour(Tour tour) {
         presenter.openTour(tour);
+    }
+
+    public void displayChosenUser(int userID) {
+        Toast.makeText(getContext(), "Show user profile for id="+userID, Toast.LENGTH_SHORT).show();
+    }
+
+    public void act(Tour tour) {
+        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
     }
 
     public void checkAction(String action) {
@@ -911,44 +920,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void addTourCell(Tour tour) {
         //create the cell
-        View tourCell = inflater.inflate(R.layout.layout_tour_cell, null, false);
-        tourCell.setTag(new Long(tour.getId()));
-
-        //configure the cell
-        Resources res = getResources();
-
-        //title i.e Maraude Croix
-        TextView tourTitle = (TextView)tourCell.findViewById(R.id.tour_cell_title);
-        tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), tour.getOrganizationName()));
-
-        //author photo - no data yet
-
-        //author i.e par Mihai
-        TextView tourAuthor = (TextView)tourCell.findViewById(R.id.tour_cell_author);
-        tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getUserId()));
-
-        //date and location i.e 1h - Arc de Triomphe
-        TextView tourLocation = (TextView)tourCell.findViewById(R.id.tour_cell_location);
-        long startHours = tour.getStartTime().getTime()/1000/60/60;
-        long currentHours = System.currentTimeMillis()/1000/60/60;
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), (currentHours - startHours), "h", ""));
-
-        //tour type
-        ImageView tourTypeView = (ImageView)tourCell.findViewById(R.id.tour_cell_type);
-        String tourType = tour.getTourType();
-        if (tourType != null) {
-            if (tourType.equals(TourType.MEDICAL.getName())) {
-                tourTypeView.setImageDrawable(res.getDrawable(R.drawable.ic_medical));
-            } else if (tourType.equals(TourType.ALIMENTARY.getName())) {
-                tourTypeView.setImageDrawable(res.getDrawable(R.drawable.ic_alimentary));
-            } else if (tourType.equals(TourType.BARE_HANDS.getName())) {
-                tourTypeView.setImageDrawable(res.getDrawable(R.drawable.ic_bare_hands));
-            }
-        } else {
-            tourTypeView.setImageDrawable(null);
-        }
-
-        //tour members - No data yet
+        TourListItemView tourCell = (TourListItemView) inflater.inflate(R.layout.layout_tour_cell, null, false);
+        tourCell.populate(tour, this);
 
         //add the cell to the layout
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -958,12 +931,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void updateTourCellStartingPoint(Tour tour) {
         if (tour == null || tour.getStartAddress() == null) return;
-        View tourCell = layoutTours.findViewWithTag(new Long(tour.getId()));
+        TourListItemView tourCell = (TourListItemView) layoutTours.findViewWithTag(new Long(tour.getId()));
         if (tourCell == null) return;
-        TextView tourLocation = (TextView)tourCell.findViewById(R.id.tour_cell_location);
-        long startHours = tour.getStartTime().getTime()/1000/60/60;
-        long currentHours = System.currentTimeMillis()/1000/60/60;
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), (currentHours - startHours), "h", tour.getStartAddress().getAddressLine(0)));
+
+        tourCell.updateStartLocation(tour);
     }
 
     private void addTourHead(Tour tour) {
