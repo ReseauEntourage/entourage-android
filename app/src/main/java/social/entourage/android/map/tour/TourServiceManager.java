@@ -199,15 +199,19 @@ public class TourServiceManager {
 
                 if (checkPermission()) {
                     Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (location == null) return;
-                    TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
-                    //TourServiceManager.this.onLocationChanged(location, point);
-
-                    pointsToDraw.add(point);
-                    pointsToSend.add(point);
-                    previousLocation = location;
-                    updateTourCoordinates();
-                    tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+                    if(location==null) {
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                    if(location!=null) {
+                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
+                        pointsToDraw.add(point);
+                        pointsToSend.add(point);
+                        previousLocation = location;
+                        updateTourCoordinates();
+                        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+                    } else {
+                        Log.e(this.getClass().getSimpleName(), "no location provided");
+                    }
                 }
             }
 
@@ -421,6 +425,9 @@ public class TourServiceManager {
 
         @Override
         public void onProviderEnabled(String provider) {
+            Intent intent = new Intent();
+            intent.setAction(TourService.KEY_GPS_ENABLED);
+            TourServiceManager.this.tourService.sendBroadcast(intent);
         }
 
         @Override
@@ -430,4 +437,5 @@ public class TourServiceManager {
             TourServiceManager.this.tourService.sendBroadcast(intent);
         }
     }
+
 }

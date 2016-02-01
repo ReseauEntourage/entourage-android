@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -27,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -138,6 +136,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.fragment_map_pin)
     View mapPin;
+
+    @Bind(R.id.fragment_map_gps_text)
+    TextView gpsText;
 
     @Bind(R.id.fragment_map_follow_button)
     View centerButton;
@@ -524,6 +525,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 loaderStop.dismiss();
                 loaderStop = null;
             }
+        }
+    }
+
+    @Override
+    public void onGpsStatusChanged(boolean active) {
+        if (active) {
+             gpsText.setVisibility(View.GONE);
+        } else {
+            gpsText.setVisibility(View.VISIBLE);
         }
     }
 
