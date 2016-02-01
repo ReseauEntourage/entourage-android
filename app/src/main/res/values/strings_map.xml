@@ -6,6 +6,7 @@
     <string name="activity_map_tab_map">CARTE</string>
     <string name="activity_map_tab_liste">LISTE</string>
 
+    <string name="map_gps_unavailable">Aucun signal GPS</string>
     <string name="map_permission_title">Entourage doit accéder à la géolocalisation</string>
     <string name="map_permission_description">Sans géolocalisation Entourage ne peut pas fonctionner.</string>
     <string name="error_dialog_disabled">La géolocalisation doit être activée pour utiliser Entourage. Voulez-vous l\'activer ?</string>
