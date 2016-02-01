@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/login_startup_logo"
-        android:src="@drawable/ic_entourage"
+        android:src="@drawable/entourage_logo_white"
         android:layout_marginTop="160dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
@@ -32,25 +32,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/entourage_title"
-        android:id="@+id/login_startup_entourage"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/login_startup_logo"
-        android:singleLine="false"
-        android:textColor="#ffffff"
-        android:textSize="30sp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/entourage_slogan"
         android:id="@+id/login_startup_slogan"
-        android:layout_below="@+id/login_startup_entourage"
         android:layout_centerHorizontal="true"
-        android:textColor="#888888"
-        android:textSize="15sp"/>
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/login_startup_logo"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -71,7 +60,8 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/login_signup_form"
             android:textColor="@color/accent"
-            android:ellipsize="none"/>
+            android:ellipsize="none"
+            android:textSize="17sp"/>
 
         <Button
             android:layout_width="match_parent"
@@ -83,7 +73,8 @@
             android:layout_marginRight="80dp"
             android:layout_marginBottom="10dp"
             android:textColor="@color/white"
-            android:background="#00ffffff"/>
+            android:background="#00ffffff"
+            android:textSize="17sp"/>
     </LinearLayout>
 
 </RelativeLayout>

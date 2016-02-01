@@ -430,6 +430,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_button_register)
     void showRegisterScreen() {
         //TODO: Show the register screen
+        Toast.makeText(getBaseContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
     }
 
 }
