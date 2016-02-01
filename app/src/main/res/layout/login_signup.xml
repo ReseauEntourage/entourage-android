@@ -151,13 +151,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/login_button_signup"
-            android:textSize="17sp"
-            android:background="@drawable/login_button"
             android:textAllCaps="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:textColor="@color/white"
-            android:textStyle="bold"/>
+            style="@style/AccentButton"/>
 
         <TextView
             style="@style/SpacedTextViewSmall"

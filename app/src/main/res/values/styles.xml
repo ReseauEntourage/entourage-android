@@ -51,6 +51,8 @@
     <style name="AccentButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@drawable/bg_button_accent</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AccentButtonStraightTop" parent="Base.Widget.AppCompat.Button">
