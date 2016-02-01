@@ -39,6 +39,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.view.HtmlTextView;
 
 /**
  * Activity providing the login steps
@@ -106,7 +107,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     View confirmationBlock;
 
     @Bind(R.id.login_text_confirmation)
-    TextView codeConfirmation;
+    HtmlTextView codeConfirmation;
 
     @Bind(R.id.login_button_home)
     Button homeButton;
@@ -362,9 +363,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void newCodeAsked(User user) {
         stopLoader();
         if (user != null) {
-            codeConfirmation.setText(R.string.login_text_lost_code_ok);
+            //codeConfirmation.setText(R.string.login_text_lost_code_ok);
+            codeConfirmation.setHtmlString(R.string.login_text_lost_code_ok_html);
         } else {
-            codeConfirmation.setText(R.string.login_text_lost_code_ko);
+            //codeConfirmation.setText(R.string.login_text_lost_code_ko);
+            codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
         }
         enterCodeBlock.setVisibility(View.GONE);
         lostCodeButtonBlock.setVisibility(View.GONE);

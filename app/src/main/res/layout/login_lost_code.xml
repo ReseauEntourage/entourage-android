@@ -82,8 +82,9 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:id="@+id/login_block_lost_code_button">
+        android:layout_weight="1"
+        android:id="@+id/login_block_lost_code_button"
+        >
 
         <Button
             android:id="@+id/login_button_ask_code"
@@ -105,24 +106,23 @@
         android:visibility="gone"
         android:layout_weight="3">
 
-        <social.entourage.android.view.FontTextView
+        <social.entourage.android.view.HtmlTextView
             android:id="@+id/login_text_confirmation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/black"
             android:gravity="center"
-            app:fontName="fonts/Blokletters-Balpen.ttf"/>
+            app:htmlText=" "/>
 
         <Button
             android:id="@+id/login_button_home"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="@string/login_button_home"
-            android:textSize="13sp"
-            android:background="@drawable/login_button"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true"
+            style="@style/AccentButton"/>
 
     </LinearLayout>
 

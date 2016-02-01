@@ -46,4 +46,14 @@ public class HtmlTextView extends TextView {
             typedArray.recycle();
         }
     }
+
+    public void setHtmlString(int resourceID) {
+        setHtmlString(getResources().getString(resourceID));
+    }
+
+    public void setHtmlString(String htmlString) {
+        if (htmlString == null) htmlString = "";
+        setText(Html.fromHtml(htmlString), BufferType.SPANNABLE);
+        this.htmlString = htmlString;
+    }
 }
