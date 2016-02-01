@@ -18,17 +18,46 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/login_title_welcome"
+                    android:id="@+id/login_welcome_title"
+                    android:textSize="30sp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/warm_grey"
+                    android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/login_text_info"
+                android:id="@+id/login_welcome_info"
+                android:layout_gravity="center_horizontal"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/login_title_welcome"
-                android:id="@+id/login_welcome"
-                android:textSize="25sp"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentTop="false"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
+                android:text="@string/login_text_more"
+                android:id="@+id/login_welcome_more"
+                android:layout_gravity="center_horizontal"
+                android:textSize="15sp"
+                android:textColor="@color/accent"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
 
         <TableLayout
             android:id="@+id/login_block_signup"
@@ -52,7 +81,8 @@
                     android:text="@string/login_text_phone"
                     android:id="@+id/login_text_phone"
                     android:layout_marginLeft="10dp"
-                    android:textStyle="bold"/>
+                    android:textSize="15sp"
+                    android:textColor="@color/black"/>
 
                 <EditText
                     android:id="@+id/login_edit_phone"
@@ -78,7 +108,8 @@
                     android:text="@string/login_text_code"
                     android:id="@+id/login_text_code"
                     android:layout_marginLeft="10dp"
-                    android:textStyle="bold"/>
+                    android:textSize="15sp"
+                    android:textColor="@color/black"/>
 
                 <EditText
                     android:id="@+id/login_edit_code"
@@ -99,7 +130,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:id="@+id/imageView"
                     android:background="@color/login_divider"
                     android:layout_span="2"
@@ -120,12 +151,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/login_button_signup"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:background="@drawable/login_button"
             android:textAllCaps="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
 
         <TextView
             style="@style/SpacedTextViewSmall"
@@ -135,7 +167,7 @@
             android:layout_margin="10dp"
             android:gravity="center_horizontal"
             android:text="@string/login_text_lost_code"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textColor="@color/custom_clickable_text_yellow"
             android:textAllCaps="false"
             android:clickable="true"
