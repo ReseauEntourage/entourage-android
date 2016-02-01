@@ -4,6 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,6 +16,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -204,8 +209,6 @@ public class TourServiceManager {
                     }
                     if(location!=null) {
                         TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
-                        //TourServiceManager.this.onLocationChanged(location, point);
-
                         pointsToDraw.add(point);
                         pointsToSend.add(point);
                         previousLocation = location;
@@ -427,6 +430,9 @@ public class TourServiceManager {
 
         @Override
         public void onProviderEnabled(String provider) {
+            Intent intent = new Intent();
+            intent.setAction(TourService.KEY_GPS_ENABLED);
+            TourServiceManager.this.tourService.sendBroadcast(intent);
         }
 
         @Override
@@ -436,4 +442,5 @@ public class TourServiceManager {
             TourServiceManager.this.tourService.sendBroadcast(intent);
         }
     }
+
 }

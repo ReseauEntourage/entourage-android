@@ -201,7 +201,6 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.cancel();
-                            DrawerActivity.this.finish();
                         }
                     })
                     .create()

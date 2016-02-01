@@ -52,7 +52,7 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-        buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v0"'
+        buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1"'
         buildConfigField 'String', 'FLURRY_API_KEY', "\"${flurryApiKey}\""
     }
 
@@ -76,7 +76,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
-            buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back.herokuapp.com/api/v0"'
+            buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back.herokuapp.com/api/v1"'
         }
         preprod {
             signingConfig signingConfigs.debug

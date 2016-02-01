@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -124,6 +125,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.fragment_map_pin)
     View mapPin;
+
+    @Bind(R.id.fragment_map_gps_text)
+    TextView gpsText;
 
     @Bind(R.id.fragment_map_follow_button)
     View centerButton;
@@ -483,6 +487,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 loaderStop.dismiss();
                 loaderStop = null;
             }
+        }
+    }
+
+    @Override
+    public void onGpsStatusChanged(boolean active) {
+        if (active) {
+             gpsText.setVisibility(View.GONE);
+        } else {
+            gpsText.setVisibility(View.VISIBLE);
         }
     }
 
