@@ -31,7 +31,6 @@ import social.entourage.android.map.tour.TourService;
 )
 public interface EntourageComponent {
     void inject(Application application);
-    void inject(DrawerActivity activity);
     void inject(TourService service);
     void inject(EncounterTapeService service);
 

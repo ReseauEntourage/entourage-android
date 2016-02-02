@@ -6,12 +6,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.google.android.gms.iid.InstanceID;
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import java.io.IOException;
 
+import social.entourage.android.api.tape.event.GCMTokenObtainedEvent;
 import social.entourage.android.tools.BusProvider;
 
 /**
@@ -37,7 +42,7 @@ public class RegisterGCMService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
         int storedVersion = sharedPreferences.getInt(KEY_APPLICATION_VERSION, ENTOURAGE_MIN_VERSION);
         int currentVersion = getCurrentCodeVersion();
@@ -55,6 +60,8 @@ public class RegisterGCMService extends IntentService {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(KEY_REGISTRATION_ID, registrationId);
                 editor.commit();
+                BusProvider.getInstance().register(this);
+                BusProvider.getInstance().post(new GCMTokenObtainedEvent(registrationId));
             }
 
         }

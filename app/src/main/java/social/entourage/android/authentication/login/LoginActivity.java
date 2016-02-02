@@ -428,5 +428,4 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         //TODO: Show the register screen
         Toast.makeText(getBaseContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
     }
-
 }

@@ -58,29 +58,4 @@ public class UserPresenter {
     public void saveUserToursOnly(boolean choice) {
         authenticationController.saveUserToursOnly(choice);
     }
-
-    /*public void updateUser(String deviceId, Location location) {
-        if (fragment != null) {
-            fragment.startLoader();
-            if (deviceId != null) {
-                ArrayMap<String, Object> user = new ArrayMap<>();
-                user.put(KEY_DEVICE_ID, deviceId);
-                user.put(KEY_DEVICE_TYPE, ANDROID_DEVICE);
-                user.put(KEY_DEVICE_LOCATION, location);
-                userRequest.updateUser(user, new Callback<UserResponse>() {
-                    @Override
-                    public void success(UserResponse userResponse, Response response) {
-                        fragment.displayToast(fragment.getString(R.string.user_text_update_ok));
-                        fragment.updateView(userResponse.getUser().getEmail());
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        fragment.displayToast(fragment.getString(R.string.user_text_update_ko));
-                        fragment.resetLoginButton();
-                    }
-                });
-            }
-        }
-    }*/
 }
