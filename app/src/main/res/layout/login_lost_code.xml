@@ -11,23 +11,39 @@
     android:background="@color/background_login_grey"
     android:weightSum="8">
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="3"
-        android:id="@+id/login_block_lost_code_title">
+        android:layout_height="wrap_content"
+        android:background="@color/background_login_light">
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/login_title_lost_code"
             android:id="@+id/login_text_lost_code_title"
-            android:layout_centerInParent="true"
-            android:textSize="25sp"
+            android:textSize="17sp"
             android:elegantTextHeight="false"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="4"
+        android:id="@+id/login_block_lost_code_title">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_image_lost_code_phone"
+            android:layout_centerInParent="true"
+            android:src="@drawable/phone"/>
     </RelativeLayout>
 
     <TableLayout
@@ -36,82 +52,28 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:background="@color/background_login_light"
-        android:divider="@color/login_divider"
-        android:showDividers="middle|end">
+        >
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:weightSum="2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/login_text_country_code"
-                android:id="@+id/textView"
-                android:layout_marginLeft="10dp"
-                android:textStyle="bold"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:id="@+id/editText"
-                style="@style/CustomEditTextTheme"
-                android:text="@string/login_text_default_country_code"
-                android:editable="false"
-                android:contextClickable="false"
-                android:enabled="false"
-                android:gravity="right"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/login_text_phone"
-                android:id="@+id/textView2"
-                android:layout_marginLeft="10dp"
-                android:textStyle="bold"
-                android:layout_weight="1"/>
 
             <EditText
                 android:id="@+id/login_edit_phone_lost_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="@string/login_hint_phone"
+                android:hint="@string/login_hint_phone_long"
                 android:textColorHint="@color/login_edittext_hint"
                 style="@style/CustomEditTextTheme"
                 android:maxLength="12"
                 android:gravity="right"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"/>
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/login_divider">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:id="@+id/imageView2"
-                android:background="@color/login_divider"
-                android:layout_span="2"/>
         </TableRow>
 
     </TableLayout>
@@ -120,19 +82,19 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:id="@+id/login_block_lost_code_button">
+        android:layout_weight="1"
+        android:id="@+id/login_block_lost_code_button"
+        >
 
         <Button
             android:id="@+id/login_button_ask_code"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:text="@string/login_button_ask_code"
-            android:textSize="20sp"
-            android:background="@drawable/login_button"
-            android:textAllCaps="true"
-            android:textColor="@color/white"/>
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            style="@style/AccentButton"/>
     </LinearLayout>
 
     <LinearLayout
@@ -144,24 +106,23 @@
         android:visibility="gone"
         android:layout_weight="3">
 
-        <social.entourage.android.view.FontTextView
+        <social.entourage.android.view.HtmlTextView
             android:id="@+id/login_text_confirmation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/black"
             android:gravity="center"
-            app:fontName="fonts/Blokletters-Balpen.ttf"/>
+            app:htmlText=" "/>
 
         <Button
             android:id="@+id/login_button_home"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="@string/login_button_home"
-            android:textSize="13sp"
-            android:background="@drawable/login_button"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true"
+            style="@style/AccentButton"/>
 
     </LinearLayout>
 
