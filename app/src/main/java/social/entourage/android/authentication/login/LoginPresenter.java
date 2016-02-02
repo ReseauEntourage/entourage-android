@@ -40,12 +40,6 @@ public class LoginPresenter {
     private final static String COUNTRY_CODE_FR = "FR";
     private final static String COUNTRY_CODE_CA = "CA";
 
-    private final static String KEY_DEVICE_ID = "device_id";
-    private final static String KEY_DEVICE_TYPE = "device_type";
-    private final static String KEY_DEVICE_LOCATION = "device_location";
-
-    private final static String ANDROID_DEVICE = "android";
-
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -185,29 +179,6 @@ public class LoginPresenter {
                     @Override
                     public void failure(RetrofitError error) {
                         activity.newCodeAsked(null);
-                    }
-                });
-            }
-        }
-    }
-
-    public void updateUser(String deviceId, Location location) {
-        if (activity != null) {
-            activity.startLoader();
-            if (deviceId != null) {
-                ArrayMap<String, Object> user = new ArrayMap<>();
-                user.put(KEY_DEVICE_ID, deviceId);
-                user.put(KEY_DEVICE_TYPE, ANDROID_DEVICE);
-                user.put(KEY_DEVICE_LOCATION, location);
-                userRequest.updateUser(user, new Callback<UserResponse>() {
-                    @Override
-                    public void success(UserResponse userResponse, Response response) {
-                        activity.displayToast(activity.getString(R.string.user_text_update_ok));
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        activity.displayToast(activity.getString(R.string.user_text_update_ko));
                     }
                 });
             }

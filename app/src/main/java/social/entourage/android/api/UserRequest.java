@@ -14,11 +14,6 @@ public interface UserRequest {
     @PATCH("/users/me.json")
     void updateUser(@Body ArrayMap<String, Object> user, Callback<UserResponse> callback);
 
-    /*@PATCH("/users/me.json")
-    void updateUser(@Body HashMap<String, String> user, Callback<UserResponse> callback);*/
-
     @PATCH("/users/me/code.json")
     void regenerateSecretCode(@Body ArrayMap<String, Object> userInfo, Callback<UserResponse> callback);
-
-
 }

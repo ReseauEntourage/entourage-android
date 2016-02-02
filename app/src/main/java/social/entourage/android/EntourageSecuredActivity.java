@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.message.push.RegisterGCMService;
 
 /**
  * Base Activity that only runs if the user is currently logged
@@ -25,6 +26,8 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
         if(!authenticationController.isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
+        } else {
+            startService(new Intent(this, RegisterGCMService.class));
         }
     }
 

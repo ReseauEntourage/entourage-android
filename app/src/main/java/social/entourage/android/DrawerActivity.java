@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,12 +30,15 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.event.CheckIntentActionEvent;
+import social.entourage.android.api.tape.event.GCMTokenObtainedEvent;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -57,6 +62,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    @Inject
+    DrawerPresenter presenter;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -113,12 +121,15 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         }
 
         BusProvider.getInstance().register(this);
-        startService(new Intent(this, RegisterGCMService.class));
     }
 
     @Override
     protected void setupComponent(EntourageComponent entourageComponent) {
-        entourageComponent.inject(this);
+        DaggerDrawerComponent.builder()
+                .entourageComponent(entourageComponent)
+                .drawerModule(new DrawerModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -385,6 +396,14 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     // ----------------------------------
     // BUS LISTENERS
     // ----------------------------------
+
+    @Subscribe
+    public void GCMTokenObtained(GCMTokenObtainedEvent event) {
+        if (event.getRegistrationId() != null) {
+            Location location = EntourageLocation.getInstance().getCurrentLocation();
+            presenter.updateUser(null, null, null, (location != null ? location : null));
+        }
+    }
 
     @Subscribe
     public void checkIntentAction(CheckIntentActionEvent event) {
