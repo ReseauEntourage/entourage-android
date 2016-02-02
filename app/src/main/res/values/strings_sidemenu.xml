@@ -1,8 +1,9 @@
 <resources>
     <string name="sidemenu_title">Mon Compte</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_logout">DECONNEXION</string>
+    <string name="action_settings">Paramètres de l’application</string>
+    <string name="action_logout">Déconnexion</string>
     <string name="action_guide">Guide de solidarité</string>
     <string name="action_tours">MARAUDES</string>
     <string name="action_profile">PROFIL</string>
+    <string name="action_about">À propos</string>
 </resources>

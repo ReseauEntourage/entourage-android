@@ -4,7 +4,7 @@
     <!-- Application -->
     <color name="primary">#ffffff</color>
     <color name="primary_dark">#717171</color>
-    <color name="primary_light">#FAFAFA</color>
+    <color name="primary_light">#F7F7F7</color>
     <color name="accent">#FF6907</color>
     <color name="warm_grey">#9B9B9B</color>
     <color name="dark_grey">#4A4A4A</color>

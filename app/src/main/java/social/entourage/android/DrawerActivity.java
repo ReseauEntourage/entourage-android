@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -268,7 +269,24 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     private void configureNavigationItem() {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        //make the navigation view full screen
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
+        params.width = metrics.widthPixels;
+        navigationView.setLayoutParams(params);
+
+        //add listener to back button
+        ImageView backView = (ImageView) navigationView.findViewById(R.id.drawer_header_back);
+        backView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        //add navigationitemlistener
+        final NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(final MenuItem menuItem) {
                 menuItem.setChecked(true);
@@ -282,7 +300,21 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 drawerLayout.closeDrawers();
                 return true;
             }
-        });
+        };
+        navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener);
+
+        //add listener to user photo and name, that opens the user profile screen
+        View.OnClickListener navigationUserClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                MenuItem menuItem = navigationView.getMenu().findItem(R.id.action_user);
+                if (menuItem == null) return;
+                navigationItemSelectedListener.onNavigationItemSelected(menuItem);
+            }
+        };
+        userPhoto.setOnClickListener(navigationUserClickListener);
+        userName.setOnClickListener(navigationUserClickListener);
+
     }
 
     private void selectItem(@IdRes int menuId) {
@@ -312,6 +344,8 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
                 logout();
                 break;
+            case R.id.action_settings:
+            case R.id.action_about:
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();

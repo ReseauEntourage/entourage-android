@@ -5,17 +5,35 @@
     android:layout_height="wrap_content"
     android:gravity="end"
     android:layout_marginTop="20dp"
-    >
+              android:weightSum="1"
+              android:background="@color/primary">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/sidemenu_title"
-        android:id="@+id/drawer_header_title"
-        android:layout_gravity="center_horizontal"
-        android:textAllCaps="true"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/sidemenu_title"
+            android:id="@+id/drawer_header_title"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="17sp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:id="@+id/drawer_header_back"
+            android:layout_weight="1.13"
+            android:src="@drawable/right_arrow"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="vertical"
