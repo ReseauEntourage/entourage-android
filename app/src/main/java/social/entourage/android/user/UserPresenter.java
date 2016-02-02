@@ -1,5 +1,8 @@
 package social.entourage.android.user;
 
+import android.location.Location;
+import android.support.v4.util.ArrayMap;
+
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -56,29 +59,28 @@ public class UserPresenter {
         authenticationController.saveUserToursOnly(choice);
     }
 
-    public void updateUser(final String email, final String code) {
+    /*public void updateUser(String deviceId, Location location) {
         if (fragment != null) {
             fragment.startLoader();
-            HashMap<String, String> user = new HashMap<>();
-            if (email != null) {
-                user.put("email", email);
-            }
-            if (code != null) {
-                user.put("sms_code", code);
-            }
-            userRequest.updateUser(user, new Callback<UserResponse>() {
-                @Override
-                public void success(UserResponse userResponse, Response response) {
-                    fragment.displayToast(fragment.getString(R.string.user_text_update_ok));
-                    fragment.updateView(userResponse.getUser().getEmail());
-                }
+            if (deviceId != null) {
+                ArrayMap<String, Object> user = new ArrayMap<>();
+                user.put(KEY_DEVICE_ID, deviceId);
+                user.put(KEY_DEVICE_TYPE, ANDROID_DEVICE);
+                user.put(KEY_DEVICE_LOCATION, location);
+                userRequest.updateUser(user, new Callback<UserResponse>() {
+                    @Override
+                    public void success(UserResponse userResponse, Response response) {
+                        fragment.displayToast(fragment.getString(R.string.user_text_update_ok));
+                        fragment.updateView(userResponse.getUser().getEmail());
+                    }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    fragment.displayToast(fragment.getString(R.string.user_text_update_ko));
-                    fragment.resetLoginButton();
-                }
-            });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        fragment.displayToast(fragment.getString(R.string.user_text_update_ko));
+                        fragment.resetLoginButton();
+                    }
+                });
+            }
         }
-    }
+    }*/
 }

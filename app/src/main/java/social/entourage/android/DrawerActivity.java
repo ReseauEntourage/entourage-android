@@ -3,8 +3,7 @@ package social.entourage.android;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -81,6 +80,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     private GuideMapEntourageFragment guideMapEntourageFragment;
     private UserFragment userFragment;
 
+    private SharedPreferences gcmSharedPreferences;
     private String intentAction;
 
     // ----------------------------------
@@ -97,6 +97,8 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         configureNavigationItem();
 
         selectItem(R.id.action_tours);
+
+        gcmSharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
         intentAction = getIntent().getAction();
 
@@ -307,6 +309,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 loadFragment(userFragment, TAG_FRAGMENT_USER);
                 break;
             case R.id.action_logout:
+                gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
                 logout();
                 break;
             default:

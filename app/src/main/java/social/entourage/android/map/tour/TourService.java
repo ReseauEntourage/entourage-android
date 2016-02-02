@@ -375,7 +375,7 @@ public class TourService extends Service {
     }
 
     // ----------------------------------
-    // INNER CLASSES
+    // INNER INTERFACES
     // ----------------------------------
 
     public interface TourServiceListener {

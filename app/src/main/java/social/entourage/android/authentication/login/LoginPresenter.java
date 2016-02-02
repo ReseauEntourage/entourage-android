@@ -2,6 +2,7 @@ package social.entourage.android.authentication.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
@@ -23,6 +24,7 @@ import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.LoginResponse;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
+import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**
@@ -37,6 +39,12 @@ public class LoginPresenter {
 
     private final static String COUNTRY_CODE_FR = "FR";
     private final static String COUNTRY_CODE_CA = "CA";
+
+    private final static String KEY_DEVICE_ID = "device_id";
+    private final static String KEY_DEVICE_TYPE = "device_type";
+    private final static String KEY_DEVICE_LOCATION = "device_location";
+
+    private final static String ANDROID_DEVICE = "android";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -119,15 +127,18 @@ public class LoginPresenter {
         return null;
     }
 
-    public void login(final String phone, final String smsCode, final String type, final String id) {
+    public void login(final String phone, final String smsCode) {
         if (activity != null) {
             final String phoneNumber = checkPhoneNumberFormat(phone);
             if (phoneNumber != null) {
+                HashMap<String, String> user = new HashMap<>();
+                user.put("phone", phoneNumber);
+                user.put("sms_code", smsCode);
                 SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
                 HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
                 final boolean isTutorialDone = loggedNumbers.contains(phoneNumber);
                 activity.startLoader();
-                loginRequest.login(phoneNumber, smsCode, type, id, new Callback<LoginResponse>() {
+                loginRequest.login(user, new Callback<LoginResponse>() {
                     @Override
                     public void success(LoginResponse loginResponse, Response response) {
                         authenticationController.saveUser(loginResponse.getUser());
@@ -155,7 +166,6 @@ public class LoginPresenter {
     public void sendNewCode(final String phone) {
         if (activity != null) {
             if (phone != null) {
-
                 Map<String, String> user = new ArrayMap<>();
                 user.put("phone", phone);
 
@@ -181,8 +191,31 @@ public class LoginPresenter {
         }
     }
 
-    public void updateUserEmail(final String email) {
+    public void updateUser(String deviceId, Location location) {
         if (activity != null) {
+            activity.startLoader();
+            if (deviceId != null) {
+                ArrayMap<String, Object> user = new ArrayMap<>();
+                user.put(KEY_DEVICE_ID, deviceId);
+                user.put(KEY_DEVICE_TYPE, ANDROID_DEVICE);
+                user.put(KEY_DEVICE_LOCATION, location);
+                userRequest.updateUser(user, new Callback<UserResponse>() {
+                    @Override
+                    public void success(UserResponse userResponse, Response response) {
+                        activity.displayToast(activity.getString(R.string.user_text_update_ok));
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        activity.displayToast(activity.getString(R.string.user_text_update_ko));
+                    }
+                });
+            }
+        }
+    }
+
+    public void updateUserEmail(final String email) {
+        /*if (activity != null) {
             activity.startLoader();
             HashMap<String, String> user = new HashMap<>();
             user.put("email", email);
@@ -200,6 +233,6 @@ public class LoginPresenter {
                     activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
                 }
             });
-        }
+        }*/
     }
 }

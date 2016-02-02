@@ -24,7 +24,6 @@ import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashSet;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -38,7 +37,6 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
-import social.entourage.android.message.push.RegisterGCMService;
 
 /**
  * Activity providing the login steps
@@ -49,7 +47,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // CONSTANTS
     // ----------------------------------
 
-    private final static String ANDROID_DEVICE = "android";
     private static final int PERMISSIONS_REQUEST_PHONE_STATE = 1;
     public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
 
@@ -320,13 +317,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_signup)
     void onLoginClick() {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         loginPresenter.login(
                 phoneEditText.getText().toString(),
-                passwordEditText.getText().toString(),
-                ANDROID_DEVICE,
-                sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null)
-        );
+                passwordEditText.getText().toString());
     }
 
     @OnClick(R.id.login_text_lost_code)

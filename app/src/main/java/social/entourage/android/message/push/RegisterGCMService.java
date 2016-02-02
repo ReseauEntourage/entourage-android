@@ -12,6 +12,8 @@ import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
+import social.entourage.android.tools.BusProvider;
+
 /**
  * Service providing the registration to Google Cloud Messaging
  */
@@ -69,4 +71,5 @@ public class RegisterGCMService extends IntentService {
         }
         return -1;
     }
+
 }
