@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashSet;
 
@@ -30,7 +29,6 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
@@ -164,9 +162,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
 
+        /*
         Picasso.with(this).load(R.drawable.ic_user_photo)
                 .transform(new CropCircleTransformation())
                 .into(profilePhoto);
+                */
     }
 
     @Override
