@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.tour.TourInformationFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
 
@@ -297,35 +299,46 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         });
 
         //add navigationitemlistener
-        final NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
+        final View.OnClickListener sidemenuClickListener = new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(final MenuItem menuItem) {
-                menuItem.setChecked(true);
+            public void onClick(final View v) {
                 drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
                     @Override
                     public void onDrawerClosed(View drawerView) {
                         super.onDrawerClosed(drawerView);
-                        selectItem(menuItem.getItemId());
+                        selectItem(v.getId());
                     }
                 });
                 drawerLayout.closeDrawers();
-                return true;
             }
         };
-        navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener);
 
         //add listener to user photo and name, that opens the user profile screen
         View.OnClickListener navigationUserClickListener = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                MenuItem menuItem = navigationView.getMenu().findItem(R.id.action_user);
+                SideMenuItemView menuItem = (SideMenuItemView) navigationView.findViewById(R.id.action_user);
                 if (menuItem == null) return;
-                navigationItemSelectedListener.onNavigationItemSelected(menuItem);
+                sidemenuClickListener.onClick(menuItem);
             }
         };
         userPhoto.setOnClickListener(navigationUserClickListener);
         userName.setOnClickListener(navigationUserClickListener);
 
+        int childCount = navigationView.getChildCount();
+        View v = null;
+        for (int i = 0; i < childCount; i++) {
+            v = navigationView.getChildAt(i);
+            if (v instanceof LinearLayout) {
+                int itemsCount = ((LinearLayout) v).getChildCount();
+                for (int j = 0; j < itemsCount; j++) {
+                    View child = ((LinearLayout) v).getChildAt(j);
+                    if (child instanceof SideMenuItemView) {
+                        child.setOnClickListener(sidemenuClickListener);
+                    }
+                }
+            }
+        }
     }
 
     private void selectItem(@IdRes int menuId) {
