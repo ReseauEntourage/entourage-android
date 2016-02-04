@@ -32,6 +32,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -154,9 +155,14 @@ public class TourServiceManager {
     private void initializeLocationService() {
         locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
-        if (checkPermission()) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
-                    Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
+        if (checkPermission() && tour != null) {
+            if (tour.getTourVehicleType().equals(TourTransportMode.FEET)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_ON_TOUR_FEET,
+                        Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET, locationListener);
+            } else if (tour.getTourVehicleType().equals(TourTransportMode.CAR)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_ON_TOUR_CAR,
+                        Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR, locationListener);
+            }
         }
     }
 
@@ -192,6 +198,7 @@ public class TourServiceManager {
         tourRequest.tour(tourWrapper, new Callback<Tour.TourWrapper>() {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {
+                initializeLocationService();
                 initializeTimerFinishTask();
                 tourId = tourWrapper.getTour().getId();
                 tour.setId(tourId);
@@ -199,10 +206,10 @@ public class TourServiceManager {
 
                 if (checkPermission()) {
                     Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if(location==null) {
+                    if (location == null) {
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     }
-                    if(location!=null) {
+                    if (location != null) {
                         TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
                         pointsToDraw.add(point);
                         pointsToSend.add(point);
@@ -237,6 +244,7 @@ public class TourServiceManager {
                 pointsToSend.clear();
                 pointsToDraw.clear();
                 cancelFinishTimer();
+                stopLocationService();
             }
 
             @Override
