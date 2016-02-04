@@ -62,7 +62,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
         }
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String date = dateFormat.format(tour.getTourPoints().get(0).getPassingTime());
+        String date = dateFormat.format(tour.getStartTime());
         holder.cardTextDate.setText(date);
 
         holder.cardTextOrganization.setText(tour.getOrganizationName());

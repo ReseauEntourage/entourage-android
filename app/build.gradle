@@ -34,6 +34,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'jp.wasabeef:picasso-transformations:1.0.5'
 
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
     compile 'net.danlew:android.joda:2.7.1'
     compile files('libs/FlurryAnalytics-6.1.0.jar')
 

@@ -82,6 +82,14 @@ public class Tour implements Serializable {
     @Expose(serialize = false)
     private Address startAddress;
 
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("number_of_people")
+    private int numberOfPeople;
+
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("author")
+    private TourAuthor author;
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -162,6 +170,10 @@ public class Tour implements Serializable {
         return startAddress;
     }
 
+    public int getNumberOfPeople() { return numberOfPeople; }
+
+    public TourAuthor getAuthor() { return author; }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -208,6 +220,8 @@ public class Tour implements Serializable {
 
     public void setStartAddress(final Address startAddress) { this.startAddress = startAddress; }
 
+    public void setAuthor(TourAuthor author) { this.author = author; }
+
     @Override
     public String toString() {
         return "tour : " + id + ", vehicule : " + tourVehicleType + ", type : " + tourType + ", status : " + tourStatus + ", points : " + tourPoints.size();
@@ -250,8 +264,8 @@ public class Tour implements Serializable {
         @Override
         public int compare(Tour tour1, Tour tour2) {
             if (!tour1.getTourPoints().isEmpty() && !tour2.getTourPoints().isEmpty()) {
-                Date date1 = tour1.getTourPoints().get(0).getPassingTime();
-                Date date2 = tour2.getTourPoints().get(0).getPassingTime();
+                Date date1 = tour1.getStartTime();
+                Date date2 = tour2.getStartTime();
                 return date2.compareTo(date1);
             } else {
                 return 0;
@@ -263,8 +277,8 @@ public class Tour implements Serializable {
         @Override
         public int compare(Tour tour1, Tour tour2) {
             if (!tour1.getTourPoints().isEmpty() && !tour2.getTourPoints().isEmpty()) {
-                Date date1 = tour1.getTourPoints().get(0).getPassingTime();
-                Date date2 = tour2.getTourPoints().get(0).getPassingTime();
+                Date date1 = tour1.getStartTime();
+                Date date2 = tour2.getStartTime();
                 return date1.compareTo(date2);
             } else {
                 return 0;

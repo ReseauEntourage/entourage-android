@@ -296,7 +296,7 @@ public class TourService extends Service {
     public void register(TourServiceListener listener) {
         listeners.add(listener);
         if (tourServiceManager.isRunning()) {
-            listener.onTourResumed(tourServiceManager.getPointsToDraw(), tourServiceManager.getTour().getTourType());
+            listener.onTourResumed(tourServiceManager.getPointsToDraw(), tourServiceManager.getTour().getTourType(), tourServiceManager.getTour().getStartTime());
         }
     }
 
@@ -381,7 +381,7 @@ public class TourService extends Service {
     public interface TourServiceListener {
         void onTourCreated(boolean created, long tourId);
         void onTourUpdated(LatLng newPoint);
-        void onTourResumed(List<TourPoint> pointsToDraw, String tourType);
+        void onTourResumed(List<TourPoint> pointsToDraw, String tourType, Date startDate);
         void onLocationUpdated(LatLng location);
         void onRetrieveToursNearby(List<Tour> tours);
         void onRetrieveToursByUserId(List<Tour> tours);

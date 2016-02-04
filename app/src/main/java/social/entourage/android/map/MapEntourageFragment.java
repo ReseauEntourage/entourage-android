@@ -426,9 +426,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onTourResumed(List<TourPoint> pointsToDraw, String tourType) {
+    public void onTourResumed(List<TourPoint> pointsToDraw, String tourType, Date startDate) {
         if (!pointsToDraw.isEmpty()) {
-            drawCurrentTour(pointsToDraw, tourType);
+            drawCurrentTour(pointsToDraw, tourType, startDate);
             previousCoordinates = pointsToDraw.get(pointsToDraw.size() - 1).getLocation();
 
             Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
@@ -819,7 +819,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Map.Entry pair = (Map.Entry) iteratorTours.next();
             Tour tour = (Tour) pair.getValue();
             Polyline line = drawnUserHistory.get(tour.getId());
-            line.setColor(getTrackColor(true, tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
+            line.setColor(getTrackColor(true, tour.getTourType(), tour.getStartTime()));
         }
     }
 
@@ -829,7 +829,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Map.Entry pair = (Map.Entry) iteratorLines.next();
             Tour tour = retrievedHistory.get(pair.getKey());
             Polyline line = (Polyline) pair.getValue();
-            line.setColor(getTrackColor(true, tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
+            line.setColor(getTrackColor(true, tour.getTourType(), tour.getStartTime()));
         }
     }
 
@@ -883,10 +883,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         previousCoordinates = location;
     }
 
-    private void drawCurrentTour(List<TourPoint> pointsToDraw, String tourType) {
+    private void drawCurrentTour(List<TourPoint> pointsToDraw, String tourType, Date startDate) {
         if (!pointsToDraw.isEmpty()) {
             PolylineOptions line = new PolylineOptions();
-            color = getTrackColor(true, tourType, pointsToDraw.get(0).getPassingTime());
+            color = getTrackColor(true, tourType, startDate);
             line.zIndex(2f);
             line.width(15);
             line.color(color);
@@ -900,13 +900,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void drawNearbyTour(Tour tour, boolean isHistory) {
         if (mapFragment != null && mapFragment.getMap() != null && drawnToursMap != null && drawnUserHistory != null && tour != null && !tour.getTourPoints().isEmpty()) {
             PolylineOptions line = new PolylineOptions();
-            if (isToday(tour.getTourPoints().get(0).getPassingTime())) {
+            if (isToday(tour.getStartTime())) {
                 line.zIndex(1f);
             } else {
                 line.zIndex(0f);
             }
             line.width(15);
-            line.color(getTrackColor(isHistory, tour.getTourType(), tour.getTourPoints().get(0).getPassingTime()));
+            line.color(getTrackColor(isHistory, tour.getTourType(), tour.getStartTime()));
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
