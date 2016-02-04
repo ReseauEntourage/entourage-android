@@ -121,8 +121,6 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (user != null) {
             userName.setText(user.getFullName());
         }
-
-        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -182,6 +180,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         highlightCurrentMenuItem();
@@ -196,6 +200,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        BusProvider.getInstance().unregister(this);
     }
 
     // ----------------------------------
