@@ -45,6 +45,9 @@
     <color name="login_edittext">#000000</color>
     <color name="login_edittext_hint">#8D8D8D</color>
 
+    <!-- Side Menu -->
+    <color name="sidemenu_divider">#a5a59c</color>
+
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">#444444</color>

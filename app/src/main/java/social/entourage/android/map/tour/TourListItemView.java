@@ -2,6 +2,7 @@ package social.entourage.android.map.tour;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,9 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourType;
@@ -51,19 +55,28 @@ public class TourListItemView extends GridLayout {
         TextView tourTitle = (TextView)this.findViewById(R.id.tour_cell_title);
         tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), tour.getOrganizationName()));
 
-        //author photo - no data yet
-        ImageView photoView = (ImageView)this.findViewById(R.id.tour_cell_photo);
-        photoView.setTag(tour.getUserId());
+        //author photo
+        final ImageView photoView = (ImageView)this.findViewById(R.id.tour_cell_photo);
+        photoView.setTag(tour.getAuthor().getUserID());
         photoView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
                 mapFragment.displayChosenUser((Integer)v.getTag());
             }
         });
+        String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
+        if (avatarURLAsString != null) {
+            ImageLoader.getInstance().loadImage(avatarURLAsString, new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingComplete(final String imageUri, final View view, final Bitmap loadedImage) {
+                    photoView.setImageBitmap(loadedImage);
+                }
+            });
+        }
 
         //author i.e par Mihai
         TextView tourAuthor = (TextView)this.findViewById(R.id.tour_cell_author);
-        tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getUserId()));
+        tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));
 
         //date and location i.e 1h - Arc de Triomphe
         TextView tourLocation = (TextView)this.findViewById(R.id.tour_cell_location);
@@ -95,7 +108,9 @@ public class TourListItemView extends GridLayout {
             }
         });
 
-        //tour members - No data yet
+        //tour members
+        TextView numberOfPeopleTextView = (TextView)this.findViewById(R.id.tour_cell_people_count);
+        numberOfPeopleTextView.setText(""+tour.getNumberOfPeople());
     }
 
     public void updateStartLocation(Tour tour) {

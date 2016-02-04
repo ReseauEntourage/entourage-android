@@ -20,17 +20,13 @@ public class TourPoint implements Serializable {
 
     private double longitude;
 
-    @SerializedName("passing_time")
-    private Date passingTime;
-
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
 
-    public TourPoint(double latitude, double longitude, Date passingTime) {
+    public TourPoint(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.passingTime = passingTime;
     }
 
     // ----------------------------------
@@ -45,20 +41,12 @@ public class TourPoint implements Serializable {
         return longitude;
     }
 
-    public Date getPassingTime() {
-        return passingTime;
-    }
-
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
-    }
-
-    public void setPassingTime(Date passingTime) {
-        this.passingTime = passingTime;
     }
 
     public LatLng getLocation() {

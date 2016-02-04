@@ -186,7 +186,7 @@ public class TourServiceManager {
     private void addLastTourPoint() {
         Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
         if (currentLocation != null) {
-            TourPoint lastPoint = new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude(), new Date());
+            TourPoint lastPoint = new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
             pointsToSend.add(lastPoint);
         }
         updateTourCoordinates();
@@ -209,8 +209,8 @@ public class TourServiceManager {
                     if (location == null) {
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     }
-                    if (location != null) {
-                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
+                    if(location!=null) {
+                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
                         pointsToDraw.add(point);
                         pointsToSend.add(point);
                         previousLocation = location;
@@ -378,7 +378,7 @@ public class TourServiceManager {
         }
         pointsNeededForNextRequest--;
 
-        tour.addCoordinate(new TourPoint(location.getLatitude(), location.getLongitude(), new Date()));
+        tour.addCoordinate(new TourPoint(location.getLatitude(), location.getLongitude()));
         if (previousLocation != null) {
             tour.updateDistance(location.distanceTo(previousLocation));
         }
@@ -421,7 +421,7 @@ public class TourServiceManager {
         public void onLocationChanged(Location location) {
             tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
             if (tour != null && !tourService.isPaused()) {
-                TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), new Date());
+                TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
                 TourServiceManager.this.onLocationChanged(location, point);
             }
         }

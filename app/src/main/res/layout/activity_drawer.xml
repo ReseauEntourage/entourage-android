@@ -35,8 +35,9 @@
         android:background="@color/background_light"
         app:itemBackground="@drawable/drawer_item"
         app:itemIconTint="@color/item_state_list"
-        app:itemTextColor="@color/text_state_list"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer"/>
+        app:itemTextColor="@color/text_state_list">
+            <include
+                layout="@layout/layout_side_menu" />
+        </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

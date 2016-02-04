@@ -155,16 +155,21 @@ public class TourInformationFragment extends DialogFragment {
         String type = tour.getTourType();
         String status = tour.getTourStatus();
 
+        /*
         if (!tour.getTourPoints().isEmpty()) {
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             String date = dateFormat.format(tour.getTourPoints().get(0).getPassingTime());
             tourDate.setText(date);
         }
+        */
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String date = dateFormat.format(tour.getStartTime());
+        tourDate.setText(date);
 
         if (tour.getStartTime() != null && tour.getEndTime() != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-            tourDuration.setText(res.getString(R.string.tour_info_text_duration, dateFormat.format(tour.getStartTime()), dateFormat.format(tour.getEndTime())));
+            SimpleDateFormat durationFormat = new SimpleDateFormat("HH'h'mm");
+            durationFormat.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+            tourDuration.setText(res.getString(R.string.tour_info_text_duration, durationFormat.format(tour.getStartTime()), durationFormat.format(tour.getEndTime())));
         } else {
             tourDuration.setText(res.getString(R.string.tour_info_text_duration, "", ""));
         }

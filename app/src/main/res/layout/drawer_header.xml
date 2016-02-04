@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="end"
     android:layout_marginTop="20dp"
-              android:weightSum="1"
-              android:background="@color/primary">
+    android:weightSum="1"
+    android:background="@color/primary">
 
     <RelativeLayout
         android:layout_width="match_parent"
