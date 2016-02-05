@@ -91,7 +91,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,56 +99,23 @@
         android:layout_columnSpan="3"
         >
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2">
-
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:id="@+id/tour_cell_divider_left"
-                android:background="@color/greyish"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="10dp"/>
-
-        </LinearLayout>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:id="@+id/tour_cell_divider_left"
+            android:background="@color/greyish"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="25dp"/>
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tour_cell_button_act"
-            android:layout_weight="1"
+            android:layout_centerInParent="true"
             style="@style/ActButton"
             android:enabled="false"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2">
 
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:id="@+id/tour_cell_divider_right"
-                android:background="@color/greyish"
-                android:layout_gravity="fill_horizontal"
-                android:layout_weight="2"
-                android:layout_marginTop="10dp"/>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="2dp">
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </social.entourage.android.map.tour.TourListItemView>
