@@ -8,6 +8,7 @@
     <color name="accent">#FF6907</color>
     <color name="warm_grey">#9B9B9B</color>
     <color name="dark_grey">#4A4A4A</color>
+    <color name="greyish">#A5A59C</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
@@ -46,7 +47,7 @@
     <color name="login_edittext_hint">#8D8D8D</color>
 
     <!-- Side Menu -->
-    <color name="sidemenu_divider">#a5a59c</color>
+    <color name="sidemenu_divider">@color/greyish</color>
 
     <!-- Others -->
     <color name="login_view">#333333</color>

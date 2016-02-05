@@ -18,8 +18,8 @@
     <string name="tour_go">C\'est parti !</string>
     <string name="tour_type">Type de maraude</string>
     <string name="tour_type_medical">Médicale</string>
-    <string name="tour_type_bare_hands">A main nues</string>
-    <string name="tour_type_alimentary">Alimentaire</string>
+    <string name="tour_type_bare_hands">Sociale</string>
+    <string name="tour_type_alimentary">Distributive</string>
     <string name="tour_create_encounter_button">Créer une rencontre</string>
     <string name="tour_text_separator">-</string>
 
@@ -55,8 +55,11 @@
     <string name="tour_end_duration">%1$s passées dans la rue</string>
 
     <!-- Tour Cell -->
-    <string name="tour_cell_title">Maraude %1$s</string>
-    <string name="tour_cell_author">par %1$s</string>
+    <string name="tour_cell_title">%1$s</string>
+    <string name="tour_cell_type">Maraude %1$s par\u0020</string>
+    <string name="tour_cell_author">%1$s</string>
     <string name="tour_cell_location">%1$d%2$s - %3$s</string>
+    <string name="tour_cell_button_enabled">Je rejoins</string>
+    <string name="tour_cell_button_disabled">Actif</string>
 
 </resources>

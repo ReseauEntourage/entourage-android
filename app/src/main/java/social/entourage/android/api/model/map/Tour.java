@@ -218,9 +218,17 @@ public class Tour implements Serializable {
         this.tourPoints = tourPoints;
     }
 
-    public void setStartAddress(final Address startAddress) { this.startAddress = startAddress; }
+    public void setStartAddress(final Address startAddress) {
+        this.startAddress = startAddress;
+    }
 
-    public void setAuthor(TourAuthor author) { this.author = author; }
+    public void setAuthor(TourAuthor author) {
+        this.author = author;
+    }
+
+    public boolean canJoin() {
+        return false;
+    }
 
     @Override
     public String toString() {
@@ -263,7 +271,7 @@ public class Tour implements Serializable {
     public static class TourComparatorNewToOld implements Comparator<Tour> {
         @Override
         public int compare(Tour tour1, Tour tour2) {
-            if (!tour1.getTourPoints().isEmpty() && !tour2.getTourPoints().isEmpty()) {
+            if (tour1.getStartTime() != null && tour2.getStartTime() != null) {
                 Date date1 = tour1.getStartTime();
                 Date date2 = tour2.getStartTime();
                 return date2.compareTo(date1);
@@ -276,7 +284,7 @@ public class Tour implements Serializable {
     public static class TourComparatorOldToNew implements Comparator<Tour> {
         @Override
         public int compare(Tour tour1, Tour tour2) {
-            if (!tour1.getTourPoints().isEmpty() && !tour2.getTourPoints().isEmpty()) {
+            if (tour1.getStartTime() != null && tour2.getStartTime() != null) {
                 Date date1 = tour1.getStartTime();
                 Date date2 = tour2.getStartTime();
                 return date1.compareTo(date2);

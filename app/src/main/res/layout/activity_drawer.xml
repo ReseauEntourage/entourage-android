@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".DrawerActivity"
-    android:background="@color/background">
+    android:background="@color/background_light">
 
     <RelativeLayout
         android:id="@+id/content_view"

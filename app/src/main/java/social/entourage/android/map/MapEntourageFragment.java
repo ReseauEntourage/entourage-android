@@ -834,6 +834,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private boolean isToday(Date date) {
+        if (date == null) return false;
         Date today = new Date();
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
@@ -935,7 +936,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         //add the cell to the layout
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(10, 0, 10 ,0);
+        lp.setMargins(0, 0, 0 ,10);
         layoutTours.addView(tourCell, lp);
     }
 
