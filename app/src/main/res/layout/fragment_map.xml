@@ -14,15 +14,26 @@
             android:layout_height="match_parent"
             class="com.google.android.gms.maps.SupportMapFragment"/>
 
-        <TextView
-            android:id="@+id/fragment_map_gps_text"
+        <LinearLayout
+            android:id="@+id/fragment_map_gps_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_clickable_layout_gps"
             android:gravity="center"
-            android:text="@string/map_gps_unavailable"
-            android:textColor="@android:color/holo_red_dark"
-            android:visibility="gone"/>
+            android:elevation="5dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/map_gps_unavailable"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/fragment_map_follow_button"

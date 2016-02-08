@@ -37,6 +37,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -159,9 +160,23 @@ public class TourServiceManager {
     private void initializeLocationService() {
         locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
+        updateLocationServiceFrequency();
+    }
+
+    private void updateLocationServiceFrequency() {
         if (checkPermission()) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS,
-                    Constants.DISTANCE_BETWEEN_UPDATES_METERS, locationListener);
+            long minTime = Constants.UPDATE_TIMER_MILLIS_OFF_TOUR;
+            float minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR;
+            if (tour != null) {
+                if (tour.getTourVehicleType().equals(TourTransportMode.FEET)) {
+                    minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_FEET;
+                    minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET;
+                } else if (tour.getTourVehicleType().equals(TourTransportMode.CAR)) {
+                    minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_CAR;
+                    minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR;
+                }
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
         }
     }
 
@@ -197,7 +212,8 @@ public class TourServiceManager {
         tourRequest.tour(tourWrapper, new Callback<Tour.TourWrapper>() {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {
-                initializeTimerFinishTask();
+                //initializeTimerFinishTask();
+                updateLocationServiceFrequency();
                 tourId = tourWrapper.getTour().getId();
                 tour.setId(tourId);
                 tourService.notifyListenersTourCreated(true, tourId);
@@ -241,7 +257,8 @@ public class TourServiceManager {
                 tour = null;
                 pointsToSend.clear();
                 pointsToDraw.clear();
-                cancelFinishTimer();
+                //cancelFinishTimer();
+                updateLocationServiceFrequency();
             }
 
             @Override
