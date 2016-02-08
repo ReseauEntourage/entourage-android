@@ -9,7 +9,6 @@ import social.entourage.android.api.model.map.Encounter;
 
 public interface EncounterRequest {
 
-    //@Headers({"Accept: application/json"})
     @POST("/tours/{tour_id}/encounters.json")
     void create( @Path("tour_id") long tourId, @Body Encounter.EncounterWrapper encounterWrapper, Callback<EncounterResponse> callback);
 }

@@ -155,14 +155,23 @@ public class TourServiceManager {
     private void initializeLocationService() {
         locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
-        if (checkPermission() && tour != null) {
-            if (tour.getTourVehicleType().equals(TourTransportMode.FEET)) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_ON_TOUR_FEET,
-                        Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET, locationListener);
-            } else if (tour.getTourVehicleType().equals(TourTransportMode.CAR)) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_ON_TOUR_CAR,
-                        Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR, locationListener);
+        updateLocationServiceFrequency();
+    }
+
+    private void updateLocationServiceFrequency() {
+        if (checkPermission()) {
+            long minTime = Constants.UPDATE_TIMER_MILLIS_OFF_TOUR;
+            float minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR;
+            if (tour != null) {
+                if (tour.getTourVehicleType().equals(TourTransportMode.FEET)) {
+                    minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_FEET;
+                    minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET;
+                } else if (tour.getTourVehicleType().equals(TourTransportMode.CAR)) {
+                    minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_CAR;
+                    minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR;
+                }
             }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
         }
     }
 
@@ -198,7 +207,8 @@ public class TourServiceManager {
         tourRequest.tour(tourWrapper, new Callback<Tour.TourWrapper>() {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {
-                initializeLocationService();
+                //initializeLocationService();
+                updateLocationServiceFrequency();
                 initializeTimerFinishTask();
                 tourId = tourWrapper.getTour().getId();
                 tour.setId(tourId);
@@ -244,7 +254,8 @@ public class TourServiceManager {
                 pointsToSend.clear();
                 pointsToDraw.clear();
                 cancelFinishTimer();
-                stopLocationService();
+                //stopLocationService();
+                updateLocationServiceFrequency();
             }
 
             @Override
@@ -293,7 +304,7 @@ public class TourServiceManager {
         }
     }
 
-    protected void retrieveToursNearbySmall(LatLng point) {
+    protected void retrieveToursNearbySmall(LatLng point, boolean includeUserHistory) {
         if (point != null) {
             tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, 0.04, new Callback<Tour.ToursWrapper>() {
                 @Override

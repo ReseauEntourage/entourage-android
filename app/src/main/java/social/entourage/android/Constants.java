@@ -41,10 +41,12 @@ public class Constants {
 
     // Geolocation
     public static final long UPDATE_TIMER_MILLIS_MAP = 3000;
-    public static final long DISTANCE_BETWEEN_UPDATES_METERS = 50;
+    public static final long DISTANCE_BETWEEN_UPDATES_METERS_MAP = 50;
 
+    public static final long UPDATE_TIMER_MILLIS_OFF_TOUR = 20000;
     public static final long UPDATE_TIMER_MILLIS_ON_TOUR_FEET = 10000;
     public static final long UPDATE_TIMER_MILLIS_ON_TOUR_CAR = 5000;
+    public static final float DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR = 30;
     public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET = 10;
     public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR = 5;
 }

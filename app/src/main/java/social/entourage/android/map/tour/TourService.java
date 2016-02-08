@@ -255,8 +255,8 @@ public class TourService extends Service {
         tourServiceManager.retrieveToursByUserId(userId, page, per);
     }
 
-    public void searchToursFromPoint(LatLng point) {
-        tourServiceManager.retrieveToursNearbySmall(point);
+    public void searchToursFromPoint(LatLng point, boolean includeUserHistory) {
+        tourServiceManager.retrieveToursNearbySmall(point, includeUserHistory);
     }
 
     public void beginTreatment(String transportMode, String type) {

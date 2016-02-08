@@ -16,6 +16,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,7 +30,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -137,8 +137,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.fragment_map_pin)
     View mapPin;
 
-    @Bind(R.id.fragment_map_gps_text)
-    TextView gpsText;
+    @Bind(R.id.fragment_map_gps_layout)
+    LinearLayout gpsLayout;
 
     @Bind(R.id.fragment_map_follow_button)
     View centerButton;
@@ -193,7 +193,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         retrievedHistory = new TreeMap<>();
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
-        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -250,6 +249,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onStart() {
         super.onStart();
         presenter.start();
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -266,6 +266,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -531,15 +537,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onGpsStatusChanged(boolean active) {
         if (active) {
-             gpsText.setVisibility(View.GONE);
+            gpsLayout.setVisibility(View.GONE);
         } else {
-            gpsText.setVisibility(View.VISIBLE);
+            gpsLayout.setVisibility(View.VISIBLE);
         }
     }
 
     // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
+
+    @OnClick(R.id.fragment_map_gps_layout)
+    void displayGeolocationPreferences() {
+        if (getActivity() != null) {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+    }
 
     @OnClick(R.id.fragment_map_follow_button)
     void onFollowGeolocation() {
@@ -632,7 +645,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
 
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_MAP, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_MAP, Constants.DISTANCE_BETWEEN_UPDATES_METERS_MAP, new CustomLocationListener());
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastKnownLocation == null) {
                 lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -682,7 +695,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         } else {
                             loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
                             loaderSearchTours.setCancelable(true);
-                            tourService.searchToursFromPoint(latLng);
+                            tourService.searchToursFromPoint(latLng, userHistory);
                         }
                     }
                 }

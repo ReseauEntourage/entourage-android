@@ -44,23 +44,32 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/layout_tours"
-                    >
+                    android:id="@+id/layout_tours">
 
                 </LinearLayout>
             </ScrollView>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/fragment_map_gps_text"
+        <LinearLayout
+            android:id="@+id/fragment_map_gps_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:orientation="vertical"
+            android:background="@android:color/holo_blue_dark"
             android:gravity="center"
-            android:text="@string/map_gps_unavailable"
-            android:textColor="@android:color/holo_red_dark"
-            android:visibility="gone"/>
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/map_gps_unavailable"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/fragment_map_follow_button"
