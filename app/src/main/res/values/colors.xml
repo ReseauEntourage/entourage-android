@@ -53,6 +53,7 @@
     <color name="login_view">#333333</color>
     <color name="separator">#444444</color>
     <color name="grey_contour">#DADADA</color>
+    <color name="blue_dark">#007EA9</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 

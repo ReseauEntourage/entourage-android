@@ -536,10 +536,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onGpsStatusChanged(boolean active) {
-        if (active) {
-            gpsLayout.setVisibility(View.GONE);
-        } else {
-            gpsLayout.setVisibility(View.VISIBLE);
+        if (gpsLayout != null) {
+            if (active) {
+                gpsLayout.setVisibility(View.GONE);
+            } else {
+                gpsLayout.setVisibility(View.VISIBLE);
+            }
         }
     }
 
