@@ -276,13 +276,9 @@ public class Tour implements Serializable {
     public static class TourComparatorOldToNew implements Comparator<Tour> {
         @Override
         public int compare(Tour tour1, Tour tour2) {
-            if (!tour1.getTourPoints().isEmpty() && !tour2.getTourPoints().isEmpty()) {
-                Date date1 = tour1.getStartTime();
-                Date date2 = tour2.getStartTime();
-                return date1.compareTo(date2);
-            } else {
-                return 0;
-            }
+            Date date1 = tour1.getStartTime();
+            Date date2 = tour2.getStartTime();
+            return date1.compareTo(date2);
         }
     }
 

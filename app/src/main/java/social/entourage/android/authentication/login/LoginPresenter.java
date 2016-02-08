@@ -109,7 +109,7 @@ public class LoginPresenter {
             if (regionFormat.equals(COUNTRY_CODE_FR)) {
                 pattern = Pattern.compile("^(\\+33)\\d{9}");
             }
-            else if (regionFormat.equals(COUNTRY_CODE_FR)) {
+            else if (regionFormat.equals(COUNTRY_CODE_CA)) {
                 pattern = Pattern.compile("^(\\+1)\\d{10}");
             }
             Matcher matcher = pattern.matcher(phoneNumber);

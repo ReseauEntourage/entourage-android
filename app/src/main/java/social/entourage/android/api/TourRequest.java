@@ -13,19 +13,15 @@ import social.entourage.android.api.model.map.TourPoint;
 
 public interface TourRequest {
 
-    //@Headers({"Accept: application/json"})
     @POST("/tours.json")
     void tour( @Body Tour.TourWrapper tourWrapper, Callback<Tour.TourWrapper> callback);
 
-    //@Headers({"Accept: application/json"})
     @POST("/tours/{tour_id}/tour_points.json")
     void tourPoints( @Path("tour_id") long tourId, @Body TourPoint.TourPointWrapper points, Callback<Tour.TourWrapper> callback);
 
-    //@Headers({"Accept: application/json"})
     @PUT("/tours/{id}.json")
     void closeTour(@Path("id") long tourId, @Body Tour.TourWrapper tourWrapper, Callback<Tour.TourWrapper> callback);
 
-    //@Headers({"Accept: application/json"})
     @GET("/tours.json")
     void retrieveToursNearby(@Query("limit") int limit,
                              @Query("type") String type,
@@ -35,7 +31,6 @@ public interface TourRequest {
                              @Query("distance") double distance,
                              Callback<Tour.ToursWrapper> callback);
 
-    //@Headers({"Accept: application/json"})
     @GET("/users/{user_id}/tours.json")
     void retrieveToursByUserId(@Path("user_id") int userId,
                                @Query("page") int page,

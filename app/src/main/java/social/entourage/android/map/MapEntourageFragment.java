@@ -193,7 +193,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         retrievedHistory = new TreeMap<>();
 
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
-        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -250,6 +249,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onStart() {
         super.onStart();
         presenter.start();
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -266,6 +266,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -632,7 +638,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
 
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_MAP, Constants.DISTANCE_BETWEEN_UPDATES_METERS, new CustomLocationListener());
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_MAP, Constants.DISTANCE_BETWEEN_UPDATES_METERS_MAP, new CustomLocationListener());
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastKnownLocation == null) {
                 lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -682,7 +688,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         } else {
                             loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
                             loaderSearchTours.setCancelable(true);
-                            tourService.searchToursFromPoint(latLng);
+                            tourService.searchToursFromPoint(latLng, userHistory);
                         }
                     }
                 }

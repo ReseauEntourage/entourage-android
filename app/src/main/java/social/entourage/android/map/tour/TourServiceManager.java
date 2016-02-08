@@ -293,7 +293,7 @@ public class TourServiceManager {
         }
     }
 
-    protected void retrieveToursNearbySmall(LatLng point) {
+    protected void retrieveToursNearbySmall(LatLng point, boolean includeUserHistory) {
         if (point != null) {
             tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, 0.04, new Callback<Tour.ToursWrapper>() {
                 @Override

@@ -124,11 +124,23 @@ public class UserFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (getActivity() != null) {
             getActivity().setTitle(R.string.activity_display_user_title);
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        BusProvider.getInstance().unregister(this);
     }
 
     // ----------------------------------
