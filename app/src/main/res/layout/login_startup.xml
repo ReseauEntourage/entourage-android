@@ -21,13 +21,15 @@
         android:layout_marginTop="0dp"/>
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:id="@+id/login_startup_logo"
-        android:src="@drawable/entourage_logo_white"
-        android:layout_marginTop="160dp"
+        android:src="@drawable/entourage_logo"
+        android:layout_marginTop="130dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,7 +41,8 @@
         android:textColor="@color/white"
         android:textSize="21sp"
         android:gravity="center_horizontal"
-        android:layout_below="@+id/login_startup_logo"/>
+        android:layout_below="@+id/login_startup_logo"
+        />
 
     <LinearLayout
         android:orientation="vertical"
