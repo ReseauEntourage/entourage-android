@@ -151,7 +151,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/login_button_signup"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             style="@style/AccentButton"/>

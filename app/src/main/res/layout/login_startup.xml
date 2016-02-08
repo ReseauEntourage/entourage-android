@@ -61,7 +61,8 @@
             android:background="@drawable/login_signup_form"
             android:textColor="@color/accent"
             android:ellipsize="none"
-            android:textSize="17sp"/>
+            android:textSize="17sp"
+            android:textAllCaps="false"/>
 
         <Button
             android:layout_width="match_parent"
@@ -74,7 +75,8 @@
             android:layout_marginBottom="10dp"
             android:textColor="@color/white"
             android:background="#00ffffff"
-            android:textSize="17sp"/>
+            android:textSize="17sp"
+            android:textAllCaps="false"/>
     </LinearLayout>
 
 </RelativeLayout>
