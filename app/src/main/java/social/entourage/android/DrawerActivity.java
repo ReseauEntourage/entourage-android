@@ -94,6 +94,8 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     private SharedPreferences gcmSharedPreferences;
     private String intentAction;
 
+    @IdRes int selectedSidemenuAction;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -309,31 +311,29 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         });
 
         //add navigationitemlistener
-        final View.OnClickListener sidemenuClickListener = new View.OnClickListener() {
+        drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
-            public void onClick(final View v) {
-                drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        super.onDrawerClosed(drawerView);
-                        selectItem(v.getId());
-                    }
-                });
-                drawerLayout.closeDrawers();
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                selectItem(selectedSidemenuAction);
             }
-        };
+        });
 
         //add listener to user photo and name, that opens the user profile screen
-        View.OnClickListener navigationUserClickListener = new View.OnClickListener() {
+        userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                SideMenuItemView menuItem = (SideMenuItemView) navigationView.findViewById(R.id.action_user);
-                if (menuItem == null) return;
-                sidemenuClickListener.onClick(menuItem);
+                selectedSidemenuAction = R.id.action_user;
+                drawerLayout.closeDrawers();
             }
-        };
-        userPhoto.setOnClickListener(navigationUserClickListener);
-        userName.setOnClickListener(navigationUserClickListener);
+        });
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                selectedSidemenuAction = R.id.action_user;
+                drawerLayout.closeDrawers();
+            }
+        });
 
         int childCount = navigationView.getChildCount();
         View v = null;
@@ -344,7 +344,13 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 for (int j = 0; j < itemsCount; j++) {
                     View child = ((LinearLayout) v).getChildAt(j);
                     if (child instanceof SideMenuItemView) {
-                        child.setOnClickListener(sidemenuClickListener);
+                        child.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                selectedSidemenuAction = v.getId();
+                                drawerLayout.closeDrawers();
+                            }
+                        });
                     }
                 }
             }
@@ -352,6 +358,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     private void selectItem(@IdRes int menuId) {
+        if (menuId == 0) return;;
         switch (menuId) {
             case R.id.action_tours:
                 mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT_MAP);
@@ -384,6 +391,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
         }
+        selectedSidemenuAction = 0;
     }
 
     private void loadFragment(Fragment newFragment, String tag) {
