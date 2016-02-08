@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.location.Address;
-import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -108,13 +106,23 @@ public class TourListItemView extends GridLayout {
         tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), (currentHours - startHours), "h", ""));
 
         //act button
-        boolean canJoinTour = tour.canJoin();
+        String joinStatus = tour.getJoinStatus();
         Button actButton = (Button)this.findViewById(R.id.tour_cell_button_act);
-        actButton.setEnabled(canJoinTour);
-        if (canJoinTour) {
-            actButton.setText(R.string.tour_cell_button_enabled);
+        if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
+            actButton.setEnabled(false);
+            actButton.setText(R.string.tour_cell_button_pending);
+            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_pending), null, null);
+        } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
+            actButton.setEnabled(false);
+            actButton.setText(R.string.tour_cell_button_accepted);
+            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_accepted), null, null);
+        } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
+            actButton.setEnabled(false);
+            actButton.setText(R.string.tour_cell_button_pending);
         } else {
-            actButton.setText(R.string.tour_cell_button_disabled);
+            actButton.setEnabled(true);
+            actButton.setText(R.string.tour_cell_button_join);
+            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_join), null, null);
         }
         actButton.setOnClickListener(new OnClickListener() {
             @Override

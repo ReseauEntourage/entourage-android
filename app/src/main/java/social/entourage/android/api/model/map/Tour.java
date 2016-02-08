@@ -26,6 +26,9 @@ public class Tour implements Serializable {
     public static final String TOUR_ON_GOING = "ongoing";
     private static final String TOUR_FEET = "feet";
     private static final String TOUR_CAR = "car";
+    public static final String JOIN_STATUS_PENDING = "pending";
+    public static final String JOIN_STATUS_ACCEPTED = "accepted";
+    public static final String JOIN_STATUS_REJECTED = "rejected";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -89,6 +92,10 @@ public class Tour implements Serializable {
     @Expose(serialize = false, deserialize = true)
     @SerializedName("author")
     private TourAuthor author;
+
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("join_status")
+    private String joinStatus;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -170,9 +177,17 @@ public class Tour implements Serializable {
         return startAddress;
     }
 
-    public int getNumberOfPeople() { return numberOfPeople; }
+    public int getNumberOfPeople() {
+        return numberOfPeople;
+    }
 
-    public TourAuthor getAuthor() { return author; }
+    public TourAuthor getAuthor() {
+        return author;
+    }
+
+    public String getJoinStatus() {
+        return joinStatus;
+    }
 
     public void setId(long id) {
         this.id = id;
@@ -224,10 +239,6 @@ public class Tour implements Serializable {
 
     public void setAuthor(TourAuthor author) {
         this.author = author;
-    }
-
-    public boolean canJoin() {
-        return false;
     }
 
     @Override
