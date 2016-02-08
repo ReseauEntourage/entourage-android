@@ -16,6 +16,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,7 +30,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -137,8 +137,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.fragment_map_pin)
     View mapPin;
 
-    @Bind(R.id.fragment_map_gps_text)
-    TextView gpsText;
+    @Bind(R.id.fragment_map_gps_layout)
+    LinearLayout gpsLayout;
 
     @Bind(R.id.fragment_map_follow_button)
     View centerButton;
@@ -537,15 +537,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onGpsStatusChanged(boolean active) {
         if (active) {
-             gpsText.setVisibility(View.GONE);
+            gpsLayout.setVisibility(View.GONE);
         } else {
-            gpsText.setVisibility(View.VISIBLE);
+            gpsLayout.setVisibility(View.VISIBLE);
         }
     }
 
     // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
+
+    @OnClick(R.id.fragment_map_gps_layout)
+    void displayGeolocationPreferences() {
+        if (getActivity() != null) {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+    }
 
     @OnClick(R.id.fragment_map_follow_button)
     void onFollowGeolocation() {
@@ -840,6 +847,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private boolean isToday(Date date) {
+        if (date == null) return false;
         Date today = new Date();
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
@@ -941,7 +949,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         //add the cell to the layout
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(10, 0, 10 ,0);
+        lp.setMargins(0, 0, 0 ,10);
         layoutTours.addView(tourCell, lp);
     }
 
