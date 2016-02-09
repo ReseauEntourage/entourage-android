@@ -59,7 +59,8 @@
             android:orientation="vertical"
             android:background="@drawable/bg_clickable_layout_gps"
             android:gravity="center"
-            android:elevation="5dp">
+            android:elevation="5dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
