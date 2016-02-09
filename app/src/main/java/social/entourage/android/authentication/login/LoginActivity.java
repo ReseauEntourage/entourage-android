@@ -57,6 +57,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     LoginInformationFragment informationFragment;
 
+    private View previousView = null;
+
     @Inject
     LoginPresenter loginPresenter;
 
@@ -143,6 +145,19 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_include_startup)
     View loginStartup;
 
+    /************************
+     * Newsletter subscription View
+     ************************/
+
+    @Bind(R.id.login_include_newsletter)
+    View loginNewsletter;
+
+    @Bind(R.id.login_newsletter_button)
+    Button newsletterButton;
+
+    @Bind(R.id.login_newsletter_email)
+    TextView newsletterEmail;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -161,6 +176,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginLostCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
+        loginNewsletter.setVisibility(View.GONE);
 
         /*
         Picasso.with(this).load(R.drawable.ic_user_photo)
@@ -206,6 +222,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         else if (loginTutorial.getVisibility() == View.VISIBLE) {
             loginTutorial.setVisibility(View.GONE);
             loginWelcome.setVisibility(View.VISIBLE);
+        }
+        else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
+            newsletterEmail.setText("");
+            loginNewsletter.setVisibility(View.GONE);
+            previousView.setVisibility(View.VISIBLE);
         }
         else {
             super.onBackPressed();
@@ -268,6 +289,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         receiveCodeButton.setText(R.string.button_loading);
         receiveCodeButton.setEnabled(false);
         lostCodePhone.setEnabled(false);
+        newsletterButton.setText(R.string.button_loading);
+        newsletterButton.setEnabled(false);
     }
 
     public void stopLoader() {
@@ -276,6 +299,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         receiveCodeButton.setText(R.string.login_button_ask_code);
         receiveCodeButton.setEnabled(true);
         lostCodePhone.setEnabled(true);
+        newsletterButton.setText(R.string.login_button_newsletter);
+        newsletterButton.setEnabled(true);
     }
 
     public void launchFillInProfileView(String phoneNumber, User user) {
@@ -331,6 +356,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginLostCode.setVisibility(View.VISIBLE);
         lostCodeButtonBlock.setVisibility(View.VISIBLE);
         confirmationBlock.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.login_welcome_more)
+    void onMoreClick() {
+        loginSignup.setVisibility(View.GONE);
+        loginNewsletter.setVisibility(View.VISIBLE);
+        previousView = loginSignup;
     }
 
     /************************
@@ -424,8 +456,31 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     @OnClick(R.id.login_button_register)
-    void showRegisterScreen() {
-        //TODO: Show the register screen
-        Toast.makeText(getBaseContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+    void showNewsletterScreen() {
+        loginStartup.setVisibility(View.GONE);
+        loginNewsletter.setVisibility(View.VISIBLE);
+        previousView = loginStartup;
     }
+
+    /************************
+     * Newsletter View
+     ************************/
+
+    @OnClick(R.id.login_newsletter_button)
+    void newsletterSubscribe() {
+        hideKeyboard();
+        startLoader();
+        loginPresenter.subscribeToNewsletter(newsletterEmail.getText().toString());
+    }
+
+    void newsletterResult(boolean success) {
+        stopLoader();
+        if (success) {
+            displayToast(getString(R.string.login_text_newsletter_success));
+        }
+        else {
+            displayToast(getString(R.string.login_text_newsletter_fail));
+        }
+    }
+
 }

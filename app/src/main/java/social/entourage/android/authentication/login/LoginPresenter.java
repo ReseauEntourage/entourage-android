@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import retrofit.Callback;
+import retrofit.ResponseCallback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import social.entourage.android.Constants;
@@ -24,6 +25,7 @@ import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.LoginResponse;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
+import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 
@@ -121,6 +123,13 @@ public class LoginPresenter {
         return null;
     }
 
+    public String checkEmailFormat(String email) {
+        if (email != null && !email.equals("")) {
+            return email;
+        }
+        return null;
+    }
+
     public void login(final String phone, final String smsCode) {
         if (activity != null) {
             final String phoneNumber = checkPhoneNumberFormat(phone);
@@ -205,5 +214,29 @@ public class LoginPresenter {
                 }
             });
         }*/
+    }
+
+    public void subscribeToNewsletter(final String email) {
+        if (activity != null) {
+            String checkedEmail = checkEmailFormat(email);
+            if (checkedEmail != null) {
+                Newsletter newsletter = new Newsletter(email, true);
+                Newsletter.NewsletterWrapper newsletterWrapper = new Newsletter.NewsletterWrapper(newsletter);
+                loginRequest.subscribeToNewsletter(newsletterWrapper, new ResponseCallback() {
+                    @Override
+                    public void success(Response response) {
+                        activity.newsletterResult(true);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        activity.newsletterResult(false);
+                    }
+                });
+            } else {
+                activity.stopLoader();
+                activity.displayToast(activity.getString(R.string.login_text_invalid_email));
+            }
+        }
     }
 }

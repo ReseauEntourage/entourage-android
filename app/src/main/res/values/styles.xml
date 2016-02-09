@@ -35,6 +35,12 @@
     <style name="CustomDialogThemeNoTitle" parent="CustomDialogActivityTheme">
         <item name="windowNoTitle">true</item>
     </style>
+    
+    <!-- Title style -->
+    <style name="EntourageTitle" parent="android:Widget.TextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textSize">17sp</item>
+    </style>
 
     <!-- Dialog fragment theme with slide animation. -->
     <style name="CustomDialogFragmentSlide" parent="Theme.AppCompat.Light.Dialog">

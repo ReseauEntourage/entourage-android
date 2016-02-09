@@ -20,15 +20,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/login_title_lost_code"
             android:id="@+id/login_text_lost_code_title"
-            android:textSize="17sp"
             android:elegantTextHeight="false"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            style="@style/EntourageTitle"/>
     </LinearLayout>
 
     <RelativeLayout
