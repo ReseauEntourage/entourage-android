@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +36,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.Constants;
+import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.api.tape.EncounterTaskResult;
 import social.entourage.android.tools.BusProvider;
@@ -76,6 +76,7 @@ public class TourServiceManager {
     private ConnectivityManager connectivityManager;
     private LocationManager locationManager;
     private CustomLocationListener locationListener;
+    private boolean isBetterLocationUpdated;
 
     public TourServiceManager(final TourService tourService, final TourRequest tourRequest, final EncounterRequest encounterRequest) {
         Log.i("TourServiceManager", "constructor");
@@ -156,6 +157,15 @@ public class TourServiceManager {
         locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new CustomLocationListener();
         updateLocationServiceFrequency();
+        if (checkPermission()) {
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastKnownLocation == null) {
+                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+            if (lastKnownLocation != null) {
+                EntourageLocation.getInstance().setInitialLocation(lastKnownLocation);
+            }
+        }
     }
 
     private void updateLocationServiceFrequency() {
@@ -208,6 +218,11 @@ public class TourServiceManager {
             @Override
             public void success(Tour.TourWrapper tourWrapper, Response response) {
                 //initializeLocationService();
+                Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                if (currentLocation != null) {
+                    LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                    BusProvider.getInstance().post(new OnBetterLocationEvent(latLng));
+                }
                 updateLocationServiceFrequency();
                 initializeTimerFinishTask();
                 tourId = tourWrapper.getTour().getId();
@@ -254,7 +269,6 @@ public class TourServiceManager {
                 pointsToSend.clear();
                 pointsToDraw.clear();
                 cancelFinishTimer();
-                //stopLocationService();
                 updateLocationServiceFrequency();
             }
 
@@ -430,6 +444,7 @@ public class TourServiceManager {
 
         @Override
         public void onLocationChanged(Location location) {
+            updateLocation(location);
             tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
             if (tour != null && !tourService.isPaused()) {
                 TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
@@ -454,6 +469,25 @@ public class TourServiceManager {
             Intent intent = new Intent();
             intent.setAction(TourService.KEY_GPS_DISABLED);
             TourServiceManager.this.tourService.sendBroadcast(intent);
+        }
+
+        private void updateLocation(Location location) {
+            EntourageLocation.getInstance().saveCurrentLocation(location);
+            Location bestLocation = EntourageLocation.getInstance().getLocation();
+            boolean shouldCenterMap = false;
+            if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
+                EntourageLocation.getInstance().saveLocation(location);
+                isBetterLocationUpdated = true;
+                shouldCenterMap = true;
+            }
+
+            if (isBetterLocationUpdated) {
+                isBetterLocationUpdated = false;
+                LatLng latLng = EntourageLocation.getInstance().getLatLng();
+                if (shouldCenterMap) {
+                    BusProvider.getInstance().post(new OnBetterLocationEvent(latLng));
+                }
+            }
         }
     }
 

@@ -6,17 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import com.google.android.gms.iid.InstanceID;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 
 import java.io.IOException;
 
-import social.entourage.android.api.tape.event.GCMTokenObtainedEvent;
+import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.tools.BusProvider;
 
 /**
