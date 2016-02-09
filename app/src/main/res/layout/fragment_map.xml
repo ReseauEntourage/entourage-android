@@ -47,6 +47,7 @@
                     android:id="@+id/layout_tours">
 
                 </LinearLayout>
+
             </ScrollView>
 
         </LinearLayout>
@@ -56,9 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@drawable/bg_clickable_layout_gps"
             android:gravity="center"
-            android:visibility="gone">
+            android:elevation="5dp">
 
             <TextView
                 android:layout_width="match_parent"
