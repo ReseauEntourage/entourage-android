@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background_light"
+              android:weightSum="8">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_login_light">
+
+        <TextView
+            style="@style/EntourageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_title_lost_code"
+            android:id="@+id/login_code_sent_title"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:id="@+id/relativeLayout">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/login_verify_code_image"
+            android:layout_centerInParent="true"
+            android:src="@drawable/sms"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background">
+
+        <EditText
+            style="@style/CustomEditTextTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/login_verify_code_code"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="@string/login_hint_code_resent"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:inputType="numberPassword"
+            android:maxLength="6"
+            android:textColorHint="@color/login_edittext_hint"/>
+    </LinearLayout>
+
+    <Button
+        style="@style/AccentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_button_verify_code"
+        android:id="@+id/login_button_verify_code"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/login_text_lost_code"
+            android:id="@+id/login_verify_code_resend"
+            android:layout_weight="0.5"
+            android:textColor="@color/custom_clickable_text_yellow"
+            android:gravity="start"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/login_text_verify_code_back"
+            android:id="@+id/login_verify_code_back"
+            android:layout_weight="0.5"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/custom_clickable_text_yellow"
+            android:gravity="end"/>
+    </LinearLayout>
+</LinearLayout>

@@ -32,17 +32,20 @@
     <string name="login_text_code">Code d\'accès</string>
     <string name="login_text_country_code">Code pays</string>
     <string name="login_text_default_country_code">+33</string>
+    <string name="login_text_verify_code_back">Modifier le numéro</string>
     <string name="login_hint_name">Saisissez votre prénom et votre nom</string>
     <string name="login_hint_phone">Saisir numéro</string>
     <string name="login_hint_code">Saisir le code</string>
     <string name="login_hint_phone_long">Saisir votre numéro de téléphone</string>
     <string name="login_hint_email">Saisir votre adresse email</string>
+    <string name="login_hint_code_resent">Saisir le code de vérification reçu par SMS</string>
     <string name="login_button_signup">Se connecter</string>
     <string name="login_button_newsletter">Me tenir informé !</string>
     <string name="login_button_ask_code">Recevoir mon code</string>
     <string name="login_button_go">Valider</string>
     <string name="login_button_home">Retour à l\'accueil</string>
     <string name="login_button_finish_tutorial">J\'ai compris !</string>
+    <string name="login_button_verify_code">Envoyer</string>
     <string name="login_photo_error">La photo de profil n\'est pas encore disponible</string>
 
     <string name="login_permission_title">Entourage doit accéder l\'état de votre téléphone</string>

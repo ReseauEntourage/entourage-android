@@ -16,6 +16,12 @@
         layout="@layout/login_lost_code"/>
 
     <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/login_verify_code"
+        android:id="@+id/login_include_verify_code"/>
+
+    <include
         android:id="@+id/login_include_welcome"
         layout="@layout/login_welcome"/>
 

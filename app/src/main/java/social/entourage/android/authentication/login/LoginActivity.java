@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
@@ -158,6 +159,19 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_newsletter_email)
     TextView newsletterEmail;
 
+    /************************
+     * Verify Code view
+     ************************/
+
+    @Bind(R.id.login_include_verify_code)
+    View loginVerifyCode;
+
+    @Bind(R.id.login_button_verify_code)
+    Button verifyCodeButton;
+
+    @Bind(R.id.login_verify_code_code)
+    TextView receivedCode;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -174,6 +188,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
         loginSignup.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.GONE);
+        loginVerifyCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.GONE);
@@ -227,6 +242,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             newsletterEmail.setText("");
             loginNewsletter.setVisibility(View.GONE);
             previousView.setVisibility(View.VISIBLE);
+        }
+        else if (loginVerifyCode.getVisibility() == View.VISIBLE) {
+            showLostCodeScreen();
         }
         else {
             super.onBackPressed();
@@ -291,6 +309,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         lostCodePhone.setEnabled(false);
         newsletterButton.setText(R.string.button_loading);
         newsletterButton.setEnabled(false);
+        verifyCodeButton.setText(R.string.button_loading);
+        verifyCodeButton.setEnabled(false);
     }
 
     public void stopLoader() {
@@ -301,11 +321,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         lostCodePhone.setEnabled(true);
         newsletterButton.setText(R.string.login_button_newsletter);
         newsletterButton.setEnabled(true);
+        verifyCodeButton.setText(R.string.login_button_verify_code);
+        verifyCodeButton.setEnabled(true);
     }
 
     public void launchFillInProfileView(String phoneNumber, User user) {
         loggedPhoneNumber = phoneNumber;
         loginSignup.setVisibility(View.GONE);
+        loginVerifyCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.VISIBLE);
         if (user.getEmail() != null) {
             profileEmail.setText(user.getEmail());
@@ -388,15 +411,22 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void newCodeAsked(User user) {
         stopLoader();
         if (user != null) {
-            //codeConfirmation.setText(R.string.login_text_lost_code_ok);
-            codeConfirmation.setHtmlString(R.string.login_text_lost_code_ok_html);
+            if (loginLostCode.getVisibility() == View.VISIBLE) {
+                loginLostCode.setVisibility(View.GONE);
+                loginVerifyCode.setVisibility(View.VISIBLE);
+            }
+            else {
+                displayToast(getString(R.string.login_text_lost_code_ok));
+            }
         } else {
-            //codeConfirmation.setText(R.string.login_text_lost_code_ko);
-            codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
+            if (loginLostCode.getVisibility() == View.VISIBLE) {
+                //codeConfirmation.setText(R.string.login_text_lost_code_ko);
+                codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
+                enterCodeBlock.setVisibility(View.GONE);
+                lostCodeButtonBlock.setVisibility(View.GONE);
+                confirmationBlock.setVisibility(View.VISIBLE);
+            }
         }
-        enterCodeBlock.setVisibility(View.GONE);
-        lostCodeButtonBlock.setVisibility(View.GONE);
-        confirmationBlock.setVisibility(View.VISIBLE);
     }
 
     /************************
@@ -481,6 +511,31 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         else {
             displayToast(getString(R.string.login_text_newsletter_fail));
         }
+    }
+
+    /************************
+     * Verify Code View
+     ************************/
+
+    @OnClick(R.id.login_button_verify_code)
+    void verifyCode() {
+        loginPresenter.login(
+                lostCodePhone.getText().toString(),
+                receivedCode.getText().toString()
+        );
+    }
+
+    @OnClick(R.id.login_verify_code_resend)
+    void resendCode() {
+        sendNewCode();
+    }
+
+    @OnClick(R.id.login_verify_code_back)
+    void showLostCodeScreen() {
+        hideKeyboard();
+        receivedCode.setText("");
+        loginVerifyCode.setVisibility(View.GONE);
+        loginLostCode.setVisibility(View.VISIBLE);
     }
 
 }

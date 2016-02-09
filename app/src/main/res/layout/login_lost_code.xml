@@ -34,12 +34,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:id="@+id/login_block_lost_code_title">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/login_image_lost_code_phone"
             android:layout_centerInParent="true"
             android:src="@drawable/phone"/>
