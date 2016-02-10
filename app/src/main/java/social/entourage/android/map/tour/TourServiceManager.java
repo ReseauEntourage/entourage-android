@@ -117,8 +117,10 @@ public class TourServiceManager {
 
     public void stopLocationService() {
         if (checkPermission()) {
-            locationManager.removeUpdates(locationListener);
-            locationManager = null;
+            if (locationListener != null) {
+                locationManager.removeUpdates(locationListener);
+                locationManager = null;
+            }
         }
     }
 
@@ -154,10 +156,10 @@ public class TourServiceManager {
     }
 
     private void initializeLocationService() {
-        locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new CustomLocationListener();
-        updateLocationServiceFrequency();
         if (checkPermission()) {
+            locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
+            locationListener = new CustomLocationListener();
+            updateLocationServiceFrequency();
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastKnownLocation == null) {
                 lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -430,6 +432,13 @@ public class TourServiceManager {
     // ----------------------------------
     // BUS LISTENERS
     // ----------------------------------
+
+    @Subscribe
+    public void onLocationPermissionGranted(OnLocationPermissionGranted event) {
+        if (locationListener == null && event.isPermissionGranted()) {
+            initializeLocationService();
+        }
+    }
 
     @Subscribe
     public void encounterToSend(EncounterUploadTask task) {
