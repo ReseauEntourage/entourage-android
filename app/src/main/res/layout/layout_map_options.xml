@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:alpha="0.88">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_map_action_close"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:drawableTop="@drawable/button_close"
+        style="@style/ImageOnlyButton"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button_map_action_close"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:gravity="bottom"
+        android:id="@+id/map_actions_list"
+        android:layout_marginRight="16dp"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_create"
+            android:id="@+id/button_start_tour_launcher"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="false"
+            style="@style/MapActionButton"
+            android:drawableEnd="@drawable/button_create_maraude"
+            android:layout_above="@+id/button_map_action_close"
+            android:layout_gravity="right"/>
+    </LinearLayout>
+
+</RelativeLayout>

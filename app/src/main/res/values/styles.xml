@@ -82,4 +82,16 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="ImageOnlyButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textSize">0dp</item>
+    </style>
+
+    <style name="MapActionButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

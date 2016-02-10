@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -168,6 +169,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.fragment_map_main_layout)
     LinearLayout layoutMain;
 
+    @Bind(R.id.button_show_map_options)
+    Button buttonShowMapOptions;
+
+    @Bind(R.id.layout_map_button_options)
+    RelativeLayout mapOptionsView;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -286,6 +293,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         if (scrollviewTours.getVisibility() == View.GONE) {
             showToursList();
+            return true;
+        }
+        if (mapOptionsView.getVisibility() == View.VISIBLE) {
+            hideMapOptions();
             return true;
         }
         return false;
@@ -603,6 +614,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             intent.putExtras(args);
             startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
         }
+    }
+
+    // ----------------------------------
+    // Map Options handler
+    // ----------------------------------
+
+    @OnClick(R.id.button_show_map_options)
+    public void showMapOptions() {
+        mapOptionsView.setVisibility(View.VISIBLE);
+        buttonShowMapOptions.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.button_map_action_close)
+    public void hideMapOptions() {
+        mapOptionsView.setVisibility(View.GONE);
+        buttonShowMapOptions.setVisibility(View.VISIBLE);
     }
 
     // ----------------------------------
