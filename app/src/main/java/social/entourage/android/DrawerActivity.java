@@ -427,7 +427,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     // ----------------------------------
 
     @Subscribe
-    public void GCMTokenObtained(GCMTokenObtainedEvent event) {
+    public void GCMTokenObtained(OnGCMTokenObtainedEvent event) {
         if (event.getRegistrationId() != null) {
             Location location = EntourageLocation.getInstance().getCurrentLocation();
             presenter.updateUser(null, null, null, (location != null ? location : null));
@@ -435,7 +435,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Subscribe
-    public void checkIntentAction(CheckIntentActionEvent event) {
+    public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
         mapEntourageFragment.checkAction(intentAction);
         intentAction = null;

@@ -211,10 +211,10 @@ public class UserFragment extends Fragment {
     void setUsersToursOnly() {
         if (userToursSwitch.isChecked()) {
             presenter.saveUserToursOnly(true);
-            BusProvider.getInstance().post(new UserChoiceEvent(true));
+            BusProvider.getInstance().post(new OnUserChoiceEvent(true));
         } else {
             presenter.saveUserToursOnly(false);
-            BusProvider.getInstance().post(new UserChoiceEvent(false));
+            BusProvider.getInstance().post(new OnUserChoiceEvent(false));
         }
     }
 

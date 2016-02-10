@@ -57,7 +57,7 @@ public class RegisterGCMService extends IntentService {
                 editor.putString(KEY_REGISTRATION_ID, registrationId);
                 editor.commit();
                 BusProvider.getInstance().register(this);
-                BusProvider.getInstance().post(new GCMTokenObtainedEvent(registrationId));
+                BusProvider.getInstance().post(new OnGCMTokenObtainedEvent(registrationId));
             }
 
         }

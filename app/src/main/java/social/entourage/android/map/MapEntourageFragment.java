@@ -186,6 +186,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         retrievedTours = new TreeMap<>();
         retrievedHistory = new TreeMap<>();
 
+        checkPermission();
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
     }
 
@@ -230,9 +231,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
-                if ((permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) ||
-                    (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED)) {
+                if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
                     checkPermission();
+                } else {
+                    BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
                 }
             }
         }
@@ -252,7 +254,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             getActivity().setTitle(R.string.activity_tours_title);
             if (isMapLoaded) {
-                BusProvider.getInstance().post(new CheckIntentActionEvent());
+                BusProvider.getInstance().post(new OnCheckIntentActionEvent());
             }
         }
     }
@@ -364,7 +366,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     @Subscribe
-    public void onUserChoiceChanged(UserChoiceEvent event) {
+    public void onUserChoiceChanged(OnUserChoiceEvent event) {
         userHistory = event.isUserHistory();
         if (userHistory) {
             tourService.updateUserHistory(userId, 1, 500);
@@ -627,22 +629,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
                 return;
             }
-            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.map_permission_title)
-                            .setMessage(R.string.map_permission_description)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    requestPermissions(new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION }, PERMISSIONS_REQUEST_LOCATION);
-                                }
-                            }).show();
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
-                }
-                return;
-            }
         }
     }
 
@@ -694,7 +680,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 @Override
                 public void onMapLoaded() {
                     isMapLoaded = true;
-                    BusProvider.getInstance().post(new CheckIntentActionEvent());
+                    BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                 }
             });
         }
