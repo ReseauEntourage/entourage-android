@@ -73,6 +73,43 @@
 
         </LinearLayout>
 
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:id="@+id/map_display_type"
+            android:gravity="center"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:weightSum="1"
+            android:visibility="gone">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:text="@string/activity_map_tab_map"
+                android:id="@+id/map_display_type_carte"
+                android:button="@null"
+                android:gravity="center"
+                android:checked="true"
+                android:background="@drawable/bg_map_type_tab"
+                android:layout_weight="0.5"
+                android:textColor="@drawable/map_type_tab_text_color"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:text="@string/activity_map_tab_liste"
+                android:id="@+id/map_display_type_list"
+                android:button="@null"
+                android:background="@drawable/bg_map_type_tab"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@drawable/map_type_tab_text_color"/>
+        </RadioGroup>
+
         <ImageButton
             android:id="@+id/fragment_map_follow_button"
             android:layout_width="wrap_content"

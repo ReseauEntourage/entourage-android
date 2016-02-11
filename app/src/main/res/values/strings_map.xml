@@ -3,8 +3,8 @@
 
     <string name="map_api_key">AIzaSyAFqKD4mIEGQIfgbwQVQloMrlRkrqk9J4M</string>
     <string name="activity_map_title">MARAUDES</string>
-    <string name="activity_map_tab_map">CARTE</string>
-    <string name="activity_map_tab_liste">LISTE</string>
+    <string name="activity_map_tab_map">Carte</string>
+    <string name="activity_map_tab_liste">Liste</string>
 
     <string name="map_gps_unavailable">Aucun signal GPS</string>
     <string name="map_permission_title">Entourage doit accéder à la géolocalisation</string>

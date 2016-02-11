@@ -85,6 +85,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Bind(R.id.drawer_header_user_photo)
     ImageView userPhoto;
 
+    @Bind(R.id.toolbar_discussion)
+    BadgeView discussionBadgeView;
+
     private Fragment mainFragment;
     private MapEntourageFragment mapEntourageFragment;
     private GuideMapEntourageFragment guideMapEntourageFragment;
@@ -291,12 +294,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        final BadgeView badgeView = (BadgeView)toolbar.findViewById(R.id.toolbar_discussion);
-        if (badgeView != null) {
-            badgeView.setOnClickListener(new View.OnClickListener() {
+        discussionBadgeView = (BadgeView)toolbar.findViewById(R.id.toolbar_discussion);
+        if (discussionBadgeView != null) {
+            discussionBadgeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    badgeView.setBadgeCount(0);
+                    discussionBadgeView.setBadgeCount(0);
                     Toast.makeText(getApplicationContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -307,7 +310,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         badgeTestHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                badgeView.setBadgeCount(2);
+                discussionBadgeView.setBadgeCount(2);
             }
         }, 5000);
     }

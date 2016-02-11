@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -173,6 +174,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.map_fab_menu)
     FloatingActionMenu mapOptionsMenu;
+
+    @Bind(R.id.map_display_type)
+    RadioGroup mapDisplayTypeRadioGroup;
 
     // ----------------------------------
     // LIFECYCLE
@@ -609,6 +613,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    @OnClick(R.id.map_display_type_list)
+    public void onDisplayTypeList() {
+        showToursList();
+    }
+
     // ----------------------------------
     // Map Options handler
     // ----------------------------------
@@ -980,6 +989,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void hideToursList() {
         scrollviewTours.setVisibility(View.GONE);
+
+        mapDisplayTypeRadioGroup.check(R.id.map_display_type_carte);
+        mapDisplayTypeRadioGroup.setVisibility(View.VISIBLE);
+
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
         originalMapLayoutWeight = lp.weight;
         lp.weight = layoutMain.getWeightSum();
@@ -989,6 +1002,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void showToursList() {
         scrollviewTours.setVisibility(View.VISIBLE);
+
+        mapDisplayTypeRadioGroup.setVisibility(View.GONE);
+
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
         lp.weight = originalMapLayoutWeight;
         layoutMapMain.setLayoutParams(lp);
