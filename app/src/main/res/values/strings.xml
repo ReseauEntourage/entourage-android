@@ -9,5 +9,9 @@
     <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
     <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
     <string name="error_end_tour_before_logout">Terminez la maraude avant de vous déconnecter</string>
+    <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>
+    <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
+    <string name="button_update_version">Mettre à jour</string>
+    <string name="title_update_version">MISE A JOUR DISPONIBLE</string>
 
 </resources>

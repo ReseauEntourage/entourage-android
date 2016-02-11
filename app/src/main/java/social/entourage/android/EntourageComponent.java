@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import social.entourage.android.api.ApiModule;
+import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.MapRequest;
@@ -31,7 +32,6 @@ import social.entourage.android.map.tour.TourService;
 )
 public interface EntourageComponent {
     void inject(Application application);
-    void inject(DrawerActivity activity);
     void inject(TourService service);
     void inject(EncounterTapeService service);
 
@@ -39,6 +39,7 @@ public interface EntourageComponent {
 
     EncounterTapeTaskQueue getEncounterTapeTaskQueue();
 
+    AppRequest getAppRequest();
     EncounterRequest getEncounterRequest();
     LoginRequest getLoginRequest();
     MapRequest getMapRequest();

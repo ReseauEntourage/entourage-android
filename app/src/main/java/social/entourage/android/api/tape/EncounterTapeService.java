@@ -13,7 +13,7 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
-import social.entourage.android.api.tape.event.ConnectionChangedEvent;
+import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadCallback;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.tools.BusProvider;
@@ -104,7 +104,7 @@ public class EncounterTapeService extends Service implements EncounterUploadCall
     // ----------------------------------
 
     @Subscribe
-    public void onConnectionChanged(ConnectionChangedEvent event) {
+    public void onConnectionChanged(OnConnectionChangedEvent event) {
         connected = event.isConnected();
         if (connected) executeNext();
     }
@@ -121,9 +121,9 @@ public class EncounterTapeService extends Service implements EncounterUploadCall
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
             if (activeNetInfo != null && activeNetInfo.isConnected()) {
-                BusProvider.getInstance().post(new ConnectionChangedEvent(true));
+                BusProvider.getInstance().post(new OnConnectionChangedEvent(true));
             } else {
-                BusProvider.getInstance().post(new ConnectionChangedEvent(false));
+                BusProvider.getInstance().post(new OnConnectionChangedEvent(false));
             }
             BusProvider.getInstance().unregister(this);
         }

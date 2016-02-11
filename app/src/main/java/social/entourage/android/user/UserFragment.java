@@ -32,7 +32,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.api.tape.event.UserChoiceEvent;
+import social.entourage.android.api.tape.Events.*;
 
 public class UserFragment extends Fragment {
 
@@ -199,10 +199,10 @@ public class UserFragment extends Fragment {
     void setUsersToursOnly() {
         if (userToursSwitch.isChecked()) {
             presenter.saveUserToursOnly(true);
-            BusProvider.getInstance().post(new UserChoiceEvent(true));
+            BusProvider.getInstance().post(new OnUserChoiceEvent(true));
         } else {
             presenter.saveUserToursOnly(false);
-            BusProvider.getInstance().post(new UserChoiceEvent(false));
+            BusProvider.getInstance().post(new OnUserChoiceEvent(false));
         }
     }
 

@@ -9,13 +9,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
@@ -26,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -59,7 +55,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
@@ -69,8 +64,7 @@ import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
-import social.entourage.android.api.tape.event.CheckIntentActionEvent;
-import social.entourage.android.api.tape.event.UserChoiceEvent;
+import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
@@ -100,8 +94,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private View toReturn;
 
     private SupportMapFragment mapFragment;
-
-    private boolean isBetterLocationUpdated;
 
     private LatLng previousCoordinates;
     private Location previousCameraLocation;
@@ -159,7 +151,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeLocationService();
         if (!isBound) {
             doBindService();
         }
@@ -171,8 +162,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         retrievedTours = new TreeMap<>();
         retrievedHistory = new TreeMap<>();
 
+        checkPermission();
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
-        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -215,9 +206,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
-                if ((permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) ||
-                    (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED)) {
-                    initializeLocationService();
+                if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                    checkPermission();
+                } else {
+                    BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
                 }
             }
         }
@@ -228,6 +220,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onStart() {
         super.onStart();
         presenter.start();
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -236,7 +229,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             getActivity().setTitle(R.string.activity_tours_title);
             if (isMapLoaded) {
-                BusProvider.getInstance().post(new CheckIntentActionEvent());
+                BusProvider.getInstance().post(new OnCheckIntentActionEvent());
             }
         }
     }
@@ -244,6 +237,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -316,12 +315,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
             // 3 : Check if tour is already paused
             else if (tourService.isPaused()) {
-                //TODO: check if confirmation screen is already launched
                 launchConfirmationActivity();
             }
             // 4 : Check if should pause tour
             else if (action != null && TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
-                //TODO: check if confirmation screen is already launched
                 launchConfirmationActivity();
             }
         }
@@ -332,7 +329,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     @Subscribe
-    public void onUserChoiceChanged(UserChoiceEvent event) {
+    public void onUserChoiceChanged(OnUserChoiceEvent event) {
         userHistory = event.isUserHistory();
         if (userHistory) {
             tourService.updateUserHistory(userId, 1, 500);
@@ -567,7 +564,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // PRIVATE METHODS (lifecycle)
     // ----------------------------------
 
-    private void initializeLocationService() {
+    private void checkPermission() {
         if (getActivity() != null) {
             if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -584,32 +581,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
                 return;
-            }
-            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.map_permission_title)
-                            .setMessage(R.string.map_permission_description)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    requestPermissions(new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION }, PERMISSIONS_REQUEST_LOCATION);
-                                }
-                            }).show();
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
-                }
-                return;
-            }
-
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.UPDATE_TIMER_MILLIS_MAP, Constants.DISTANCE_BETWEEN_UPDATES_METERS_MAP, new CustomLocationListener());
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (lastKnownLocation == null) {
-                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            }
-            if (lastKnownLocation != null) {
-                EntourageLocation.getInstance().setInitialLocation(lastKnownLocation);
             }
         }
     }
@@ -658,7 +629,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 @Override
                 public void onMapLoaded() {
                     isMapLoaded = true;
-                    BusProvider.getInstance().post(new CheckIntentActionEvent());
+                    BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                 }
             });
         }
@@ -918,46 +889,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
-
-    private class CustomLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-
-            EntourageLocation.getInstance().saveCurrentLocation(location);
-
-            Location bestLocation = EntourageLocation.getInstance().getLocation();
-            boolean shouldCenterMap = false;
-            if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
-                EntourageLocation.getInstance().saveLocation(location);
-                isBetterLocationUpdated = true;
-                shouldCenterMap = true;
-            }
-
-            if (isBetterLocationUpdated) {
-                isBetterLocationUpdated = false;
-                LatLng latLng = EntourageLocation.getInstance().getLatLng();
-                if (shouldCenterMap) {
-                    centerMap(latLng);
-                }
-            }
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    }
 
     private class ServiceConnection implements android.content.ServiceConnection {
         @Override

@@ -3,8 +3,6 @@ package social.entourage.android;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,12 +25,14 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.tape.event.CheckIntentActionEvent;
+import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -56,6 +56,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    @Inject
+    DrawerPresenter presenter;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -108,13 +111,16 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             userName.setText(user.getFirstName());
         }
 
-        BusProvider.getInstance().register(this);
         startService(new Intent(this, RegisterGCMService.class));
     }
 
     @Override
     protected void setupComponent(EntourageComponent entourageComponent) {
-        entourageComponent.inject(this);
+        DaggerDrawerComponent.builder()
+                .entourageComponent(entourageComponent)
+                .drawerModule(new DrawerModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -165,6 +171,13 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        BusProvider.getInstance().register(this);
+        presenter.checkForUpdate();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         highlightCurrentMenuItem();
@@ -179,6 +192,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        BusProvider.getInstance().unregister(this);
     }
 
     // ----------------------------------
@@ -348,7 +367,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     // ----------------------------------
 
     @Subscribe
-    public void checkIntentAction(CheckIntentActionEvent event) {
+    public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
         mapEntourageFragment.checkAction(intentAction);
         intentAction = null;
