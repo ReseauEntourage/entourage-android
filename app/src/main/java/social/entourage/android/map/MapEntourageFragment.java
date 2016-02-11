@@ -32,6 +32,8 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -140,7 +142,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     View centerButton;
 
     @Bind(R.id.button_start_tour_launcher)
-    Button buttonStartLauncher;
+    FloatingActionButton buttonStartLauncher;
 
     @Bind(R.id.layout_map_launcher)
     View mapLauncherLayout;
@@ -169,11 +171,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.fragment_map_main_layout)
     LinearLayout layoutMain;
 
-    @Bind(R.id.button_show_map_options)
-    Button buttonShowMapOptions;
-
-    @Bind(R.id.layout_map_button_options)
-    RelativeLayout mapOptionsView;
+    @Bind(R.id.map_fab_menu)
+    FloatingActionMenu mapOptionsMenu;
 
     // ----------------------------------
     // LIFECYCLE
@@ -213,6 +212,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         initializeMap();
+        initializeFloatingMenu();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -290,15 +290,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public boolean onBackPressed() {
         if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
             mapLauncherLayout.setVisibility(View.GONE);
-            buttonStartLauncher.setVisibility(View.VISIBLE);
+            //buttonStartLauncher.setVisibility(View.VISIBLE);
             return true;
         }
         if (scrollviewTours.getVisibility() == View.GONE) {
             showToursList();
             return true;
         }
-        if (mapOptionsView.getVisibility() == View.VISIBLE) {
-            hideMapOptions();
+        if (mapOptionsMenu.isOpened()) {
+            mapOptionsMenu.toggle(true);
             return true;
         }
         return false;
@@ -525,7 +525,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 previousCoordinates = null;
 
                 mapPin.setVisibility(View.GONE);
-                buttonStartLauncher.setVisibility(View.VISIBLE);
+                //buttonStartLauncher.setVisibility(View.VISIBLE);
 
                 currentTourId = -1;
                 tourService.updateNearbyTours();
@@ -576,15 +576,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         isFollowing = true;
     }
 
-    @OnClick(R.id.button_start_tour_launcher)
-    void onStartTourLauncher() {
-        if (!tourService.isRunning()) {
-            FlurryAgent.logEvent(Constants.EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP);
-            buttonStartLauncher.setVisibility(View.GONE);
-            mapLauncherLayout.setVisibility(View.VISIBLE);
-        }
-    }
-
     @OnClick(R.id.launcher_tour_go)
     void onStartNewTour() {
         buttonLaunchTour.setText(R.string.button_loading);
@@ -622,16 +613,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // Map Options handler
     // ----------------------------------
 
-    @OnClick(R.id.button_show_map_options)
-    public void showMapOptions() {
-        mapOptionsView.setVisibility(View.VISIBLE);
-        buttonShowMapOptions.setVisibility(View.GONE);
+    private void initializeFloatingMenu() {
+        mapOptionsMenu.setClosedOnTouchOutside(true);
     }
 
-    @OnClick(R.id.button_map_action_close)
-    public void hideMapOptions() {
-        mapOptionsView.setVisibility(View.GONE);
-        buttonShowMapOptions.setVisibility(View.VISIBLE);
+    @OnClick(R.id.button_start_tour_launcher)
+    void onStartTourLauncher() {
+        if (!tourService.isRunning()) {
+            FlurryAgent.logEvent(Constants.EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP);
+            mapOptionsMenu.toggle(false);
+            mapLauncherLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     // ----------------------------------
@@ -737,7 +729,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void resumeTour() {
         if (tourService.isRunning()) {
             tourService.resumeTreatment();
-            buttonStartLauncher.setVisibility(View.GONE);
+            //buttonStartLauncher.setVisibility(View.GONE);
             mapPin.setVisibility(View.VISIBLE);
             layoutMapTour.setVisibility(View.VISIBLE);
         }
@@ -756,7 +748,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void launchConfirmationActivity() {
         pauseTour();
-        buttonStartLauncher.setVisibility(View.GONE);
+        //buttonStartLauncher.setVisibility(View.GONE);
         layoutMapTour.setVisibility(View.GONE);
         Bundle args = new Bundle();
         args.putSerializable(Tour.KEY_TOUR, getCurrentTour());
@@ -1015,7 +1007,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 boolean isRunning = tourService != null && tourService.isRunning();
                 if (isRunning) {
-                    buttonStartLauncher.setVisibility(View.GONE);
+                    //buttonStartLauncher.setVisibility(View.GONE);
 
                     currentTourId = tourService.getCurrentTourId();
                     mapPin.setVisibility(View.VISIBLE);
