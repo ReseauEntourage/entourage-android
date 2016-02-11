@@ -8,5 +8,6 @@
     <string name="entourage_slogan">Un peu de chaleur humaine\navec Entourage.</string>
     <string name="error_end_tour_before_logout">Terminez la maraude avant de vous déconnecter</string>
     <string name="error_not_yet_implemented">Not Yet Implemented</string>
-
+    <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>
+    <string name="application_update">Une version plus récente de l\'application est disponible, voulez-vous la mettre à jour ?</string>
 </resources>

@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import social.entourage.android.api.ApiModule;
+import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.MapRequest;
@@ -38,6 +39,7 @@ public interface EntourageComponent {
 
     EncounterTapeTaskQueue getEncounterTapeTaskQueue();
 
+    AppRequest getAppRequest();
     EncounterRequest getEncounterRequest();
     LoginRequest getLoginRequest();
     MapRequest getMapRequest();
