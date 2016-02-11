@@ -187,6 +187,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     protected void onStart() {
         super.onStart();
         BusProvider.getInstance().register(this);
+        presenter.checkForUpdate();
     }
 
     @Override

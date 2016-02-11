@@ -83,6 +83,12 @@ public class ApiModule {
 
     @Provides
     @Singleton
+    public AppRequest providesAppRequest(final RestAdapter restAdapter) {
+        return restAdapter.create(AppRequest.class);
+    }
+
+    @Provides
+    @Singleton
     public MapRequest providesMapService(final RestAdapter restAdapter) {
         return restAdapter.create(MapRequest.class);
     }

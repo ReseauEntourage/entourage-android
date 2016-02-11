@@ -8,11 +8,8 @@ import com.flurry.android.FlurryAgent;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
-
-import java.io.File;
 
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.authentication.AuthenticationModule;
