@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -70,34 +72,23 @@ public class DrawerPresenter {
 
     private void displayAppUpdateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(activity.getString(R.string.application_update))
+        final AlertDialog dialog = builder.setView(R.layout.dialog_version_update)
                 .setCancelable(false)
-                .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            Uri uri;
-                            if (BuildConfig.DEBUG) {
-                                uri = Uri.parse(MARKET_PREFIX + "social.entourage.android");
-                            } else {
-                                uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
-                            }
-                            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                        } catch (Exception e) {
-                            Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();
-                            dialog.cancel();
-                        }
-
-                    }
-                })
-                .setNegativeButton("PLUS TARD", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .create()
-                .show();
+                .create();
+        dialog.show();
+        Button updateButton = (Button) dialog.findViewById(R.id.update_dialog_button);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Uri uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                } catch (Exception e) {
+                    Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
+                }
+            }
+        });
     }
 
     // ----------------------------------
@@ -118,7 +109,9 @@ public class DrawerPresenter {
                 @Override
                 public void failure(RetrofitError error) {
                     if (error.getResponse().getStatus() == 426) {
-                        displayAppUpdateDialog();
+                        if (!BuildConfig.DEBUG) {
+                            displayAppUpdateDialog();
+                        }
                     }
                 }
             });
