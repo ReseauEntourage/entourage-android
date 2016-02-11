@@ -25,14 +25,14 @@
             android:src="@drawable/entourage_header"
             android:scaleType="fitCenter"
             android:layout_weight="1"/>
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/toolbar_chat"
+        <social.entourage.android.badge.BadgeView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/toolbar_discussion"
+            android:layout_weight="1"
+            android:icon="@drawable/ic_discussion"
             android:gravity="right"
-            android:src="@drawable/ic_chat"
-            android:scaleType="fitEnd"
-            android:layout_weight="1"/>
+            android:layout_marginRight="10dp"/>
 
     </LinearLayout>
 

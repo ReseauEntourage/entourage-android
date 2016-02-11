@@ -38,6 +38,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
+import social.entourage.android.badge.BadgeView;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -289,6 +290,26 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        final BadgeView badgeView = (BadgeView)toolbar.findViewById(R.id.toolbar_discussion);
+        if (badgeView != null) {
+            badgeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    badgeView.setBadgeCount(0);
+                    Toast.makeText(getApplicationContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        //TODO: Remove the following after discussion screen implementation
+        Handler badgeTestHandler = new Handler();
+        badgeTestHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                badgeView.setBadgeCount(2);
+            }
+        }, 5000);
     }
 
     private void configureNavigationItem() {
