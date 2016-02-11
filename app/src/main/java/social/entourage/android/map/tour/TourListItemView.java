@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 import java.util.Date;
 
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Tour;
@@ -97,13 +98,7 @@ public class TourListItemView extends GridLayout {
 
         //date and location i.e 1h - Arc de Triomphe
         TextView tourLocation = (TextView)this.findViewById(R.id.tour_cell_location);
-        Date tourStartDate = tour.getStartTime();
-        long currentHours = System.currentTimeMillis()/1000/60/60;
-        long startHours = currentHours;
-        if (tourStartDate != null) {
-            startHours = tourStartDate.getTime() / 1000 / 60 / 60;
-        }
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), (currentHours - startHours), "h", ""));
+        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), getHoursDiffToNow(tour.getStartTime()), "h", ""));
 
         //act button
         String joinStatus = tour.getJoinStatus();
@@ -118,7 +113,8 @@ public class TourListItemView extends GridLayout {
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_accepted), null, null);
         } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
             actButton.setEnabled(false);
-            actButton.setText(R.string.tour_cell_button_pending);
+            actButton.setText(R.string.tour_cell_button_rejected);
+            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_rejected), null, null);
         } else {
             actButton.setEnabled(true);
             actButton.setText(R.string.tour_cell_button_join);
@@ -138,12 +134,6 @@ public class TourListItemView extends GridLayout {
 
     public void updateStartLocation(Tour tour) {
         TextView tourLocationTextView = (TextView)this.findViewById(R.id.tour_cell_location);
-        long currentHours = System.currentTimeMillis()/1000/60/60;
-        long startHours = currentHours;
-        Date tourStartDate = tour.getStartTime();
-        if (tourStartDate != null) {
-            startHours = tourStartDate.getTime()/1000/60/60;
-        }
         String tourLocation = "";
         Address tourAddress = tour.getStartAddress();
         if (tourAddress != null) {
@@ -152,6 +142,15 @@ public class TourListItemView extends GridLayout {
                 tourLocation = "";
             }
         }
-        tourLocationTextView.setText(String.format(getResources().getString(R.string.tour_cell_location), (currentHours - startHours), "h", tourLocation));
+        tourLocationTextView.setText(String.format(getResources().getString(R.string.tour_cell_location), getHoursDiffToNow(tour.getStartTime()), "h", tourLocation));
+    }
+
+    private long getHoursDiffToNow(Date fromDate) {
+        long currentHours = System.currentTimeMillis() / Constants.MILLIS_HOUR;
+        long startHours = currentHours;
+        if (fromDate != null) {
+            startHours = fromDate.getTime() / Constants.MILLIS_HOUR;
+        }
+        return (currentHours - startHours);
     }
 }

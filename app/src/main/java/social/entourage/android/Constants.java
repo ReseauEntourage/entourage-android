@@ -49,4 +49,7 @@ public class Constants {
     public static final float DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR = 30;
     public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET = 10;
     public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR = 5;
+
+    //Time constants
+    public static final long MILLIS_HOUR = 3600000; //1000 * 60 * 60
 }
