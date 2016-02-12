@@ -4,7 +4,7 @@
     <!-- Tour -->
     <string name="activity_tours_title">MARAUDES</string>
     <string name="tour_create">Créer une maraude</string>
-    <string name="tour_start">Démarrer une maraude</string>
+    <string name="tour_start"> Démarrez votre maraude</string>
     <string name="tour_creation_fail">Echec de l\'envoi de maraude</string>
     <string name="tour_resume">Reprendre</string>
     <string name="tour_finish">Terminer</string>

@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -153,7 +154,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     View mapLauncherLayout;
 
     @Bind(R.id.launcher_tour_go)
-    Button buttonLaunchTour;
+    ImageView buttonLaunchTour;
 
     @Bind(R.id.launcher_tour_transport_mode)
     RadioGroup radioGroupTransportMode;
@@ -440,7 +441,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onTourCreated(boolean created, long tourId) {
-        buttonLaunchTour.setText(R.string.tour_go);
         buttonLaunchTour.setEnabled(true);
         if (getActivity() != null) {
             if (created) {
@@ -597,7 +597,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.launcher_tour_go)
     void onStartNewTour() {
-        buttonLaunchTour.setText(R.string.button_loading);
         buttonLaunchTour.setEnabled(false);
         TourTransportMode tourTransportMode = TourTransportMode.findByRessourceId(radioGroupTransportMode.getCheckedRadioButtonId());
         TourType tourType = TourType.findByRessourceId(radioGroupType.getCheckedRadioButtonId());

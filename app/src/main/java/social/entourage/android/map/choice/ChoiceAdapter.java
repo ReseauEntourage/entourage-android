@@ -56,7 +56,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
                 holder.cardTextType.setText(R.string.tour_type_alimentary);
             }
             else if (tour.getTourType().equals(TourType.BARE_HANDS.getName())) {
-                holder.cardImage.setImageResource(R.drawable.ic_bare_hands);
+                holder.cardImage.setImageResource(R.drawable.ic_social);
                 holder.cardTextType.setText(R.string.tour_type_bare_hands);
             }
         }

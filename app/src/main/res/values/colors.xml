@@ -4,7 +4,7 @@
     <!-- Application -->
     <color name="primary">#ffffff</color>
     <color name="primary_dark">#717171</color>
-    <color name="primary_light">#F7F7F7</color>
+    <color name="primary_light">#efeff4</color>
     <color name="accent">#F26521</color>
     <color name="warm_grey">#9B9B9B</color>
     <color name="dark_grey">#4A4A4A</color>
@@ -51,7 +51,7 @@
 
     <!-- Others -->
     <color name="login_view">#333333</color>
-    <color name="separator">#444444</color>
+    <color name="separator">@color/greyish</color>
     <color name="grey_contour">#DADADA</color>
     <color name="blue_dark">#007EA9</color>
     <color name="black">#000000</color>
