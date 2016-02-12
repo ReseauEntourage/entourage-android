@@ -40,6 +40,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -543,7 +544,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 previousCoordinates = null;
 
                 mapPin.setVisibility(View.GONE);
-                //buttonStartLauncher.setVisibility(View.VISIBLE);
+                mapOptionsMenu.setVisibility(View.VISIBLE);
 
                 currentTourId = -1;
                 tourService.updateNearbyTours();
@@ -714,65 +715,67 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void initializeMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
-        if (mapFragment.getMap() != null) {
-            GoogleMap googleMap = mapFragment.getMap();
-            googleMap.setMyLocationEnabled(true);
-            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-            googleMap.getUiSettings().setMapToolbarEnabled(false);
-            googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-                @Override
-                public void onCameraChange(CameraPosition cameraPosition) {
-                    EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
-                    Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-                    Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
-                    float newZoom = cameraPosition.zoom;
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final GoogleMap googleMap) {
+                googleMap.setMyLocationEnabled(true);
+                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                googleMap.getUiSettings().setMapToolbarEnabled(false);
+                googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    @Override
+                    public void onCameraChange(CameraPosition cameraPosition) {
+                        EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
+                        Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                        Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
+                        float newZoom = cameraPosition.zoom;
 
-                    if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
-                        previousCameraZoom = newZoom;
-                        previousCameraLocation = newLocation;
-                        tourService.updateNearbyTours();
-                        if (userHistory) {
-                            tourService.updateUserHistory(userId, 1, 500);
+                        if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+                            previousCameraZoom = newZoom;
+                            previousCameraLocation = newLocation;
+                            tourService.updateNearbyTours();
+                            if (userHistory) {
+                                tourService.updateUserHistory(userId, 1, 500);
+                            }
                         }
-                    }
 
-                    if (isFollowing && currentLocation != null) {
-                        if (currentLocation.distanceTo(newLocation) > 1) {
-                            isFollowing = false;
+                        if (isFollowing && currentLocation != null) {
+                            if (currentLocation.distanceTo(newLocation) > 1) {
+                                isFollowing = false;
+                            }
                         }
                     }
-                }
-            });
-            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    if (getActivity() != null) {
-                        if (scrollviewTours.getVisibility() == View.VISIBLE) {
-                            hideToursList();
-                        } else {
-                            loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
-                            loaderSearchTours.setCancelable(true);
-                            tourService.searchToursFromPoint(latLng, userHistory);
+                });
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        if (getActivity() != null) {
+                            if (scrollviewTours.getVisibility() == View.VISIBLE) {
+                                hideToursList();
+                            } else {
+                                loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
+                                loaderSearchTours.setCancelable(true);
+                                tourService.searchToursFromPoint(latLng, userHistory);
+                            }
                         }
                     }
-                }
-            });
-            googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                @Override
-                public void onMapLongClick(final LatLng latLng) {
-                    if (getActivity() != null) {
-                        showLongClickOnMapOptions(latLng);
+                });
+                googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(final LatLng latLng) {
+                        if (getActivity() != null) {
+                            showLongClickOnMapOptions(latLng);
+                        }
                     }
-                }
-            });
-            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                @Override
-                public void onMapLoaded() {
-                    isMapLoaded = true;
-                    BusProvider.getInstance().post(new OnCheckIntentActionEvent());
-                }
-            });
-        }
+                });
+                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() {
+                        isMapLoaded = true;
+                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
+                    }
+                });
+            }
+        });
     }
 
     // ----------------------------------
