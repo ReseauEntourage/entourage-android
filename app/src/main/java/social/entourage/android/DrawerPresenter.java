@@ -108,7 +108,8 @@ public class DrawerPresenter {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    if (error.getResponse().getStatus() == 426) {
+                    Response response = error.getResponse();
+                    if (response != null && response.getStatus() == 426) {
                         if (!BuildConfig.DEBUG) {
                             displayAppUpdateDialog();
                         }

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -20,9 +21,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -178,6 +181,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.map_display_type)
     RadioGroup mapDisplayTypeRadioGroup;
 
+    @Bind(R.id.layout_map_longclick)
+    RelativeLayout mapLongClickView;
+
+    @Bind(R.id.map_longclick_buttons)
+    LinearLayout mapLongClickButtonsView;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -294,15 +303,20 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public boolean onBackPressed() {
         if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
             mapLauncherLayout.setVisibility(View.GONE);
-            //buttonStartLauncher.setVisibility(View.VISIBLE);
-            return true;
-        }
-        if (scrollviewTours.getVisibility() == View.GONE) {
-            showToursList();
+            mapOptionsMenu.setVisibility(View.VISIBLE);
             return true;
         }
         if (mapOptionsMenu.isOpened()) {
             mapOptionsMenu.toggle(true);
+            return true;
+        }
+        if (mapLongClickView.getVisibility() == View.VISIBLE) {
+            mapLongClickView.setVisibility(View.GONE);
+            mapOptionsMenu.setVisibility(View.VISIBLE);
+            return true;
+        }
+        if (scrollviewTours.getVisibility() == View.GONE) {
+            showToursList();
             return true;
         }
         return false;
@@ -626,13 +640,51 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         mapOptionsMenu.setClosedOnTouchOutside(true);
     }
 
-    @OnClick(R.id.button_start_tour_launcher)
+    @OnClick({R.id.button_start_tour_launcher, R.id.map_longclick_button_start_tour_launcher})
     void onStartTourLauncher() {
         if (!tourService.isRunning()) {
             FlurryAgent.logEvent(Constants.EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP);
-            mapOptionsMenu.toggle(false);
+            if (mapOptionsMenu.isOpened()) {
+                mapOptionsMenu.toggle(false);
+            }
+            mapOptionsMenu.setVisibility(View.GONE);
+            mapLongClickView.setVisibility(View.GONE);
             mapLauncherLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    // ----------------------------------
+    // Long clicks on map handler
+    // ----------------------------------
+
+    private void showLongClickOnMapOptions(LatLng latLng) {
+        //only show when map is in full screen
+        if (scrollviewTours.getVisibility() == View.VISIBLE) {
+            return;
+        }
+        //hide the FAB menu
+        mapOptionsMenu.setVisibility(View.GONE);
+        //get the click point
+        Point clickPoint = mapFragment.getMap().getProjection().toScreenLocation(latLng);
+        //adjust the buttons holder layout
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point screenSize = new Point();
+        display.getSize(screenSize);
+        mapLongClickButtonsView.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        int bW = mapLongClickButtonsView.getMeasuredWidth();
+        int bH = mapLongClickButtonsView.getMeasuredHeight();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mapLongClickButtonsView.getLayoutParams();
+        int marginLeft = clickPoint.x;
+        if (marginLeft + bW > screenSize.x) {
+            marginLeft -= bW;
+        }
+        int marginTop = clickPoint.y - bH;
+        if (marginTop < 0) marginTop = clickPoint.y;
+        lp.setMargins(marginLeft, marginTop, 0, 0);
+        mapLongClickButtonsView.setLayoutParams(lp);
+        //show the view
+        mapLongClickView.setVisibility(View.VISIBLE);
     }
 
     // ----------------------------------
@@ -663,10 +715,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void initializeMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
         if (mapFragment.getMap() != null) {
-            mapFragment.getMap().setMyLocationEnabled(true);
-            mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
-            mapFragment.getMap().getUiSettings().setMapToolbarEnabled(false);
-            mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            GoogleMap googleMap = mapFragment.getMap();
+            googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+            googleMap.getUiSettings().setMapToolbarEnabled(false);
+            googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                 @Override
                 public void onCameraChange(CameraPosition cameraPosition) {
                     EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
@@ -690,7 +743,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
             });
-            mapFragment.getMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
                     if (getActivity() != null) {
@@ -704,7 +757,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
             });
-            mapFragment.getMap().setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(final LatLng latLng) {
+                    if (getActivity() != null) {
+                        showLongClickOnMapOptions(latLng);
+                    }
+                }
+            });
+            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 @Override
                 public void onMapLoaded() {
                     isMapLoaded = true;
