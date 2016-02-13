@@ -1,10 +1,12 @@
 package social.entourage.android.api;
 
-import retrofit.ResponseCallback;
-import retrofit.http.GET;
+import com.squareup.okhttp.ResponseBody;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
 
 public interface AppRequest {
 
-    @GET("/check.json")
-    void checkForUpdate(ResponseCallback callback);
+    @GET("check.json")
+    Call<ResponseBody> checkForUpdate();
 }

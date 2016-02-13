@@ -3,8 +3,6 @@ package social.entourage.android.map;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -15,13 +13,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import social.entourage.android.api.MapRequest;
-import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.Constants;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;

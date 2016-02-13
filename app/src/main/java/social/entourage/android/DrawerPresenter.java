@@ -1,7 +1,6 @@
 package social.entourage.android;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -13,12 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.squareup.okhttp.ResponseBody;
+
 import javax.inject.Inject;
 
-import retrofit.Callback;
-import retrofit.ResponseCallback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
@@ -102,7 +102,23 @@ public class DrawerPresenter {
 
     public void checkForUpdate() {
         if (!defaultSharedPreferences.getBoolean(Constants.UPDATE_DIALOG_DISPLAYED, false)) {
-            appRequest.checkForUpdate(new ResponseCallback() {
+            Call<ResponseBody> call = appRequest.checkForUpdate();
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    /*if (error.getResponse().getStatus() == 426) {
+                        if (!BuildConfig.DEBUG) {
+                            displayAppUpdateDialog();
+                        }
+                    }*/
+                }
+            });
+            /*appRequest.checkForUpdate(new ResponseCallback() {
                 @Override
                 public void success(Response response) {}
 
@@ -114,7 +130,7 @@ public class DrawerPresenter {
                         }
                     }
                 }
-            });
+            });*/
             defaultSharedPreferences.edit().putBoolean(Constants.UPDATE_DIALOG_DISPLAYED, true).commit();
         }
     }
@@ -144,7 +160,21 @@ public class DrawerPresenter {
                 user.put(KEY_DEVICE_ID, deviceId);
                 user.put(KEY_DEVICE_TYPE, ANDROID_DEVICE);
 
-                userRequest.updateUser(user, new Callback<UserResponse>() {
+                Call<UserResponse> call = userRequest.updateUser(user);
+                call.enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        if (response.isSuccess()) {
+                            Log.d(LOG_TAG, "success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        Log.d(LOG_TAG, t.getLocalizedMessage());
+                    }
+                });
+                /*userRequest.updateUser(user, new Callback<UserResponse>() {
                     @Override
                     public void success(UserResponse userResponse, Response response) {
                         Log.d(LOG_TAG, "success");
@@ -154,7 +184,7 @@ public class DrawerPresenter {
                     public void failure(RetrofitError error) {
                         Log.d(LOG_TAG, error.getLocalizedMessage());
                     }
-                });
+                });*/
             }
         }
     }

@@ -255,8 +255,8 @@ public class TourService extends Service {
         tourServiceManager.retrieveToursByUserId(userId, page, per);
     }
 
-    public void searchToursFromPoint(LatLng point, boolean includeUserHistory) {
-        tourServiceManager.retrieveToursNearbySmall(point, includeUserHistory);
+    public void searchToursFromPoint(LatLng point, boolean isUserHistory, int userId, int page, int per) {
+        tourServiceManager.retrieveToursNearbySmall(point, isUserHistory, userId, page, per);
     }
 
     public void beginTreatment(String transportMode, String type) {
@@ -362,6 +362,12 @@ public class TourService extends Service {
         }
     }
 
+    public void notifyListenersUserToursFoundFromPoint(Map<Long, Tour> tours) {
+        for (TourServiceListener listener : listeners) {
+            listener.onUserToursFound(tours);
+        }
+    }
+
     public void notifyListenersToursFound(Map<Long, Tour> tours) {
         for (TourServiceListener listener : listeners) {
             listener.onToursFound(tours);
@@ -385,6 +391,7 @@ public class TourService extends Service {
         void onLocationUpdated(LatLng location);
         void onRetrieveToursNearby(List<Tour> tours);
         void onRetrieveToursByUserId(List<Tour> tours);
+        void onUserToursFound(Map<Long, Tour> tours);
         void onToursFound(Map<Long, Tour> tours);
         void onTourClosed(boolean closed);
         void onGpsStatusChanged(boolean active);

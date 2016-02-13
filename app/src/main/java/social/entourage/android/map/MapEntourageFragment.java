@@ -487,6 +487,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
+    public void onUserToursFound(Map<Long, Tour> tours) {
+        //TODO
+    }
+
+    @Override
     public void onToursFound(Map<Long, Tour> tours) {
         if (loaderSearchTours != null) {
             loaderSearchTours.dismiss();
@@ -699,7 +704,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         } else {
                             loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
                             loaderSearchTours.setCancelable(true);
-                            tourService.searchToursFromPoint(latLng, userHistory);
+                            tourService.searchToursFromPoint(latLng, userHistory, userId, 1, 500);
                         }
                     }
                 }
