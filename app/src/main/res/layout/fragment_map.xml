@@ -8,7 +8,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layout_map_launcher">
+        >
 
         <LinearLayout
             android:orientation="vertical"
@@ -161,6 +161,13 @@
                 style="@style/MapActionButtonStyle"/>
 
         </com.github.clans.fab.FloatingActionMenu>
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/layout_map_longclick"
+            android:id="@+id/layout_map_longclick"
+            android:visibility = "gone"/>
 
         <include
             layout="@layout/layout_map_tour"
