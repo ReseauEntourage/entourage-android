@@ -121,7 +121,8 @@
             android:layout_marginTop="30dp"
             android:text="@string/login_button_home"
             android:textAllCaps="false"
-            style="@style/AccentButton"/>
+            style="@style/AccentButton"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
