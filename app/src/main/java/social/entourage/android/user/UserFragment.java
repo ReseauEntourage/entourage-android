@@ -220,8 +220,6 @@ public class UserFragment extends Fragment {
 
     @OnClick(R.id.user_button_confirm_changes)
     void confirmChanges() {
-
-        /*
         String emailEdit = userEditEmail.getText().toString();
         String codeEdit = userEditCode.getText().toString();
         String confirmationEdit = userEditConfirmation.getText().toString();
@@ -245,7 +243,6 @@ public class UserFragment extends Fragment {
         if (email != null || code != null) {
             presenter.updateUser(email, code);
         }
-        */
     }
 
     @OnClick(R.id.user_button_unsubscribe)

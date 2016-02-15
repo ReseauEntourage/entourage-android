@@ -10,6 +10,8 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.util.Log;
 
@@ -23,10 +25,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import social.entourage.android.BuildConfig;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
@@ -35,10 +45,10 @@ import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
-import social.entourage.android.Constants;
-import social.entourage.android.api.tape.Events.*;
-import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.api.tape.EncounterTaskResult;
+import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
+import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
+import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.tools.BusProvider;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
@@ -57,6 +67,7 @@ public class TourServiceManager {
     private static final int POINT_PER_REQUEST = 10;
     private static final double ALIGNMENT_PRECISION = .000001;
     private static final long VIBRATION_DURATION = 1000;
+    private static final double RETRIEVE_TOURS_DISTANCE = 0.04;
 
     private final TourService tourService;
     private final TourRequest tourRequest;
@@ -216,42 +227,48 @@ public class TourServiceManager {
     private void sendTour() {
         Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
-        tourRequest.tour(tourWrapper, new Callback<Tour.TourWrapper>() {
+        Call<Tour.TourWrapper> call = tourRequest.tour(tourWrapper);
+        call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
-            public void success(Tour.TourWrapper tourWrapper, Response response) {
-                //initializeLocationService();
-                Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-                if (currentLocation != null) {
-                    LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                    BusProvider.getInstance().post(new OnBetterLocationEvent(latLng));
-                }
-                updateLocationServiceFrequency();
-                initializeTimerFinishTask();
-                tourId = tourWrapper.getTour().getId();
-                tour.setId(tourId);
-                tourService.notifyListenersTourCreated(true, tourId);
+            public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
+                if (response.isSuccess()) {
+                    //initializeLocationService();
+                    Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                    if (currentLocation != null) {
+                        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                        BusProvider.getInstance().post(new OnBetterLocationEvent(latLng));
+                    }
+                    updateLocationServiceFrequency();
+                    initializeTimerFinishTask();
+                    tourId = response.body().getTour().getId();
+                    tour.setId(tourId);
+                    tourService.notifyListenersTourCreated(true, tourId);
 
-                if (checkPermission()) {
-                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (location == null) {
-                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    if (checkPermission()) {
+                        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if (location == null) {
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        }
+                        if (location != null) {
+                            TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
+                            pointsToDraw.add(point);
+                            pointsToSend.add(point);
+                            previousLocation = location;
+                            updateTourCoordinates();
+                            tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+                        } else {
+                            Log.e(this.getClass().getSimpleName(), "no location provided");
+                        }
                     }
-                    if(location!=null) {
-                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
-                        pointsToDraw.add(point);
-                        pointsToSend.add(point);
-                        previousLocation = location;
-                        updateTourCoordinates();
-                        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
-                    } else {
-                        Log.e(this.getClass().getSimpleName(), "no location provided");
-                    }
+                } else {
+                    tour = null;
+                    tourService.notifyListenersTourCreated(false, -1);
                 }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.e("Error", error.toString());
+            public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
+                Log.e("Error", t.getLocalizedMessage());
                 tour = null;
                 tourService.notifyListenersTourCreated(false, -1);
             }
@@ -262,21 +279,26 @@ public class TourServiceManager {
         tour.setTourStatus(Tour.TOUR_CLOSED);
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
-        tourRequest.closeTour(tourId, tourWrapper, new Callback<Tour.TourWrapper>() {
+        Call<Tour.TourWrapper> call = tourRequest.closeTour(tourId, tourWrapper);
+        call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
-            public void success(Tour.TourWrapper tourWrapper, Response response) {
-                Log.d("Success", tourWrapper.toString());
-                tourService.notifyListenersTourClosed(true);
-                tour = null;
-                pointsToSend.clear();
-                pointsToDraw.clear();
-                cancelFinishTimer();
-                updateLocationServiceFrequency();
+            public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
+                if (response.isSuccess()) {
+                    Log.d("Success", response.body().getTour().toString());
+                    tourService.notifyListenersTourClosed(true);
+                    tour = null;
+                    pointsToSend.clear();
+                    pointsToDraw.clear();
+                    cancelFinishTimer();
+                    updateLocationServiceFrequency();
+                } else {
+                    tourService.notifyListenersTourClosed(false);
+                }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.e("Error", error.toString());
+            public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
+                Log.e("Error", t.getLocalizedMessage());
                 tourService.notifyListenersTourClosed(false);
             }
         });
@@ -286,16 +308,21 @@ public class TourServiceManager {
         final TourPoint.TourPointWrapper tourPointWrapper = new TourPoint.TourPointWrapper();
         tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
         tourPointWrapper.setDistance(tour.getDistance());
-        tourRequest.tourPoints(tourId, tourPointWrapper, new Callback<Tour.TourWrapper>() {
+        Call<Tour.TourWrapper> call = tourRequest.tourPoints(tourId, tourPointWrapper);
+        call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
-            public void success(Tour.TourWrapper tourWrapper, Response response) {
-                pointsToSend.removeAll(tourPointWrapper.getTourPoints());
-                Log.v(this.getClass().getSimpleName(), tourWrapper.toString());
+            public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
+                if (response.isSuccess()) {
+                    if (response.body().getTour() != null) {
+                        pointsToSend.removeAll(response.body().getTour().getTourPoints());
+                        Log.v(this.getClass().getSimpleName(), response.body().getTour().toString());
+                    }
+                }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.e(this.getClass().getSimpleName(), error.toString());
+            public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
+                Log.e(this.getClass().getSimpleName(), t.getLocalizedMessage());
             }
         });
     }
@@ -306,50 +333,135 @@ public class TourServiceManager {
             LatLng location = currentPosition.target;
             float zoom = currentPosition.zoom;
             float distance = 40000f / (float) Math.pow(2f, zoom) / 2.5f;
-            tourRequest.retrieveToursNearby(10, null, null, location.latitude, location.longitude, distance, new Callback<Tour.ToursWrapper>() {
+            Call<Tour.ToursWrapper> call = tourRequest.retrieveToursNearby(10, null, null, location.latitude, location.longitude, distance);
+            call.enqueue(new Callback<Tour.ToursWrapper>() {
                 @Override
-                public void success(Tour.ToursWrapper toursWrapper, Response response) {
-                    tourService.notifyListenersToursNearby(toursWrapper.getTours());
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e("Error", error.toString());
-                }
-            });
-        }
-    }
-
-    protected void retrieveToursNearbySmall(LatLng point, boolean includeUserHistory) {
-        if (point != null) {
-            tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, 0.04, new Callback<Tour.ToursWrapper>() {
-                @Override
-                public void success(Tour.ToursWrapper toursWrapper, Response response) {
-                    Map<Long, Tour> toursMap = new HashMap<>();
-                    for (Tour tour : toursWrapper.getTours()) {
-                        toursMap.put(tour.getId(), tour);
+                public void onResponse(Call<Tour.ToursWrapper> call, Response<Tour.ToursWrapper> response) {
+                    if (response.isSuccess()) {
+                        tourService.notifyListenersToursNearby(response.body().getTours());
                     }
-                    tourService.notifyListenersToursFound(toursMap);
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
-                    Log.e("Error", error.toString());
+                public void onFailure(Call<Tour.ToursWrapper> call, Throwable t) {
+                    Log.e("Error", t.getLocalizedMessage());
                 }
             });
         }
     }
+
+    protected void retrieveToursNearbySmall(final LatLng point, final boolean isUserHistory, final int userId, final int page, final int per) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final ExecutorService executorService = Executors.newFixedThreadPool((isUserHistory ? 2 : 1));
+                    final Future<List<Tour>> futureCloseTours;
+                    final Future<List<Tour>> futureCloseUserTours;
+                    final List<Tour> closeTours;
+                    final List<Tour> closeUserTours;
+
+                    futureCloseTours = executorService.submit(
+                        new Callable<List<Tour>>() {
+                            @Override
+                            public List<Tour> call() throws Exception {
+                                return tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, RETRIEVE_TOURS_DISTANCE)
+                                        .execute().body().getTours();
+                            }
+                        }
+                    );
+                    closeTours = futureCloseTours.get();
+                    //if (isUserHistory) {
+                        futureCloseUserTours = executorService.submit(
+                                new Callable<List<Tour>>() {
+                                    @Override
+                                    public List<Tour> call() throws Exception {
+                                        return tourRequest.retrieveToursByUserIdAndPoint(userId, page, per, point.latitude, point.longitude, RETRIEVE_TOURS_DISTANCE)
+                                                .execute().body().getTours();
+                                    }
+                                }
+                        );
+                        closeUserTours = futureCloseUserTours.get();
+                    //}
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Map<Long, Tour> toursMap = new HashMap<>();
+                            for (Tour tour : closeTours) {
+                                toursMap.put(tour.getId(), tour);
+                            }
+                            //if (isUserHistory) {
+                                for (Tour tour : closeUserTours) {
+                                    toursMap.put(tour.getId(), tour);
+                                }
+                            //}
+                            tourService.notifyListenersToursFound(toursMap);
+                        }
+                    });
+                } catch (InterruptedException | ExecutionException e) {
+                    Log.e(TourServiceManager.class.getSimpleName(), "", e);
+                }
+            }
+        }).start();
+    }
+
+    /*protected void retrieveToursNearbySmall(LatLng point) {
+        if (point != null) {
+            Call<Tour.ToursWrapper> call = tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, RETRIEVE_TOURS_DISTANCE);
+            call.enqueue(new Callback<Tour.ToursWrapper>() {
+                @Override
+                public void onResponse(Call<Tour.ToursWrapper> call, Response<Tour.ToursWrapper> response) {
+                    if (response.isSuccess()) {
+                        Map<Long, Tour> toursMap = new HashMap<>();
+                        for (Tour tour : response.body().getTours()) {
+                            toursMap.put(tour.getId(), tour);
+                        }
+                        tourService.notifyListenersToursFound(toursMap);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Tour.ToursWrapper> call, Throwable t) {
+                    Log.e("Error", t.getLocalizedMessage());
+                }
+            });
+        }
+    }*/
 
     protected void retrieveToursByUserId(int userId, int page, int per) {
-        tourRequest.retrieveToursByUserId(userId, page, per, new Callback<Tour.ToursWrapper>() {
+        Call<Tour.ToursWrapper> call = tourRequest.retrieveToursByUserId(userId, page, per);
+        call.enqueue(new Callback<Tour.ToursWrapper>() {
             @Override
-            public void success(Tour.ToursWrapper toursWrapper, Response response) {
-                tourService.notifyListenersUserToursFound(toursWrapper.getTours());
+            public void onResponse(Call<Tour.ToursWrapper> call, Response<Tour.ToursWrapper> response) {
+                if (response.isSuccess()) {
+                    tourService.notifyListenersUserToursFound(response.body().getTours());
+                }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.e("Error", error.toString());
+            public void onFailure(Call<Tour.ToursWrapper> call, Throwable t) {
+                Log.e("Error", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    protected void retrieveToursByUserIdAndPoint(int userId, int page, int per, LatLng point) {
+        Call<Tour.ToursWrapper> call = tourRequest.retrieveToursByUserIdAndPoint(userId, page, per, point.latitude, point.longitude, RETRIEVE_TOURS_DISTANCE);
+        call.enqueue(new Callback<Tour.ToursWrapper>() {
+            @Override
+            public void onResponse(Call<Tour.ToursWrapper> call, Response<Tour.ToursWrapper> response) {
+                if (response.isSuccess()) {
+                    Map<Long, Tour> toursMap = new HashMap<>();
+                    for (Tour tour : response.body().getTours()) {
+                        toursMap.put(tour.getId(), tour);
+                    }
+                    tourService.notifyListenersUserToursFoundFromPoint(toursMap);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Tour.ToursWrapper> call, Throwable t) {
+                Log.e("Error", t.getLocalizedMessage());
             }
         });
     }
@@ -359,19 +471,20 @@ public class TourServiceManager {
         if (netInfo != null && netInfo.isConnected()) {
             Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
             encounterWrapper.setEncounter(encounter);
-            encounterRequest.create(encounter.getTourId(), encounterWrapper, new Callback<EncounterResponse>() {
+            Call<EncounterResponse> call = encounterRequest.create(encounter.getTourId(), encounterWrapper);
+            call.enqueue(new Callback<EncounterResponse>() {
                 @Override
-                public void success(EncounterResponse encounterResponse, Response response) {
-                    Log.d("tape:", "success");
-                    BusProvider.getInstance().post(new EncounterTaskResult(true, encounter));
-                    //Toast.makeText(tourService, "envoyé", Toast.LENGTH_SHORT).show();
-                }
+                public void onResponse(Call<EncounterResponse> call, Response<EncounterResponse> response) {
+                    if (response.isSuccess()) {
+                        Log.d("tape:", "success");
+                        BusProvider.getInstance().post(new EncounterTaskResult(true, encounter));
+                    }
+                 }
 
                 @Override
-                public void failure(RetrofitError error) {
+                public void onFailure(Call<EncounterResponse> call, Throwable t) {
                     Log.d("tape:", "failure");
                     BusProvider.getInstance().post(new EncounterTaskResult(false, null));
-                    //Toast.makeText(tourService, "erreur", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -499,5 +612,4 @@ public class TourServiceManager {
             }
         }
     }
-
 }

@@ -1,16 +1,14 @@
 package social.entourage.android.api;
 
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Headers;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface MapRequest {
 
-    @GET("/pois.json")
-    void retrievePoisNearby(@Query("latitude") double latitude,
+    @GET("pois.json")
+    Call<MapResponse> retrievePoisNearby(@Query("latitude") double latitude,
                             @Query("longitude") double longitude,
-                            @Query("distance") double distance,
-                            Callback<MapResponse> callback);
+                            @Query("distance") double distance);
 }
 

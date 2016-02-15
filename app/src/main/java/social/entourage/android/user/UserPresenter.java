@@ -1,15 +1,15 @@
 package social.entourage.android.user;
 
-import android.location.Location;
 import android.support.v4.util.ArrayMap;
 
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import social.entourage.android.R;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
@@ -57,5 +57,34 @@ public class UserPresenter {
 
     public void saveUserToursOnly(boolean choice) {
         authenticationController.saveUserToursOnly(choice);
+    }
+
+    public void updateUser(String email, String code) {
+        if (fragment != null) {
+            fragment.startLoader();
+            ArrayMap<String, Object> user = new ArrayMap<>();
+            if (email != null) {
+                user.put("email", email);
+            }
+            if (code != null) {
+                user.put("sms_code", code);
+            }
+            Call<UserResponse> call = userRequest.updateUser(user);
+            call.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    if (response.isSuccess()) {
+                        fragment.displayToast(fragment.getString(R.string.user_text_update_ok));
+                        fragment.updateView(response.body().getUser().getEmail());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    fragment.displayToast(fragment.getString(R.string.user_text_update_ko));
+                    fragment.resetLoginButton();
+                }
+            });
+        }
     }
 }
