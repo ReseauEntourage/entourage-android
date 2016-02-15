@@ -9,6 +9,7 @@
     <color name="warm_grey">#9B9B9B</color>
     <color name="dark_grey">#4A4A4A</color>
     <color name="greyish">#A5A59C</color>
+    <color name="dodger_blue">#3A97FF</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>

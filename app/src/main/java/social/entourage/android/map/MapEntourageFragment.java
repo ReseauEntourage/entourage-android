@@ -162,9 +162,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.launcher_tour_type)
     RadioGroup radioGroupType;
 
-    @Bind(R.id.layout_map_tour)
-    View layoutMapTour;
-
     @Bind(R.id.scrollview_tours)
     ScrollView scrollviewTours;
 
@@ -188,6 +185,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.map_longclick_buttons)
     LinearLayout mapLongClickButtonsView;
+
+    @Bind(R.id.tour_stop_button)
+    FloatingActionButton tourStopButton;
 
     // ----------------------------------
     // LIFECYCLE
@@ -448,8 +448,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 currentTourId = tourId;
                 presenter.incrementUserToursCount();
                 mapLauncherLayout.setVisibility(View.GONE);
-                layoutMapTour.setVisibility(View.VISIBLE);
+                if (scrollviewTours.getVisibility() == View.VISIBLE) {
+                    hideToursList();
+                }
                 mapPin.setVisibility(View.VISIBLE);
+                mapOptionsMenu.setVisibility(View.VISIBLE);
+                tourStopButton.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(getActivity(), R.string.tour_creation_fail, Toast.LENGTH_SHORT).show();
             }
@@ -545,6 +549,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 mapPin.setVisibility(View.GONE);
                 mapOptionsMenu.setVisibility(View.VISIBLE);
+                tourStopButton.setVisibility(View.GONE);
 
                 currentTourId = -1;
                 tourService.updateNearbyTours();
@@ -554,7 +559,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 Toast.makeText(getActivity(), R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
             } else {
-                layoutMapTour.setVisibility((View.VISIBLE));
                 Toast.makeText(getActivity(), R.string.tour_close_fail, Toast.LENGTH_SHORT).show();
             }
             if (loaderStop != null) {
@@ -607,13 +611,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @OnClick(R.id.tour_stop_button)
     public void onStartStopConfirmation() {
         pauseTour();
-        layoutMapTour.setVisibility(View.GONE);
         if (getActivity() != null) {
             launchConfirmationActivity();
         }
     }
 
-    @OnClick(R.id.tour_add_encounter_button)
+    //@OnClick(R.id.tour_add_encounter_button)
     public void onAddEncounter() {
         if (getActivity() != null) {
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
@@ -803,7 +806,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             tourService.resumeTreatment();
             //buttonStartLauncher.setVisibility(View.GONE);
             mapPin.setVisibility(View.VISIBLE);
-            layoutMapTour.setVisibility(View.VISIBLE);
         }
     }
 
@@ -821,7 +823,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void launchConfirmationActivity() {
         pauseTour();
         //buttonStartLauncher.setVisibility(View.GONE);
-        layoutMapTour.setVisibility(View.GONE);
         Bundle args = new Bundle();
         args.putSerializable(Tour.KEY_TOUR, getCurrentTour());
         Intent confirmationIntent = new Intent(getActivity(), ConfirmationActivity.class);
@@ -1090,7 +1091,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                     currentTourId = tourService.getCurrentTourId();
                     mapPin.setVisibility(View.VISIBLE);
-                    layoutMapTour.setVisibility(View.VISIBLE);
 
                     addCurrentTourEncounters();
                 }

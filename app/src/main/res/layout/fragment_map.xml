@@ -162,24 +162,27 @@
 
         </com.github.clans.fab.FloatingActionMenu>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tour_stop_button"
+            android:layout_gravity="right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="80dp"
+            app:fab_colorNormal="@color/dodger_blue"
+            app:fab_colorPressed="@color/dodger_blue"
+            app:fab_colorRipple="@color/dodger_blue"
+            android:src="@drawable/ic_pause_white"
+            android:visibility="gone"/>
+
         <include
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             layout="@layout/layout_map_longclick"
             android:id="@+id/layout_map_longclick"
             android:visibility = "gone"/>
-
-        <include
-            layout="@layout/layout_map_tour"
-            android:id="@+id/layout_map_tour"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:visibility = "gone"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp"/>
 
     </RelativeLayout>
 
