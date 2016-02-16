@@ -29,7 +29,8 @@
             android:textAllCaps="false"
             android:drawableTint="@drawable/drawabletint_radio_tab"
             android:drawableTop="@drawable/ic_feet"
-            android:checked="true"/>
+            android:checked="true"
+            android:padding="10dp"/>
 
         <View
             android:layout_width="2dp"
@@ -51,7 +52,8 @@
             android:textAllCaps="false"
             android:drawableTop="@drawable/ic_car"
             android:drawableTint="@drawable/drawabletint_radio_tab"
-            android:checked="false"/>
+            android:checked="false"
+            android:padding="10dp"/>
 
     </RadioGroup>
 
@@ -125,7 +127,8 @@
             android:gravity="center"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_alimentary"
-            android:checked="false"/>
+            android:checked="false"
+            android:padding="10dp"/>
 
     </RadioGroup>
 
