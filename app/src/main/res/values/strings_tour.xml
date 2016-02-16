@@ -8,7 +8,7 @@
     <string name="tour_creation_fail">Echec de l\'envoi de maraude</string>
     <string name="tour_resume">Reprendre</string>
     <string name="tour_finish">Terminer</string>
-    <string name="tour_stop">Stop</string>
+    <string name="tour_stop">Arrêter</string>
     <string name="tour_close_fail">Echec de la fermeture de maraude</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>
@@ -51,8 +51,10 @@
     <string name="loader_title_tour_search">Recherche de maraudes récentes</string>
 
     <!-- Confirmation -->
-    <string name="tour_end_confirmation">Veux-tu vraiment arrêter la maraude ?\nUn mail récapitulatif te sera envoyé.</string>
-    <string name="tour_end_duration">%1$s passées dans la rue</string>
+    <string name="tour_end_confirmation">Voulez-vous arrêter votre maraude ?\nUn mail récapitulatif vous sera envoyé.</string>
+    <string name="tour_end_duration">Passées dans la rue</string>
+    <string name="tour_end_encounters">Personne rencontrée</string>
+    <string name="tour_end_distance">Km parcourus</string>
 
     <!-- Tour Cell -->
     <string name="tour_cell_title">%1$s</string>

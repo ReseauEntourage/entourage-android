@@ -107,10 +107,10 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
             Resources res = getResources();
             int encountersCount = tour.getEncounters().size();
             int distanceInt = (int) tour.getDistance();
-            String distanceString = String.format("%.1f", tour.getDistance() / 1000);
-            encountersView.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
-            distanceView.setText(res.getQuantityString(R.plurals.kilometers_count, distanceInt, distanceString));
-            durationView.setText(getString(R.string.tour_end_duration, tour.getDuration()));
+            String distanceString = String.format("%d:%d", distanceInt/1000, distanceInt % 1000);
+            encountersView.setText(""+encountersCount);
+            distanceView.setText(distanceString);
+            durationView.setText(tour.getDuration());
         }
     }
 
