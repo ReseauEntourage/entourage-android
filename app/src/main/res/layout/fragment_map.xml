@@ -135,6 +135,21 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="320dp"/>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tour_stop_button"
+            android:layout_gravity="right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="80dp"
+            app:fab_colorNormal="@color/dodger_blue"
+            app:fab_colorPressed="@color/dodger_blue"
+            app:fab_colorRipple="@color/dodger_blue"
+            android:src="@drawable/ic_pause_white"
+            android:visibility="gone"/>
+
         <com.github.clans.fab.FloatingActionMenu
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -160,22 +175,17 @@
                 app:fab_label="@string/tour_create"
                 style="@style/MapActionButtonStyle"/>
 
-        </com.github.clans.fab.FloatingActionMenu>
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_add_tour_encounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_encounter"
+                app:fab_size="mini"
+                app:fab_label="@string/tour_create_encounter_button"
+                style="@style/MapActionButtonStyle"
+                android:visibility="gone"/>
 
-        <com.github.clans.fab.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tour_stop_button"
-            android:layout_gravity="right"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="80dp"
-            app:fab_colorNormal="@color/dodger_blue"
-            app:fab_colorPressed="@color/dodger_blue"
-            app:fab_colorRipple="@color/dodger_blue"
-            android:src="@drawable/ic_pause_white"
-            android:visibility="gone"/>
+        </com.github.clans.fab.FloatingActionMenu>
 
         <include
             android:layout_width="match_parent"

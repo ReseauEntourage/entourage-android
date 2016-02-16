@@ -318,10 +318,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             mapOptionsMenu.setVisibility(View.VISIBLE);
             return true;
         }
-        if (scrollviewTours.getVisibility() == View.GONE) {
-            showToursList();
-            return true;
-        }
         return false;
     }
 
@@ -454,6 +450,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
                 mapPin.setVisibility(View.VISIBLE);
                 mapOptionsMenu.setVisibility(View.VISIBLE);
+                updateFloatingMenuOptions();
                 tourStopButton.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(getActivity(), R.string.tour_creation_fail, Toast.LENGTH_SHORT).show();
@@ -555,6 +552,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 mapPin.setVisibility(View.GONE);
                 mapOptionsMenu.setVisibility(View.VISIBLE);
+                updateFloatingMenuOptions();
                 tourStopButton.setVisibility(View.GONE);
 
                 currentTourId = -1;
@@ -622,7 +620,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    //@OnClick(R.id.tour_add_encounter_button)
+    @OnClick(R.id.button_add_tour_encounter)
     public void onAddEncounter() {
         if (getActivity() != null) {
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
@@ -647,6 +645,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void initializeFloatingMenu() {
         mapOptionsMenu.setClosedOnTouchOutside(true);
+    }
+
+    private void updateFloatingMenuOptions() {
+        if (tourService.isRunning()) {
+            mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.VISIBLE);
+            mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(View.GONE);
+        }
+        else {
+            mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
+            mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick({R.id.button_start_tour_launcher, R.id.map_longclick_button_start_tour_launcher})
@@ -1093,7 +1102,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 boolean isRunning = tourService != null && tourService.isRunning();
                 if (isRunning) {
-                    //buttonStartLauncher.setVisibility(View.GONE);
+                    updateFloatingMenuOptions();
 
                     currentTourId = tourService.getCurrentTourId();
                     mapPin.setVisibility(View.VISIBLE);
