@@ -227,6 +227,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        presenter.start();
         initializeMap();
         initializeFloatingMenu();
     }
@@ -267,7 +268,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onStart() {
         super.onStart();
-        presenter.start();
         BusProvider.getInstance().register(this);
     }
 
@@ -344,7 +344,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         double encounterLatitude = encounter.getLatitude();
         double encounterLongitude = encounter.getLongitude();
         LatLng encounterPosition = new LatLng(encounterLatitude, encounterLongitude);
-        BitmapDescriptor encounterIcon = BitmapDescriptorFactory.fromResource(R.drawable.encounter);
+        BitmapDescriptor encounterIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_encounter);
 
         MarkerOptions markerOptions = new MarkerOptions().position(encounterPosition)
                 .icon(encounterIcon);
@@ -750,6 +750,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 googleMap.setMyLocationEnabled(true);
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
+
+                initializeMapZoom();
+                setOnMarkerClickListener(presenter.getOnClickListener());
+
                 googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                     @Override
                     public void onCameraChange(CameraPosition cameraPosition) {
@@ -774,6 +778,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         }
                     }
                 });
+
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
@@ -788,6 +793,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         }
                     }
                 });
+
                 googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(final LatLng latLng) {
@@ -796,6 +802,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         }
                     }
                 });
+
                 googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {

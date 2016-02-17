@@ -69,7 +69,7 @@
 
         <activity
             android:name=".map.encounter.ReadEncounterActivity"
-            android:theme="@style/CustomDialogActivityTheme"
+            android:theme="@style/AppTheme"
             android:label="@string/activity_read_encounter_title"
             android:screenOrientation="portrait"
             android:noHistory="true">

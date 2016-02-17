@@ -60,8 +60,6 @@ public class MapPresenter {
 
     public void start() {
         onClickListener = new OnEntourageMarkerClickListener();
-        fragment.initializeMapZoom();
-        fragment.setOnMarkerClickListener(onClickListener);
     }
 
     public void incrementUserToursCount() {

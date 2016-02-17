@@ -1,5 +1,7 @@
 package social.entourage.android.api.model.map;
 
+import android.location.Address;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -39,6 +41,8 @@ public class Encounter implements Serializable{
     private String voiceMessageUrl;
 
     private String soundCloudPermalinkUrl;
+
+    private Address address;
 
     // ----------------------------------
     // GETTERS & SETTERS
@@ -128,8 +132,16 @@ public class Encounter implements Serializable{
         return soundCloudPermalinkUrl;
     }
 
-    public void setSoundCloudPermalinkUrl(final String permakink) {
-        this.soundCloudPermalinkUrl = permakink;
+    public void setSoundCloudPermalinkUrl(final String permalink) {
+        this.soundCloudPermalinkUrl = permalink;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(final Address address) {
+        this.address = address;
     }
 
     // ----------------------------------
