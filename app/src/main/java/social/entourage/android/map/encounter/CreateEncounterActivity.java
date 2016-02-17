@@ -6,14 +6,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,6 +57,12 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @Bind(R.id.edittext_street_person_name)
     EditText streetPersonNameEditText;
 
+    @Bind(R.id.encounter_author)
+    TextView encounterAuthor;
+
+    @Bind(R.id.encounter_date)
+    TextView encounterDate;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -74,15 +83,18 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE));
             presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
         }
+        initialiseFields();
         FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_START);
     }
 
+    /*
     @Override
     protected void onStart() {
         super.onStart();
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
+    */
 
     @Override
     protected void onResume() {
@@ -121,6 +133,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void initialiseFields() {
+        encounterAuthor.setText(getResources().getString(R.string.encounter_label_person_name_and, presenter.getAuthor()));
+        Date today = new Date();
+        String todayDateString = DateFormat.getDateFormat(getApplicationContext()).format(today);
+        encounterDate.setText(getResources().getString(R.string.encounter_encountered, todayDateString));
     }
 
     // ----------------------------------

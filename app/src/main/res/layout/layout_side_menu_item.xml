@@ -18,7 +18,7 @@
         android:layout_centerVertical="true"
         android:paddingLeft="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/dark_grey"
+        android:textColor="@color/greyish_brown"
         android:text="Some text"
         />
     <ImageView

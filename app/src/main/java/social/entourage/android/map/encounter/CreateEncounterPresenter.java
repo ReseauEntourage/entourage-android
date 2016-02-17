@@ -76,6 +76,13 @@ public class CreateEncounterPresenter {
         this.longitude = longitude;
     }
 
+    public String getAuthor() {
+        if ( !authenticationController.isAuthenticated() ) {
+            return "";
+        }
+        return authenticationController.getUser().getFirstName();
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------

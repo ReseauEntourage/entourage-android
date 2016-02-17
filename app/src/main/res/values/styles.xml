@@ -40,6 +40,10 @@
     <style name="EntourageTitle" parent="android:Widget.TextView">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textSize">17sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColor">@color/greyish_brown</item>
     </style>
 
     <!-- Dialog fragment theme with slide animation. -->

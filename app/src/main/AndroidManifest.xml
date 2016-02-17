@@ -77,7 +77,7 @@
 
         <activity
             android:name=".map.encounter.CreateEncounterActivity"
-            android:theme="@style/CustomDialogActivityTheme"
+            android:theme="@style/AppTheme"
             android:label="@string/activity_create_encounter_title"
             android:screenOrientation="portrait">
         </activity>

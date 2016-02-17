@@ -1,50 +1,101 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/rounded_borders_white"
-    android:layout_margin="20dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/background_light">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_create_encounter_title"
+            android:id="@+id/create_encounter_title"
+            style="@style/EntourageTitle"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/encounter_author"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/greyish_brown"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="17sp"/>
+
+    <EditText
+        android:id="@+id/edittext_street_person_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/encounter_hint_person_name"
+        android:textIsSelectable="false"
+        android:textCursorDrawable="@drawable/bg_cursor_yellow"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:textSize="17sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/encounter_date"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="17sp"
+        android:textColor="@color/greyish_brown"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp">
-
-        <EditText
-            android:id="@+id/edittext_street_person_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:hint="@string/encounter_hint_person_name"
-            android:textIsSelectable="false"
-            android:textCursorDrawable="@drawable/bg_cursor_yellow"
-            android:background="@drawable/bg_edit_text"/>
+        >
 
         <EditText
             android:id="@+id/edittext_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
             android:lines="10"
             android:gravity="left|top"
             android:inputType="textMultiLine"
-            android:layout_below="@id/edittext_street_person_name"
             android:textCursorDrawable="@drawable/bg_cursor_yellow"
-            android:background="@drawable/bg_edit_text"
-            android:hint="@string/encounter_hint_notes"/>
+            android:background="@color/background"
+            android:hint="@string/encounter_hint_notes"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:padding="10dp"/>
 
         <ImageButton
             android:id="@+id/button_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/edittext_message"
-            android:background="@drawable/bg_popup"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_action_record_sound"
-            android:contentDescription="@string/encounter_voice_message_button" />
+            android:contentDescription="@string/encounter_voice_message_button"
+            android:layout_alignRight="@+id/edittext_message"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/edittext_message"
+            android:background="@color/greyish"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-10dp"
+            android:alpha="0.5"/>
 
         <Button
             style="@style/AccentButton"
@@ -54,8 +105,8 @@
             android:layout_marginTop="15dp"
             android:text="@string/encouter_add"
             android:minWidth="50dp"
-            android:layout_below="@id/button_record"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 

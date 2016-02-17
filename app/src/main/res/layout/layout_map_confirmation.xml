@@ -13,7 +13,7 @@
         android:gravity="center"
         android:textSize="17sp"
         android:text="@string/tour_end_confirmation"
-        android:textColor="@color/dark_grey"/>
+        android:textColor="@color/greyish_brown"/>
 
     <TextView
         android:id="@+id/confirmation_duration"
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tour_stop"
                 android:drawableBottom="@drawable/tour_stop"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/greyish_brown"
                 android:background="?android:attr/selectableItemBackground"
                 android:textSize="25sp"
                 android:textAllCaps="false"/>
@@ -152,7 +152,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:drawableBottom="@drawable/tour_start"
                 android:textAllCaps="false"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/greyish_brown"
                 android:textSize="25sp"/>
         </LinearLayout>
 

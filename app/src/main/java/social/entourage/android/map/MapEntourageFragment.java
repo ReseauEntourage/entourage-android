@@ -627,6 +627,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onAddEncounter() {
         if (getActivity() != null) {
             mapLongClickView.setVisibility(View.GONE);
+            if (mapOptionsMenu.isOpened()) {
+                mapOptionsMenu.toggle(false);
+            }
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
             saveCameraPosition();
             Bundle args = new Bundle();
