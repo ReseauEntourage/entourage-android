@@ -1071,10 +1071,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         BitmapDescriptor icon = null;
         if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
-            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_feet);
+            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_feet_active);
         }
         else if (tour.getTourVehicleType().equals(TourTransportMode.CAR.getName())) {
-            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_car);
+            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_car_active);
         }
 
         MarkerOptions markerOptions = new MarkerOptions().position(position).icon(icon);

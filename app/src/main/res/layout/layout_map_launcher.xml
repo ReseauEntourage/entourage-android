@@ -27,8 +27,7 @@
             android:textSize="18sp"
             android:textColor="@drawable/textcolor_radio_tab"
             android:textAllCaps="false"
-            android:drawableTint="@drawable/drawabletint_radio_tab"
-            android:drawableTop="@drawable/ic_feet"
+            android:drawableTop="@drawable/rb_tour_feet"
             android:checked="true"
             android:padding="10dp"/>
 
@@ -50,8 +49,7 @@
             android:textSize="18sp"
             android:textColor="@drawable/textcolor_radio_tab"
             android:textAllCaps="false"
-            android:drawableTop="@drawable/ic_car"
-            android:drawableTint="@drawable/drawabletint_radio_tab"
+            android:drawableTop="@drawable/rb_tour_car"
             android:checked="false"
             android:padding="10dp"/>
 
@@ -81,8 +79,7 @@
             android:padding="10dp"
             android:textSize="18sp"
             android:textColor="@drawable/textcolor_radio_tab"
-            android:drawableTint="@drawable/drawabletint_radio_tab"
-            android:drawableTop="@drawable/ic_medical"
+            android:drawableTop="@drawable/rb_tour_medical"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -102,10 +99,9 @@
             android:padding="10dp"
             android:textSize="18sp"
             android:textColor="@drawable/textcolor_radio_tab"
-            android:drawableTint="@drawable/drawabletint_radio_tab"
             android:layout_weight="1"
             android:gravity="center"
-            android:drawableTop="@drawable/ic_social"
+            android:drawableTop="@drawable/rb_tour_social"
             android:checked="false"/>
 
         <View
@@ -123,10 +119,9 @@
             android:button="@null"
             android:textSize="18sp"
             android:textColor="@drawable/textcolor_radio_tab"
-            android:drawableTint="@drawable/drawabletint_radio_tab"
             android:gravity="center"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_alimentary"
+            android:drawableTop="@drawable/rb_tour_distributive"
             android:checked="false"
             android:padding="10dp"/>
 

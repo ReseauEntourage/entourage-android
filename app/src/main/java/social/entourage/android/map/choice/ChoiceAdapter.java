@@ -48,15 +48,15 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
 
         if (tour.getTourType() != null) {
             if (tour.getTourType().equals(TourType.MEDICAL.getName())) {
-                holder.cardImage.setImageResource(R.drawable.ic_medical);
+                holder.cardImage.setImageResource(R.drawable.ic_medical_active);
                 holder.cardTextType.setText(R.string.tour_type_medical);
             }
             else if (tour.getTourType().equals(TourType.ALIMENTARY.getName())) {
-                holder.cardImage.setImageResource(R.drawable.ic_alimentary);
+                holder.cardImage.setImageResource(R.drawable.ic_distibutive_active);
                 holder.cardTextType.setText(R.string.tour_type_alimentary);
             }
             else if (tour.getTourType().equals(TourType.BARE_HANDS.getName())) {
-                holder.cardImage.setImageResource(R.drawable.ic_social);
+                holder.cardImage.setImageResource(R.drawable.ic_social_active);
                 holder.cardTextType.setText(R.string.tour_type_bare_hands);
             }
         }
