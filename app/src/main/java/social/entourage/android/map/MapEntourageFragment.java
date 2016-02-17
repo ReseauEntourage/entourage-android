@@ -316,6 +316,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (mapLongClickView.getVisibility() == View.VISIBLE) {
             mapLongClickView.setVisibility(View.GONE);
             mapOptionsMenu.setVisibility(View.VISIBLE);
+            if (tourService != null && tourService.isRunning()) {
+                tourStopButton.setVisibility(View.VISIBLE);
+            }
             return true;
         }
         return false;
@@ -620,9 +623,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    @OnClick(R.id.button_add_tour_encounter)
+    @OnClick({R.id.button_add_tour_encounter, R.id.map_longclick_button_create_encounter})
     public void onAddEncounter() {
         if (getActivity() != null) {
+            mapLongClickView.setVisibility(View.GONE);
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
             saveCameraPosition();
             Bundle args = new Bundle();
@@ -676,12 +680,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private void showLongClickOnMapOptions(LatLng latLng) {
-        //only show when map is in full screen
-        if (scrollviewTours.getVisibility() == View.VISIBLE) {
+        //only show when map is in full screen and not visible
+        if (scrollviewTours.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
             return;
         }
         //hide the FAB menu
         mapOptionsMenu.setVisibility(View.GONE);
+        tourStopButton.setVisibility(View.GONE);
         //get the click point
         Point clickPoint = mapFragment.getMap().getProjection().toScreenLocation(latLng);
         //adjust the buttons holder layout
@@ -701,6 +706,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (marginTop < 0) marginTop = clickPoint.y;
         lp.setMargins(marginLeft, marginTop, 0, 0);
         mapLongClickButtonsView.setLayoutParams(lp);
+        //update the visible buttons
+        boolean isTourRunning = tourService != null && tourService.isRunning();
+        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning?View.GONE:View.VISIBLE);
+        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning?View.VISIBLE:View.GONE);
         //show the view
         mapLongClickView.setVisibility(View.VISIBLE);
     }

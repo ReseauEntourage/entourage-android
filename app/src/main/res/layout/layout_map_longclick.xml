@@ -16,5 +16,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/map_longclick_button_start_tour_launcher"
             android:src="@drawable/ic_button_create_maraude"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/map_longclick_button_create_encounter"
+            android:src="@drawable/ic_encounter"
+            android:visibility="gone"/>
+
     </LinearLayout>
 </RelativeLayout>
