@@ -186,10 +186,10 @@ public class TourServiceManager {
             long minTime = Constants.UPDATE_TIMER_MILLIS_OFF_TOUR;
             float minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR;
             if (tour != null) {
-                if (tour.getTourVehicleType().equals(TourTransportMode.FEET)) {
+                if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
                     minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_FEET;
                     minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET;
-                } else if (tour.getTourVehicleType().equals(TourTransportMode.CAR)) {
+                } else if (tour.getTourVehicleType().equals(TourTransportMode.CAR.getName())) {
                     minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_CAR;
                     minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR;
                 }
