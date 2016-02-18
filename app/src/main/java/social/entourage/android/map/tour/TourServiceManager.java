@@ -285,12 +285,12 @@ public class TourServiceManager {
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
                 if (response.isSuccess()) {
                     Log.d("Success", response.body().getTour().toString());
-                    tourService.notifyListenersTourClosed(true);
                     tour = null;
                     pointsToSend.clear();
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     updateLocationServiceFrequency();
+                    tourService.notifyListenersTourClosed(true);
                 } else {
                     tourService.notifyListenersTourClosed(false);
                 }

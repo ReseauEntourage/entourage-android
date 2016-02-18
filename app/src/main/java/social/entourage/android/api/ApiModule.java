@@ -62,7 +62,7 @@ public class ApiModule {
                         return false;
                     }
                 })
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
                 .create();
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();

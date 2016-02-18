@@ -51,7 +51,6 @@ public class EntourageApplication extends Application {
     private void setupImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
-                .memoryCacheSize(2 *1024 * 1024)
                 .denyCacheImageMultipleSizesInMemory()
                 .build();
         ImageLoader.getInstance().init(config);

@@ -20,6 +20,9 @@ public class TourPoint implements Serializable {
 
     private double longitude;
 
+    @SerializedName("passing_time")
+    private Date passingTime;
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -27,6 +30,7 @@ public class TourPoint implements Serializable {
     public TourPoint(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+        passingTime = new Date();
     }
 
     // ----------------------------------
