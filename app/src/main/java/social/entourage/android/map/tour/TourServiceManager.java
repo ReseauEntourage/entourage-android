@@ -84,6 +84,8 @@ public class TourServiceManager {
     private List<TourPoint> pointsToSend;
     private List<TourPoint> pointsToDraw;
     private Timer timerFinish;
+    private boolean isTourClosing;
+
     private ConnectivityManager connectivityManager;
     private LocationManager locationManager;
     private CustomLocationListener locationListener;
@@ -97,6 +99,7 @@ public class TourServiceManager {
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
         this.pointsToDraw = new ArrayList<>();
+        this.isTourClosing = false;
         this.connectivityManager = (ConnectivityManager) this.tourService.getSystemService(Context.CONNECTIVITY_SERVICE);
         BusProvider.getInstance().register(this);
         initializeLocationService();
@@ -141,8 +144,11 @@ public class TourServiceManager {
     }
 
     public void finishTour() {
-        addLastTourPoint();
-        closeTour();
+        //addLastTourPoint();
+        //closeTour();
+
+        isTourClosing = true;
+        updateTourCoordinates();
     }
 
     public boolean isRunning() {
@@ -305,6 +311,13 @@ public class TourServiceManager {
     }
 
     private void updateTourCoordinates() {
+        if (pointsToSend.isEmpty()) {
+            if (isTourClosing) {
+                closeTour();
+                isTourClosing = false;
+            }
+            return;
+        }
         final TourPoint.TourPointWrapper tourPointWrapper = new TourPoint.TourPointWrapper();
         tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
         tourPointWrapper.setDistance(tour.getDistance());
@@ -317,11 +330,24 @@ public class TourServiceManager {
                         pointsToSend.removeAll(response.body().getTour().getTourPoints());
                         Log.v(this.getClass().getSimpleName(), response.body().getTour().toString());
                     }
+                    if (isTourClosing) {
+                        closeTour();
+                    }
                 }
+                else {
+                    if (isTourClosing) {
+                        tourService.notifyListenersTourClosed(false);
+                    }
+                }
+                isTourClosing = false;
             }
 
             @Override
             public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
+                if (isTourClosing) {
+                    tourService.notifyListenersTourClosed(false);
+                }
+                isTourClosing = false;
                 Log.e(this.getClass().getSimpleName(), t.getLocalizedMessage());
             }
         });
