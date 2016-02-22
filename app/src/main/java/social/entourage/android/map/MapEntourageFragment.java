@@ -119,6 +119,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private LatLng previousCoordinates;
     private Location previousCameraLocation;
+    private LatLng longTapCoordinates;
     private float previousCameraZoom = 1.0f;
 
     private TourService tourService;
@@ -645,8 +646,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             saveCameraPosition();
             Bundle args = new Bundle();
             args.putLong(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourId);
-            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
-            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+            if (longTapCoordinates != null) {
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude);
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates.longitude);
+                longTapCoordinates = null;
+            }
+            else {
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+            }
             intent.putExtras(args);
             startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
         }
@@ -697,6 +705,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //only show when map is in full screen and not visible
         if (scrollviewTours.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
             return;
+        }
+        //if ongoing tour, show only if the point is in the current tour
+        if (tourService != null && tourService.isRunning()) {
+            if (!tourService.isLocationInTour(latLng)) return;
+            longTapCoordinates = latLng;
         }
         //hide the FAB menu
         mapOptionsMenu.setVisibility(View.GONE);

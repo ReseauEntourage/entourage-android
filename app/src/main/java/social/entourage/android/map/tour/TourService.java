@@ -324,6 +324,10 @@ public class TourService extends Service {
         tourServiceManager.addEncounter(encounter);
     }
 
+    public boolean isLocationInTour(LatLng latLng) {
+        return tourServiceManager.isLocationInTour(latLng);
+    }
+
     public void notifyListenersTourCreated(boolean created, long id) {
         if (created) {
             startNotification();

@@ -68,6 +68,8 @@ public class TourServiceManager {
     private static final double ALIGNMENT_PRECISION = .000001;
     private static final long VIBRATION_DURATION = 1000;
     private static final double RETRIEVE_TOURS_DISTANCE = 0.04;
+    private static final double MAX_DISTANCE_BETWEEN_TWO_POINTS = 10; //meters
+    private static final double MAX_DISTANCE_TO_LINE = .0005;
 
     private final TourService tourService;
     private final TourRequest tourRequest;
@@ -257,6 +259,7 @@ public class TourServiceManager {
                         }
                         if (location != null) {
                             TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
+                            tour.addCoordinate(point);
                             pointsToDraw.add(point);
                             pointsToSend.add(point);
                             previousLocation = location;
@@ -529,6 +532,28 @@ public class TourServiceManager {
             timerFinish.cancel();
             timerFinish = null;
         }
+    }
+
+    public boolean isLocationInTour(LatLng latLng) {
+        if (tour == null) return false;
+        List<TourPoint> tourPoints = tour.getTourPoints();
+        if (tourPoints.isEmpty()) return false;
+        if (tourPoints.size() == 1) {
+            TourPoint p = tourPoints.get(0);
+            float[] distance = {0};
+            Location.distanceBetween(p.getLatitude(), p.getLongitude(), latLng.latitude, latLng.longitude, distance);
+            if (distance[0] <= MAX_DISTANCE_BETWEEN_TWO_POINTS) return true;
+        }
+        else {
+            TourPoint targetPoint = new TourPoint(latLng.latitude, latLng.longitude);
+            for (int i = 1; i < tourPoints.size(); i++) {
+                TourPoint p1 = tourPoints.get(i-1);
+                TourPoint p2 = tourPoints.get(i);
+                double d = distanceToLine(p1, targetPoint, p2);
+                if (d <= MAX_DISTANCE_TO_LINE) return true;
+            }
+        }
+        return false;
     }
 
     private void onLocationChanged(Location location, TourPoint point) {
