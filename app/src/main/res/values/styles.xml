@@ -105,4 +105,10 @@
         <item name="fab_colorRipple">@android:color/transparent</item>
     </style>
 
+    <!-- Style for ongoing tour marker -->
+    <style name="OngoingTourMarker">
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

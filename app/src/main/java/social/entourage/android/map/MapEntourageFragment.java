@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.ui.BubbleIconFactory;
+import com.google.maps.android.ui.IconGenerator;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
@@ -98,6 +101,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public static final float ZOOM_REDRAW_LIMIT = 1.1f;
     private static final int REDRAW_LIMIT = 300;
     private static final int PERMISSIONS_REQUEST_LOCATION = 1;
+    private static final int MAX_TOUR_HEADS_DISPLAYED = 10;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -127,6 +131,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private long currentTourId;
     private int color;
+    private int displayedTourHeads = 0;
 
     private List<Polyline> currentTourLines;
     private Map<Long, Polyline> drawnToursMap;
@@ -451,7 +456,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 if (scrollviewTours.getVisibility() == View.VISIBLE) {
                     hideToursList();
                 }
-                mapPin.setVisibility(View.VISIBLE);
+                //mapPin.setVisibility(View.VISIBLE);
                 mapOptionsMenu.setVisibility(View.VISIBLE);
                 updateFloatingMenuOptions();
                 tourStopButton.setVisibility(View.VISIBLE);
@@ -549,11 +554,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 drawnUserHistory.clear();
                 retrievedTours.clear();
 
+                displayedTourHeads = 0;
+
                 layoutTours.removeAllViews();
 
                 previousCoordinates = null;
 
-                mapPin.setVisibility(View.GONE);
+                //mapPin.setVisibility(View.GONE);
                 mapOptionsMenu.setVisibility(View.VISIBLE);
                 updateFloatingMenuOptions();
                 tourStopButton.setVisibility(View.GONE);
@@ -839,7 +846,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService.isRunning()) {
             tourService.resumeTreatment();
             //buttonStartLauncher.setVisibility(View.GONE);
-            mapPin.setVisibility(View.VISIBLE);
+            //mapPin.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1064,20 +1071,32 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void addTourHead(Tour tour) {
+        if (displayedTourHeads >= MAX_TOUR_HEADS_DISPLAYED) {
+            return;
+        }
+        displayedTourHeads++;
         TourPoint lastPoint = tour.getTourPoints().get(tour.getTourPoints().size() - 1);
         double latitude = lastPoint.getLatitude();
         double longitude = lastPoint.getLongitude();
         LatLng position = new LatLng(latitude, longitude);
 
         BitmapDescriptor icon = null;
+        /*
         if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
             icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_feet_active);
         }
         else if (tour.getTourVehicleType().equals(TourTransportMode.CAR.getName())) {
             icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_car_active);
         }
+        */
+        IconGenerator iconGenerator = new IconGenerator(getContext());
+        iconGenerator.setTextAppearance(R.style.OngoingTourMarker);
+        icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(tour.getOrganizationName()));
 
-        MarkerOptions markerOptions = new MarkerOptions().position(position).icon(icon);
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(position)
+                .icon(icon)
+                .anchor(0.5f, 1.0f);
 
         if (mapFragment.getMap() != null) {
             markersMap.put(tour.getId(), mapFragment.getMap().addMarker(markerOptions));
@@ -1124,7 +1143,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     updateFloatingMenuOptions();
 
                     currentTourId = tourService.getCurrentTourId();
-                    mapPin.setVisibility(View.VISIBLE);
+                    //mapPin.setVisibility(View.VISIBLE);
 
                     addCurrentTourEncounters();
                 }
