@@ -326,6 +326,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
             return true;
         }
+        //before closing the fragment, send the cached tour points to server (if applicable)
+        if (tourService != null) {
+            tourService.updateOngoingTour();
+        }
         return false;
     }
 

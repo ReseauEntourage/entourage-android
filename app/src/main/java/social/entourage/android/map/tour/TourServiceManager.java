@@ -310,7 +310,7 @@ public class TourServiceManager {
         });
     }
 
-    private void updateTourCoordinates() {
+    public void updateTourCoordinates() {
         if (pointsToSend.isEmpty()) {
             if (isTourClosing) {
                 closeTour();

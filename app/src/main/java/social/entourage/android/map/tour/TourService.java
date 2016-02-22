@@ -259,6 +259,11 @@ public class TourService extends Service {
         tourServiceManager.retrieveToursNearbySmall(point, isUserHistory, userId, page, per);
     }
 
+    public void updateOngoingTour() {
+        if (!isRunning()) return;
+        tourServiceManager.updateTourCoordinates();
+    }
+
     public void beginTreatment(String transportMode, String type) {
         if (!isRunning()) {
             tourServiceManager.startTour(transportMode, type);
