@@ -57,6 +57,13 @@ public class TourPoint implements Serializable {
         return new LatLng(latitude, longitude);
     }
 
+    public float distanceTo(TourPoint otherPoint) {
+        if (otherPoint == null) return 0;
+        float[] result = {0};
+        Location.distanceBetween(this.latitude, this.longitude, otherPoint.latitude, otherPoint.longitude, result);
+        return result[0];
+    }
+
     // ----------------------------------
     // WRAPPER
     // ----------------------------------

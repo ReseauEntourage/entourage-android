@@ -2,6 +2,7 @@ package social.entourage.android.map.tour;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,11 +14,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import javax.inject.Inject;
 
@@ -40,32 +41,20 @@ public class TourInformationFragment extends DialogFragment {
     @Inject
     TourInformationPresenter presenter;
 
-    @Bind(R.id.tour_info_icon)
-    ImageView tourIcon;
-
-    @Bind(R.id.tour_info_date)
-    TextView tourDate;
-
-    @Bind(R.id.tour_info_duration)
-    TextView tourDuration;
-
     @Bind(R.id.tour_info_organization)
     TextView tourOrganization;
 
-    @Bind(R.id.tour_info_transport)
-    TextView tourTransport;
+    @Bind(R.id.tour_info_author_photo)
+    ImageView tourAuthorPhoto;
 
     @Bind(R.id.tour_info_type)
     TextView tourType;
 
-    @Bind(R.id.tour_info_status_ongoing)
-    TextView tourStatusOnGoing;
+    @Bind(R.id.tour_info_author_name)
+    TextView tourAuthorName;
 
-    @Bind(R.id.tour_info_status_closed)
-    TextView tourStatusClosed;
-
-    @Bind(R.id.tour_info_button_close)
-    Button closeButton;
+    @Bind(R.id.tour_info_discussion_layout)
+    LinearLayout discussionLayout;
 
     Tour tour;
 
@@ -91,6 +80,8 @@ public class TourInformationFragment extends DialogFragment {
         initializeView();
         return toReturn;
     }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -123,18 +114,13 @@ public class TourInformationFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-
-    @OnClick(R.id.tour_info_button_close)
-    void closeFragment() {
-        getOnTourInformationFragmentFinish().closeTourInformationFragment(this);
-    }
 
     // ----------------------------------
     // PRIVATE METHODS
@@ -147,58 +133,42 @@ public class TourInformationFragment extends DialogFragment {
         String type = tour.getTourType();
         String status = tour.getTourStatus();
 
-        /*
-        if (!tour.getTourPoints().isEmpty()) {
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            String date = dateFormat.format(tour.getTourPoints().get(0).getPassingTime());
-            tourDate.setText(date);
-        }
-        */
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String date = dateFormat.format(tour.getStartTime());
-        tourDate.setText(date);
-
-        if (tour.getStartTime() != null && tour.getEndTime() != null) {
-            SimpleDateFormat durationFormat = new SimpleDateFormat("HH'h'mm");
-            durationFormat.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-            tourDuration.setText(res.getString(R.string.tour_info_text_duration, durationFormat.format(tour.getStartTime()), durationFormat.format(tour.getEndTime())));
-        } else {
-            tourDuration.setText(res.getString(R.string.tour_info_text_duration, "", ""));
-        }
-
         tourOrganization.setText(tour.getOrganizationName());
-
-        if (vehicule != null) {
-            if (vehicule.equals(TourTransportMode.FEET.getName())) {
-                tourTransport.setText(getString(R.string.tour_check_feet));
-            } else if (vehicule.equals(TourTransportMode.CAR.getName())) {
-                tourTransport.setText(getString(R.string.tour_check_car));
-            }
-        } else {
-            tourTransport.setText(getString(R.string.tour_info_unknown));
-        }
 
         if (type != null) {
             if (type.equals(TourType.MEDICAL.getName())) {
-                tourType.setText(getString(R.string.tour_type_medical));
+                tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_type_medical)));
             } else if (type.equals(TourType.ALIMENTARY.getName())) {
-                tourType.setText(getString(R.string.tour_type_alimentary));
+                tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_type_alimentary)));
             } else if (type.equals(TourType.BARE_HANDS.getName())) {
-                tourType.setText(getString(R.string.tour_type_bare_hands));
+                tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_type_bare_hands)));
             }
         } else {
-            tourType.setText(getString(R.string.tour_info_unknown));
+            tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_info_unknown)));
         }
 
-        if (status != null) {
-            if (status.equals(Tour.TOUR_ON_GOING)) {
-                tourStatusClosed.setVisibility(View.GONE);
-            } else if (status.equals(Tour.TOUR_CLOSED)) {
-                tourStatusOnGoing.setVisibility(View.GONE);
-            }
-        } else {
-            tourStatusOnGoing.setVisibility(View.GONE);
+        tourAuthorName.setText(tour.getAuthor().getUserName());
+
+        String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
+        if (avatarURLAsString != null) {
+            ImageLoader.getInstance().loadImage(avatarURLAsString, new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingComplete(final String imageUri, final View view, final Bitmap loadedImage) {
+                    tourAuthorPhoto.setImageBitmap(loadedImage);
+                }
+            });
         }
+
+        TourInformationLocationCardView startCard = new TourInformationLocationCardView(getContext());
+        startCard.populate(tour, 0);
+        discussionLayout.addView(startCard);
+
+        if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+            TourInformationLocationCardView endCard = new TourInformationLocationCardView(getContext());
+            endCard.populate(tour, tour.getTourPoints().size()-1);
+            discussionLayout.addView(endCard);
+        }
+
     }
 
     private OnTourInformationFragmentFinish getOnTourInformationFragmentFinish() {
