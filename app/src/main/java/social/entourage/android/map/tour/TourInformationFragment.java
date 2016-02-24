@@ -22,6 +22,9 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -33,6 +36,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourUser;
 
 public class TourInformationFragment extends DialogFragment {
 
@@ -59,6 +63,7 @@ public class TourInformationFragment extends DialogFragment {
     LinearLayout discussionLayout;
 
     Tour tour;
+    List<TourUser> tourUserList;
 
     // ----------------------------------
     // LIFECYCLE
@@ -89,6 +94,7 @@ public class TourInformationFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        presenter.getTourUsers();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -167,18 +173,6 @@ public class TourInformationFragment extends DialogFragment {
             });
         }
 
-        TourInformationLocationCardView startCard = new TourInformationLocationCardView(getContext());
-        startCard.populate(tour, 0);
-        discussionLayout.addView(startCard);
-
-        if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
-            addDiscussionSeparator();
-
-            TourInformationLocationCardView endCard = new TourInformationLocationCardView(getContext());
-            endCard.populate(tour, tour.getTourPoints().size()-1);
-            discussionLayout.addView(endCard);
-        }
-
     }
 
     private void addDiscussionSeparator() {
@@ -190,9 +184,62 @@ public class TourInformationFragment extends DialogFragment {
         discussionLayout.addView(discussionSeparator);
     }
 
+    private void addDiscussionTourUserCard(TourUser tourUser) {
+        TourInformationUserCardView userCardView = new TourInformationUserCardView(getContext());
+        userCardView.setUsername(tourUser.getFirstName());
+        userCardView.setJoinStatus(tourUser.getStatus());
+
+        discussionLayout.addView(userCardView);
+    }
+
     private OnTourInformationFragmentFinish getOnTourInformationFragmentFinish() {
         final Activity activity = getActivity();
         return activity != null ? (OnTourInformationFragmentFinish) activity : null;
+    }
+
+    // ----------------------------------
+    // Server callbacks
+    // ----------------------------------
+
+    protected void onTourUsersReceived(List<TourUser> tourUsers) {
+        tourUserList = tourUsers;
+        if (tourUserList != null && tourUserList.size() > 1) {
+            //order the list based on the request date
+            Collections.sort(tourUserList, new TourUser.TourUserComparatorOldToNew());
+        }
+
+        //add the start time
+        TourInformationLocationCardView startCard = new TourInformationLocationCardView(getContext());
+        startCard.populate(tour, 0);
+        discussionLayout.addView(startCard);
+
+        //add the users
+        if (tourUserList != null) {
+            for (int i = 0; i < tourUserList.size(); i++) {
+                TourUser tourUser = tourUserList.get(i);
+                //skip the author
+                if (tourUser.getUserId() == tour.getAuthor().getUserID()) {
+                    continue;
+                }
+                //skip the rejected user
+                if (tourUser.getStatus().equals(Tour.JOIN_STATUS_REJECTED)) {
+                    continue;
+                }
+                //add the separator
+                addDiscussionSeparator();
+                //add the user card
+                addDiscussionTourUserCard(tourUser);
+            }
+        }
+
+        //add the end time, if tour is closed
+        if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+            addDiscussionSeparator();
+
+            TourInformationLocationCardView endCard = new TourInformationLocationCardView(getContext());
+            endCard.populate(tour, tour.getTourPoints().size()-1);
+            discussionLayout.addView(endCard);
+        }
     }
 
     // ----------------------------------

@@ -9,6 +9,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.model.map.TourUser;
 
 public interface TourRequest {
 
@@ -41,4 +42,16 @@ public interface TourRequest {
                                        @Query("latitude") double latitude,
                                        @Query("longitude") double longitude,
                                        @Query("distance") double distance);
+
+    @GET("tours/{tour_id}/users.json")
+    Call<TourUser.TourUsersWrapper> retrieveTourUsers(
+            @Path("tour_id") long tourId
+    );
+
+    @GET("tours/{tour_id}/users.json")
+    Call<TourUser.TourUsersWrapper> retrieveTourUsers(
+            @Path("tour_id") long tourId,
+            @Query("page") int page,
+            @Query("per") int per
+    );
 }
