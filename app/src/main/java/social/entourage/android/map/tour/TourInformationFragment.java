@@ -1,6 +1,8 @@
 package social.entourage.android.map.tour;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -108,7 +110,7 @@ public class TourInformationFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentFade;
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
     }
 
     @Override
@@ -119,8 +121,14 @@ public class TourInformationFragment extends DialogFragment {
     }
 
     // ----------------------------------
-    // PUBLIC METHODS
+    // Button Handling
     // ----------------------------------
+
+    @OnClick(R.id.tour_info_close)
+    protected void onCloseButton() {
+        this.dismiss();
+    }
+
 
     // ----------------------------------
     // PRIVATE METHODS
@@ -164,11 +172,22 @@ public class TourInformationFragment extends DialogFragment {
         discussionLayout.addView(startCard);
 
         if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+            addDiscussionSeparator();
+
             TourInformationLocationCardView endCard = new TourInformationLocationCardView(getContext());
             endCard.populate(tour, tour.getTourPoints().size()-1);
             discussionLayout.addView(endCard);
         }
 
+    }
+
+    private void addDiscussionSeparator() {
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout separatorLayout = (LinearLayout)inflater.inflate(R.layout.tour_information_separator_card, discussionLayout, false);
+        View discussionSeparator = separatorLayout.findViewById(R.id.tic_separator);
+        separatorLayout.removeView(discussionSeparator);
+        discussionLayout.addView(discussionSeparator);
     }
 
     private OnTourInformationFragmentFinish getOnTourInformationFragmentFinish() {

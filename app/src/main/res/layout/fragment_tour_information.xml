@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +8,7 @@
     android:orientation="vertical"
     tools:context="social.entourage.android.DrawerActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,14 +19,26 @@
         android:layout_marginTop="0dp"
         android:id="@+id/tour_info_title_layout">
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tour_info_close"
+            android:src="@drawable/ic_close"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
+
         <TextView
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tour_info_title"
             android:id="@+id/tour_info_title"
-            android:layout_gravity="center_horizontal"/>
-    </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
 
     <GridLayout
         android:layout_width="match_parent"
@@ -157,5 +168,16 @@
             android:id="@+id/tour_info_discussion_layout">
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/tour_info_progress_bar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/circular_progress_bar"
+        android:visibility="gone"/>
 
 </RelativeLayout>

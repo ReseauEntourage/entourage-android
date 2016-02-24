@@ -21,7 +21,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/tour_information_location_background"
+        android:background="@drawable/bubble_discussion"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
