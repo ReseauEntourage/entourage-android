@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -61,6 +62,9 @@ public class TourInformationFragment extends DialogFragment {
 
     @Bind(R.id.tour_info_discussion_layout)
     LinearLayout discussionLayout;
+
+    @Bind(R.id.tour_info_progress_bar)
+    ProgressBar progressBar;
 
     Tour tour;
     List<TourUser> tourUserList;
@@ -141,14 +145,12 @@ public class TourInformationFragment extends DialogFragment {
     // ----------------------------------
 
     private void initializeView() {
-        Resources res = getResources();
+
         tour = (Tour) getArguments().getSerializable(Tour.KEY_TOUR);
-        String vehicule = tour.getTourVehicleType();
-        String type = tour.getTourType();
-        String status = tour.getTourStatus();
 
         tourOrganization.setText(tour.getOrganizationName());
 
+        String type = tour.getTourType();
         if (type != null) {
             if (type.equals(TourType.MEDICAL.getName())) {
                 tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_type_medical)));
@@ -176,11 +178,11 @@ public class TourInformationFragment extends DialogFragment {
     }
 
     private void addDiscussionSeparator() {
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout separatorLayout = (LinearLayout)inflater.inflate(R.layout.tour_information_separator_card, discussionLayout, false);
         View discussionSeparator = separatorLayout.findViewById(R.id.tic_separator);
         separatorLayout.removeView(discussionSeparator);
+        
         discussionLayout.addView(discussionSeparator);
     }
 
@@ -207,6 +209,9 @@ public class TourInformationFragment extends DialogFragment {
             //order the list based on the request date
             Collections.sort(tourUserList, new TourUser.TourUserComparatorOldToNew());
         }
+
+        //hide the progress bar
+        progressBar.setVisibility(View.GONE);
 
         //add the start time
         TourInformationLocationCardView startCard = new TourInformationLocationCardView(getContext());
