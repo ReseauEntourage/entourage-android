@@ -8,7 +8,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
@@ -51,30 +54,42 @@ public class TourInformationLocationCardView extends LinearLayout {
         mLocationDistance = (TextView) this.findViewById(R.id.tic_location_distance);
     }
 
-    public void populate(Tour tour, int tourPointIndex) {
-        if (tourPointIndex < 0) return;
+    public void populate(Tour tour, boolean isStartCard) {
+
         List<TourPoint> tourPointsList = tour.getTourPoints();
-        if (tourPointIndex >= tourPointsList.size()) return;
 
         SimpleDateFormat locationDateFormat = new SimpleDateFormat(getResources().getString(R.string.tour_info_location_card_date_format));
-        if (tourPointIndex == tourPointsList.size()-1) {
+        if (!isStartCard) {
             mLocationDate.setText(locationDateFormat.format(tour.getEndTime()));
             mLocationTitle.setText(R.string.tour_info_text_closed);
+            if (tour.isClosed()) {
+                if (tour.getStartTime() != null && tour.getEndTime() != null) {
+                    Date duration = new Date(tour.getEndTime().getTime() - tour.getStartTime().getTime());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    mLocationDuration.setText(dateFormat.format(duration));
+                }
+                float distance = 0;
+                TourPoint startPoint = tourPointsList.get(0);
+                for (int i=1; i < tourPointsList.size(); i++) {
+                    TourPoint p = tourPointsList.get(i);
+                    distance += p.distanceTo(startPoint);
+                    startPoint = p;
+                }
+                mLocationDistance.setText(String.format("%.2f km", distance/1000.0f));
+            }
         } else {
             mLocationDate.setText(locationDateFormat.format(tour.getStartTime()));
             mLocationTitle.setText(R.string.tour_info_text_ongoing);
+            if (!tour.isClosed() && tour.getStartTime() != null) {
+                Date duration = new Date((new Date()).getTime() - tour.getStartTime().getTime());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                mLocationDuration.setText(dateFormat.format(duration));
+            }
+            mLocationDistance.setText("");
         }
 
-        mLocationDuration.setText(tour.getDuration());
-
-        float distance = 0;
-        TourPoint startPoint = tourPointsList.get(0);
-        for (int i=1; i <= tourPointIndex; i++) {
-            TourPoint p = tourPointsList.get(i);
-            distance += p.distanceTo(startPoint);
-            startPoint = p;
-        }
-        mLocationDistance.setText(String.format("%.2f km", distance/1000.0f));
     }
 
 }

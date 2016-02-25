@@ -262,6 +262,10 @@ public class Tour implements Serializable {
         this.encounters.add(encounter);
     }
 
+    public boolean isClosed() {
+        return tourStatus.equals(TOUR_CLOSED);
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------

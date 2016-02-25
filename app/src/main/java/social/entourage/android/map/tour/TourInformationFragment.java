@@ -215,7 +215,7 @@ public class TourInformationFragment extends DialogFragment {
 
         //add the start time
         TourInformationLocationCardView startCard = new TourInformationLocationCardView(getContext());
-        startCard.populate(tour, 0);
+        startCard.populate(tour, true);
         discussionLayout.addView(startCard);
 
         //add the users
@@ -238,11 +238,11 @@ public class TourInformationFragment extends DialogFragment {
         }
 
         //add the end time, if tour is closed
-        if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+        if (tour.isClosed()) {
             addDiscussionSeparator();
 
             TourInformationLocationCardView endCard = new TourInformationLocationCardView(getContext());
-            endCard.populate(tour, tour.getTourPoints().size()-1);
+            endCard.populate(tour, false);
             discussionLayout.addView(endCard);
         }
     }
