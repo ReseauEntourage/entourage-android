@@ -30,11 +30,14 @@ public class User {
     @Expose(serialize = false, deserialize = true)
     private final Organization organization;
 
+    @SerializedName("avatar_url")
+    private String avatarURL;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
-    private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final Organization organization, final String token) {
+    private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final Organization organization, final String token, final String avatarURL) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -42,6 +45,7 @@ public class User {
         this.stats = stats;
         this.organization = organization;
         this.token = token;
+        this.avatarURL = avatarURL;
     }
 
     // ----------------------------------
@@ -88,12 +92,20 @@ public class User {
         return organization;
     }
 
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
     }
 
     public void incrementTours() {
@@ -104,6 +116,13 @@ public class User {
         stats.setEncounterCount(stats.getEncounterCount() + 1);
     }
 
+    public static String decodeURL(String encodedURL) {
+        if (encodedURL == null) {
+            return encodedURL;
+        }
+        return encodedURL.replace('\u0026', '&');
+    }
+
     // ----------------------------------
     // BUILDER
     // ----------------------------------
@@ -111,7 +130,7 @@ public class User {
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
         private int id;
-        private String email, firstName, lastName, token;
+        private String email, firstName, lastName, token, avatarURL;
         private Stats stats;
         private Organization organization;
 
@@ -153,6 +172,11 @@ public class User {
             return this;
         }
 
+        public Builder withAvatarURL(final String avatarURL) {
+            this.avatarURL = avatarURL;
+            return this;
+        }
+
         public User build() {
             if (id == -1) {
                 return null;
@@ -175,7 +199,7 @@ public class User {
             if (token == null) {
                 return null;
             }
-            return new User(id, email, firstName, lastName, stats, organization, token);
+            return new User(id, email, firstName, lastName, stats, organization, token, avatarURL);
         }
     }
 

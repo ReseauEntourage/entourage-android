@@ -182,7 +182,7 @@ public class TourInformationFragment extends DialogFragment {
         LinearLayout separatorLayout = (LinearLayout)inflater.inflate(R.layout.tour_information_separator_card, discussionLayout, false);
         View discussionSeparator = separatorLayout.findViewById(R.id.tic_separator);
         separatorLayout.removeView(discussionSeparator);
-        
+
         discussionLayout.addView(discussionSeparator);
     }
 

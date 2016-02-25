@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -27,8 +29,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
+
+import java.net.URI;
 
 import javax.inject.Inject;
 
@@ -124,6 +130,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         User user = getAuthenticationController().getUser();
         if (user != null) {
             userName.setText(user.getFullName());
+            String avatarURL = user.getAvatarURL();
+            if (avatarURL != null) {
+                Picasso.with(this).load(Uri.parse(avatarURL))
+                        .transform(new CropCircleTransformation())
+                        .into(userPhoto);
+            }
         }
     }
 
