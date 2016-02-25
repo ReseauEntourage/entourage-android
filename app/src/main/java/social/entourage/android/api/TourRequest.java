@@ -1,5 +1,7 @@
 package social.entourage.android.api;
 
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -7,6 +9,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
@@ -53,5 +56,22 @@ public interface TourRequest {
             @Path("tour_id") long tourId,
             @Query("page") int page,
             @Query("per") int per
+    );
+
+    @POST("tours/{tour_id}/chat_messages.json")
+    Call<ChatMessage> chatMessage(
+            @Path("tour_id") long tourId,
+            @Body ChatMessage.ChatMessageWrapper message
+    );
+
+    @GET("tours/{tour_id}/chat_messages.json")
+    Call<ChatMessage.ChatMessagesWrapper> retrieveTourMessages(
+            @Path("tour_id") long tourId
+    );
+
+    @GET("tours/{tour_id}/chat_messages.json")
+    Call<ChatMessage.ChatMessagesWrapper> retrieveTourMessages(
+            @Path("tour_id") long tourId,
+            @Query("pagination") Date pagination
     );
 }

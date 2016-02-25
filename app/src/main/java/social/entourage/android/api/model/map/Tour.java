@@ -82,8 +82,8 @@ public class Tour implements Serializable {
     @Expose(serialize = false)
     private final List<Encounter> encounters;
 
-    @Expose(serialize = false)
-    private Address startAddress;
+    @Expose(serialize = false, deserialize = false)
+    private transient Address startAddress;
 
     @Expose(serialize = false, deserialize = true)
     @SerializedName("number_of_people")

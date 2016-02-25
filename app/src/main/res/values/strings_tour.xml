@@ -43,6 +43,7 @@
     <string name="tour_info_text_join_accepted">\u0020 a rejoint votre maraude.</string>
     <string name="tour_info_text_join_rejected">\u0020 rejected ??</string>
     <string name="tour_info_text_join_pending">u0020 pending ??</string>
+    <string name="tour_info_error_chat_message">Chat message not sent</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>
