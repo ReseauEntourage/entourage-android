@@ -33,9 +33,10 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
         } else {
             url = request.url().newBuilder().build();
         }
+        //TODO: should be changed after each release
         request = request.newBuilder()
                 .header("Accept", "application/json")
-                .header("X-API-Key", "32e2ced9df89")
+                .header("X-API-KEY", "32e2ced9df89")
                 .url(url).build();
         return chain.proceed(request);
     }

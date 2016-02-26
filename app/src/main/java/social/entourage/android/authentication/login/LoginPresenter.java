@@ -3,6 +3,7 @@ package social.entourage.android.authentication.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
+import android.util.Patterns;
 
 import com.squareup.okhttp.ResponseBody;
 
@@ -70,52 +71,14 @@ public class LoginPresenter {
 
     public String checkPhoneNumberFormat(String phoneNumber) {
 
-        String regionFormat = null;
-        boolean isFormatValid = false;
-
-
-        switch (phoneNumber.length()) {
-            case 10:
-                if (phoneNumber.startsWith("0")) {
-                    phoneNumber = "+33" + phoneNumber.substring(1, 10);
-                    isFormatValid = true;
-                    regionFormat = COUNTRY_CODE_FR;
-                }
-                break;
-            case 11:
-                if (phoneNumber.startsWith("1")) {
-                    phoneNumber = "+" + phoneNumber;
-                    isFormatValid = true;
-                    regionFormat = COUNTRY_CODE_CA;
-                }
-                break;
-            case 12:
-                if (phoneNumber.startsWith("+33")) {
-                    isFormatValid = true;
-                    regionFormat = COUNTRY_CODE_FR;
-                }
-                else if (phoneNumber.startsWith("+1")) {
-                    isFormatValid = true;
-                    regionFormat = COUNTRY_CODE_CA;
-                }
-                break;
-            default:
-                break;
+        if (phoneNumber.startsWith("0")) {
+            phoneNumber = "+33" + phoneNumber.substring(1);
+        } else if (!phoneNumber.startsWith("+")) {
+            phoneNumber = "+" + phoneNumber;
         }
 
-        if (isFormatValid) {
-            Pattern pattern = null;
-            if (regionFormat.equals(COUNTRY_CODE_FR)) {
-                pattern = Pattern.compile("^(\\+33)\\d{9}");
-            }
-            else if (regionFormat.equals(COUNTRY_CODE_CA)) {
-                pattern = Pattern.compile("^(\\+1)\\d{10}");
-            }
-            Matcher matcher = pattern.matcher(phoneNumber);
-            if (matcher.matches()) {
-                return phoneNumber;
-            }
-        }
+        if(Patterns.PHONE.matcher(phoneNumber).matches())
+            return phoneNumber;
 
         return null;
     }
