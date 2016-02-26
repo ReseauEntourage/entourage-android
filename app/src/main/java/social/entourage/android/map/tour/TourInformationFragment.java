@@ -29,7 +29,9 @@ import com.flurry.android.FlurryAgent;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,6 +45,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Tour;
@@ -75,6 +78,9 @@ public class TourInformationFragment extends DialogFragment {
     @Bind(R.id.tour_info_progress_bar)
     ProgressBar progressBar;
 
+    @Bind(R.id.tour_info_comment_layout)
+    LinearLayout commentLayout;
+
     @Bind(R.id.tour_info_comment)
     EditText commentEditText;
 
@@ -84,6 +90,8 @@ public class TourInformationFragment extends DialogFragment {
     List<TourUser> tourUserList;
 
     List<ChatMessage> chatMessageList;
+
+    List<TimestampedObject> cardInfoList;
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
 
@@ -116,9 +124,8 @@ public class TourInformationFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-        apiRequestsCount++;
+
         presenter.getTourUsers();
-        apiRequestsCount++;
         presenter.getTourMessages();
     }
 
@@ -209,6 +216,9 @@ public class TourInformationFragment extends DialogFragment {
         tour = (Tour) getArguments().getSerializable(Tour.KEY_TOUR);
 
         apiRequestsCount = 0;
+        tourUserList = new ArrayList<>();
+        chatMessageList = new ArrayList<>();
+        cardInfoList = new ArrayList<>();
 
         tourOrganization.setText(tour.getOrganizationName());
 
@@ -237,6 +247,11 @@ public class TourInformationFragment extends DialogFragment {
             });
         }
 
+        //hide the comment section if the user is not accepted
+        if (!tour.getJoinStatus().equals(Tour.JOIN_STATUS_ACCEPTED)) {
+            commentLayout.setVisibility(View.GONE);
+        }
+
     }
 
     private void updateDiscussionList() {
@@ -244,37 +259,65 @@ public class TourInformationFragment extends DialogFragment {
         //wait for the API calls to finish
         if (apiRequestsCount > 0) return;
 
-        //add the start time
-        TourInformationLocationCardView startCard = new TourInformationLocationCardView(getContext());
-        startCard.populate(tour, true);
-        discussionLayout.addView(startCard);
+        //sort the cards
+        Collections.sort(cardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
 
-        //add the users
-        if (tourUserList != null) {
-            for (int i = 0; i < tourUserList.size(); i++) {
-                TourUser tourUser = tourUserList.get(i);
-                //skip the author
-                if (tourUser.getUserId() == tour.getAuthor().getUserID()) {
-                    continue;
+        //remove the previous views
+        discussionLayout.removeAllViews();
+
+        //add the start time
+        addDiscussionTourStartCard();
+
+        boolean isTourClosed = tour.isClosed();
+        boolean isTourClosedCardAdded = false;
+
+        //add the cards
+        if (cardInfoList != null) {
+            for (int i = 0; i < cardInfoList.size(); i++) {
+                TimestampedObject cardInfo = cardInfoList.get(i);
+
+                //check if we need to add the Tour closed card
+                if (isTourClosed && !isTourClosedCardAdded) {
+                    Date cardTimestamp = cardInfo.getTimestamp();
+                    if (cardTimestamp != null && tour.getEndTime() != null) {
+                        if (cardTimestamp.after(tour.getEndTime())) {
+                            addDiscussionSeparator();
+                            addDiscussionTourEndCard();
+
+                            isTourClosedCardAdded = true;
+                        }
+                    }
                 }
-                //skip the rejected user
-                if (tourUser.getStatus().equals(Tour.JOIN_STATUS_REJECTED)) {
-                    continue;
+
+                if (cardInfo.getClass() == TourUser.class) {
+                    TourUser tourUser = (TourUser)cardInfo;
+                    //skip the author
+                    if (tourUser.getUserId() == tour.getAuthor().getUserID()) {
+                        continue;
+                    }
+                    //skip the rejected user
+                    if (tourUser.getStatus().equals(Tour.JOIN_STATUS_REJECTED)) {
+                        continue;
+                    }
+                    //add the separator
+                    addDiscussionSeparator();
+                    //add the user card
+                    addDiscussionTourUserCard(tourUser);
                 }
-                //add the separator
-                addDiscussionSeparator();
-                //add the user card
-                addDiscussionTourUserCard(tourUser);
+                else if (cardInfo.getClass() == ChatMessage.class) {
+                    ChatMessage chatMessage = (ChatMessage)cardInfo;
+                    //add the separator
+                    addDiscussionSeparator();
+                    //add the user card
+                    addDiscussionChatMessageCard(chatMessage);
+                }
             }
         }
 
-        //add the end time, if tour is closed
-        if (tour.isClosed()) {
+        //add the end time, if tour is closed and card not displayed
+        if (tour.isClosed() && !isTourClosedCardAdded) {
             addDiscussionSeparator();
-
-            TourInformationLocationCardView endCard = new TourInformationLocationCardView(getContext());
-            endCard.populate(tour, false);
-            discussionLayout.addView(endCard);
+            addDiscussionTourEndCard();
         }
     }
 
@@ -287,6 +330,18 @@ public class TourInformationFragment extends DialogFragment {
         discussionLayout.addView(discussionSeparator);
     }
 
+    private void addDiscussionTourStartCard() {
+        TourInformationLocationCardView startCard = new TourInformationLocationCardView(getContext());
+        startCard.populate(tour, true);
+        discussionLayout.addView(startCard);
+    }
+
+    private void addDiscussionTourEndCard() {
+        TourInformationLocationCardView endCard = new TourInformationLocationCardView(getContext());
+        endCard.populate(tour, false);
+        discussionLayout.addView(endCard);
+    }
+
     private void addDiscussionTourUserCard(TourUser tourUser) {
         TourInformationUserCardView userCardView = new TourInformationUserCardView(getContext());
         userCardView.setUsername(tourUser.getFirstName());
@@ -295,7 +350,19 @@ public class TourInformationFragment extends DialogFragment {
         discussionLayout.addView(userCardView);
     }
 
-    private void hideProgressBar() {
+    private void addDiscussionChatMessageCard(ChatMessage chatMessage) {
+        TourInformationChatMessageCardView chatMessageCardView = new TourInformationChatMessageCardView(getContext());
+        chatMessageCardView.populate(chatMessage);
+
+        discussionLayout.addView(chatMessageCardView);
+    }
+
+    protected void showProgressBar() {
+        apiRequestsCount++;
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgressBar() {
         apiRequestsCount--;
         if (apiRequestsCount <= 0) {
             progressBar.setVisibility(View.GONE);
@@ -312,10 +379,9 @@ public class TourInformationFragment extends DialogFragment {
     // ----------------------------------
 
     protected void onTourUsersReceived(List<TourUser> tourUsers) {
-        tourUserList = tourUsers;
-        if (tourUserList != null && tourUserList.size() > 1) {
-            //order the list based on the request date
-            Collections.sort(tourUserList, new TourUser.TourUserComparatorOldToNew());
+        if (tourUserList != null) {
+            tourUserList.addAll(tourUsers);
+            cardInfoList.addAll(tourUserList);
         }
 
         //hide the progress bar
@@ -326,7 +392,10 @@ public class TourInformationFragment extends DialogFragment {
     }
 
     protected void onTourMessagesReceived(List<ChatMessage> chatMessageList) {
-        this.chatMessageList = chatMessageList;
+        if (chatMessageList != null) {
+            this.chatMessageList.addAll(chatMessageList);
+            cardInfoList.addAll(this.chatMessageList);
+        }
 
         //hide the progress bar
         hideProgressBar();
@@ -336,11 +405,23 @@ public class TourInformationFragment extends DialogFragment {
     }
 
     protected void onTourMessageSent(ChatMessage chatMessage) {
+        hideProgressBar();
+
         if (chatMessage == null) {
             Toast.makeText(getContext(), R.string.tour_info_error_chat_message, Toast.LENGTH_SHORT).show();
             return;
         }
         commentEditText.setText("");
+
+        //add the message to the list
+        chatMessageList.add(chatMessage);
+        cardInfoList.add(chatMessage);
+
+        //add the separator
+        addDiscussionSeparator();
+
+        //add the message card
+        addDiscussionChatMessageCard(chatMessage);
     }
 
     // ----------------------------------

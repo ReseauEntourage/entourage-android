@@ -27,12 +27,12 @@ public class TourInformationUserCardView extends LinearLayout {
     private TextView mJoinStatusView;
 
     public TourInformationUserCardView(Context context) {
-        super(context, null, R.attr.TourInformationUserCardViewStyle);
+        super(context, null, R.attr.TourInformationCardViewStyle);
         init(null, 0);
     }
 
     public TourInformationUserCardView(Context context, AttributeSet attrs) {
-        super(context, attrs, R.attr.TourInformationUserCardViewStyle);
+        super(context, attrs, R.attr.TourInformationCardViewStyle);
         init(attrs, 0);
     }
 

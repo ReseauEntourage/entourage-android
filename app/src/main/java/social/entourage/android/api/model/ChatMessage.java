@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by mihaiionescu on 25/02/16.
  */
-public class ChatMessage implements Serializable {
+public class ChatMessage extends TimestampedObject implements Serializable {
 
     @Expose(serialize = false)
     @SerializedName("id")
@@ -68,6 +68,17 @@ public class ChatMessage implements Serializable {
 
     public void setUserId(final long userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public Date getTimestamp() {
+        return creationDate;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o.getClass() != this.getClass()) return false;
+        return this.chatId == ((ChatMessage)o).chatId;
     }
 
     // ----------------------------------

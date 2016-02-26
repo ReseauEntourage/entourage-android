@@ -59,7 +59,7 @@ public interface TourRequest {
     );
 
     @POST("tours/{tour_id}/chat_messages.json")
-    Call<ChatMessage> chatMessage(
+    Call<ChatMessage.ChatMessageWrapper> chatMessage(
             @Path("tour_id") long tourId,
             @Body ChatMessage.ChatMessageWrapper message
     );
@@ -72,6 +72,6 @@ public interface TourRequest {
     @GET("tours/{tour_id}/chat_messages.json")
     Call<ChatMessage.ChatMessagesWrapper> retrieveTourMessages(
             @Path("tour_id") long tourId,
-            @Query("pagination") Date pagination
+            @Query("before") Date pagination
     );
 }

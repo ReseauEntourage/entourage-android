@@ -1,5 +1,7 @@
 package social.entourage.android.map.tour;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -33,11 +35,12 @@ public class TourInformationPresenter {
         this.fragment = fragment;
     }
 
-    // --
+    // ----------------------------------
     // Api calls
-    // --
+    // ----------------------------------
 
     public void getTourUsers() {
+        fragment.showProgressBar();
         if (fragment.tour == null) {
             fragment.onTourUsersReceived(null);
             return;
@@ -62,11 +65,16 @@ public class TourInformationPresenter {
     }
 
     public void getTourMessages() {
+        getTourMessages(null);
+    }
+
+    public void getTourMessages(Date lastMessageDate) {
+        fragment.showProgressBar();
         if (fragment.tour == null) {
             fragment.onTourMessagesReceived(null);
             return;
         }
-        Call<ChatMessage.ChatMessagesWrapper> call = tourRequest.retrieveTourMessages(fragment.tour.getId());
+        Call<ChatMessage.ChatMessagesWrapper> call = tourRequest.retrieveTourMessages(fragment.tour.getId(), lastMessageDate);
         call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
             @Override
             public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
@@ -86,6 +94,7 @@ public class TourInformationPresenter {
     }
 
     public void sendTourMessage(String message) {
+        fragment.showProgressBar();
         if (fragment.tour == null || message == null || message.trim().length() == 0) {
             fragment.onTourMessageSent(null);
             return;
@@ -93,12 +102,12 @@ public class TourInformationPresenter {
         ChatMessage chatMessage = new ChatMessage(message);
         ChatMessage.ChatMessageWrapper chatMessageWrapper = new ChatMessage.ChatMessageWrapper();
         chatMessageWrapper.setChatMessage(chatMessage);
-        Call<ChatMessage> call = tourRequest.chatMessage(fragment.tour.getId(), chatMessageWrapper);
-        call.enqueue(new Callback<ChatMessage>() {
+        Call<ChatMessage.ChatMessageWrapper> call = tourRequest.chatMessage(fragment.tour.getId(), chatMessageWrapper);
+        call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
             @Override
-            public void onResponse(final Call<ChatMessage> call, final Response<ChatMessage> response) {
+            public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
                 if (response.isSuccess()) {
-                    fragment.onTourMessageSent(response.body());
+                    fragment.onTourMessageSent(response.body().getChatMessage());
                 }
                 else {
                     fragment.onTourMessageSent(null);
@@ -106,7 +115,7 @@ public class TourInformationPresenter {
             }
 
             @Override
-            public void onFailure(final Call<ChatMessage> call, final Throwable t) {
+            public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
                 fragment.onTourMessageSent(null);
             }
         });

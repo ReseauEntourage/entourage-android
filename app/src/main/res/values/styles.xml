@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="TourInformationUserCardViewStyle">@style/tourInformationUserCardViewStyle</item>
+        <item name="TourInformationCardViewStyle">@style/tourInformationCardViewStyle</item>
     </style>
 
     <!-- Custom Edit Text theme for the login views. -->
@@ -113,7 +113,7 @@
     </style>
 
     <!-- TourInformationUserCardViewStyle -->
-    <style name="tourInformationUserCardViewStyle">
+    <style name="tourInformationCardViewStyle">
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>

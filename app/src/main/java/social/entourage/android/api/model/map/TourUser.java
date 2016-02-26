@@ -8,10 +8,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import social.entourage.android.api.model.TimestampedObject;
+
 /**
  * Created by mihaiionescu on 24/02/16.
  */
-public class TourUser implements Serializable {
+public class TourUser extends TimestampedObject implements Serializable {
 
     @SerializedName("id")
     private int userId;
@@ -79,22 +81,14 @@ public class TourUser implements Serializable {
         this.userId = userId;
     }
 
+    @Override
+    public Date getTimestamp() {
+        return requestDate;
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
-
-    public static class TourUserComparatorOldToNew implements Comparator<TourUser> {
-        @Override
-        public int compare(final TourUser lhs, final TourUser rhs) {
-            if (lhs.getRequestDate() != null && rhs.getRequestDate() != null) {
-                Date date1 = lhs.getRequestDate();
-                Date date2 = rhs.getRequestDate();
-                return date1.compareTo(date2);
-            } else {
-                return 0;
-            }
-        }
-    }
 
     public static class TourUsersWrapper {
 

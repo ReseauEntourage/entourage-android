@@ -16,7 +16,7 @@
     <declare-styleable name="BadgeView">
         <attr name="android:icon" />
     </declare-styleable>
-    <declare-styleable name="TourInformationUserCardView">
-        <attr name="TourInformationUserCardViewStyle" format="reference" />
+    <declare-styleable name="TourInformationCardView">
+        <attr name="TourInformationCardViewStyle" format="reference" />
     </declare-styleable>
 </resources>
