@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -54,6 +55,13 @@ import social.entourage.android.api.model.map.TourUser;
 public class TourInformationFragment extends DialogFragment {
 
     // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
+    private static final long REFRESH_TIMER_DELAY = 10000; //milliseconds
+
+    // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
@@ -87,13 +95,25 @@ public class TourInformationFragment extends DialogFragment {
     int apiRequestsCount;
 
     Tour tour;
+
     List<TourUser> tourUserList;
-
     List<ChatMessage> chatMessageList;
-
     List<TimestampedObject> cardInfoList;
+    Date lastChatMessageDate = null;
 
-    private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
+    boolean isDiscussionListInitialised = false;
+
+    private Handler refreshHandler = new Handler();
+    private Runnable refreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isDiscussionListInitialised) {
+                cardInfoList.clear();
+                presenter.getTourMessages(lastChatMessageDate);
+            }
+            refreshHandler.postDelayed(this, REFRESH_TIMER_DELAY);
+        }
+    };
 
     // ----------------------------------
     // LIFECYCLE
@@ -177,6 +197,18 @@ public class TourInformationFragment extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshHandler.postDelayed(refreshRunnable, REFRESH_TIMER_DELAY);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        refreshHandler.removeCallbacks(refreshRunnable);
+    }
+
     // ----------------------------------
     // Button Handling
     // ----------------------------------
@@ -254,16 +286,12 @@ public class TourInformationFragment extends DialogFragment {
 
     }
 
-    private void updateDiscussionList() {
-
+    private void initialiseDiscussionList() {
         //wait for the API calls to finish
         if (apiRequestsCount > 0) return;
 
         //sort the cards
         Collections.sort(cardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
-
-        //remove the previous views
-        discussionLayout.removeAllViews();
 
         //add the start time
         addDiscussionTourStartCard();
@@ -289,28 +317,8 @@ public class TourInformationFragment extends DialogFragment {
                     }
                 }
 
-                if (cardInfo.getClass() == TourUser.class) {
-                    TourUser tourUser = (TourUser)cardInfo;
-                    //skip the author
-                    if (tourUser.getUserId() == tour.getAuthor().getUserID()) {
-                        continue;
-                    }
-                    //skip the rejected user
-                    if (tourUser.getStatus().equals(Tour.JOIN_STATUS_REJECTED)) {
-                        continue;
-                    }
-                    //add the separator
-                    addDiscussionSeparator();
-                    //add the user card
-                    addDiscussionTourUserCard(tourUser);
-                }
-                else if (cardInfo.getClass() == ChatMessage.class) {
-                    ChatMessage chatMessage = (ChatMessage)cardInfo;
-                    //add the separator
-                    addDiscussionSeparator();
-                    //add the user card
-                    addDiscussionChatMessageCard(chatMessage);
-                }
+                //add the card
+                addDiscussionCard(cardInfo, discussionLayout.getChildCount());
             }
         }
 
@@ -319,42 +327,120 @@ public class TourInformationFragment extends DialogFragment {
             addDiscussionSeparator();
             addDiscussionTourEndCard();
         }
+
+        isDiscussionListInitialised = true;
+    }
+
+    private void updateDiscussionList() {
+        if (!isDiscussionListInitialised) {
+            initialiseDiscussionList();
+            return;
+        }
+        if (cardInfoList == null) {
+            return;
+        }
+        for (int i = 0; i < cardInfoList.size(); i++) {
+            TimestampedObject cardInfo = cardInfoList.get(i);
+
+            int cardIndex = findCardIndexOlderThan(cardInfo.getTimestamp());
+
+            //add the card
+            addDiscussionCard(cardInfo, cardIndex);
+        }
     }
 
     private void addDiscussionSeparator() {
+        addDiscussionSeparator(discussionLayout.getChildCount());
+    }
+
+    private void addDiscussionSeparator(int atIndex) {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout separatorLayout = (LinearLayout)inflater.inflate(R.layout.tour_information_separator_card, discussionLayout, false);
         View discussionSeparator = separatorLayout.findViewById(R.id.tic_separator);
         separatorLayout.removeView(discussionSeparator);
 
-        discussionLayout.addView(discussionSeparator);
+        discussionLayout.addView(discussionSeparator, atIndex);
+    }
+
+    private void addDiscussionCard(TimestampedObject cardInfo, int afterIndex) {
+        View card = null;
+        if (cardInfo.getClass() == TourUser.class) {
+            TourUser tourUser = (TourUser)cardInfo;
+            //skip the author
+            if (tourUser.getUserId() == tour.getAuthor().getUserID()) {
+                return;
+            }
+            //skip the rejected user
+            if (tourUser.getStatus().equals(Tour.JOIN_STATUS_REJECTED)) {
+                return;
+            }
+            //get the user card
+            card = getDiscussionTourUserCard(tourUser);
+        }
+        else if (cardInfo.getClass() == ChatMessage.class) {
+            ChatMessage chatMessage = (ChatMessage)cardInfo;
+            //get the chat card
+            card = getDiscussionChatMessageCard(chatMessage);
+        }
+
+        //add the card
+        if (card != null) {
+            addDiscussionSeparator(afterIndex);
+            discussionLayout.addView(card, afterIndex+1);  //+1 because we added the separator
+        }
     }
 
     private void addDiscussionTourStartCard() {
         TourInformationLocationCardView startCard = new TourInformationLocationCardView(getContext());
         startCard.populate(tour, true);
+        startCard.setTag(tour.getStartTime());
+
         discussionLayout.addView(startCard);
     }
 
     private void addDiscussionTourEndCard() {
         TourInformationLocationCardView endCard = new TourInformationLocationCardView(getContext());
         endCard.populate(tour, false);
+        endCard.setTag(tour.getEndTime());
+
         discussionLayout.addView(endCard);
     }
 
-    private void addDiscussionTourUserCard(TourUser tourUser) {
+    private View getDiscussionTourUserCard(TourUser tourUser) {
         TourInformationUserCardView userCardView = new TourInformationUserCardView(getContext());
         userCardView.setUsername(tourUser.getFirstName());
         userCardView.setJoinStatus(tourUser.getStatus());
+        userCardView.setTag(tourUser.getTimestamp());
 
-        discussionLayout.addView(userCardView);
+        return userCardView;
     }
 
-    private void addDiscussionChatMessageCard(ChatMessage chatMessage) {
+    private View getDiscussionChatMessageCard(ChatMessage chatMessage) {
         TourInformationChatMessageCardView chatMessageCardView = new TourInformationChatMessageCardView(getContext());
         chatMessageCardView.populate(chatMessage);
+        chatMessageCardView.setTag(chatMessage.getTimestamp());
 
-        discussionLayout.addView(chatMessageCardView);
+        return chatMessageCardView;
+    }
+
+    private int findCardIndexOlderThan(Date referenceDate) {
+        int discussionViewCount = discussionLayout.getChildCount();
+        if (referenceDate == null) {
+            return discussionViewCount;
+        }
+        for (int i = 0; i < discussionViewCount-1; i++) {
+            View v = discussionLayout.getChildAt(i);
+            Object tag = v.getTag();
+            if (tag == null || tag.getClass() != Date.class) {
+                continue;
+            }
+            Date viewDate = (Date)tag;
+            if (viewDate.after(referenceDate)) {
+                if (i == 0) return 0;
+                return i-1;
+            }
+        }
+        return discussionViewCount;
     }
 
     protected void showProgressBar() {
@@ -381,7 +467,7 @@ public class TourInformationFragment extends DialogFragment {
     protected void onTourUsersReceived(List<TourUser> tourUsers) {
         if (tourUserList != null) {
             tourUserList.addAll(tourUsers);
-            cardInfoList.addAll(tourUserList);
+            cardInfoList.addAll(tourUsers);
         }
 
         //hide the progress bar
@@ -394,7 +480,12 @@ public class TourInformationFragment extends DialogFragment {
     protected void onTourMessagesReceived(List<ChatMessage> chatMessageList) {
         if (chatMessageList != null) {
             this.chatMessageList.addAll(chatMessageList);
-            cardInfoList.addAll(this.chatMessageList);
+            cardInfoList.addAll(chatMessageList);
+
+            if (chatMessageList.size() > 0) {
+                ChatMessage chatMessage = chatMessageList.get(chatMessageList.size() - 1);
+                lastChatMessageDate = chatMessage.getCreationDate();
+            }
         }
 
         //hide the progress bar
@@ -421,7 +512,7 @@ public class TourInformationFragment extends DialogFragment {
         addDiscussionSeparator();
 
         //add the message card
-        addDiscussionChatMessageCard(chatMessage);
+        addDiscussionCard(chatMessage, discussionLayout.getChildCount());
     }
 
     // ----------------------------------
