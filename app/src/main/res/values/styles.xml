@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="TourInformationCardViewStyle">@style/tourInformationCardViewStyle</item>
+        <item name="ChatMessageViewStyle">@style/chatMessageViewStyle</item>
     </style>
 
     <!-- Custom Edit Text theme for the login views. -->
@@ -116,6 +117,12 @@
     <style name="tourInformationCardViewStyle">
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <!-- ChatMessageViewStyle -->
+    <style name="chatMessageViewStyle">
+        <item name="android:orientation">horizontal</item>
         <item name="android:padding">10dp</item>
     </style>
 

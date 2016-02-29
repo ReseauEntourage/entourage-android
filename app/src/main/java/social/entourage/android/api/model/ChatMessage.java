@@ -19,12 +19,13 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     private String content;
 
     @Expose(serialize = false)
-    @SerializedName("user_id")
-    private long userId;
-
-    @Expose(serialize = false)
     @SerializedName("created_at")
     private Date creationDate;
+
+    @Expose(serialize = false)
+    private User user;
+
+    private boolean isMe;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -62,12 +63,19 @@ public class ChatMessage extends TimestampedObject implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public long getUserId() {
-        return userId;
+    public int getUserId() {
+        if (user != null) {
+            return user.getId();
+        }
+        return 0;
     }
 
-    public void setUserId(final long userId) {
-        this.userId = userId;
+    public boolean isMe() {
+        return isMe;
+    }
+
+    public void setIsMe(final boolean isMe) {
+        this.isMe = isMe;
     }
 
     @Override

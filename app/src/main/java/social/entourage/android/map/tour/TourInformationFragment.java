@@ -33,6 +33,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,6 +52,7 @@ import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.authentication.AuthenticationController;
 
 public class TourInformationFragment extends DialogFragment {
 
@@ -416,8 +418,7 @@ public class TourInformationFragment extends DialogFragment {
     }
 
     private View getDiscussionChatMessageCard(ChatMessage chatMessage) {
-        TourInformationChatMessageCardView chatMessageCardView = new TourInformationChatMessageCardView(getContext());
-        chatMessageCardView.populate(chatMessage);
+        TourInformationChatMessageCardView chatMessageCardView = new TourInformationChatMessageCardView(getContext(), chatMessage);
         chatMessageCardView.setTag(chatMessage.getTimestamp());
 
         return chatMessageCardView;
@@ -483,6 +484,17 @@ public class TourInformationFragment extends DialogFragment {
             cardInfoList.addAll(chatMessageList);
 
             if (chatMessageList.size() > 0) {
+                //check who sent the message
+                AuthenticationController authenticationController = EntourageApplication.get(getActivity()).getEntourageComponent().getAuthenticationController();
+                if (authenticationController.isAuthenticated()) {
+                    int me = authenticationController.getUser().getId();
+                    Iterator chatMessageIterator = chatMessageList.iterator();
+                    while (chatMessageIterator.hasNext()) {
+                        ChatMessage chatMessage = (ChatMessage) chatMessageIterator.next();
+                        chatMessage.setIsMe(chatMessage.getUserId() == me);
+                    }
+                }
+                //remember the last chat message
                 ChatMessage chatMessage = chatMessageList.get(chatMessageList.size() - 1);
                 lastChatMessageDate = chatMessage.getCreationDate();
             }
@@ -505,6 +517,7 @@ public class TourInformationFragment extends DialogFragment {
         commentEditText.setText("");
 
         //add the message to the list
+        chatMessage.setIsMe(true);
         chatMessageList.add(chatMessage);
         cardInfoList.add(chatMessage);
 

@@ -19,4 +19,7 @@
     <declare-styleable name="TourInformationCardView">
         <attr name="TourInformationCardViewStyle" format="reference" />
     </declare-styleable>
+    <declare-styleable name="ChatMessageView">
+        <attr name="ChatMessageViewStyle" format="reference" />
+    </declare-styleable>
 </resources>
