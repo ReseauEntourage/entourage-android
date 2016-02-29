@@ -9,6 +9,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.TourUser;
 
 /**
@@ -80,8 +81,7 @@ public class TourInformationPresenter {
             public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
                 if (response.isSuccess()) {
                     fragment.onTourMessagesReceived(response.body().getChatMessages());
-                }
-                else {
+                } else {
                     fragment.onTourMessagesReceived(null);
                 }
             }
@@ -117,6 +117,31 @@ public class TourInformationPresenter {
             @Override
             public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
                 fragment.onTourMessageSent(null);
+            }
+        });
+    }
+
+    public void getTourEncounters() {
+        fragment.showProgressBar();
+        if (fragment.tour == null) {
+            fragment.onTourEncountersReceived(null);
+            return;
+        }
+        Call<Encounter.EncountersWrapper> call = tourRequest.retrieveTourEncounters(fragment.tour.getId());
+        call.enqueue(new Callback<Encounter.EncountersWrapper>() {
+            @Override
+            public void onResponse(final Call<Encounter.EncountersWrapper> call, final Response<Encounter.EncountersWrapper> response) {
+                if (response.isSuccess()) {
+                    fragment.onTourEncountersReceived(response.body().getEncounters());
+                }
+                else {
+                    fragment.onTourEncountersReceived(null);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Encounter.EncountersWrapper> call, final Throwable t) {
+                fragment.onTourEncountersReceived(null);
             }
         });
     }

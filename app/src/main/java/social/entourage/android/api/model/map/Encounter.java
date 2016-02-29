@@ -7,9 +7,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import social.entourage.android.api.model.TimestampedObject;
 
 @SuppressWarnings("unused")
-public class Encounter implements Serializable{
+public class Encounter extends TimestampedObject implements Serializable{
 
     // ----------------------------------
     // ATTRIBUTES
@@ -144,6 +147,11 @@ public class Encounter implements Serializable{
         this.address = address;
     }
 
+    @Override
+    public Date getTimestamp() {
+        return creationDate;
+    }
+
     // ----------------------------------
     // WRAPPER
     // ----------------------------------
@@ -158,6 +166,19 @@ public class Encounter implements Serializable{
 
         public void setEncounter(final Encounter encounter) {
             this.encounter = encounter;
+        }
+    }
+
+    public static class EncountersWrapper {
+
+        private List<Encounter> encounters;
+
+        public List<Encounter> getEncounters() {
+            return encounters;
+        }
+
+        public void setEncounters(final List<Encounter> encounters) {
+            this.encounters = encounters;
         }
     }
 

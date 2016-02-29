@@ -10,6 +10,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
@@ -73,5 +74,10 @@ public interface TourRequest {
     Call<ChatMessage.ChatMessagesWrapper> retrieveTourMessages(
             @Path("tour_id") long tourId,
             @Query("before") Date pagination
+    );
+
+    @GET("tours/{tour_id}/encounters.json")
+    Call<Encounter.EncountersWrapper> retrieveTourEncounters(
+            @Path("tour_id") long tourId
     );
 }

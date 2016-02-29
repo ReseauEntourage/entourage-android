@@ -53,6 +53,7 @@ import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
@@ -139,6 +140,7 @@ public class TourInformationFragment extends DialogFragment {
 
         presenter.getTourUsers();
         presenter.getTourMessages();
+        presenter.getTourEncounters();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -359,6 +361,11 @@ public class TourInformationFragment extends DialogFragment {
             //get the chat card
             card = getDiscussionChatMessageCard(chatMessage);
         }
+        else if (cardInfo.getClass() == Encounter.class) {
+            Encounter encounter = (Encounter)cardInfo;
+            //get the encounter card
+            card = getDiscussionEncounterCard(encounter);
+        }
 
         //add the card
         if (card != null) {
@@ -397,6 +404,14 @@ public class TourInformationFragment extends DialogFragment {
         chatMessageCardView.setTag(chatMessage.getTimestamp());
 
         return chatMessageCardView;
+    }
+
+    private View getDiscussionEncounterCard(Encounter encounter) {
+        TourInformationEncounterCardView encounterCardView = new TourInformationEncounterCardView(getContext());
+        encounterCardView.populate(encounter);
+        encounterCardView.setTag(encounter.getTimestamp());
+
+        return encounterCardView;
     }
 
     private int findCardIndexOlderThan(Date referenceDate) {
@@ -501,6 +516,18 @@ public class TourInformationFragment extends DialogFragment {
 
         //add the message card
         addDiscussionCard(chatMessage, discussionLayout.getChildCount());
+    }
+
+    protected void onTourEncountersReceived(List<Encounter> encounterList) {
+        if (encounterList != null) {
+            cardInfoList.addAll(encounterList);
+        }
+
+        //hide the progress bar
+        hideProgressBar();
+
+        //update the discussion list
+        updateDiscussionList();
     }
 
     // ----------------------------------
