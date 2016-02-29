@@ -1,12 +1,21 @@
 package social.entourage.android.map.tour;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
@@ -62,7 +71,12 @@ public class TourInformationChatMessageCardView extends LinearLayout {
     }
 
     public void populate(ChatMessage chatMessage) {
-        //TODO: we need the user photo
+        String avatarURL = chatMessage.getUserAvatarURL();
+        if (avatarURL != null) {
+            Picasso.with(getContext()).load(Uri.parse(avatarURL))
+                    .transform(new CropCircleTransformation())
+                    .into(mUserPhotoView);
+        }
 
         mMessageView.setText(chatMessage.getContent());
     }

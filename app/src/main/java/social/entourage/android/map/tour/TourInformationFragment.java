@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.flurry.android.FlurryAgent;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +44,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -273,12 +276,9 @@ public class TourInformationFragment extends DialogFragment {
 
         String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
         if (avatarURLAsString != null) {
-            ImageLoader.getInstance().loadImage(avatarURLAsString, new SimpleImageLoadingListener() {
-                @Override
-                public void onLoadingComplete(final String imageUri, final View view, final Bitmap loadedImage) {
-                    tourAuthorPhoto.setImageBitmap(loadedImage);
-                }
-            });
+            Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
+                    .transform(new CropCircleTransformation())
+                    .into(tourAuthorPhoto);
         }
 
         //hide the comment section if the user is not accepted
