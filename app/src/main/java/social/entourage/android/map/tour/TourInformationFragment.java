@@ -64,7 +64,6 @@ public class TourInformationFragment extends DialogFragment {
     // ----------------------------------
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
-    private static final long REFRESH_TIMER_DELAY = 10000; //milliseconds
 
     // ----------------------------------
     // ATTRIBUTES
@@ -107,18 +106,6 @@ public class TourInformationFragment extends DialogFragment {
     Date lastChatMessageDate = null;
 
     boolean isDiscussionListInitialised = false;
-
-    private Handler refreshHandler = new Handler();
-    private Runnable refreshRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (isDiscussionListInitialised) {
-                cardInfoList.clear();
-                presenter.getTourMessages(lastChatMessageDate);
-            }
-            refreshHandler.postDelayed(this, REFRESH_TIMER_DELAY);
-        }
-    };
 
     // ----------------------------------
     // LIFECYCLE
@@ -200,18 +187,6 @@ public class TourInformationFragment extends DialogFragment {
         super.onStart();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        refreshHandler.postDelayed(refreshRunnable, REFRESH_TIMER_DELAY);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        refreshHandler.removeCallbacks(refreshRunnable);
     }
 
     // ----------------------------------
