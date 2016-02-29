@@ -16,7 +16,9 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourUser;
 
 /**
  * User Card View in tour information screen
@@ -47,6 +49,11 @@ public class TourInformationUserCardView extends LinearLayout {
 
         mUsernameView = (TextView) findViewById(R.id.tic_username);
         mJoinStatusView = (TextView) findViewById(R.id.tic_join_status);
+    }
+
+    public void populate(TourUser user) {
+        setUsername(user.getFirstName());
+        setJoinStatus(user.getStatus());
     }
 
     public void setUsername(String username) {

@@ -392,8 +392,7 @@ public class TourInformationFragment extends DialogFragment {
 
     private View getDiscussionTourUserCard(TourUser tourUser) {
         TourInformationUserCardView userCardView = new TourInformationUserCardView(getContext());
-        userCardView.setUsername(tourUser.getFirstName());
-        userCardView.setJoinStatus(tourUser.getStatus());
+        userCardView.populate(tourUser);
         userCardView.setTag(tourUser.getTimestamp());
 
         return userCardView;
