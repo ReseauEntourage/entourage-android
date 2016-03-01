@@ -10,7 +10,19 @@ import java.util.List;
  */
 public abstract class TimestampedObject {
 
+    private int hashCode;
+
     public abstract Date getTimestamp();
+
+    public abstract String hashString();
+
+    @Override
+    public int hashCode() {
+        if (hashCode == 0) {
+            hashCode = hashString().hashCode();
+        }
+        return hashCode;
+    }
 
 
     // ----------------------------------

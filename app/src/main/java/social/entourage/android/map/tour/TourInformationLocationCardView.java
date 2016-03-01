@@ -16,6 +16,7 @@ import java.util.TimeZone;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.model.map.TourTimestamp;
 
 /**
  * Linear Layout that represents a location card in the tour info screen
@@ -90,6 +91,37 @@ public class TourInformationLocationCardView extends LinearLayout {
             mLocationDistance.setText("");
         }
 
+    }
+
+    public void populate(TourTimestamp tourTimestamp) {
+        SimpleDateFormat locationDateFormat = new SimpleDateFormat(getResources().getString(R.string.tour_info_location_card_date_format));
+        mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()));
+
+        if (Tour.TOUR_ON_GOING.equals(tourTimestamp.getStatus())) {
+            mLocationTitle.setText(R.string.tour_info_text_ongoing);
+        }
+        else {
+            mLocationTitle.setText(R.string.tour_info_text_closed);
+        }
+
+        if (tourTimestamp.getDistance() > 0) {
+            mLocationDistance.setText(String.format("%.2f km", tourTimestamp.getDistance()/1000.0f));
+            mLocationDistance.setVisibility(VISIBLE);
+        }
+        else {
+            mLocationDistance.setVisibility(GONE);
+        }
+
+        if (tourTimestamp.getDuration() > 0) {
+            Date duration = new Date(tourTimestamp.getDuration());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            mLocationDuration.setText(dateFormat.format(duration));
+            mLocationDuration.setVisibility(VISIBLE);
+        }
+        else {
+            mLocationDuration.setVisibility(GONE);
+        }
     }
 
 }

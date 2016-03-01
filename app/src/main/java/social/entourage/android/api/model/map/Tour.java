@@ -7,10 +7,14 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 
 @SuppressWarnings("unused")
@@ -80,7 +84,7 @@ public class Tour implements Serializable {
     private String organizationDescription;
 
     @Expose(serialize = false)
-    private final List<Encounter> encounters;
+    private List<Encounter> encounters;
 
     @Expose(serialize = false, deserialize = false)
     private transient Address startAddress;
@@ -97,20 +101,33 @@ public class Tour implements Serializable {
     @SerializedName("join_status")
     private String joinStatus;
 
+    //CardInfo cache support
+
+    @Expose(serialize = false, deserialize = false)
+    List<TimestampedObject> cachedCardInfoList;
+
+    @Expose(serialize = false, deserialize = false)
+    List<TimestampedObject> addedCardInfoList;
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
 
     public Tour() {
-        this.tourPoints = new ArrayList<>();
-        this.encounters = new ArrayList<>();
+        init();
     }
 
     public Tour(String tourVehicleType, String tourType) {
         this.tourVehicleType = tourVehicleType;
         this.tourType = tourType;
+        init();
+    }
+
+    private void init() {
         this.tourPoints = new ArrayList<>();
         this.encounters = new ArrayList<>();
+        this.cachedCardInfoList = new ArrayList<>();
+        this.addedCardInfoList = new ArrayList<>();
     }
 
     // ----------------------------------
@@ -189,6 +206,14 @@ public class Tour implements Serializable {
         return joinStatus;
     }
 
+    public List<TimestampedObject> getCachedCardInfoList() {
+        return cachedCardInfoList;
+    }
+
+    public List<TimestampedObject> getAddedCardInfoList() {
+        return addedCardInfoList;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -264,6 +289,37 @@ public class Tour implements Serializable {
 
     public boolean isClosed() {
         return tourStatus.equals(TOUR_CLOSED);
+    }
+
+    public void addCardInfo(TimestampedObject cardInfo) {
+        if (cardInfo == null) return;
+        if (cachedCardInfoList.contains(cardInfo)) {
+            return;
+        }
+        cachedCardInfoList.add(cardInfo);
+        addedCardInfoList.add(cardInfo);
+
+        Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
+    }
+
+    public void addCardInfoList(List<TimestampedObject> cardInfoList) {
+        if (cardInfoList == null) return;
+        Iterator<TimestampedObject> iterator = cardInfoList.iterator();
+        while (iterator.hasNext()) {
+            TimestampedObject timestampedObject = iterator.next();
+            if (cachedCardInfoList.contains(timestampedObject)) {
+                continue;
+            }
+            cachedCardInfoList.add(timestampedObject);
+            addedCardInfoList.add(timestampedObject);
+        }
+        if (addedCardInfoList.size() > 0) {
+            Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
+        }
+    }
+
+    public void clearAddedCardInfoList() {
+        addedCardInfoList.clear();
     }
 
     // ----------------------------------

@@ -15,6 +15,8 @@ import social.entourage.android.api.model.TimestampedObject;
  */
 public class TourUser extends TimestampedObject implements Serializable {
 
+    private final static String HASH_STRING_HEAD = "TourUser-";
+
     @SerializedName("id")
     private int userId;
 
@@ -84,6 +86,11 @@ public class TourUser extends TimestampedObject implements Serializable {
     @Override
     public Date getTimestamp() {
         return requestDate;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + userId;
     }
 
     // ----------------------------------

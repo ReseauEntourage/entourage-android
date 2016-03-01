@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class ChatMessage extends TimestampedObject implements Serializable {
 
+    private final static String HASH_STRING_HEAD = "ChatMessage-";
+
     @Expose(serialize = false)
     @SerializedName("id")
     private long chatId;
@@ -25,6 +27,7 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     @Expose(serialize = false)
     private User user;
 
+    @Expose(serialize = false, deserialize = false)
     private boolean isMe;
 
     // ----------------------------------
@@ -89,8 +92,13 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     }
 
     @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + chatId;
+    }
+
+    @Override
     public boolean equals(final Object o) {
-        if (o.getClass() != this.getClass()) return false;
+        if (o == null || o.getClass() != this.getClass()) return false;
         return this.chatId == ((ChatMessage)o).chatId;
     }
 

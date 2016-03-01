@@ -12,7 +12,9 @@ import java.util.List;
 import social.entourage.android.api.model.TimestampedObject;
 
 @SuppressWarnings("unused")
-public class Encounter extends TimestampedObject implements Serializable{
+public class Encounter extends TimestampedObject implements Serializable {
+
+    private final static String HASH_STRING_HEAD = "Encounter-";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -150,6 +152,17 @@ public class Encounter extends TimestampedObject implements Serializable{
     @Override
     public Date getTimestamp() {
         return creationDate;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + id;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || o.getClass() != this.getClass()) return false;
+        return this.id == ((Encounter)o).id;
     }
 
     // ----------------------------------
