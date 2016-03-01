@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import okhttp3.HttpUrl;
+import social.entourage.android.Constants;
 
 /**
  * Retrofit interceptor that automatically add a params to the url when authenticated
@@ -33,10 +34,10 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
         } else {
             url = request.url().newBuilder().build();
         }
-        //TODO: should be changed after each release
+
         request = request.newBuilder()
                 .header("Accept", "application/json")
-                .header("X-API-KEY", "32e2ced9df89")
+                .header("X-API-KEY", Constants.API_KEY)
                 .url(url).build();
         return chain.proceed(request);
     }

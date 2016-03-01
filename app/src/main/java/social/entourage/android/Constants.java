@@ -2,6 +2,10 @@ package social.entourage.android;
 
 public class Constants {
 
+    //TODO: should be changed after each release
+    // API Key
+    public static final String API_KEY = "7a8c1f9f4b973384aaff3ed3";
+
     // Filenames
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
     public static final String FILENAME_TAPE_QUEUE = "encounters_queue";
