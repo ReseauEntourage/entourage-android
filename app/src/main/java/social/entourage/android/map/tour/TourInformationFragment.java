@@ -19,11 +19,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +90,9 @@ public class TourInformationFragment extends DialogFragment {
 
     @Bind(R.id.tour_info_author_name)
     TextView tourAuthorName;
+
+    @Bind(R.id.tour_info_discussion_scrollview)
+    ScrollView discussionScrollview;
 
     @Bind(R.id.tour_info_discussion_layout)
     LinearLayout discussionLayout;
@@ -449,6 +454,18 @@ public class TourInformationFragment extends DialogFragment {
         return discussionViewCount;
     }
 
+    private void scrollToLastCard() {
+        discussionScrollview.postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        discussionScrollview.fullScroll(View.FOCUS_DOWN);
+                    }
+                },
+                100
+        );
+    }
+
     protected void showProgressBar() {
         apiRequestsCount++;
         progressBar.setVisibility(View.VISIBLE);
@@ -523,11 +540,20 @@ public class TourInformationFragment extends DialogFragment {
         }
         commentEditText.setText("");
 
+        //hide the keyboard
+        if (commentEditText.hasFocus()) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
+        }
+
         //add the message to the list
         chatMessage.setIsMe(true);
         tour.addCardInfo(chatMessage);
 
         updateDiscussionList();
+
+        //make the chat message visible
+        scrollToLastCard();
     }
 
     protected void onTourEncountersReceived(List<Encounter> encounterList) {
