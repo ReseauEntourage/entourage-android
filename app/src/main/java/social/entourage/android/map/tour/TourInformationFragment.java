@@ -355,8 +355,9 @@ public class TourInformationFragment extends DialogFragment {
         if (card != null) {
             if (discussionLayout.getChildCount() != 0) {
                 addDiscussionSeparator(afterIndex);
+                afterIndex++; //+1 because we added the separator
             }
-            discussionLayout.addView(card, afterIndex+1);  //+1 because we added the separator
+            discussionLayout.addView(card, afterIndex);
         }
     }
 

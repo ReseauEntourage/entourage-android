@@ -29,7 +29,8 @@
         <ImageView
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:id="@+id/tic_location_image"/>
+            android:id="@+id/tic_location_image"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,17 +39,19 @@
             android:id="@+id/tic_location_title"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:layout_toRightOf="@+id/tic_location_image"/>
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/tic_location_duration"
-            android:layout_toRightOf="@+id/tic_location_image"
             android:textSize="20sp"
             android:textColor="@color/white"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tic_location_title"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,7 +60,8 @@
             android:id="@+id/tic_location_distance"
             android:textSize="20sp"
             android:textColor="@color/white"
-            android:layout_toRightOf="@+id/tic_location_image"
-            android:layout_alignBottom="@+id/tic_location_image"/>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/tic_location_duration"/>
     </RelativeLayout>
 </merge>
