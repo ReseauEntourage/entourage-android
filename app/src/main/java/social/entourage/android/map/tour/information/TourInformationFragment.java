@@ -17,7 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -95,6 +98,9 @@ public class TourInformationFragment extends DialogFragment {
 
     @Bind(R.id.tour_info_comment)
     EditText commentEditText;
+
+    @Bind(R.id.tour_info_options)
+    LinearLayout optionsLayout;
 
     int apiRequestsCount;
 
@@ -215,6 +221,34 @@ public class TourInformationFragment extends DialogFragment {
         }
     }
 
+    @OnClick(R.id.tour_info_more_button)
+    public void onMoreButton() {
+        Animation bottomUp = AnimationUtils.loadAnimation(getContext(),
+                R.anim.bottom_up);
+
+        optionsLayout.startAnimation(bottomUp);
+        optionsLayout.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.tour_info_button_close, R.id.tour_info_options})
+    public void onCloseOptionsButton() {
+        Animation bottomDown = AnimationUtils.loadAnimation(getContext(),
+                R.anim.bottom_down);
+
+        optionsLayout.startAnimation(bottomDown);
+        optionsLayout.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.tour_info_button_stop_tour)
+    public void onStopTourButton() {
+        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.tour_info_button_quit_tour)
+    public void onQuitTourButton() {
+        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -254,7 +288,24 @@ public class TourInformationFragment extends DialogFragment {
             commentLayout.setVisibility(View.GONE);
         }
 
+        initialiseOptionsView();
+
         initialiseDiscussionList();
+    }
+
+    private void initialiseOptionsView() {
+        AuthenticationController authenticationController = EntourageApplication.get(getActivity()).getEntourageComponent().getAuthenticationController();
+        if (authenticationController.isAuthenticated()) {
+            int me = authenticationController.getUser().getId();
+            if (tour.getAuthor().getUserID() != me) {
+                Button stopTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_stop_tour);
+                stopTourButton.setVisibility(View.GONE);
+            }
+            else {
+                Button quitTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_quit_tour);
+                quitTourButton.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void initialiseDiscussionList() {
