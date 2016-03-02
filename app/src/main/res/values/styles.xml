@@ -5,9 +5,6 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="TourInformationCardViewStyle">@style/tourInformationCardViewStyle</item>
-        <item name="ChatMessageViewStyle">@style/chatMessageViewStyle</item>
-        <item name="TourInformationEncounterCardViewStyle">@style/tourInformationEncounterCardViewStyle</item>
     </style>
 
     <!-- Custom Edit Text theme for the login views. -->
@@ -112,25 +109,6 @@
     <style name="OngoingTourMarker">
         <item name="android:textColor">@color/greyish_brown</item>
         <item name="android:textSize">12sp</item>
-    </style>
-
-    <!-- TourInformationUserCardViewStyle -->
-    <style name="tourInformationCardViewStyle">
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">10dp</item>
-    </style>
-
-    <!-- ChatMessageViewStyle -->
-    <style name="chatMessageViewStyle">
-        <item name="android:orientation">horizontal</item>
-        <item name="android:padding">10dp</item>
-    </style>
-
-    <!-- tourInformationEncounterCardViewStyle -->
-    <style name="tourInformationEncounterCardViewStyle">
-        <item name="android:orientation">vertical</item>
-        <item name="android:padding">10dp</item>
     </style>
 
 </resources>

@@ -16,13 +16,4 @@
     <declare-styleable name="BadgeView">
         <attr name="android:icon" />
     </declare-styleable>
-    <declare-styleable name="TourInformationCardView">
-        <attr name="TourInformationCardViewStyle" format="reference" />
-    </declare-styleable>
-    <declare-styleable name="ChatMessageView">
-        <attr name="ChatMessageViewStyle" format="reference" />
-    </declare-styleable>
-    <declare-styleable name="TourInformationEncounterCardView">
-        <attr name="TourInformationEncounterCardViewStyle" format="reference" />
-    </declare-styleable>
 </resources>

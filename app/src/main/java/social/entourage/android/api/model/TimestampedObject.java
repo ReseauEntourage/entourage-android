@@ -10,6 +10,13 @@ import java.util.List;
  */
 public abstract class TimestampedObject {
 
+    public static final int SEPARATOR = 0;
+    public static final int CHAT_MESSAGE_ME = 1;
+    public static final int CHAT_MESSAGE_OTHER = 2;
+    public static final int TOUR_USER = 3;
+    public static final int TOUR_STATUS = 4;
+    public static final int ENCOUNTER = 5;
+
     private int hashCode;
 
     public abstract Date getTimestamp();
@@ -23,6 +30,8 @@ public abstract class TimestampedObject {
         }
         return hashCode;
     }
+
+    public abstract int getType();
 
 
     // ----------------------------------

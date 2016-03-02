@@ -102,6 +102,11 @@ public class ChatMessage extends TimestampedObject implements Serializable {
         return this.chatId == ((ChatMessage)o).chatId;
     }
 
+    @Override
+    public int getType() {
+        return isMe ? CHAT_MESSAGE_ME : CHAT_MESSAGE_OTHER;
+    }
+
     // ----------------------------------
     // WRAPPERS
     // ----------------------------------

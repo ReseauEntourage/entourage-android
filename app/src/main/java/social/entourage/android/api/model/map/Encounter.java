@@ -165,6 +165,11 @@ public class Encounter extends TimestampedObject implements Serializable {
         return this.id == ((Encounter)o).id;
     }
 
+    @Override
+    public int getType() {
+        return ENCOUNTER;
+    }
+
     // ----------------------------------
     // WRAPPER
     // ----------------------------------

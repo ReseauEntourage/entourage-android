@@ -1,9 +1,10 @@
-<merge
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:gravity="center_vertical|end">
+    android:gravity="center_vertical|end"
+    android:padding="10dp">
 
 
     <TextView
@@ -20,4 +21,4 @@
         android:id="@+id/tic_chat_user_photo"
         android:src="@drawable/ic_user_photo_small"/>
 
-</merge>
+</LinearLayout>

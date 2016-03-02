@@ -93,6 +93,17 @@ public class TourUser extends TimestampedObject implements Serializable {
         return HASH_STRING_HEAD + userId;
     }
 
+    @Override
+    public int getType() {
+        return TOUR_USER;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || o.getClass() != this.getClass()) return false;
+        return (this.userId == ((TourUser)o).userId) && (this.status.equals(((TourUser)o).status));
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------

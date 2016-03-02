@@ -94,4 +94,9 @@ public class TourTimestamp extends TimestampedObject {
         if (o == null || o.getClass() != this.getClass()) return false;
         return this.date.equals( ((TourTimestamp)o).date );
     }
+
+    @Override
+    public int getType() {
+        return TOUR_STATUS;
+    }
 }
