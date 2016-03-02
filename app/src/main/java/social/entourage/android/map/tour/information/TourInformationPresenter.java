@@ -1,4 +1,4 @@
-package social.entourage.android.map.tour.TourInformation;
+package social.entourage.android.map.tour.information;
 
 import java.util.Date;
 

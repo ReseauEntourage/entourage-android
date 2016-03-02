@@ -1,4 +1,4 @@
-package social.entourage.android.map.tour.TourInformation;
+package social.entourage.android.map.tour.information;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -53,7 +53,7 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.map.tour.TourInformation.discussion.DiscussionAdapter;
+import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 
 public class TourInformationFragment extends DialogFragment {
 

@@ -1,4 +1,4 @@
-package social.entourage.android.map.tour.TourInformation.discussion;
+package social.entourage.android.map.tour.information.discussion;
 
 import android.view.View;
 import android.widget.TextView;

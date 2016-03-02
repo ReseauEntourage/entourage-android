@@ -44,7 +44,7 @@ import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
-import social.entourage.android.map.tour.TourInformation.TourInformationFragment;
+import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.sidemenu.SideMenuItemView;

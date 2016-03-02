@@ -1,4 +1,4 @@
-package social.entourage.android.map.tour.TourInformation.discussion;
+package social.entourage.android.map.tour.information.discussion;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
