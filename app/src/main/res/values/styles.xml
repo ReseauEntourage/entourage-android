@@ -77,6 +77,9 @@
 
     <style name="WhiteButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@drawable/bg_button_white</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="ActButton" parent="Base.Widget.AppCompat.Button">

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,7 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.map.tour.DaggerTourInformationComponent;
+import social.entourage.android.map.tour.TourInformation.discussion.DiscussionAdapter;
 
 public class TourInformationFragment extends DialogFragment {
 
@@ -84,7 +85,7 @@ public class TourInformationFragment extends DialogFragment {
     @Bind(R.id.tour_info_discussion_view)
     RecyclerView discussionView;
 
-    TourInformationDiscussionAdapter discussionAdapter;
+    DiscussionAdapter discussionAdapter;
 
     @Bind(R.id.tour_info_progress_bar)
     ProgressBar progressBar;
@@ -269,17 +270,14 @@ public class TourInformationFragment extends DialogFragment {
         }
 
         //init the recycler view
-        discussionAdapter = new TourInformationDiscussionAdapter();
+        discussionView.setLayoutManager(new LinearLayoutManager(getContext()));
+        discussionAdapter = new DiscussionAdapter();
         discussionView.setAdapter(discussionAdapter);
 
         //add the cards
         List<TimestampedObject> cachedCardInfoList = tour.getCachedCardInfoList();
         if (cachedCardInfoList != null) {
-            for (int i = 0; i < cachedCardInfoList.size(); i++) {
-                TimestampedObject cardInfo = cachedCardInfoList.get(i);
-                //add the card
-                addDiscussionCard(cardInfo, discussionLayout.getChildCount());
-            }
+            discussionAdapter.addItems(cachedCardInfoList);
         }
 
         //clear the added cards info
@@ -293,70 +291,14 @@ public class TourInformationFragment extends DialogFragment {
             return;
         }
         for (int i = 0; i < addedCardInfoList.size(); i++) {
+
             TimestampedObject cardInfo = addedCardInfoList.get(i);
+            discussionAdapter.addCardInfoBeforeTimestamp(cardInfo);
 
-            int cardIndex = findCardIndexOlderThan(cardInfo.getTimestamp());
-
-            //add the card
-            addDiscussionCard(cardInfo, cardIndex);
         }
 
         //clear the added cards info
         tour.clearAddedCardInfoList();
-    }
-
-    private void addDiscussionSeparator() {
-        addDiscussionSeparator(discussionLayout.getChildCount());
-    }
-
-    private void addDiscussionSeparator(int atIndex) {
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout separatorLayout = (LinearLayout)inflater.inflate(R.layout.tour_information_separator_card, discussionLayout, false);
-        View discussionSeparator = separatorLayout.findViewById(R.id.tic_separator);
-        separatorLayout.removeView(discussionSeparator);
-
-        discussionLayout.addView(discussionSeparator, atIndex);
-    }
-
-    private void addDiscussionCard(TimestampedObject cardInfo, int afterIndex) {
-        View card = null;
-        if (cardInfo.getClass() == TourUser.class) {
-            TourUser tourUser = (TourUser)cardInfo;
-            //skip the author
-            if (tourUser.getUserId() == tour.getAuthor().getUserID()) {
-                return;
-            }
-            //skip the rejected user
-            if (tourUser.getStatus().equals(Tour.JOIN_STATUS_REJECTED)) {
-                return;
-            }
-            //get the user card
-            card = getDiscussionTourUserCard(tourUser);
-        }
-        else if (cardInfo.getClass() == ChatMessage.class) {
-            ChatMessage chatMessage = (ChatMessage)cardInfo;
-            //get the chat card
-            card = getDiscussionChatMessageCard(chatMessage);
-        }
-        else if (cardInfo.getClass() == Encounter.class) {
-            Encounter encounter = (Encounter)cardInfo;
-            //get the encounter card
-            card = getDiscussionEncounterCard(encounter);
-        }
-        else if (cardInfo.getClass() == TourTimestamp.class) {
-            TourTimestamp tourTimestamp = (TourTimestamp)cardInfo;
-            //get the tour timestamp card
-            card = getDiscussionTourTimestampCard(tourTimestamp);
-        }
-
-        //add the card
-        if (card != null) {
-            if (discussionLayout.getChildCount() != 0) {
-                addDiscussionSeparator(afterIndex);
-                afterIndex++; //+1 because we added the separator
-            }
-            discussionLayout.addView(card, afterIndex);
-        }
     }
 
     private void addDiscussionTourStartCard(Date now) {
@@ -396,58 +338,8 @@ public class TourInformationFragment extends DialogFragment {
         tour.addCardInfo(tourTimestamp);
     }
 
-    private View getDiscussionTourTimestampCard(TourTimestamp tourTimestamp) {
-        TourInformationLocationCardView locationCard = new TourInformationLocationCardView(getContext());
-        locationCard.populate(tourTimestamp);
-        locationCard.setTag(tourTimestamp.getTimestamp());
-
-        return  locationCard;
-    }
-
-    private View getDiscussionTourUserCard(TourUser tourUser) {
-        TourInformationUserCardView userCardView = new TourInformationUserCardView(getContext());
-        userCardView.populate(tourUser);
-        userCardView.setTag(tourUser.getTimestamp());
-
-        return userCardView;
-    }
-
-    private View getDiscussionChatMessageCard(ChatMessage chatMessage) {
-        TourInformationChatMessageCardView chatMessageCardView = new TourInformationChatMessageCardView(getContext(), chatMessage);
-        chatMessageCardView.setTag(chatMessage.getTimestamp());
-
-        return chatMessageCardView;
-    }
-
-    private View getDiscussionEncounterCard(Encounter encounter) {
-        TourInformationEncounterCardView encounterCardView = new TourInformationEncounterCardView(getContext());
-        encounterCardView.populate(encounter);
-        encounterCardView.setTag(encounter.getTimestamp());
-
-        return encounterCardView;
-    }
-
-    private int findCardIndexOlderThan(Date referenceDate) {
-        int discussionViewCount = discussionLayout.getChildCount();
-        if (referenceDate == null) {
-            return discussionViewCount;
-        }
-        for (int i = 0; i < discussionViewCount; i++) {
-            View v = discussionLayout.getChildAt(i);
-            Object tag = v.getTag();
-            if (tag == null || tag.getClass() != Date.class) {
-                continue;
-            }
-            Date viewDate = (Date)tag;
-            if (viewDate.after(referenceDate)) {
-                if (i == 0) return 0;
-                return i-1;
-            }
-        }
-        return discussionViewCount;
-    }
-
     private void scrollToLastCard() {
+        discussionView.scrollToPosition(discussionAdapter.getItemCount()-1);
     }
 
     protected void showProgressBar() {
@@ -474,7 +366,19 @@ public class TourInformationFragment extends DialogFragment {
     protected void onTourUsersReceived(List<TourUser> tourUsers) {
         if (tourUsers != null) {
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
-            timestampedObjectList.addAll(tourUsers);
+            Iterator<TourUser> iterator = tourUsers.iterator();
+            while (iterator.hasNext()) {
+                TourUser tourUser =  iterator.next();
+                //skip the author
+                if (tourUser.getUserId() == tour.getAuthor().getUserID()) {
+                    continue;
+                }
+                //skip the rejected user
+                if (tourUser.getStatus().equals(Tour.JOIN_STATUS_REJECTED)) {
+                    continue;
+                }
+                timestampedObjectList.add(tourUser);
+            }
             tour.addCardInfoList(timestampedObjectList);
         }
 

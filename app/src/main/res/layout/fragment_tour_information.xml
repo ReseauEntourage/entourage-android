@@ -188,4 +188,39 @@
         android:indeterminateDrawable="@drawable/circular_progress_bar"
         android:visibility="visible"/>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:background="@color/background_transparent"
+        android:id="@+id/tour_info_options"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_info_options_stop_tour"
+            android:id="@+id/tour_info_button_stop_tour"
+            style="@style/WhiteButton"/>
+
+        <Button
+            style="@style/WhiteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_info_options_quit_tour"
+            android:id="@+id/tour_info_button_quit_tour"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_info_options_close"
+            android:id="@+id/tour_info_button_close"
+            style="@style/AccentButton"
+            android:alpha="1"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
 </RelativeLayout>

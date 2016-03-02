@@ -1,54 +1,34 @@
 package social.entourage.android.map.tour.TourInformation.discussion;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
-import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import social.entourage.android.R;
-import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 
 /**
  * User Card View in tour information screen
  */
-public class UserCardViewHolder extends LinearLayout {
+public class UserCardViewHolder extends BaseCardViewHolder {
 
     private TextView mUsernameView;
     private TextView mJoinStatusView;
 
-    public UserCardViewHolder(Context context) {
-        super(context, null, R.attr.TourInformationCardViewStyle);
-        init(null, 0);
+    public UserCardViewHolder(final View view) {
+        super(view);
     }
 
-    public UserCardViewHolder(Context context, AttributeSet attrs) {
-        super(context, attrs, R.attr.TourInformationCardViewStyle);
-        init(attrs, 0);
+    @Override
+    protected void bindFields() {
+        mUsernameView = (TextView) itemView.findViewById(R.id.tic_username);
+        mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
     }
 
-    public UserCardViewHolder(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(attrs, defStyle);
-    }
-
-    private void init(AttributeSet attrs, int defStyle) {
-
-        inflate(getContext(), R.layout.tour_information_user_card_view, this);
-
-        mUsernameView = (TextView) findViewById(R.id.tic_username);
-        mJoinStatusView = (TextView) findViewById(R.id.tic_join_status);
+    @Override
+    public void populate(final TimestampedObject data) {
+        this.populate((TourUser)data);
     }
 
     public void populate(TourUser user) {
@@ -56,11 +36,11 @@ public class UserCardViewHolder extends LinearLayout {
         setJoinStatus(user.getStatus());
     }
 
-    public void setUsername(String username) {
+    private void setUsername(String username) {
         mUsernameView.setText(username);
     }
 
-    public void setJoinStatus(String joinStatus) {
+    private void setJoinStatus(String joinStatus) {
         if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
             mJoinStatusView.setText(R.string.tour_info_text_join_accepted);
         }
@@ -73,6 +53,10 @@ public class UserCardViewHolder extends LinearLayout {
         else {
             mJoinStatusView.setText("");
         }
+    }
+
+    public static int getLayoutResource() {
+        return R.layout.tour_information_user_card_view;
     }
 
 }

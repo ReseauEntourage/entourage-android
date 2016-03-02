@@ -18,7 +18,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
-import social.entourage.android.map.tour.tourInformation.TourInformationFragment;
+import social.entourage.android.map.tour.TourInformation.TourInformationFragment;
 
 /**
  * Presenter controlling the MapEntourageFragment

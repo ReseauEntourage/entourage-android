@@ -1,19 +1,11 @@
 package social.entourage.android.map.tour.TourInformation.discussion;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
-import android.text.TextPaint;
 import android.text.format.DateFormat;
-import android.util.AttributeSet;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -21,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
 
 /**
@@ -35,27 +28,22 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
 
     private boolean addressRetrieved = false;
 
-    public EncounterCardViewHolder(Context context) {
-        super(context, null, R.attr.TourInformationEncounterCardViewStyle);
-        init(null, 0);
+    public EncounterCardViewHolder(final View view) {
+        super(view);
     }
 
-    public EncounterCardViewHolder(Context context, AttributeSet attrs) {
-        super(context, attrs, R.attr.TourInformationEncounterCardViewStyle);
-        init(attrs, 0);
+    @Override
+    protected void bindFields() {
+
+        context = itemView.getContext();
+
+        mStreetPersonNameView = (TextView) itemView.findViewById(R.id.tic_encounter_street_name);
+        mMessageView = (TextView) itemView.findViewById(R.id.tic_encounter_message);
     }
 
-    public EncounterCardViewHolder(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(attrs, defStyle);
-    }
-
-    private void init(AttributeSet attrs, int defStyle) {
-        context = getContext();
-        inflate(context, R.layout.tour_information_encounter_card_view, this);
-
-        mStreetPersonNameView = (TextView)findViewById(R.id.tic_encounter_street_name);
-        mMessageView = (TextView)findViewById(R.id.tic_encounter_message);
+    @Override
+    public void populate(final TimestampedObject data) {
+        populate((Encounter)data);
     }
 
     public void populate(Encounter encounter) {
@@ -75,7 +63,7 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
         if (encounter.getCreationDate() != null) {
             encounterDate = DateFormat.getDateFormat(context).format(encounter.getCreationDate());
         }
-        String encounterLocation = getResources().getString(R.string.encounter_read_location,
+        String encounterLocation = itemView.getResources().getString(R.string.encounter_read_location,
                 encounter.getUserName(),
                 encounter.getStreetPersonName(),
                 location,
