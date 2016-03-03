@@ -6,6 +6,13 @@ import com.google.gson.annotations.SerializedName;
 public class User {
 
     // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    public static final String KEY_USER_ID = "social.entourage.android.KEY_USER_ID";
+    public static final String KEY_USER = "social.entourage.android.KEY_USER";
+
+    // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 

@@ -86,6 +86,22 @@ public class Events {
     }
 
     /**
+     * Event signaling that user view is requested
+     */
+    public static class OnUserViewRequestedEvent {
+
+        private int userId;
+
+        public OnUserViewRequestedEvent(int userId) {
+            this.userId = userId;
+        };
+
+        public int getUserId() {
+            return userId;
+        }
+    }
+
+    /**
      * Event triggering the tours service location listener when the permission has been granted
      */
     public static class OnLocationPermissionGranted {

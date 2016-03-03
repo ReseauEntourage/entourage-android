@@ -102,6 +102,14 @@ public class UserFragment extends DialogFragment {
     // LIFECYCLE
     // ----------------------------------
 
+    public static UserFragment newInstance(int userId) {
+        UserFragment userFragment = new UserFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(User.KEY_USER_ID, userId);
+        userFragment.setArguments(args);
+        return userFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);

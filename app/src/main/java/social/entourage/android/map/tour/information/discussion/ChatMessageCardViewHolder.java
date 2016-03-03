@@ -11,6 +11,8 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Chat Message Card for Tour Information Screen
@@ -19,6 +21,8 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
 
     private ImageView mUserPhotoView;
     private TextView mMessageView;
+
+    private int userId = 0;
 
     public ChatMessageCardViewHolder(final View view) {
         super(view);
@@ -29,6 +33,14 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
 
         mUserPhotoView = (ImageView) itemView.findViewById(R.id.tic_chat_user_photo);
         mMessageView = (TextView) itemView.findViewById(R.id.tic_chat_message);
+
+        mUserPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (userId == 0) return;
+                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
+            }
+        });
 
     }
 
@@ -46,6 +58,8 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         }
 
         mMessageView.setText(chatMessage.getContent());
+
+        userId = chatMessage.getUserId();
     }
 
     public static int getLayoutResource() {
