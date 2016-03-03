@@ -22,7 +22,9 @@ import retrofit2.Response;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Presenter controlling the DrawerActivity
@@ -166,6 +168,10 @@ public class DrawerPresenter {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                         if (response.isSuccess()) {
+                            if (activity.authenticationController.isAuthenticated()) {
+                                activity.authenticationController.saveUser(response.body().getUser());
+                                BusProvider.getInstance().post(new Events.OnUserInfoUpdatedEvent());
+                            }
                             Log.d(LOG_TAG, "success");
                         }
                     }

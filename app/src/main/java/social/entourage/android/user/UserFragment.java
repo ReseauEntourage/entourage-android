@@ -2,14 +2,18 @@ package social.entourage.android.user;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -34,7 +39,7 @@ import social.entourage.android.api.model.User;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.api.tape.Events.*;
 
-public class UserFragment extends Fragment {
+public class UserFragment extends DialogFragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -99,6 +104,7 @@ public class UserFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreateView(inflater, container, savedInstanceState);
         if (toReturn == null) {
             toReturn = inflater.inflate(R.layout.fragment_user, container, false);
@@ -124,9 +130,17 @@ public class UserFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         BusProvider.getInstance().register(this);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -257,4 +271,5 @@ public class UserFragment extends Fragment {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_AND_CONDITIONS_URL));
         startActivity(browserIntent);
     }
+
 }

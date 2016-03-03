@@ -78,6 +78,14 @@ public class Events {
     }
 
     /**
+     * Event signaling that user info is updated
+     */
+    public static class OnUserInfoUpdatedEvent {
+
+        public OnUserInfoUpdatedEvent() {};
+    }
+
+    /**
      * Event triggering the tours service location listener when the permission has been granted
      */
     public static class OnLocationPermissionGranted {

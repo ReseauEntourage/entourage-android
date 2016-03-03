@@ -118,16 +118,17 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
         intentAction = getIntent().getAction();
 
-        Picasso.with(this).load(R.drawable.ic_user_photo)
-                .transform(new CropCircleTransformation())
-                .into(userPhoto);
+//        Picasso.with(this).load(R.drawable.ic_user_photo)
+//                .transform(new CropCircleTransformation())
+//                .into(userPhoto);
 
         User user = getAuthenticationController().getUser();
         if (user != null) {
             userName.setText(user.getFullName());
             String avatarURL = user.getAvatarURL();
             if (avatarURL != null) {
-                Picasso.with(this).load(Uri.parse(avatarURL))
+                Picasso.with(this)
+                        .load(Uri.parse(avatarURL))
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }
@@ -409,7 +410,8 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 if (userFragment == null) {
                     userFragment = new UserFragment();
                 }
-                loadFragment(userFragment, TAG_FRAGMENT_USER);
+                //loadFragment(userFragment, TAG_FRAGMENT_USER);
+                userFragment.show(getSupportFragmentManager(), TAG_FRAGMENT_USER);
                 break;
             case R.id.action_logout:
                 gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
@@ -471,6 +473,21 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         switchToMapFragment();
         mapEntourageFragment.checkAction(intentAction);
         intentAction = null;
+    }
+
+    @Subscribe
+    public void userInfoUpdated(OnUserInfoUpdatedEvent event) {
+        User user = getAuthenticationController().getUser();
+        if (user != null) {
+            userName.setText(user.getFullName());
+            String avatarURL = user.getAvatarURL();
+            if (avatarURL != null) {
+                Picasso.with(this)
+                        .load(Uri.parse(avatarURL))
+                        .transform(new CropCircleTransformation())
+                        .into(userPhoto);
+            }
+        }
     }
 
     // ----------------------------------

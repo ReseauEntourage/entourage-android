@@ -45,11 +45,12 @@
 
         <ImageView
             android:id="@+id/drawer_header_user_photo"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="100dp"
-            android:paddingTop="15dp"
-            android:src="@drawable/bg_user_image_button"
-            android:layout_gravity="center_horizontal"/>
+            android:src="@drawable/ic_user_photo"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:layout_marginTop="15dp"/>
 
         <TextView
             android:id="@+id/drawer_header_user_name"

@@ -50,7 +50,8 @@
         android:id="@+id/action_tours"
         android:title="@string/action_tours"
         android:icon="@drawable/ic_map"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        android:visibility="gone"/>
 
     <social.entourage.android.sidemenu.SideMenuItemView
         android:layout_width="match_parent"
