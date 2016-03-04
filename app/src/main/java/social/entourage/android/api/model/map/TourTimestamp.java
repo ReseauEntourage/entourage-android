@@ -92,7 +92,8 @@ public class TourTimestamp extends TimestampedObject {
     @Override
     public boolean equals(final Object o) {
         if (o == null || o.getClass() != this.getClass()) return false;
-        return this.date.equals( ((TourTimestamp)o).date );
+        //return this.date.equals( ((TourTimestamp)o).date );
+        return this.duration == ((TourTimestamp)o).duration;
     }
 
     @Override
