@@ -2,12 +2,15 @@ package social.entourage.android.map.tour.information;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -29,13 +32,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -56,9 +63,10 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 
-public class TourInformationFragment extends DialogFragment {
+public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -72,6 +80,10 @@ public class TourInformationFragment extends DialogFragment {
 
     @Inject
     TourInformationPresenter presenter;
+
+    TourService tourService;
+    private ServiceConnection connection = new ServiceConnection();
+    private boolean isBound = false;
 
     @Bind(R.id.tour_info_organization)
     TextView tourOrganization;
@@ -107,6 +119,8 @@ public class TourInformationFragment extends DialogFragment {
     Tour tour;
 
     Date lastChatMessageDate = null;
+
+    OnTourInformationFragmentFinish mListener;
 
     // ----------------------------------
     // LIFECYCLE
@@ -157,6 +171,15 @@ public class TourInformationFragment extends DialogFragment {
         if (!(activity instanceof  OnTourInformationFragmentFinish)) {
             throw new ClassCastException(activity.toString() + " must implement OnTourInformationFragmentFinish");
         }
+        mListener = (OnTourInformationFragmentFinish)activity;
+        doBindService();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+        doBindService();
     }
 
     @Override
@@ -241,7 +264,31 @@ public class TourInformationFragment extends DialogFragment {
 
     @OnClick(R.id.tour_info_button_stop_tour)
     public void onStopTourButton() {
-        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+        //compute distance
+        float distance = 0.0f;
+        List<TourPoint> tourPointsList = tour.getTourPoints();
+        TourPoint startPoint = tourPointsList.get(0);
+        for (int i=1; i < tourPointsList.size(); i++) {
+            TourPoint p = tourPointsList.get(i);
+            distance += p.distanceTo(startPoint);
+            startPoint = p;
+        }
+        tour.setDistance(distance);
+
+        //duration
+        Date now = new Date();
+        Date duration = new Date(now.getTime() - tour.getStartTime().getTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        tour.setDuration(dateFormat.format(duration));
+
+        //hide the options
+        optionsLayout.setVisibility(View.GONE);
+
+        //show stop tour activity
+        if (mListener != null) {
+            mListener.showStopTourActivity(tour);
+        }
     }
 
     @OnClick(R.id.tour_info_button_quit_tour)
@@ -411,7 +458,7 @@ public class TourInformationFragment extends DialogFragment {
     }
 
     // ----------------------------------
-    // Server callbacks
+    // API callbacks
     // ----------------------------------
 
     protected void onTourUsersReceived(List<TourUser> tourUsers) {
@@ -510,10 +557,107 @@ public class TourInformationFragment extends DialogFragment {
     }
 
     // ----------------------------------
+    // SERVICE BINDING METHODS
+    // ----------------------------------
+
+    void doBindService() {
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), TourService.class);
+            getActivity().startService(intent);
+            getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    void doUnbindService() {
+        if (getActivity() != null && isBound) {
+            getActivity().unbindService(connection);
+            isBound = false;
+        }
+    }
+
+    // ----------------------------------
+    // Tour Service listener implementation
+    // ----------------------------------
+
+    @Override
+    public void onTourCreated(final boolean created, final long tourId) {
+
+    }
+
+    @Override
+    public void onTourUpdated(final LatLng newPoint) {
+
+    }
+
+    @Override
+    public void onTourResumed(final List<TourPoint> pointsToDraw, final String tourType, final Date startDate) {
+
+    }
+
+    @Override
+    public void onLocationUpdated(final LatLng location) {
+
+    }
+
+    @Override
+    public void onRetrieveToursNearby(final List<Tour> tours) {
+
+    }
+
+    @Override
+    public void onRetrieveToursByUserId(final List<Tour> tours) {
+
+    }
+
+    @Override
+    public void onUserToursFound(final Map<Long, Tour> tours) {
+
+    }
+
+    @Override
+    public void onToursFound(final Map<Long, Tour> tours) {
+
+    }
+
+    @Override
+    public void onTourClosed(final boolean closed, final Tour tour) {
+        if (closed && tour.getId() == this.tour.getId()) {
+            this.tour.setTourStatus(Tour.TOUR_CLOSED);
+            this.tour.setEndTime(tour.getEndTime());
+            addDiscussionTourEndCard();
+            updateDiscussionList();
+        }
+    }
+
+    @Override
+    public void onGpsStatusChanged(final boolean active) {
+
+    }
+
+    // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
 
     public interface OnTourInformationFragmentFinish {
+        void showStopTourActivity(Tour tour);
         void closeTourInformationFragment(TourInformationFragment fragment);
+    }
+
+    private class ServiceConnection implements android.content.ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            if (getActivity() != null) {
+                tourService = ((TourService.LocalBinder) service).getService();
+                tourService.register(TourInformationFragment.this);
+                isBound = true;
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            tourService.unregister(TourInformationFragment.this);
+            tourService = null;
+            isBound = false;
+        }
     }
 }

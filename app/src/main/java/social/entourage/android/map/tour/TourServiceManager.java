@@ -153,6 +153,10 @@ public class TourServiceManager {
         updateTourCoordinates();
     }
 
+    public void finishTour(Tour tour){
+        closeTour(tour);
+    }
+
     public boolean isRunning() {
         return tour != null;
     }
@@ -299,16 +303,40 @@ public class TourServiceManager {
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     updateLocationServiceFrequency();
-                    tourService.notifyListenersTourClosed(true);
+                    tourService.notifyListenersTourClosed(true, response.body().getTour());
                 } else {
-                    tourService.notifyListenersTourClosed(false);
+                    tourService.notifyListenersTourClosed(false, tour);
                 }
             }
 
             @Override
             public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
                 Log.e("Error", t.getLocalizedMessage());
-                tourService.notifyListenersTourClosed(false);
+                tourService.notifyListenersTourClosed(false, tour);
+            }
+        });
+    }
+
+    private void closeTour(final Tour tour) {
+        tour.setTourStatus(Tour.TOUR_CLOSED);
+        final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
+        tourWrapper.setTour(tour);
+        Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getId(), tourWrapper);
+        call.enqueue(new Callback<Tour.TourWrapper>() {
+            @Override
+            public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
+                if (response.isSuccess()) {
+                    Log.d("Success", response.body().getTour().toString());
+                    tourService.notifyListenersTourClosed(true, response.body().getTour());
+                } else {
+                    tourService.notifyListenersTourClosed(false, tour);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
+                Log.e("Error", t.getLocalizedMessage());
+                tourService.notifyListenersTourClosed(false, tour);
             }
         });
     }
@@ -339,7 +367,7 @@ public class TourServiceManager {
                 }
                 else {
                     if (isTourClosing) {
-                        tourService.notifyListenersTourClosed(false);
+                        tourService.notifyListenersTourClosed(false, tour);
                     }
                 }
                 isTourClosing = false;
@@ -348,7 +376,7 @@ public class TourServiceManager {
             @Override
             public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
                 if (isTourClosing) {
-                    tourService.notifyListenersTourClosed(false);
+                    tourService.notifyListenersTourClosed(false, tour);
                 }
                 isTourClosing = false;
                 Log.e(this.getClass().getSimpleName(), t.getLocalizedMessage());

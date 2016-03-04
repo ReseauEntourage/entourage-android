@@ -104,10 +104,10 @@ public class Tour implements Serializable {
     //CardInfo cache support
 
     @Expose(serialize = false, deserialize = false)
-    List<TimestampedObject> cachedCardInfoList;
+    transient List<TimestampedObject> cachedCardInfoList;
 
     @Expose(serialize = false, deserialize = false)
-    List<TimestampedObject> addedCardInfoList;
+    transient List<TimestampedObject> addedCardInfoList;
 
     // ----------------------------------
     // CONSTRUCTORS

@@ -122,6 +122,7 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
     public void onResumeTour() {
         Bundle args = new Bundle();
         args.putBoolean(KEY_RESUME_TOUR, true);
+        args.putSerializable(Tour.KEY_TOUR, tour);
         Intent resumeIntent = new Intent(this, DrawerActivity.class);
         resumeIntent.putExtras(args);
         startActivity(resumeIntent);
@@ -131,6 +132,7 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
     public void onEndTour() {
         Bundle args = new Bundle();
         args.putBoolean(KEY_END_TOUR, true);
+        args.putSerializable(Tour.KEY_TOUR, tour);
         Intent resumeIntent = new Intent(this, DrawerActivity.class);
         resumeIntent.putExtras(args);
         startActivity(resumeIntent);

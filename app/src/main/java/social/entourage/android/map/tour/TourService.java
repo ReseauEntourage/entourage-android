@@ -298,6 +298,10 @@ public class TourService extends Service {
         }
     }
 
+    public void stopOtherTour(Tour tour) {
+        tourServiceManager.finishTour(tour);
+    }
+
     public void register(TourServiceListener listener) {
         listeners.add(listener);
         if (tourServiceManager.isRunning()) {
@@ -337,13 +341,20 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersTourClosed(boolean closed) {
+    public void notifyListenersTourResumed() {
+        if (!tourServiceManager.isRunning()) return;
+        for (TourServiceListener listener : listeners) {
+            listener.onTourResumed(tourServiceManager.getPointsToDraw(), tourServiceManager.getTour().getTourType(), tourServiceManager.getTour().getStartTime());
+        }
+    }
+
+    public void notifyListenersTourClosed(boolean closed, Tour tour) {
         if (closed) {
             removeNotification();
             isPaused = false;
         }
         for (TourServiceListener listener : listeners) {
-            listener.onTourClosed(closed);
+            listener.onTourClosed(closed, tour);
         }
     }
 
@@ -402,7 +413,7 @@ public class TourService extends Service {
         void onRetrieveToursByUserId(List<Tour> tours);
         void onUserToursFound(Map<Long, Tour> tours);
         void onToursFound(Map<Long, Tour> tours);
-        void onTourClosed(boolean closed);
+        void onTourClosed(boolean closed, Tour tour);
         void onGpsStatusChanged(boolean active);
     }
 }

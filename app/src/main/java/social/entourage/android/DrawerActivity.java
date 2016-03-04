@@ -96,6 +96,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
     private SharedPreferences gcmSharedPreferences;
     private String intentAction;
+    private Tour intentTour;
 
     @IdRes int selectedSidemenuAction;
 
@@ -258,6 +259,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         String action = intent.getAction();
         Bundle args = intent.getExtras();
         if (args != null) {
+            intentTour = (Tour)args.getSerializable(Tour.KEY_TOUR);
             if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
                 intentAction = ConfirmationActivity.KEY_RESUME_TOUR;
             }
@@ -471,8 +473,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
-        mapEntourageFragment.checkAction(intentAction);
+        mapEntourageFragment.checkAction(intentAction, intentTour);
         intentAction = null;
+        intentTour = null;
     }
 
     @Subscribe
@@ -504,6 +507,17 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void closeTourInformationFragment(TourInformationFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
+    }
+
+    @Override
+    public void showStopTourActivity(Tour tour) {
+        mapEntourageFragment.pauseTour(tour);
+        //buttonStartLauncher.setVisibility(View.GONE);
+        Bundle args = new Bundle();
+        args.putSerializable(Tour.KEY_TOUR, tour);
+        Intent confirmationIntent = new Intent(this, ConfirmationActivity.class);
+        confirmationIntent.putExtras(args);
+        startActivity(confirmationIntent);
     }
 
     @Override

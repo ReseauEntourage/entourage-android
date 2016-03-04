@@ -382,15 +382,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
     }
 
-    public void checkAction(String action) {
+    public void checkAction(String action, Tour actionTour) {
         if (getActivity() != null && isBound) {
             // 1 : Check if should Resume tour
             if (action != null && ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
-                resumeTour();
+                resumeTour(actionTour);
             }
             // 2 : Check if should End tour
             else if (action != null && ConfirmationActivity.KEY_END_TOUR.equals(action)) {
-                stopTour();
+                stopTour(actionTour);
             }
             // 3 : Check if tour is already paused
             else if (tourService.isPaused()) {
@@ -550,7 +550,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onTourClosed(boolean closed) {
+    public void onTourClosed(boolean closed, Tour tour) {
         if (getActivity() != null) {
             if (closed) {
                 mapFragment.getMap().clear();
@@ -567,11 +567,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 previousCoordinates = null;
 
                 //mapPin.setVisibility(View.GONE);
-                mapOptionsMenu.setVisibility(View.VISIBLE);
-                updateFloatingMenuOptions();
-                tourStopButton.setVisibility(View.GONE);
+                if (tour.getId() == currentTourId) {
+                    mapOptionsMenu.setVisibility(View.VISIBLE);
+                    updateFloatingMenuOptions();
+                    tourStopButton.setVisibility(View.GONE);
 
-                currentTourId = -1;
+                    currentTourId = -1;
+                }
+                else {
+                    tourService.notifyListenersTourResumed();
+                }
+
                 tourService.updateNearbyTours();
                 if (userHistory) {
                     tourService.updateUserHistory(userId, 1, 1);
@@ -870,6 +876,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    public void pauseTour(Tour tour) {
+        if (tourService != null && tourService.isRunning()) {
+            if (tourService.getCurrentTourId() == tour.getId()) {
+                tourService.pauseTreatment();
+            }
+        }
+    }
+
     private void resumeTour() {
         if (tourService.isRunning()) {
             tourService.resumeTreatment();
@@ -878,13 +892,32 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private void stopTour() {
+    private void resumeTour(Tour tour) {
+        if (tourService != null) {
+            if (tour != null && tourService.getCurrentTourId() == tour.getId() && tourService.isRunning()) {
+                tourService.resumeTreatment();
+            }
+        }
+    }
+
+    private void stopTour(Tour tour) {
         if (getActivity() != null) {
-            if (tourService != null && tourService.isRunning()) {
-                loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
-                loaderStop.setCancelable(true);
-                tourService.endTreatment();
-                FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+            if (tourService != null) {
+                if (tour != null && tourService.getCurrentTourId() != tour.getId()) {
+                    loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
+                    loaderStop.setCancelable(true);
+                    FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+                    tourService.stopOtherTour(tour);
+                    return;
+                }
+                else {
+                    if (tourService.isRunning()) {
+                        loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
+                        loaderStop.setCancelable(true);
+                        tourService.endTreatment();
+                        FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+                    }
+                }
             }
         }
     }
