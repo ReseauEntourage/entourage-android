@@ -47,6 +47,7 @@
     <string name="tour_info_options_stop_tour">Clôturer</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
     <string name="tour_info_options_close">Annuler</string>
+    <string name="tour_info_encounter_location">\u0020et %1$s se sont rencontrés à %2$s le %3$s.</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>

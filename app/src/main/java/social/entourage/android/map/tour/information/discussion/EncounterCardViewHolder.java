@@ -15,18 +15,22 @@ import java.util.Locale;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Encounter Card View
  */
 public class EncounterCardViewHolder extends BaseCardViewHolder {
 
+    private TextView mAuthorView;
     private TextView mStreetPersonNameView;
     private TextView mMessageView;
 
     private Context context;
 
     private boolean addressRetrieved = false;
+    private int authorId;
 
     public EncounterCardViewHolder(final View view) {
         super(view);
@@ -37,8 +41,18 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
 
         context = itemView.getContext();
 
+        mAuthorView = (TextView) itemView.findViewById(R.id.tic_encounter_author);
         mStreetPersonNameView = (TextView) itemView.findViewById(R.id.tic_encounter_street_name);
         mMessageView = (TextView) itemView.findViewById(R.id.tic_encounter_message);
+
+        mAuthorView.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(final View v) {
+                     if (authorId == 0) return;
+                     BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(authorId));
+                 }
+             }
+        );
     }
 
     @Override
@@ -63,13 +77,15 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
         if (encounter.getCreationDate() != null) {
             encounterDate = DateFormat.getDateFormat(context).format(encounter.getCreationDate());
         }
-        String encounterLocation = itemView.getResources().getString(R.string.encounter_read_location,
-                encounter.getUserName(),
+        mAuthorView.setText(encounter.getUserName());
+        String encounterLocation = itemView.getResources().getString(R.string.tour_info_encounter_location,
                 encounter.getStreetPersonName(),
                 location,
                 encounterDate);
         mStreetPersonNameView.setText(encounterLocation);
         mMessageView.setText(encounter.getMessage());
+
+        authorId = encounter.getUserId();
     }
 
     public static int getLayoutResource() {

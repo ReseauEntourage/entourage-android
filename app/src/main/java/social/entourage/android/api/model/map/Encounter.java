@@ -32,7 +32,7 @@ public class Encounter extends TimestampedObject implements Serializable {
     private double latitude;
 
     @SerializedName("user_id")
-    private String userId;
+    private int userId;
 
     @SerializedName("user_name")
     private String userName;
@@ -93,11 +93,11 @@ public class Encounter extends TimestampedObject implements Serializable {
         this.latitude = latitude;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
