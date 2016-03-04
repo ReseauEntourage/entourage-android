@@ -25,6 +25,7 @@ public class RegisterGCMService extends IntentService {
     public static final String SHARED_PREFERENCES_FILE_GCM = "ENTOURAGE_GCM_DATA";
     private static final String KEY_APPLICATION_VERSION = "ENTOURAGE_APPLICATION_VERSION";
     public static final String KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID";
+    public static final String KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED";
     private static final int ENTOURAGE_MIN_VERSION = 0;
 
     public RegisterGCMService() {

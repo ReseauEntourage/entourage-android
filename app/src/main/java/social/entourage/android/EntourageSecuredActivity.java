@@ -1,6 +1,8 @@
 package social.entourage.android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.flurry.android.FlurryAgent;
@@ -27,7 +29,11 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         } else {
-            startService(new Intent(this, RegisterGCMService.class));
+            final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+            boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+            if (notificationsEnabled) {
+                startService(new Intent(this, RegisterGCMService.class));
+            }
         }
     }
 

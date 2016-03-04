@@ -36,6 +36,7 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.view.HtmlTextView;
 
 /**
@@ -438,14 +439,41 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     }
 
-    //TODO: remove this when the tutorial content is ready
     @OnClick(R.id.login_button_go)
     void finishTutorial() {
         loginPresenter.updateUserEmail(profileEmail.getText().toString());
+        //show the notifications dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.login_permission_notification_description)
+            .setPositiveButton(R.string.login_permission_notification_accept,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            showNewsfeedScreenWithNotifications(true);
+                        }
+                    })
+            .setNegativeButton(R.string.login_permission_notification_refuse,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            showNewsfeedScreenWithNotifications(false);
+                        }
+                    })
+            .create().show();
+    }
+
+    private void showNewsfeedScreenWithNotifications(boolean enabled) {
+        //remember the choice
+        final SharedPreferences notificationsPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = notificationsPreferences.edit();
+        editor.putBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, enabled);
+        editor.commit();
+        //set the tutorial as done
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         HashSet<String>loggedNumbers = (HashSet) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.add(loggedPhoneNumber);
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
+        //start the activity
         startActivity(new Intent(this, DrawerActivity.class));
     }
 
