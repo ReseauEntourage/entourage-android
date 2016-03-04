@@ -7,6 +7,8 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * User Card View in tour information screen
@@ -16,6 +18,8 @@ public class UserCardViewHolder extends BaseCardViewHolder {
     private TextView mUsernameView;
     private TextView mJoinStatusView;
 
+    private int userId;
+
     public UserCardViewHolder(final View view) {
         super(view);
     }
@@ -24,6 +28,15 @@ public class UserCardViewHolder extends BaseCardViewHolder {
     protected void bindFields() {
         mUsernameView = (TextView) itemView.findViewById(R.id.tic_username);
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
+
+        mUsernameView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    if (userId == 0) return;
+                    BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
+                }
+            }
+        );
     }
 
     @Override
@@ -34,6 +47,8 @@ public class UserCardViewHolder extends BaseCardViewHolder {
     public void populate(TourUser user) {
         setUsername(user.getFirstName());
         setJoinStatus(user.getStatus());
+
+        userId = user.getUserId();
     }
 
     private void setUsername(String username) {
