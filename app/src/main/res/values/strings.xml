@@ -12,4 +12,7 @@
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
     <string name="button_update_version">Mettre à jour</string>
     <string name="title_update_version">MISE A JOUR DISPONIBLE</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -88,6 +88,7 @@ import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
+import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourListItemView;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
@@ -757,7 +758,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     requestPermissions(new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_LOCATION);
                                 }
-                            }).show();
+                            })
+                            .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(final DialogInterface dialog, final int i) {
+                                    NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
+                                    noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), "fragment_no_location_permission");
+                                }
+                            })
+                            .show();
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
@@ -771,7 +780,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final GoogleMap googleMap) {
-                googleMap.setMyLocationEnabled(true);
+                if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                    googleMap.setMyLocationEnabled(true);
+                }
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
 
