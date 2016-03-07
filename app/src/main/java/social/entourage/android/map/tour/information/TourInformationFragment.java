@@ -405,8 +405,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (tour.getStartTime() != null && !tour.isClosed()) {
             duration = now.getTime() - tour.getStartTime().getTime();
         }
+        Date timestamp;
+        if (tour.getCachedCardInfoList().size() == 0) {
+            timestamp = tour.getStartTime();
+        }
+        else {
+            timestamp = duration == 0 ? tour.getStartTime() : now;
+        }
         TourTimestamp tourTimestamp = new TourTimestamp(
                 tour.getStartTime(),
+                timestamp,
                 Tour.TOUR_ON_GOING,
                 duration,
                 distance
@@ -428,6 +436,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             startPoint = p;
         }
         TourTimestamp tourTimestamp = new TourTimestamp(
+                tour.getEndTime(),
                 tour.getEndTime(),
                 Tour.TOUR_CLOSED,
                 duration,

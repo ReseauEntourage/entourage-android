@@ -16,6 +16,7 @@ public class TourTimestamp extends TimestampedObject {
     // ----------------------------------
 
     private Date date;
+    private Date timestamp;
     private String status;
     private long duration; //millis
     private float distance; //meters
@@ -31,8 +32,9 @@ public class TourTimestamp extends TimestampedObject {
         distance = 0.0f;
     }
 
-    public TourTimestamp(Date date, String status, long duration, float distance) {
+    public TourTimestamp(Date date, Date timestamp, String status, long duration, float distance) {
         this.date = date;
+        this.timestamp = timestamp;
         this.status = status;
         this.duration = duration;
         this.distance = distance;
@@ -81,7 +83,7 @@ public class TourTimestamp extends TimestampedObject {
 
     @Override
     public Date getTimestamp() {
-        return date;
+        return timestamp;
     }
 
     @Override
