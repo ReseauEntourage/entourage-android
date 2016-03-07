@@ -20,11 +20,8 @@ public class TourUser extends TimestampedObject implements Serializable {
     @SerializedName("id")
     private int userId;
 
-    @SerializedName("first_name")
-    private String firstName;
-
-    @SerializedName("last_name")
-    private String lastName;
+    @SerializedName("display_name")
+    private String displayName;
 
     @Expose(serialize = false, deserialize = true)
     private String email;
@@ -43,20 +40,12 @@ public class TourUser extends TimestampedObject implements Serializable {
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFirstName(final String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(final String lastName) {
-        this.lastName = lastName;
+    public void setDisplayName(final String displayName) {
+        this.displayName = displayName;
     }
 
     public Date getRequestDate() {

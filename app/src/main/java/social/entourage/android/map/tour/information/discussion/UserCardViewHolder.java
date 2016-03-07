@@ -45,7 +45,7 @@ public class UserCardViewHolder extends BaseCardViewHolder {
     }
 
     public void populate(TourUser user) {
-        setUsername(user.getFirstName());
+        setUsername(user.getDisplayName());
         setJoinStatus(user.getStatus());
 
         userId = user.getUserId();
