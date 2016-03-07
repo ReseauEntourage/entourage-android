@@ -51,7 +51,7 @@ public class CreateEncounterPresenter {
     public void createEncounter(String message, String streetPersonName) {
 
         Encounter encounter = new Encounter();
-        encounter.setUserName(authenticationController.getUser().getFirstName());
+        encounter.setUserName(authenticationController.getUser().getDisplayName());
         encounter.setMessage(message);
         encounter.setStreetPersonName(streetPersonName);
         encounter.setCreationDate(new Date());
@@ -80,7 +80,7 @@ public class CreateEncounterPresenter {
         if ( !authenticationController.isAuthenticated() ) {
             return "";
         }
-        return authenticationController.getUser().getFirstName();
+        return authenticationController.getUser().getDisplayName();
     }
 
     // ----------------------------------

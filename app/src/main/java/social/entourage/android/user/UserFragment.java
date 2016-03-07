@@ -184,7 +184,7 @@ public class UserFragment extends DialogFragment {
                     .transform(new CropCircleTransformation())
                     .into(organizationPhoto);
 
-            userName.setText(user.getFirstName() + " " + user.getLastName());
+            userName.setText(user.getDisplayName());
             userEmail.setText(user.getEmail());
             userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
             userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));

@@ -125,7 +125,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
         User user = getAuthenticationController().getUser();
         if (user != null) {
-            userName.setText(user.getFullName());
+            userName.setText(user.getDisplayName());
             String avatarURL = user.getAvatarURL();
             if (avatarURL != null) {
                 Picasso.with(this)
@@ -482,7 +482,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void userInfoUpdated(OnUserInfoUpdatedEvent event) {
         User user = getAuthenticationController().getUser();
         if (user != null) {
-            userName.setText(user.getFullName());
+            userName.setText(user.getDisplayName());
             String avatarURL = user.getAvatarURL();
             if (avatarURL != null) {
                 Picasso.with(this)

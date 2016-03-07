@@ -23,11 +23,8 @@ public class User {
     @Expose(serialize = false, deserialize = false)
     private String phone;
 
-    @SerializedName("first_name")
-    private final String firstName;
-
-    @SerializedName("last_name")
-    private final String lastName;
+    @SerializedName("display_name")
+    private final String displayName;
 
     private final String token;
 
@@ -44,11 +41,10 @@ public class User {
     // CONSTRUCTOR
     // ----------------------------------
 
-    private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final Organization organization, final String token, final String avatarURL) {
+    private User(final int id, final String email, final String displayName, final Stats stats, final Organization organization, final String token, final String avatarURL) {
         this.id = id;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.displayName = displayName;
         this.stats = stats;
         this.organization = organization;
         this.token = token;
@@ -71,21 +67,7 @@ public class User {
         return phone;
     }
 
-    public String getFirstName() { return firstName;}
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getFullName() {
-        StringBuilder fullname = new StringBuilder();
-        if (firstName != null) fullname.append(firstName);
-        if (lastName != null) {
-            if (fullname.length() > 0) fullname.append(' ');
-            fullname.append(lastName);
-        }
-        return fullname.toString();
-    }
+    public String getDisplayName() { return displayName;}
 
     public String getToken() {
         return token;
@@ -137,7 +119,7 @@ public class User {
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
         private int id;
-        private String email, firstName, lastName, token, avatarURL;
+        private String email, displayName, token, avatarURL;
         private Stats stats;
         private Organization organization;
 
@@ -154,13 +136,8 @@ public class User {
             return this;
         }
 
-        public Builder withFirstName(final String firstName) {
-            this.firstName = firstName;
-            return this;
-        }
-
-        public Builder withLastName(final String lastName) {
-            this.lastName = lastName;
+        public Builder withDisplayName(final String displayName) {
+            this.displayName = displayName;
             return this;
         }
 
@@ -191,10 +168,7 @@ public class User {
             if (email == null) {
                 return null;
             }
-            if (firstName == null) {
-                return null;
-            }
-            if (lastName == null) {
+            if (displayName == null) {
                 return null;
             }
             if (stats == null) {
@@ -206,7 +180,7 @@ public class User {
             if (token == null) {
                 return null;
             }
-            return new User(id, email, firstName, lastName, stats, organization, token, avatarURL);
+            return new User(id, email, displayName, stats, organization, token, avatarURL);
         }
     }
 
