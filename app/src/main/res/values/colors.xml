@@ -51,6 +51,9 @@
 
     <!-- Side Menu -->
     <color name="sidemenu_divider">@color/greyish</color>
+    
+    <!-- Notifications -->
+    <color name="battleship_grey">#797a7c</color>
 
     <!-- Others -->
     <color name="login_view">#333333</color>

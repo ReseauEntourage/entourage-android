@@ -402,6 +402,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             else if (action != null && TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
                 launchConfirmationActivity();
             }
+            // 5 : Check if should stop tour
+            else if (action != null && TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+                tourService.endTreatment();
+            }
         }
     }
 

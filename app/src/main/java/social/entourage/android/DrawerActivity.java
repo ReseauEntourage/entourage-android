@@ -166,6 +166,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                         break;
                     case ConfirmationActivity.KEY_END_TOUR:
                         break;
+                    case TourService.KEY_NOTIFICATION_STOP_TOUR:
                     case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
                         sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                         break;
@@ -210,7 +211,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 displayAlertNoGps();
                 sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
-            else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
+            else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                 sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
         }
@@ -274,6 +275,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             }
             else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
                 intentAction = TourService.KEY_NOTIFICATION_PAUSE_TOUR;
+            }
+            else if (TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+                intentAction = TourService.KEY_NOTIFICATION_STOP_TOUR;
             }
         }
     }

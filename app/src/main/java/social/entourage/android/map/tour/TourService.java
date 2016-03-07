@@ -50,6 +50,7 @@ public class TourService extends Service {
 
     private static final int NOTIFICATION_ID = 1;
     public static final String KEY_NOTIFICATION_PAUSE_TOUR = "social.entourage.android.KEY_NOTIFICATION_PAUSE_TOUR";
+    public static final String KEY_NOTIFICATION_STOP_TOUR = "social.entourage.android.KEY_NOTIFICATION_STOP_TOUR";
     public static final String KEY_GPS_DISABLED = "social.entourage.android.KEY_GPS_DISABLED";
     public static final String KEY_GPS_ENABLED = "social.entourage.android.KEY_GPS_ENABLED";
 
@@ -81,6 +82,12 @@ public class TourService extends Service {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
+                Intent newIntent = new Intent(context, DrawerActivity.class);
+                newIntent.setAction(action);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
+            }
+            else if (KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                 Intent newIntent = new Intent(context, DrawerActivity.class);
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -121,6 +128,7 @@ public class TourService extends Service {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(KEY_NOTIFICATION_PAUSE_TOUR);
+        filter.addAction(KEY_NOTIFICATION_STOP_TOUR);
         filter.addAction(KEY_GPS_DISABLED);
         filter.addAction(KEY_GPS_ENABLED);
         registerReceiver(receiver, filter);
@@ -190,8 +198,10 @@ public class TourService extends Service {
             builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
             PendingIntent pauseTourIntent = createPendingIntent(KEY_NOTIFICATION_PAUSE_TOUR);
+            PendingIntent stopTourIntent = createPendingIntent(KEY_NOTIFICATION_STOP_TOUR);
             notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
-            notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, pauseTourIntent);
+            notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_button, pauseTourIntent);
+            notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, stopTourIntent);
             builder = builder.setContent(notificationRemoteView);
         }
         notification = builder.build();
