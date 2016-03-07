@@ -5,9 +5,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -28,7 +25,7 @@ public class EntourageApplication extends Application {
         setupFlurry();
         JodaTimeAndroid.init(this);
         setupDagger();
-        setupImageLoader(getApplicationContext());
+
     }
 
     private void setupDagger() {
@@ -46,14 +43,6 @@ public class EntourageApplication extends Application {
         //FlurryAgent.setReportLocation(true);
         FlurryAgent.setLogEvents(true);
         FlurryAgent.init(this, BuildConfig.FLURRY_API_KEY);
-    }
-
-    private void setupImageLoader(Context context) {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
-                .denyCacheImageMultipleSizesInMemory()
-                .build();
-        ImageLoader.getInstance().init(config);
     }
 
     public EntourageComponent getEntourageComponent() {

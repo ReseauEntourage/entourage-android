@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.location.Address;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -11,11 +12,11 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourType;
@@ -69,12 +70,10 @@ public class TourListItemView extends GridLayout {
         });
         String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
         if (avatarURLAsString != null) {
-            ImageLoader.getInstance().loadImage(avatarURLAsString, new SimpleImageLoadingListener() {
-                @Override
-                public void onLoadingComplete(final String imageUri, final View view, final Bitmap loadedImage) {
-                    photoView.setImageBitmap(loadedImage);
-                }
-            });
+            Picasso.with(this.getContext())
+                    .load(Uri.parse(avatarURLAsString))
+                    .transform(new CropCircleTransformation())
+                    .into(photoView);
         }
 
         //Tour type
