@@ -45,6 +45,7 @@ import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.EncounterTaskResult;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
@@ -548,6 +549,29 @@ public class TourServiceManager {
             Log.d("tape:", "no network");
             BusProvider.getInstance().post(new EncounterTaskResult(false, null));
             //Toast.makeText(tourService, "pas de réseau", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void requestToJoinTour(final Tour tour) {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            Call<TourUser.TourUserWrapper> call = tourRequest.requestToJoinTour(tour.getId());
+            call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+                @Override
+                public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+                    if (response.isSuccess()) {
+                        tourService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
+                    }
+                    else {
+                        tourService.notifyListenersUserStatusChanged(null, tour);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+                    tourService.notifyListenersUserStatusChanged(null, tour);
+                }
+            });
         }
     }
 

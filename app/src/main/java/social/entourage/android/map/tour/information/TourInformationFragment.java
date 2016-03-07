@@ -643,6 +643,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     }
 
+    @Override
+    public void onUserStatusChanged(final TourUser user, final Tour tour) {
+
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------

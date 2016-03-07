@@ -81,6 +81,7 @@ import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
@@ -91,6 +92,7 @@ import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourListItemView;
 import social.entourage.android.map.tour.TourService;
+import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.tools.BusProvider;
 
 public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener {
@@ -379,7 +381,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void act(Tour tour) {
-        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+        tourService.requestToJoinTour(tour);
     }
 
     public void checkAction(String action, Tour actionTour) {
@@ -602,6 +604,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             } else {
                 gpsLayout.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    @Override
+    public void onUserStatusChanged(final TourUser user, final Tour tour) {
+        if (user == null) {
+            //error changing the status
+            Toast.makeText(getContext(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            tour.setJoinStatus(user.getStatus());
+            updateTourCellJoinStatus(tour);
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(tour);
+            tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
         }
     }
 
@@ -1123,12 +1141,24 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         layoutTours.addView(tourCell, lp);
     }
 
+    private TourListItemView findTourCellWithTour(Tour tour) {
+        if (tour == null) return null;
+        return (TourListItemView) layoutTours.findViewWithTag(tour.getId());
+    }
+
     private void updateTourCellStartingPoint(Tour tour) {
-        if (tour == null || tour.getStartAddress() == null) return;
-        TourListItemView tourCell = (TourListItemView) layoutTours.findViewWithTag(new Long(tour.getId()));
+        if (tour.getStartAddress() == null) return;
+        TourListItemView tourCell = findTourCellWithTour(tour);
         if (tourCell == null) return;
 
         tourCell.updateStartLocation(tour);
+    }
+
+    private void updateTourCellJoinStatus(Tour tour) {
+        TourListItemView tourCell = findTourCellWithTour(tour);
+        if (tourCell == null) return;
+
+        tourCell.updateJoinStatus(tour);
     }
 
     private void addTourHead(Tour tour) {

@@ -30,19 +30,30 @@ import social.entourage.android.map.MapEntourageFragment;
  */
 public class TourListItemView extends GridLayout {
 
+    private Button actButton;
+
     public TourListItemView(final Context context) {
         super(context);
+        init();
     }
 
     public TourListItemView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public TourListItemView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
+        actButton = (Button)this.findViewById(R.id.tour_cell_button_act);
     }
 
     public void populate(final Tour tour, final MapEntourageFragment mapFragment) {
+
+        init();
         //configure the cell
         this.setTag(tour.getId());
         this.setOnClickListener(new OnClickListener() {
@@ -100,25 +111,7 @@ public class TourListItemView extends GridLayout {
         tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), getHoursDiffToNow(tour.getStartTime()), "h", ""));
 
         //act button
-        String joinStatus = tour.getJoinStatus();
-        Button actButton = (Button)this.findViewById(R.id.tour_cell_button_act);
-        if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
-            actButton.setEnabled(false);
-            actButton.setText(R.string.tour_cell_button_pending);
-            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_pending), null, null);
-        } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
-            actButton.setEnabled(false);
-            actButton.setText(R.string.tour_cell_button_accepted);
-            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_accepted), null, null);
-        } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
-            actButton.setEnabled(false);
-            actButton.setText(R.string.tour_cell_button_rejected);
-            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_rejected), null, null);
-        } else {
-            actButton.setEnabled(true);
-            actButton.setText(R.string.tour_cell_button_join);
-            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_join), null, null);
-        }
+        updateJoinStatus(tour);
         actButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -142,6 +135,27 @@ public class TourListItemView extends GridLayout {
             }
         }
         tourLocationTextView.setText(String.format(getResources().getString(R.string.tour_cell_location), getHoursDiffToNow(tour.getStartTime()), "h", tourLocation));
+    }
+
+    public void updateJoinStatus(Tour tour) {
+        String joinStatus = tour.getJoinStatus();
+        if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
+            actButton.setEnabled(false);
+            actButton.setText(R.string.tour_cell_button_pending);
+            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_pending), null, null);
+        } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
+            actButton.setEnabled(false);
+            actButton.setText(R.string.tour_cell_button_accepted);
+            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_accepted), null, null);
+        } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
+            actButton.setEnabled(false);
+            actButton.setText(R.string.tour_cell_button_rejected);
+            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_rejected), null, null);
+        } else {
+            actButton.setEnabled(true);
+            actButton.setText(R.string.tour_cell_button_join);
+            actButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_join), null, null);
+        }
     }
 
     private long getHoursDiffToNow(Date fromDate) {

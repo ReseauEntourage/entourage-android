@@ -30,6 +30,7 @@ public class Tour implements Serializable {
     public static final String TOUR_ON_GOING = "ongoing";
     private static final String TOUR_FEET = "feet";
     private static final String TOUR_CAR = "car";
+    public static final String JOIN_STATUS_NOT_REQUESTED = "not_requested";
     public static final String JOIN_STATUS_PENDING = "pending";
     public static final String JOIN_STATUS_ACCEPTED = "accepted";
     public static final String JOIN_STATUS_REJECTED = "rejected";
@@ -264,6 +265,10 @@ public class Tour implements Serializable {
 
     public void setAuthor(TourAuthor author) {
         this.author = author;
+    }
+
+    public void setJoinStatus(String joinStatus) {
+        this.joinStatus = joinStatus;
     }
 
     @Override

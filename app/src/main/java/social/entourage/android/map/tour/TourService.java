@@ -36,6 +36,7 @@ import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.model.map.TourUser;
 
 /**
  * Background service handling location updates
@@ -302,6 +303,10 @@ public class TourService extends Service {
         tourServiceManager.finishTour(tour);
     }
 
+    public void requestToJoinTour(Tour tour) {
+        tourServiceManager.requestToJoinTour(tour);
+    }
+
     public void register(TourServiceListener listener) {
         listeners.add(listener);
         if (tourServiceManager.isRunning()) {
@@ -400,6 +405,12 @@ public class TourService extends Service {
         }
     }
 
+    public void notifyListenersUserStatusChanged(TourUser user, Tour tour) {
+        for (TourServiceListener listener : listeners) {
+            listener.onUserStatusChanged(user, tour);
+        }
+    }
+
     // ----------------------------------
     // INNER INTERFACES
     // ----------------------------------
@@ -415,5 +426,6 @@ public class TourService extends Service {
         void onToursFound(Map<Long, Tour> tours);
         void onTourClosed(boolean closed, Tour tour);
         void onGpsStatusChanged(boolean active);
+        void onUserStatusChanged(TourUser user, Tour tour);
     }
 }

@@ -108,6 +108,20 @@ public class TourUser extends TimestampedObject implements Serializable {
     // INNER CLASSES
     // ----------------------------------
 
+    public static class TourUserWrapper {
+
+        private TourUser user;
+
+        public TourUser getUser() {
+            return user;
+        }
+
+        public void setUser(TourUser user) {
+            this.user = user;
+        }
+
+    }
+
     public static class TourUsersWrapper {
 
         private List<TourUser> users;

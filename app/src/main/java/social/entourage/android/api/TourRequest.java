@@ -80,4 +80,9 @@ public interface TourRequest {
     Call<Encounter.EncountersWrapper> retrieveTourEncounters(
             @Path("tour_id") long tourId
     );
+
+    @POST("tours/{tour_id}/users")
+    Call<TourUser.TourUserWrapper> requestToJoinTour(
+            @Path("tour_id") long tourId
+    );
 }
