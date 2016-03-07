@@ -179,7 +179,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        doBindService();
+        doUnbindService();
     }
 
     @Override
