@@ -902,6 +902,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    public void saveOngoingTour() {
+        if (tourService != null) {
+            tourService.updateOngoingTour();
+        }
+    }
+
     private void resumeTour() {
         if (tourService.isRunning()) {
             tourService.resumeTreatment();

@@ -416,6 +416,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 userFragment.show(getSupportFragmentManager(), TAG_FRAGMENT_USER);
                 break;
             case R.id.action_logout:
+                if (mapEntourageFragment != null) {
+                    mapEntourageFragment.saveOngoingTour();
+                }
                 gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
                 logout();
                 break;
