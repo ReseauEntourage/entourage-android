@@ -292,10 +292,20 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         startActivity(new Intent(this, DrawerActivity.class));
     }
 
-    public void loginFail() {
+    public void loginFail(boolean networkError) {
         stopLoader();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
-        displayToast(getString(R.string.login_fail));
+        //displayToast(getString(R.string.login_fail));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.login_login_error_title)
+            .setMessage(networkError ? R.string.login_login_error_network : R.string.login_login_error_invalid_credentials)
+            .setPositiveButton(R.string.login_login_error_retry, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(final DialogInterface dialog, final int which) {
+
+                }
+            });
+        builder.create().show();
     }
 
     public void displayToast(String message) {

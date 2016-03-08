@@ -115,13 +115,13 @@ public class LoginPresenter {
                                 activity.launchFillInProfileView(phoneNumber, response.body().getUser());
                             }
                         } else {
-                            activity.loginFail();
+                            activity.loginFail(false);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        activity.loginFail();
+                        activity.loginFail(true);
                     }
                 });
             } else {
