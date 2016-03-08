@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,6 +14,7 @@ import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -306,7 +308,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick(R.id.tour_info_button_quit_tour)
     public void onQuitTourButton() {
-        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.tour_info_quit_tour_title)
+                .setMessage(R.string.tour_info_quit_tour_description)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        presenter.quitTour();
+                    }
+                })
+                .setNegativeButton(R.string.no, null);
+        builder.create().show();
     }
 
     // ----------------------------------
@@ -606,6 +618,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         //update the discussion list
         updateDiscussionList();
+    }
+
+    protected void onTourQuited(String status) {
+        hideProgressBar();
+        if (status == null) {
+            Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
     // ----------------------------------

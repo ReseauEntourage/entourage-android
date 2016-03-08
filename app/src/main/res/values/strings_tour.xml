@@ -49,6 +49,9 @@
     <string name="tour_info_options_quit_tour">Quitter</string>
     <string name="tour_info_options_close">Annuler</string>
     <string name="tour_info_encounter_location">\u0020et %1$s se sont rencontrés à %2$s le %3$s.</string>
+    <string name="tour_info_quit_tour_title">!!Quit tour</string>
+    <string name="tour_info_quit_tour_description">!!Are you sure you want to quit the tour?</string>
+    <string name="tour_info_quit_tour_error">!!Error quiting the tour</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>

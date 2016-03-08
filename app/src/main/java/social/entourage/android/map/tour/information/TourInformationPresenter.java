@@ -146,4 +146,9 @@ public class TourInformationPresenter {
         });
     }
 
+    public void quitTour() {
+        fragment.showProgressBar();
+        fragment.onTourQuited(null);
+    }
+
 }
