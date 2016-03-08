@@ -126,4 +126,9 @@ public class DiscussionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         addCardInfo(cardInfo);
         notifyItemInserted(items.size()-1);
     }
+
+    public TimestampedObject getCardAt(int position) {
+        if (position < 0 || position >= items.size()) return null;
+        return items.get(position);
+    }
 }

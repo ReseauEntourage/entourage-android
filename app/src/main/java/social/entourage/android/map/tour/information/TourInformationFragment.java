@@ -10,7 +10,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -73,6 +72,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     // ----------------------------------
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
+    private static final int SCROLL_DELTA_Y_THRESHOLD = 20;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -118,7 +118,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     Tour tour;
 
-    Date lastChatMessageDate = null;
+    Date oldestChatMessageDate = null;
+    boolean needsMoreChatMessaged = true;
+    private OnScrollListener discussionScrollListener = new OnScrollListener();
+    private int scrollDeltaY = 0;
 
     OnTourInformationFragmentFinish mListener;
 
@@ -212,6 +215,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onStart();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        //setup scroll listener
+        discussionView.addOnScrollListener(discussionScrollListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        discussionView.removeOnScrollListener(discussionScrollListener);
     }
 
     // ----------------------------------
@@ -380,6 +393,32 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         //clear the added cards info
         tour.clearAddedCardInfoList();
+
+        //scroll to last card
+        scrollToLastCard();
+
+        //find the oldest chat message received
+        initOldestChatMessageDate();
+    }
+
+    private void initOldestChatMessageDate() {
+        List<TimestampedObject> cachedCardInfoList = tour.getCachedCardInfoList();
+        Iterator<TimestampedObject> iterator = cachedCardInfoList.iterator();
+        while (iterator.hasNext()) {
+            TimestampedObject timestampedObject = iterator.next();
+            if (timestampedObject.getClass() != ChatMessage.class) continue;
+            ChatMessage chatMessage = (ChatMessage) timestampedObject;
+            Date chatCreationDate = chatMessage.getCreationDate();
+            if (chatCreationDate == null) continue;
+            if (oldestChatMessageDate == null) {
+                oldestChatMessageDate = chatCreationDate;
+            }
+            else {
+                if (chatCreationDate.before(oldestChatMessageDate)) {
+                    oldestChatMessageDate = chatCreationDate;
+                }
+            }
+        }
     }
 
     private void updateDiscussionList() {
@@ -397,6 +436,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         //clear the added cards info
         tour.clearAddedCardInfoList();
+
+        //scroll to last card
+        scrollToLastCard();
     }
 
     private void addDiscussionTourStartCard(Date now) {
@@ -510,12 +552,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     }
                 }
                 //remember the last chat message
-                ChatMessage chatMessage = chatMessageList.get(chatMessageList.size() - 1);
-                lastChatMessageDate = chatMessage.getCreationDate();
+                ChatMessage chatMessage = chatMessageList.get(0);
+                oldestChatMessageDate = chatMessage.getCreationDate();
 
                 List<TimestampedObject> timestampedObjectList = new ArrayList<>();
                 timestampedObjectList.addAll(chatMessageList);
                 tour.addCardInfoList(timestampedObjectList);
+            }
+            else {
+                //no need to ask for more messages
+                needsMoreChatMessaged = false;
             }
         }
 
@@ -546,9 +592,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         tour.addCardInfo(chatMessage);
 
         updateDiscussionList();
-
-        //make the chat message visible
-        scrollToLastCard();
     }
 
     protected void onTourEncountersReceived(List<Encounter> encounterList) {
@@ -647,6 +690,36 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     public void onUserStatusChanged(final TourUser user, final Tour tour) {
 
     }
+
+    // ----------------------------------
+    // RecyclerView.OnScrollListener
+    // ----------------------------------
+
+    private class OnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+            if (!needsMoreChatMessaged) return;
+            scrollDeltaY += dy;
+            //check if user is scrolling up and pass the threshold
+            if (dy < 0 && Math.abs(scrollDeltaY) >= SCROLL_DELTA_Y_THRESHOLD) {
+                LinearLayoutManager layoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                int adapterPosition = recyclerView.findViewHolderForLayoutPosition(firstVisibleItemPosition).getAdapterPosition();
+                TimestampedObject timestampedObject = discussionAdapter.getCardAt(adapterPosition);
+                Date timestamp = timestampedObject.getTimestamp();
+                if (timestamp != null && timestamp.before(oldestChatMessageDate)) {
+                    presenter.getTourMessages(oldestChatMessageDate);
+                }
+                scrollDeltaY = 0;
+            }
+        }
+
+        @Override
+        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        }
+    }
+
 
     // ----------------------------------
     // INNER CLASSES
