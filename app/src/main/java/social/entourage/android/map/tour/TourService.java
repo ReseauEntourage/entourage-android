@@ -191,20 +191,23 @@ public class TourService extends Service {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.tour_record)
+                .setContentTitle(getString(R.string.local_service_running))
                 .setContentIntent(contentIntent)
                 .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setPriority(NotificationCompat.PRIORITY_MAX);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
             PendingIntent pauseTourIntent = createPendingIntent(KEY_NOTIFICATION_PAUSE_TOUR);
             PendingIntent stopTourIntent = createPendingIntent(KEY_NOTIFICATION_STOP_TOUR);
-            notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service);
+            notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service_small);
             notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_button, pauseTourIntent);
             notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, stopTourIntent);
             builder = builder.setContent(notificationRemoteView);
+            notification = builder.build();
+            //notification.bigContentView = notificationRemoteView;
         }
-        notification = builder.build();
+        //notification = builder.build();
     }
 
     private void configureRemoteView(int action) {
