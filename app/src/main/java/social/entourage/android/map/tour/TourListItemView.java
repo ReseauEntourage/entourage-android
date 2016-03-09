@@ -108,7 +108,7 @@ public class TourListItemView extends GridLayout {
 
         //date and location i.e 1h - Arc de Triomphe
         TextView tourLocation = (TextView)this.findViewById(R.id.tour_cell_location);
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), getHoursDiffToNow(tour.getStartTime()), "h", ""));
+        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", ""));
 
         //act button
         updateJoinStatus(tour);
@@ -134,7 +134,7 @@ public class TourListItemView extends GridLayout {
                 tourLocation = "";
             }
         }
-        tourLocationTextView.setText(String.format(getResources().getString(R.string.tour_cell_location), getHoursDiffToNow(tour.getStartTime()), "h", tourLocation));
+        tourLocationTextView.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", tourLocation));
     }
 
     public void updateJoinStatus(Tour tour) {
@@ -158,12 +158,4 @@ public class TourListItemView extends GridLayout {
         }
     }
 
-    private long getHoursDiffToNow(Date fromDate) {
-        long currentHours = System.currentTimeMillis() / Constants.MILLIS_HOUR;
-        long startHours = currentHours;
-        if (fromDate != null) {
-            startHours = fromDate.getTime() / Constants.MILLIS_HOUR;
-        }
-        return (currentHours - startHours);
-    }
 }

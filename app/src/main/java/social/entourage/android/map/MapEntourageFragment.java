@@ -1020,7 +1020,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         return color;
     }
 
-    private int getTransparentColor(int color) {
+    public static int getTransparentColor(int color) {
         return Color.argb(100, Color.red(color), Color.green(color), Color.blue(color));
     }
 
@@ -1044,7 +1044,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private boolean isToday(Date date) {
+    public static boolean isToday(Date date) {
         if (date == null) return false;
         Date today = new Date();
         Calendar cal1 = Calendar.getInstance();

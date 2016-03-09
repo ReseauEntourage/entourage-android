@@ -9,7 +9,7 @@ public class EntourageLocation {
 
     private static final double INITIAL_LATITUDE = 48.841636;
     private static final double INITIAL_LONGITUDE = 2.335899;
-    private static final float INITIAL_CAMERA_FACTOR = 15;
+    public static final float INITIAL_CAMERA_FACTOR = 15;
 
     private static final EntourageLocation ourInstance = new EntourageLocation();
 

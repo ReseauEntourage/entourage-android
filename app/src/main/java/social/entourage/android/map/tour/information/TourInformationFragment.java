@@ -8,13 +8,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,11 +32,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -54,6 +67,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;
@@ -64,6 +78,7 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 
@@ -99,6 +114,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_info_author_name)
     TextView tourAuthorName;
 
+    @Bind(R.id.tour_info_location)
+    TextView tourLocation;
+
+    @Bind(R.id.tour_info_people_count)
+    TextView tourPeopleCount;
+
     @Bind(R.id.tour_info_discussion_view)
     RecyclerView discussionView;
 
@@ -116,6 +137,21 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_info_options)
     LinearLayout optionsLayout;
 
+    @Bind(R.id.tour_info_public_section)
+    RelativeLayout publicSection;
+
+    @Bind(R.id.tour_info_private_section)
+    RelativeLayout privateSection;
+
+    @Bind(R.id.tour_info_share_button)
+    AppCompatImageButton shareButton;
+
+    @Bind(R.id.tour_info_more_button)
+    AppCompatImageButton moreButton;
+
+    @Bind(R.id.tour_info_join_button)
+    Button joinButton;
+
     int apiRequestsCount;
 
     Tour tour;
@@ -125,6 +161,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     boolean scrollToLastCard = true;
     private OnScrollListener discussionScrollListener = new OnScrollListener();
     private int scrollDeltaY = 0;
+
+    private SupportMapFragment mapFragment;
 
     OnTourInformationFragmentFinish mListener;
 
@@ -158,9 +196,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
-        presenter.getTourUsers();
-        presenter.getTourMessages();
-        presenter.getTourEncounters();
+        if (tour.isPrivate()) {
+            loadPrivateCards();
+        }
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -356,17 +394,29 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     .into(tourAuthorPhoto);
         }
 
-        //hide the comment section if the user is not accepted
-        if (!tour.getJoinStatus().equals(Tour.JOIN_STATUS_ACCEPTED)) {
-            commentLayout.setVisibility(View.GONE);
+        String location = "";
+        Address tourAddress = tour.getStartAddress();
+        if (tourAddress != null) {
+            location = tourAddress.getAddressLine(0);
+            if (tourLocation == null) {
+                location = "";
+            }
         }
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", location));
 
-        initialiseOptionsView();
+        tourPeopleCount.setText("" + tour.getNumberOfPeople());
 
-        initialiseDiscussionList();
+        initializeOptionsView();
+
+        if (tour.isPrivate()) {
+            switchToPrivateSection();
+        }
+        else {
+            switchToPublicSection();
+        }
     }
 
-    private void initialiseOptionsView() {
+    private void initializeOptionsView() {
         AuthenticationController authenticationController = EntourageApplication.get(getActivity()).getEntourageComponent().getAuthenticationController();
         if (authenticationController.isAuthenticated()) {
             int me = authenticationController.getUser().getId();
@@ -381,7 +431,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    private void initialiseDiscussionList() {
+    private void updateHeaderButtons() {
+        boolean isTourPrivate = tour.isPrivate();
+        shareButton.setVisibility(isTourPrivate ? View.GONE : (tour.getJoinStatus().equals(Tour.JOIN_STATUS_PENDING) ? View.GONE : View.VISIBLE));
+        moreButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
+    }
+
+    private void initializeDiscussionList() {
 
         Date now = new Date();
 
@@ -431,6 +487,117 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     oldestChatMessageDate = chatCreationDate;
                 }
             }
+        }
+    }
+
+    private void initializeMap() {
+        if (mapFragment == null) {
+            GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+            googleMapOptions.zOrderOnTop(true);
+            mapFragment = SupportMapFragment.newInstance(googleMapOptions);
+        }
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commit();
+
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final GoogleMap googleMap) {
+                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                googleMap.getUiSettings().setMapToolbarEnabled(false);
+
+                List<TourPoint> tourPoints = tour.getTourPoints();
+                if (tourPoints != null && tourPoints.size() > 0) {
+                    //setup the camera position to starting point
+                    TourPoint startPoint = tourPoints.get(0);
+                    CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR, 0, 0);
+                    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()));
+                    googleMap.addMarker(markerOptions);
+
+                    //add the tour points
+                    PolylineOptions line = new PolylineOptions();
+                    int color = getTrackColor(tour.getTourType(), tour.getStartTime());
+                    line.zIndex(2f);
+                    line.width(15);
+                    line.color(color);
+                    for (TourPoint tourPoint : tourPoints) {
+                        line.add(tourPoint.getLocation());
+                    }
+                    googleMap.addPolyline(line);
+                }
+            }
+        });
+    }
+
+    private int getTrackColor(String type, Date date) {
+        int color = Color.GRAY;
+        if (TourType.MEDICAL.getName().equals(type)) {
+            color = Color.RED;
+        }
+        else if (TourType.ALIMENTARY.getName().equals(type)) {
+            color = Color.GREEN;
+        }
+        else if (TourType.BARE_HANDS.getName().equals(type)) {
+            color = Color.BLUE;
+        }
+        if (!MapEntourageFragment.isToday(date)) {
+            return MapEntourageFragment.getTransparentColor(color);
+        }
+
+        return Color.argb(0, Color.red(color), Color.green(color), Color.blue(color));
+    }
+
+    private void switchToPublicSection() {
+        publicSection.setVisibility(View.VISIBLE);
+        privateSection.setVisibility(View.GONE);
+
+        updateHeaderButtons();
+        updateJoinStatus();
+
+        initializeMap();
+    }
+
+    private void switchToPrivateSection() {
+        publicSection.setVisibility(View.GONE);
+        privateSection.setVisibility(View.VISIBLE);
+
+        updateHeaderButtons();
+
+        //hide the comment section if the user is not accepted
+        if (!tour.getJoinStatus().equals(Tour.JOIN_STATUS_ACCEPTED)) {
+            commentLayout.setVisibility(View.GONE);
+        }
+
+        initializeDiscussionList();
+    }
+
+    private void loadPrivateCards() {
+        if (presenter != null) {
+            presenter.getTourUsers();
+            presenter.getTourMessages();
+            presenter.getTourEncounters();
+        }
+    }
+
+    private void updateJoinStatus() {
+        String joinStatus = tour.getJoinStatus();
+        if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
+            joinButton.setEnabled(false);
+            joinButton.setText(R.string.tour_cell_button_pending);
+            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_pending), null, null);
+        } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
+            joinButton.setEnabled(false);
+            joinButton.setText(R.string.tour_cell_button_accepted);
+            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_accepted), null, null);
+        } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
+            joinButton.setEnabled(false);
+            joinButton.setText(R.string.tour_cell_button_rejected);
+            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_rejected), null, null);
+        } else {
+            joinButton.setEnabled(true);
+            joinButton.setText(R.string.tour_cell_button_join);
+            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_join), null, null);
         }
     }
 

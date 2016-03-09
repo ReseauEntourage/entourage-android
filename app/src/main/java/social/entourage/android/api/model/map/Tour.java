@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import social.entourage.android.Constants;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 
@@ -296,6 +297,10 @@ public class Tour implements Serializable {
         return tourStatus.equals(TOUR_CLOSED);
     }
 
+    public boolean isPrivate() {
+        return joinStatus.equals(JOIN_STATUS_ACCEPTED);
+    }
+
     public void addCardInfo(TimestampedObject cardInfo) {
         if (cardInfo == null) return;
         if (cachedCardInfoList.contains(cardInfo)) {
@@ -327,6 +332,15 @@ public class Tour implements Serializable {
 
     public void clearAddedCardInfoList() {
         addedCardInfoList.clear();
+    }
+
+    public static long getHoursDiffToNow(Date fromDate) {
+        long currentHours = System.currentTimeMillis() / Constants.MILLIS_HOUR;
+        long startHours = currentHours;
+        if (fromDate != null) {
+            startHours = fromDate.getTime() / Constants.MILLIS_HOUR;
+        }
+        return (currentHours - startHours);
     }
 
     // ----------------------------------

@@ -40,6 +40,16 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/tour_info_share_button"
+            android:src="@drawable/ic_share"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/tour_info_user_add_button"
             android:layout_toLeftOf="@+id/tour_info_more_button"
             android:layout_centerVertical="true"
@@ -60,7 +70,7 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:rowCount="2"
+        android:rowCount="3"
         android:columnCount="2"
         android:background="@color/background"
         android:layout_alignParentLeft="false"
@@ -111,71 +121,48 @@
                 android:text="Small Text"
                 android:id="@+id/tour_info_author_name"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_columnSpan="2"
+            android:id="@+id/tour_info_details_public">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/greyish"
+                android:text="Small Text"
+                android:id="@+id/tour_info_location"
+                android:lines="1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_friends"
+                    android:id="@+id/tour_info_people_image"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:text="1"
+                    android:id="@+id/tour_info_people_count"
+                    android:paddingLeft="3dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
     </GridLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/tour_info_discussion"
-        android:id="@+id/tour_info_discussion_title"
-        android:gravity="center"
-        android:textColor="@color/greyish_brown"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textSize="14sp"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentTop="false"
-        android:layout_below="@+id/tour_info_details_layout"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:layout_gravity="bottom"
-        android:padding="5dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="false"
-        android:id="@+id/tour_info_comment_layout"
-        android:layout_alignParentBottom="true">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tour_info_comment_add_button"
-            android:src="@drawable/ic_plus"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_gravity="center_vertical"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tour_info_comment"
-            android:layout_weight="1"
-            android:background="@drawable/bg_edit_text"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-
-        <ImageButton
-            android:id="@+id/tour_info_comment_record_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_action_record_sound"
-            android:contentDescription="@string/encounter_voice_message_button"
-            android:layout_alignRight="@+id/edittext_message"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tour_info_discussion_view"
-        android:layout_below="@+id/tour_info_discussion_title"
-        android:layout_above="@+id/tour_info_comment_layout"
-        android:layout_alignParentLeft="true"
-        android:background="@color/background"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleSmall"
@@ -224,5 +211,20 @@
             android:alpha="1"
             android:layout_marginBottom="10dp"/>
     </LinearLayout>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/layout_private_tour_information"
+        android:layout_below="@+id/tour_info_details_layout"
+        android:id="@+id/tour_info_private_section"
+        android:visibility = "gone"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/layout_public_tour_information"
+        android:layout_below="@+id/tour_info_details_layout"
+        android:id="@+id/tour_info_public_section"/>
 
 </RelativeLayout>

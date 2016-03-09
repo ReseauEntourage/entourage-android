@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:alpha="1">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/tour_info_map_layout"/>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:id="@+id/tour_info_join_separator"
+            android:background="@color/greyish"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="25dp"/>
+
+        <Button
+            style="@style/ActButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tour_info_join_button"
+            android:layout_centerInParent="true"
+            android:enabled="true"
+            android:text="@string/tour_cell_button_join"
+            android:drawableTop="@drawable/button_act_join"/>
+    </RelativeLayout>
+</RelativeLayout>
