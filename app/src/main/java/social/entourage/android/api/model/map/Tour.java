@@ -307,8 +307,8 @@ public class Tour implements Serializable {
         Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
     }
 
-    public void addCardInfoList(List<TimestampedObject> cardInfoList) {
-        if (cardInfoList == null) return;
+    public int addCardInfoList(List<TimestampedObject> cardInfoList) {
+        if (cardInfoList == null) return 0;
         Iterator<TimestampedObject> iterator = cardInfoList.iterator();
         while (iterator.hasNext()) {
             TimestampedObject timestampedObject = iterator.next();
@@ -320,7 +320,9 @@ public class Tour implements Serializable {
         }
         if (addedCardInfoList.size() > 0) {
             Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
+            Collections.sort(addedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
         }
+        return addedCardInfoList.size();
     }
 
     public void clearAddedCardInfoList() {

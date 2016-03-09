@@ -122,6 +122,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     Date oldestChatMessageDate = null;
     boolean needsMoreChatMessaged = true;
+    boolean scrollToLastCard = true;
     private OnScrollListener discussionScrollListener = new OnScrollListener();
     private int scrollDeltaY = 0;
 
@@ -434,6 +435,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void updateDiscussionList() {
+        updateDiscussionList(true);
+    }
+
+    private void updateDiscussionList(boolean scrollToLastCard) {
 
         List<TimestampedObject> addedCardInfoList = tour.getAddedCardInfoList();
         if (addedCardInfoList == null || addedCardInfoList.size() == 0) {
@@ -449,8 +454,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         //clear the added cards info
         tour.clearAddedCardInfoList();
 
-        //scroll to last card
-        scrollToLastCard();
+        if (scrollToLastCard) {
+            //scroll to last card
+            scrollToLastCard();
+        }
     }
 
     private void addDiscussionTourStartCard(Date now) {
@@ -563,13 +570,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                         chatMessage.setIsMe(chatMessage.getUserId() == me);
                     }
                 }
-                //remember the last chat message
-                ChatMessage chatMessage = chatMessageList.get(0);
-                oldestChatMessageDate = chatMessage.getCreationDate();
 
                 List<TimestampedObject> timestampedObjectList = new ArrayList<>();
                 timestampedObjectList.addAll(chatMessageList);
-                tour.addCardInfoList(timestampedObjectList);
+                if (tour.addCardInfoList(timestampedObjectList) > 0) {
+                    //remember the last chat message
+                    ChatMessage chatMessage = (ChatMessage)tour.getAddedCardInfoList().get(0);
+                    oldestChatMessageDate = chatMessage.getCreationDate();
+                }
             }
             else {
                 //no need to ask for more messages
@@ -581,7 +589,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         hideProgressBar();
 
         //update the discussion list
-        updateDiscussionList();
+        updateDiscussionList(scrollToLastCard);
+        scrollToLastCard = false;
     }
 
     protected void onTourMessageSent(ChatMessage chatMessage) {
