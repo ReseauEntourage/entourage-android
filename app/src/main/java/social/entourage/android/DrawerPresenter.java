@@ -22,6 +22,7 @@ import retrofit2.Response;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
+import social.entourage.android.api.model.ApplicationInfo;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.tools.BusProvider;
@@ -194,5 +195,31 @@ public class DrawerPresenter {
                 });*/
             }
         }
+    }
+
+    public void updateApplicationInfo(String pushNotificationToken) {
+        if (activity == null) {
+            return;
+        }
+        ApplicationInfo applicationInfo = new ApplicationInfo(pushNotificationToken);
+        ApplicationInfo.ApplicationWrapper applicationWrapper = new ApplicationInfo.ApplicationWrapper();
+        applicationWrapper.setApplicationInfo(applicationInfo);
+        Call<ResponseBody> call = appRequest.updateApplicationInfo(applicationWrapper);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+                if (response.isSuccess()) {
+                    Log.d(LOG_TAG, "updating application info with success");
+                }
+                else {
+                    Log.d(LOG_TAG, "updating application info error");
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+                Log.d(LOG_TAG, t.getLocalizedMessage());
+            }
+        });
     }
 }

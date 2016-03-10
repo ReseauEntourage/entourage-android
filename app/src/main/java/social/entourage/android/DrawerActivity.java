@@ -119,10 +119,6 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
         intentAction = getIntent().getAction();
 
-//        Picasso.with(this).load(R.drawable.ic_user_photo)
-//                .transform(new CropCircleTransformation())
-//                .into(userPhoto);
-
         User user = getAuthenticationController().getUser();
         if (user != null) {
             userName.setText(user.getDisplayName());
@@ -133,6 +129,11 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }
+            //refresh the user info from the server
+            Location location = EntourageLocation.getInstance().getCurrentLocation();
+            presenter.updateUser(null, null, null, (location != null ? location : null));
+            //initialize the push notifications
+            initializePushNotifications();
         }
     }
 
@@ -465,6 +466,17 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         }
     }
 
+    private void initializePushNotifications() {
+        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+        if (notificationsEnabled) {
+            startService(new Intent(this, RegisterGCMService.class));
+        }
+        else {
+            presenter.updateApplicationInfo("");
+        }
+    }
+
     // ----------------------------------
     // BUS LISTENERS
     // ----------------------------------
@@ -472,8 +484,10 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void GCMTokenObtained(OnGCMTokenObtainedEvent event) {
         if (event.getRegistrationId() != null) {
-            Location location = EntourageLocation.getInstance().getCurrentLocation();
-            presenter.updateUser(null, null, null, (location != null ? location : null));
+            presenter.updateApplicationInfo(event.getRegistrationId());
+        }
+        else {
+            presenter.updateApplicationInfo("");
         }
     }
 

@@ -28,12 +28,6 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
         if(!authenticationController.isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-        } else {
-            final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-            boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
-            if (notificationsEnabled) {
-                startService(new Intent(this, RegisterGCMService.class));
-            }
         }
     }
 

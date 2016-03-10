@@ -41,28 +41,20 @@ public class RegisterGCMService extends IntentService {
 
         final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
-        int storedVersion = sharedPreferences.getInt(KEY_APPLICATION_VERSION, ENTOURAGE_MIN_VERSION);
-        int currentVersion = getCurrentCodeVersion();
-
-        if (storedVersion < currentVersion) {
-
-            String registrationId = null;
-            try {
-                registrationId = InstanceID.getInstance(this).getToken(GCM_SENDER_ID, GCM_SCOPE);
-            } catch (IOException e) {
-                Log.e("Error", "Can not register Google Cloud Messaging");
-            }
-
-            if (registrationId != null) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(KEY_REGISTRATION_ID, registrationId);
-                editor.commit();
-                BusProvider.getInstance().register(this);
-                BusProvider.getInstance().post(new OnGCMTokenObtainedEvent(registrationId));
-            }
-
+        String registrationId = null;
+        try {
+            registrationId = InstanceID.getInstance(this).getToken(GCM_SENDER_ID, GCM_SCOPE);
+        } catch (IOException e) {
+            Log.e("Error", "Can not register Google Cloud Messaging");
         }
 
+        if (registrationId != null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_REGISTRATION_ID, registrationId);
+            editor.commit();
+        }
+        BusProvider.getInstance().register(this);
+        BusProvider.getInstance().post(new OnGCMTokenObtainedEvent(registrationId));
     }
 
     private int getCurrentCodeVersion() {
