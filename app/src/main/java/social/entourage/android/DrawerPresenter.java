@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -24,6 +25,7 @@ import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.tools.BusProvider;
 
@@ -92,6 +94,14 @@ public class DrawerPresenter {
                 }
             }
         });
+    }
+
+    protected void displayMyTours() {
+        if (activity != null) {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            MyToursFragment fragment = new MyToursFragment();
+            fragment.show(fragmentManager, MyToursFragment.TAG);
+        }
     }
 
     // ----------------------------------

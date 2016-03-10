@@ -92,4 +92,10 @@
     <string name="tour_join_request_message_sent">!!Message sent</string>
     <string name="tour_join_request_message_error">!!Message not sent</string>
 
+    <!-- My tours -->
+    <string name="mytours_title">MES MARAUDES</string>
+    <string name="mytours_ongoing">En cours</string>
+    <string name="mytours_recorded">Enregistrés</string>
+    <string name="mytours_frozen">Clôturés</string>
+
 </resources>

@@ -46,12 +46,13 @@ import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.TourService;
+import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
 
-public class DrawerActivity extends EntourageSecuredActivity implements TourInformationFragment.OnTourInformationFragmentFinish, ChoiceFragment.OnChoiceFragmentFinish {
+public class DrawerActivity extends EntourageSecuredActivity implements TourInformationFragment.OnTourInformationFragmentFinish, ChoiceFragment.OnChoiceFragmentFinish, MyToursFragment.OnFragmentInteractionListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -315,8 +316,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             discussionBadgeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    discussionBadgeView.setBadgeCount(0);
-                    Toast.makeText(getApplicationContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+                    presenter.displayMyTours();
                 }
             });
         }
@@ -551,5 +551,10 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 mapEntourageFragment.displayChosenTour(tour);
             }
         }
+    }
+
+    @Override
+    public void onShowTourInfo(final Tour tour) {
+
     }
 }
