@@ -148,6 +148,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private float originalMapLayoutWeight;
 
+    private boolean isRequestingToJoin = false;
+
     @Bind(R.id.fragment_map_pin)
     View mapPin;
 
@@ -381,6 +383,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void act(Tour tour) {
+        isRequestingToJoin = true;
         tourService.requestToJoinTour(tour);
     }
 
@@ -615,7 +618,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onUserStatusChanged(final TourUser user, final Tour tour) {
         if (user == null) {
             //error changing the status
-            Toast.makeText(getContext(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
+            if (isRequestingToJoin) {
+                Toast.makeText(getContext(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
+            }
         }
         else {
             tour.setJoinStatus(user.getStatus());
@@ -625,6 +630,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(tour);
             tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
         }
+        isRequestingToJoin = false;
     }
 
     // ----------------------------------

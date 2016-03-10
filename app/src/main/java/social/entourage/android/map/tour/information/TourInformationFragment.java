@@ -360,6 +360,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         builder.create().show();
     }
 
+    @OnClick({R.id.tour_info_join_button, R.id.tour_info_share_button})
+    public void onJoinTourButton() {
+        if (tourService != null) {
+            showProgressBar();
+            tourService.requestToJoinTour(tour);
+        }
+        else {
+            Toast.makeText(getActivity(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -686,6 +697,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         apiRequestsCount--;
         if (apiRequestsCount <= 0) {
             progressBar.setVisibility(View.GONE);
+            apiRequestsCount = 0;
         }
     }
 
@@ -884,7 +896,35 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Override
     public void onUserStatusChanged(final TourUser user, final Tour tour) {
+        //ignore requests that are not related to our tour
+        if (tour.getId() != this.tour.getId()) return;
 
+        hideProgressBar();
+
+        //check for errors
+        if (user == null) {
+            Toast.makeText(getActivity(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //update the local tour info
+        boolean oldPrivateStatus = tour.isPrivate();
+        tour.setJoinStatus(user.getStatus());
+        boolean currentPrivateStatus = tour.isPrivate();
+        //update UI
+        if (oldPrivateStatus != currentPrivateStatus) {
+            if (tour.isPrivate()) {
+                switchToPrivateSection();
+                loadPrivateCards();
+            }
+            else {
+                switchToPublicSection();
+            }
+        }
+        else {
+            updateHeaderButtons();
+            updateJoinStatus();
+        }
     }
 
     // ----------------------------------
