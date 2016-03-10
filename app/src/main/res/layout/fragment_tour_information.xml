@@ -175,6 +175,21 @@
         android:indeterminateDrawable="@drawable/circular_progress_bar"
         android:visibility="visible"/>
 
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/layout_private_tour_information"
+        android:layout_below="@+id/tour_info_details_layout"
+        android:id="@+id/tour_info_private_section"
+        android:visibility = "gone"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/layout_public_tour_information"
+        android:layout_below="@+id/tour_info_details_layout"
+        android:id="@+id/tour_info_public_section"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -211,20 +226,5 @@
             android:alpha="1"
             android:layout_marginBottom="10dp"/>
     </LinearLayout>
-
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/layout_private_tour_information"
-        android:layout_below="@+id/tour_info_details_layout"
-        android:id="@+id/tour_info_private_section"
-        android:visibility = "gone"/>
-
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/layout_public_tour_information"
-        android:layout_below="@+id/tour_info_details_layout"
-        android:id="@+id/tour_info_public_section"/>
 
 </RelativeLayout>

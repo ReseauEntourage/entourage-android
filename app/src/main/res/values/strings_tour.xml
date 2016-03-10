@@ -52,6 +52,7 @@
     <string name="tour_info_quit_tour_title">!!Quit tour</string>
     <string name="tour_info_quit_tour_description">!!Are you sure you want to quit the tour?</string>
     <string name="tour_info_quit_tour_error">!!Error quiting the tour</string>
+    <string name="tour_info_request_error">!!Request error</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>

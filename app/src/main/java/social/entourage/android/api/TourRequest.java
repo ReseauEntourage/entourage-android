@@ -4,6 +4,7 @@ import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -84,5 +85,11 @@ public interface TourRequest {
     @POST("tours/{tour_id}/users")
     Call<TourUser.TourUserWrapper> requestToJoinTour(
             @Path("tour_id") long tourId
+    );
+
+    @DELETE("tours/{tour_id}/users/{user_id}")
+    Call<TourUser.TourUserWrapper> removeUserFromTour(
+            @Path("tour_id") long tourId,
+            @Path("user_id") int userId
     );
 }

@@ -72,6 +72,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -90,6 +91,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
     private static final int SCROLL_DELTA_Y_THRESHOLD = 20;
+
+    private static final int REQUEST_NONE = 0;
+    private static final int REQUEST_QUIT_TOUR = 1;
+    private static final int REQUEST_JOIN_TOUR = 2;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -353,7 +358,19 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        presenter.quitTour();
+                        if (tourService == null) {
+                            Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            showProgressBar();
+                            User me = EntourageApplication.me(getActivity());
+                            if (me == null) {
+                                Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                tourService.removeUserFromTour(tour, me.getId());
+                            }
+                        }
                     }
                 })
                 .setNegativeButton(R.string.no, null);
@@ -417,8 +434,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         tourPeopleCount.setText("" + tour.getNumberOfPeople());
 
-        initializeOptionsView();
-
         if (tour.isPrivate()) {
             switchToPrivateSection();
         }
@@ -428,16 +443,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void initializeOptionsView() {
-        AuthenticationController authenticationController = EntourageApplication.get(getActivity()).getEntourageComponent().getAuthenticationController();
-        if (authenticationController.isAuthenticated()) {
-            int me = authenticationController.getUser().getId();
-            if (tour.getAuthor().getUserID() != me) {
-                Button stopTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_stop_tour);
-                stopTourButton.setVisibility(View.GONE);
+        User me = EntourageApplication.me(getActivity());
+        Button stopTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_stop_tour);
+        Button quitTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_quit_tour);
+        stopTourButton.setVisibility(View.GONE);
+        quitTourButton.setVisibility(View.GONE);
+        if (me != null) {
+            int myId = me.getId();
+            if (tour.getAuthor().getUserID() != myId) {
+                quitTourButton.setVisibility(View.VISIBLE);
             }
             else {
-                Button quitTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_quit_tour);
-                quitTourButton.setVisibility(View.GONE);
+                stopTourButton.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -574,6 +591,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         privateSection.setVisibility(View.VISIBLE);
 
         updateHeaderButtons();
+        initializeOptionsView();
 
         //hide the comment section if the user is not accepted
         if (!tour.getJoinStatus().equals(Tour.JOIN_STATUS_ACCEPTED)) {
@@ -903,7 +921,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         //check for errors
         if (user == null) {
-            Toast.makeText(getActivity(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.tour_info_request_error, Toast.LENGTH_SHORT).show();
             return;
         }
 

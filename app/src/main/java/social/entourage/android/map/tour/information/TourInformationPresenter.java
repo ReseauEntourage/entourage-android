@@ -52,8 +52,7 @@ public class TourInformationPresenter {
             public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
                 if (response.isSuccess()) {
                     fragment.onTourUsersReceived(response.body().getUsers());
-                }
-                else {
+                } else {
                     fragment.onTourUsersReceived(null);
                 }
             }
@@ -133,8 +132,7 @@ public class TourInformationPresenter {
             public void onResponse(final Call<Encounter.EncountersWrapper> call, final Response<Encounter.EncountersWrapper> response) {
                 if (response.isSuccess()) {
                     fragment.onTourEncountersReceived(response.body().getEncounters());
-                }
-                else {
+                } else {
                     fragment.onTourEncountersReceived(null);
                 }
             }
@@ -144,11 +142,6 @@ public class TourInformationPresenter {
                 fragment.onTourEncountersReceived(null);
             }
         });
-    }
-
-    public void quitTour() {
-        fragment.showProgressBar();
-        fragment.onTourQuited(null);
     }
 
 }

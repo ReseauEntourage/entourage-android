@@ -320,6 +320,10 @@ public class TourService extends Service {
         tourServiceManager.requestToJoinTour(tour);
     }
 
+    public void removeUserFromTour(Tour tour, int userId) {
+        tourServiceManager.removeUserFromTour(tour, userId);
+    }
+
     public void register(TourServiceListener listener) {
         listeners.add(listener);
         if (tourServiceManager.isRunning()) {

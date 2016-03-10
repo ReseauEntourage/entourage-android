@@ -573,6 +573,35 @@ public class TourServiceManager {
                 }
             });
         }
+        else {
+            tourService.notifyListenersUserStatusChanged(null, tour);
+        }
+    }
+
+    protected void removeUserFromTour(final Tour tour, int userId) {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tour.getId(), userId);
+            call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+                @Override
+                public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+                    if (response.isSuccess()) {
+                        tourService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
+                    }
+                    else {
+                        tourService.notifyListenersUserStatusChanged(null, tour);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call call, final Throwable t) {
+                    tourService.notifyListenersUserStatusChanged(null, tour);
+                }
+            });
+        }
+        else {
+            tourService.notifyListenersUserStatusChanged(null, tour);
+        }
     }
 
     // ----------------------------------
