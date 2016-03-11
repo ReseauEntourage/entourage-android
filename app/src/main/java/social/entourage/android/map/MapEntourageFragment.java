@@ -471,6 +471,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 if (scrollviewTours.getVisibility() == View.VISIBLE) {
                     hideToursList();
                 }
+                addTourCell(tourService.getCurrentTour());
                 //mapPin.setVisibility(View.VISIBLE);
                 mapOptionsMenu.setVisibility(View.VISIBLE);
                 updateFloatingMenuOptions();

@@ -254,7 +254,8 @@ public class TourServiceManager {
                     updateLocationServiceFrequency();
                     initializeTimerFinishTask();
                     tourId = response.body().getTour().getId();
-                    tour.setId(tourId);
+                    //tour.setId(tourId);
+                    tour = response.body().getTour();
                     tourService.notifyListenersTourCreated(true, tourId);
 
                     if (checkPermission()) {
