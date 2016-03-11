@@ -520,6 +520,22 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         fragment.show(getSupportFragmentManager(), TAG_FRAGMENT_USER);
     }
 
+    @Subscribe
+    public void tourInfoViewRequested(OnTourInfoViewRequestedEvent event) {
+        if (mapEntourageFragment != null) {
+            mapEntourageFragment.displayChosenTour(event.getTour());
+        }
+    }
+
+    @Subscribe
+    public void userActRequested(OnUserActEvent event) {
+        if (event.getAct().equals(OnUserActEvent.ACT_JOIN)) {
+            if (mapEntourageFragment != null) {
+                mapEntourageFragment.act(event.getTour());
+            }
+        }
+    }
+
     // ----------------------------------
     // INTERFACES CALLBACKS
     // ----------------------------------

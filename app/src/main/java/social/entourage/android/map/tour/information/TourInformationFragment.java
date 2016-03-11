@@ -686,11 +686,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             duration = tour.getEndTime().getTime() - tour.getStartTime().getTime();
         }
         List<TourPoint> tourPointsList = tour.getTourPoints();
-        TourPoint startPoint = tourPointsList.get(0);
-        for (int i=1; i < tourPointsList.size(); i++) {
-            TourPoint p = tourPointsList.get(i);
-            distance += p.distanceTo(startPoint);
-            startPoint = p;
+        if (tourPointsList.size() > 1) {
+            TourPoint startPoint = tourPointsList.get(0);
+            for (int i = 1; i < tourPointsList.size(); i++) {
+                TourPoint p = tourPointsList.get(i);
+                distance += p.distanceTo(startPoint);
+                startPoint = p;
+            }
         }
         TourTimestamp tourTimestamp = new TourTimestamp(
                 tour.getEndTime(),

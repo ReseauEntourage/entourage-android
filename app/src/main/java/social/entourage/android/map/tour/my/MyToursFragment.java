@@ -7,13 +7,20 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
+
+import java.util.Iterator;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,6 +44,8 @@ public class MyToursFragment extends DialogFragment {
     private static final String TAB_RECORDED_TOURS = "tab_recorded_tours";
     private static final String TAB_FROZEN_TOURS = "tab_frozen_tours";
 
+    private static final int API_TOURS_PER_PAGE = 10;
+
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -48,6 +57,28 @@ public class MyToursFragment extends DialogFragment {
 
     @Bind(R.id.mytours_tabHost)
     TabHost tabHost;
+
+    @Bind(R.id.mytours_ongoing)
+    RecyclerView ongoingToursRecyclerView;
+
+    MyToursAdapter ongoingToursAdapter;
+
+    @Bind(R.id.mytours_recorded)
+    RecyclerView recordedToursRecyclerView;
+
+    MyToursAdapter recordedToursAdapter;
+
+    @Bind(R.id.mytours_frozen)
+    RecyclerView frozenToursRecyclerView;
+
+    MyToursAdapter frozenToursAdapter;
+
+    @Bind(R.id.mytours_progress_bar)
+    ProgressBar progressBar;
+
+    private int apiRequestsCount = 0;
+
+    private int page = 0;
 
     // ----------------------------------
     // Lifecycle
@@ -73,6 +104,7 @@ public class MyToursFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        retrieveMyTours();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -113,13 +145,24 @@ public class MyToursFragment extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+    // ----------------------------------
+    // Private methods
+    // ----------------------------------
+
     private void initializeView() {
+        initializeTabHost();
+        initializeRecyclerViews();
+    }
+
+    private void initializeTabHost() {
         tabHost.setup();
-        tabHost.getTabWidget().setDividerDrawable(R.color.accent);
-        tabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         setupTab(R.id.mytours_ongoing_layout, getString(R.string.mytours_ongoing));
         setupTab(R.id.mytours_recorded_layout, getString(R.string.mytours_recorded));
         setupTab(R.id.mytours_frozen_layout, getString(R.string.mytours_frozen));
+
+        TabWidget tabWidget = tabHost.getTabWidget();
+        tabWidget.getChildTabViewAt(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_tabitem_left));
+        tabWidget.getChildTabViewAt(tabWidget.getTabCount() - 1).setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_tabitem_right));
     }
 
     private void setupTab(@IdRes int viewId, String tag) {
@@ -137,6 +180,64 @@ public class MyToursFragment extends DialogFragment {
         return view;
     }
 
+    private void initializeRecyclerViews() {
+        ongoingToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        ongoingToursAdapter = new MyToursAdapter();
+        ongoingToursRecyclerView.setAdapter(ongoingToursAdapter);
+
+        recordedToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recordedToursAdapter = new MyToursAdapter();
+        recordedToursRecyclerView.setAdapter(recordedToursAdapter);
+
+        frozenToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        frozenToursAdapter = new MyToursAdapter();
+        frozenToursRecyclerView.setAdapter(frozenToursAdapter);
+    }
+
+    protected void showProgressBar() {
+        apiRequestsCount++;
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgressBar() {
+        apiRequestsCount--;
+        if (apiRequestsCount <= 0) {
+            progressBar.setVisibility(View.GONE);
+            apiRequestsCount = 0;
+        }
+    }
+
+    private void retrieveMyTours() {
+        showProgressBar();
+        presenter.getMyTours(page, API_TOURS_PER_PAGE);
+    }
+
+    // ----------------------------------
+    // Presenter callbacks
+    // ----------------------------------
+
+    protected void onToursReceived(List<Tour> tourList) {
+        hideProgressBar();
+        if (tourList == null) return;
+        if (tourList.size() > 0) {
+            Iterator<Tour> iterator = tourList.iterator();
+            while (iterator.hasNext()) {
+                Tour tour = iterator.next();
+                if (tour.getTourStatus().equals(Tour.TOUR_ON_GOING)) {
+                    ongoingToursAdapter.add(tour);
+                }
+                else if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+                    recordedToursAdapter.add(tour);
+                }
+                else {
+                    frozenToursAdapter.add(tour);
+                }
+            }
+            page++;
+            //TODO Implement pagination better
+            //presenter.getMyTours(page, API_TOURS_PER_PAGE);
+        }
+    }
 
     // ----------------------------------
     // BUTTONS HANDLING

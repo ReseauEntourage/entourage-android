@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="social.entourage.android.map.tour.my.MyToursFragment"
-                android:background="@color/background">
+                android:background="@color/background_light">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -42,23 +42,22 @@
         android:id="@+id/mytours_tabHost"
         android:layout_below="@+id/mytours_title_layout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@color/background_light">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/background_light">
+            >
 
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_tabwidget"
                 android:tabStripEnabled="false"
                 android:gravity="center_horizontal"
                 android:layout_margin="20dp"
-                android:divider="@color/accent"
                 >
             </TabWidget>
 
@@ -66,7 +65,7 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background">
+                >
 
                 <LinearLayout
                     android:id="@+id/mytours_ongoing_layout"
@@ -106,5 +105,13 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mytours_progress_bar"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

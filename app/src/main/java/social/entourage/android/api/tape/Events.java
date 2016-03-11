@@ -2,6 +2,8 @@ package social.entourage.android.api.tape;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import social.entourage.android.api.model.map.Tour;
+
 public class Events {
 
     /**
@@ -86,6 +88,30 @@ public class Events {
     }
 
     /**
+     * Event signaling that user wants to act on a tour
+     */
+    public static class OnUserActEvent {
+
+        public static String ACT_JOIN = "join";
+
+        private String act;
+        private Tour tour;
+
+        public OnUserActEvent(String act, Tour tour) {
+            this.act = act;
+            this.tour = tour;
+        }
+
+        public String getAct() {
+            return act;
+        }
+
+        public Tour getTour() {
+            return tour;
+        }
+    }
+
+    /**
      * Event signaling that user view is requested
      */
     public static class OnUserViewRequestedEvent {
@@ -98,6 +124,22 @@ public class Events {
 
         public int getUserId() {
             return userId;
+        }
+    }
+
+    /**
+     * Event signaling that tour info view is requested
+     */
+    public static class OnTourInfoViewRequestedEvent {
+
+        private Tour tour;
+
+        public OnTourInfoViewRequestedEvent(Tour tour) {
+            this.tour = tour;
+        };
+
+        public Tour getTour() {
+            return tour;
         }
     }
 
