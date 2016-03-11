@@ -343,6 +343,31 @@ public class TourServiceManager {
         });
     }
 
+    protected void freezeTour(final Tour tour) {
+        if (tour == null) return;
+        tour.setTourStatus(Tour.TOUR_FREEZED);
+        final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
+        tourWrapper.setTour(tour);
+        Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getId(), tourWrapper);
+        call.enqueue(new Callback<Tour.TourWrapper>() {
+            @Override
+            public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
+                if (response.isSuccess()) {
+                    Log.d("Success", response.body().getTour().toString());
+                    tourService.notifyListenersTourClosed(true, response.body().getTour());
+                } else {
+                    tourService.notifyListenersTourClosed(false, tour);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
+                Log.e("Error", t.getLocalizedMessage());
+                tourService.notifyListenersTourClosed(false, tour);
+            }
+        });
+    }
+
     public void updateTourCoordinates() {
         if (pointsToSend.isEmpty()) {
             if (isTourClosing) {

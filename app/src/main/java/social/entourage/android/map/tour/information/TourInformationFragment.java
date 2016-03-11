@@ -323,30 +323,37 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick(R.id.tour_info_button_stop_tour)
     public void onStopTourButton() {
-        //compute distance
-        float distance = 0.0f;
-        List<TourPoint> tourPointsList = tour.getTourPoints();
-        TourPoint startPoint = tourPointsList.get(0);
-        for (int i=1; i < tourPointsList.size(); i++) {
-            TourPoint p = tourPointsList.get(i);
-            distance += p.distanceTo(startPoint);
-            startPoint = p;
+        if (tour.getTourStatus().equals(Tour.TOUR_ON_GOING)) {
+            //compute distance
+            float distance = 0.0f;
+            List<TourPoint> tourPointsList = tour.getTourPoints();
+            TourPoint startPoint = tourPointsList.get(0);
+            for (int i = 1; i < tourPointsList.size(); i++) {
+                TourPoint p = tourPointsList.get(i);
+                distance += p.distanceTo(startPoint);
+                startPoint = p;
+            }
+            tour.setDistance(distance);
+
+            //duration
+            Date now = new Date();
+            Date duration = new Date(now.getTime() - tour.getStartTime().getTime());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            tour.setDuration(dateFormat.format(duration));
+
+            //hide the options
+            optionsLayout.setVisibility(View.GONE);
+
+            //show stop tour activity
+            if (mListener != null) {
+                mListener.showStopTourActivity(tour);
+            }
         }
-        tour.setDistance(distance);
-
-        //duration
-        Date now = new Date();
-        Date duration = new Date(now.getTime() - tour.getStartTime().getTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        tour.setDuration(dateFormat.format(duration));
-
-        //hide the options
-        optionsLayout.setVisibility(View.GONE);
-
-        //show stop tour activity
-        if (mListener != null) {
-            mListener.showStopTourActivity(tour);
+        else if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+            if (tourService != null) {
+                tourService.freezeTour(tour);
+            }
         }
     }
 
@@ -454,7 +461,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 quitTourButton.setVisibility(View.VISIBLE);
             }
             else {
-                stopTourButton.setVisibility(View.VISIBLE);
+                stopTourButton.setVisibility(tour.getTourStatus().equals(Tour.TOUR_FREEZED) ? View.GONE : View.VISIBLE);
             }
         }
     }
@@ -593,8 +600,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         updateHeaderButtons();
         initializeOptionsView();
 
-        //hide the comment section if the user is not accepted
-        if (!tour.getJoinStatus().equals(Tour.JOIN_STATUS_ACCEPTED)) {
+        //hide the comment section if the user is not accepted or tour is freezed
+        if (!tour.getJoinStatus().equals(Tour.JOIN_STATUS_ACCEPTED) || tour.getTourStatus().equals(Tour.TOUR_FREEZED)) {
             commentLayout.setVisibility(View.GONE);
         }
 
@@ -901,11 +908,23 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Override
     public void onTourClosed(final boolean closed, final Tour tour) {
-        if (closed && tour.getId() == this.tour.getId()) {
-            this.tour.setTourStatus(Tour.TOUR_CLOSED);
+        //ignore requests that are not related to our tour
+        if (tour.getId() != this.tour.getId()) return;
+
+        if (closed) {
+            this.tour.setTourStatus(tour.getTourStatus());
             this.tour.setEndTime(tour.getEndTime());
-            addDiscussionTourEndCard();
-            updateDiscussionList();
+            if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+                addDiscussionTourEndCard();
+                updateDiscussionList();
+            }
+            else if (tour.getTourStatus().equals(Tour.TOUR_FREEZED)){
+                commentLayout.setVisibility(View.GONE);
+            }
+            optionsLayout.setVisibility(View.GONE);
+        }
+        else {
+            Toast.makeText(getActivity(), R.string.tour_close_fail, Toast.LENGTH_SHORT).show();
         }
     }
 

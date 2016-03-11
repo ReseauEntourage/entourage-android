@@ -29,6 +29,7 @@ public class Tour implements Serializable {
     public static final String KEY_TOURS = "social.entourage.android.KEY_TOURS";
     public static final String TOUR_CLOSED = "closed";
     public static final String TOUR_ON_GOING = "ongoing";
+    public static final String TOUR_FREEZED = "freezed";
     private static final String TOUR_FEET = "feet";
     private static final String TOUR_CAR = "car";
     public static final String JOIN_STATUS_NOT_REQUESTED = "not_requested";
@@ -294,7 +295,7 @@ public class Tour implements Serializable {
     }
 
     public boolean isClosed() {
-        return tourStatus.equals(TOUR_CLOSED);
+        return !tourStatus.equals(TOUR_ON_GOING);
     }
 
     public boolean isPrivate() {

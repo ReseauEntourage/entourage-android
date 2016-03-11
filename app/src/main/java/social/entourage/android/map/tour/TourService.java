@@ -316,6 +316,10 @@ public class TourService extends Service {
         tourServiceManager.finishTour(tour);
     }
 
+    public void freezeTour(Tour tour) {
+        tourServiceManager.freezeTour(tour);
+    }
+
     public void requestToJoinTour(Tour tour) {
         tourServiceManager.requestToJoinTour(tour);
     }
