@@ -192,10 +192,10 @@ public class LoginPresenter {
             if (checkedEmail != null) {
                 Newsletter newsletter = new Newsletter(email, true);
                 Newsletter.NewsletterWrapper newsletterWrapper = new Newsletter.NewsletterWrapper(newsletter);
-                Call<ResponseBody> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
-                call.enqueue(new Callback<ResponseBody>() {
+                Call<Newsletter.NewsletterWrapper> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
+                call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<Newsletter.NewsletterWrapper> call, Response<Newsletter.NewsletterWrapper> response) {
                         if (response.isSuccess()) {
                             activity.newsletterResult(true);
                         } else {
@@ -204,7 +204,7 @@ public class LoginPresenter {
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(Call<Newsletter.NewsletterWrapper> call, Throwable t) {
                         activity.newsletterResult(false);
                     }
                 });

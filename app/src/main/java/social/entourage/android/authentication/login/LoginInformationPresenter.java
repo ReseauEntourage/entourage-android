@@ -43,10 +43,10 @@ public class LoginInformationPresenter {
             fragment.startLoader();
             Newsletter newsletter = new Newsletter(email, active);
             Newsletter.NewsletterWrapper newsletterWrapper = new Newsletter.NewsletterWrapper(newsletter);
-            Call<ResponseBody> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
-            call.enqueue(new Callback<ResponseBody>() {
+            Call<Newsletter.NewsletterWrapper> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
+            call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(Call<Newsletter.NewsletterWrapper> call, Response<Newsletter.NewsletterWrapper> response) {
                     if (response.isSuccess()) {
                         fragment.newsletterResult(true);
                     } else {
@@ -55,7 +55,7 @@ public class LoginInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<Newsletter.NewsletterWrapper> call, Throwable t) {
                     fragment.newsletterResult(false);
                 }
             });

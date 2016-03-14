@@ -15,5 +15,5 @@ public interface LoginRequest {
     Call<LoginResponse> login(@Body HashMap<String, String> user);
 
     @POST("newsletter_subscriptions.json")
-    Call<ResponseBody> subscribeToNewsletter(@Body Newsletter.NewsletterWrapper newsletterWrapper);
+    Call<Newsletter.NewsletterWrapper> subscribeToNewsletter(@Body Newsletter.NewsletterWrapper newsletterWrapper);
 }
