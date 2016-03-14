@@ -21,6 +21,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -93,6 +95,7 @@ import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourListItemView;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.join.TourJoinRequestFragment;
+import social.entourage.android.map.tour.my.ToursAdapter;
 import social.entourage.android.tools.BusProvider;
 
 public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener {
@@ -174,11 +177,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.launcher_tour_type)
     RadioGroup radioGroupType;
 
-    @Bind(R.id.scrollview_tours)
-    ScrollView scrollviewTours;
+    @Bind(R.id.fragment_map_tours_view)
+    RecyclerView toursView;
 
-    @Bind(R.id.layout_tours)
-    LinearLayout layoutTours;
+    ToursAdapter toursAdapter;
 
     @Bind(R.id.layout_map)
     FrameLayout layoutMapMain;
@@ -241,6 +243,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         presenter.start();
         initializeMap();
         initializeFloatingMenu();
+        initializeToursListView();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -468,7 +471,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 currentTourId = tourId;
                 presenter.incrementUserToursCount();
                 mapLauncherLayout.setVisibility(View.GONE);
-                if (scrollviewTours.getVisibility() == View.VISIBLE) {
+                if (toursView.getVisibility() == View.VISIBLE) {
                     hideToursList();
                 }
                 addTourCell(tourService.getCurrentTour());
@@ -573,7 +576,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 displayedTourHeads = 0;
 
-                layoutTours.removeAllViews();
+                toursAdapter.removeAllTours();
 
                 previousCoordinates = null;
 
@@ -740,7 +743,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void showLongClickOnMapOptions(LatLng latLng) {
         //only show when map is in full screen and not visible
-        if (scrollviewTours.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
+        if (toursView.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
             return;
         }
         //if ongoing tour, show only if the point is in the current tour
@@ -854,7 +857,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void onMapClick(LatLng latLng) {
                         if (getActivity() != null) {
-                            if (scrollviewTours.getVisibility() == View.VISIBLE) {
+                            if (toursView.getVisibility() == View.VISIBLE) {
                                 hideToursList();
                             } else {
                                 loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
@@ -883,6 +886,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 });
             }
         });
+    }
+
+    private void initializeToursListView() {
+        toursView.setLayoutManager(new LinearLayoutManager(getContext()));
+        toursAdapter = new ToursAdapter();
+        toursView.setAdapter(toursAdapter);
     }
 
     // ----------------------------------
@@ -1137,7 +1146,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 retrievedTours.put(tour.getId(), tour);
                 drawnToursMap.put(tour.getId(), mapFragment.getMap().addPolyline(line));
                 addTourCell(tour);
-                new GeocoderTask().execute(tour);
             }
             if (tour.getTourStatus() == null) {
                 tour.setTourStatus(Tour.TOUR_CLOSED);
@@ -1149,34 +1157,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void addTourCell(Tour tour) {
-        //create the cell
-        TourListItemView tourCell = (TourListItemView) inflater.inflate(R.layout.layout_tour_cell, null, false);
-        tourCell.populate(tour, this);
-
-        //add the cell to the layout
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, 0, 0 ,10);
-        layoutTours.addView(tourCell, lp);
-    }
-
-    private TourListItemView findTourCellWithTour(Tour tour) {
-        if (tour == null) return null;
-        return (TourListItemView) layoutTours.findViewWithTag(tour.getId());
-    }
-
-    private void updateTourCellStartingPoint(Tour tour) {
-        if (tour.getStartAddress() == null) return;
-        TourListItemView tourCell = findTourCellWithTour(tour);
-        if (tourCell == null) return;
-
-        tourCell.updateStartLocation(tour);
+        toursAdapter.add(tour);
     }
 
     private void updateTourCellJoinStatus(Tour tour) {
-        TourListItemView tourCell = findTourCellWithTour(tour);
-        if (tourCell == null) return;
-
-        tourCell.updateJoinStatus(tour);
+        toursAdapter.updateTour(tour);
     }
 
     private void addTourHead(Tour tour) {
@@ -1214,7 +1199,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void hideToursList() {
-        scrollviewTours.setVisibility(View.GONE);
+        toursView.setVisibility(View.GONE);
 
         mapDisplayTypeRadioGroup.check(R.id.map_display_type_carte);
         mapDisplayTypeRadioGroup.setVisibility(View.VISIBLE);
@@ -1227,7 +1212,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void showToursList() {
-        scrollviewTours.setVisibility(View.VISIBLE);
+        toursView.setVisibility(View.VISIBLE);
 
         mapDisplayTypeRadioGroup.setVisibility(View.GONE);
 
@@ -1269,33 +1254,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         public void onServiceDisconnected(ComponentName name) {
             tourService.unregister(MapEntourageFragment.this);
             tourService = null;
-        }
-    }
-
-    private class GeocoderTask extends AsyncTask<Tour, Void, Tour> {
-
-        @Override
-        protected Tour doInBackground(final Tour... params) {
-            try {
-                Geocoder geoCoder = new Geocoder(getContext(), Locale.getDefault());
-                Tour tour = params[0];
-                if (tour.getTourPoints().isEmpty()) return null;
-                TourPoint tourPoint = tour.getTourPoints().get(0);
-                List<Address> addresses = geoCoder.getFromLocation(tourPoint.getLatitude(), tourPoint.getLongitude(), 1);
-                if (addresses.size() > 0) {
-                    tour.setStartAddress(addresses.get(0));
-                }
-                return tour;
-            }
-            catch (IOException e) {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(final Tour tour) {
-            updateTourCellStartingPoint(tour);
         }
     }
 }

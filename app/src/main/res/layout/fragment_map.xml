@@ -34,21 +34,11 @@
                     />
             </FrameLayout>
 
-            <ScrollView
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/scrollview_tours"
-                android:layout_weight="6">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/layout_tours">
-
-                </LinearLayout>
-
-            </ScrollView>
+                android:id="@+id/fragment_map_tours_view"
+                android:layout_weight="6"/>
 
         </LinearLayout>
 

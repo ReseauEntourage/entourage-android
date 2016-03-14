@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TabWidget;
@@ -61,17 +60,17 @@ public class MyToursFragment extends DialogFragment {
     @Bind(R.id.mytours_ongoing)
     RecyclerView ongoingToursRecyclerView;
 
-    MyToursAdapter ongoingToursAdapter;
+    ToursAdapter ongoingToursAdapter;
 
     @Bind(R.id.mytours_recorded)
     RecyclerView recordedToursRecyclerView;
 
-    MyToursAdapter recordedToursAdapter;
+    ToursAdapter recordedToursAdapter;
 
     @Bind(R.id.mytours_frozen)
     RecyclerView frozenToursRecyclerView;
 
-    MyToursAdapter frozenToursAdapter;
+    ToursAdapter frozenToursAdapter;
 
     @Bind(R.id.mytours_progress_bar)
     ProgressBar progressBar;
@@ -182,15 +181,15 @@ public class MyToursFragment extends DialogFragment {
 
     private void initializeRecyclerViews() {
         ongoingToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ongoingToursAdapter = new MyToursAdapter();
+        ongoingToursAdapter = new ToursAdapter();
         ongoingToursRecyclerView.setAdapter(ongoingToursAdapter);
 
         recordedToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recordedToursAdapter = new MyToursAdapter();
+        recordedToursAdapter = new ToursAdapter();
         recordedToursRecyclerView.setAdapter(recordedToursAdapter);
 
         frozenToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        frozenToursAdapter = new MyToursAdapter();
+        frozenToursAdapter = new ToursAdapter();
         frozenToursRecyclerView.setAdapter(frozenToursAdapter);
     }
 
