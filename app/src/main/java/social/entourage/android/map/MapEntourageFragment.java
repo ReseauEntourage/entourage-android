@@ -497,6 +497,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             centerMap(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
             isFollowing = true;
         }
+        tourStopButton.setVisibility(View.VISIBLE);
     }
 
     @Override
