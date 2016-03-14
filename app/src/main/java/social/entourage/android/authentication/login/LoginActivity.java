@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -194,6 +196,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginTutorial.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.GONE);
 
+        passwordEditText.setTypeface(Typeface.DEFAULT);
+        passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
+
         /*
         Picasso.with(this).load(R.drawable.ic_user_photo)
                 .transform(new CropCircleTransformation())
@@ -234,6 +239,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);
             loginSignup.setVisibility(View.VISIBLE);
+            showKeyboard(phoneEditText);
         }
         else if (loginTutorial.getVisibility() == View.VISIBLE) {
             loginTutorial.setVisibility(View.GONE);
@@ -390,6 +396,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginLostCode.setVisibility(View.VISIBLE);
         lostCodeButtonBlock.setVisibility(View.VISIBLE);
         confirmationBlock.setVisibility(View.GONE);
+
+        showKeyboard(lostCodePhone);
     }
 
     @OnClick(R.id.login_welcome_more)
@@ -417,6 +425,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.GONE);
         loginSignup.setVisibility(View.VISIBLE);
+        showKeyboard(phoneEditText);
     }
 
     void newCodeAsked(User user) {
@@ -521,6 +530,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void showLoginScreen() {
         loginStartup.setVisibility(View.GONE);
         loginSignup.setVisibility(View.VISIBLE);
+        showKeyboard(phoneEditText);
     }
 
     @OnClick(R.id.login_button_register)
@@ -574,6 +584,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         receivedCode.setText("");
         loginVerifyCode.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.VISIBLE);
+        showKeyboard(lostCodePhone);
     }
 
 }

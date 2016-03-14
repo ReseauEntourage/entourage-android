@@ -66,13 +66,14 @@
             android:gravity="center_horizontal"
             android:background="@color/background_login_light"
             android:divider="@color/login_divider"
-            android:showDividers="middle|end"
-            >
+            android:showDividers="middle">
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -80,26 +81,34 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/login_text_phone"
                     android:id="@+id/login_text_phone"
-                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:layout_weight="1"/>
 
                 <EditText
                     android:id="@+id/login_edit_phone"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
                     android:hint="@string/login_hint_phone"
                     android:textColorHint="@color/login_edittext_hint"
                     android:maxLength="12"
                     style="@style/CustomEditTextTheme"
-                    android:gravity="right"/>
+                    android:gravity="right|end"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="start"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:focusable="true"/>
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -107,9 +116,9 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/login_text_code"
                     android:id="@+id/login_text_code"
-                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:layout_weight="1"/>
 
                 <EditText
                     android:id="@+id/login_edit_code"
@@ -120,7 +129,12 @@
                     android:maxLength="6"
                     android:inputType="numberPassword"
                     style="@style/CustomEditTextTheme"
-                    android:gravity="right"/>
+                    android:textSize="15sp"
+                    android:gravity="right|end"
+                    android:ellipsize="start"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"/>
             </TableRow>
 
             <TableRow
