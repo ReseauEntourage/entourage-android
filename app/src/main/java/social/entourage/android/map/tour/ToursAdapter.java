@@ -1,11 +1,10 @@
-package social.entourage.android.map.tour.my;
+package social.entourage.android.map.tour;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import social.entourage.android.api.model.map.Tour;

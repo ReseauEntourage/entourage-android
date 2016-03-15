@@ -1,4 +1,4 @@
-package social.entourage.android.map.tour.my;
+package social.entourage.android.map.tour;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -27,7 +26,6 @@ import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.tools.BusProvider;
 
 /**

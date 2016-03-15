@@ -9,10 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -23,7 +20,6 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -52,18 +47,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.ui.BubbleIconFactory;
 import com.google.maps.android.ui.IconGenerator;
 import com.squareup.otto.Subscribe;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -92,10 +84,9 @@ import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
-import social.entourage.android.map.tour.TourListItemView;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.join.TourJoinRequestFragment;
-import social.entourage.android.map.tour.my.ToursAdapter;
+import social.entourage.android.map.tour.ToursAdapter;
 import social.entourage.android.tools.BusProvider;
 
 public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener {
@@ -178,7 +169,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     RadioGroup radioGroupType;
 
     @Bind(R.id.fragment_map_tours_view)
-    RecyclerView toursView;
+    RecyclerView toursListView;
 
     ToursAdapter toursAdapter;
 
@@ -471,7 +462,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 currentTourId = tourId;
                 presenter.incrementUserToursCount();
                 mapLauncherLayout.setVisibility(View.GONE);
-                if (toursView.getVisibility() == View.VISIBLE) {
+                if (toursListView.getVisibility() == View.VISIBLE) {
                     hideToursList();
                 }
                 addTourCell(tourService.getCurrentTour());
@@ -743,7 +734,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void showLongClickOnMapOptions(LatLng latLng) {
         //only show when map is in full screen and not visible
-        if (toursView.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
+        if (toursListView.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
             return;
         }
         //if ongoing tour, show only if the point is in the current tour
@@ -857,7 +848,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void onMapClick(LatLng latLng) {
                         if (getActivity() != null) {
-                            if (toursView.getVisibility() == View.VISIBLE) {
+                            if (toursListView.getVisibility() == View.VISIBLE) {
                                 hideToursList();
                             } else {
                                 loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
@@ -889,9 +880,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void initializeToursListView() {
-        toursView.setLayoutManager(new LinearLayoutManager(getContext()));
+        toursListView.setLayoutManager(new LinearLayoutManager(getContext()));
         toursAdapter = new ToursAdapter();
-        toursView.setAdapter(toursAdapter);
+        toursListView.setAdapter(toursAdapter);
     }
 
     // ----------------------------------
@@ -1199,7 +1190,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void hideToursList() {
-        toursView.setVisibility(View.GONE);
+        toursListView.setVisibility(View.GONE);
 
         mapDisplayTypeRadioGroup.check(R.id.map_display_type_carte);
         mapDisplayTypeRadioGroup.setVisibility(View.VISIBLE);
@@ -1212,7 +1203,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void showToursList() {
-        toursView.setVisibility(View.VISIBLE);
+        toursListView.setVisibility(View.VISIBLE);
 
         mapDisplayTypeRadioGroup.setVisibility(View.GONE);
 
