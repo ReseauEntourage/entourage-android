@@ -747,8 +747,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 if (tourUser.getUserId() == tour.getAuthor().getUserID()) {
                     continue;
                 }
-                //skip the rejected user
-                if (tourUser.getStatus().equals(Tour.JOIN_STATUS_REJECTED)) {
+                //show only the accepted users
+                if (!tourUser.getStatus().equals(Tour.JOIN_STATUS_ACCEPTED)) {
                     continue;
                 }
                 timestampedObjectList.add(tourUser);
