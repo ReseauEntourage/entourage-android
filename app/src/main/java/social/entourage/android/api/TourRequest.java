@@ -37,8 +37,14 @@ public interface TourRequest {
 
     @GET("users/{user_id}/tours.json")
     Call<Tour.ToursWrapper> retrieveToursByUserId(@Path("user_id") int userId,
+                                                  @Query("page") int page,
+                                                  @Query("per") int per);
+
+    @GET("users/{user_id}/tours.json")
+    Call<Tour.ToursWrapper> retrieveToursByUserIdAndStatus(@Path("user_id") int userId,
                                @Query("page") int page,
-                               @Query("per") int per);
+                               @Query("per") int per,
+                               @Query("status") String status);
 
     @GET("users/{user_id}/tours.json")
     Call<Tour.ToursWrapper> retrieveToursByUserIdAndPoint(@Path("user_id") int userId,

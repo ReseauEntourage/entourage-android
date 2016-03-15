@@ -37,27 +37,27 @@ public class MyToursPresenter {
     // Methods
     // ----------------------------------
 
-    protected void getMyTours(int page, int per) {
+    protected void getMyTours(int page, int per, final String status) {
         User me = EntourageApplication.me(fragment.getContext());
         if (me == null) {
-            fragment.onToursReceived(null);
+            fragment.onToursReceived(null, status);
             return;
         }
-        Call<Tour.ToursWrapper> call = tourRequest.retrieveToursByUserId(me.getId(), page, per);
+        Call<Tour.ToursWrapper> call = tourRequest.retrieveToursByUserIdAndStatus(me.getId(), page, per, status);
         call.enqueue(new Callback<Tour.ToursWrapper>() {
             @Override
             public void onResponse(final Call<Tour.ToursWrapper> call, final Response<Tour.ToursWrapper> response) {
                 if (response.isSuccess()) {
-                    fragment.onToursReceived(response.body().getTours());
+                    fragment.onToursReceived(response.body().getTours(), status);
                 }
                 else {
-                    fragment.onToursReceived(null);
+                    fragment.onToursReceived(null, status);
                 }
             }
 
             @Override
             public void onFailure(final Call<Tour.ToursWrapper> call, final Throwable t) {
-                fragment.onToursReceived(null);
+                fragment.onToursReceived(null, status);
             }
         });
     }

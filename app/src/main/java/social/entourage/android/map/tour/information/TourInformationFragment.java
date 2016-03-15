@@ -260,7 +260,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     public void onStart() {
         super.onStart();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.background)));
 
         //setup scroll listener
         discussionView.addOnScrollListener(discussionScrollListener);

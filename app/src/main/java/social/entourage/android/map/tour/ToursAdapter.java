@@ -36,6 +36,9 @@ public class ToursAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (addedTour.getStartTime() != null) {
             for (int i = 0; i < tourList.size(); i++) {
                 Tour tour = tourList.get(i);
+                //don't add if it already exists
+                if (tour.getId() == addedTour.getId()) return;
+                //check if we need to add it at the current position
                 Date tourStartTime = tour.getStartTime();
                 if (tour.getStartTime() != null) {
                     if (addedTour.getStartTime().after(tourStartTime)) {
@@ -46,6 +49,7 @@ public class ToursAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             }
         }
+        //add the tour at the end of the list
         tourList.add(addedTour);
         notifyItemInserted(tourList.size()-1);
     }
