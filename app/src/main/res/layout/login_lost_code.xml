@@ -61,7 +61,7 @@
 
             <EditText
                 android:id="@+id/login_edit_phone_lost_code"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:hint="@string/login_hint_phone_long"
@@ -72,7 +72,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
-                android:focusable="true"/>
+                android:focusable="true"
+                android:textSize="15sp"/>
 
         </TableRow>
 
