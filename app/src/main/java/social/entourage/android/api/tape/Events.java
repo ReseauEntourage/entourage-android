@@ -2,6 +2,7 @@ package social.entourage.android.api.tape;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.map.Tour;
 
 public class Events {
@@ -156,6 +157,22 @@ public class Events {
 
         public boolean isPermissionGranted() {
             return isPermissionGranted;
+        }
+    }
+
+    /**
+     * Event signaling a push notification has been received
+     */
+    public static class OnPushNotificationReceived {
+
+        private Message message;
+
+        public OnPushNotificationReceived(Message message) {
+            this.message = message;
+        }
+
+        public Message getMessage() {
+            return message;
         }
     }
 }

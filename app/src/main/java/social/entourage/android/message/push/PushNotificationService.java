@@ -15,7 +15,9 @@ import java.util.Random;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.message.MessageActivity;
+import social.entourage.android.tools.BusProvider;
 
 public class PushNotificationService extends IntentService {
 
@@ -37,8 +39,10 @@ public class PushNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         notificationId = new Random().nextInt(MAX - MIN + 1) + MIN;
-        Log.d("notification:", Integer.toString(notificationId));
-        displayPushNotification(getMessageFromNotification(intent.getExtras()));
+        Log.d("notification", Integer.toString(notificationId));
+        Message message = getMessageFromNotification(intent.getExtras());
+        BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
+        displayPushNotification(message);
     }
 
     private void displayPushNotification(Message message) {

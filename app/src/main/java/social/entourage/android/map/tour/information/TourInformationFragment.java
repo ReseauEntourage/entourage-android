@@ -70,6 +70,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
@@ -88,6 +89,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
+
+    public static final String TAG = "fragment_tour_information";
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
     private static final int SCROLL_DELTA_Y_THRESHOLD = 20;
@@ -392,6 +395,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         else {
             Toast.makeText(getActivity(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onPushNotificationChatMessageReceived(Message message) {
+        //we received a chat notification
+        //retrieve the last messages from server
+        if (presenter != null) {
+            presenter.getTourMessages();
         }
     }
 

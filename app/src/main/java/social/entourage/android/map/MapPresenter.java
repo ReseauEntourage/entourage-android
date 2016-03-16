@@ -74,7 +74,7 @@ public class MapPresenter {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
             TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tour);
-            tourInformationFragment.show(fragmentManager, "fragment_tour_information");
+            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }
 

@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
@@ -533,6 +534,29 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             if (mapEntourageFragment != null) {
                 mapEntourageFragment.act(event.getTour());
             }
+        }
+    }
+
+    // ----------------------------------
+    // PUSH NOTIFICATION HANDLING
+    // ----------------------------------
+
+    @Subscribe
+    public void onPushNotificationReceived(OnPushNotificationReceived event) {
+        final Message message = event.getMessage();
+        Handler mHandler = new Handler(getMainLooper());
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), message.getObject(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void onPushNotificationChatMessageReceived(Message message) {
+        TourInformationFragment fragment = (TourInformationFragment)getSupportFragmentManager().findFragmentByTag(TourInformationFragment.TAG);
+        if (fragment != null) {
+            fragment.onPushNotificationChatMessageReceived(message);
         }
     }
 
