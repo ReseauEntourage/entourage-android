@@ -11,6 +11,7 @@
     <string name="tour_stop">Arrêter</string>
     <string name="tour_pause">Pause</string>
     <string name="tour_close_fail">Echec de la fermeture de maraude</string>
+    <string name="tour_freeze_fail">!!Echec de la cloturer de maraude</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>
     <string name="tour_check_feet">A pieds</string>
@@ -42,9 +43,9 @@
     <string name="tour_info_button_close">Fermer</string>
     <string name="tour_info_location_card_date_format">c. HH:mm</string>
     <string name="tour_info_text_join_accepted">\u0020a rejoint votre maraude.</string>
-    <string name="tour_info_text_join_rejected">\u0020!!rejected</string>
-    <string name="tour_info_text_join_pending">\u0020!!pending</string>
-    <string name="tour_info_error_chat_message">Chat message not sent</string>
+    <string name="tour_info_text_join_rejected">!!\u0020 rejected</string>
+    <string name="tour_info_text_join_pending">!!\u0020pending</string>
+    <string name="tour_info_error_chat_message">!!Chat message not sent</string>
     <string name="tour_info_options_stop_tour">Clôturer</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
     <string name="tour_info_options_close">Annuler</string>
@@ -58,6 +59,7 @@
     <string name="tour_sent">Maraude sauvegardée</string>
     <string name="local_service_started">Maraude lancée</string>
     <string name="local_service_stopped">Maraude terminée</string>
+    <string name="tour_freezed">!!Maraude cloturée</string>
     <string name="local_service_running">Maraude en cours</string>
     <string name="local_service_connected">Connecté au GeoService</string>
     <string name="local_service_disconnected">Déconnecté du GeoService</string>

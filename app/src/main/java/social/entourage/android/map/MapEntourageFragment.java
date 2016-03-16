@@ -13,7 +13,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
@@ -588,9 +590,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     tourService.updateUserHistory(userId, 1, 1);
                 }
 
-                Toast.makeText(getActivity(), R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
+                @StringRes int tourStatusStringId =  R.string.local_service_stopped;
+                if (tour.getTourStatus().equals(Tour.TOUR_FREEZED)) {
+                    tourStatusStringId = R.string.tour_freezed;
+                }
+
+                Toast.makeText(getActivity(), tourStatusStringId, Toast.LENGTH_SHORT).show();
+
             } else {
-                Toast.makeText(getActivity(), R.string.tour_close_fail, Toast.LENGTH_SHORT).show();
+                @StringRes int tourClosedFailedId = R.string.tour_close_fail;
+                if (tour.getTourStatus().equals(Tour.TOUR_FREEZED)) {
+                    tourClosedFailedId = R.string.tour_freezed;
+                }
+                Toast.makeText(getActivity(), tourClosedFailedId, Toast.LENGTH_SHORT).show();
             }
             if (loaderStop != null) {
                 loaderStop.dismiss();

@@ -7,15 +7,12 @@
     <string name="entourage_title">Entourage</string>
     <string name="entourage_slogan">Un peu de chaleur humaine\navec Entourage.</string>
     <string name="error_end_tour_before_logout">Terminez la maraude avant de vous déconnecter</string>
-    <string name="error_not_yet_implemented">Not Yet Implemented</string>
+    <string name="error_not_yet_implemented">!!Not Yet Implemented</string>
     <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
     <string name="button_update_version">Mettre à jour</string>
     <string name="title_update_version">MISE A JOUR DISPONIBLE</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
