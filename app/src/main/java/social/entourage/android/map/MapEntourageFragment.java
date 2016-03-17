@@ -526,7 +526,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onUserToursFound(Map<Long, Tour> tours) {
-        //TODO
     }
 
     @Override

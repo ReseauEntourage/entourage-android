@@ -43,6 +43,7 @@ public class PushNotificationService extends IntentService {
         Message message = getMessageFromNotification(intent.getExtras());
         BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
         displayPushNotification(message);
+        GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
     private void displayPushNotification(Message message) {
