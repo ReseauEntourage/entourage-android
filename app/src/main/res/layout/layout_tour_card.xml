@@ -6,9 +6,8 @@
     android:background="@color/background"
     android:rowCount="5"
     android:columnCount="3"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:padding="10dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,11 +17,12 @@
         android:textColor="@color/greyish_brown"
         android:id="@+id/tour_card_title"
         android:layout_row="0"
-        android:layout_columnSpan="2"/>
+        android:layout_columnSpan="2"
+        android:textSize="20sp"/>
 
     <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
         android:id="@+id/tour_card_photo"
         android:layout_gravity="right"
         android:layout_rowSpan="2"
@@ -42,7 +42,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
             android:text="Small Text"
-            android:id="@+id/tour_card_type"/>
+            android:id="@+id/tour_card_type"
+            android:textSize="18sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -51,7 +52,8 @@
             android:textColor="@color/greyish_brown"
             android:textStyle="bold"
             android:text="Small Text"
-            android:id="@+id/tour_card_author"/>
+            android:id="@+id/tour_card_author"
+            android:textSize="18sp"/>
     </LinearLayout>
 
     <TextView
@@ -62,13 +64,16 @@
         android:text="Small Text"
         android:id="@+id/tour_card_location"
         android:layout_columnSpan="2"
-        android:lines="1"/>
+        android:lines="1"
+        android:layout_marginTop="5dp"
+        android:textSize="16sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
 
         <EditText
             android:layout_width="wrap_content"
@@ -85,21 +90,22 @@
             android:visibility="gone"/>
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_friends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_users"
             android:id="@+id/tour_card_people_image"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
             android:text="1"
             android:id="@+id/tour_card_people_count"
             android:paddingLeft="3dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textSize="18dp"/>
     </LinearLayout>
 
     <RelativeLayout

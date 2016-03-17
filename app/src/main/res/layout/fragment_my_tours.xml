@@ -107,7 +107,6 @@
     </TabHost>
 
     <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/mytours_progress_bar"

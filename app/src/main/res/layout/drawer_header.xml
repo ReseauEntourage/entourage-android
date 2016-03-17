@@ -41,7 +41,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_login_grey">
+        android:background="@color/background_light">
 
         <ImageView
             android:id="@+id/drawer_header_user_photo"
@@ -61,7 +61,9 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:layout_marginRight="5dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
     </LinearLayout>
 
 

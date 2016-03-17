@@ -249,6 +249,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             newsletterEmail.setText("");
             loginNewsletter.setVisibility(View.GONE);
             previousView.setVisibility(View.VISIBLE);
+            if (previousView == loginSignup) {
+                showKeyboard(phoneEditText);
+            }
         }
         else if (loginVerifyCode.getVisibility() == View.VISIBLE) {
             showLostCodeScreen();
@@ -350,6 +353,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (user.getEmail() != null) {
             profileEmail.setText(user.getEmail());
         }
+        profileEmail.requestFocus();
     }
 
     // ----------------------------------
@@ -405,6 +409,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginSignup.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.VISIBLE);
         previousView = loginSignup;
+        showKeyboard(newsletterEmail);
     }
 
     /************************
@@ -538,6 +543,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginStartup.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.VISIBLE);
         previousView = loginStartup;
+        showKeyboard(newsletterEmail);
     }
 
     /************************

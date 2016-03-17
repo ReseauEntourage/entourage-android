@@ -25,7 +25,7 @@
         android:title="@string/action_guide"
         android:icon="@drawable/ic_guide"
         android:background="@color/white"
-        android:layout_marginTop="10dp"/>
+        />
 
     <social.entourage.android.sidemenu.SideMenuItemView
         android:layout_width="match_parent"
