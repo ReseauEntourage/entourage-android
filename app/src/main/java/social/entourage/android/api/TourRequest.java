@@ -1,6 +1,9 @@
 package social.entourage.android.api;
 
+import android.util.ArrayMap;
+
 import java.util.Date;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -11,6 +14,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -91,6 +95,13 @@ public interface TourRequest {
     @POST("tours/{tour_id}/users")
     Call<TourUser.TourUserWrapper> requestToJoinTour(
             @Path("tour_id") long tourId
+    );
+
+    @PUT("tours/{tour_id}/users/{user_id}")
+    Call<TourUser.TourUserWrapper> updateUserTourStatus(
+            @Path("tour_id") long tourId,
+            @Path("user_id") int userId,
+            @Body HashMap<String, String> user
     );
 
     @DELETE("tours/{tour_id}/users/{user_id}")

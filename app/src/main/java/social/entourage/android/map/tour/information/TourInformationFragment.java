@@ -71,6 +71,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
@@ -398,12 +399,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    public void onPushNotificationChatMessageReceived(Message message) {
+    public boolean onPushNotificationChatMessageReceived(Message message) {
         //we received a chat notification
+        //check if it is referring to this tour
+        PushNotificationContent content = message.getContent();
+        if (content.getTourId() != tour.getId()) {
+            return false;
+        }
         //retrieve the last messages from server
         if (presenter != null) {
             presenter.getTourMessages();
         }
+        return true;
     }
 
     // ----------------------------------

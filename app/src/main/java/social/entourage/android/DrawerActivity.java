@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
@@ -37,6 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
@@ -101,6 +103,8 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     private Tour intentTour;
 
     @IdRes int selectedSidemenuAction;
+
+    private int badgeCount = 0;
 
     // ----------------------------------
     // LIFECYCLE
@@ -322,14 +326,6 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             });
         }
 
-        //TODO: Remove the following after discussion screen implementation
-        Handler badgeTestHandler = new Handler();
-        badgeTestHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                discussionBadgeView.setBadgeCount(2);
-            }
-        }, 5000);
     }
 
     private void configureNavigationItem() {
@@ -544,20 +540,50 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
-        Handler mHandler = new Handler(getMainLooper());
-        mHandler.post(new Runnable() {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), message.getObject(), Toast.LENGTH_LONG).show();
+                increaseBadgeCount();
+                if (message != null) {
+                    PushNotificationContent content = message.getContent();
+                    if (content != null) {
+                        if (content.getType().equals(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE)) {
+                            if (onPushNotificationChatMessageReceived(message)) {
+                                decreaseBadgeCount();
+                            }
+                        }
+                    }
+                }
             }
         });
     }
 
-    private void onPushNotificationChatMessageReceived(Message message) {
+    private boolean onPushNotificationChatMessageReceived(Message message) {
         TourInformationFragment fragment = (TourInformationFragment)getSupportFragmentManager().findFragmentByTag(TourInformationFragment.TAG);
         if (fragment != null) {
-            fragment.onPushNotificationChatMessageReceived(message);
+            return fragment.onPushNotificationChatMessageReceived(message);
         }
+        return false;
+    }
+
+    // ----------------------------------
+    // BADGE COUNT HANDLING
+    // ----------------------------------
+
+    private void increaseBadgeCount() {
+        badgeCount++;
+        discussionBadgeView.setBadgeCount(badgeCount);
+    }
+
+    private void decreaseBadgeCount() {
+        badgeCount--;
+        discussionBadgeView.setBadgeCount(badgeCount);
+    }
+
+    private void resetBadgeCount() {
+        badgeCount = 0;
+        discussionBadgeView.setBadgeCount(badgeCount);
     }
 
     // ----------------------------------

@@ -15,7 +15,9 @@ import java.util.Random;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.map.tour.join.received.TourJoinRequestReceivedActivity;
 import social.entourage.android.message.MessageActivity;
 import social.entourage.android.tools.BusProvider;
 
@@ -39,7 +41,7 @@ public class PushNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         notificationId = new Random().nextInt(MAX - MIN + 1) + MIN;
-        Log.d("notification", Integer.toString(notificationId));
+        Log.d("notification", ""+notificationId);
         Message message = getMessageFromNotification(intent.getExtras());
         BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
         displayPushNotification(message);
@@ -53,7 +55,7 @@ public class PushNotificationService extends IntentService {
         builder.setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_entourage));
         builder.setContentTitle(message.getAuthor());
         builder.setContentText(message.getObject());
-        builder.setSubText(message.getContent());
+        builder.setSubText(message.getMessage());
 
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
@@ -65,13 +67,20 @@ public class PushNotificationService extends IntentService {
     private PendingIntent createMessagePendingIntent(Message message) {
         Bundle args = new Bundle();
         args.putSerializable(PUSH_MESSAGE, message);
-        Intent messageIntent = new Intent(this, MessageActivity.class);
+        Intent messageIntent = null;
+        if (message.getContent().getType().equals(PushNotificationContent.TYPE_NEW_JOIN_REQUEST)) {
+            messageIntent = new Intent(this, TourJoinRequestReceivedActivity.class);
+        }
+        else {
+            messageIntent = new Intent(this, MessageActivity.class);
+        }
         messageIntent.putExtras(args);
         return PendingIntent.getActivity(this, notificationId, messageIntent, 0);
     }
 
     @Nullable
     private Message getMessageFromNotification(Bundle args) {
+        Log.d("notification", KEY_SENDER+"= "+args.getString(KEY_SENDER)+"; "+KEY_OBJECT+"= "+args.getString(KEY_OBJECT)+"; "+KEY_CONTENT+"= "+args.getString(KEY_CONTENT));
         return new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT));
     }
 
