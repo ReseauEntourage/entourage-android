@@ -60,7 +60,7 @@
 
     <string name="login_login_error_title">Veuillez réessayer</string>
     <string name="login_login_error_invalid_credentials">Le numéro de téléphone et ce code d’accès ne correspondent pas.</string>
-    <string name="login_login_error_network">!!Network error</string>
+    <string name="login_login_error_network">Erreur de connexion</string>
     <string name="login_login_error_retry">Réessayer</string>
 
 </resources>
