@@ -11,7 +11,7 @@
     <string name="tour_stop">Arrêter</string>
     <string name="tour_pause">Pause</string>
     <string name="tour_close_fail">Echec de la fermeture de maraude</string>
-    <string name="tour_freeze_fail">!!Echec de la cloturer de maraude</string>
+    <string name="tour_freeze_fail">Echec de la clôture de maraude</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>
     <string name="tour_check_feet">A pieds</string>
@@ -43,23 +43,23 @@
     <string name="tour_info_button_close">Fermer</string>
     <string name="tour_info_location_card_date_format">c. HH:mm</string>
     <string name="tour_info_text_join_accepted">\u0020a rejoint votre maraude.</string>
-    <string name="tour_info_text_join_rejected">!!\u0020 rejected</string>
-    <string name="tour_info_text_join_pending">!!\u0020pending</string>
-    <string name="tour_info_error_chat_message">!!Chat message not sent</string>
+    <string name="tour_info_text_join_rejected">\u0020 rejeté</string>
+    <string name="tour_info_text_join_pending">!!\u0020 en attente</string>
+    <string name="tour_info_error_chat_message">Message non envoyé</string>
     <string name="tour_info_options_stop_tour">Clôturer</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
     <string name="tour_info_options_close">Annuler</string>
     <string name="tour_info_encounter_location">\u0020et %1$s se sont rencontrés à %2$s le %3$s.</string>
-    <string name="tour_info_quit_tour_title">!!Quit tour</string>
-    <string name="tour_info_quit_tour_description">!!Are you sure you want to quit the tour?</string>
-    <string name="tour_info_quit_tour_error">!!Error quiting the tour</string>
-    <string name="tour_info_request_error">!!Request error</string>
+    <string name="tour_info_quit_tour_title">Quitter la maraude</string>
+    <string name="tour_info_quit_tour_description">Voulez-vous vraiment quitter la maraude ?</string>
+    <string name="tour_info_quit_tour_error">Erreur de la requête</string>
+    <string name="tour_info_request_error">Erreur de la requête</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>
     <string name="local_service_started">Maraude lancée</string>
     <string name="local_service_stopped">Maraude terminée</string>
-    <string name="tour_freezed">!!Maraude cloturée</string>
+    <string name="tour_freezed">Maraude clôturée</string>
     <string name="local_service_running">Maraude en cours</string>
     <string name="local_service_connected">Connecté au GeoService</string>
     <string name="local_service_disconnected">Déconnecté du GeoService</string>
@@ -85,14 +85,14 @@
     <string name="tour_cell_button_rejected">Demande refusée</string>
 
     <!-- Join Request -->
-    <string name="tour_join_request_success">!!Request sent</string>
-    <string name="tour_join_request_error">!!Request NOT sent</string>
+    <string name="tour_join_request_success">Requête envoyée</string>
+    <string name="tour_join_request_error">Erreur d\'envoi de la requête</string>
     <string name="tour_join_request_title">MERCI !</string>
     <string name="tour_join_request_description">Cette maraude étant privée, votre demande a été  transmise au créateur.</string>
     <string name="tour_join_request_message_hint">Si vous le souhaitez,  envoyez-lui un message :</string>
     <string name="tour_join_request_send">Envoyer</string>
-    <string name="tour_join_request_message_sent">!!Message sent</string>
-    <string name="tour_join_request_message_error">!!Message not sent</string>
+    <string name="tour_join_request_message_sent">Message envoyé</string>
+    <string name="tour_join_request_message_error">Erreur d\'envoi du message</string>
 
     <!-- My tours -->
     <string name="mytours_title">MES MARAUDES</string>
