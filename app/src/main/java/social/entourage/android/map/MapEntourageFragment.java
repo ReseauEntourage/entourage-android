@@ -74,6 +74,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -972,6 +973,18 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
                     }
                 }
+            }
+        }
+    }
+
+    public void userStatusChanged(long tourId, int userId, String status) {
+        if (tourService != null) {
+            Tour tour = retrievedTours.get(tourId);
+            if (tour != null) {
+                TourUser user = new TourUser();
+                user.setUserId(userId);
+                user.setStatus(status);
+                tourService.notifyListenersUserStatusChanged(user, tour);
             }
         }
     }

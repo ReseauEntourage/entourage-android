@@ -547,9 +547,15 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 if (message != null) {
                     PushNotificationContent content = message.getContent();
                     if (content != null) {
-                        if (content.getType().equals(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE)) {
+                        String contentType = content.getType();
+                        if (contentType.equals(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE)) {
                             if (onPushNotificationChatMessageReceived(message)) {
                                 decreaseBadgeCount();
+                            }
+                        }
+                        else if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
+                            if (mapEntourageFragment != null) {
+                                mapEntourageFragment.userStatusChanged(content.getTourId(), content.getUserId(), Tour.JOIN_STATUS_ACCEPTED);
                             }
                         }
                     }
