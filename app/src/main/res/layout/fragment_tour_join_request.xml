@@ -41,12 +41,14 @@
             style="@style/EntourageTitle"
             android:textStyle="bold"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"/>
+            android:paddingRight="10dp"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="gone">
 
             <EditText
                 android:layout_width="match_parent"
@@ -74,7 +76,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tour_join_request_send"
+            android:text="@android:string/ok"
             android:id="@+id/tour_join_request_message_send"
             style="@style/AccentButton"/>
     </LinearLayout>

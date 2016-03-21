@@ -96,7 +96,8 @@ public class TourJoinRequestFragment extends DialogFragment {
 
     @OnClick(R.id.tour_join_request_message_send)
     protected void onMessageSend() {
-        presenter.sendMessage(messageView.getText().toString(), tour);
+        //presenter.sendMessage(messageView.getText().toString(), tour);
+        dismiss();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
