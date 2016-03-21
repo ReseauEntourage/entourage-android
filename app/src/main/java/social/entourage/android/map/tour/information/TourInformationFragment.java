@@ -309,7 +309,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick(R.id.tour_info_more_button)
     public void onMoreButton() {
-        Animation bottomUp = AnimationUtils.loadAnimation(getContext(),
+        Animation bottomUp = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.bottom_up);
 
         optionsLayout.startAnimation(bottomUp);
@@ -318,7 +318,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick({R.id.tour_info_button_close, R.id.tour_info_options})
     public void onCloseOptionsButton() {
-        Animation bottomDown = AnimationUtils.loadAnimation(getContext(),
+        Animation bottomDown = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.bottom_down);
 
         optionsLayout.startAnimation(bottomDown);
@@ -964,8 +964,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             return;
         }
 
+        //close the overlay
+        onCloseOptionsButton();
+
         //update the local tour info
-        boolean oldPrivateStatus = tour.isPrivate();
+        boolean oldPrivateStatus = (privateSection.getVisibility() == View.VISIBLE);
         tour.setJoinStatus(user.getStatus());
         boolean currentPrivateStatus = tour.isPrivate();
         //update UI
