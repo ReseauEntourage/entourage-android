@@ -2,8 +2,11 @@ package social.entourage.android.api;
 
 import android.util.ArrayMap;
 
+import com.squareup.okhttp.ResponseBody;
+
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -98,10 +101,10 @@ public interface TourRequest {
     );
 
     @PUT("tours/{tour_id}/users/{user_id}")
-    Call<TourUser.TourUserWrapper> updateUserTourStatus(
+    Call<ResponseBody> updateUserTourStatus(
             @Path("tour_id") long tourId,
             @Path("user_id") int userId,
-            @Body HashMap<String, String> user
+            @Body HashMap<String, Object> user
     );
 
     @DELETE("tours/{tour_id}/users/{user_id}")

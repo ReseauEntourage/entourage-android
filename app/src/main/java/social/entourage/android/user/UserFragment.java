@@ -45,6 +45,8 @@ public class UserFragment extends DialogFragment {
     // CONSTANTS
     // ----------------------------------
 
+    public static final String TAG = "fragment_user";
+
     private final String TERMS_AND_CONDITIONS_URL= "http://www.entourage.social/cgu";
 
     // ----------------------------------

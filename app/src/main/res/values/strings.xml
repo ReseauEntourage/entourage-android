@@ -16,5 +16,6 @@
     <string name="no">Non</string>
     <string name="accept">Accepter</string>
     <string name="decline">Refuser</string>
+    <string name="cancel">!!Cancel</string>
 
 </resources>

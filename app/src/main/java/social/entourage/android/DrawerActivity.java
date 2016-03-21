@@ -63,7 +63,6 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
     private final String TAG_FRAGMENT_MAP = "fragment_map";
     private final String TAG_FRAGMENT_GUIDE = "fragment_guide";
-    private final String TAG_FRAGMENT_USER = "fragment_user";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -410,12 +409,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 loadFragment(guideMapEntourageFragment, TAG_FRAGMENT_GUIDE);
                 break;
             case R.id.action_user:
-                userFragment = (UserFragment) getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT_USER);
+                userFragment = (UserFragment) getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
                 if (userFragment == null) {
                     userFragment = new UserFragment();
                 }
                 //loadFragment(userFragment, TAG_FRAGMENT_USER);
-                userFragment.show(getSupportFragmentManager(), TAG_FRAGMENT_USER);
+                userFragment.show(getSupportFragmentManager(), UserFragment.TAG);
                 break;
             case R.id.action_logout:
                 if (mapEntourageFragment != null) {
@@ -514,7 +513,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void userViewRequested(OnUserViewRequestedEvent event) {
         UserFragment fragment = UserFragment.newInstance(event.getUserId());
-        fragment.show(getSupportFragmentManager(), TAG_FRAGMENT_USER);
+        fragment.show(getSupportFragmentManager(), UserFragment.TAG);
     }
 
     @Subscribe

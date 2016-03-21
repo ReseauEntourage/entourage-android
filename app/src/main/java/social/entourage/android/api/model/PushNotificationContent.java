@@ -43,6 +43,7 @@ public class PushNotificationContent implements Serializable {
         @SerializedName("tour_id")
         public long tourId;
 
+        @SerializedName("user_id")
         public int userId;
 
         public String type;
