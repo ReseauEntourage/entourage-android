@@ -73,26 +73,21 @@ public class TourJoinRequestReceivedPresenter {
     }
 
     protected void rejectJoinRequest(long tourId, int userId) {
-        HashMap<String, String> status = new HashMap<>();
-        status.put("status", Tour.JOIN_STATUS_REJECTED);
-        HashMap<String, Object> user = new HashMap<>();
-        user.put("user", status);
-        Call<ResponseBody> call = tourRequest.updateUserTourStatus(tourId, userId, user);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourId, userId);
+        call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (activity != null) {
                     if (response.isSuccess()) {
                         activity.onUserTourStatusChanged(true);
-                    }
-                    else {
+                    } else {
                         activity.onUserTourStatusChanged(false);
                     }
                 }
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(false);
                 }
