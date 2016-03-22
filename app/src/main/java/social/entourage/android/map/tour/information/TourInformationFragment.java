@@ -20,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -615,6 +616,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private void switchToPrivateSection() {
         publicSection.setVisibility(View.GONE);
         privateSection.setVisibility(View.VISIBLE);
+        if (mapFragment != null) {
+            getChildFragmentManager().beginTransaction().remove(mapFragment).commit();
+            mapFragment = null;
+        }
 
         updateHeaderButtons();
         initializeOptionsView();
