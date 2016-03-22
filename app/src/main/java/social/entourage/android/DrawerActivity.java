@@ -37,6 +37,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.about.AboutActivity;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.User;
@@ -425,7 +426,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 logout();
                 break;
             case R.id.action_settings:
+                Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+                break;
             case R.id.action_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();

@@ -91,6 +91,10 @@
             android:name=".map.tour.join.received.TourJoinRequestReceivedActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".about.AboutActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
         <service
             android:name=".map.tour.TourService"
