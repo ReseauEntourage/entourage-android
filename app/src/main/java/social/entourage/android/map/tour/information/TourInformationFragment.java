@@ -841,6 +841,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     protected void onTourEncountersReceived(List<Encounter> encounterList) {
         if (encounterList != null) {
+            User me = EntourageApplication.me(getActivity());
+            if (me != null) {
+                for (int i = 0; i < encounterList.size(); i++) {
+                    Encounter encounter = encounterList.get(i);
+                    encounter.setIsMyEncounter(encounter.getUserId() == me.getId());
+                }
+            }
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
             timestampedObjectList.addAll(encounterList);
             tour.addCardInfoList(timestampedObjectList);

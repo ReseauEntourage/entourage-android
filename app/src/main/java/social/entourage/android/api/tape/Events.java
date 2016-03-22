@@ -3,6 +3,7 @@ package social.entourage.android.api.tape;
 import com.google.android.gms.maps.model.LatLng;
 
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 
 public class Events {
@@ -141,6 +142,22 @@ public class Events {
 
         public Tour getTour() {
             return tour;
+        }
+    }
+
+    /**
+     * Event signaling that tour info view is requested
+     */
+    public static class OnTourEncounterViewRequestedEvent {
+
+        private Encounter encounter;
+
+        public OnTourEncounterViewRequestedEvent(Encounter encounter) {
+            this.encounter = encounter;
+        };
+
+        public Encounter getEncounter() {
+            return encounter;
         }
     }
 

@@ -16,9 +16,11 @@ import javax.inject.Inject;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.tour.information.TourInformationFragment;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Presenter controlling the MapEntourageFragment
@@ -85,11 +87,7 @@ public class MapPresenter {
     private void openEncounter(Encounter encounter) {
         if (fragment.getActivity() != null) {
             fragment.saveCameraPosition();
-            Intent intent = new Intent(fragment.getActivity(), ReadEncounterActivity.class);
-            Bundle extras = new Bundle();
-            extras.putSerializable(ReadEncounterActivity.BUNDLE_KEY_ENCOUNTER, encounter);
-            intent.putExtras(extras);
-            fragment.getActivity().startActivity(intent);
+            BusProvider.getInstance().post(new Events.OnTourEncounterViewRequestedEvent(encounter));
         }
     }
 

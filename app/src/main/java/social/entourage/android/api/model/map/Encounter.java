@@ -2,7 +2,6 @@ package social.entourage.android.api.model.map;
 
 import android.location.Address;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -47,7 +46,9 @@ public class Encounter extends TimestampedObject implements Serializable {
 
     private String soundCloudPermalinkUrl;
 
-    private Address address;
+    private transient Address address;
+
+    private boolean isMyEncounter = false;
 
     // ----------------------------------
     // GETTERS & SETTERS
@@ -147,6 +148,14 @@ public class Encounter extends TimestampedObject implements Serializable {
 
     public void setAddress(final Address address) {
         this.address = address;
+    }
+
+    public boolean isMyEncounter() {
+        return isMyEncounter;
+    }
+
+    public void setIsMyEncounter(final boolean isMyEncounter) {
+        this.isMyEncounter = isMyEncounter;
     }
 
     @Override

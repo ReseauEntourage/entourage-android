@@ -47,6 +47,7 @@ import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
+import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.my.MyToursFragment;
@@ -530,6 +531,15 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                 mapEntourageFragment.act(event.getTour());
             }
         }
+    }
+
+    @Subscribe
+    public void tourEncounterViewRequested(OnTourEncounterViewRequestedEvent event) {
+        Intent intent = new Intent(this, ReadEncounterActivity.class);
+        Bundle extras = new Bundle();
+        extras.putSerializable(ReadEncounterActivity.BUNDLE_KEY_ENCOUNTER, event.getEncounter());
+        intent.putExtras(extras);
+        this.startActivity(intent);
     }
 
     // ----------------------------------

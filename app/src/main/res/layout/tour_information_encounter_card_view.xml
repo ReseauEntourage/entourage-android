@@ -33,5 +33,6 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/tic_encounter_message"
         android:textColor="@color/greyish"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -30,7 +30,7 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
     private Context context;
 
     private boolean addressRetrieved = false;
-    private int authorId;
+    private Encounter encounter;
 
     public EncounterCardViewHolder(final View view) {
         super(view);
@@ -48,11 +48,19 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
         mAuthorView.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(final View v) {
-                     if (authorId == 0) return;
-                     BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(authorId));
+                     if (encounter.getUserId() == 0) return;
+                     BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(encounter.getUserId()));
                  }
              }
         );
+
+        mStreetPersonNameView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (!encounter.isMyEncounter()) return;
+                BusProvider.getInstance().post(new Events.OnTourEncounterViewRequestedEvent(encounter));
+            }
+        });
     }
 
     @Override
@@ -83,9 +91,9 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
                 location,
                 encounterDate);
         mStreetPersonNameView.setText(encounterLocation);
-        mMessageView.setText(encounter.getMessage());
+        //mMessageView.setText(encounter.getMessage());
 
-        authorId = encounter.getUserId();
+        this.encounter = encounter;
     }
 
     public static int getLayoutResource() {
