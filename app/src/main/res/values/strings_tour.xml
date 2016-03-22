@@ -93,6 +93,7 @@
     <string name="tour_join_request_send">Envoyer</string>
     <string name="tour_join_request_message_sent">Message envoyé</string>
     <string name="tour_join_request_message_error">Erreur d\'envoi du message</string>
+    <string name="tour_join_request_received_message">%1$s veut rejoindre votre maraude.</string>
     <string name="tour_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre maraude]]></string>
 
     <!-- My tours -->

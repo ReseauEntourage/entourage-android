@@ -204,10 +204,9 @@ public class TourService extends Service {
             notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_button, pauseTourIntent);
             notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, stopTourIntent);
             builder = builder.setContent(notificationRemoteView);
-            notification = builder.build();
             //notification.bigContentView = notificationRemoteView;
         }
-        //notification = builder.build();
+        notification = builder.build();
     }
 
     private void configureRemoteView(int action) {

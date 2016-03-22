@@ -6,10 +6,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Random;
 
@@ -41,7 +46,7 @@ public class PushNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         notificationId = new Random().nextInt(MAX - MIN + 1) + MIN;
-        Log.d("notification", ""+notificationId);
+        Log.d("notification", "" + notificationId);
         Message message = getMessageFromNotification(intent.getExtras());
         BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
         displayPushNotification(message);
@@ -56,6 +61,16 @@ public class PushNotificationService extends IntentService {
         builder.setContentTitle(message.getAuthor());
         builder.setContentText(message.getObject());
         builder.setSubText(message.getMessage());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            PushNotificationContent content = message.getContent();
+            if (content != null && PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
+                RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.push_notification);
+                String notificationText = getString(R.string.tour_join_request_received_message, message.getAuthor());
+                remoteViews.setTextViewText(R.id.push_notification_text, notificationText);
+                builder.setContent(remoteViews);
+            }
+        }
 
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
