@@ -22,7 +22,7 @@ public class AboutActivity extends AppCompatActivity {
     private static final String FACEBOOK_URL = "http://facebook.com";
     private static final String TERMS_URL = "";
     private static final String WEBSITE_URL = "";
-    private static final String EMAIL_TO = "";
+    private static final String EMAIL_TO = "contact@entourage.social";
 
     // ----------------------------------
     // ATTRIBUTES
