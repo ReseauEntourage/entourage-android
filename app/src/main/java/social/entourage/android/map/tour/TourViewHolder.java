@@ -131,20 +131,16 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
         //act button
         String joinStatus = tour.getJoinStatus();
-        if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
-            actButton.setEnabled(false);
+        if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
             actButton.setText(R.string.tour_cell_button_pending);
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
-        } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
-            actButton.setEnabled(false);
+        } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
             actButton.setText(R.string.tour_cell_button_accepted);
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
-        } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
-            actButton.setEnabled(false);
+        } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
             actButton.setText(R.string.tour_cell_button_rejected);
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
         } else {
-            actButton.setEnabled(true);
             actButton.setText(R.string.tour_cell_button_join);
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
         }
@@ -173,7 +169,17 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
         }
         else if (v == actButton) {
-            BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, tour));
+            String joinStatus = tour.getJoinStatus();
+            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
+            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
+            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+                //What to do on rejected status ?
+            } else {
+                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, tour));
+            }
+
         }
         else if (v == itemView) {
             BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));

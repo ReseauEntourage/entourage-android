@@ -95,6 +95,7 @@ public class Events {
     public static class OnUserActEvent {
 
         public static String ACT_JOIN = "join";
+        public static String ACT_QUIT = "quit";
 
         private String act;
         private Tour tour;

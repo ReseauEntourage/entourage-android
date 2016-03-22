@@ -989,6 +989,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    public void removeUserFromTour(Tour tour, int userId) {
+        if (tourService != null) {
+            tourService.removeUserFromTour(tour, userId);
+        }
+    }
+
     private void launchConfirmationActivity() {
         pauseTour();
         //buttonStartLauncher.setVisibility(View.GONE);

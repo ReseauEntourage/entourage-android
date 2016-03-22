@@ -128,7 +128,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tour_card_button_act"
-            android:layout_centerInParent="true"
-            android:enabled="false"/>
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
 </GridLayout>

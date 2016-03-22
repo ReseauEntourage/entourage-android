@@ -525,11 +525,35 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Subscribe
-    public void userActRequested(OnUserActEvent event) {
-        if (event.getAct().equals(OnUserActEvent.ACT_JOIN)) {
+    public void userActRequested(final OnUserActEvent event) {
+        if (OnUserActEvent.ACT_JOIN.equals(event.getAct())) {
             if (mapEntourageFragment != null) {
                 mapEntourageFragment.act(event.getTour());
             }
+        }
+        else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.tour_info_quit_tour_title)
+                    .setMessage(R.string.tour_info_quit_tour_description)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            if (mapEntourageFragment == null) {
+                                Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                User me = EntourageApplication.me(DrawerActivity.this);
+                                if (me == null) {
+                                    Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    mapEntourageFragment.removeUserFromTour(event.getTour(), me.getId());
+                                }
+                            }
+                        }
+                    })
+                    .setNegativeButton(R.string.no, null);
+            builder.create().show();
         }
     }
 
