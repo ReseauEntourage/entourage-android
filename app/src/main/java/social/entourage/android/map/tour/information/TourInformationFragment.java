@@ -408,6 +408,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         //retrieve the last messages from server
         if (presenter != null) {
+            scrollToLastCard = true;
             presenter.getTourMessages();
         }
         return true;
