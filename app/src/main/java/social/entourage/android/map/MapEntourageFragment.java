@@ -1,6 +1,7 @@
 package social.entourage.android.map;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -68,6 +69,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
@@ -156,9 +158,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.fragment_map_follow_button)
     View centerButton;
 
-    @Bind(R.id.button_start_tour_launcher)
-    FloatingActionButton buttonStartLauncher;
-
     @Bind(R.id.layout_map_launcher)
     View mapLauncherLayout;
 
@@ -182,9 +181,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.fragment_map_main_layout)
     LinearLayout layoutMain;
 
-    @Bind(R.id.map_fab_menu)
-    FloatingActionMenu mapOptionsMenu;
-
     @Bind(R.id.map_display_type)
     RadioGroup mapDisplayTypeRadioGroup;
 
@@ -196,6 +192,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.tour_stop_button)
     FloatingActionButton tourStopButton;
+
+    FloatingActionMenu mapOptionsMenu;
 
     // ----------------------------------
     // LIFECYCLE
@@ -685,7 +683,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    @OnClick({R.id.button_add_tour_encounter, R.id.map_longclick_button_create_encounter})
+    @OnClick(R.id.map_longclick_button_create_encounter)
     public void onAddEncounter() {
         if (getActivity() != null) {
             mapLongClickView.setVisibility(View.GONE);
@@ -720,6 +718,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private void initializeFloatingMenu() {
+        mapOptionsMenu = ((DrawerActivity)getActivity()).mapOptionsMenu;
         mapOptionsMenu.setClosedOnTouchOutside(true);
     }
 
@@ -734,8 +733,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    @OnClick({R.id.button_start_tour_launcher, R.id.map_longclick_button_start_tour_launcher})
-    void onStartTourLauncher() {
+    @OnClick(R.id.map_longclick_button_start_tour_launcher)
+    public void onStartTourLauncher() {
         if (!tourService.isRunning()) {
             FlurryAgent.logEvent(Constants.EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP);
             if (mapOptionsMenu.isOpened()) {
@@ -899,9 +898,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void initializeToursListView() {
-        toursListView.setLayoutManager(new LinearLayoutManager(getContext()));
-        toursAdapter = new ToursAdapter();
-        toursListView.setAdapter(toursAdapter);
+        if (toursAdapter == null) {
+            toursListView.setLayoutManager(new LinearLayoutManager(getContext()));
+            toursAdapter = new ToursAdapter();
+            toursListView.setAdapter(toursAdapter);
+        }
     }
 
     // ----------------------------------

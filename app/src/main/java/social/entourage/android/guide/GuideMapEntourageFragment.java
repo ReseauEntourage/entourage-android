@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.maps.android.clustering.ClusterManager;
@@ -83,30 +84,33 @@ public class GuideMapEntourageFragment extends Fragment {
         poisMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
 
-        if (mapFragment.getMap() != null) {
-            clusterManager = new ClusterManager(getActivity(), mapFragment.getMap());
-            poiRenderer = new PoiRenderer(getActivity(), mapFragment.getMap(), clusterManager);
-            clusterManager.setRenderer(poiRenderer);
-            clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
-            mapFragment.getMap().setOnMarkerClickListener(clusterManager);
-            mapFragment.getMap().setMyLocationEnabled(true);
-            mapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(true);
-            mapFragment.getMap().getUiSettings().setMapToolbarEnabled(false);
-            mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-                @Override
-                public void onCameraChange(CameraPosition cameraPosition) {
-                    clusterManager.onCameraChange(cameraPosition);
-                    EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
-                    Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
-                    float newZoom = cameraPosition.zoom;
-                    if (newZoom/previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
-                        previousCameraZoom = newZoom;
-                        previousCameraLocation = newLocation;
-                        presenter.updatePoisNearby();
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final GoogleMap googleMap) {
+                clusterManager = new ClusterManager(getActivity(), googleMap);
+                poiRenderer = new PoiRenderer(getActivity(), googleMap, clusterManager);
+                clusterManager.setRenderer(poiRenderer);
+                clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
+                googleMap.setOnMarkerClickListener(clusterManager);
+                googleMap.setMyLocationEnabled(true);
+                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                googleMap.getUiSettings().setMapToolbarEnabled(false);
+                googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    @Override
+                    public void onCameraChange(CameraPosition cameraPosition) {
+                        clusterManager.onCameraChange(cameraPosition);
+                        EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
+                        Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
+                        float newZoom = cameraPosition.zoom;
+                        if (newZoom/previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                            previousCameraZoom = newZoom;
+                            previousCameraLocation = newLocation;
+                            presenter.updatePoisNearby();
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {

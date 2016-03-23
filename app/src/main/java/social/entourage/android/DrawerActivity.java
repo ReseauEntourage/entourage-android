@@ -29,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +38,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.about.AboutActivity;
 import social.entourage.android.api.model.Message;
@@ -93,6 +96,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
     @Bind(R.id.toolbar_discussion)
     BadgeView discussionBadgeView;
+
+    @Bind(R.id.map_fab_menu)
+    public FloatingActionMenu mapOptionsMenu;
 
     private Fragment mainFragment;
     private MapEntourageFragment mapEntourageFragment;
@@ -393,7 +399,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         }
     }
 
-    private void selectItem(@IdRes int menuId) {
+    public void selectItem(@IdRes int menuId) {
         if (menuId == 0) return;;
         switch (menuId) {
             case R.id.action_tours:
@@ -667,5 +673,65 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Override
     public void onShowTourInfo(final Tour tour) {
 
+    }
+
+    // ----------------------------------
+    // Floating Action Buttons hamdling
+    // ----------------------------------
+
+    @OnClick(R.id.button_start_tour_launcher)
+    protected void onStartTourClicked() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment.onStartTourLauncher();
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.map_poi_create_tour_error)
+                    .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            onPOILauncherClicked();
+                            mapEntourageFragment.onStartTourLauncher();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null);
+            builder.show();
+        }
+    }
+
+    @OnClick(R.id.button_add_tour_encounter)
+    protected void onAddTourEncounterClicked() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment.onAddEncounter();
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.map_poi_create_encounter_error)
+                    .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            onPOILauncherClicked();
+                            mapEntourageFragment.onAddEncounter();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null);
+            builder.show();
+        }
+    }
+
+    @OnClick(R.id.button_poi_launcher)
+    protected void onPOILauncherClicked() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
+            button.setLabelText(getString(R.string.map_poi_close_button));
+            mapOptionsMenu.toggle(false);
+            selectItem(R.id.action_guide);
+        }
+        else {
+            FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
+            button.setLabelText(getString(R.string.map_poi_launcher_button));
+            mapOptionsMenu.toggle(false);
+            selectItem(R.id.action_tours);
+        }
     }
 }
