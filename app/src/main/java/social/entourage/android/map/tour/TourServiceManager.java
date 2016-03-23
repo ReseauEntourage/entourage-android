@@ -384,10 +384,7 @@ public class TourServiceManager {
             @Override
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
                 if (response.isSuccess()) {
-                    if (response.body().getTour() != null) {
-                        pointsToSend.removeAll(response.body().getTour().getTourPoints());
-                        Log.v(this.getClass().getSimpleName(), response.body().getTour().toString());
-                    }
+                    pointsToSend.removeAll(tourPointWrapper.getTourPoints());
                     if (isTourClosing) {
                         closeTour();
                     }
