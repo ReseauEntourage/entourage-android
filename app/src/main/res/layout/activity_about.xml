@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,9 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:id="@+id/about_title_layout">
+        android:id="@+id/about_title_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -41,14 +41,18 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:background="@color/background_light"
-        android:id="@+id/about_separator_top"/>
+        android:id="@+id/about_separator_top"
+        android:layout_below="@+id/about_title_layout"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:id="@+id/about_rate_us_layout">
+        android:id="@+id/about_rate_us_layout"
+        android:layout_below="@+id/about_separator_top"
+        android:paddingLeft="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding"
+        android:paddingBottom="@dimen/about_items_padding">
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,145 +61,198 @@
             android:text="@string/about_rate_us"
             android:id="@+id/about_rate_us"
             android:textSize="16sp"
-            android:textColor="@color/greyish_brown"/>
+            android:textColor="@color/greyish_brown"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="false"
+            android:layout_centerVertical="true"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/about_version"
             android:gravity="right|end"
             android:textColor="@color/accent"
             android:textSize="14sp"
-            android:text="v1.1"/>
+            android:text="v1.1"
+            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/about_arrow_rate_us"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView2"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
+            android:id="@+id/about_arrow_rate_us"
+            android:src="@drawable/arrow_grey"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/greyish"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_below="@+id/about_rate_us_layout"
+        android:id="@+id/about_separator_about_us"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:id="@+id/about_facebook_layout">
+        android:id="@+id/about_facebook_layout"
+        android:layout_below="@+id/about_separator_about_us"
+        android:paddingLeft="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding"
+        android:paddingBottom="@dimen/about_items_padding">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/about_facebook"
             android:id="@+id/about_facebook"
             android:textSize="16sp"
-            android:textColor="@color/greyish_brown"/>
+            android:textColor="@color/greyish_brown"
+            android:layout_gravity="center_vertical"/>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imageView3"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrow_grey"
+            android:scaleType="fitEnd"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/greyish"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_below="@+id/about_facebook_layout"
+        android:id="@+id/about_separator_facebook"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:id="@+id/about_conditions_layout">
+        android:id="@+id/about_conditions_layout"
+        android:layout_below="@+id/about_separator_facebook"
+        android:paddingLeft="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding"
+        android:paddingBottom="@dimen/about_items_padding">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/about_conditions"
             android:id="@+id/about_conditions"
             android:textSize="16sp"
-            android:textColor="@color/greyish_brown"/>
+            android:textColor="@color/greyish_brown"
+            android:layout_gravity="center_vertical"/>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imageView4"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrow_grey"
+            android:scaleType="fitEnd"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/greyish"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_below="@+id/about_conditions_layout"
+        android:id="@+id/about_separator_conditions"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:id="@+id/about_website_layout">
+        android:id="@+id/about_website_layout"
+        android:layout_below="@+id/about_separator_conditions"
+        android:paddingLeft="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding"
+        android:paddingBottom="@dimen/about_items_padding">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/about_website"
             android:id="@+id/about_website"
             android:textSize="16sp"
-            android:textColor="@color/greyish_brown"/>
+            android:textColor="@color/greyish_brown"
+            android:layout_gravity="center_vertical"/>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imageView5"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrow_grey"
+            android:scaleType="fitEnd"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/greyish"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_below="@+id/about_website_layout"
+        android:id="@+id/about_separator_website"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:id="@+id/about_email_layout">
+        android:id="@+id/about_email_layout"
+        android:layout_below="@+id/about_separator_website"
+        android:paddingLeft="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding"
+        android:paddingBottom="@dimen/about_items_padding">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/about_email"
             android:id="@+id/about_email"
             android:textSize="16sp"
-            android:textColor="@color/greyish_brown"/>
+            android:textColor="@color/greyish_brown"
+            android:layout_gravity="center_vertical"/>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imageView6"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrow_grey"
+            android:scaleType="fitEnd"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/greyish"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_below="@+id/about_email_layout"
+        android:id="@+id/about_separator_email"/>
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/about_logo"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/entourage_logo_grey"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/about_items_padding"/>
+
+</RelativeLayout>

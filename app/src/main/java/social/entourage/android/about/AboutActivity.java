@@ -18,10 +18,10 @@ public class AboutActivity extends AppCompatActivity {
     // CONSTANTS
     // ----------------------------------
 
-    private static final String RATE_URL = "";
+    private static final String RATE_URL = "http://www.entourage.social";
     private static final String FACEBOOK_URL = "http://facebook.com";
-    private static final String TERMS_URL = "";
-    private static final String WEBSITE_URL = "";
+    private static final String TERMS_URL = "http://www.entourage.social";
+    private static final String WEBSITE_URL = "http://www.entourage.social";
     private static final String EMAIL_TO = "contact@entourage.social";
 
     // ----------------------------------

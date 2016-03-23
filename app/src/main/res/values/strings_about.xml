@@ -1,8 +1,8 @@
 <resources>
     <string name="about_title">A PROPOS</string>
-    <string name="about_rate_us">Notez-nous dans l\’App Store </string>
+    <string name="about_rate_us">Notez-nous dans l’Play Store </string>
     <string name="about_facebook">Aimer notre page Facebook</string>
-    <string name="about_conditions">Conditions générales d\’utilisation</string>
+    <string name="about_conditions">Conditions générales d’utilisation</string>
     <string name="about_website">Entourage.social</string>
     <string name="about_email">Contactez Entourage</string>
 </resources>
