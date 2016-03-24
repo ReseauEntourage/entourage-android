@@ -215,6 +215,7 @@ public class UserFragment extends DialogFragment {
             userTourCount.setText(""+tourCount);
 
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);
+            userEmailVerifiedImage.setImageResource(R.drawable.not_verified);
 
             if (organizationsAdapter == null) {
                 userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
