@@ -214,6 +214,8 @@ public class UserFragment extends DialogFragment {
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
             userTourCount.setText(""+tourCount);
 
+            userPhoneVerifiedImage.setImageResource(R.drawable.verified);
+
             if (organizationsAdapter == null) {
                 userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 List<Organization> organizationList = new ArrayList<>();

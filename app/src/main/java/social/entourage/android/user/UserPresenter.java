@@ -52,7 +52,23 @@ public class UserPresenter {
     }
 
     public void getUser(int userId) {
+        Call<UserResponse> call = userRequest.getUser(userId);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+                if (response.isSuccess()) {
+                    fragment.onUserReceived(response.body().getUser());
+                }
+                else {
+                    fragment.onUserReceived(null);
+                }
+            }
 
+            @Override
+            public void onFailure(final Call<UserResponse> call, final Throwable t) {
+                fragment.onUserReceived(null);
+            }
+        });
     }
 
     public boolean isUserToursOnly() {
