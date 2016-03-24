@@ -1,5 +1,7 @@
 package social.entourage.android.api.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Organization {
 
     // ----------------------------------
@@ -13,6 +15,9 @@ public class Organization {
     private String phone;
 
     private String address;
+
+    @SerializedName("logo_url")
+    private String logoUrl;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -59,5 +64,13 @@ public class Organization {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(final String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }

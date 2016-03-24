@@ -419,7 +419,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             case R.id.action_user:
                 userFragment = (UserFragment) getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
                 if (userFragment == null) {
-                    userFragment = new UserFragment();
+                    userFragment = UserFragment.newInstance(getAuthenticationController().getUser().getId());
                 }
                 //loadFragment(userFragment, TAG_FRAGMENT_USER);
                 userFragment.show(getSupportFragmentManager(), UserFragment.TAG);

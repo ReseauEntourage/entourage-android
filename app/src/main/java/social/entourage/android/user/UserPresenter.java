@@ -47,8 +47,12 @@ public class UserPresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public User getUser() {
+    public User getAuthentificatedUser() {
         return authenticationController.getUser();
+    }
+
+    public void getUser(int userId) {
+
     }
 
     public boolean isUserToursOnly() {
@@ -61,7 +65,6 @@ public class UserPresenter {
 
     public void updateUser(String email, String code) {
         if (fragment != null) {
-            fragment.startLoader();
             ArrayMap<String, Object> user = new ArrayMap<>();
             if (email != null) {
                 user.put("email", email);
@@ -75,14 +78,12 @@ public class UserPresenter {
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                     if (response.isSuccess()) {
                         fragment.displayToast(fragment.getString(R.string.user_text_update_ok));
-                        fragment.updateView(response.body().getUser().getEmail());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UserResponse> call, Throwable t) {
                     fragment.displayToast(fragment.getString(R.string.user_text_update_ko));
-                    fragment.resetLoginButton();
                 }
             });
         }

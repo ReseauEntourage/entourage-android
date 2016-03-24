@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,18 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.SimpleAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -35,6 +43,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.api.tape.Events.*;
@@ -58,47 +67,48 @@ public class UserFragment extends DialogFragment {
     @Inject
     UserPresenter presenter;
 
+    @Bind(R.id.user_profile_scrollview)
+    ScrollView scrollView;
+
+    @Bind(R.id.user_profile_edit_button)
+    TextView userEditProfile;
+
     @Bind(R.id.user_photo)
     ImageView userPhoto;
 
     @Bind(R.id.user_name)
     TextView userName;
 
-    @Bind(R.id.user_email)
-    TextView userEmail;
+    @Bind(R.id.user_role)
+    TextView userRole;
+
+    @Bind(R.id.user_member_since)
+    TextView userMemberSince;
+
+    @Bind(R.id.user_address)
+    TextView userAddress;
+
+    @Bind(R.id.user_identification_email_check)
+    ImageView userEmailVerifiedImage;
+
+    @Bind(R.id.user_identification_phone_check)
+    ImageView userPhoneVerifiedImage;
 
     @Bind(R.id.user_tours_count)
     TextView userTourCount;
 
-    @Bind(R.id.user_encounters_count)
-    TextView userEncountersCount;
+    @Bind(R.id.user_associations_view)
+    RecyclerView userAssociationsView;
 
-    @Bind(R.id.user_tours_switch)
-    Switch userToursSwitch;
+    UserOrganizationsAdapter organizationsAdapter;
 
-    @Bind(R.id.organization_photo)
-    ImageView organizationPhoto;
+    @Bind(R.id.user_profile_progressBar)
+    ProgressBar progressBar;
 
-    @Bind(R.id.user_organization)
-    TextView userOrganization;
+    private int requestedUserId;
+    private User user;
+    private boolean isMyProfile = false;
 
-    @Bind(R.id.user_edit_email)
-    EditText userEditEmail;
-
-    @Bind(R.id.user_edit_code)
-    EditText userEditCode;
-
-    @Bind(R.id.user_edit_confirmation)
-    EditText userEditConfirmation;
-
-    @Bind(R.id.user_button_confirm_changes)
-    Button buttonConfirmChanges;
-
-    @Bind(R.id.user_button_unsubscribe)
-    Button buttonUnsubscribe;
-
-    @Bind(R.id.user_terms_and_conditions)
-    TextView termsAndConditions;
 
     // ----------------------------------
     // LIFECYCLE
@@ -107,7 +117,7 @@ public class UserFragment extends DialogFragment {
     public static UserFragment newInstance(int userId) {
         UserFragment userFragment = new UserFragment();
         Bundle args = new Bundle();
-        args.putSerializable(User.KEY_USER_ID, userId);
+        args.putInt(User.KEY_USER_ID, userId);
         userFragment.setArguments(args);
         return userFragment;
     }
@@ -128,7 +138,18 @@ public class UserFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-        configureView();
+        requestedUserId = getArguments().getInt(User.KEY_USER_ID);
+        User authentificatedUser = presenter.getAuthentificatedUser();
+        if (requestedUserId == authentificatedUser.getId()) {
+            isMyProfile = true;
+            user = authentificatedUser;
+            configureView();
+        }
+        else {
+            progressBar.setVisibility(View.VISIBLE);
+            presenter.getUser(requestedUserId);
+        }
+
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -174,27 +195,44 @@ public class UserFragment extends DialogFragment {
     private void configureView() {
         if (getActivity() != null) {
             Resources res = getResources();
-            User user = presenter.getUser();
             int tourCount = user.getStats().getTourCount();
             int encountersCount = user.getStats().getEncounterCount();
 
-            Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
-                    .transform(new CropCircleTransformation())
-                    .into(userPhoto);
+            userEditProfile.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
-            Picasso.with(getActivity()).load(R.drawable.ic_organisation_notfound)
-                    .transform(new CropCircleTransformation())
-                    .into(organizationPhoto);
-
-            userName.setText(user.getDisplayName());
-            userEmail.setText(user.getEmail());
-            userTourCount.setText(res.getQuantityString(R.plurals.tours_count, tourCount, tourCount));
-            userEncountersCount.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
-            userOrganization.setText(user.getOrganization().getName());
-            if (presenter.isUserToursOnly()) {
-                userToursSwitch.setChecked(true);
+            if (user.getAvatarURL() != null) {
+                Picasso.with(getActivity()).load(Uri.parse(user.getAvatarURL()))
+                        .transform(new CropCircleTransformation())
+                        .into(userPhoto);
             }
-            userEditEmail.setText(user.getEmail());
+            else {
+                Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
+                        .transform(new CropCircleTransformation())
+                        .into(userPhoto);
+            }
+
+            userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
+            userTourCount.setText(""+tourCount);
+
+            if (organizationsAdapter == null) {
+                userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                List<Organization> organizationList = new ArrayList<>();
+                if (user.getOrganization() != null) {
+                    organizationList.add(user.getOrganization());
+                }
+                organizationsAdapter = new UserOrganizationsAdapter(organizationList);
+                userAssociationsView.setAdapter(organizationsAdapter);
+            }
+
+            /*
+            scrollView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    scrollView.scrollTo(0, 0);
+                }
+            }, 100);
+            */
+
         }
     }
 
@@ -208,40 +246,35 @@ public class UserFragment extends DialogFragment {
         }
     }
 
-    public void updateView(String email) {
-        resetLoginButton();
-        userEmail.setText(email);
-        userEditEmail.setText("");
-        userEditCode.setText("");
-        userEditConfirmation.setText("");
-        userEditEmail.setText(email);
-    }
+    // ----------------------------------
+    // Presenter Callbacks
+    // ----------------------------------
 
-    public void startLoader() {
-        buttonConfirmChanges.setText(R.string.button_loading);
-        buttonConfirmChanges.setEnabled(false);
-    }
-
-    public void resetLoginButton() {
-        buttonConfirmChanges.setText(R.string.user_button_confirm_changes);
-        buttonConfirmChanges.setEnabled(true);
+    protected void onUserReceived(User user) {
+        progressBar.setVisibility(View.GONE);
+        if (user == null) {
+            displayToast(getString(R.string.user_retrieval_error));
+            return;
+        }
+        this.user = user;
+        configureView();
     }
 
     // ----------------------------------
     // ONCLICK CALLBACKS
     // ----------------------------------
 
-    @OnClick(R.id.user_tours_switch)
-    void setUsersToursOnly() {
-        if (userToursSwitch.isChecked()) {
-            presenter.saveUserToursOnly(true);
-            BusProvider.getInstance().post(new OnUserChoiceEvent(true));
-        } else {
-            presenter.saveUserToursOnly(false);
-            BusProvider.getInstance().post(new OnUserChoiceEvent(false));
-        }
+    @OnClick(R.id.user_profile_close_button)
+    protected void onCloseButtonClicked() {
+        dismissAllowingStateLoss();
     }
 
+    @OnClick(R.id.user_profile_edit_button)
+    protected void onEditProfileClicked() {
+        //TODO Open the edit profile screen
+    }
+
+    /*
     @OnClick(R.id.user_button_confirm_changes)
     void confirmChanges() {
         String emailEdit = userEditEmail.getText().toString();
@@ -268,18 +301,6 @@ public class UserFragment extends DialogFragment {
             presenter.updateUser(email, code);
         }
     }
-
-    @OnClick(R.id.user_button_unsubscribe)
-    void unsubscribe() {
-        if (getActivity() != null) {
-            Snackbar.make(getActivity().getCurrentFocus(), getResources().getString(R.string.unsubscribe_error), Snackbar.LENGTH_LONG).show();
-        }
-    }
-
-    @OnClick(R.id.user_terms_and_conditions)
-    void displayTermsAndConditions() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_AND_CONDITIONS_URL));
-        startActivity(browserIntent);
-    }
+    */
 
 }

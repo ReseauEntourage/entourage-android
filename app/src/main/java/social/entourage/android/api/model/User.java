@@ -23,6 +23,12 @@ public class User {
     @Expose(serialize = false, deserialize = false)
     private String phone;
 
+    @SerializedName("first_name")
+    private String firstName;
+
+    @SerializedName("last_name")
+    private String lastName;
+
     @SerializedName("display_name")
     private final String displayName;
 
@@ -69,6 +75,14 @@ public class User {
 
     public String getDisplayName() { return displayName;}
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public String getToken() {
         return token;
     }
@@ -95,6 +109,14 @@ public class User {
 
     public void setAvatarURL(String avatarURL) {
         this.avatarURL = avatarURL;
+    }
+
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
     }
 
     public void incrementTours() {

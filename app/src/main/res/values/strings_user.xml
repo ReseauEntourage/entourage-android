@@ -3,7 +3,6 @@
 
     <string name="activity_display_user_title">PROFIL</string>
     <string name="user_information_label">Informations de maraudeur</string>
-    <string name="user_organization_label">Informations d\'association</string>
     <string name="user_privacy_label">Informations privées</string>
     <string name="user_unsubscribe_label">Désinscription</string>
     <string name="user_form_access_code">Code d\'accès</string>
@@ -15,5 +14,14 @@
     <string name="user_image_add_photo">Ajouter une photo</string>
     <string name="user_switch_label">Afficher toutes mes maraudes</string>
     <string name="user_terms_and_conditions"><u>Conditions Générales d\'Utilisation</u></string>
+    <string name="user_profile_edit_button">Editer</string>
+    <string name="user_profile_verified_information_label">Identitification vérifiée</string>
+    <string name="user_information_email_label">Adresse e-mail</string>
+    <string name="user_information_phone_label">Numéro de téléphone</string>
+    <string name="user_number_entourages_label">Nombre d’entourages</string>
+    <string name="user_number_tours_label">Nombre d’maraudes</string>
+    <string name="user_associations_title">Association(s)</string>
+
+    <string name="user_retrieval_error">!!Error getting the user profile</string>
 
 </resources>
