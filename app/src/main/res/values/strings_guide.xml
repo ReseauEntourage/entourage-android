@@ -3,9 +3,13 @@
 
     <!-- Guide -->
     <string name="activity_display_guide_title">GUIDE</string>
+    <string name="map_poi_launcher_button">Afficher le guide de solidarité</string>
+    <string name="map_poi_close_button">Masquer le guide de solidarité</string>
+    <string name="map_poi_create_tour_error">!!Si vous desirez creer une maraude, vouz devez quitterle quide de solidarite</string>
+    <string name="map_poi_create_encounter_error">!!Si vous desirez creer une rencontre, vouz devez quitterle quide de solidarite</string>
 
     <!-- POI -->
-    <string name="activity_read_poi_title">Point d\'intérêt</string>
+    <string name="activity_read_poi_title">GUIDE DE SOLIDARITE</string>
     <string name="encounter_text_message">Message</string>
     <string name="encounter_listen_to_voice_message">Ecoutez leur message vocal</string>
     <string name="tweet_with_audio">Ecoutez le message que j\'ai enregistré avec %1$s via l\'application Entourage : %2$s %3$s %4$s</string>

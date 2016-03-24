@@ -58,8 +58,7 @@
         <activity
             android:name=".guide.poi.ReadPoiActivity"
             android:label="@string/activity_read_poi_title"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomDialogActivityTheme">
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".map.confirmation.ConfirmationActivity"

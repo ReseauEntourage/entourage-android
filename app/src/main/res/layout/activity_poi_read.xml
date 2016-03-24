@@ -4,9 +4,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/rounded_borders_white"
-    android:layout_margin="20dp"
+    android:background="@color/background"
     tools:context=".guide.poi.ReadPoiActivity">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:id="@+id/poi_read_toolbar"
+        >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:src="@drawable/ic_close"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="false"/>
+
+        <TextView
+            style="@style/EntourageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_read_poi_title"
+            android:id="@+id/textView4"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="false"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/poi_type_layout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/poi_type_image"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/poi_type_label"
+            android:textColor="@color/white"
+            android:textSize="17sp"/>
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,14 +69,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="center_horizontal">
+                >
 
                 <TextView
                     android:id="@+id/textview_poi_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:background="@drawable/bg_edit_text"/>
+                    android:textColor="@color/greyish_brown"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/textview_poi_description"
@@ -32,10 +85,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp"
+                    android:textColor="@color/greyish_brown"/>
 
                 <Button
-                    style="@style/AccentButton"
+                    style="@style/ActButton"
                     android:id="@+id/button_poi_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
