@@ -2,7 +2,9 @@ package social.entourage.android.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Organization {
+import java.io.Serializable;
+
+public class Organization implements Serializable {
 
     // ----------------------------------
     // ATTRIBUTES

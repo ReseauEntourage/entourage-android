@@ -127,4 +127,11 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- User profile textviews -->
+    <style name="UserProfileTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+
 </resources>

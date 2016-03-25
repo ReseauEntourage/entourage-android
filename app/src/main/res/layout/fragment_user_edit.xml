@@ -1,0 +1,305 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="social.entourage.android.user.edit.UserEditFragment"
+                android:background="@color/background">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:id="@+id/user_edit_title_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_edit_close_button"
+            android:src="@drawable/ic_close"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+
+        <TextView
+            style="@style/EntourageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_display_user_title"
+            android:id="@+id/textView5"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/user_save_button"
+            android:id="@+id/user_save_button"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/accent"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/user_edit_title_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/user_profile_details">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:background="@color/accent"/>
+
+                <ImageView
+                    android:id="@+id/user_photo"
+                    android:layout_width="136dp"
+                    android:layout_height="136dp"
+                    android:src="@drawable/bg_user_image_button"
+                    android:contentDescription="@string/user_image_add_photo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="20dp"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/user_name_layout"
+                android:clickable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_edit_firstname_label"
+                    android:id="@+id/textView6"
+                    style="@style/UserProfileTextViewStyle"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_edit_firstname"
+                    android:gravity="right|end"
+                    android:textColor="@color/accent"
+                    style="@style/UserProfileTextViewStyle"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/user_privacy_label"
+                android:id="@+id/textView7"
+                android:background="@color/background_light"
+                android:paddingTop="20dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="@color/greyish_brown"
+                android:paddingBottom="5dp"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:id="@+id/user_private_informations">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:clickable="true"
+                    android:id="@+id/user_email_layout">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_edit_email_label"
+                        android:id="@+id/textView8"
+                        style="@style/UserProfileTextViewStyle"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/user_email"
+                        android:gravity="right|end"
+                        android:textColor="@color/accent"
+                        style="@style/UserProfileTextViewStyle"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyish"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:clickable="true"
+                    android:id="@+id/user_password_layout">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_edit_password_label"
+                        android:id="@+id/textView9"
+                        style="@style/UserProfileTextViewStyle"
+                        android:layout_centerVertical="true"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/user_change_password_arrow"
+                        android:src="@drawable/arrow_grey"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_edit_password_button"
+                        android:id="@+id/user_change_password_button"
+                        android:layout_toLeftOf="@+id/user_change_password_arrow"
+                        style="@style/UserProfileTextViewStyle"
+                        android:textColor="@color/accent"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyish"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_edit_phone_label"
+                        android:id="@+id/textView10"
+                        style="@style/UserProfileTextViewStyle"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/user_phone"
+                        android:gravity="right|end"
+                        android:textColor="@color/greyish"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/user_public_information_label"
+                android:id="@+id/textView11"
+                android:background="@color/background_light"
+                android:paddingTop="20dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="@color/greyish_brown"
+                android:paddingBottom="5dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_public_informations"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_edit_address_label"
+                    android:id="@+id/textView12"
+                    android:layout_centerVertical="true"
+                    style="@style/UserProfileTextViewStyle"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_address"
+                    style="@style/UserProfileTextViewStyle"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/accent"
+                    android:layout_toRightOf="@+id/textView12"
+                    android:gravity="right|end"/>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/user_associations_title"
+                android:id="@+id/textView13"
+                android:background="@color/background_light"
+                android:paddingTop="20dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="@color/greyish_brown"
+                android:paddingBottom="5dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_associations_view"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/background_light"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/user_edit_delete_account_button"
+                android:id="@+id/button"
+                android:background="?android:attr/selectableItemBackground"
+                android:textColor="@color/accent"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:layout_marginBottom="10dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

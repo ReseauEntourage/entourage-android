@@ -47,7 +47,7 @@ public class UserPresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public User getAuthentificatedUser() {
+    public User getAuthenticatedUser() {
         return authenticationController.getUser();
     }
 

@@ -24,4 +24,18 @@
 
     <string name="user_retrieval_error">!!Error getting the user profile</string>
 
+    <string name="user_save_button">Enregistrer</string>
+    <string name="user_edit_firstname_label">Prénom</string>
+    <string name="user_edit_email_label">E-mail</string>
+    <string name="user_edit_password_label">Mot de passe</string>
+    <string name="user_edit_password_button">Changer</string>
+    <string name="user_edit_phone_label">Téléphone</string>
+    <string name="user_public_information_label">Informations publiques</string>
+    <string name="user_edit_address_label">Quartier</string>
+    <string name="user_edit_delete_account_button">Supprimer mon compte</string>
+
+    <string name="user_edit_password_old_password_label">Ancien code d’accès</string>
+    <string name="user_edit_password_new_password_label">Nouveau code d’accès</string>
+    <string name="user_edit_password_confirm_password_label">Confirmer le code</string>
+
 </resources>

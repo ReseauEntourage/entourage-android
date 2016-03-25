@@ -1,28 +1,21 @@
 package social.entourage.android.user;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.SimpleAdapter;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +31,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -46,7 +38,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.api.tape.Events.*;
+import social.entourage.android.user.edit.UserEditFragment;
 
 public class UserFragment extends DialogFragment {
 
@@ -139,10 +131,10 @@ public class UserFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         requestedUserId = getArguments().getInt(User.KEY_USER_ID);
-        User authentificatedUser = presenter.getAuthentificatedUser();
-        if (requestedUserId == authentificatedUser.getId()) {
+        User authenticatedUser = presenter.getAuthenticatedUser();
+        if (requestedUserId == authenticatedUser.getId()) {
             isMyProfile = true;
-            user = authentificatedUser;
+            user = authenticatedUser;
             configureView();
         }
         else {
@@ -227,15 +219,6 @@ public class UserFragment extends DialogFragment {
                 userAssociationsView.setAdapter(organizationsAdapter);
             }
 
-            /*
-            scrollView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    scrollView.scrollTo(0, 0);
-                }
-            }, 100);
-            */
-
         }
     }
 
@@ -274,7 +257,8 @@ public class UserFragment extends DialogFragment {
 
     @OnClick(R.id.user_profile_edit_button)
     protected void onEditProfileClicked() {
-        //TODO Open the edit profile screen
+        UserEditFragment fragment = new UserEditFragment();
+        fragment.show(getFragmentManager(), UserEditFragment.TAG);
     }
 
     /*
