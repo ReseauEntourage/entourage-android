@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -126,6 +127,7 @@ public class ReadPoiActivity extends EntourageActivity {
         PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.findCategoryTypeById(poi.getCategoryId());
         poiTypeLayout.setBackgroundColor(categoryType.getColor());
         poiTypeLabel.setText(categoryType.getName());
+        poiTypeImage.setImageResource(categoryType.getResourceTransparentId());
     }
 
     public void setActionButton(Button btn, String value) {
@@ -133,5 +135,10 @@ public class ReadPoiActivity extends EntourageActivity {
             btn.setVisibility(View.VISIBLE);
             btn.setText(value);
         }
+    }
+
+    @OnClick(R.id.poi_close_button)
+    protected void onCloseButtonClicked() {
+        finish();
     }
 }

@@ -43,7 +43,7 @@ public class GuideMapPresenter {
 
     public void start() {
         fragment.initializeMapZoom();
-        updatePoisNearby();
+        //updatePoisNearby();
     }
 
     public void updatePoisNearby() {

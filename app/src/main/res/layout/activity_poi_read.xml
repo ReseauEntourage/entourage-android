@@ -18,7 +18,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
+            android:id="@+id/poi_close_button"
             android:src="@drawable/ic_close"
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
@@ -44,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:id="@+id/poi_type_layout">
+        android:id="@+id/poi_type_layout"
+        android:padding="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -57,7 +58,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/poi_type_label"
             android:textColor="@color/white"
-            android:textSize="17sp"/>
+            android:textSize="17sp"
+            android:layout_marginLeft="5dp"/>
     </LinearLayout>
 
     <ScrollView
@@ -79,14 +81,28 @@
                     android:textColor="@color/greyish_brown"
                     android:textStyle="bold"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/greyish"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
+
                 <TextView
                     android:id="@+id/textview_poi_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/greyish_brown"/>
+
+                <Button
+                    style="@style/ActButton"
+                    android:id="@+id/button_poi_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp" />
 
                 <Button
                     style="@style/ActButton"
@@ -98,7 +114,7 @@
                     android:layout_marginTop="10dp" />
 
                 <Button
-                    style="@style/AccentButton"
+                    style="@style/ActButton"
                     android:id="@+id/button_poi_mail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,19 +123,11 @@
                     android:layout_marginTop="10dp" />
 
                 <Button
-                    style="@style/AccentButton"
+                    style="@style/ActButton"
                     android:id="@+id/button_poi_web"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp" />
-
-                <Button
-                    style="@style/AccentButton"
-                    android:id="@+id/button_poi_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:layout_marginTop="10dp" />
 
