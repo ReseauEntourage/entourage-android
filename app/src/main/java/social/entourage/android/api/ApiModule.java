@@ -67,13 +67,15 @@ public class ApiModule {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
+        builder.addInterceptor(interceptor);
+
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(loggingInterceptor);
         }
 
-        OkHttpClient client = builder.addInterceptor(interceptor).build();
+        OkHttpClient client = builder.build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.ENTOURAGE_URL)
