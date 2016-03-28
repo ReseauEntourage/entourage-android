@@ -32,6 +32,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
+import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -232,6 +234,15 @@ public class UserFragment extends DialogFragment {
         }
     }
 
+    public void deleteAccount() {
+        if (presenter != null) {
+            if (getActivity() instanceof EntourageActivity) {
+                ((EntourageActivity) getActivity()).showProgressDialog(0);
+            }
+            presenter.deleteAccount();
+        }
+    }
+
     // ----------------------------------
     // Presenter Callbacks
     // ----------------------------------
@@ -246,13 +257,28 @@ public class UserFragment extends DialogFragment {
         configureView();
     }
 
+    protected void onDeletedAccount(boolean success) {
+        if (getActivity() instanceof EntourageActivity) {
+            ((EntourageActivity) getActivity()).dismissProgressDialog();
+        }
+        if (success) {
+            //go back to login screen
+            if (getActivity() instanceof DrawerActivity) {
+                ((DrawerActivity) getActivity()).selectItem(R.id.action_logout);
+            }
+        }
+        else {
+            displayToast(getString(R.string.user_delete_account_failure));
+        }
+    }
+
     // ----------------------------------
     // ONCLICK CALLBACKS
     // ----------------------------------
 
     @OnClick(R.id.user_profile_close_button)
     protected void onCloseButtonClicked() {
-        dismissAllowingStateLoss();
+        dismiss();
     }
 
     @OnClick(R.id.user_profile_edit_button)

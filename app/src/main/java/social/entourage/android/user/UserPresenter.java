@@ -104,4 +104,10 @@ public class UserPresenter {
             });
         }
     }
+
+    public void deleteAccount() {
+        if (fragment != null) {
+            fragment.onDeletedAccount(false);
+        }
+    }
 }

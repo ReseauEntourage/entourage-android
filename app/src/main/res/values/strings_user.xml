@@ -38,4 +38,8 @@
     <string name="user_edit_password_new_password_label">Nouveau code d’accès</string>
     <string name="user_edit_password_confirm_password_label">Confirmer le code</string>
 
+    <string name="user_delete_account_dialog">!!Are you sure you want to delete your account ?</string>
+    <string name="user_delete_account_in_progress">!!Deleting account</string>
+    <string name="user_delete_account_failure">!!Failed to delete the account</string>
+
 </resources>

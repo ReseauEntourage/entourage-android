@@ -1,6 +1,7 @@
 package social.entourage.android.user.edit;
 
 
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.UserOrganizationsAdapter;
 
 public class UserEditFragment extends DialogFragment {
@@ -169,6 +172,23 @@ public class UserEditFragment extends DialogFragment {
     protected void onEditPassword() {
         UserEditPasswordFragment fragment = new UserEditPasswordFragment();
         fragment.show(getFragmentManager(), UserEditPasswordFragment.TAG);
+    }
+
+    @OnClick(R.id.user_delete_account_button)
+    protected void onDeleteAccountClicked() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.user_delete_account_dialog)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        UserFragment fragment = (UserFragment)getFragmentManager().findFragmentByTag(UserFragment.TAG);
+                        if (fragment != null) {
+                            fragment.deleteAccount();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.no, null);
+        builder.show();
     }
 
     private void showEditProfile(int editType) {

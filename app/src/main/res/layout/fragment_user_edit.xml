@@ -291,7 +291,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/user_edit_delete_account_button"
-                android:id="@+id/button"
+                android:id="@+id/user_delete_account_button"
                 android:background="?android:attr/selectableItemBackground"
                 android:textColor="@color/accent"
                 android:textAllCaps="false"
