@@ -13,24 +13,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
-        android:id="@+id/user_edit_profile_firstname"/>
+        android:id="@+id/user_edit_profile_firstname"
+        android:hint="@string/user_edit_firstname_label"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
-        android:id="@+id/user_edit_profile_lastname"/>
+        android:id="@+id/user_edit_profile_lastname"
+        android:hint="@string/user_edit_lastname_label"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/user_edit_profile_email"/>
+        android:id="@+id/user_edit_profile_email"
+        android:hint="@string/user_edit_email_label"/>
 
     <Button
         android:layout_width="match_parent"

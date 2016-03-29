@@ -243,6 +243,12 @@ public class UserFragment extends DialogFragment {
         }
     }
 
+    public void saveAccount(User user) {
+        if (presenter != null) {
+            presenter.updateUser(user);
+        }
+    }
+
     // ----------------------------------
     // Presenter Callbacks
     // ----------------------------------
@@ -269,6 +275,24 @@ public class UserFragment extends DialogFragment {
         }
         else {
             displayToast(getString(R.string.user_delete_account_failure));
+        }
+    }
+
+    protected void onUserUpdated(User user) {
+        if (user == null) {
+            displayToast(getString(R.string.user_text_update_ko));
+            return;
+        }
+        else {
+            //update the current view
+            this.user = user;
+            configureView();
+            //update the edit view, if available
+            UserEditFragment userEditFragment = (UserEditFragment)getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+            if (userEditFragment != null) {
+                userEditFragment.configureView();
+            }
+            displayToast(getString(R.string.user_text_update_ok));
         }
     }
 

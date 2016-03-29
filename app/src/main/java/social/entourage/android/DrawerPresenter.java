@@ -181,7 +181,6 @@ public class DrawerPresenter {
                         if (response.isSuccess()) {
                             if (activity.authenticationController.isAuthenticated()) {
                                 activity.authenticationController.saveUser(response.body().getUser());
-                                BusProvider.getInstance().post(new Events.OnUserInfoUpdatedEvent());
                             }
                             Log.d(LOG_TAG, "success");
                         }

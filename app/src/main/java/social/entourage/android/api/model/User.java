@@ -50,6 +50,8 @@ public class User implements Serializable {
     @SerializedName("avatar_url")
     private String avatarURL;
 
+    private String smsCode;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -140,6 +142,14 @@ public class User implements Serializable {
 
     public void setLastName(final String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getSmsCode() {
+        return smsCode;
+    }
+
+    public void setSmsCode(final String smsCode) {
+        this.smsCode = smsCode;
     }
 
     public void incrementTours() {

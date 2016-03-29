@@ -107,7 +107,7 @@ public class LoginPresenter {
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         if (response.isSuccess()) {
                             authenticationController.saveUser(response.body().getUser());
-                            authenticationController.saveUserPhone(phoneNumber);
+                            authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode);
                             authenticationController.saveUserToursOnly(false);
                             if (isTutorialDone) {
                                 activity.startMapActivity();

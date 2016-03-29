@@ -79,27 +79,36 @@ public class UserPresenter {
         authenticationController.saveUserToursOnly(choice);
     }
 
-    public void updateUser(String email, String code) {
+    public void updateUser(final User user) {
         if (fragment != null) {
-            ArrayMap<String, Object> user = new ArrayMap<>();
-            if (email != null) {
-                user.put("email", email);
+            ArrayMap<String, Object> userMap = new ArrayMap<>();
+            userMap.put("first_name", user.getFirstName());
+            userMap.put("last_name", user.getLastName());
+            if (user.getEmail() != null) {
+                userMap.put("email", user.getEmail());
             }
-            if (code != null) {
-                user.put("sms_code", code);
+            if (user.getSmsCode() != null) {
+                userMap.put("sms_code", user.getSmsCode());
             }
-            Call<UserResponse> call = userRequest.updateUser(user);
+            Call<UserResponse> call = userRequest.updateUser(userMap);
             call.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                     if (response.isSuccess()) {
-                        fragment.displayToast(fragment.getString(R.string.user_text_update_ok));
+                        //update the logged user
+                        authenticationController.saveUser(response.body().getUser());
+                        authenticationController.saveUserPhoneAndCode(user.getPhone(), user.getSmsCode());
+                        //inform the fragment
+                        fragment.onUserUpdated(response.body().getUser());
+                    }
+                    else {
+                        fragment.onUserUpdated(null);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UserResponse> call, Throwable t) {
-                    fragment.displayToast(fragment.getString(R.string.user_text_update_ko));
+                    fragment.onUserUpdated(null);
                 }
             });
         }

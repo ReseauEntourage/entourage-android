@@ -191,6 +191,14 @@ public class UserEditFragment extends DialogFragment {
         builder.show();
     }
 
+    @OnClick(R.id.user_save_button)
+    protected void onSaveButtonClicked() {
+        UserFragment fragment = (UserFragment)getFragmentManager().findFragmentByTag(UserFragment.TAG);
+        if (fragment != null) {
+            fragment.saveAccount(editedUser);
+        }
+    }
+
     private void showEditProfile(int editType) {
         UserEditProfileFragment fragment = UserEditProfileFragment.newInstance(editType);
         fragment.show(getFragmentManager(), UserEditProfileFragment.TAG);

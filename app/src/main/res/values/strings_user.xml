@@ -26,6 +26,7 @@
 
     <string name="user_save_button">Enregistrer</string>
     <string name="user_edit_firstname_label">Prénom</string>
+    <string name="user_edit_lastname_label">Nom</string>
     <string name="user_edit_email_label">E-mail</string>
     <string name="user_edit_password_label">Mot de passe</string>
     <string name="user_edit_password_button">Changer</string>
@@ -37,6 +38,9 @@
     <string name="user_edit_password_old_password_label">Ancien code d’accès</string>
     <string name="user_edit_password_new_password_label">Nouveau code d’accès</string>
     <string name="user_edit_password_confirm_password_label">Confirmer le code</string>
+    <string name="user_edit_password_invalid_current_password">!!The old password is invalid</string>
+    <string name="user_edit_password_new_password_too_short">!!The new password is too short.</string>
+    <string name="user_edit_password_not_match">!!The new and confirmed password does not match.</string>
 
     <string name="user_delete_account_dialog">!!Are you sure you want to delete your account ?</string>
     <string name="user_delete_account_in_progress">!!Deleting account</string>
