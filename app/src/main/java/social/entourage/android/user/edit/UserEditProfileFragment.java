@@ -2,6 +2,7 @@ package social.entourage.android.user.edit;
 
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -101,15 +103,37 @@ public class UserEditProfileFragment extends DialogFragment {
 
     @OnClick(R.id.user_edit_profile_save)
     protected void onSaveProfile() {
-        user.setFirstName(userFirstname.getText().toString());
-        user.setLastName(userLastname.getText().toString());
-        user.setEmail(userEmail.getText().toString());
+        String firstname = userFirstname.getText().toString().trim();
+        String lastname = userLastname.getText().toString().trim();
+        String email = userEmail.getText().toString().trim();
+        if (firstname.length() == 0) {
+            displayToast(R.string.user_edit_profile_invalid_firstname);
+            userFirstname.requestFocus();
+            return;
+        }
+        if (lastname.length() == 0) {
+            displayToast(R.string.user_edit_profile_invalid_lastname);
+            userLastname.requestFocus();
+            return;
+        }
+        if (email.length() == 0) {
+            displayToast(R.string.user_edit_profile_invalid_email);
+            userEmail.requestFocus();
+            return;
+        }
+        user.setFirstName(firstname);
+        user.setLastName(lastname);
+        user.setEmail(email);
         UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
         if (userEditFragment != null) {
             userEditFragment.configureView();
         }
 
         dismiss();
+    }
+
+    private void displayToast(@StringRes int stringId) {
+        Toast.makeText(getActivity(), stringId, Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -42,6 +42,10 @@
     <string name="user_edit_password_new_password_too_short">!!The new password is too short.</string>
     <string name="user_edit_password_not_match">!!The new and confirmed password does not match.</string>
 
+    <string name="user_edit_profile_invalid_firstname">!!Invalid firstname</string>
+    <string name="user_edit_profile_invalid_lastname">!!Invalid lastname</string>
+    <string name="user_edit_profile_invalid_email">!!Invalid email</string>
+
     <string name="user_delete_account_dialog">!!Are you sure you want to delete your account ?</string>
     <string name="user_delete_account_in_progress">!!Deleting account</string>
     <string name="user_delete_account_failure">!!Failed to delete the account</string>
