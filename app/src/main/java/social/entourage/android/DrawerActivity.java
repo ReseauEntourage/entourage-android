@@ -676,7 +676,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     // ----------------------------------
-    // Floating Action Buttons hamdling
+    // Floating Action Buttons handling
     // ----------------------------------
 
     @OnClick(R.id.button_start_tour_launcher)
