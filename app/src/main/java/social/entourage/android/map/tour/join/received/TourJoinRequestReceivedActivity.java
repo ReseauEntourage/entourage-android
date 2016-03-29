@@ -79,12 +79,6 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                             presenter.rejectJoinRequest(message.getContent().getTourId(), message.getContent().getUserId());
                         }
                     }
-                })
-                .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        finish();
-                    }
                 });
         builder.show();
     }
