@@ -116,7 +116,23 @@ public class UserPresenter {
 
     public void deleteAccount() {
         if (fragment != null) {
-            fragment.onDeletedAccount(false);
+            Call<UserResponse> call = userRequest.deleteUser();
+            call.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+                    if (response.isSuccess()) {
+                        fragment.onDeletedAccount(true);
+                    }
+                    else {
+                        fragment.onDeletedAccount(false);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<UserResponse> call, final Throwable t) {
+                    fragment.onDeletedAccount(false);
+                }
+            });
         }
     }
 }

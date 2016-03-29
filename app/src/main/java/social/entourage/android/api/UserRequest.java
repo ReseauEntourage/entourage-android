@@ -4,6 +4,7 @@ import android.support.v4.util.ArrayMap;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
@@ -18,4 +19,7 @@ public interface UserRequest {
 
     @GET("users/{user_id}")
     Call<UserResponse> getUser(@Path("user_id") int userId);
+
+    @DELETE("users/me.json")
+    Call<UserResponse> deleteUser();
 }
