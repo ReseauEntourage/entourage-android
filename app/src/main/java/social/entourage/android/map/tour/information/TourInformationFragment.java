@@ -233,6 +233,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (isBound) {
+            tourService.unregister(this);
+        }
         doUnbindService();
     }
 
