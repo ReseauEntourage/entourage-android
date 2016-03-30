@@ -372,7 +372,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void displayChosenTour(Tour tour) {
-        presenter.openTour(tour);
+        if (presenter != null) {
+            presenter.openTour(tour);
+        }
     }
 
     public void displayChosenUser(int userID) {

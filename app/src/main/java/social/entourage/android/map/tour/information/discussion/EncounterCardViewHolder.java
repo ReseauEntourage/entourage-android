@@ -69,6 +69,7 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
     }
 
     public void populate(Encounter encounter) {
+        /*
         String location = "";
         Address address = encounter.getAddress();
         if (address != null) {
@@ -81,14 +82,15 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
                 new GeocoderTask().execute(encounter);
             }
         }
+        */
+
         String encounterDate = "";
         if (encounter.getCreationDate() != null) {
-            encounterDate = DateFormat.getDateFormat(context).format(encounter.getCreationDate());
+            encounterDate = DateFormat.getTimeFormat(context).format(encounter.getCreationDate());
         }
-        mAuthorView.setText(encounter.getUserName());
+        mAuthorView.setText(encounter.getUserName()+" ");
         String encounterLocation = itemView.getResources().getString(R.string.tour_info_encounter_location,
                 encounter.getStreetPersonName(),
-                location,
                 encounterDate);
         mStreetPersonNameView.setText(encounterLocation);
         //mMessageView.setText(encounter.getMessage());

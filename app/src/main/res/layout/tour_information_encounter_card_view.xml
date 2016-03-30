@@ -16,7 +16,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/tic_encounter_author"
             android:textSize="18sp"
-            android:textColor="@color/greyish"/>
+            android:textColor="@color/accent"/>
 
         <TextView
             android:layout_width="wrap_content"
