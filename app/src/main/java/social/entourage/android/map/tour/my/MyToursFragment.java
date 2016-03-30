@@ -28,9 +28,12 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.map.tour.ToursAdapter;
 
@@ -256,9 +259,16 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
         if (tourList == null) return;
         //add the tours
         if (tourList.size() > 0) {
+            DrawerActivity activity = null;
+            if (getActivity() instanceof DrawerActivity) {
+                activity = (DrawerActivity) getActivity();
+            }
             Iterator<Tour> iterator = tourList.iterator();
             while (iterator.hasNext()) {
                 Tour tour = iterator.next();
+                if (activity != null) {
+                    tour.setBadgeCount(activity.getPushNotificationsCountForTour(tour.getId()));
+                }
                 if (tour.getTourStatus().equals(Tour.TOUR_ON_GOING)) {
                     ongoingToursAdapter.add(tour);
                 }
@@ -303,6 +313,57 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
             retrieveMyTours(currentTabTag);
         }
         scrollDeltaY = 0;
+    }
+
+    // ----------------------------------
+    // Push handling
+    // ----------------------------------
+
+    public void onPushNotificationReceived(Message message) {
+        PushNotificationContent content = message.getContent();
+        if (content == null) return;
+        long tourId = content.getTourId();
+        Tour tour;
+        tour = ongoingToursAdapter.findTour(tourId);
+        if (tour != null) {
+            tour.increaseBadgeCount();
+            ongoingToursAdapter.updateTour(tour);
+            return;
+        }
+        tour = recordedToursAdapter.findTour(tourId);
+        if (tour != null) {
+            tour.increaseBadgeCount();
+            recordedToursAdapter.updateTour(tour);
+            return;
+        }
+        tour = frozenToursAdapter.findTour(tourId);
+        if (tour != null) {
+            tour.increaseBadgeCount();
+            frozenToursAdapter.updateTour(tour);
+            return;
+        }
+    }
+
+    public void onPushNotificationConsumedForTour(long tourId) {
+        Tour tour;
+        tour = ongoingToursAdapter.findTour(tourId);
+        if (tour != null) {
+            tour.setBadgeCount(0);
+            ongoingToursAdapter.updateTour(tour);
+            return;
+        }
+        tour = recordedToursAdapter.findTour(tourId);
+        if (tour != null) {
+            tour.setBadgeCount(0);
+            recordedToursAdapter.updateTour(tour);
+            return;
+        }
+        tour = frozenToursAdapter.findTour(tourId);
+        if (tour != null) {
+            tour.setBadgeCount(0);
+            frozenToursAdapter.updateTour(tour);
+            return;
+        }
     }
 
     // ----------------------------------

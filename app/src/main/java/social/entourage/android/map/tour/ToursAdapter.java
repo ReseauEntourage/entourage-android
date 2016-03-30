@@ -70,4 +70,14 @@ public class ToursAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
     }
+
+    public Tour findTour(long tourId) {
+        for (int i = 0; i < tourList.size(); i++) {
+            Tour tour = tourList.get(i);
+            if (tour.getId() == tourId) {
+                return tour;
+            }
+        }
+        return null;
+    }
 }

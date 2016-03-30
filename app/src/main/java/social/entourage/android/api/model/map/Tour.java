@@ -104,6 +104,8 @@ public class Tour implements Serializable {
     @SerializedName("join_status")
     private String joinStatus;
 
+    private int badgeCount = 0;
+
     //CardInfo cache support
 
     @Expose(serialize = false, deserialize = false)
@@ -271,6 +273,18 @@ public class Tour implements Serializable {
 
     public void setJoinStatus(String joinStatus) {
         this.joinStatus = joinStatus;
+    }
+
+    public int getBadgeCount() {
+        return badgeCount;
+    }
+
+    public void setBadgeCount(final int badgeCount) {
+        this.badgeCount = badgeCount;
+    }
+
+    public void increaseBadgeCount() {
+        badgeCount++;
     }
 
     @Override

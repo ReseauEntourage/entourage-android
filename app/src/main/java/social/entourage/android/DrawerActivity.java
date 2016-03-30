@@ -34,6 +34,8 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -112,6 +114,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @IdRes int selectedSidemenuAction;
 
     private int badgeCount = 0;
+    ArrayList<Message> pushNotifications = new ArrayList<>();
 
     // ----------------------------------
     // LIFECYCLE
@@ -532,7 +535,15 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void tourInfoViewRequested(OnTourInfoViewRequestedEvent event) {
         if (mapEntourageFragment != null) {
-            mapEntourageFragment.displayChosenTour(event.getTour());
+            Tour tour = event.getTour();
+            if (tour == null) return;
+            mapEntourageFragment.displayChosenTour(tour);
+            //decrease the badge count
+            int tourBadgeCount = tour.getBadgeCount();
+            decreaseBadgeCount(tourBadgeCount);
+            removePushNotificationsForTour(tour.getId());
+            //update the tour card
+            mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
         }
     }
 
@@ -585,29 +596,30 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                increaseBadgeCount();
-                if (message != null) {
+        if (message != null) {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
                     PushNotificationContent content = message.getContent();
                     if (content != null) {
                         String contentType = content.getType();
                         if (contentType.equals(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE)) {
-                            if (onPushNotificationChatMessageReceived(message)) {
-                                decreaseBadgeCount();
+                            if (!onPushNotificationChatMessageReceived(message)) {
+                                addPushNotification(message);
                             }
-                        }
-                        else if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
-                            if (mapEntourageFragment != null) {
-                                mapEntourageFragment.userStatusChanged(content.getTourId(), content.getUserId(), Tour.JOIN_STATUS_ACCEPTED);
+                        } else {
+                            addPushNotification(message);
+                            if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
+                                if (mapEntourageFragment != null) {
+                                    mapEntourageFragment.userStatusChanged(content.getTourId(), content.getUserId(), Tour.JOIN_STATUS_ACCEPTED);
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     private boolean onPushNotificationChatMessageReceived(Message message) {
@@ -616,6 +628,41 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             return fragment.onPushNotificationChatMessageReceived(message);
         }
         return false;
+    }
+
+    private void addPushNotification(Message message) {
+        pushNotifications.add(message);
+        increaseBadgeCount();
+        if (mapEntourageFragment != null) {
+            mapEntourageFragment.onPushNotificationReceived(message);
+        }
+        MyToursFragment myToursFragment = (MyToursFragment) getSupportFragmentManager().findFragmentByTag(MyToursFragment.TAG);
+        if (myToursFragment != null) {
+            myToursFragment.onPushNotificationReceived(message);
+        }
+    }
+
+    private void removePushNotificationsForTour(long tourId) {
+        for (int i = 0; i < pushNotifications.size(); i++) {
+            Message message = pushNotifications.get(i);
+            PushNotificationContent content = message.getContent();
+            if (content != null && content.getTourId() == tourId) {
+                pushNotifications.remove(i);
+                i--;
+            }
+        }
+    }
+
+    public int getPushNotificationsCountForTour(long tourId) {
+        int count = 0;
+        for (int i = 0; i < pushNotifications.size(); i++) {
+            Message message = pushNotifications.get(i);
+            PushNotificationContent content = message.getContent();
+            if (content != null && content.getTourId() == tourId) {
+                count++;
+            }
+        }
+        return count;
     }
 
     // ----------------------------------
@@ -627,8 +674,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         discussionBadgeView.setBadgeCount(badgeCount);
     }
 
-    private void decreaseBadgeCount() {
-        badgeCount--;
+    private void decreaseBadgeCount(int amount) {
+        badgeCount -= amount;
+        if (badgeCount < 0) badgeCount = 0;
         discussionBadgeView.setBadgeCount(badgeCount);
     }
 

@@ -74,6 +74,8 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
@@ -1168,6 +1170,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
+            DrawerActivity activity = null;
+            if (getActivity() instanceof DrawerActivity) {
+                activity = (DrawerActivity) getActivity();
+                tour.setBadgeCount(activity.getPushNotificationsCountForTour(tour.getId()));
+            }
             if (isHistory) {
                 retrievedHistory.put(tour.getId(), tour);
                 drawnUserHistory.put(tour.getId(), mapFragment.getMap().addPolyline(line));
@@ -1248,6 +1255,28 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
         lp.weight = originalMapLayoutWeight;
         layoutMapMain.setLayoutParams(lp);
+    }
+
+    // ----------------------------------
+    // Push handling
+    // ----------------------------------
+
+    public void onPushNotificationReceived(Message message) {
+        //update the badge count on tour card
+        PushNotificationContent content = message.getContent();
+        if (content == null) return;
+        long tourId = message.getContent().getTourId();
+        Tour tour = retrievedTours.get(tourId);
+        if (tour == null) return;
+        tour.increaseBadgeCount();
+        toursAdapter.updateTour(tour);
+    }
+
+    public void onPushNotificationConsumedForTour(long tourId) {
+        Tour tour = retrievedTours.get(tourId);
+        if (tour == null) return;
+        tour.setBadgeCount(0);
+        toursAdapter.updateTour(tour);
     }
 
     // ----------------------------------

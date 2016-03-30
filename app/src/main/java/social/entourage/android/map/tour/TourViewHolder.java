@@ -129,6 +129,16 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         //tour members
         numberOfPeopleTextView.setText(""+tour.getNumberOfPeople());
 
+        //badge count
+        int badgeCount = tour.getBadgeCount();
+        if (badgeCount <= 0) {
+            badgeCountView.setVisibility(View.GONE);
+        }
+        else {
+            badgeCountView.setVisibility(View.VISIBLE);
+            badgeCountView.setText("" + tour.getBadgeCount());
+        }
+
         //act button
         String joinStatus = tour.getJoinStatus();
         if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
