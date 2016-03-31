@@ -30,6 +30,8 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 public class CreateEncounterActivity extends EntourageSecuredActivity {
 
@@ -179,11 +181,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         if (errorMessage == null) {
             getAuthenticationController().incrementUserEncountersCount();
             message = getString(R.string.create_encounter_success);
-            Intent resultIntent = new Intent();
-            Bundle arguments = getIntent().getExtras();
-            arguments.putSerializable(BUNDLE_KEY_ENCOUNTER, encounterResponse);
-            resultIntent.putExtras(arguments);
-            setResult(Constants.RESULT_CREATE_ENCOUNTER_OK, resultIntent);
+//            Intent resultIntent = new Intent();
+//            Bundle arguments = getIntent().getExtras();
+//            arguments.putSerializable(BUNDLE_KEY_ENCOUNTER, encounterResponse);
+//            resultIntent.putExtras(arguments);
+//            setResult(Constants.RESULT_CREATE_ENCOUNTER_OK, resultIntent);
+            BusProvider.getInstance().post(new Events.OnEncounterCreated(encounterResponse));
+
             finish();
             FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
         } else {

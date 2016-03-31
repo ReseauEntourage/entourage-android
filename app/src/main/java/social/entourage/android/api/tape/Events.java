@@ -193,4 +193,21 @@ public class Events {
             return message;
         }
     }
+
+    /**
+     * Event signaling that an encounter was created
+     */
+    public static class OnEncounterCreated {
+
+        private Encounter encounter;
+
+        public OnEncounterCreated(Encounter encounter) {
+            this.encounter = encounter;
+        }
+
+        public Encounter getEncounter() {
+            return encounter;
+        }
+
+    }
 }

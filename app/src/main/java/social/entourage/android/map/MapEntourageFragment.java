@@ -83,6 +83,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
@@ -208,6 +209,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             doBindService();
         }
 
+        BusProvider.getInstance().register(this);
+
         currentTourLines = new ArrayList<>();
         drawnToursMap = new TreeMap<>();
         drawnUserHistory = new TreeMap<>();
@@ -276,7 +279,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onStart() {
         super.onStart();
-        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -298,12 +300,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onStop() {
         super.onStop();
-        BusProvider.getInstance().unregister(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        BusProvider.getInstance().unregister(this);
         if (isBound && tourService != null) {
             tourService.unregister(MapEntourageFragment.this);
             doUnbindService();
@@ -438,6 +440,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (event.getLocation() != null) {
             centerMap(event.getLocation());
         }
+    }
+
+    @Subscribe
+    public void onEncounterCreated(OnEncounterCreated event) {
+        Encounter encounter = event.getEncounter();
+        addEncounter(encounter);
+        presenter.loadEncounterOnMap(encounter);
     }
 
     // ----------------------------------
@@ -708,7 +717,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
             }
             intent.putExtras(args);
-            startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
+            //startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
+            startActivity(intent);
         }
     }
 
@@ -739,14 +749,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.map_longclick_button_start_tour_launcher)
     public void onStartTourLauncher() {
-        if (!tourService.isRunning()) {
-            FlurryAgent.logEvent(Constants.EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP);
-            if (mapOptionsMenu.isOpened()) {
-                mapOptionsMenu.toggle(false);
+        if (tourService != null) {
+            if (!tourService.isRunning()) {
+                FlurryAgent.logEvent(Constants.EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP);
+                if (mapOptionsMenu.isOpened()) {
+                    mapOptionsMenu.toggle(false);
+                }
+                mapOptionsMenu.setVisibility(View.GONE);
+                mapLongClickView.setVisibility(View.GONE);
+                mapLauncherLayout.setVisibility(View.VISIBLE);
             }
-            mapOptionsMenu.setVisibility(View.GONE);
-            mapLongClickView.setVisibility(View.GONE);
-            mapLauncherLayout.setVisibility(View.VISIBLE);
         }
     }
 
