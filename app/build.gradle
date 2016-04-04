@@ -53,7 +53,7 @@ android {
         applicationId 'social.entourage.android'
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch
+        versionCode versionMajor * 100000 + versionMinor * 10000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
