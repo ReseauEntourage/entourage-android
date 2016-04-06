@@ -61,11 +61,11 @@ public class Tour implements Serializable {
     private Date date;
 
     @SerializedName("start_time")
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = true, deserialize = true)
     private Date startTime;
 
     @SerializedName("end_time")
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = true, deserialize = true)
     private Date endTime;
 
     @Expose(serialize = false, deserialize = false)
@@ -104,6 +104,7 @@ public class Tour implements Serializable {
     @SerializedName("join_status")
     private String joinStatus;
 
+    @Expose(serialize = false, deserialize = false)
     private int badgeCount = 0;
 
     //CardInfo cache support
@@ -125,6 +126,7 @@ public class Tour implements Serializable {
     public Tour(String tourVehicleType, String tourType) {
         this.tourVehicleType = tourVehicleType;
         this.tourType = tourType;
+        this.startTime = new Date();
         init();
     }
 

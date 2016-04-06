@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -292,6 +293,7 @@ public class TourServiceManager {
 
     private void closeTour() {
         tour.setTourStatus(Tour.TOUR_CLOSED);
+        tour.setEndTime(new Date());
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
         Call<Tour.TourWrapper> call = tourRequest.closeTour(tourId, tourWrapper);
@@ -321,6 +323,7 @@ public class TourServiceManager {
 
     private void closeTour(final Tour tour) {
         tour.setTourStatus(Tour.TOUR_CLOSED);
+        tour.setEndTime(new Date());
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
         Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getId(), tourWrapper);
