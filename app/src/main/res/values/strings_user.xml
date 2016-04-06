@@ -22,7 +22,7 @@
     <string name="user_number_tours_label">Nombre d’maraudes</string>
     <string name="user_associations_title">Association(s)</string>
 
-    <string name="user_retrieval_error">!!Error getting the user profile</string>
+    <string name="user_retrieval_error">Erreur de récupération du profil</string>
 
     <string name="user_save_button">Enregistrer</string>
     <string name="user_edit_firstname_label">Prénom</string>
@@ -38,16 +38,16 @@
     <string name="user_edit_password_old_password_label">Ancien code d’accès</string>
     <string name="user_edit_password_new_password_label">Nouveau code d’accès</string>
     <string name="user_edit_password_confirm_password_label">Confirmer le code</string>
-    <string name="user_edit_password_invalid_current_password">!!The old password is invalid</string>
-    <string name="user_edit_password_new_password_too_short">!!The new password is too short.</string>
-    <string name="user_edit_password_not_match">!!The new and confirmed password does not match.</string>
+    <string name="user_edit_password_invalid_current_password">Mot de passe invalide</string>
+    <string name="user_edit_password_new_password_too_short">Le nouveau mot de passe est trop court.</string>
+    <string name="user_edit_password_not_match">Les mots de passe ne coincident pas.</string>
 
-    <string name="user_edit_profile_invalid_firstname">!!Invalid firstname</string>
-    <string name="user_edit_profile_invalid_lastname">!!Invalid lastname</string>
-    <string name="user_edit_profile_invalid_email">!!Invalid email</string>
+    <string name="user_edit_profile_invalid_firstname">Prénom invalide</string>
+    <string name="user_edit_profile_invalid_lastname">Nom invalide</string>
+    <string name="user_edit_profile_invalid_email">Email invalide</string>
 
-    <string name="user_delete_account_dialog">!!Are you sure you want to delete your account ?</string>
-    <string name="user_delete_account_in_progress">!!Deleting account</string>
-    <string name="user_delete_account_failure">!!Failed to delete the account</string>
+    <string name="user_delete_account_dialog">Voulez-vous vraiment supprimer votre compte ?</string>
+    <string name="user_delete_account_in_progress">Suppression en cours</string>
+    <string name="user_delete_account_failure">Erreur lors de la suppression du compte</string>
 
 </resources>
