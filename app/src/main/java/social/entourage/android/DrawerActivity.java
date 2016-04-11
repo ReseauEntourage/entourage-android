@@ -596,7 +596,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
-        if (message != null) {
+        if (message != null && message.getContent() != null && message.getContent().getTourId() != 0) {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override

@@ -25,8 +25,10 @@ public class PushNotificationContent implements Serializable {
     }
 
     public long getTourId() {
-        if (extra != null) {
-            return extra.tourId;
+        if (extra != null && extra.joinableType != null) {
+            if (Extra.JOINABLE_TYPE_TOUR.equalsIgnoreCase(extra.joinableType)) {
+                return extra.joinableId;
+            }
         }
         return 0;
     }
@@ -40,8 +42,14 @@ public class PushNotificationContent implements Serializable {
 
     private class Extra implements Serializable {
 
-        @SerializedName("tour_id")
-        public long tourId;
+        public static final String JOINABLE_TYPE_TOUR = "Tour";
+        public static final String JOINABLE_TYPE_ENTOURAGE = "Entourage";
+
+        @SerializedName("joinable_id")
+        public long joinableId;
+
+        @SerializedName("joinable_type")
+        public String joinableType;
 
         @SerializedName("user_id")
         public int userId;
