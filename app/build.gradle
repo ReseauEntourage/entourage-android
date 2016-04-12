@@ -80,7 +80,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
-            buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back.herokuapp.com/api/v1/"'
+            buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
         }
         preprod {
             signingConfig signingConfigs.debug
