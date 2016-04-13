@@ -19,7 +19,7 @@
     <string name="user_information_email_label">Adresse e-mail</string>
     <string name="user_information_phone_label">Numéro de téléphone</string>
     <string name="user_number_entourages_label">Nombre d’entourages</string>
-    <string name="user_number_tours_label">Nombre d’maraudes</string>
+    <string name="user_number_tours_label">Nombre de maraudes</string>
     <string name="user_associations_title">Association(s)</string>
 
     <string name="user_retrieval_error">Erreur de récupération du profil</string>
@@ -40,7 +40,7 @@
     <string name="user_edit_password_confirm_password_label">Confirmer le code</string>
     <string name="user_edit_password_invalid_current_password">Mot de passe invalide</string>
     <string name="user_edit_password_new_password_too_short">Le nouveau mot de passe est trop court.</string>
-    <string name="user_edit_password_not_match">Les mots de passe ne coincident pas.</string>
+    <string name="user_edit_password_not_match">Les mots de passe ne coïncident pas.</string>
 
     <string name="user_edit_profile_invalid_firstname">Prénom invalide</string>
     <string name="user_edit_profile_invalid_lastname">Nom invalide</string>

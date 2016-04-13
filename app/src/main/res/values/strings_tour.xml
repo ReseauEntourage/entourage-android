@@ -99,7 +99,7 @@
     <!-- My tours -->
     <string name="mytours_title">MES MARAUDES</string>
     <string name="mytours_ongoing">En cours</string>
-    <string name="mytours_recorded">Enregistrés</string>
-    <string name="mytours_frozen">Clôturés</string>
+    <string name="mytours_recorded">Enregistrées</string>
+    <string name="mytours_frozen">Clôturées</string>
 
 </resources>
