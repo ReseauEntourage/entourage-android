@@ -61,6 +61,7 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
 
         itemView.setOnClickListener(this);
+        tourAuthor.setOnClickListener(this);
         photoView.setOnClickListener(this);
         actButton.setOnClickListener(this);
 
@@ -175,7 +176,7 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     @Override
     public void onClick(final View v) {
         if (tour == null) return;
-        if (v == photoView) {
+        if (v == photoView || v == tourAuthor) {
             BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
         }
         else if (v == actButton) {

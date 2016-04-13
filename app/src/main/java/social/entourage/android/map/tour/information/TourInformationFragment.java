@@ -81,10 +81,12 @@ import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
+import social.entourage.android.tools.BusProvider;
 
 public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener {
 
@@ -293,6 +295,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @OnClick(R.id.tour_info_comment_add_button)
     protected void onAddCommentButton() {
         presenter.sendTourMessage(commentEditText.getText().toString());
+    }
+
+    @OnClick({R.id.tour_info_author_name, R.id.tour_info_author_photo})
+    protected void onAuthorClicked() {
+        BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
     }
 
     @OnClick(R.id.tour_info_comment_record_button)
