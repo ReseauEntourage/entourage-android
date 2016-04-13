@@ -88,7 +88,7 @@
     <string name="tour_join_request_success">Requête envoyée</string>
     <string name="tour_join_request_error">Erreur d\'envoi de la requête</string>
     <string name="tour_join_request_title">MERCI !</string>
-    <string name="tour_join_request_description">Cette maraude étant privée, votre demande a été  transmise au créateur.</string>
+    <string name="tour_join_request_description">Cette maraude étant privée,  votre demande a été  transmise au créateur.</string>
     <string name="tour_join_request_message_hint">Si vous le souhaitez,  envoyez-lui un message :</string>
     <string name="tour_join_request_send">Envoyer</string>
     <string name="tour_join_request_message_sent">Message envoyé</string>
@@ -97,9 +97,9 @@
     <string name="tour_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre maraude]]></string>
 
     <!-- My tours -->
-    <string name="mytours_title">MES MARAUDES</string>
+    <string name="mytours_title">MES ENTOURAGES</string>
     <string name="mytours_ongoing">En cours</string>
-    <string name="mytours_recorded">Enregistrées</string>
-    <string name="mytours_frozen">Clôturées</string>
+    <string name="mytours_recorded">Actifs</string>
+    <string name="mytours_frozen">Clôturés</string>
 
 </resources>
