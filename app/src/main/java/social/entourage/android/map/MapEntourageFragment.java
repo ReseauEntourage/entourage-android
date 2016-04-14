@@ -520,12 +520,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
+        int previousToursCount = retrievedTours.size();
         tours = removeRedundantTours(tours, false);
         Collections.sort(tours, new Tour.TourComparatorOldToNew());
         for (Tour tour : tours) {
             if (currentTourId != tour.getId()) {
                 drawNearbyTour(tour, false);
             }
+        }
+        if (retrievedTours.size() == 0) {
+            hideToursList();
+        }
+        else if (previousToursCount == 0) {
+            showToursList();
         }
     }
 
@@ -1249,6 +1256,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void hideToursList() {
+        if (toursListView.getVisibility() == View.GONE) {
+            return;
+        }
         toursListView.setVisibility(View.GONE);
 
         mapDisplayTypeRadioGroup.check(R.id.map_display_type_carte);
