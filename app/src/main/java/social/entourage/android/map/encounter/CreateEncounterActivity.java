@@ -10,6 +10,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +88,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         }
         initialiseFields();
         FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_START);
+
     }
 
     /*

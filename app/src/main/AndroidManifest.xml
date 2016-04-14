@@ -77,6 +77,7 @@
             android:name=".map.encounter.CreateEncounterActivity"
             android:label="@string/activity_create_encounter_title"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme">
         </activity>
         <activity

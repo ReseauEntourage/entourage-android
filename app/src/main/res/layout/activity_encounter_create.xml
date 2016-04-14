@@ -1,4 +1,4 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +11,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background">
+        android:background="@color/background"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:id="@+id/create_encounter_title_layout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +37,9 @@
         android:textColor="@color/greyish_brown"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textSize="17sp"/>
+        android:textSize="17sp"
+        android:layout_marginLeft="0dp"
+        android:layout_below="@+id/create_encounter_title_layout"/>
 
     <EditText
         android:id="@+id/edittext_street_person_name"
@@ -43,7 +50,8 @@
         android:textCursorDrawable="@drawable/bg_cursor_yellow"
         android:background="@color/white"
         android:padding="10dp"
-        android:textSize="17sp"/>
+        android:textSize="17sp"
+        android:layout_below="@+id/encounter_author"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -55,12 +63,13 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textSize="17sp"
-        android:textColor="@color/greyish_brown"/>
+        android:textColor="@color/greyish_brown"
+        android:layout_below="@+id/edittext_street_person_name"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:layout_below="@+id/encounter_date">
 
         <EditText
             android:id="@+id/edittext_message"
@@ -110,4 +119,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
