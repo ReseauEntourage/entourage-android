@@ -1272,6 +1272,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void showToursList() {
+        if (toursListView.getVisibility() == View.VISIBLE) {
+            return;
+        }
         toursListView.setVisibility(View.VISIBLE);
 
         mapDisplayTypeRadioGroup.setVisibility(View.GONE);
