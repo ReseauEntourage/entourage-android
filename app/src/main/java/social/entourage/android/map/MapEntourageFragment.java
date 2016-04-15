@@ -1,6 +1,7 @@
 package social.entourage.android.map;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -1266,9 +1267,26 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
         originalMapLayoutWeight = lp.weight;
-        lp.weight = layoutMain.getWeightSum();
-        layoutMapMain.setLayoutParams(lp);
-        layoutMain.forceLayout();
+//        lp.weight = layoutMain.getWeightSum();
+//        layoutMapMain.setLayoutParams(lp);
+//        layoutMain.forceLayout();
+
+        final float targetHeight = layoutMain.getWeightSum();
+        ValueAnimator anim = ValueAnimator.ofFloat(originalMapLayoutWeight, targetHeight);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float val = (Float) valueAnimator.getAnimatedValue();
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                layoutParams.weight = val;
+                layoutMapMain.setLayoutParams(layoutParams);
+                layoutMain.forceLayout();
+            }
+
+
+        });
+        anim.start();
+
     }
 
     private void showToursList() {
@@ -1280,8 +1298,24 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         mapDisplayTypeRadioGroup.setVisibility(View.GONE);
 
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
-        lp.weight = originalMapLayoutWeight;
-        layoutMapMain.setLayoutParams(lp);
+//        lp.weight = originalMapLayoutWeight;
+//        layoutMapMain.setLayoutParams(lp);
+
+        float targetHeight = layoutMain.getWeightSum();
+        ValueAnimator anim = ValueAnimator.ofFloat(lp.weight, originalMapLayoutWeight);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float val = (Float) valueAnimator.getAnimatedValue();
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                layoutParams.weight = val;
+                layoutMapMain.setLayoutParams(layoutParams);
+                layoutMain.forceLayout();
+            }
+
+
+        });
+        anim.start();
     }
 
     // ----------------------------------
