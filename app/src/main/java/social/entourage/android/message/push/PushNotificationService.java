@@ -18,6 +18,7 @@ import org.w3c.dom.Text;
 
 import java.util.Random;
 
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
@@ -83,11 +84,21 @@ public class PushNotificationService extends IntentService {
         Bundle args = new Bundle();
         args.putSerializable(PUSH_MESSAGE, message);
         Intent messageIntent = null;
-        if (message.getContent().getType().equals(PushNotificationContent.TYPE_NEW_JOIN_REQUEST)) {
+        String messageType = "";
+        if (message.getContent() != null) {
+            messageType = message.getContent().getType();
+        }
+        if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(messageType)) {
             messageIntent = new Intent(this, TourJoinRequestReceivedActivity.class);
+        }
+        else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType)) {
+            messageIntent = new Intent(this, DrawerActivity.class);
         }
         else {
             messageIntent = new Intent(this, MessageActivity.class);
+        }
+        if (messageType != null) {
+            messageIntent.setAction(messageType);
         }
         messageIntent.putExtras(args);
         return PendingIntent.getActivity(this, notificationId, messageIntent, 0);

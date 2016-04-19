@@ -57,6 +57,7 @@ import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.my.MyToursFragment;
+import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
@@ -174,6 +175,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
     @Override
     protected void onNewIntent(Intent intent) {
+        this.setIntent(intent);
         getIntentAction(intent);
         if (mainFragment != null) {
             switchToMapFragment();
@@ -284,6 +286,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             else if (args.getBoolean(ConfirmationActivity.KEY_END_TOUR, false)) {
                 intentAction = ConfirmationActivity.KEY_END_TOUR;
             }
+            else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
+            }
         }
         else if (action != null) {
             getIntent().setAction(null);
@@ -295,6 +300,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             }
             else if (TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                 intentAction = TourService.KEY_NOTIFICATION_STOP_TOUR;
+            }
+            else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
             }
         }
     }
@@ -507,6 +515,13 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
         mapEntourageFragment.checkAction(intentAction, intentTour);
+        if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
+            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            PushNotificationContent content = message.getContent();
+            if (content != null) {
+                mapEntourageFragment.displayChosenTour(content.getTourId());
+            }
+        }
         intentAction = null;
         intentTour = null;
     }

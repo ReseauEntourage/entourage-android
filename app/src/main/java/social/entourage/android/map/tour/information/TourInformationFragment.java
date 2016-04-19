@@ -167,6 +167,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     int apiRequestsCount;
 
     Tour tour;
+    long requestedTourId;
 
     Date oldestChatMessageDate = null;
     boolean needsMoreChatMessaged = true;
@@ -190,6 +191,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         return fragment;
     }
 
+    public static TourInformationFragment newInstance(long tourId) {
+        TourInformationFragment fragment = new TourInformationFragment();
+        Bundle args = new Bundle();
+        args.putLong(Tour.KEY_TOUR_ID, tourId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -197,7 +206,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onCreateView(inflater, container, savedInstanceState);
         View toReturn = inflater.inflate(R.layout.fragment_tour_information, container, false);
         ButterKnife.bind(this, toReturn);
-        initializeView();
+
         return toReturn;
     }
 
@@ -208,7 +217,15 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
-        if (tour.isPrivate()) {
+        tour = (Tour) getArguments().getSerializable(Tour.KEY_TOUR);
+        if (tour != null) {
+            initializeView();
+        }
+        else {
+            requestedTourId = getArguments().getLong(Tour.KEY_TOUR_ID);
+            presenter.getTour(requestedTourId);
+        }
+        if (tour != null && tour.isPrivate()) {
             loadPrivateCards();
         }
     }
@@ -281,6 +298,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onStop();
 
         discussionView.removeOnScrollListener(discussionScrollListener);
+    }
+
+    public long getTourId() {
+        if (tour != null) {
+            return tour.getId();
+        }
+        return requestedTourId;
     }
 
     // ----------------------------------
@@ -430,8 +454,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     // ----------------------------------
 
     private void initializeView() {
-
-        tour = (Tour) getArguments().getSerializable(Tour.KEY_TOUR);
 
         apiRequestsCount = 0;
 
@@ -770,6 +792,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     // ----------------------------------
     // API callbacks
     // ----------------------------------
+
+    protected void onTourReceived(Tour tour) {
+        hideProgressBar();
+        if (tour != null) {
+            this.tour = tour;
+            initializeView();
+            if (tour.isPrivate()) {
+                loadPrivateCards();
+            }
+        }
+    }
 
     protected void onTourUsersReceived(List<TourUser> tourUsers) {
         if (tourUsers != null) {

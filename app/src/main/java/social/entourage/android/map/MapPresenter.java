@@ -80,6 +80,14 @@ public class MapPresenter {
         }
     }
 
+    public void openTour(long tourId) {
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tourId);
+            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
+        }
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------

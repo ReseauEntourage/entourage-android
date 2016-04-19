@@ -10,6 +10,7 @@ import retrofit2.Response;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 
 /**
@@ -39,6 +40,26 @@ public class TourInformationPresenter {
     // ----------------------------------
     // Api calls
     // ----------------------------------
+
+    public void getTour(long tourId) {
+        fragment.showProgressBar();
+        Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(tourId);
+        call.enqueue(new Callback<Tour.TourWrapper>() {
+            @Override
+            public void onResponse(final Call<Tour.TourWrapper> call, final Response<Tour.TourWrapper> response) {
+                if (response.isSuccess()) {
+                    fragment.onTourReceived(response.body().getTour());
+                } else {
+                    fragment.onTourReceived(null);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Tour.TourWrapper> call, final Throwable t) {
+                fragment.onTourReceived(null);
+            }
+        });
+    }
 
     public void getTourUsers() {
         fragment.showProgressBar();

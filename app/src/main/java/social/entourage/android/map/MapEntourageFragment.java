@@ -94,6 +94,7 @@ import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourService;
+import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.map.tour.ToursAdapter;
 import social.entourage.android.tools.BusProvider;
@@ -372,6 +373,25 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     public void initializeMapZoom() {
         centerMap(EntourageLocation.getInstance().getLastCameraPosition());
+    }
+
+    public void displayChosenTour(long tourId) {
+        //check if we are not already displaying the tour
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
+        if (tourInformationFragment != null && tourInformationFragment.getTourId() == tourId) {
+            return;
+        }
+        //display the tour
+        Tour tour = toursAdapter.findTour(tourId);
+        if (tour != null) {
+            displayChosenTour(tour);
+        }
+        else {
+            if (presenter != null) {
+                presenter.openTour(tourId);
+            }
+        }
     }
 
     public void displayChosenTour(Tour tour) {

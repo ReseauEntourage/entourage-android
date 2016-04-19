@@ -61,6 +61,11 @@ public interface TourRequest {
                                        @Query("longitude") double longitude,
                                        @Query("distance") double distance);
 
+    @GET("tours/{tour_id}")
+    Call<Tour.TourWrapper> retrieveTourById(
+            @Path("tour_id") long tourId
+    );
+
     @GET("tours/{tour_id}/users.json")
     Call<TourUser.TourUsersWrapper> retrieveTourUsers(
             @Path("tour_id") long tourId
