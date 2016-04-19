@@ -834,6 +834,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         mapLongClickView.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.layout_map_longclick)
+    void hideLongClickView() {
+        onBackPressed();
+    }
+
     // ----------------------------------
     // PRIVATE METHODS (lifecycle)
     // ----------------------------------
