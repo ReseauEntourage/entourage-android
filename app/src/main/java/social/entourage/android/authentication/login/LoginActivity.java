@@ -416,6 +416,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Lost Code View
      ************************/
 
+    @OnClick(R.id.login_lost_code_close)
+    void lostCodeClose() {
+        onBackPressed();
+    }
+
     @OnClick(R.id.login_button_ask_code)
     void sendNewCode() {
         startLoader();
@@ -550,6 +555,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Newsletter View
      ************************/
 
+    @OnClick(R.id.login_newsletter_close)
+    void newsletterClose() {
+        hideKeyboard();
+        onBackPressed();
+    }
+
     @OnClick(R.id.login_newsletter_button)
     void newsletterSubscribe() {
         hideKeyboard();
@@ -570,6 +581,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     /************************
      * Verify Code View
      ************************/
+
+    @OnClick(R.id.login_code_sent_close)
+    void verifyCodeClose() {
+        onBackPressed();
+    }
 
     @OnClick(R.id.login_button_verify_code)
     void verifyCode() {

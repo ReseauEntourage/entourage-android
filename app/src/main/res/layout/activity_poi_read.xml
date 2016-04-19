@@ -25,7 +25,8 @@
             android:layout_marginLeft="10dp"
             android:layout_alignParentStart="false"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="false"/>
+            android:layout_alignParentTop="false"
+            android:padding="5dp"/>
 
         <TextView
             style="@style/EntourageTitle"

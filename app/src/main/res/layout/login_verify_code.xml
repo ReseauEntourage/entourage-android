@@ -6,19 +6,31 @@
               android:background="@color/background_light"
               android:weightSum="8">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_login_light">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_code_sent_close"
+            android:src="@drawable/ic_close"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"/>
 
         <TextView
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_title_lost_code"
-            android:id="@+id/login_code_sent_title"/>
-    </LinearLayout>
+            android:id="@+id/login_code_sent_title"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

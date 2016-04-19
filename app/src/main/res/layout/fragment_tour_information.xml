@@ -26,7 +26,8 @@
             android:src="@drawable/ic_close"
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"/>
 
         <TextView
             style="@style/EntourageTitle"

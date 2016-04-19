@@ -7,11 +7,21 @@
     android:background="@color/background_light"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/encounter_read_close"
+            android:src="@drawable/ic_close"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"/>
 
         <TextView
             style="@style/EntourageTitle"
@@ -19,8 +29,11 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_read_encounter_title"
             android:id="@+id/encounter_read_title"
-            android:layout_gravity="center_horizontal"/>
-    </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

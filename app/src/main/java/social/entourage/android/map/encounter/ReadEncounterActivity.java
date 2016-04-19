@@ -28,6 +28,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -105,6 +106,11 @@ public class ReadEncounterActivity extends EntourageActivity {
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
+
+    @OnClick(R.id.encounter_read_close)
+    public void onCloseButton() {
+        finish();
+    }
 
     public void displayEncounter() {
         String location = "";

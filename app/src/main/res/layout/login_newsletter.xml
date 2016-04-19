@@ -6,12 +6,22 @@
               android:weightSum="8"
               android:background="@color/background_login_grey">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_login_light"
         >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_newsletter_close"
+            android:src="@drawable/ic_close"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -19,10 +29,10 @@
             android:text="@string/login_title_newsletter"
             android:id="@+id/login_newsletter_title"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            style="@style/EntourageTitle"/>
-    </LinearLayout>
+            style="@style/EntourageTitle"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

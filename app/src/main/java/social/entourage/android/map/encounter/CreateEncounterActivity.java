@@ -150,6 +150,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     // PUBLIC METHODS
     // ----------------------------------
 
+    @OnClick(R.id.create_encounter_close)
+    public void onCloseButton() {
+        finish();
+    }
+
     @OnClick(R.id.button_create_encounter)
     public void createEncounter() {
         if (!messageEditText.getText().toString().equals("") && !streetPersonNameEditText.getText().toString().equals("")) {

@@ -46,7 +46,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void populate() {
-        versionTextView.setText(BuildConfig.VERSION_NAME);
+        versionTextView.setText("v"+BuildConfig.VERSION_NAME);
     }
 
     // ----------------------------------
