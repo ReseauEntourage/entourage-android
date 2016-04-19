@@ -25,6 +25,7 @@ import social.entourage.android.view.HtmlTextView;
 public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
 
     private Message message;
+    private int requestsCount = 0;
 
     @Inject
     TourJoinRequestReceivedPresenter presenter;
@@ -67,6 +68,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                     public void onClick(final DialogInterface dialog, final int which) {
                         PushNotificationContent content = message.getContent();
                         if (content != null) {
+                            requestsCount++;
                             presenter.acceptJoinRequest(message.getContent().getTourId(), message.getContent().getUserId());
                         }
                     }
@@ -76,10 +78,19 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                     public void onClick(final DialogInterface dialog, final int which) {
                         PushNotificationContent content = message.getContent();
                         if (content != null) {
+                            requestsCount++;
                             presenter.rejectJoinRequest(message.getContent().getTourId(), message.getContent().getUserId());
                         }
                     }
                 });
+        if (requestsCount > 0) {
+            builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(final DialogInterface dialog, final int which) {
+                    finish();
+                }
+            });
+        }
         builder.show();
     }
 
