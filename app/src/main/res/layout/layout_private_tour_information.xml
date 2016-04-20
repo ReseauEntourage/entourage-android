@@ -58,6 +58,18 @@
             android:contentDescription="@string/encounter_voice_message_button"
             android:layout_alignRight="@+id/edittext_message"
             android:layout_gravity="center_vertical"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="@string/send"
+            android:id="@+id/tour_info_comment_send_button"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/accent"
+            android:visibility="gone"
+            />
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

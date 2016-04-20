@@ -20,6 +20,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -146,6 +149,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_info_comment)
     EditText commentEditText;
 
+    @Bind(R.id.tour_info_comment_send_button)
+    Button commentSendButton;
+
+    @Bind(R.id.tour_info_comment_record_button)
+    AppCompatImageButton commentRecordButton;
+
     @Bind(R.id.tour_info_options)
     LinearLayout optionsLayout;
 
@@ -228,6 +237,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (tour != null && tour.isPrivate()) {
             loadPrivateCards();
         }
+
+        initializeCommentEditText();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -316,7 +327,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         this.dismiss();
     }
 
-    @OnClick(R.id.tour_info_comment_add_button)
+    @OnClick(R.id.tour_info_comment_send_button)
     protected void onAddCommentButton() {
         presenter.sendTourMessage(commentEditText.getText().toString());
     }
@@ -633,6 +644,28 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
 
         return Color.argb(0, Color.red(color), Color.green(color), Color.blue(color));
+    }
+
+    private void initializeCommentEditText() {
+        commentEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {}
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {}
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (s.length() > 0) {
+                    commentRecordButton.setVisibility(View.GONE);
+                    commentSendButton.setVisibility(View.VISIBLE);
+                } else {
+                    commentRecordButton.setVisibility(View.VISIBLE);
+                    commentSendButton.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void switchToPublicSection() {
