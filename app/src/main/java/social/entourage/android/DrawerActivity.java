@@ -604,6 +604,18 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         this.startActivity(intent);
     }
 
+    @Subscribe
+    public void tourCloseRequested(OnTourCloseRequestEvent event) {
+        Tour tour = event.getTour();
+        if (mapEntourageFragment != null) {
+            if (!tour.isClosed()) {
+                mapEntourageFragment.stopTour(tour);
+            } else {
+                mapEntourageFragment.freezeTour(tour);
+            }
+        }
+    }
+
     // ----------------------------------
     // PUSH NOTIFICATION HANDLING
     // ----------------------------------

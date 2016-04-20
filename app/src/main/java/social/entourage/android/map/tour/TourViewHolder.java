@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Tour;
@@ -184,6 +185,12 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                 BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
             } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                if (tour.getAuthor() != null) {
+                    if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+                        BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
+                        return;
+                    }
+                }
                 BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
             } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                 //What to do on rejected status ?

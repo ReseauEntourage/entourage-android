@@ -163,6 +163,22 @@ public class Events {
     }
 
     /**
+     * Event signaling that the tour needs to be closed/freezed
+     */
+    public static class OnTourCloseRequestEvent {
+
+        private Tour tour;
+
+        public OnTourCloseRequestEvent(Tour tour) {
+            this.tour = tour;
+        };
+
+        public Tour getTour() {
+            return tour;
+        }
+    }
+
+    /**
      * Event triggering the tours service location listener when the permission has been granted
      */
     public static class OnLocationPermissionGranted {

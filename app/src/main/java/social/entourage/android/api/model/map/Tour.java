@@ -319,6 +319,10 @@ public class Tour implements Serializable {
         return joinStatus.equals(JOIN_STATUS_ACCEPTED);
     }
 
+    public boolean isFreezed() {
+        return tourStatus.equals(TOUR_FREEZED);
+    }
+
     public void addCardInfo(TimestampedObject cardInfo) {
         if (cardInfo == null) return;
         if (cachedCardInfoList.contains(cardInfo)) {

@@ -1005,7 +1005,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private void stopTour(Tour tour) {
+    public void stopTour(Tour tour) {
         if (getActivity() != null) {
             if (tourService != null) {
                 if (tour != null && tourService.getCurrentTourId() != tour.getId()) {
@@ -1023,6 +1023,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
                     }
                 }
+            }
+        }
+    }
+
+    public void freezeTour(Tour tour) {
+        if (getActivity() != null) {
+            if (tourService != null) {
+                tourService.freezeTour(tour);
             }
         }
     }
