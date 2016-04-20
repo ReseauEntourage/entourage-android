@@ -70,7 +70,7 @@ public class TourServiceManager {
     private static final double ALIGNMENT_PRECISION = .000001;
     private static final long VIBRATION_DURATION = 1000;
     private static final double RETRIEVE_TOURS_DISTANCE = 0.04;
-    private static final double MAX_DISTANCE_BETWEEN_TWO_POINTS = 10; //meters
+    private static final double MAX_DISTANCE_BETWEEN_TWO_POINTS = 50; //meters
     private static final double MAX_DISTANCE_TO_LINE = .0005;
 
     private final TourService tourService;
