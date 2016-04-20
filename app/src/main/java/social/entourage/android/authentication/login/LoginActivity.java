@@ -572,6 +572,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         stopLoader();
         if (success) {
             displayToast(getString(R.string.login_text_newsletter_success));
+            onBackPressed();
         }
         else {
             displayToast(getString(R.string.login_text_newsletter_fail));
