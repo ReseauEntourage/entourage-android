@@ -329,7 +329,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick(R.id.tour_info_comment_send_button)
     protected void onAddCommentButton() {
-        presenter.sendTourMessage(commentEditText.getText().toString());
+        if (presenter != null) {
+            presenter.sendTourMessage(commentEditText.getText().toString());
+        }
     }
 
     @OnClick({R.id.tour_info_author_name, R.id.tour_info_author_photo})
