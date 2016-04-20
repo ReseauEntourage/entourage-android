@@ -290,7 +290,7 @@ public class UserFragment extends DialogFragment {
             //update the edit view, if available
             UserEditFragment userEditFragment = (UserEditFragment)getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
             if (userEditFragment != null) {
-                userEditFragment.configureView();
+                userEditFragment.dismiss();
             }
             displayToast(getString(R.string.user_text_update_ok));
         }
