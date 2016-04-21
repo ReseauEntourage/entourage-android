@@ -170,6 +170,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_info_more_button)
     AppCompatImageButton moreButton;
 
+    @Bind(R.id.tour_info_act_layout)
+    RelativeLayout actLayout;
+
     @Bind(R.id.tour_info_join_button)
     Button joinButton;
 
@@ -526,14 +529,19 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 quitTourButton.setVisibility(View.VISIBLE);
             }
             else {
-                stopTourButton.setVisibility(tour.getTourStatus().equals(Tour.TOUR_FREEZED) ? View.GONE : View.VISIBLE);
+                stopTourButton.setVisibility(tour.isFreezed() ? View.GONE : View.VISIBLE);
+                if (tour.isClosed()) {
+                    stopTourButton.setText(R.string.tour_info_options_freeze_tour);
+                } else {
+                    stopTourButton.setText(R.string.tour_info_options_stop_tour);
+                }
             }
         }
     }
 
     private void updateHeaderButtons() {
         boolean isTourPrivate = tour.isPrivate();
-        shareButton.setVisibility(isTourPrivate ? View.GONE : (tour.getJoinStatus().equals(Tour.JOIN_STATUS_PENDING) ? View.GONE : View.VISIBLE));
+        shareButton.setVisibility(isTourPrivate ? View.GONE : ( (tour.getJoinStatus().equals(Tour.JOIN_STATUS_PENDING) || tour.isFreezed()) ? View.GONE : View.VISIBLE ) );
         moreButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
     }
 
@@ -708,23 +716,30 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void updateJoinStatus() {
-        String joinStatus = tour.getJoinStatus();
-        if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
-            joinButton.setEnabled(false);
-            joinButton.setText(R.string.tour_cell_button_pending);
-            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_pending), null, null);
-        } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
-            joinButton.setEnabled(false);
-            joinButton.setText(R.string.tour_cell_button_accepted);
-            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_accepted), null, null);
-        } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
-            joinButton.setEnabled(false);
-            joinButton.setText(R.string.tour_cell_button_rejected);
-            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_rejected), null, null);
-        } else {
-            joinButton.setEnabled(true);
-            joinButton.setText(R.string.tour_cell_button_join);
-            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_join), null, null);
+        if (tour == null) return;
+        if (tour.isFreezed()) {
+            actLayout.setVisibility(View.GONE);
+        }
+        else {
+            actLayout.setVisibility(View.VISIBLE);
+            String joinStatus = tour.getJoinStatus();
+            if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
+                joinButton.setEnabled(false);
+                joinButton.setText(R.string.tour_cell_button_pending);
+                joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_pending), null, null);
+            } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
+                joinButton.setEnabled(false);
+                joinButton.setText(R.string.tour_cell_button_accepted);
+                joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_accepted), null, null);
+            } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
+                joinButton.setEnabled(false);
+                joinButton.setText(R.string.tour_cell_button_rejected);
+                joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_rejected), null, null);
+            } else {
+                joinButton.setEnabled(true);
+                joinButton.setText(R.string.tour_cell_button_join);
+                joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_join), null, null);
+            }
         }
     }
 
@@ -1031,6 +1046,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 commentLayout.setVisibility(View.GONE);
             }
             optionsLayout.setVisibility(View.GONE);
+            initializeOptionsView();
         }
         else {
             Toast.makeText(getActivity(), R.string.tour_close_fail, Toast.LENGTH_SHORT).show();

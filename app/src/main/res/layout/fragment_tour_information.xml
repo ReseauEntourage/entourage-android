@@ -205,7 +205,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tour_info_options_stop_tour"
+            android:text="@string/tour_info_options_freeze_tour"
             android:id="@+id/tour_info_button_stop_tour"
             style="@style/WhiteButton"
             android:layout_marginBottom="5dp"/>

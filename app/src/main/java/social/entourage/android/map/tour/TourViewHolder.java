@@ -142,19 +142,25 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         }
 
         //act button
-        String joinStatus = tour.getJoinStatus();
-        if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-            actButton.setText(R.string.tour_cell_button_pending);
-            actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
-        } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-            actButton.setText(R.string.tour_cell_button_accepted);
-            actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
-        } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-            actButton.setText(R.string.tour_cell_button_rejected);
-            actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
-        } else {
-            actButton.setText(R.string.tour_cell_button_join);
-            actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+        if (tour.isFreezed()) {
+            actButton.setVisibility(View.GONE);
+        }
+        else {
+            actButton.setVisibility(View.VISIBLE);
+            String joinStatus = tour.getJoinStatus();
+            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                actButton.setText(R.string.tour_cell_button_pending);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
+            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                actButton.setText(R.string.tour_cell_button_accepted);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
+            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+                actButton.setText(R.string.tour_cell_button_rejected);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
+            } else {
+                actButton.setText(R.string.tour_cell_button_join);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+            }
         }
 
     }
