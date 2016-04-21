@@ -416,7 +416,8 @@ public class TourServiceManager {
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
             float zoom = currentPosition.zoom;
-            float distance = 40000f / (float) Math.pow(2f, zoom) / 2.5f;
+            //float distance = 40000f / (float) Math.pow(2f, zoom) / 2.5f;
+            float distance = 40000f / (float) Math.pow(2f, zoom);
             Call<Tour.ToursWrapper> call = tourRequest.retrieveToursNearby(10, null, null, location.latitude, location.longitude, distance);
             call.enqueue(new Callback<Tour.ToursWrapper>() {
                 @Override
