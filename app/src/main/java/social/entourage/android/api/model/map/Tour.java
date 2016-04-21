@@ -365,6 +365,17 @@ public class Tour implements Serializable {
         return (currentHours - startHours);
     }
 
+    public boolean isSame(Tour tour) {
+        boolean isSame = true;
+
+        if (tour == null) return false;
+        if (id != tour.id) return false;
+        if (tourPoints.size() != tour.tourPoints.size()) return false;
+        if (!tourStatus.equals(tour.tourStatus)) return false;
+
+        return isSame;
+    }
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
