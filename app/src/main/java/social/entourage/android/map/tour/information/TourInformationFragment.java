@@ -541,7 +541,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private void updateHeaderButtons() {
         boolean isTourPrivate = tour.isPrivate();
-        shareButton.setVisibility(isTourPrivate ? View.GONE : ( (tour.getJoinStatus().equals(Tour.JOIN_STATUS_PENDING) || tour.isFreezed()) ? View.GONE : View.VISIBLE ) );
+        shareButton.setVisibility(isTourPrivate ? View.GONE : ( (!tour.getJoinStatus().equals(Tour.JOIN_STATUS_NOT_REQUESTED) || tour.isFreezed()) ? View.GONE : View.VISIBLE ) );
         moreButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
     }
 
@@ -1012,7 +1012,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Override
     public void onRetrieveToursNearby(final List<Tour> tours) {
-
+        for (Tour receivedTour:tours) {
+            if (receivedTour.getId() == this.tour.getId()) {
+                if(!receivedTour.isSame(this.tour)) {
+                    onTourClosed(true, receivedTour);
+                }
+            }
+        }
     }
 
     @Override
@@ -1038,15 +1044,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (closed) {
             this.tour.setTourStatus(tour.getTourStatus());
             this.tour.setEndTime(tour.getEndTime());
-            if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
-                addDiscussionTourEndCard();
-                updateDiscussionList();
-            }
-            else if (tour.getTourStatus().equals(Tour.TOUR_FREEZED)){
-                commentLayout.setVisibility(View.GONE);
+            if (tour.getTourStatus().equals(Tour.TOUR_CLOSED) && tour.isPrivate()) {
+                    addDiscussionTourEndCard();
+                    updateDiscussionList();
+                }
+                else if (tour.getTourStatus().equals(Tour.TOUR_FREEZED)){
+                    commentLayout.setVisibility(View.GONE);
             }
             optionsLayout.setVisibility(View.GONE);
             initializeOptionsView();
+            updateHeaderButtons();
+            updateJoinStatus();
         }
         else {
             Toast.makeText(getActivity(), R.string.tour_close_fail, Toast.LENGTH_SHORT).show();

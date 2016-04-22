@@ -568,6 +568,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         else if (previousToursCount == 0) {
             showToursList();
         }
+        if (retrievedTours.size() > 0) {
+            toursListView.scrollToPosition(0);
+        }
     }
 
     @Override
