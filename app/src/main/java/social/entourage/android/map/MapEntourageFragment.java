@@ -1387,8 +1387,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //update the badge count on tour card
         PushNotificationContent content = message.getContent();
         if (content == null) return;
+        if (toursAdapter == null) return;
         long tourId = content.getTourId();
-        Tour tour = retrievedTours.get(tourId);
+        Tour tour = toursAdapter.findTour(tourId);
         if (tour == null) return;
         tour.increaseBadgeCount();
         toursAdapter.updateTour(tour);
