@@ -74,7 +74,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/tour_info_discussion_view"
         android:layout_below="@+id/tour_info_discussion_title"
         android:layout_above="@+id/tour_info_comment_layout"

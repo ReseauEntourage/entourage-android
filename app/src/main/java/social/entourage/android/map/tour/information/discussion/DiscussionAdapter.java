@@ -82,6 +82,7 @@ public class DiscussionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             addCardInfo(addItems.get(i));
         }
         int positionEnd = items.size()-1;
+        notifyItemRangeInserted(positionStart, positionEnd-positionStart);
     }
 
     public void addCardInfo(TimestampedObject cardInfo) {
