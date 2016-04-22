@@ -814,7 +814,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         //if ongoing tour, show only if the point is in the current tour
         if (tourService != null && tourService.isRunning()) {
-            if (!tourService.isLocationInTour(latLng)) return;
+            if (!tourService.isLocationInTour(latLng)) {
+                Toast.makeText(getActivity().getApplicationContext(), R.string.tour_encounter_too_far, Toast.LENGTH_SHORT).show();
+                return;
+            }
             longTapCoordinates = latLng;
         }
         //hide the FAB menu

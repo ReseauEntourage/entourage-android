@@ -103,4 +103,7 @@
     <string name="mytours_recorded">Actifs</string>
     <string name="mytours_frozen">Clôturés</string>
 
+    <!-- Encounter -->
+    <string name="tour_encounter_too_far">!!The encounter is too far away from the tour</string>
+
 </resources>
