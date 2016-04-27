@@ -9,9 +9,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.R;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.map.tour.information.TourInformationFragment;
+import social.entourage.android.api.model.map.TourJoinMessage;
+import social.entourage.android.api.model.map.TourUser;
 
 /**
  * Created by mihaiionescu on 07/03/16.
@@ -41,17 +41,17 @@ public class TourJoinRequestPresenter {
     // ----------------------------------
 
     protected void sendMessage(String message, Tour tour) {
-        if (message == null || message.trim().length() == 0) {
+        if (message == null || message.trim().length() == 0 || tour == null) {
             fragment.dismiss();
             return;
         }
-        ChatMessage chatMessage = new ChatMessage(message);
-        ChatMessage.ChatMessageWrapper chatMessageWrapper = new ChatMessage.ChatMessageWrapper();
-        chatMessageWrapper.setChatMessage(chatMessage);
-        Call<ChatMessage.ChatMessageWrapper> call = tourRequest.chatMessage(tour.getId(), chatMessageWrapper);
-        call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
+        TourJoinMessage joinMessage = new TourJoinMessage(message.trim());
+        TourJoinMessage.TourJoinMessageWrapper joinMessageWrapper = new TourJoinMessage.TourJoinMessageWrapper();
+        joinMessageWrapper.setJoinMessage(joinMessage);
+        Call<TourUser.TourUserWrapper> call = tourRequest.updateJoinTourMessage(tour.getId(), joinMessageWrapper);
+        call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
-            public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
+            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (response.isSuccess()) {
                     fragment.dismiss();
                     Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
@@ -62,7 +62,7 @@ public class TourJoinRequestPresenter {
             }
 
             @Override
-            public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
+            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
                 Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
             }
         });

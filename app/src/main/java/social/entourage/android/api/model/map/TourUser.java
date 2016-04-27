@@ -32,6 +32,8 @@ public class TourUser extends TimestampedObject implements Serializable {
     @SerializedName("requested_at")
     private Date requestDate;
 
+    private String message;
+
     public String getEmail() {
         return email;
     }
@@ -70,6 +72,14 @@ public class TourUser extends TimestampedObject implements Serializable {
 
     public void setUserId(final int userId) {
         this.userId = userId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(final String message) {
+        this.message = message;
     }
 
     @Override

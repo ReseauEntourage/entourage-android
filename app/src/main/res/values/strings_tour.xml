@@ -90,7 +90,7 @@
     <string name="tour_join_request_error">Erreur d\'envoi de la requête</string>
     <string name="tour_join_request_title">MERCI !</string>
     <string name="tour_join_request_description">Cette maraude étant privée, votre demande a été transmise au créateur.</string>
-    <string name="tour_join_request_message_hint">Si vous le souhaitez,  envoyez-lui un message :</string>
+    <string name="tour_join_request_message_hint">Si vous le souhaitez, envoyez-lui un message :</string>
     <string name="tour_join_request_send">Envoyer</string>
     <string name="tour_join_request_message_sent">Message envoyé</string>
     <string name="tour_join_request_message_error">Erreur d\'envoi du message</string>
