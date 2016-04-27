@@ -41,11 +41,6 @@ public class Encounter extends TimestampedObject implements Serializable {
 
     private String message;
 
-    @SerializedName("voice_message")
-    private String voiceMessageUrl;
-
-    private String soundCloudPermalinkUrl;
-
     private transient Address address;
 
     private boolean isMyEncounter = false;
@@ -124,22 +119,6 @@ public class Encounter extends TimestampedObject implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getVoiceMessageUrl() {
-        return voiceMessageUrl;
-    }
-
-    public void setVoiceMessageUrl(String voiceMessageUrl) {
-        this.voiceMessageUrl = voiceMessageUrl;
-    }
-
-    public String getSoundCloudPermalinkUrl() {
-        return soundCloudPermalinkUrl;
-    }
-
-    public void setSoundCloudPermalinkUrl(final String permalink) {
-        this.soundCloudPermalinkUrl = permalink;
     }
 
     public Address getAddress() {
