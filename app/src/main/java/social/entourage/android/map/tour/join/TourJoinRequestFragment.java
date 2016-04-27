@@ -101,6 +101,11 @@ public class TourJoinRequestFragment extends DialogFragment {
         }
     }
 
+    @OnClick(R.id.tour_join_request_close)
+    protected void onClosePressed() {
+        dismiss();
+    }
+
     protected void setupComponent(EntourageComponent entourageComponent) {
         DaggerTourJoinRequestComponent.builder()
                 .entourageComponent(entourageComponent)
