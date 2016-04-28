@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Create Entourage -->
+    <string name="create_entourage_demand_title">DEMANDE</string>
+    <string name="create_entourage_contribution_title">CONTRIBUTION</string>
+    <string name="create_entourage_position_description">Ma position</string>
+    <string name="create_entourage_title_hint">Titre de votre demande</string>
+    <string name="create_entourage_title_char_count_format">%1$d/%2$d</string>
+    <string name="create_entourage_description_hint">Description détaillée</string>
+
+</resources>
