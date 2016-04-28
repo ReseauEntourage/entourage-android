@@ -7,8 +7,10 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourJoinMessage;
 import social.entourage.android.api.model.map.TourUser;
@@ -41,14 +43,21 @@ public class TourJoinRequestPresenter {
     // ----------------------------------
 
     protected void sendMessage(String message, Tour tour) {
+        if (fragment == null) {
+            return;
+        }
         if (message == null || message.trim().length() == 0 || tour == null) {
             fragment.dismiss();
+            return;
+        }
+        User me = EntourageApplication.me(fragment.getContext());
+        if (me == null) {
             return;
         }
         TourJoinMessage joinMessage = new TourJoinMessage(message.trim());
         TourJoinMessage.TourJoinMessageWrapper joinMessageWrapper = new TourJoinMessage.TourJoinMessageWrapper();
         joinMessageWrapper.setJoinMessage(joinMessage);
-        Call<TourUser.TourUserWrapper> call = tourRequest.updateJoinTourMessage(tour.getId(), joinMessageWrapper);
+        Call<TourUser.TourUserWrapper> call = tourRequest.updateJoinTourMessage(tour.getId(), me.getId(), joinMessageWrapper);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {

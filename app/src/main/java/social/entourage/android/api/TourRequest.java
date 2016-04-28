@@ -106,9 +106,10 @@ public interface TourRequest {
             @Path("tour_id") long tourId
     );
 
-    @PUT("tours/{tour_id}/users")
+    @PUT("tours/{tour_id}/users/{user_id}")
     Call<TourUser.TourUserWrapper> updateJoinTourMessage(
             @Path("tour_id") long tourId,
+            @Path("user_id") int userId,
             @Body TourJoinMessage.TourJoinMessageWrapper messageWrapper
     );
 
