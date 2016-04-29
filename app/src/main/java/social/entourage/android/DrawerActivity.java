@@ -46,6 +46,7 @@ import social.entourage.android.about.AboutActivity;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.badge.BadgeView;
@@ -791,6 +792,20 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+        }
+    }
+
+    @OnClick(R.id.button_create_entourage_contribution)
+    protected void onCreateEntourageContributionClicked() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment.createEntourage(Entourage.TYPE_CONTRIBUTION);
+        }
+    }
+
+    @OnClick(R.id.button_create_entourage_demand)
+    protected void onCreateEntouragDemandClicked() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment.createEntourage(Entourage.TYPE_DEMAND);
         }
     }
 

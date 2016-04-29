@@ -1,6 +1,10 @@
 package social.entourage.android.map.entourage;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -11,11 +15,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -26,6 +37,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 
 /**
@@ -40,6 +52,7 @@ public class CreateEntourageFragment extends DialogFragment {
     public static final String TAG = "social.entourage.android.createentourage";
 
     private static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
+    private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
 
     private static final int TITLE_MAX_CHAR_COUNT = 150;
 
@@ -74,6 +87,7 @@ public class CreateEntourageFragment extends DialogFragment {
     TextView descriptionHintTextView;
 
     private String entourageType;
+    private LatLng location;
 
     // ----------------------------------
     // Lifecycle
@@ -83,10 +97,11 @@ public class CreateEntourageFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static CreateEntourageFragment newInstance(String entourageType) {
+    public static CreateEntourageFragment newInstance(String entourageType, LatLng location) {
         CreateEntourageFragment fragment = new CreateEntourageFragment();
         Bundle args = new Bundle();
         args.putString(KEY_ENTOURAGE_TYPE, entourageType);
+        args.putParcelable(KEY_ENTOURAGE_LOCATION, location);
         fragment.setArguments(args);
 
         return fragment;
@@ -96,6 +111,7 @@ public class CreateEntourageFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_entourage, container, false);
         ButterKnife.bind(this, view);
@@ -125,8 +141,8 @@ public class CreateEntourageFragment extends DialogFragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -134,6 +150,19 @@ public class CreateEntourageFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.background)));
     }
 
     // ----------------------------------
@@ -149,13 +178,16 @@ public class CreateEntourageFragment extends DialogFragment {
     protected void onValidateClicked() {
         if (isValid()) {
             if (presenter != null) {
-                //TODO Use the actual location
-                TourPoint location = new TourPoint(0, 0);
+                TourPoint entourageLocation = new TourPoint(0, 0);
+                if (location != null) {
+                    entourageLocation.setLatitude(location.latitude);
+                    entourageLocation.setLongitude(location.longitude);
+                }
                 presenter.createEntourage(
                         entourageType,
                         titleEditText.getText().toString(),
                         descriptionEditText.getText().toString(),
-                        location);
+                        entourageLocation);
             } else {
                 Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
             }
@@ -186,6 +218,7 @@ public class CreateEntourageFragment extends DialogFragment {
 
     private void initializeView() {
         initializeTypeTextView();
+        initializeLocation();
         initializeTitleEditText();
         initializeDescriptionEditText();
     }
@@ -198,6 +231,17 @@ public class CreateEntourageFragment extends DialogFragment {
                 typeTextView.setText(R.string.entourage_create_contribution_title);
             } else {
                 typeTextView.setText(R.string.entourage_create_demand_title);
+            }
+        }
+    }
+
+    private void initializeLocation() {
+        Bundle args = getArguments();
+        if (args != null) {
+            location = args.getParcelable(KEY_ENTOURAGE_LOCATION);
+            if (location != null) {
+                GeocoderTask geocoderTask = new GeocoderTask();
+                geocoderTask.execute(location);
             }
         }
     }
@@ -225,6 +269,9 @@ public class CreateEntourageFragment extends DialogFragment {
                 titleCharCountTextView.setText(charCountString);
             }
         });
+
+        String charCountString = getContext().getString(R.string.entourage_create_title_char_count_format, titleEditText.length(), TITLE_MAX_CHAR_COUNT);
+        titleCharCountTextView.setText(charCountString);
     }
 
     private void initializeDescriptionEditText() {
@@ -266,6 +313,35 @@ public class CreateEntourageFragment extends DialogFragment {
             return false;
         }
         return true;
+    }
+
+    private class GeocoderTask extends AsyncTask<LatLng, Void, String> {
+
+        @Override
+        protected String doInBackground(final LatLng... params) {
+            try {
+                Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
+                LatLng location = params[0];
+                List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
+                String addressLine = "";
+                if (addresses.size() > 0) {
+                    Address address = addresses.get(0);
+                    if (address.getMaxAddressLineIndex() >= 0) {
+                        addressLine = addresses.get(0).getAddressLine(0);
+                    }
+                }
+                return addressLine;
+            }
+            catch (IOException e) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final String address) {
+            CreateEntourageFragment.this.positionTextView.setText(address);
+        }
     }
 
     /**

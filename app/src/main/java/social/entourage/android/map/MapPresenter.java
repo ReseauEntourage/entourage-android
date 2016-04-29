@@ -19,6 +19,7 @@ import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
+import social.entourage.android.map.entourage.CreateEntourageFragment;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.tools.BusProvider;
 
@@ -85,6 +86,14 @@ public class MapPresenter {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
             TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tourId);
             tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
+        }
+    }
+
+    public void createEntourage(String entourageType, LatLng location) {
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(entourageType, location);
+            entourageFragment.show(fragmentManager, CreateEntourageFragment.TAG);
         }
     }
 

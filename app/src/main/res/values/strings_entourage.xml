@@ -14,4 +14,7 @@
     <string name="entourage_create_error_title_too_long">!!Title is too long</string>
     <string name="entourage_create_error_description_empty">!!Description cannot be empty</string>
 
+    <string name="entourage_create_menu_demand">Créer une demande</string>
+    <string name="entourage_create_menu_contribution">Créer une contribution</string>
+
 </resources>

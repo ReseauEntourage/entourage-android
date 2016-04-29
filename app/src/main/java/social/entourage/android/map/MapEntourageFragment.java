@@ -413,10 +413,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void displayChosenUser(int userID) {
-        Toast.makeText(getContext(), "Show user profile for id="+userID, Toast.LENGTH_SHORT).show();
-    }
-
     public void act(Tour tour) {
         if (tourService != null) {
             isRequestingToJoin = true;
@@ -424,6 +420,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         else {
             Toast.makeText(getContext(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void createEntourage(String entourageType) {
+        mapLongClickView.setVisibility(View.GONE);
+        if (mapOptionsMenu.isOpened()) {
+            mapOptionsMenu.toggle(false);
+        }
+        LatLng location = EntourageLocation.getInstance().getLastCameraPosition().target;
+        if (presenter != null) {
+            presenter.createEntourage(entourageType, location);
         }
     }
 
@@ -778,16 +785,20 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void initializeFloatingMenu() {
         mapOptionsMenu = ((DrawerActivity)getActivity()).mapOptionsMenu;
         mapOptionsMenu.setClosedOnTouchOutside(true);
+        updateFloatingMenuOptions();
     }
 
     private void updateFloatingMenuOptions() {
-        if (tourService.isRunning()) {
+        if (tourService != null && tourService.isRunning()) {
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.VISIBLE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(View.GONE);
         }
         else {
+            User me = EntourageApplication.me(getActivity());
+            boolean isPro = ( me != null ? me.isPro() : true );
+
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
-            mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(View.VISIBLE);
+            mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.VISIBLE : View.GONE);
         }
     }
 

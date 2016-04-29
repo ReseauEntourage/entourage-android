@@ -1,5 +1,6 @@
 package social.entourage.android.api.model.map;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class Entourage implements Serializable {
     // Attributes
     // ----------------------------------
 
+    @Expose(serialize = false, deserialize = true)
     private long id;
 
     @SerializedName("updated_at")

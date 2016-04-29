@@ -51,6 +51,24 @@
                 style="@style/MapActionButtonStyle"/>
 
             <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_create_entourage_contribution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_entourage_contribution"
+                app:fab_size="mini"
+                app:fab_label="@string/entourage_create_menu_contribution"
+                style="@style/MapActionButtonStyle"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_create_entourage_demand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_entourage_demand"
+                app:fab_size="mini"
+                app:fab_label="@string/entourage_create_menu_demand"
+                style="@style/MapActionButtonStyle"/>
+
+            <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_start_tour_launcher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

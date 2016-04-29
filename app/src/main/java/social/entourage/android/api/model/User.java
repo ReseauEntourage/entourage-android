@@ -19,8 +19,8 @@ public class User implements Serializable {
     public static final String KEY_USER_ID = "social.entourage.android.KEY_USER_ID";
     public static final String KEY_USER = "social.entourage.android.KEY_USER";
 
-    public static final String TYPE_PUBLIC = "PUBLIC";
-    public static final String TYPE_PRO = "PRO";
+    public static final String TYPE_PUBLIC = "public";
+    public static final String TYPE_PRO = "pro";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -56,7 +56,7 @@ public class User implements Serializable {
     private String smsCode;
 
     @SerializedName("user_type")
-    private String type;
+    private String type = TYPE_PRO;
 
     // ----------------------------------
     // CONSTRUCTOR
