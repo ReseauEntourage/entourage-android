@@ -2,7 +2,7 @@
 <resources>
 
     <string name="activity_read_encounter_title">COMPTE-RENDU DE RENCONTRE</string>
-    <string name="activity_create_encounter_title">DECRIVEZ VOTRE RENCONTRE</string>
+    <string name="activity_create_encounter_title">RENCONTRE</string>
     <string name="encounter_hint_person_name">Nom de la personne</string>
     <string name="encounter_hint_notes">Détaillez votre rencontre</string>
     <string name="encounter_label_date">Date de rencontre</string>
