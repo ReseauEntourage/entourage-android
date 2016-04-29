@@ -19,5 +19,6 @@
     <string name="cancel">Annuler</string>
     <string name="leave">Quitter</string>
     <string name="send">Envoyer</string>
+    <string name="validate">Valider</string>
 
 </resources>
