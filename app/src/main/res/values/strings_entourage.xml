@@ -8,4 +8,10 @@
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_hint">Description détaillée</string>
 
+    <string name="entourage_create_error">!!Entourage not created!</string>
+    <string name="entourage_create_ok">!!Entourage created.</string>
+    <string name="entourage_create_error_title_empty">!!Title cannot be empty</string>
+    <string name="entourage_create_error_title_too_long">!!Title is too long</string>
+    <string name="entourage_create_error_description_empty">!!Description cannot be empty</string>
+
 </resources>

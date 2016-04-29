@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/validate"
-            android:id="@+id/create_entourage_add_button"
+            android:id="@+id/create_entourage_validate_button"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             style="@style/TransparentAccentButton"
@@ -52,7 +52,8 @@
         android:background="@color/background"
         android:id="@+id/create_entourage_position_layout"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:clickable="true">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -88,7 +89,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
             android:id="@+id/create_entourage_position"
             android:layout_toRightOf="@+id/create_entourage_position_description"
             android:layout_toLeftOf="@+id/create_entourage_position_arrow"

@@ -125,6 +125,12 @@ public class ApiModule {
 
     @Provides
     @Singleton
+    public EntourageRequest providesEntourageRequest(final Retrofit restAdapter) {
+        return restAdapter.create(EntourageRequest.class);
+    }
+
+    @Provides
+    @Singleton
     public EncounterTapeTaskQueue providesEncounterTapeTaskQueue(Application application) {
         Gson gson = new GsonBuilder().create();
         FileObjectQueue.Converter<CreateEncounterPresenter.EncounterUploadTask> converter = new social.entourage.android.tools.GsonConverter<>(gson, CreateEncounterPresenter.EncounterUploadTask.class);
