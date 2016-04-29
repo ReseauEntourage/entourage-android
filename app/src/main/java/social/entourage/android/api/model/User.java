@@ -19,6 +19,9 @@ public class User implements Serializable {
     public static final String KEY_USER_ID = "social.entourage.android.KEY_USER_ID";
     public static final String KEY_USER = "social.entourage.android.KEY_USER";
 
+    public static final String TYPE_PUBLIC = "PUBLIC";
+    public static final String TYPE_PRO = "PRO";
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -51,6 +54,9 @@ public class User implements Serializable {
     private String avatarURL;
 
     private String smsCode;
+
+    @SerializedName("user_type")
+    private String type;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -165,6 +171,10 @@ public class User implements Serializable {
             return encodedURL;
         }
         return encodedURL.replace('\u0026', '&');
+    }
+
+    public boolean isPro() {
+        return TYPE_PRO.equals(type);
     }
 
     // ----------------------------------
