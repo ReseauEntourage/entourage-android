@@ -290,6 +290,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
             }
+            else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
+            }
         }
         else if (action != null) {
             getIntent().setAction(null);
@@ -304,6 +307,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             }
             else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
+            }
+            else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
             }
         }
     }
@@ -516,7 +522,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
         mapEntourageFragment.checkAction(intentAction, intentTour);
-        if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
+        if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
             Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             PushNotificationContent content = message.getContent();
             if (content != null) {

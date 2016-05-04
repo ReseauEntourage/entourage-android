@@ -372,6 +372,7 @@ public class Tour implements Serializable {
         if (id != tour.id) return false;
         if (tourPoints.size() != tour.tourPoints.size()) return false;
         if (!tourStatus.equals(tour.tourStatus)) return false;
+        if (!joinStatus.equals(tour.joinStatus)) return false;
 
         return isSame;
     }

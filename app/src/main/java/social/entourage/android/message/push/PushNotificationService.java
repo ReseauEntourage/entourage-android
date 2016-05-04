@@ -91,7 +91,7 @@ public class PushNotificationService extends IntentService {
         if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(messageType)) {
             messageIntent = new Intent(this, TourJoinRequestReceivedActivity.class);
         }
-        else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType)) {
+        else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(messageType)) {
             messageIntent = new Intent(this, DrawerActivity.class);
         }
         else {
