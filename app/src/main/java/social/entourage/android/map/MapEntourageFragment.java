@@ -73,6 +73,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
@@ -314,12 +315,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        BusProvider.getInstance().unregister(this);
     }
 
     @Override
