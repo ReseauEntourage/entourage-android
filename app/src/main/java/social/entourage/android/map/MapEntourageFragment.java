@@ -84,6 +84,7 @@ import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
@@ -199,7 +200,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     RelativeLayout mapLongClickView;
 
     @Bind(R.id.map_longclick_buttons)
-    LinearLayout mapLongClickButtonsView;
+    RelativeLayout mapLongClickButtonsView;
 
     @Bind(R.id.tour_stop_button)
     FloatingActionButton tourStopButton;
@@ -428,7 +429,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (mapOptionsMenu.isOpened()) {
             mapOptionsMenu.toggle(false);
         }
+        mapOptionsMenu.setVisibility(View.VISIBLE);
+        if (tourService != null && tourService.isRunning()) {
+            tourStopButton.setVisibility(View.VISIBLE);
+        }
         LatLng location = EntourageLocation.getInstance().getLastCameraPosition().target;
+        if (longTapCoordinates != null) {
+            location = longTapCoordinates;
+            longTapCoordinates = null;
+        }
         if (presenter != null) {
             presenter.createEntourage(entourageType, location);
         }
@@ -759,6 +768,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Bundle args = new Bundle();
             args.putLong(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourId);
             if (longTapCoordinates != null) {
+                //if ongoing tour, show only if the point is in the current tour
+                if (tourService != null && tourService.isRunning()) {
+                    if (!tourService.isLocationInTour(longTapCoordinates)) {
+                        longTapCoordinates = null;
+                        mapOptionsMenu.setVisibility(View.VISIBLE);
+                        tourStopButton.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity().getApplicationContext(), R.string.tour_encounter_too_far, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude);
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates.longitude);
                 longTapCoordinates = null;
@@ -776,6 +795,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @OnClick(R.id.map_display_type_list)
     public void onDisplayTypeList() {
         showToursList();
+    }
+
+    @OnClick(R.id.map_longclick_button_entourage_demand)
+    protected void onCreateEntourageDemand() {
+        createEntourage(Entourage.TYPE_DEMAND);
+    }
+
+    @OnClick(R.id.map_longclick_button_entourage_contribution)
+    protected void onCreateEntourageContribution() {
+        createEntourage(Entourage.TYPE_CONTRIBUTION);
     }
 
     // ----------------------------------
@@ -826,19 +855,26 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (toursListView.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
             return;
         }
-        //if ongoing tour, show only if the point is in the current tour
-        if (tourService != null && tourService.isRunning()) {
-            if (!tourService.isLocationInTour(latLng)) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.tour_encounter_too_far, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            longTapCoordinates = latLng;
-        }
+        //save the tap coordinates
+        longTapCoordinates = latLng;
         //hide the FAB menu
         mapOptionsMenu.setVisibility(View.GONE);
         tourStopButton.setVisibility(View.GONE);
         //get the click point
         Point clickPoint = map.getProjection().toScreenLocation(latLng);
+        //update the visible buttons
+        boolean isTourRunning = tourService != null && tourService.isRunning();
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = ( me != null ? me.isPro() : true );
+        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility( isTourRunning ? View.INVISIBLE : (isPro ? View.VISIBLE : View.GONE) );
+        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning?View.VISIBLE:View.GONE);
+        if (!isPro) {
+            ImageView entourageContribution = (ImageView)mapLongClickButtonsView.findViewById(R.id.map_longclick_button_entourage_contribution);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) entourageContribution.getLayoutParams();
+            layoutParams.setMargins(10, 0, 0, 0);
+            entourageContribution.setLayoutParams(layoutParams);
+        }
+        mapLongClickButtonsView.requestLayout();
         //adjust the buttons holder layout
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -848,18 +884,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         int bW = mapLongClickButtonsView.getMeasuredWidth();
         int bH = mapLongClickButtonsView.getMeasuredHeight();
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mapLongClickButtonsView.getLayoutParams();
-        int marginLeft = clickPoint.x;
+        int marginLeft = clickPoint.x - bW/2;
         if (marginLeft + bW > screenSize.x) {
-            marginLeft -= bW;
+            marginLeft -= bW/2;
         }
+        if (marginLeft < 0) marginLeft = 0;
         int marginTop = clickPoint.y - bH;
         if (marginTop < 0) marginTop = clickPoint.y;
         lp.setMargins(marginLeft, marginTop, 0, 0);
         mapLongClickButtonsView.setLayoutParams(lp);
-        //update the visible buttons
-        boolean isTourRunning = tourService != null && tourService.isRunning();
-        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning?View.GONE:View.VISIBLE);
-        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning?View.VISIBLE:View.GONE);
         //show the view
         mapLongClickView.setVisibility(View.VISIBLE);
     }
