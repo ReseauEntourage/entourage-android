@@ -16,11 +16,33 @@
         layout="@layout/login_lost_code"/>
 
     <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/login_verify_code"
+        android:id="@+id/login_include_verify_code"/>
+
+    <include
         android:id="@+id/login_include_welcome"
         layout="@layout/login_welcome"/>
 
     <include
         android:id="@+id/login_include_tutorial"
         layout="@layout/login_tutorial"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/login_newsletter"
+        android:id="@+id/login_include_newsletter"
+        android:layout_alignParentStart="true"/>
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/login_startup"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/login_include_startup"/>
 
 </RelativeLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@android:style/TextAppearance.StatusBar.EventContent"
+                android:background="#ff000000">
+
+    <ImageView
+        android:id="@+id/notification_tour_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_notification" />
+
+    <LinearLayout
+        android:id="@+id/notification_tour_infos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toEndOf="@+id/notification_tour_image"
+        android:layout_toRightOf="@+id/notification_tour_image"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notification_tour_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/local_service_running"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+        <Chronometer
+            android:id="@+id/notification_tour_chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/notification_tour_infos">
+
+        <Button
+            style="@style/NotificationButton.Small"
+            android:id="@+id/notification_tour_stop_button"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/tour_stop"
+            android:layout_marginLeft="5dp"
+            android:visibility="visible"/>
+
+        <Button
+            style="@style/NotificationButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_pause"
+            android:id="@+id/notification_tour_pause_button"
+            android:layout_marginLeft="5dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:layout_marginRight="5dp"
+            android:visibility="visible"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

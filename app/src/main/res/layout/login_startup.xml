@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/login_view"
+              tools:context=".authentication.login.LoginActivity"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/login_startup_background"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/login_startup_background"
+        android:scaleType="centerCrop"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"/>
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_startup_logo"
+        android:src="@drawable/entourage_logo"
+        android:layout_marginTop="130dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/entourage_slogan"
+        android:id="@+id/login_startup_slogan"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/login_startup_logo"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:id="@+id/linearLayout">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_button_register"
+            android:id="@+id/login_button_register"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_signup_form"
+            android:textColor="@color/accent"
+            android:ellipsize="none"
+            android:textSize="17sp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_button_login"
+            android:id="@+id/login_button_login"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:background="#00ffffff"
+            android:textSize="17sp"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -3,7 +3,6 @@
 
     <string name="activity_display_user_title">PROFIL</string>
     <string name="user_information_label">Informations de maraudeur</string>
-    <string name="user_organization_label">Informations d\'association</string>
     <string name="user_privacy_label">Informations privées</string>
     <string name="user_unsubscribe_label">Désinscription</string>
     <string name="user_form_access_code">Code d\'accès</string>
@@ -15,5 +14,40 @@
     <string name="user_image_add_photo">Ajouter une photo</string>
     <string name="user_switch_label">Afficher toutes mes maraudes</string>
     <string name="user_terms_and_conditions"><u>Conditions Générales d\'Utilisation</u></string>
+    <string name="user_profile_edit_button">Editer</string>
+    <string name="user_profile_verified_information_label">Identitification vérifiée</string>
+    <string name="user_information_email_label">Adresse e-mail</string>
+    <string name="user_information_phone_label">Numéro de téléphone</string>
+    <string name="user_number_entourages_label">Nombre d’entourages</string>
+    <string name="user_number_tours_label">Nombre de maraudes</string>
+    <string name="user_associations_title">Association(s)</string>
+
+    <string name="user_retrieval_error">Erreur de récupération du profil</string>
+
+    <string name="user_save_button">Enregistrer</string>
+    <string name="user_edit_firstname_label">Prénom</string>
+    <string name="user_edit_lastname_label">Nom</string>
+    <string name="user_edit_email_label">E-mail</string>
+    <string name="user_edit_password_label">Mot de passe</string>
+    <string name="user_edit_password_button">Changer</string>
+    <string name="user_edit_phone_label">Téléphone</string>
+    <string name="user_public_information_label">Informations publiques</string>
+    <string name="user_edit_address_label">Quartier</string>
+    <string name="user_edit_delete_account_button">Supprimer mon compte</string>
+
+    <string name="user_edit_password_old_password_label">Ancien code d’accès</string>
+    <string name="user_edit_password_new_password_label">Nouveau code d’accès</string>
+    <string name="user_edit_password_confirm_password_label">Confirmer le code</string>
+    <string name="user_edit_password_invalid_current_password">Mot de passe invalide</string>
+    <string name="user_edit_password_new_password_too_short">Le nouveau mot de passe est trop court.</string>
+    <string name="user_edit_password_not_match">Les mots de passe ne coïncident pas.</string>
+
+    <string name="user_edit_profile_invalid_firstname">Prénom invalide</string>
+    <string name="user_edit_profile_invalid_lastname">Nom invalide</string>
+    <string name="user_edit_profile_invalid_email">Email invalide</string>
+
+    <string name="user_delete_account_dialog">Voulez-vous vraiment supprimer votre compte ?</string>
+    <string name="user_delete_account_in_progress">Suppression en cours</string>
+    <string name="user_delete_account_failure">Erreur lors de la suppression du compte</string>
 
 </resources>

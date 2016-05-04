@@ -1,10 +1,12 @@
 package social.entourage.android.authentication.login;
 
+import com.squareup.okhttp.ResponseBody;
+
 import javax.inject.Inject;
 
-import retrofit.ResponseCallback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.model.Newsletter;
 
@@ -41,14 +43,19 @@ public class LoginInformationPresenter {
             fragment.startLoader();
             Newsletter newsletter = new Newsletter(email, active);
             Newsletter.NewsletterWrapper newsletterWrapper = new Newsletter.NewsletterWrapper(newsletter);
-            loginRequest.subscribeToNewsletter(newsletterWrapper, new ResponseCallback() {
+            Call<Newsletter.NewsletterWrapper> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
+            call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
                 @Override
-                public void success(Response response) {
-                    fragment.newsletterResult(true);
+                public void onResponse(Call<Newsletter.NewsletterWrapper> call, Response<Newsletter.NewsletterWrapper> response) {
+                    if (response.isSuccess()) {
+                        fragment.newsletterResult(true);
+                    } else {
+                        fragment.newsletterResult(false);
+                    }
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
+                public void onFailure(Call<Newsletter.NewsletterWrapper> call, Throwable t) {
                     fragment.newsletterResult(false);
                 }
             });

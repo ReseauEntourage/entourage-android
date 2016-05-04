@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -17,11 +19,13 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.Constants;
+import social.entourage.android.guide.PoiRenderer;
 
 /**
  * Activity showing the detail of a POI
@@ -55,6 +59,12 @@ public class ReadPoiActivity extends EntourageActivity {
     Button btnPoiWeb;
     @Bind(R.id.button_poi_address)
     Button btnPoiAddress;
+    @Bind(R.id.poi_type_layout)
+    LinearLayout poiTypeLayout;
+    @Bind(R.id.poi_type_image)
+    ImageView poiTypeImage;
+    @Bind(R.id.poi_type_label)
+    TextView poiTypeLabel;
 
     // ----------------------------------
     // LIFECYCLE
@@ -91,8 +101,8 @@ public class ReadPoiActivity extends EntourageActivity {
     protected void onStart() {
         super.onStart();
         presenter.displayPoi(poi);
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        //getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -114,6 +124,10 @@ public class ReadPoiActivity extends EntourageActivity {
         setActionButton(btnPoiWeb, poi.getWebsite());
         setActionButton(btnPoiAddress, poi.getAdress());
         btnPoiAddress.setOnClickListener(onAddressClickListener);
+        PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.findCategoryTypeById(poi.getCategoryId());
+        poiTypeLayout.setBackgroundColor(categoryType.getColor());
+        poiTypeLabel.setText(categoryType.getName());
+        poiTypeImage.setImageResource(categoryType.getResourceTransparentId());
     }
 
     public void setActionButton(Button btn, String value) {
@@ -121,5 +135,10 @@ public class ReadPoiActivity extends EntourageActivity {
             btn.setVisibility(View.VISIBLE);
             btn.setText(value);
         }
+    }
+
+    @OnClick(R.id.poi_close_button)
+    protected void onCloseButtonClicked() {
+        finish();
     }
 }

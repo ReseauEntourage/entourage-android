@@ -2,6 +2,10 @@ package social.entourage.android;
 
 public class Constants {
 
+    //TODO: should be changed after each release
+    // API Key
+    public static final String API_KEY = "7a8c1f9f4b973384aaff3ed3";
+
     // Filenames
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
     public static final String FILENAME_TAPE_QUEUE = "encounters_queue";
@@ -53,4 +57,7 @@ public class Constants {
     public static final float DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR = 30;
     public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET = 5;
     public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR = 3;
+
+    //Time constants
+    public static final long MILLIS_HOUR = 3600000; //1000 * 60 * 60
 }

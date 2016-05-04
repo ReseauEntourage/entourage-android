@@ -1,6 +1,8 @@
 package social.entourage.android.authentication;
 
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Controller that managed the authenticated user and persist it on the phone
@@ -28,13 +30,19 @@ public class AuthenticationController {
     }
 
     public void saveUser(User user) {
+        if (loggedUser != null && loggedUser.getId() == user.getId()) {
+            user.setPhone(loggedUser.getPhone());
+            user.setSmsCode(loggedUser.getSmsCode());
+        }
         loggedUser = user;
         userSharedPref.putObject(PREF_KEY_USER, user);
         userSharedPref.commit();
+        BusProvider.getInstance().post(new Events.OnUserInfoUpdatedEvent());
     }
 
-    public void saveUserPhone(String phone) {
+    public void saveUserPhoneAndCode(String phone, String smsCode) {
         loggedUser.setPhone(phone);
+        loggedUser.setSmsCode(smsCode);
         userSharedPref.putObject(PREF_KEY_USER, loggedUser);
         userSharedPref.commit();
     }

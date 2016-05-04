@@ -9,6 +9,8 @@ import com.flurry.android.FlurryAgent;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import social.entourage.android.api.ApiModule;
+import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
 
 /**
@@ -25,6 +27,7 @@ public class EntourageApplication extends Application {
         setupFlurry();
         JodaTimeAndroid.init(this);
         setupDagger();
+
     }
 
     private void setupDagger() {
@@ -50,5 +53,13 @@ public class EntourageApplication extends Application {
 
     public static EntourageApplication get(Context context) {
         return (EntourageApplication) context.getApplicationContext();
+    }
+
+    public static User me(Context context) {
+        EntourageApplication application = EntourageApplication.get(context);
+        if (application == null) return null;
+        AuthenticationController authenticationController = application.component.getAuthenticationController();
+        if (authenticationController == null) return null;
+        return authenticationController.getUser();
     }
 }

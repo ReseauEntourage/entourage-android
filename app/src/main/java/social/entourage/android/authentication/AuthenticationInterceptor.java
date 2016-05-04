@@ -1,15 +1,22 @@
 package social.entourage.android.authentication;
 
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import retrofit.RequestInterceptor;
+import okhttp3.HttpUrl;
+import social.entourage.android.Constants;
 
 /**
  * Retrofit interceptor that automatically add a params to the url when authenticated
  */
 @Singleton
-public class AuthenticationInterceptor implements RequestInterceptor {
+public class AuthenticationInterceptor implements okhttp3.Interceptor {
 
     private final AuthenticationController authenticationController;
 
@@ -19,11 +26,19 @@ public class AuthenticationInterceptor implements RequestInterceptor {
     }
 
     @Override
-    public void intercept(final RequestFacade request) {
-        request.addHeader("Accept", "application/json");
-        request.addHeader("X-API-KEY", "32e2ced9df89");
+    public okhttp3.Response intercept(Chain chain) throws IOException {
+        okhttp3.Request request = chain.request();
+        HttpUrl url;
         if (authenticationController.isAuthenticated()) {
-            request.addEncodedQueryParam("token", authenticationController.getUser().getToken());
+            url = request.url().newBuilder().addQueryParameter("token", authenticationController.getUser().getToken()).build();
+        } else {
+            url = request.url().newBuilder().build();
         }
+
+        request = request.newBuilder()
+                .header("Accept", "application/json")
+                .header("X-API-KEY", Constants.API_KEY)
+                .url(url).build();
+        return chain.proceed(request);
     }
 }

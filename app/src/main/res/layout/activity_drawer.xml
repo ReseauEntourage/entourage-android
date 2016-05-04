@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".DrawerActivity">
+    tools:context=".DrawerActivity"
+    android:background="@color/background_light">
 
     <RelativeLayout
         android:id="@+id/content_view"
@@ -24,6 +25,52 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar"/>
 
+        <com.github.clans.fab.FloatingActionMenu
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map_fab_menu"
+            android:layout_gravity="right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            app:menu_labels_singleLine="true"
+            app:menu_backgroundColor="#ccffffff"
+            app:menu_labels_style="@style/MapActionLabelStyle"
+            app:menu_colorNormal="@color/accent"
+            app:menu_colorPressed="@color/accent"
+            app:menu_colorRipple="@color/accent">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_poi_launcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_solidarity"
+                app:fab_size="mini"
+                app:fab_label="@string/map_poi_launcher_button"
+                style="@style/MapActionButtonStyle"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_start_tour_launcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_button_create_maraude"
+                app:fab_size="mini"
+                app:fab_label="@string/tour_create"
+                style="@style/MapActionButtonStyle"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_add_tour_encounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_encounter"
+                app:fab_size="mini"
+                app:fab_label="@string/tour_create_encounter_button"
+                style="@style/MapActionButtonStyle"
+                android:visibility="gone"/>
+
+        </com.github.clans.fab.FloatingActionMenu>
+
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView
@@ -31,11 +78,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/background_dark"
+        android:background="@color/background_light"
         app:itemBackground="@drawable/drawer_item"
         app:itemIconTint="@color/item_state_list"
-        app:itemTextColor="@color/text_state_list"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer"/>
+        app:itemTextColor="@color/text_state_list">
+            <include
+                layout="@layout/layout_side_menu" />
+        </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

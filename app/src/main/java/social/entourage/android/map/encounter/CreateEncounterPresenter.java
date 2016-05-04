@@ -51,7 +51,7 @@ public class CreateEncounterPresenter {
     public void createEncounter(String message, String streetPersonName) {
 
         Encounter encounter = new Encounter();
-        encounter.setUserName(authenticationController.getUser().getFirstName());
+        encounter.setUserName(authenticationController.getUser().getDisplayName());
         encounter.setMessage(message);
         encounter.setStreetPersonName(streetPersonName);
         encounter.setCreationDate(new Date());
@@ -74,6 +74,13 @@ public class CreateEncounterPresenter {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getAuthor() {
+        if ( !authenticationController.isAuthenticated() ) {
+            return "";
+        }
+        return authenticationController.getUser().getDisplayName();
     }
 
     // ----------------------------------

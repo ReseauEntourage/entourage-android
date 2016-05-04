@@ -1,5 +1,7 @@
 package social.entourage.android.api.model;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 
 public class Message implements Serializable {
@@ -12,7 +14,7 @@ public class Message implements Serializable {
 
     private String object;
 
-    private String content;
+    private PushNotificationContent content;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -21,7 +23,8 @@ public class Message implements Serializable {
     public Message(String author, String object, String content) {
         this.author = author;
         this.object = object;
-        this.content = content;
+        Gson gson = new Gson();
+        this.content = gson.fromJson(content, PushNotificationContent.class);
     }
 
     // ----------------------------------
@@ -44,13 +47,12 @@ public class Message implements Serializable {
         this.object = object;
     }
 
-    public String getContent() {
+    public String getMessage() {
+        return content.message;
+    }
+
+    public PushNotificationContent getContent() {
         return content;
     }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
 
 }

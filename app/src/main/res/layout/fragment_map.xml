@@ -1,18 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layout_map_launcher">
+        >
 
-        <fragment android:id="@+id/fragment_map"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            class="com.google.android.gms.maps.SupportMapFragment"/>
+            android:weightSum="8"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:id="@+id/fragment_map_main_layout">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:id="@+id/layout_map">
+
+                <fragment android:id="@+id/fragment_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    />
+            </FrameLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/fragment_map_tours_view"
+                android:layout_weight="6"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/fragment_map_gps_layout"
@@ -35,14 +63,54 @@
 
         </LinearLayout>
 
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:id="@+id/map_display_type"
+            android:gravity="center"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:weightSum="1"
+            android:visibility="gone">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:text="@string/activity_map_tab_map"
+                android:id="@+id/map_display_type_carte"
+                android:button="@null"
+                android:gravity="center"
+                android:checked="true"
+                android:background="@drawable/bg_map_type_tab"
+                android:layout_weight="0.5"
+                android:textColor="@drawable/map_type_tab_text_color"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:text="@string/activity_map_tab_liste"
+                android:id="@+id/map_display_type_list"
+                android:button="@null"
+                android:background="@drawable/bg_map_type_tab"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@drawable/map_type_tab_text_color"/>
+        </RadioGroup>
+
         <ImageButton
             android:id="@+id/fragment_map_follow_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:alpha="0.5"
             android:layout_gravity="end|top"
-            android:src="@drawable/ic_action_center_map"/>
+            android:src="@drawable/ic_action_center_map"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentRight="true"/>
 
         <ImageView
             android:id="@+id/fragment_map_pin"
@@ -51,30 +119,35 @@
             android:src="@drawable/pointer"
             android:layout_gravity="center"
             android:paddingBottom="35dp"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="212dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="320dp"/>
 
-        <Button
-            style="@style/WhiteButton"
-            android:id="@+id/button_start_tour_launcher"
-            android:layout_height="wrap_content"
+        <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tour_stop_button"
+            android:layout_gravity="right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:alpha="0.8"
-            android:textColor="@color/abc_input_method_navigation_guard"
-            android:text="@string/tour_start"/>
+            android:layout_marginBottom="80dp"
+            app:fab_colorNormal="@color/dodger_blue"
+            app:fab_colorPressed="@color/dodger_blue"
+            app:fab_colorRipple="@color/dodger_blue"
+            android:src="@drawable/ic_pause_white"
+            android:visibility="gone"/>
 
         <include
-            layout="@layout/layout_map_tour"
-            android:id="@+id/layout_map_tour"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:visibility = "gone" />
+            android:layout_height="match_parent"
+            layout="@layout/layout_map_longclick"
+            android:id="@+id/layout_map_longclick"
+            android:visibility = "gone"/>
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <include
         layout="@layout/layout_map_launcher"

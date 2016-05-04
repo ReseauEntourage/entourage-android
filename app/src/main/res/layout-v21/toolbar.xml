@@ -7,4 +7,35 @@
     android:minHeight="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    android:elevation="4dp" />
+    android:elevation="4dp">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="3">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+    <ImageView
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:id="@+id/toolbar_entourage_logo"
+        android:src="@drawable/entourage_logo_grey"
+        android:scaleType="fitCenter"
+        android:layout_weight="1"/>
+
+    <social.entourage.android.badge.BadgeView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/toolbar_discussion"
+        android:layout_weight="1"
+        android:icon="@drawable/ic_discussion"
+        android:gravity="right"
+        android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.Toolbar>

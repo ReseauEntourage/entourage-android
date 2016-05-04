@@ -2,6 +2,10 @@ package social.entourage.android.api.tape;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Tour;
+
 public class Events {
 
     /**
@@ -78,6 +82,103 @@ public class Events {
     }
 
     /**
+     * Event signaling that user info is updated
+     */
+    public static class OnUserInfoUpdatedEvent {
+
+        public OnUserInfoUpdatedEvent() {};
+    }
+
+    /**
+     * Event signaling that user wants to act on a tour
+     */
+    public static class OnUserActEvent {
+
+        public static String ACT_JOIN = "join";
+        public static String ACT_QUIT = "quit";
+
+        private String act;
+        private Tour tour;
+
+        public OnUserActEvent(String act, Tour tour) {
+            this.act = act;
+            this.tour = tour;
+        }
+
+        public String getAct() {
+            return act;
+        }
+
+        public Tour getTour() {
+            return tour;
+        }
+    }
+
+    /**
+     * Event signaling that user view is requested
+     */
+    public static class OnUserViewRequestedEvent {
+
+        private int userId;
+
+        public OnUserViewRequestedEvent(int userId) {
+            this.userId = userId;
+        };
+
+        public int getUserId() {
+            return userId;
+        }
+    }
+
+    /**
+     * Event signaling that tour info view is requested
+     */
+    public static class OnTourInfoViewRequestedEvent {
+
+        private Tour tour;
+
+        public OnTourInfoViewRequestedEvent(Tour tour) {
+            this.tour = tour;
+        };
+
+        public Tour getTour() {
+            return tour;
+        }
+    }
+
+    /**
+     * Event signaling that tour info view is requested
+     */
+    public static class OnTourEncounterViewRequestedEvent {
+
+        private Encounter encounter;
+
+        public OnTourEncounterViewRequestedEvent(Encounter encounter) {
+            this.encounter = encounter;
+        };
+
+        public Encounter getEncounter() {
+            return encounter;
+        }
+    }
+
+    /**
+     * Event signaling that the tour needs to be closed/freezed
+     */
+    public static class OnTourCloseRequestEvent {
+
+        private Tour tour;
+
+        public OnTourCloseRequestEvent(Tour tour) {
+            this.tour = tour;
+        };
+
+        public Tour getTour() {
+            return tour;
+        }
+    }
+
+    /**
      * Event triggering the tours service location listener when the permission has been granted
      */
     public static class OnLocationPermissionGranted {
@@ -91,5 +192,38 @@ public class Events {
         public boolean isPermissionGranted() {
             return isPermissionGranted;
         }
+    }
+
+    /**
+     * Event signaling a push notification has been received
+     */
+    public static class OnPushNotificationReceived {
+
+        private Message message;
+
+        public OnPushNotificationReceived(Message message) {
+            this.message = message;
+        }
+
+        public Message getMessage() {
+            return message;
+        }
+    }
+
+    /**
+     * Event signaling that an encounter was created
+     */
+    public static class OnEncounterCreated {
+
+        private Encounter encounter;
+
+        public OnEncounterCreated(Encounter encounter) {
+            this.encounter = encounter;
+        }
+
+        public Encounter getEncounter() {
+            return encounter;
+        }
+
     }
 }

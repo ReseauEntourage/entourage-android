@@ -6,4 +6,14 @@
     <declare-styleable name="HtmlTextView">
         <attr name="htmlText" format="string" />
     </declare-styleable>
+    <declare-styleable name="SideMenuItemView">
+        <attr name="showDivider" format="boolean"/>
+        <attr name="centerText" format="boolean" />
+        <attr name="android:icon" />
+        <attr name="android:title" />
+        <attr name="android:textColor" />
+    </declare-styleable>
+    <declare-styleable name="BadgeView">
+        <attr name="android:icon" />
+    </declare-styleable>
 </resources>

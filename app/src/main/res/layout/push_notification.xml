@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+                android:background="#ff000000"
+                android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/push_notification_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_notification"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/push_notification_text"
+        android:layout_toRightOf="@+id/push_notification_logo"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="3dp"
+        android:textColor="#FFFFFFFF"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>

@@ -107,10 +107,10 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
             Resources res = getResources();
             int encountersCount = tour.getEncounters().size();
             int distanceInt = (int) tour.getDistance();
-            String distanceString = String.format("%.1f", tour.getDistance() / 1000);
-            encountersView.setText(res.getQuantityString(R.plurals.encounters_count, encountersCount, encountersCount));
-            distanceView.setText(res.getQuantityString(R.plurals.kilometers_count, distanceInt, distanceString));
-            durationView.setText(getString(R.string.tour_end_duration, tour.getDuration()));
+            String distanceString = String.format("%d:%d", distanceInt/1000, distanceInt % 1000);
+            encountersView.setText(""+encountersCount);
+            distanceView.setText(distanceString);
+            durationView.setText(tour.getDuration());
         }
     }
 
@@ -122,6 +122,7 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
     public void onResumeTour() {
         Bundle args = new Bundle();
         args.putBoolean(KEY_RESUME_TOUR, true);
+        args.putSerializable(Tour.KEY_TOUR, tour);
         Intent resumeIntent = new Intent(this, DrawerActivity.class);
         resumeIntent.putExtras(args);
         startActivity(resumeIntent);
@@ -131,6 +132,7 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
     public void onEndTour() {
         Bundle args = new Bundle();
         args.putBoolean(KEY_END_TOUR, true);
+        args.putSerializable(Tour.KEY_TOUR, tour);
         Intent resumeIntent = new Intent(this, DrawerActivity.class);
         resumeIntent.putExtras(args);
         startActivity(resumeIntent);

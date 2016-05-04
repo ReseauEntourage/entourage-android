@@ -1,24 +1,18 @@
 package social.entourage.android.guide;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import javax.inject.Inject;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
-import social.entourage.android.Constants;
-import social.entourage.android.guide.poi.ReadPoiActivity;
 
 /**
  * Presenter controlling the GuideMapEntourageFragment
@@ -49,7 +43,7 @@ public class GuideMapPresenter {
 
     public void start() {
         fragment.initializeMapZoom();
-        updatePoisNearby();
+        //updatePoisNearby();
     }
 
     public void updatePoisNearby() {
@@ -67,15 +61,18 @@ public class GuideMapPresenter {
             float zoom = currentPosition.zoom;
             float distance = 40000f / (float) Math.pow(2f, zoom) / 2.5f;
             distance = Math.max(1, distance);
-            mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance, new Callback<MapResponse>() {
+            Call<MapResponse> call = mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance);
+            call.enqueue(new Callback<MapResponse>() {
                 @Override
-                public void success(MapResponse mapResponse, Response response) {
-                    fragment.putPoiOnMap(mapResponse.getCategories(), mapResponse.getPois());
+                public void onResponse(Call<MapResponse> call, Response<MapResponse> response) {
+                    if (response.isSuccess()) {
+                        fragment.putPoiOnMap(response.body().getCategories(), response.body().getPois());
+                    }
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
-                    Log.d("GuideMapEntourageFrag", "Impossible to retrieve POIs", error);
+                public void onFailure(Call<MapResponse> call, Throwable t) {
+                    Log.d("GuideMapEntourageFrag", "Impossible to retrieve POIs", t);
                 }
             });
         }

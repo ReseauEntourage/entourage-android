@@ -27,10 +27,10 @@ public class TourPoint implements Serializable {
     // CONSTRUCTORS
     // ----------------------------------
 
-    public TourPoint(double latitude, double longitude, Date passingTime) {
+    public TourPoint(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.passingTime = passingTime;
+        passingTime = new Date();
     }
 
     // ----------------------------------
@@ -45,10 +45,6 @@ public class TourPoint implements Serializable {
         return longitude;
     }
 
-    public Date getPassingTime() {
-        return passingTime;
-    }
-
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
@@ -57,12 +53,15 @@ public class TourPoint implements Serializable {
         this.longitude = longitude;
     }
 
-    public void setPassingTime(Date passingTime) {
-        this.passingTime = passingTime;
-    }
-
     public LatLng getLocation() {
         return new LatLng(latitude, longitude);
+    }
+
+    public float distanceTo(TourPoint otherPoint) {
+        if (otherPoint == null) return 0;
+        float[] result = {0};
+        Location.distanceBetween(this.latitude, this.longitude, otherPoint.latitude, otherPoint.longitude, result);
+        return result[0];
     }
 
     // ----------------------------------

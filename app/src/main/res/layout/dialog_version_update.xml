@@ -13,7 +13,6 @@
         android:paddingRight="20dp"
         android:gravity="center"
         android:textSize="17sp"
-        android:textStyle="bold"
         android:text="@string/title_update_version"/>
 
     <ImageView
@@ -36,8 +35,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:text="@string/button_update_version"
         android:textAllCaps="true"
-        style="@style/AccentButtonStraightTop"/>
+        style="@style/AccentButton"/>
 
 </LinearLayout>

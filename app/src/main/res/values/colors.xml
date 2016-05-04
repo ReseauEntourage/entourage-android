@@ -2,21 +2,29 @@
 <resources>
 
     <!-- Application -->
-    <color name="primary">#B5B5B5</color>
+    <color name="primary">#ffffff</color>
     <color name="primary_dark">#717171</color>
-    <color name="primary_light">#FAFAFA</color>
-    <color name="accent">#FF6907</color>
+    <color name="primary_light">#efeff4</color>
+    <color name="accent">#f26521</color>
+    <color name="warm_grey">#9B9B9B</color>
+    <color name="greyish_brown">#4A4A4A</color>
+    <color name="greyish">#A5A59C</color>
+    <color name="pale_grey">#efeff4</color>
+    <color name="dodger_blue">#3A97FF</color>
+    <color name="bright_blue">#007aff</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
     <color name="background_dark">@color/primary_dark</color>
     <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
+    <color name="background_transparent">#ccefeff4</color>
 
     <!-- Login -->
-    <color name="background_login_light">#E2E2E2</color>
-    <color name="background_login_grey">#696969</color>
+    <color name="background_login_light">#FFFFFF</color>
+    <color name="background_login_grey">#F7F7F7</color>
     <color name="text_dark">#4F4F4F</color>
+    <color name="login_divider">@color/greyish</color>
 
     <!-- Profile -->
     <color name="background_user_category">#CFCFCF</color>
@@ -39,15 +47,22 @@
     <!-- EditTexts -->
     <color name="custom_edittext_short_pressed">#EEEEEE</color>
     <color name="login_form">#FFFFFF</color>
-    <color name="login_edittext">#F0F0F0</color>
+    <color name="login_edittext">#000000</color>
     <color name="login_edittext_hint">#8D8D8D</color>
+
+    <!-- Side Menu -->
+    <color name="sidemenu_divider">@color/greyish</color>
+    
+    <!-- Notifications -->
+    <color name="battleship_grey">#797a7c</color>
 
     <!-- Others -->
     <color name="login_view">#333333</color>
-    <color name="separator">#444444</color>
+    <color name="separator">@color/greyish</color>
     <color name="grey_contour">#DADADA</color>
     <color name="blue_dark">#007EA9</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="badge_background">#EE3E3A</color>
 
 </resources>

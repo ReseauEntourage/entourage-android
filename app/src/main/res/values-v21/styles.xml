@@ -7,7 +7,6 @@
 
     <!-- Custom TextView theme with letter spacing (small) -->
     <style name="SpacedTextViewSmall" parent="android:Widget.TextView">
-        <item name="android:letterSpacing">0.4</item>
     </style>
 
 </resources>

@@ -1,12 +1,15 @@
 package social.entourage.android.user;
 
+import android.support.v4.util.ArrayMap;
+
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import social.entourage.android.R;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
@@ -44,8 +47,28 @@ public class UserPresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public User getUser() {
+    public User getAuthenticatedUser() {
         return authenticationController.getUser();
+    }
+
+    public void getUser(int userId) {
+        Call<UserResponse> call = userRequest.getUser(userId);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+                if (response.isSuccess()) {
+                    fragment.onUserReceived(response.body().getUser());
+                }
+                else {
+                    fragment.onUserReceived(null);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<UserResponse> call, final Throwable t) {
+                fragment.onUserReceived(null);
+            }
+        });
     }
 
     public boolean isUserToursOnly() {
@@ -56,27 +79,58 @@ public class UserPresenter {
         authenticationController.saveUserToursOnly(choice);
     }
 
-    public void updateUser(final String email, final String code) {
+    public void updateUser(final User user) {
         if (fragment != null) {
-            fragment.startLoader();
-            HashMap<String, String> user = new HashMap<>();
-            if (email != null) {
-                user.put("email", email);
+            ArrayMap<String, Object> userMap = new ArrayMap<>();
+            userMap.put("first_name", user.getFirstName());
+            userMap.put("last_name", user.getLastName());
+            if (user.getEmail() != null) {
+                userMap.put("email", user.getEmail());
             }
-            if (code != null) {
-                user.put("sms_code", code);
+            if (user.getSmsCode() != null) {
+                userMap.put("sms_code", user.getSmsCode());
             }
-            userRequest.updateUser(user, new Callback<UserResponse>() {
+            Call<UserResponse> call = userRequest.updateUser(userMap);
+            call.enqueue(new Callback<UserResponse>() {
                 @Override
-                public void success(UserResponse userResponse, Response response) {
-                    fragment.displayToast(fragment.getString(R.string.user_text_update_ok));
-                    fragment.updateView(userResponse.getUser().getEmail());
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    if (response.isSuccess()) {
+                        //update the logged user
+                        authenticationController.saveUser(response.body().getUser());
+                        authenticationController.saveUserPhoneAndCode(user.getPhone(), user.getSmsCode());
+                        //inform the fragment
+                        fragment.onUserUpdated(response.body().getUser());
+                    }
+                    else {
+                        fragment.onUserUpdated(null);
+                    }
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
-                    fragment.displayToast(fragment.getString(R.string.user_text_update_ko));
-                    fragment.resetLoginButton();
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    fragment.onUserUpdated(null);
+                }
+            });
+        }
+    }
+
+    public void deleteAccount() {
+        if (fragment != null) {
+            Call<UserResponse> call = userRequest.deleteUser();
+            call.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+                    if (response.isSuccess()) {
+                        fragment.onDeletedAccount(true);
+                    }
+                    else {
+                        fragment.onDeletedAccount(false);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<UserResponse> call, final Throwable t) {
+                    fragment.onDeletedAccount(false);
                 }
             });
         }

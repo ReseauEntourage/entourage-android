@@ -3,7 +3,21 @@ package social.entourage.android.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class User implements Serializable {
+
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    public static final String KEY_USER_ID = "social.entourage.android.KEY_USER_ID";
+    public static final String KEY_USER = "social.entourage.android.KEY_USER";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -17,10 +31,13 @@ public class User {
     private String phone;
 
     @SerializedName("first_name")
-    private final String firstName;
+    private String firstName;
 
     @SerializedName("last_name")
-    private final String lastName;
+    private String lastName;
+
+    @SerializedName("display_name")
+    private final String displayName;
 
     private final String token;
 
@@ -30,18 +47,39 @@ public class User {
     @Expose(serialize = false, deserialize = true)
     private final Organization organization;
 
+    @SerializedName("avatar_url")
+    private String avatarURL;
+
+    private String smsCode;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
-    private User(final int id, final String email, final String firstName, final String lastName, final Stats stats, final Organization organization, final String token) {
+    private User(final int id, final String email, final String displayName, final Stats stats, final Organization organization, final String token, final String avatarURL) {
         this.id = id;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.displayName = displayName;
         this.stats = stats;
         this.organization = organization;
         this.token = token;
+        this.avatarURL = avatarURL;
+    }
+
+    public User clone() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return (User) ois.readObject();
+        } catch (IOException e) {
+            return null;
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
     }
 
     // ----------------------------------
@@ -59,6 +97,8 @@ public class User {
     public String getPhone() {
         return phone;
     }
+
+    public String getDisplayName() { return displayName;}
 
     public String getFirstName() {
         return firstName;
@@ -80,12 +120,36 @@ public class User {
         return organization;
     }
 
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
+    }
+
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getSmsCode() {
+        return smsCode;
+    }
+
+    public void setSmsCode(final String smsCode) {
+        this.smsCode = smsCode;
     }
 
     public void incrementTours() {
@@ -96,6 +160,13 @@ public class User {
         stats.setEncounterCount(stats.getEncounterCount() + 1);
     }
 
+    public static String decodeURL(String encodedURL) {
+        if (encodedURL == null) {
+            return encodedURL;
+        }
+        return encodedURL.replace('\u0026', '&');
+    }
+
     // ----------------------------------
     // BUILDER
     // ----------------------------------
@@ -103,7 +174,7 @@ public class User {
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
         private int id;
-        private String email, firstName, lastName, token;
+        private String email, displayName, token, avatarURL;
         private Stats stats;
         private Organization organization;
 
@@ -120,13 +191,8 @@ public class User {
             return this;
         }
 
-        public Builder withFirstName(final String firstName) {
-            this.firstName = firstName;
-            return this;
-        }
-
-        public Builder withLastName(final String lastName) {
-            this.lastName = lastName;
+        public Builder withDisplayName(final String displayName) {
+            this.displayName = displayName;
             return this;
         }
 
@@ -145,6 +211,11 @@ public class User {
             return this;
         }
 
+        public Builder withAvatarURL(final String avatarURL) {
+            this.avatarURL = avatarURL;
+            return this;
+        }
+
         public User build() {
             if (id == -1) {
                 return null;
@@ -152,10 +223,7 @@ public class User {
             if (email == null) {
                 return null;
             }
-            if (firstName == null) {
-                return null;
-            }
-            if (lastName == null) {
+            if (displayName == null) {
                 return null;
             }
             if (stats == null) {
@@ -167,7 +235,7 @@ public class User {
             if (token == null) {
                 return null;
             }
-            return new User(id, email, firstName, lastName, stats, organization, token);
+            return new User(id, email, displayName, stats, organization, token, avatarURL);
         }
     }
 

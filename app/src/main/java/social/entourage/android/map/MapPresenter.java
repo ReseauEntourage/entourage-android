@@ -3,8 +3,6 @@ package social.entourage.android.map;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -15,17 +13,14 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import social.entourage.android.api.MapRequest;
-import social.entourage.android.api.MapResponse;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.Constants;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
-import social.entourage.android.map.tour.TourInformationFragment;
+import social.entourage.android.map.tour.information.TourInformationFragment;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Presenter controlling the MapEntourageFragment
@@ -67,8 +62,6 @@ public class MapPresenter {
 
     public void start() {
         onClickListener = new OnEntourageMarkerClickListener();
-        fragment.initializeMapZoom();
-        fragment.setOnMarkerClickListener(onClickListener);
     }
 
     public void incrementUserToursCount() {
@@ -83,7 +76,15 @@ public class MapPresenter {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
             TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tour);
-            tourInformationFragment.show(fragmentManager, "fragment_tour_information");
+            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
+        }
+    }
+
+    public void openTour(long tourId) {
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tourId);
+            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }
 
@@ -94,11 +95,7 @@ public class MapPresenter {
     private void openEncounter(Encounter encounter) {
         if (fragment.getActivity() != null) {
             fragment.saveCameraPosition();
-            Intent intent = new Intent(fragment.getActivity(), ReadEncounterActivity.class);
-            Bundle extras = new Bundle();
-            extras.putSerializable(ReadEncounterActivity.BUNDLE_KEY_ENCOUNTER, encounter);
-            intent.putExtras(extras);
-            fragment.getActivity().startActivity(intent);
+            BusProvider.getInstance().post(new Events.OnTourEncounterViewRequestedEvent(encounter));
         }
     }
 

@@ -4,33 +4,35 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_alignParentBottom="true"
-    android:background="@color/background"
-    android:gravity="center">
+              android:gravity="center"
+              android:background="@color/background">
 
     <RadioGroup
         android:id="@+id/launcher_tour_transport_mode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/background_dark"
-        android:checkedButton="@+id/launcher_tour_type_feet">
+        android:checkedButton="@+id/launcher_tour_type_feet"
+        android:layout_marginTop="10dp"
+        android:background="@color/background">
 
         <RadioButton
             android:id="@+id/launcher_tour_type_feet"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="80dp"
             android:layout_weight="1"
             android:text="@string/tour_check_feet"
-            android:background="@drawable/bg_radio_tab"
             android:button="@null"
             android:gravity="center"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:textAllCaps="true" />
+            android:textSize="18sp"
+            android:textColor="@drawable/textcolor_radio_tab"
+            android:textAllCaps="false"
+            android:drawableTop="@drawable/rb_tour_feet"
+            android:checked="true"
+            android:padding="10dp"/>
 
         <View
-            android:layout_width="0.5dp"
+            android:layout_width="2dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -39,100 +41,117 @@
         <RadioButton
             android:id="@+id/launcher_tour_type_car"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="80dp"
             android:layout_weight="1"
             android:text="@string/tour_check_car"
-            android:background="@drawable/bg_radio_tab"
             android:button="@null"
             android:gravity="center"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:textAllCaps="true" />
+            android:textSize="18sp"
+            android:textColor="@drawable/textcolor_radio_tab"
+            android:textAllCaps="false"
+            android:drawableTop="@drawable/rb_tour_car"
+            android:checked="false"
+            android:padding="10dp"/>
 
     </RadioGroup>
 
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:gravity="center">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/separator"
+        />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/background_dark"
-            android:text="@string/tour_type"
+    <RadioGroup
+        android:id="@+id/launcher_tour_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:checkedButton="@+id/launcher_tour_type_medical"
+        android:background="@color/background">
+
+        <RadioButton
+            android:id="@+id/launcher_tour_type_medical"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:text="@string/tour_type_medical"
+            android:button="@null"
             android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="12sp"
-            android:textAllCaps="true" />
+            android:textSize="18sp"
+            android:textColor="@drawable/textcolor_radio_tab"
+            android:drawableTop="@drawable/rb_tour_medical"
+            android:layout_weight="1"
+            android:gravity="center"/>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/custom_button_accent_enabled"
-            android:layout_marginBottom="0.5dp"/>
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/separator" />
 
-        <RadioGroup
-            android:id="@+id/launcher_tour_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:background="@color/separator"
-            android:checkedButton="@+id/launcher_tour_type_medical">
+        <RadioButton
+            android:id="@+id/launcher_tour_type_bare_hands"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:text="@string/tour_type_bare_hands"
+            android:button="@null"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:textColor="@drawable/textcolor_radio_tab"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:drawableTop="@drawable/rb_tour_social"
+            android:checked="false"/>
 
-            <RadioButton
-                android:id="@+id/launcher_tour_type_medical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tour_type_medical"
-                android:background="@drawable/bg_radio_spinner"
-                android:button="@null"
-                android:padding="10dp"
-                android:layout_marginBottom="0.5dp"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"/>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/separator" />
 
-            <RadioButton
-                android:id="@+id/launcher_tour_type_bare_hands"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tour_type_bare_hands"
-                android:background="@drawable/bg_radio_spinner"
-                android:button="@null"
-                android:padding="10dp"
-                android:layout_marginBottom="0.5dp"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"/>
+        <RadioButton
+            android:id="@+id/launcher_tour_type_alimentary"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:text="@string/tour_type_alimentary"
+            android:button="@null"
+            android:textSize="18sp"
+            android:textColor="@drawable/textcolor_radio_tab"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/rb_tour_distributive"
+            android:checked="false"
+            android:padding="10dp"/>
 
-            <RadioButton
-                android:id="@+id/launcher_tour_type_alimentary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tour_type_alimentary"
-                android:background="@drawable/bg_radio_spinner"
-                android:button="@null"
-                android:padding="10dp"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"/>
+    </RadioGroup>
 
-        </RadioGroup>
-
-    </LinearLayout>
-
-    <Button
-        style="@style/AccentButton"
-        android:id="@+id/launcher_tour_go"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/tour_go"/>
+        android:background="@color/background_light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/tour_start"
+            android:id="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/greyish_brown"
+            android:textSize="20sp"
+            android:layout_marginTop="40dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/launcher_tour_go"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/tour_start"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"/>
+    </RelativeLayout>
 
 </LinearLayout>

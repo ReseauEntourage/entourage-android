@@ -85,7 +85,7 @@ public class MessageActivity extends EntourageSecuredActivity {
     private void displayMessage(Message message) {
         messageAuthor.setText(message.getAuthor());
         messageObject.setText(message.getObject());
-        messageContent.setText(message.getContent());
+        messageContent.setText(message.getMessage());
     }
 
 }

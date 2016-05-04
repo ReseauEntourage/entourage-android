@@ -3,8 +3,6 @@
     <item android:state_enabled="false">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <corners
-                android:radius="3dp" />
             <solid
                 android:color="@color/custom_button_accent_disabled" />
             <padding
@@ -17,8 +15,6 @@
     <item android:state_pressed="true" android:state_enabled="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <corners
-                android:radius="3dp" />
             <solid
                 android:color="@color/custom_button_accent_pressed" />
             <padding
@@ -31,8 +27,6 @@
     <item android:state_focused="true" android:state_enabled="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <corners
-                android:radius="3dp" />
             <solid
                 android:color="@color/custom_button_accent_focused" />
             <padding
@@ -45,8 +39,6 @@
     <item android:state_enabled="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <corners
-                android:radius="3dp" />
             <solid
                 android:color="@color/custom_button_accent_enabled" />
             <padding

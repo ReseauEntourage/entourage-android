@@ -1,27 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="end"
     android:layout_marginTop="20dp"
-    android:paddingTop="25dp"
-    android:background="@drawable/entourage_header">
+    android:weightSum="1"
+    android:background="@color/primary">
 
-    <ImageView
-        android:id="@+id/drawer_header_user_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:paddingTop="15dp"
-        android:src="@drawable/bg_user_image_button"/>
-
-    <TextView
-        android:id="@+id/drawer_header_user_name"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textSize="25sp"
-        android:textColor="@android:color/black"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/sidemenu_title"
+            android:id="@+id/drawer_header_title"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="17sp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:id="@+id/drawer_header_back"
+            android:layout_weight="1.13"
+            android:src="@drawable/ic_forward"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_light">
+
+        <ImageView
+            android:id="@+id/drawer_header_user_photo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_user_photo"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:id="@+id/drawer_header_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -12,19 +12,20 @@ import com.squareup.tape.FileObjectQueue;
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.Endpoint;
-import retrofit.Endpoints;
-import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
+import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationInterceptor;
 import social.entourage.android.map.encounter.CreateEncounterPresenter;
-import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 
 /**
  * Module related to Application
@@ -33,15 +34,12 @@ import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 @Module
 public class ApiModule {
 
-    @Provides
-    @Singleton
-    public Endpoint providesEndPoint() {
-        return Endpoints.newFixedEndpoint(BuildConfig.ENTOURAGE_URL);
-    }
+    @Inject
+    AuthenticationInterceptor interceptor;
 
     @Provides
     @Singleton
-    public RestAdapter providesRestAdapter(final Endpoint endpoint, final AuthenticationInterceptor interceptor) {
+    public Retrofit providesRestAdapter(final AuthenticationInterceptor interceptor) {
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new ExclusionStrategy() {
                     @Override
@@ -64,50 +62,64 @@ public class ApiModule {
                         return false;
                     }
                 })
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
                 .create();
 
-        return new RestAdapter.Builder()
-                .setEndpoint(endpoint)
-                .setRequestInterceptor(interceptor)
-                .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.BASIC)
-                .setConverter(new GsonConverter(gson))
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        builder.addInterceptor(interceptor);
+
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(loggingInterceptor);
+        }
+
+        OkHttpClient client = builder.build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.ENTOURAGE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+
+        return retrofit;
+
     }
 
     @Provides
     @Singleton
-    public LoginRequest providesLoginService(final RestAdapter restAdapter) {
+    public LoginRequest providesLoginService(final Retrofit restAdapter) {
         return restAdapter.create(LoginRequest.class);
     }
 
     @Provides
     @Singleton
-    public AppRequest providesAppRequest(final RestAdapter restAdapter) {
+    public AppRequest providesAppRequest(final Retrofit restAdapter) {
         return restAdapter.create(AppRequest.class);
     }
 
     @Provides
     @Singleton
-    public MapRequest providesMapService(final RestAdapter restAdapter) {
+    public MapRequest providesMapService(final Retrofit restAdapter) {
         return restAdapter.create(MapRequest.class);
     }
 
     @Provides
     @Singleton
-    public EncounterRequest providesEncounterService(final RestAdapter restAdapter) {
+    public EncounterRequest providesEncounterService(final Retrofit restAdapter) {
         return restAdapter.create(EncounterRequest.class);
     }
 
     @Provides
     @Singleton
-    public TourRequest providesTourRequest(final RestAdapter restAdapter) {
+    public TourRequest providesTourRequest(final Retrofit restAdapter) {
         return restAdapter.create(TourRequest.class);
     }
 
     @Provides
     @Singleton
-    public UserRequest providesUserRequest(final RestAdapter restAdapter) {
+    public UserRequest providesUserRequest(final Retrofit restAdapter) {
         return restAdapter.create(UserRequest.class);
     }
 

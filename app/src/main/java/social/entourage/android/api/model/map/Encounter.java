@@ -1,13 +1,19 @@
 package social.entourage.android.api.model.map;
 
-import com.google.gson.annotations.Expose;
+import android.location.Address;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import social.entourage.android.api.model.TimestampedObject;
 
 @SuppressWarnings("unused")
-public class Encounter implements Serializable{
+public class Encounter extends TimestampedObject implements Serializable {
+
+    private final static String HASH_STRING_HEAD = "Encounter-";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -25,7 +31,7 @@ public class Encounter implements Serializable{
     private double latitude;
 
     @SerializedName("user_id")
-    private String userId;
+    private int userId;
 
     @SerializedName("user_name")
     private String userName;
@@ -39,6 +45,10 @@ public class Encounter implements Serializable{
     private String voiceMessageUrl;
 
     private String soundCloudPermalinkUrl;
+
+    private transient Address address;
+
+    private boolean isMyEncounter = false;
 
     // ----------------------------------
     // GETTERS & SETTERS
@@ -84,11 +94,11 @@ public class Encounter implements Serializable{
         this.latitude = latitude;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -128,8 +138,45 @@ public class Encounter implements Serializable{
         return soundCloudPermalinkUrl;
     }
 
-    public void setSoundCloudPermalinkUrl(final String permakink) {
-        this.soundCloudPermalinkUrl = permakink;
+    public void setSoundCloudPermalinkUrl(final String permalink) {
+        this.soundCloudPermalinkUrl = permalink;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(final Address address) {
+        this.address = address;
+    }
+
+    public boolean isMyEncounter() {
+        return isMyEncounter;
+    }
+
+    public void setIsMyEncounter(final boolean isMyEncounter) {
+        this.isMyEncounter = isMyEncounter;
+    }
+
+    @Override
+    public Date getTimestamp() {
+        return creationDate;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + id;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || o.getClass() != this.getClass()) return false;
+        return this.id == ((Encounter)o).id;
+    }
+
+    @Override
+    public int getType() {
+        return ENCOUNTER;
     }
 
     // ----------------------------------
@@ -146,6 +193,19 @@ public class Encounter implements Serializable{
 
         public void setEncounter(final Encounter encounter) {
             this.encounter = encounter;
+        }
+    }
+
+    public static class EncountersWrapper {
+
+        private List<Encounter> encounters;
+
+        public List<Encounter> getEncounters() {
+            return encounters;
+        }
+
+        public void setEncounters(final List<Encounter> encounters) {
+            this.encounters = encounters;
         }
     }
 
