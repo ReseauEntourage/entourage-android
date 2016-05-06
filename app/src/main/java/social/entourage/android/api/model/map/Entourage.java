@@ -1,22 +1,30 @@
 package social.entourage.android.api.model.map;
 
+import android.location.Address;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import social.entourage.android.api.model.TimestampedObject;
+
 /**
  * Created by mihaiionescu on 28/04/16.
  */
-public class Entourage implements Serializable {
+public class Entourage extends TimestampedObject implements Serializable {
 
     // ----------------------------------
     // Constants
     // ----------------------------------
 
+    private final static String HASH_STRING_HEAD = "Entourage-";
+
     public static final String TYPE_CONTRIBUTION = "contribution";
     public static final String TYPE_DEMAND = "ask_for_help";
+
+    public static final String NEWSFEED_TYPE = "Entourage";
 
     // ----------------------------------
     // Attributes
@@ -32,7 +40,7 @@ public class Entourage implements Serializable {
     private Date createdTime;
 
     @SerializedName("entourage_type")
-    private String type;
+    private String entourageType;
 
     private String title;
 
@@ -44,6 +52,20 @@ public class Entourage implements Serializable {
 
     private TourAuthor author;
 
+    @Expose(serialize = false, deserialize = false)
+    private transient Address startAddress;
+
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("number_of_people")
+    private int numberOfPeople;
+
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("join_status")
+    private String joinStatus;
+
+    @Expose(serialize = false, deserialize = false)
+    private int badgeCount = 0;
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -52,8 +74,8 @@ public class Entourage implements Serializable {
 
     }
 
-    public Entourage(String type, String title, String description, TourPoint location) {
-        this.type = type;
+    public Entourage(String entourageType, String title, String description, TourPoint location) {
+        this.entourageType = entourageType;
         this.title = title;
         this.description = description;
         this.location = location;
@@ -120,12 +142,12 @@ public class Entourage implements Serializable {
         this.title = title;
     }
 
-    public String getType() {
-        return type;
+    public String getEntourageType() {
+        return entourageType;
     }
 
-    public void setType(final String type) {
-        this.type = type;
+    public void setEntourageType(final String entourageType) {
+        this.entourageType = entourageType;
     }
 
     public Date getUpdatedTime() {
@@ -134,6 +156,86 @@ public class Entourage implements Serializable {
 
     public void setUpdatedTime(final Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public int getBadgeCount() {
+        return badgeCount;
+    }
+
+    public void setBadgeCount(final int badgeCount) {
+        this.badgeCount = badgeCount;
+    }
+
+    public int getNumberOfPeople() {
+        return numberOfPeople;
+    }
+
+    public void setNumberOfPeople(final int numberOfPeople) {
+        this.numberOfPeople = numberOfPeople;
+    }
+
+    public Address getStartAddress() {
+        return startAddress;
+    }
+
+    public void setStartAddress(final Address startAddress) {
+        this.startAddress = startAddress;
+    }
+
+    public String getJoinStatus() {
+        return joinStatus;
+    }
+
+    public void setJoinStatus(final String joinStatus) {
+        this.joinStatus = joinStatus;
+    }
+
+    public Date getStartTime() {
+        return createdTime;
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public boolean isFreezed() {
+        return false;
+    }
+
+    public boolean isSame(Entourage entourage) {
+        boolean isSame = true;
+
+        if (entourage == null) return false;
+        if (id != entourage.id) return false;
+        if (!status.equals(entourage.status)) return false;
+        if (!joinStatus.equals(entourage.joinStatus)) return false;
+
+        return isSame;
+    }
+
+    // ----------------------------------
+    // TimestampedObject overrides
+    // ----------------------------------
+
+    @Override
+    public Date getTimestamp() {
+        return createdTime;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + id;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || o.getClass() != this.getClass()) return false;
+        return this.id == ((Entourage)o).id;
+    }
+
+    @Override
+    public int getType() {
+        return ENTOURAGE_CARD;
     }
 
     // ----------------------------------

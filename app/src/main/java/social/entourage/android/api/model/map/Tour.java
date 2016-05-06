@@ -19,11 +19,13 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 
 @SuppressWarnings("unused")
-public class Tour implements Serializable {
+public class Tour extends TimestampedObject implements Serializable {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
+
+    private final static String HASH_STRING_HEAD = "Tour-";
 
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
     public static final String KEY_TOUR_ID = "social.entourage.android.KEY_TOUR_ID";
@@ -37,6 +39,8 @@ public class Tour implements Serializable {
     public static final String JOIN_STATUS_PENDING = "pending";
     public static final String JOIN_STATUS_ACCEPTED = "accepted";
     public static final String JOIN_STATUS_REJECTED = "rejected";
+
+    public static final String NEWSFEED_TYPE = "Tour";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -375,6 +379,31 @@ public class Tour implements Serializable {
         if (!joinStatus.equals(tour.joinStatus)) return false;
 
         return isSame;
+    }
+
+    // ----------------------------------
+    // TimestampedObject overrides
+    // ----------------------------------
+
+    @Override
+    public Date getTimestamp() {
+        return startTime;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + id;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || o.getClass() != this.getClass()) return false;
+        return this.id == ((Tour)o).id;
+    }
+
+    @Override
+    public int getType() {
+        return TOUR_CARD;
     }
 
     // ----------------------------------

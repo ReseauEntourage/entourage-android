@@ -17,4 +17,9 @@
     <string name="entourage_create_menu_demand">Créer une demande</string>
     <string name="entourage_create_menu_contribution">Créer une contribution</string>
 
+    <!-- Entourage Card -->
+    <string name="entourage_type_demand">Demande</string>
+    <string name="entourage_type_contribution">Contribution</string>
+    <string name="entourage_type_format">%1$s par\u0020</string>
+
 </resources>

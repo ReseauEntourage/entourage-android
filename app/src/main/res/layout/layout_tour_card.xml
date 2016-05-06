@@ -18,7 +18,8 @@
         android:id="@+id/tour_card_title"
         android:layout_row="0"
         android:layout_columnSpan="2"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <ImageView
         android:layout_width="47dp"

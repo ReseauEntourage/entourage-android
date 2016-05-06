@@ -78,7 +78,7 @@ public class TourTimestamp extends TimestampedObject {
 
 
     // ----------------------------------
-    // TimestampedObject ovverides
+    // TimestampedObject overrides
     // ----------------------------------
 
     @Override
@@ -102,4 +102,10 @@ public class TourTimestamp extends TimestampedObject {
     public int getType() {
         return TOUR_STATUS;
     }
+
+    @Override
+    public long getId() {
+        return 0;
+    }
+
 }

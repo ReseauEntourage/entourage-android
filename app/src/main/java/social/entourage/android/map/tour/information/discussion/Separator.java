@@ -20,6 +20,11 @@ public class Separator extends TimestampedObject {
 
     @Override
     public int getType() {
+        return SEPARATOR;
+    }
+
+    @Override
+    public long getId() {
         return 0;
     }
 }

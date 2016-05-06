@@ -16,6 +16,8 @@ public abstract class TimestampedObject {
     public static final int TOUR_USER = 3;
     public static final int TOUR_STATUS = 4;
     public static final int ENCOUNTER = 5;
+    public static final int TOUR_CARD = 6;
+    public static final int ENTOURAGE_CARD = 7;
 
     private int hashCode;
 
@@ -32,6 +34,8 @@ public abstract class TimestampedObject {
     }
 
     public abstract int getType();
+
+    public abstract long getId();
 
 
     // ----------------------------------

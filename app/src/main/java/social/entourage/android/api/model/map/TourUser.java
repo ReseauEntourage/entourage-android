@@ -98,6 +98,11 @@ public class TourUser extends TimestampedObject implements Serializable {
     }
 
     @Override
+    public long getId() {
+        return userId;
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (o == null || o.getClass() != this.getClass()) return false;
         return (this.userId == ((TourUser)o).userId) && (this.status.equals(((TourUser)o).status));

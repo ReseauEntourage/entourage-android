@@ -41,7 +41,9 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
+import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
@@ -76,6 +78,7 @@ public class TourServiceManager {
     private final TourService tourService;
     private final TourRequest tourRequest;
     private final EncounterRequest encounterRequest;
+    private final NewsfeedRequest newsfeedRequest;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -95,11 +98,12 @@ public class TourServiceManager {
     private CustomLocationListener locationListener;
     private boolean isBetterLocationUpdated;
 
-    public TourServiceManager(final TourService tourService, final TourRequest tourRequest, final EncounterRequest encounterRequest) {
+    public TourServiceManager(final TourService tourService, final TourRequest tourRequest, final EncounterRequest encounterRequest, final NewsfeedRequest newsfeedRequest) {
         Log.i("TourServiceManager", "constructor");
         this.tourService = tourService;
         this.tourRequest = tourRequest;
         this.encounterRequest = encounterRequest;
+        this.newsfeedRequest = newsfeedRequest;
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
         this.pointsToDraw = new ArrayList<>();
@@ -490,29 +494,6 @@ public class TourServiceManager {
         }).start();
     }
 
-    /*protected void retrieveToursNearbySmall(LatLng point) {
-        if (point != null) {
-            Call<Tour.ToursWrapper> call = tourRequest.retrieveToursNearby(5, null, null, point.latitude, point.longitude, RETRIEVE_TOURS_DISTANCE);
-            call.enqueue(new Callback<Tour.ToursWrapper>() {
-                @Override
-                public void onResponse(Call<Tour.ToursWrapper> call, Response<Tour.ToursWrapper> response) {
-                    if (response.isSuccess()) {
-                        Map<Long, Tour> toursMap = new HashMap<>();
-                        for (Tour tour : response.body().getTours()) {
-                            toursMap.put(tour.getId(), tour);
-                        }
-                        tourService.notifyListenersToursFound(toursMap);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Tour.ToursWrapper> call, Throwable t) {
-                    Log.e("Error", t.getLocalizedMessage());
-                }
-            });
-        }
-    }*/
-
     protected void retrieveToursByUserId(int userId, int page, int per) {
         Call<Tour.ToursWrapper> call = tourRequest.retrieveToursByUserId(userId, page, per);
         call.enqueue(new Callback<Tour.ToursWrapper>() {
@@ -547,6 +528,24 @@ public class TourServiceManager {
             @Override
             public void onFailure(Call<Tour.ToursWrapper> call, Throwable t) {
                 Log.e("Error", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    protected void retrieveNewsfeed(int page, int per) {
+        Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveFeed(page, per);
+        call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
+            @Override
+            public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
+                if (response.isSuccess()) {
+                    List<Newsfeed> newsfeedList = response.body().getNewsfeed();
+                    tourService.notifyListenersNewsfeed(newsfeedList);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
+
             }
         });
     }

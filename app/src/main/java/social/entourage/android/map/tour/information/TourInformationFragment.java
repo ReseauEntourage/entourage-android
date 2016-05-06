@@ -22,7 +22,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,7 +42,6 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -75,6 +72,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
@@ -756,7 +754,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         for (int i = 0; i < addedCardInfoList.size(); i++) {
 
             TimestampedObject cardInfo = addedCardInfoList.get(i);
-            discussionAdapter.addCardInfoBeforeTimestamp(cardInfo);
+            discussionAdapter.addCardInfoAfterTimestamp(cardInfo);
 
         }
 
@@ -1100,6 +1098,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             updateHeaderButtons();
             updateJoinStatus();
         }
+    }
+
+    @Override
+    public void onRetrieveNewsfeed(final List<Newsfeed> newsfeedList) {
+
     }
 
     // ----------------------------------

@@ -33,7 +33,9 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.EncounterRequest;
+import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -65,6 +67,8 @@ public class TourService extends Service {
     TourRequest tourRequest;
     @Inject
     EncounterRequest encounterRequest;
+    @Inject
+    NewsfeedRequest newsfeedRequest;
 
     private TourServiceManager tourServiceManager;
 
@@ -122,7 +126,7 @@ public class TourService extends Service {
         super.onCreate();
         EntourageApplication.get(this).getEntourageComponent().inject(this);
 
-        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest);
+        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest, newsfeedRequest);
 
         listeners =  new ArrayList<>();
         isPaused = false;
@@ -263,6 +267,11 @@ public class TourService extends Service {
 
     public void updateNearbyTours() {
         tourServiceManager.retrieveToursNearbyLarge();
+    }
+
+    public void updateNewsfeed() {
+        //TODO Add location and proper pagination
+        tourServiceManager.retrieveNewsfeed(1, 10);
     }
 
     public void updateUserHistory(int userId, int page, int per) {
@@ -432,6 +441,12 @@ public class TourService extends Service {
         }
     }
 
+    public void notifyListenersNewsfeed(List<Newsfeed> newsfeedList) {
+        for (TourServiceListener listener : listeners) {
+            listener.onRetrieveNewsfeed(newsfeedList);
+        }
+    }
+
     // ----------------------------------
     // INNER INTERFACES
     // ----------------------------------
@@ -448,5 +463,6 @@ public class TourService extends Service {
         void onTourClosed(boolean closed, Tour tour);
         void onGpsStatusChanged(boolean active);
         void onUserStatusChanged(TourUser user, Tour tour);
+        void onRetrieveNewsfeed(List<Newsfeed> newsfeedList);
     }
 }

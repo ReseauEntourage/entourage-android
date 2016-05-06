@@ -1,4 +1,4 @@
-package social.entourage.android.map.tour;
+package social.entourage.android.map.entourage;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -24,7 +24,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
@@ -32,52 +32,52 @@ import social.entourage.android.map.tour.information.discussion.BaseCardViewHold
 import social.entourage.android.tools.BusProvider;
 
 /**
- * Created by mihaiionescu on 11/03/16.
+ * Created by mihaiionescu on 05/05/16.
  */
-public class TourViewHolder extends BaseCardViewHolder implements View.OnClickListener {
+public class EntourageViewHolder extends BaseCardViewHolder implements View.OnClickListener {
 
-    private TextView tourTitle;
+    private TextView entourageTitle;
     private ImageView photoView;
-    private TextView tourTypeTextView;
-    private TextView tourAuthor;
-    private TextView tourLocation;
+    private TextView entourageTypeTextView;
+    private TextView entourageAuthor;
+    private TextView entourageLocation;
     private TextView badgeCountView;
     private TextView numberOfPeopleTextView;
     private Button actButton;
 
-    private Tour tour;
+    private Entourage entourage;
 
     private Context context;
 
     private GeocoderTask geocoderTask;
 
-    public TourViewHolder(final View itemView) {
+    public EntourageViewHolder(final View itemView) {
         super(itemView);
     }
 
     @Override
     protected void bindFields() {
 
-        tourTitle = (TextView)itemView.findViewById(R.id.tour_card_title);
+        entourageTitle = (TextView)itemView.findViewById(R.id.tour_card_title);
         photoView = (ImageView)itemView.findViewById(R.id.tour_card_photo);
-        tourTypeTextView = (TextView)itemView.findViewById(R.id.tour_card_type);
-        tourAuthor = (TextView)itemView.findViewById(R.id.tour_card_author);
-        tourLocation = (TextView)itemView.findViewById(R.id.tour_card_location);
+        entourageTypeTextView = (TextView)itemView.findViewById(R.id.tour_card_type);
+        entourageAuthor = (TextView)itemView.findViewById(R.id.tour_card_author);
+        entourageLocation = (TextView)itemView.findViewById(R.id.tour_card_location);
         badgeCountView = (TextView)itemView.findViewById(R.id.tour_card_badge_count);
         numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
         actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
 
         itemView.setOnClickListener(this);
-        tourAuthor.setOnClickListener(this);
+        entourageAuthor.setOnClickListener(this);
         photoView.setOnClickListener(this);
         actButton.setOnClickListener(this);
 
         context = itemView.getContext();
     }
 
-    public static TourViewHolder fromParent(final ViewGroup parent) {
+    public static EntourageViewHolder fromParent(final ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tour_card, parent, false);
-        return new TourViewHolder(view);
+        return new EntourageViewHolder(view);
     }
 
     public static final int getLayoutResource() {
@@ -86,21 +86,21 @@ public class TourViewHolder extends BaseCardViewHolder implements View.OnClickLi
 
     @Override
     public void populate(final TimestampedObject data) {
-        populate((Tour)data);
+        populate((Entourage)data);
     }
 
-    public void populate(Tour tour) {
+    public void populate(Entourage entourage) {
 
-        this.tour = tour;
+        this.entourage = entourage;
 
         //configure the cell fields
         Resources res = itemView.getResources();
 
         //title
-        tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), tour.getOrganizationName()));
+        entourageTitle.setText(String.format(res.getString(R.string.tour_cell_title), entourage.getTitle()));
 
         //author photo
-        String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
+        String avatarURLAsString = entourage.getAuthor().getAvatarURLAsString();
         if (avatarURLAsString != null) {
             Picasso.with(itemView.getContext())
                     .load(Uri.parse(avatarURLAsString))
@@ -109,25 +109,24 @@ public class TourViewHolder extends BaseCardViewHolder implements View.OnClickLi
         }
 
         //Tour type
-        String tourType = tour.getTourType();
-        String tourTypeDescription = "";
-        if (tourType != null) {
-            if (tourType.equals(TourType.MEDICAL.getName())) {
-                tourTypeDescription = res.getString(R.string.tour_type_medical).toLowerCase();
-            } else if (tourType.equals(TourType.ALIMENTARY.getName())) {
-                tourTypeDescription = res.getString(R.string.tour_type_alimentary).toLowerCase();
-            } else if (tourType.equals(TourType.BARE_HANDS.getName())) {
-                tourTypeDescription = res.getString(R.string.tour_type_bare_hands).toLowerCase();
+        String entourageType = entourage.getEntourageType();
+        String entourageTypeDescription = "";
+        if (entourageType != null) {
+            if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
+                entourageTypeDescription = context.getString(R.string.entourage_type_contribution);
+            }
+            else if (Entourage.TYPE_DEMAND.equals(entourageType)) {
+                entourageTypeDescription = context.getString(R.string.entourage_type_demand);
             }
         }
-        tourTypeTextView.setText(String.format(res.getString(R.string.tour_cell_type), tourTypeDescription));
+        entourageTypeTextView.setText(String.format(res.getString(R.string.entourage_type_format), entourageTypeDescription));
 
         //author
-        tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));
+        entourageAuthor.setText(String.format(res.getString(R.string.tour_cell_author), entourage.getAuthor().getUserName()));
 
         //date and location i.e 1h - Arc de Triomphe
         String location = "";
-        Address tourAddress = tour.getStartAddress();
+        Address tourAddress = entourage.getStartAddress();
         if (tourAddress != null) {
             location = tourAddress.getAddressLine(0);
             if (location == null) {
@@ -139,30 +138,30 @@ public class TourViewHolder extends BaseCardViewHolder implements View.OnClickLi
                 geocoderTask.cancel(true);
             }
             geocoderTask = new GeocoderTask();
-            geocoderTask.execute(tour);
+            geocoderTask.execute(entourage);
         }
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", location));
+        entourageLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(entourage.getStartTime()), "h", location));
 
         //tour members
-        numberOfPeopleTextView.setText(""+tour.getNumberOfPeople());
+        numberOfPeopleTextView.setText(""+entourage.getNumberOfPeople());
 
         //badge count
-        int badgeCount = tour.getBadgeCount();
+        int badgeCount = entourage.getBadgeCount();
         if (badgeCount <= 0) {
             badgeCountView.setVisibility(View.GONE);
         }
         else {
             badgeCountView.setVisibility(View.VISIBLE);
-            badgeCountView.setText("" + tour.getBadgeCount());
+            badgeCountView.setText("" + entourage.getBadgeCount());
         }
 
         //act button
-        if (tour.isFreezed()) {
+        if (entourage.isFreezed()) {
             actButton.setVisibility(View.GONE);
         }
         else {
             actButton.setVisibility(View.VISIBLE);
-            String joinStatus = tour.getJoinStatus();
+            String joinStatus = entourage.getJoinStatus();
             if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                 actButton.setText(R.string.tour_cell_button_pending);
                 actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
@@ -180,75 +179,76 @@ public class TourViewHolder extends BaseCardViewHolder implements View.OnClickLi
 
     }
 
-    private void updateStartLocation(Tour tour) {
-        if (tour == null || tour != this.tour) return;
+    private void updateStartLocation(Entourage entourage) {
+        if (entourage == null || entourage != this.entourage) return;
         String location = "";
-        Address tourAddress = tour.getStartAddress();
+        Address tourAddress = entourage.getStartAddress();
         if (tourAddress != null) {
             location = tourAddress.getAddressLine(0);
             if (location == null) {
                 location = "";
             }
         }
-        tourLocation.setText(String.format(itemView.getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", location));
+        entourageLocation.setText(String.format(itemView.getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(entourage.getStartTime()), "h", location));
 
         geocoderTask = null;
     }
 
     @Override
     public void onClick(final View v) {
-        if (tour == null) return;
-        if (v == photoView || v == tourAuthor) {
-            BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
+        if (entourage == null) return;
+        if (v == photoView || v == entourageAuthor) {
+            BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(entourage.getAuthor().getUserID()));
         }
-        else if (v == actButton) {
-            String joinStatus = tour.getJoinStatus();
-            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
-            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                if (tour.getAuthor() != null) {
-                    if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
-                        BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
-                        return;
-                    }
-                }
-                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
-            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-                //What to do on rejected status ?
-            } else {
-                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, tour));
-            }
-
-        }
-        else if (v == itemView) {
-            BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
-        }
+//        else if (v == actButton) {
+//            String joinStatus = entourage.getJoinStatus();
+//            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+//                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
+//            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+//                if (entourage.getAuthor() != null) {
+//                    if (entourage.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+//                        BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
+//                        return;
+//                    }
+//                }
+//                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, entourage));
+//            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+//                //What to do on rejected status ?
+//            } else {
+//                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, entourage));
+//            }
+//
+//        }
+//        else if (v == itemView) {
+//            BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(entourage));
+//        }
     }
 
-    private class GeocoderTask extends AsyncTask<Tour, Void, Tour> {
+    private class GeocoderTask extends AsyncTask<Entourage, Void, Entourage> {
 
         @Override
-        protected Tour doInBackground(final Tour... params) {
+        protected Entourage doInBackground(final Entourage... params) {
             try {
                 Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
-                Tour tour = params[0];
-                if (tour.getTourPoints().isEmpty()) return null;
-                TourPoint tourPoint = tour.getTourPoints().get(0);
+                Entourage entourage = params[0];
+                if (entourage.getLocation() == null) return null;
+                TourPoint tourPoint = entourage.getLocation();
                 List<Address> addresses = geoCoder.getFromLocation(tourPoint.getLatitude(), tourPoint.getLongitude(), 1);
                 if (addresses.size() > 0) {
-                    tour.setStartAddress(addresses.get(0));
+                    entourage.setStartAddress(addresses.get(0));
                 }
-                return tour;
+                return entourage;
             }
-            catch (IOException e) {
+            catch (Exception e) {
 
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(final Tour tour) {
-            updateStartLocation(tour);
+        protected void onPostExecute(final Entourage entourage) {
+            updateStartLocation(entourage);
         }
     }
+
 }

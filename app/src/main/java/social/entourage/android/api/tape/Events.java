@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 
 public class Events {
@@ -223,6 +224,23 @@ public class Events {
 
         public Encounter getEncounter() {
             return encounter;
+        }
+
+    }
+
+    /**
+     * Event signaling that an entourage was created
+     */
+    public static class OnEntourageCreated {
+
+        private Entourage entourage;
+
+        public OnEntourageCreated(Entourage entourage) {
+            this.entourage = entourage;
+        }
+
+        public Entourage getEntourage() {
+            return entourage;
         }
 
     }

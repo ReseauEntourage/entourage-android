@@ -8,6 +8,8 @@ import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Created by mihaiionescu on 28/04/16.
@@ -47,7 +49,9 @@ public class CreateEntouragePresenter {
             public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccess()) {
                     if (fragment != null) {
-                        fragment.onEntourageCreated(response.body().getEntourage());
+                        Entourage receivedEntourage = response.body().getEntourage();
+                        fragment.onEntourageCreated(receivedEntourage);
+                        BusProvider.getInstance().post(new Events.OnEntourageCreated(receivedEntourage));
                     }
                 }
                 else {
