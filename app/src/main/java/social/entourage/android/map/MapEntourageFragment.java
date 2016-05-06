@@ -45,6 +45,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -118,6 +119,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private static final long REFRESH_TOURS_INTERVAL = 60000; //1 minute in ms
 
+    private static final float ENTOURAGE_HEATMAP_SIZE = 100; //meters
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -153,7 +156,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private List<Polyline> currentTourLines;
     private Map<Long, Polyline> drawnToursMap;
     private Map<Long, Polyline> drawnUserHistory;
-    private Map<Long, Marker> markersMap;
+    private Map<String, Object> markersMap;
     private Map<Long, Tour> retrievedHistory;
 
     private LayoutInflater inflater;
@@ -975,6 +978,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 initializeMapZoom();
                 setOnMarkerClickListener(presenter.getOnClickListener());
+                map.setOnGroundOverlayClickListener(presenter.getOnGroundOverlayClickListener());
 
                 googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                     @Override
@@ -1370,20 +1374,28 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
     
     private void drawNearbyEntourage(Entourage entourage, boolean isHistory) {
-        if (map != null && drawnToursMap != null && drawnUserHistory != null && entourage != null) {
-//            PolylineOptions line = new PolylineOptions();
-            //TODO Draw the location of the entourage
-//            DrawerActivity activity = null;
-//            if (getActivity() instanceof DrawerActivity) {
-//                activity = (DrawerActivity) getActivity();
-//                entourage.setBadgeCount(activity.getPushNotificationsCountForTour(entourage.getId()));
-//            }
+        if (map != null && markersMap != null && entourage != null) {
+            if (map != null && entourage.getLocation() != null) {
+                if (markersMap.get(entourage.hashString()) == null) {
+                    LatLng position = entourage.getLocation().getLocation();
+                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.heat_zone);
+                    GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
+                            .image(icon)
+                            .position(position, ENTOURAGE_HEATMAP_SIZE, ENTOURAGE_HEATMAP_SIZE)
+                            .clickable(true)
+                            .anchor(0.5f, 0.5f);
+
+                    markersMap.put(entourage.hashString(), map.addGroundOverlay(groundOverlayOptions));
+                    if (presenter != null) {
+                        presenter.getOnGroundOverlayClickListener().addEntourageGroundOverlay(position, entourage);
+                    }
+                }
+            }
 
             if (isHistory) {
 //                retrievedHistory.put(tour.getId(), tour);
 //                drawnUserHistory.put(tour.getId(), map.addPolyline(line));
             } else {
-//                drawnToursMap.put(tour.getId(), map.addPolyline(line));
                 addNewsfeedCard(entourage);
             }
         }
@@ -1449,7 +1461,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 .anchor(0.5f, 1.0f);
 
         if (map != null) {
-            markersMap.put(tour.getId(), map.addMarker(markerOptions));
+            markersMap.put(tour.hashString(), map.addMarker(markerOptions));
             presenter.getOnClickListener().addTourMarker(position, tour);
         }
     }

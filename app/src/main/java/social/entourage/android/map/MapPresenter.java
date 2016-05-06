@@ -3,8 +3,10 @@ package social.entourage.android.map;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
@@ -15,6 +17,7 @@ import javax.inject.Inject;
 
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
@@ -38,6 +41,7 @@ public class MapPresenter {
     private final AuthenticationController authenticationController;
 
     private OnEntourageMarkerClickListener onClickListener;
+    private OnEntourageGroundOverlayClickListener onGroundOverlayClickListener;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -61,8 +65,13 @@ public class MapPresenter {
         return onClickListener;
     }
 
+    public OnEntourageGroundOverlayClickListener getOnGroundOverlayClickListener() {
+        return onGroundOverlayClickListener;
+    }
+
     public void start() {
         onClickListener = new OnEntourageMarkerClickListener();
+        onGroundOverlayClickListener = new OnEntourageGroundOverlayClickListener();
     }
 
     public void incrementUserToursCount() {
@@ -116,6 +125,7 @@ public class MapPresenter {
         final Map<LatLng, Encounter> encounterMarkerHashMap = new HashMap<>();
         final Map<LatLng, Tour> tourMarkerHashMap = new HashMap<>();
 
+
         public void addEncounterMarker(LatLng markerPosition, Encounter encounter) {
             encounterMarkerHashMap.put(markerPosition, encounter);
         }
@@ -134,10 +144,28 @@ public class MapPresenter {
             if (encounterMarkerHashMap.get(markerPosition) != null){
                 openEncounter(encounterMarkerHashMap.get(markerPosition));
             }
-            if (tourMarkerHashMap.get(markerPosition) != null){
+            else if (tourMarkerHashMap.get(markerPosition) != null){
                 openTour(tourMarkerHashMap.get(markerPosition));
             }
             return false;
+        }
+    }
+
+    public class OnEntourageGroundOverlayClickListener implements GoogleMap.OnGroundOverlayClickListener {
+
+        final Map<LatLng, Entourage> entourageMarkerHashMap = new HashMap<>();
+
+        public void addEntourageGroundOverlay(LatLng markerPosition, Entourage entourage) {
+            entourageMarkerHashMap.put(markerPosition, entourage);
+        }
+
+        @Override
+        public void onGroundOverlayClick(final GroundOverlay groundOverlay) {
+            LatLng markerPosition = groundOverlay.getPosition();
+            if (entourageMarkerHashMap.get(markerPosition) != null) {
+                //TODO Show the entourage details
+                Log.d("Entourage GroundOverlay", "click");
+            }
         }
     }
 
