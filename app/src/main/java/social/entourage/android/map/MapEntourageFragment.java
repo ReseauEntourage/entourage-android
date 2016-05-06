@@ -1521,6 +1521,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     public void onPushNotificationReceived(Message message) {
+        //refresh the newsfeed
+        if (tourService != null) {
+            tourService.updateNewsfeed();
+        }
         //update the badge count on tour card
         PushNotificationContent content = message.getContent();
         if (content == null) return;
