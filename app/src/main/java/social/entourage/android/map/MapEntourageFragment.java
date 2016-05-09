@@ -149,7 +149,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private boolean isMapLoaded;
     private boolean isFollowing = true;
 
-    private long currentTourId;
+    private long currentTourId = -1;
     private int color;
     private int displayedTourHeads = 0;
 
@@ -581,21 +581,46 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
-        int previousToursCount = newsfeedAdapter.getItemCount();
+        //check if there are tours to add or update
+        int previousToursCount = retrievedTours.size();
         tours = removeRedundantTours(tours, false);
         Collections.sort(tours, new Tour.TourComparatorOldToNew());
         for (Tour tour : tours) {
             if (currentTourId != tour.getId()) {
-                drawNearbyTour(tour, false);
+                //drawNearbyTour(tour, false);
+                addTourCell(tour);
+                retrievedTours.put(tour.getId(), tour);
             }
         }
-        if (newsfeedAdapter.getItemCount() == 0) {
+        //recreate the map if needed
+        if (tours.size() > 0 && map != null) {
+            map.clear();
+            for (Tour tour : retrievedTours.values()) {
+                if (currentTourId != tour.getId()) {
+                    drawNearbyTour(tour, false);
+                }
+            }
+            if (tourService != null && currentTourId != -1) {
+                PolylineOptions line = new PolylineOptions();
+                for (Polyline polyline : currentTourLines) {
+                    line.addAll(polyline.getPoints());
+                }
+                line.zIndex(2f);
+                line.width(15);
+                line.color(color);
+                map.addPolyline(line);
+            }
+        }
+
+        //show the map if no tours
+        if (retrievedTours.size() == 0) {
             hideToursList();
         }
         else if (previousToursCount == 0) {
             showToursList();
         }
-        if (newsfeedAdapter.getItemCount() > 0) {
+        //scroll to latest
+        if (retrievedTours.size() > 0) {
             toursListView.scrollToPosition(0);
         }
     }
@@ -1182,7 +1207,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         return tours;
     }
-    
+
     private List<Newsfeed> removeRedundantNewsfeed(List<Newsfeed> newsfeedList, boolean isHistory) {
         Iterator iteratorNewsfeed = newsfeedList.iterator();
         while (iteratorNewsfeed.hasNext()) {
@@ -1362,6 +1387,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 drawnUserHistory.put(tour.getId(), map.addPolyline(line));
             } else {
                 drawnToursMap.put(tour.getId(), map.addPolyline(line));
+                //addTourCell(tour);
                 addTourCard(tour);
             }
             if (tour.getTourStatus() == null) {
@@ -1372,7 +1398,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
         }
     }
-    
+
     private void drawNearbyEntourage(Entourage entourage, boolean isHistory) {
         if (map != null && markersMap != null && entourage != null) {
             if (map != null && entourage.getLocation() != null) {
