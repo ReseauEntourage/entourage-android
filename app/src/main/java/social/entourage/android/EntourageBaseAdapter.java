@@ -38,6 +38,10 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         return items.get(position).getType();
     }
 
+    public List<TimestampedObject> getItems() {
+        return items;
+    }
+
     public void addItems(List<TimestampedObject> addItems) {
         int positionStart = items.size()-1;
         for (int i = 0; i < addItems.size(); i++) {
