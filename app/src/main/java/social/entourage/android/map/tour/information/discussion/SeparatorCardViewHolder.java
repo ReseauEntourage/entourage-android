@@ -4,6 +4,7 @@ import android.view.View;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.base.BaseCardViewHolder;
 
 /**
  * Created by mihaiionescu on 02/03/16.

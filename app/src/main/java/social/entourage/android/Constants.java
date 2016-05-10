@@ -60,4 +60,7 @@ public class Constants {
 
     //Time constants
     public static final long MILLIS_HOUR = 3600000; //1000 * 60 * 60
+
+    // Items per pagination
+    public static final int ITEMS_PER_PAGE = 10;
 }

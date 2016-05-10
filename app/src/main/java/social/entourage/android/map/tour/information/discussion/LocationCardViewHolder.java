@@ -15,6 +15,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
+import social.entourage.android.base.BaseCardViewHolder;
 
 /**
  * Linear Layout that represents a location card in the tour info screen

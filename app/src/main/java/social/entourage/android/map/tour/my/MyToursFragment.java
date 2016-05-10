@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -35,6 +36,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.map.tour.ToursAdapter;
 
 public class MyToursFragment extends DialogFragment implements TabHost.OnTabChangeListener {
@@ -44,8 +46,6 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     // ----------------------------------
 
     public static final String TAG = "social.entourage.android.mytours";
-
-    private static final int API_TOURS_PER_PAGE = 10;
 
     private static final int MAX_SCROLL_DELTA_Y = 20;
 
@@ -81,11 +81,11 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
 
     private int apiRequestsCount = 0;
 
-    private Pagination ongoingToursPagination= new Pagination();
-    private Pagination recordedToursPagination= new Pagination();
-    private Pagination frozenToursPagination= new Pagination();
+    private EntouragePagination ongoingToursPagination= new EntouragePagination(Constants.ITEMS_PER_PAGE);
+    private EntouragePagination recordedToursPagination= new EntouragePagination(Constants.ITEMS_PER_PAGE);
+    private EntouragePagination frozenToursPagination= new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
-    private HashMap<String, Pagination> paginationHashMap = new HashMap<>();
+    private HashMap<String, EntouragePagination> paginationHashMap = new HashMap<>();
 
     private int scrollDeltaY;
     private OnScrollListener scrollListener = new OnScrollListener();
@@ -236,11 +236,11 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     }
 
     private void retrieveMyTours(String status) {
-        Pagination pagination = paginationHashMap.get(status);
+        EntouragePagination pagination = paginationHashMap.get(status);
         if (pagination != null && !pagination.isLoading) {
             showProgressBar();
             pagination.isLoading = true;
-            presenter.getMyTours(pagination.page, API_TOURS_PER_PAGE, status);
+            presenter.getMyTours(pagination.page, pagination.itemsPerPage, status);
         }
     }
 
@@ -251,7 +251,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     protected void onToursReceived(List<Tour> tourList, String status) {
         hideProgressBar();
         //reset the loading indicator
-        Pagination pagination = paginationHashMap.get(status);
+        EntouragePagination pagination = paginationHashMap.get(status);
         if (pagination != null) {
             pagination.isLoading = false;
         }
@@ -281,8 +281,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
             }
             //increase page and items count
             if (pagination != null) {
-                pagination.page++;
-                pagination.itemsCount += tourList.size();
+                pagination.loadedItems(tourList.size());
             }
         }
     }
@@ -304,7 +303,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     public void onTabChanged(final String tabId) {
 
         String currentTabTag = tabHost.getCurrentTabTag();
-        Pagination pagination = paginationHashMap.get(currentTabTag);
+        EntouragePagination pagination = paginationHashMap.get(currentTabTag);
         if (pagination != null) {
             //refresh current page
             if (pagination.page > 1) {
@@ -377,12 +376,6 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     // ----------------------------------
     // PRIVATE CLASSES
     // ----------------------------------
-
-    private class Pagination {
-        protected int page = 1;
-        protected boolean isLoading = false;
-        protected int itemsCount = 0;
-    }
 
     private class OnScrollListener extends RecyclerView.OnScrollListener {
         @Override

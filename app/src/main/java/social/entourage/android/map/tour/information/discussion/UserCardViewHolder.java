@@ -8,6 +8,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
 
 /**

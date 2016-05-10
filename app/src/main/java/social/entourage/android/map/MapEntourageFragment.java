@@ -96,6 +96,7 @@ import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
+import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
@@ -120,6 +121,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private static final long REFRESH_TOURS_INTERVAL = 60000; //1 minute in ms
 
     private static final float ENTOURAGE_HEATMAP_SIZE = 100; //meters
+
+    private static final int MAX_SCROLL_DELTA_Y = 20;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -215,6 +218,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     TimerTask refreshToursTimerTask;
     final Handler refreshToursHandler = new Handler();
 
+    //pagination
+    private EntouragePagination pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+    private int scrollDeltaY;
+    private OnScrollListener scrollListener = new OnScrollListener();
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -295,6 +303,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onStart() {
         super.onStart();
+
+        toursListView.addOnScrollListener(scrollListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        toursListView.removeOnScrollListener(scrollListener);
     }
 
     @Override
@@ -314,11 +331,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         super.onPause();
 
         timerStop();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -682,6 +694,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 displayedTourHeads = 0;
 
                 newsfeedAdapter.removeAll();
+                pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
                 previousCoordinates = null;
 
@@ -697,7 +710,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     tourService.notifyListenersTourResumed();
                 }
 
-                tourService.updateNewsfeed();
+                tourService.updateNewsfeed(pagination);
                 if (userHistory) {
                     tourService.updateUserHistory(userId, 1, 1);
                 }
@@ -758,44 +771,46 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onRetrieveNewsfeed(List<Newsfeed> newsfeedList) {
         int previousToursCount = newsfeedAdapter.getItemCount();
-        newsfeedList = removeRedundantNewsfeed(newsfeedList, false);
+        if (newsfeedList != null) {
+            newsfeedList = removeRedundantNewsfeed(newsfeedList, false);
 //        Collections.sort(tours, new Tour.TourComparatorOldToNew());
-        if (map != null) {
-            //add or update the received newsfeed
-            for (Newsfeed newsfeed : newsfeedList) {
-                Object newsfeedData = newsfeed.getData();
-                if (newsfeedData != null && (newsfeedData instanceof TimestampedObject)) {
-                    addNewsfeedCard((TimestampedObject) newsfeedData);
-                    //drawNearbyNewsfeed(newsfeed, false);
+            if (map != null) {
+                //add or update the received newsfeed
+                for (Newsfeed newsfeed : newsfeedList) {
+                    Object newsfeedData = newsfeed.getData();
+                    if (newsfeedData != null && (newsfeedData instanceof TimestampedObject)) {
+                        addNewsfeedCard((TimestampedObject) newsfeedData);
+                        //drawNearbyNewsfeed(newsfeed, false);
+                    }
                 }
-            }
-            if (newsfeedList.size() > 0) {
-                //redraw the map
-                map.clear();
-                markersMap.clear();
-                //redraw the whole newsfeed
-                for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
-                    if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
-                        Tour tour = (Tour)timestampedObject;
-                        if (currentTourId == tour.getId()) {
-                            continue;
+                pagination.loadedItems(newsfeedList.size());
+                if (newsfeedList.size() > 0) {
+                    //redraw the map
+                    map.clear();
+                    markersMap.clear();
+                    //redraw the whole newsfeed
+                    for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
+                        if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
+                            Tour tour = (Tour) timestampedObject;
+                            if (currentTourId == tour.getId()) {
+                                continue;
+                            }
+                            drawNearbyTour(tour, false);
+                        } else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                            drawNearbyEntourage((Entourage) timestampedObject, false);
                         }
-                        drawNearbyTour(tour, false);
                     }
-                    else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                        drawNearbyEntourage((Entourage)timestampedObject, false);
+                    //redraw the current ongoing tour, if any
+                    if (tourService != null && currentTourId != -1) {
+                        PolylineOptions line = new PolylineOptions();
+                        for (Polyline polyline : currentTourLines) {
+                            line.addAll(polyline.getPoints());
+                        }
+                        line.zIndex(2f);
+                        line.width(15);
+                        line.color(color);
+                        map.addPolyline(line);
                     }
-                }
-                //redraw the current ongoing tour, if any
-                if (tourService != null && currentTourId != -1) {
-                    PolylineOptions line = new PolylineOptions();
-                    for (Polyline polyline : currentTourLines) {
-                        line.addAll(polyline.getPoints());
-                    }
-                    line.zIndex(2f);
-                    line.width(15);
-                    line.color(color);
-                    map.addPolyline(line);
                 }
             }
         }
@@ -805,9 +820,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         else if (previousToursCount == 0) {
             showToursList();
         }
+        /*
         if (newsfeedAdapter.getItemCount() > 0) {
             toursListView.scrollToPosition(0);
         }
+        */
+
+        pagination.isLoading = false;
+        pagination.isRefreshing = false;
     }
 
     // ----------------------------------
@@ -1053,7 +1073,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
                             previousCameraZoom = newZoom;
                             previousCameraLocation = newLocation;
-                            tourService.updateNewsfeed();
+                            newsfeedAdapter.removeAll();
+                            pagination = new EntouragePagination();
+                            tourService.updateNewsfeed(pagination);
                             if (userHistory) {
                                 tourService.updateUserHistory(userId, 1, 500);
                             }
@@ -1597,7 +1619,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onPushNotificationReceived(Message message) {
         //refresh the newsfeed
         if (tourService != null) {
-            tourService.updateNewsfeed();
+            tourService.updateNewsfeed(pagination);
         }
         //update the badge count on tour card
         PushNotificationContent content = message.getContent();
@@ -1633,7 +1655,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void run() {
                         if (tourService != null) {
-                            tourService.updateNewsfeed();
+                            pagination.isRefreshing = true;
+                            tourService.updateNewsfeed(pagination);
                         }
                     }
                 });
@@ -1671,7 +1694,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     addCurrentTourEncounters();
                 }
 
-                tourService.updateNewsfeed();
+                tourService.updateNewsfeed(pagination);
                 if (userHistory) {
                     tourService.updateUserHistory(userId, 1, 500);
                 }
@@ -1683,6 +1706,28 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         public void onServiceDisconnected(ComponentName name) {
             tourService.unregister(MapEntourageFragment.this);
             tourService = null;
+        }
+    }
+
+    private class OnScrollListener extends RecyclerView.OnScrollListener {
+        @Override
+        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+
+            scrollDeltaY += dy;
+            if (dy > 0 && scrollDeltaY > MAX_SCROLL_DELTA_Y) {
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int position = linearLayoutManager.findLastVisibleItemPosition();
+                if (position == recyclerView.getAdapter().getItemCount()-1) {
+                    if (tourService != null) {
+                        tourService.updateNewsfeed(pagination);
+                    }
+                }
+
+                scrollDeltaY = 0;
+            }
+        }
+        @Override
+        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
         }
     }
 }

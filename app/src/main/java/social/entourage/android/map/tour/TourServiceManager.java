@@ -548,9 +548,12 @@ public class TourServiceManager {
 
                 @Override
                 public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
-
+                    tourService.notifyListenersNewsfeed(null);
                 }
             });
+        }
+        else {
+            tourService.notifyListenersNewsfeed(null);
         }
     }
 

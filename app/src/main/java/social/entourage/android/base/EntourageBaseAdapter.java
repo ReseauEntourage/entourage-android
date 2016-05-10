@@ -1,4 +1,4 @@
-package social.entourage.android;
+package social.entourage.android.base;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.map.tour.information.discussion.BaseCardViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
 
 /**

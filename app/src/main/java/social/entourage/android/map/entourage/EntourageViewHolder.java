@@ -6,7 +6,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +15,17 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.map.tour.information.discussion.BaseCardViewHolder;
+import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
 
 /**

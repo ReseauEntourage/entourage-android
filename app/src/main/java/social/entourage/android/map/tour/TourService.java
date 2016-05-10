@@ -40,6 +40,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.base.EntouragePagination;
 
 /**
  * Background service handling location updates
@@ -269,9 +270,10 @@ public class TourService extends Service {
         tourServiceManager.retrieveToursNearbyLarge();
     }
 
-    public void updateNewsfeed() {
-        //TODO Add location and proper pagination
-        tourServiceManager.retrieveNewsfeed(1, 10);
+    public void updateNewsfeed(EntouragePagination pagination) {
+        if (pagination.isLoading) return;
+        pagination.isLoading = true;
+        tourServiceManager.retrieveNewsfeed(pagination.page, pagination.itemsPerPage);
     }
 
     public void updateUserHistory(int userId, int page, int per) {
