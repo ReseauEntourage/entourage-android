@@ -13,6 +13,8 @@ public interface NewsfeedRequest {
     @GET("feeds")
     Call<Newsfeed.NewsfeedWrapper> retrieveFeed(
             @Query("page") int page,
-            @Query("per") int per);
-
+            @Query("per") int per,
+            @Query("longitude") double longitude,
+            @Query("latitude") double latitude
+    );
 }

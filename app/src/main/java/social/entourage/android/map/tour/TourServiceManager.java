@@ -533,21 +533,25 @@ public class TourServiceManager {
     }
 
     protected void retrieveNewsfeed(int page, int per) {
-        Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveFeed(page, per);
-        call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
-            @Override
-            public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
-                if (response.isSuccess()) {
-                    List<Newsfeed> newsfeedList = response.body().getNewsfeed();
-                    tourService.notifyListenersNewsfeed(newsfeedList);
+        CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
+        if (currentPosition != null) {
+            LatLng location = currentPosition.target;
+            Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveFeed(page, per, location.longitude, location.latitude);
+            call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
+                @Override
+                public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
+                    if (response.isSuccess()) {
+                        List<Newsfeed> newsfeedList = response.body().getNewsfeed();
+                        tourService.notifyListenersNewsfeed(newsfeedList);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
+                @Override
+                public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     protected void sendEncounter(final Encounter encounter) {
