@@ -7,7 +7,7 @@
     <color name="primary_light">#efeff4</color>
     <color name="accent">#f26521</color>
     <color name="warm_grey">#9B9B9B</color>
-    <color name="greyish_brown">#4A4A4A</color>
+    <color name="greyish_brown">#4a4a4a</color>
     <color name="greyish">#a5a59c</color>
     <color name="pale_grey">#efeff4</color>
     <color name="dodger_blue">#3A97FF</color>
@@ -62,7 +62,7 @@
     <color name="grey_contour">#DADADA</color>
     <color name="blue_dark">#007EA9</color>
     <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#ffffff</color>
     <color name="badge_background">#EE3E3A</color>
 
 </resources>

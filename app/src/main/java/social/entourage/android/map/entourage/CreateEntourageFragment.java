@@ -8,21 +8,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,13 +34,12 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 
 /**
  *
  */
-public class CreateEntourageFragment extends DialogFragment {
+public class CreateEntourageFragment extends DialogFragment implements EntourageLocationFragment.OnFragmentInteractionListener {
 
     // ----------------------------------
     // Constants
@@ -113,7 +109,7 @@ public class CreateEntourageFragment extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_create_entourage, container, false);
+        View view = inflater.inflate(R.layout.fragment_entourage_create, container, false);
         ButterKnife.bind(this, view);
 
         return view;
@@ -196,7 +192,8 @@ public class CreateEntourageFragment extends DialogFragment {
 
     @OnClick(R.id.create_entourage_position_layout)
     protected void onPositionClicked() {
-
+        EntourageLocationFragment fragment = EntourageLocationFragment.newInstance(location, positionTextView.getText().toString(), this);
+        fragment.show(getFragmentManager(), EntourageLocationFragment.TAG);
     }
 
     // ----------------------------------
@@ -344,15 +341,24 @@ public class CreateEntourageFragment extends DialogFragment {
         }
     }
 
+    // ----------------------------------
+    // EntourageLocationFragment.OnFragmentInteractionListener
+    // ----------------------------------
+
+    public void onEntourageLocationChoosen(LatLng location, String address) {
+        if (location != null) {
+            this.location = location;
+            if (address != null) {
+                positionTextView.setText(address);
+            }
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
 

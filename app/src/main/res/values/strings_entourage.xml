@@ -21,5 +21,10 @@
     <string name="entourage_type_demand">Demande</string>
     <string name="entourage_type_contribution">Contribution</string>
     <string name="entourage_type_format">%1$s par\u0020</string>
+    
+    <!-- Entourage Location -->
+    <string name="entourage_location_title">MA POSITION</string>
+    <string name="entourage_location_search_hint">Chercher ou déplacer la carte</string>
+    <string name="entourage_location_address_not_found">!!No address found</string>
 
 </resources>

@@ -519,6 +519,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         Entourage entourage = event.getEntourage();
         if (entourage == null) return;
         drawNearbyEntourage(entourage, false);
+        addNewsfeedCard(entourage);
         toursListView.scrollToPosition(0);
     }
 
