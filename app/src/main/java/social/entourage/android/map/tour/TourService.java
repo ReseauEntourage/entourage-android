@@ -96,10 +96,12 @@ public class TourService extends Service {
             }
             else if (KEY_GPS_DISABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(false);
+                if(isRunning()) {
                 Intent newIntent = new Intent(context, DrawerActivity.class);
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
+            }
             }
             else if (KEY_GPS_ENABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(true);

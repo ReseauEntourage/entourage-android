@@ -753,7 +753,8 @@ public class TourServiceManager {
         }
 
         private void updateLocation(Location location) {
-            EntourageLocation.getInstance().saveCurrentLocation(location);
+            //TODO check this
+            //EntourageLocation.getInstance().saveCurrentLocation(location);
             Location bestLocation = EntourageLocation.getInstance().getLocation();
             boolean shouldCenterMap = false;
             if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
