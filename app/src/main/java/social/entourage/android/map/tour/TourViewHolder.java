@@ -33,7 +33,7 @@ import social.entourage.android.tools.BusProvider;
 /**
  * Created by mihaiionescu on 11/03/16.
  */
-public class TourViewHolder extends BaseCardViewHolder implements View.OnClickListener {
+public class TourViewHolder extends BaseCardViewHolder {
 
     private TextView tourTitle;
     private ImageView photoView;
@@ -49,6 +49,8 @@ public class TourViewHolder extends BaseCardViewHolder implements View.OnClickLi
     private Context context;
 
     private GeocoderTask geocoderTask;
+
+    private OnClickListener onClickListener;
 
     public TourViewHolder(final View itemView) {
         super(itemView);
@@ -66,10 +68,12 @@ public class TourViewHolder extends BaseCardViewHolder implements View.OnClickLi
         numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
         actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
 
-        itemView.setOnClickListener(this);
-        tourAuthor.setOnClickListener(this);
-        photoView.setOnClickListener(this);
-        actButton.setOnClickListener(this);
+        onClickListener = new OnClickListener();
+
+        itemView.setOnClickListener(onClickListener);
+        tourAuthor.setOnClickListener(onClickListener);
+        photoView.setOnClickListener(onClickListener);
+        actButton.setOnClickListener(onClickListener);
 
         context = itemView.getContext();
     }
@@ -194,35 +198,11 @@ public class TourViewHolder extends BaseCardViewHolder implements View.OnClickLi
         geocoderTask = null;
     }
 
-    @Override
-    public void onClick(final View v) {
-        if (tour == null) return;
-        if (v == photoView || v == tourAuthor) {
-            BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
-        }
-        else if (v == actButton) {
-            String joinStatus = tour.getJoinStatus();
-            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
-            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                if (tour.getAuthor() != null) {
-                    if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
-                        BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
-                        return;
-                    }
-                }
-                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
-            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-                //What to do on rejected status ?
-            } else {
-                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, tour));
-            }
 
-        }
-        else if (v == itemView) {
-            BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
-        }
-    }
+
+    //--------------------------
+    // INNER CLASSES
+    //--------------------------
 
     private class GeocoderTask extends AsyncTask<Tour, Void, Tour> {
 
@@ -249,5 +229,39 @@ public class TourViewHolder extends BaseCardViewHolder implements View.OnClickLi
         protected void onPostExecute(final Tour tour) {
             updateStartLocation(tour);
         }
+    }
+
+    private class OnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(final View v) {
+            if (tour == null) return;
+            if (v == photoView || v == tourAuthor) {
+                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
+            }
+            else if (v == actButton) {
+                String joinStatus = tour.getJoinStatus();
+                if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                    BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
+                } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                    if (tour.getAuthor() != null) {
+                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+                            BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
+                            return;
+                        }
+                    }
+                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
+                } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+                    //What to do on rejected status ?
+                } else {
+                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, tour));
+                }
+
+            }
+            else if (v == itemView) {
+                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
+            }
+        }
+
     }
 }

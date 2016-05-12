@@ -3,6 +3,7 @@ package social.entourage.android.api.tape;
 import com.google.android.gms.maps.model.LatLng;
 
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
@@ -99,19 +100,19 @@ public class Events {
         public static String ACT_QUIT = "quit";
 
         private String act;
-        private Tour tour;
+        private TimestampedObject timestampedObject;
 
-        public OnUserActEvent(String act, Tour tour) {
+        public OnUserActEvent(String act, TimestampedObject timestampedObject) {
             this.act = act;
-            this.tour = tour;
+            this.timestampedObject = timestampedObject;
         }
 
         public String getAct() {
             return act;
         }
 
-        public Tour getTour() {
-            return tour;
+        public TimestampedObject getTimestampedObject() {
+            return timestampedObject;
         }
     }
 

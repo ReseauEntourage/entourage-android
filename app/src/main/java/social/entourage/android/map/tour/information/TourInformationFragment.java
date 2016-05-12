@@ -78,6 +78,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
@@ -1065,8 +1066,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     @Override
-    public void onUserStatusChanged(final TourUser user, final Tour tour) {
+    public void onUserStatusChanged(final TourUser user, final TimestampedObject timestampedObject) {
         //ignore requests that are not related to our tour
+        if (timestampedObject.getType() != TimestampedObject.TOUR_CARD) return;
+        Tour tour = (Tour)timestampedObject;
         if (tour.getId() != this.tour.getId()) return;
 
         hideProgressBar();
@@ -1101,9 +1104,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     @Override
-    public void onRetrieveNewsfeed(final List<Newsfeed> newsfeedList) {
-
-    }
+    public void onRetrieveNewsfeed(final List<Newsfeed> newsfeedList) {}
 
     // ----------------------------------
     // RecyclerView.OnScrollListener

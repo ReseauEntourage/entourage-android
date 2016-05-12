@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Entourage;
@@ -31,7 +32,7 @@ import social.entourage.android.tools.BusProvider;
 /**
  * Created by mihaiionescu on 05/05/16.
  */
-public class EntourageViewHolder extends BaseCardViewHolder implements View.OnClickListener {
+public class EntourageViewHolder extends BaseCardViewHolder {
 
     private TextView entourageTitle;
     private ImageView photoView;
@@ -47,6 +48,8 @@ public class EntourageViewHolder extends BaseCardViewHolder implements View.OnCl
     private Context context;
 
     private GeocoderTask geocoderTask;
+
+    private OnClickListener onClickListener;
 
     public EntourageViewHolder(final View itemView) {
         super(itemView);
@@ -64,10 +67,12 @@ public class EntourageViewHolder extends BaseCardViewHolder implements View.OnCl
         numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
         actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
 
-        itemView.setOnClickListener(this);
-        entourageAuthor.setOnClickListener(this);
-        photoView.setOnClickListener(this);
-        actButton.setOnClickListener(this);
+        onClickListener = new OnClickListener();
+
+        itemView.setOnClickListener(onClickListener);
+        entourageAuthor.setOnClickListener(onClickListener);
+        photoView.setOnClickListener(onClickListener);
+        actButton.setOnClickListener(onClickListener);
 
         context = itemView.getContext();
     }
@@ -191,35 +196,9 @@ public class EntourageViewHolder extends BaseCardViewHolder implements View.OnCl
         geocoderTask = null;
     }
 
-    @Override
-    public void onClick(final View v) {
-        if (entourage == null) return;
-        if (v == photoView || v == entourageAuthor) {
-            BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(entourage.getAuthor().getUserID()));
-        }
-//        else if (v == actButton) {
-//            String joinStatus = entourage.getJoinStatus();
-//            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-//                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
-//            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-//                if (entourage.getAuthor() != null) {
-//                    if (entourage.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
-//                        BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
-//                        return;
-//                    }
-//                }
-//                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, entourage));
-//            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-//                //What to do on rejected status ?
-//            } else {
-//                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, entourage));
-//            }
-//
-//        }
-//        else if (v == itemView) {
-//            BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(entourage));
-//        }
-    }
+    //------------------
+    // INNER CLASSES
+    //------------------
 
     private class GeocoderTask extends AsyncTask<Entourage, Void, Entourage> {
 
@@ -246,6 +225,40 @@ public class EntourageViewHolder extends BaseCardViewHolder implements View.OnCl
         protected void onPostExecute(final Entourage entourage) {
             updateStartLocation(entourage);
         }
+    }
+
+    private class OnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(final View v) {
+            if (entourage == null) return;
+            if (v == photoView || v == entourageAuthor) {
+                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(entourage.getAuthor().getUserID()));
+            }
+            else if (v == actButton) {
+                String joinStatus = entourage.getJoinStatus();
+                if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+        //                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
+                } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+        //                if (entourage.getAuthor() != null) {
+        //                    if (entourage.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+        //                        BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
+        //                        return;
+        //                    }
+        //                }
+        //                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, entourage));
+                } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+                    //What to do on rejected status ?
+                } else {
+                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, entourage));
+                }
+
+            }
+            else if (v == itemView) {
+//                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(entourage));
+            }
+        }
+
     }
 
 }

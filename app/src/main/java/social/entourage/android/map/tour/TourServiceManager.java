@@ -41,11 +41,13 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
+import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
@@ -79,6 +81,7 @@ public class TourServiceManager {
     private final TourRequest tourRequest;
     private final EncounterRequest encounterRequest;
     private final NewsfeedRequest newsfeedRequest;
+    private final EntourageRequest entourageRequest;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -98,12 +101,13 @@ public class TourServiceManager {
     private CustomLocationListener locationListener;
     private boolean isBetterLocationUpdated;
 
-    public TourServiceManager(final TourService tourService, final TourRequest tourRequest, final EncounterRequest encounterRequest, final NewsfeedRequest newsfeedRequest) {
+    public TourServiceManager(final TourService tourService, final TourRequest tourRequest, final EncounterRequest encounterRequest, final NewsfeedRequest newsfeedRequest, final EntourageRequest entourageRequest) {
         Log.i("TourServiceManager", "constructor");
         this.tourService = tourService;
         this.tourRequest = tourRequest;
         this.encounterRequest = encounterRequest;
         this.newsfeedRequest = newsfeedRequest;
+        this.entourageRequest = entourageRequest;
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
         this.pointsToDraw = new ArrayList<>();
@@ -628,6 +632,32 @@ public class TourServiceManager {
 
                 @Override
                 public void onFailure(final Call call, final Throwable t) {
+                    tourService.notifyListenersUserStatusChanged(null, tour);
+                }
+            });
+        }
+        else {
+            tourService.notifyListenersUserStatusChanged(null, tour);
+        }
+    }
+
+    protected void requestToJoinEntourage(final Entourage entourage) {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            Call<TourUser.TourUserWrapper> call = entourageRequest.requestToJoinEntourage(entourage.getId());
+            call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+                @Override
+                public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+                    if (response.isSuccess()) {
+                        tourService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
+                    }
+                    else {
+                        tourService.notifyListenersUserStatusChanged(null, entourage);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
                     tourService.notifyListenersUserStatusChanged(null, tour);
                 }
             });

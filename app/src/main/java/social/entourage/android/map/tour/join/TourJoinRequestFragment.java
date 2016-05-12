@@ -18,6 +18,8 @@ import butterknife.OnClick;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 
 public class TourJoinRequestFragment extends DialogFragment {
@@ -39,7 +41,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     // PRIVATE MEMBERS
     // ----------------------------------
 
-    private Tour tour;
+    private TimestampedObject timestampedObject;
 
     @Inject
     TourJoinRequestPresenter presenter;
@@ -61,6 +63,14 @@ public class TourJoinRequestFragment extends DialogFragment {
         return fragment;
     }
 
+    public static TourJoinRequestFragment newInstance(Entourage entourage) {
+        TourJoinRequestFragment fragment = new TourJoinRequestFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(Tour.KEY_TOUR, entourage);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +80,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        tour = (Tour) getArguments().getSerializable(Tour.KEY_TOUR);
+        timestampedObject = (TimestampedObject) getArguments().getSerializable(Tour.KEY_TOUR);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tour_join_request, container, false);
         ButterKnife.bind(this, view);
@@ -97,7 +107,12 @@ public class TourJoinRequestFragment extends DialogFragment {
     @OnClick(R.id.tour_join_request_message_send)
     protected void onMessageSend() {
         if (presenter != null && messageView != null) {
-            presenter.sendMessage(messageView.getText().toString(), tour);
+            if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
+                presenter.sendMessage(messageView.getText().toString(), (Tour)timestampedObject);
+            }
+            else {
+                dismiss();
+            }
         }
     }
 

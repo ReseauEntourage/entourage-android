@@ -33,10 +33,13 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.EncounterRequest;
+import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
@@ -70,6 +73,8 @@ public class TourService extends Service {
     EncounterRequest encounterRequest;
     @Inject
     NewsfeedRequest newsfeedRequest;
+    @Inject
+    EntourageRequest entourageRequest;
 
     private TourServiceManager tourServiceManager;
 
@@ -129,7 +134,7 @@ public class TourService extends Service {
         super.onCreate();
         EntourageApplication.get(this).getEntourageComponent().inject(this);
 
-        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest, newsfeedRequest);
+        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest, newsfeedRequest, entourageRequest);
 
         listeners =  new ArrayList<>();
         isPaused = false;
@@ -341,6 +346,10 @@ public class TourService extends Service {
         tourServiceManager.removeUserFromTour(tour, userId);
     }
 
+    public void requestToJoinEntourage(Entourage entourage) {
+        tourServiceManager.requestToJoinEntourage(entourage);
+    }
+
     public void register(TourServiceListener listener) {
         listeners.add(listener);
         if (tourServiceManager.isRunning()) {
@@ -445,6 +454,12 @@ public class TourService extends Service {
         }
     }
 
+    public void notifyListenersUserStatusChanged(TourUser user, Entourage entourage) {
+        for (TourServiceListener listener : listeners) {
+            listener.onUserStatusChanged(user, entourage);
+        }
+    }
+
     public void notifyListenersNewsfeed(List<Newsfeed> newsfeedList) {
         for (TourServiceListener listener : listeners) {
             listener.onRetrieveNewsfeed(newsfeedList);
@@ -466,7 +481,7 @@ public class TourService extends Service {
         void onToursFound(Map<Long, Tour> tours);
         void onTourClosed(boolean closed, Tour tour);
         void onGpsStatusChanged(boolean active);
-        void onUserStatusChanged(TourUser user, Tour tour);
+        void onUserStatusChanged(TourUser user, TimestampedObject timestampedObject);
         void onRetrieveNewsfeed(List<Newsfeed> newsfeedList);
     }
 }

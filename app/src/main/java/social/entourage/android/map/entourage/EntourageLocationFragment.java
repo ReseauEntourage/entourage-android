@@ -232,7 +232,6 @@ public class EntourageLocationFragment extends DialogFragment {
                 googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                     @Override
                     public void onCameraChange(final CameraPosition cameraPosition) {
-                        Log.d("Entourage location", "camera changed");
                         float[] results = new float[1];
                         Location.distanceBetween(location.latitude, location.longitude, cameraPosition.target.latitude, cameraPosition.target.longitude, results);
                         if (results[0] >= LOCATION_MOVE_DELTA) {

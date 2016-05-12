@@ -573,7 +573,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void userActRequested(final OnUserActEvent event) {
         if (OnUserActEvent.ACT_JOIN.equals(event.getAct())) {
             if (mapEntourageFragment != null) {
-                mapEntourageFragment.act(event.getTour());
+                mapEntourageFragment.act(event.getTimestampedObject());
             }
         }
         else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
@@ -592,7 +592,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                                     Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                                 }
                                 else {
-                                    mapEntourageFragment.removeUserFromTour(event.getTour(), me.getId());
+                                    mapEntourageFragment.removeUserFromNewsfeedCard(event.getTimestampedObject(), me.getId());
                                 }
                             }
                         }

@@ -166,7 +166,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private float originalMapLayoutWeight;
 
-    private boolean isRequestingToJoin = false;
+    private int isRequestingToJoin = 0;
 
     @Bind(R.id.fragment_map_pin)
     View mapPin;
@@ -429,10 +429,18 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void act(Tour tour) {
+    public void act(TimestampedObject timestampedObject) {
         if (tourService != null) {
-            isRequestingToJoin = true;
-            tourService.requestToJoinTour(tour);
+            isRequestingToJoin++;
+            if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
+                tourService.requestToJoinTour((Tour)timestampedObject);
+            }
+            else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                tourService.requestToJoinEntourage((Entourage)timestampedObject);
+            }
+            else {
+                isRequestingToJoin--;
+            }
         }
         else {
             Toast.makeText(getContext(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
@@ -749,24 +757,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onUserStatusChanged(final TourUser user, final Tour tour) {
+    public void onUserStatusChanged(TourUser user, TimestampedObject timestampedObject) {
         if (user == null) {
             //error changing the status
-            if (isRequestingToJoin) {
+            if (isRequestingToJoin > 0) {
                 Toast.makeText(getContext(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
             }
         }
         else {
-            tour.setJoinStatus(user.getStatus());
-            updateTourCellJoinStatus(tour);
-
-            if (user.getStatus().equals(Tour.JOIN_STATUS_PENDING)) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(tour);
-                tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
+            if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
+                Tour tour = (Tour)timestampedObject;
+                tour.setJoinStatus(user.getStatus());
+                if (user.getStatus().equals(Tour.JOIN_STATUS_PENDING)) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(tour);
+                    tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
+                }
             }
+            else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                ((Entourage)timestampedObject).setJoinStatus(user.getStatus());
+            }
+            updateNewsfeedJoinStatus(timestampedObject);
         }
-        isRequestingToJoin = false;
+        isRequestingToJoin--;
     }
 
     @Override
@@ -1226,9 +1239,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void removeUserFromTour(Tour tour, int userId) {
+    public void removeUserFromNewsfeedCard(TimestampedObject card, int userId) {
         if (tourService != null) {
-            tourService.removeUserFromTour(tour, userId);
+            if (card.getType() == TimestampedObject.TOUR_CARD) {
+                tourService.removeUserFromTour((Tour)card, userId);
+            }
+            else if (card.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                //TODO Remove user from entourage
+            }
         }
     }
 
@@ -1513,8 +1531,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private void updateTourCellJoinStatus(Tour tour) {
-        newsfeedAdapter.updateCard(tour);
+    private void updateNewsfeedJoinStatus(TimestampedObject timestampedObject) {
+        newsfeedAdapter.updateCard(timestampedObject);
     }
 
     private void addTourHead(Tour tour) {
