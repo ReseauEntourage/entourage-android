@@ -1712,8 +1712,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void run() {
                         if (tourService != null) {
-                            pagination.isRefreshing = true;
-                            tourService.updateNewsfeed(pagination);
+                            EntouragePagination firstPageRefresh = new EntouragePagination();
+                            firstPageRefresh.isRefreshing = true;
+                            tourService.updateNewsfeed(firstPageRefresh);
                         }
                     }
                 });
