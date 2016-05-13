@@ -152,6 +152,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     @OnClick(R.id.create_encounter_close)
     public void onCloseButton() {
+        BusProvider.getInstance().post(new Events.OnEncounterCreated(null));
         finish();
     }
 
