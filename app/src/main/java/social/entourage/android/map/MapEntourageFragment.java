@@ -839,6 +839,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         line.width(15);
                         line.color(color);
                         map.addPolyline(line);
+
+                        Tour currentTour = tourService.getCurrentTour();
+                        if (currentTour != null) {
+                            if (currentTour.getEncounters() != null) {
+                                for (Encounter encounter : currentTour.getEncounters()) {
+                                    presenter.loadEncounterOnMap(encounter);
+                                }
+                            }
+                        }
                     }
                 }
             }
