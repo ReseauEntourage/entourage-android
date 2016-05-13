@@ -24,20 +24,32 @@ public class PushNotificationContent implements Serializable {
         return "";
     }
 
-    public long getTourId() {
-        if (extra != null && extra.joinableType != null) {
-            if (Extra.JOINABLE_TYPE_TOUR.equalsIgnoreCase(extra.joinableType)) {
-                return extra.joinableId;
-            }
-        }
-        return 0;
-    }
-
     public int getUserId() {
         if (extra != null) {
             return extra.userId;
         }
         return 0;
+    }
+
+    public long getJoinableId() {
+        if (extra != null) {
+            return extra.joinableId;
+        }
+        return 0;
+    }
+
+    public boolean isTourRelated() {
+        if (extra != null) {
+            return Extra.JOINABLE_TYPE_TOUR.equals(extra.joinableType);
+        }
+        return false;
+    }
+
+    public boolean isEntourageRelated() {
+        if (extra != null) {
+            return Extra.JOINABLE_TYPE_ENTOURAGE.equals(extra.joinableType);
+        }
+        return false;
     }
 
     private class Extra implements Serializable {

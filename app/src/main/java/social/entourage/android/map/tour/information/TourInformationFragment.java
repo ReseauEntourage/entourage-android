@@ -453,7 +453,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         //we received a chat notification
         //check if it is referring to this tour
         PushNotificationContent content = message.getContent();
-        if (content.getTourId() != tour.getId()) {
+        if (!content.isTourRelated() && content.getJoinableId() != tour.getId()) {
             return false;
         }
         //retrieve the last messages from server

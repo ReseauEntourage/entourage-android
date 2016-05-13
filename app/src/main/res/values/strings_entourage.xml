@@ -27,4 +27,9 @@
     <string name="entourage_location_search_hint">Chercher ou déplacer la carte</string>
     <string name="entourage_location_address_not_found">!!No address found</string>
 
+    <!-- Entourage Notifications -->
+    <string name="entourage_join_request_received">!!%1$s wants to join your entourage</string>
+    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre entourage]]></string>
+
+
 </resources>

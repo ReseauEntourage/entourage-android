@@ -54,7 +54,17 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.layout_tour_join_request_received_dialog, null);
         HtmlTextView htmlTextView =  (HtmlTextView)view.findViewById(R.id.tour_join_request_received_text);
-        htmlTextView.setHtmlString(getString(R.string.tour_join_request_received_message_html, message.getAuthor()));
+        String alertMessage = getString(R.string.message_unknown);
+        PushNotificationContent content = message.getContent();
+        if (content != null) {
+            if (content.isEntourageRelated()) {
+                alertMessage = getString(R.string.entourage_join_request_received_message_html, message.getAuthor());
+            }
+            else {
+                alertMessage = getString(R.string.tour_join_request_received_message_html, message.getAuthor());
+            }
+        }
+        htmlTextView.setHtmlString(alertMessage);
         htmlTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -69,7 +79,15 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         PushNotificationContent content = message.getContent();
                         if (content != null) {
                             requestsCount++;
-                            presenter.acceptJoinRequest(message.getContent().getTourId(), message.getContent().getUserId());
+                            if (content.isTourRelated()) {
+                                presenter.acceptTourJoinRequest(message.getContent().getJoinableId(), message.getContent().getUserId());
+                            }
+                            else if (content.isEntourageRelated()) {
+                                presenter.acceptEntourageJoinRequest(message.getContent().getJoinableId(), message.getContent().getUserId());
+                            }
+                            else {
+                                finish();
+                            }
                         }
                     }
                 })
@@ -79,7 +97,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         PushNotificationContent content = message.getContent();
                         if (content != null) {
                             requestsCount++;
-                            presenter.rejectJoinRequest(message.getContent().getTourId(), message.getContent().getUserId());
+                            presenter.rejectJoinRequest(message.getContent().getJoinableId(), message.getContent().getUserId());
                         }
                     }
                 });

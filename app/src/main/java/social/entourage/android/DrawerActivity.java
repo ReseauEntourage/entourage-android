@@ -525,8 +525,8 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
             Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             PushNotificationContent content = message.getContent();
-            if (content != null) {
-                mapEntourageFragment.displayChosenTour(content.getTourId());
+            if (content != null && content.isTourRelated()) {
+                mapEntourageFragment.displayChosenTour(content.getJoinableId());
             }
         }
         intentAction = null;
@@ -630,7 +630,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
-        if (message != null && message.getContent() != null && message.getContent().getTourId() != 0) {
+        if (message != null && message.getContent() != null && message.getContent().getJoinableId() != 0) {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override
@@ -646,7 +646,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                             addPushNotification(message);
                             if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
                                 if (mapEntourageFragment != null) {
-                                    mapEntourageFragment.userStatusChanged(content.getTourId(), content.getUserId(), Tour.JOIN_STATUS_ACCEPTED);
+                                    mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
                                 }
                             }
                         }
@@ -680,7 +680,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         for (int i = 0; i < pushNotifications.size(); i++) {
             Message message = pushNotifications.get(i);
             PushNotificationContent content = message.getContent();
-            if (content != null && content.getTourId() == tourId) {
+            if (content != null && content.isTourRelated() && content.getJoinableId() == tourId) {
                 pushNotifications.remove(i);
                 i--;
             }
@@ -692,7 +692,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         for (int i = 0; i < pushNotifications.size(); i++) {
             Message message = pushNotifications.get(i);
             PushNotificationContent content = message.getContent();
-            if (content != null && content.getTourId() == tourId) {
+            if (content != null && content.isTourRelated() && content.getJoinableId() == tourId) {
                 count++;
             }
         }

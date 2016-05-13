@@ -448,15 +448,9 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersUserStatusChanged(TourUser user, Tour tour) {
+    public void notifyListenersUserStatusChanged(TourUser user, TimestampedObject timestampedObject) {
         for (TourServiceListener listener : listeners) {
-            listener.onUserStatusChanged(user, tour);
-        }
-    }
-
-    public void notifyListenersUserStatusChanged(TourUser user, Entourage entourage) {
-        for (TourServiceListener listener : listeners) {
-            listener.onUserStatusChanged(user, entourage);
+            listener.onUserStatusChanged(user, timestampedObject);
         }
     }
 

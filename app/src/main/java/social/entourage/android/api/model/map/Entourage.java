@@ -166,6 +166,10 @@ public class Entourage extends TimestampedObject implements Serializable {
         this.badgeCount = badgeCount;
     }
 
+    public void increaseBadgeCount() {
+        badgeCount++;
+    }
+
     public int getNumberOfPeople() {
         return numberOfPeople;
     }

@@ -1227,14 +1227,20 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void userStatusChanged(long tourId, int userId, String status) {
+    public void userStatusChanged(PushNotificationContent content, String status) {
         if (tourService != null) {
-            Tour tour = (Tour)newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, tourId);
-            if (tour != null) {
+            TimestampedObject timestampedObject = null;
+            if (content.isTourRelated()) {
+                timestampedObject = newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, content.getJoinableId());
+            }
+            else if (content.isEntourageRelated()) {
+                timestampedObject = newsfeedAdapter.findCard(TimestampedObject.ENTOURAGE_CARD, content.getJoinableId());
+            }
+            if (timestampedObject != null) {
                 TourUser user = new TourUser();
                 user.setUserId(userId);
                 user.setStatus(status);
-                tourService.notifyListenersUserStatusChanged(user, tour);
+                tourService.notifyListenersUserStatusChanged(user, timestampedObject);
             }
         }
     }
@@ -1644,11 +1650,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         PushNotificationContent content = message.getContent();
         if (content == null) return;
         if (newsfeedAdapter == null) return;
-        long tourId = content.getTourId();
-        Tour tour = (Tour)newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, tourId);
-        if (tour == null) return;
-        tour.increaseBadgeCount();
-        newsfeedAdapter.updateCard(tour);
+        long joinableId = content.getJoinableId();
+        if (content.isTourRelated()) {
+            Tour tour = (Tour) newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, joinableId);
+            if (tour == null) return;
+            tour.increaseBadgeCount();
+            newsfeedAdapter.updateCard(tour);
+        }
+        else if (content.isEntourageRelated()) {
+            Entourage entourage = (Entourage) newsfeedAdapter.findCard(TimestampedObject.ENTOURAGE_CARD, joinableId);
+            if (entourage == null) return;
+            entourage.increaseBadgeCount();
+            newsfeedAdapter.updateCard(entourage);
+        }
     }
 
     public void onPushNotificationConsumedForTour(long tourId) {

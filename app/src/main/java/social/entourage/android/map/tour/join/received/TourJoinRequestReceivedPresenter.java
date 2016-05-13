@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
@@ -30,6 +31,8 @@ public class TourJoinRequestReceivedPresenter {
 
     @Inject
     protected TourRequest tourRequest;
+    @Inject
+    protected EntourageRequest entourageRequest;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -44,7 +47,7 @@ public class TourJoinRequestReceivedPresenter {
     // API CALLS
     // ----------------------------------
 
-    protected void acceptJoinRequest(long tourId, int userId) {
+    protected void acceptTourJoinRequest(long tourId, int userId) {
         HashMap<String, String> status = new HashMap<>();
         status.put("status", Tour.JOIN_STATUS_ACCEPTED);
         HashMap<String, Object> user = new HashMap<>();
@@ -88,6 +91,34 @@ public class TourJoinRequestReceivedPresenter {
 
             @Override
             public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+                if (activity != null) {
+                    activity.onUserTourStatusChanged(false);
+                }
+            }
+        });
+    }
+
+    protected void acceptEntourageJoinRequest(long entourageId, int userId) {
+        HashMap<String, String> status = new HashMap<>();
+        status.put("status", Tour.JOIN_STATUS_ACCEPTED);
+        HashMap<String, Object> user = new HashMap<>();
+        user.put("user", status);
+        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourageId, userId, user);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+                if (activity != null) {
+                    if (response.isSuccess()) {
+                        activity.onUserTourStatusChanged(true);
+                    }
+                    else {
+                        activity.onUserTourStatusChanged(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(false);
                 }

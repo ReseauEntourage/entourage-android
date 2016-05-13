@@ -321,7 +321,8 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     public void onPushNotificationReceived(Message message) {
         PushNotificationContent content = message.getContent();
         if (content == null) return;
-        long tourId = content.getTourId();
+        if (content.isEntourageRelated()) return;
+        long tourId = content.getJoinableId();
         Tour tour;
         tour = ongoingToursAdapter.findTour(tourId);
         if (tour != null) {
