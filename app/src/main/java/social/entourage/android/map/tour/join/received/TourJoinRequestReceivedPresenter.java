@@ -75,7 +75,7 @@ public class TourJoinRequestReceivedPresenter {
         });
     }
 
-    protected void rejectJoinRequest(long tourId, int userId) {
+    protected void rejectJoinTourRequest(long tourId, int userId) {
         Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourId, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
@@ -119,6 +119,29 @@ public class TourJoinRequestReceivedPresenter {
 
             @Override
             public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+                if (activity != null) {
+                    activity.onUserTourStatusChanged(false);
+                }
+            }
+        });
+    }
+
+    protected void rejectJoinEntourageRequest(long entourageId, int userId) {
+        Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageId, userId);
+        call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+            @Override
+            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+                if (activity != null) {
+                    if (response.isSuccess()) {
+                        activity.onUserTourStatusChanged(true);
+                    } else {
+                        activity.onUserTourStatusChanged(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(false);
                 }

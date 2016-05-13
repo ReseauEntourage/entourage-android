@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -32,6 +33,12 @@ public interface EntourageRequest {
             @Path("entourage_id") long entourageId,
             @Path("user_id") int userId,
             @Body HashMap<String, Object> user
+    );
+
+    @DELETE("entourages/{entourage_id}/users/{user_id}")
+    Call<TourUser.TourUserWrapper> removeUserFromEntourage(
+            @Path("entourage_id") long entourageId,
+            @Path("user_id") int userId
     );
 
 }

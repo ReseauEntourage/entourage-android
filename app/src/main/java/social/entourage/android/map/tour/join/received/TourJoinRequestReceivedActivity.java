@@ -80,10 +80,10 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         if (content != null) {
                             requestsCount++;
                             if (content.isTourRelated()) {
-                                presenter.acceptTourJoinRequest(message.getContent().getJoinableId(), message.getContent().getUserId());
+                                presenter.acceptTourJoinRequest(content.getJoinableId(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
-                                presenter.acceptEntourageJoinRequest(message.getContent().getJoinableId(), message.getContent().getUserId());
+                                presenter.acceptEntourageJoinRequest(content.getJoinableId(), content.getUserId());
                             }
                             else {
                                 finish();
@@ -97,7 +97,15 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         PushNotificationContent content = message.getContent();
                         if (content != null) {
                             requestsCount++;
-                            presenter.rejectJoinRequest(message.getContent().getJoinableId(), message.getContent().getUserId());
+                            if (content.isTourRelated()) {
+                                presenter.rejectJoinTourRequest(content.getJoinableId(), content.getUserId());
+                            }
+                            else if (content.isEntourageRelated()) {
+                                presenter.rejectJoinEntourageRequest(content.getJoinableId(), content.getUserId());
+                            }
+                            else {
+                                finish();
+                            }
                         }
                     }
                 });
