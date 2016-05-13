@@ -479,8 +479,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Subscribe
     public void onEncounterCreated(OnEncounterCreated event) {
         Encounter encounter = event.getEncounter();
-        addEncounter(encounter);
-        presenter.loadEncounterOnMap(encounter);
+        if (encounter != null) {
+            addEncounter(encounter);
+            presenter.loadEncounterOnMap(encounter);
+        }
+        mapOptionsMenu.setVisibility(View.VISIBLE);
+        if (tourService != null) {
+            tourStopButton.setVisibility(tourService.isRunning() ? View.VISIBLE : View.GONE);
+        }
     }
 
     // ----------------------------------
@@ -582,6 +588,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 line.width(15);
                 line.color(color);
                 map.addPolyline(line);
+
+                Tour currentTour = tourService.getCurrentTour();
+                if (currentTour != null) {
+                    if (currentTour.getEncounters() != null) {
+                        for (Encounter encounter : currentTour.getEncounters()) {
+                            presenter.loadEncounterOnMap(encounter);
+                        }
+                    }
+                }
             }
         }
 
