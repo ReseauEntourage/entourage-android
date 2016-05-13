@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -22,6 +23,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -104,6 +107,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private static final int REQUEST_NONE = 0;
     private static final int REQUEST_QUIT_TOUR = 1;
     private static final int REQUEST_JOIN_TOUR = 2;
+
+    private static final int MAP_SNAPSHOT_ZOOM = 15;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -187,6 +192,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private int scrollDeltaY = 0;
 
     private SupportMapFragment mapFragment;
+
+    private SupportMapFragment hiddenMapFragment;
+    private GoogleMap hiddenGoogleMap;
+    private boolean isTakingSnapshot = false;
+    private Bitmap mapSnapshot;
+    CameraPosition oldCameraPosition;
+    List<TourTimestamp> tourTimestampList = new ArrayList<>();
 
     OnTourInformationFragmentFinish mListener;
 
@@ -637,6 +649,83 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         });
     }
 
+    private void initializeHiddenMap() {
+        if (hiddenMapFragment == null) {
+            GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+            googleMapOptions.zOrderOnTop(true);
+            hiddenMapFragment = SupportMapFragment.newInstance(googleMapOptions);
+        }
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, hiddenMapFragment).commit();
+        hiddenMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final GoogleMap googleMap) {
+                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                googleMap.getUiSettings().setMapToolbarEnabled(false);
+                if (tourTimestampList.size() > 0) {
+                    TourTimestamp tourTimestamp = tourTimestampList.get(0);
+                    //move the camera
+                    CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
+                    googleMap.moveCamera(camera);
+                }
+                else {
+                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM));
+                }
+
+                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() {
+                        Log.d("tourmap", "onMapLoaded");
+                        getMapSnapshot();
+                    }
+                });
+
+                googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    @Override
+                    public void onCameraChange(final CameraPosition cameraPosition) {
+                        Log.d("tourmap", "onCameraChange");
+                    }
+                });
+
+                hiddenGoogleMap = googleMap;
+            }
+        });
+    }
+
+    private boolean getMapSnapshot() {
+        if (hiddenGoogleMap == null) return false;
+        if (tourTimestampList.size() == 0) return true;
+        final TourTimestamp tourTimestamp = tourTimestampList.get(0);
+        isTakingSnapshot = true;
+        //take the snapshot
+        hiddenGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+            @Override
+            public void onSnapshotReady(final Bitmap bitmap) {
+                Log.d("tourmap", "onSnapshotReady");
+                //save the snapshot
+                mapSnapshot = bitmap;
+                snapshotTaken(tourTimestamp);
+                //signal it has finished taking the snapshot
+                isTakingSnapshot = false;
+                //check if we need more snapshots
+                tourTimestampList.remove(tourTimestamp);
+                if (tourTimestampList.size() > 0) {
+                    TourTimestamp tourTimestamp = tourTimestampList.get(0);
+                    //move the camera
+                    CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
+                    hiddenGoogleMap.moveCamera(camera);
+                }
+            }
+        });
+        return true;
+    }
+
+    private void snapshotTaken(TourTimestamp tourTimestamp) {
+        if (mapSnapshot == null || tourTimestamp == null) return;
+        tourTimestamp.setSnapshot(mapSnapshot);
+        discussionAdapter.updateCard(tourTimestamp);
+    }
+
     private int getTrackColor(String type, Date date) {
         int color = Color.GRAY;
         if (TourType.MEDICAL.getName().equals(type)) {
@@ -693,6 +782,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (mapFragment != null) {
             getChildFragmentManager().beginTransaction().remove(mapFragment).commit();
             mapFragment = null;
+        }
+
+        if (hiddenMapFragment == null) {
+            initializeHiddenMap();
         }
 
         updateHeaderButtons();
@@ -781,14 +874,24 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         else {
             timestamp = duration == 0 ? tour.getStartTime() : now;
         }
+        List<TourPoint> tourPointsList = tour.getTourPoints();
+        TourPoint startPoint = null;
+        if (tourPointsList.size() > 0) {
+            startPoint = tourPointsList.get(0);
+        }
         TourTimestamp tourTimestamp = new TourTimestamp(
                 tour.getStartTime(),
                 timestamp,
                 Tour.TOUR_ON_GOING,
+                startPoint,
                 duration,
                 distance
         );
         tour.addCardInfo(tourTimestamp);
+
+        tourTimestampList.add(tourTimestamp);
+        //new SnapshotAsyncTask().execute(tourTimestamp);
+        //getMapSnapshot(tourTimestamp);
     }
 
     private void addDiscussionTourEndCard() {
@@ -798,8 +901,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             duration = tour.getEndTime().getTime() - tour.getStartTime().getTime();
         }
         List<TourPoint> tourPointsList = tour.getTourPoints();
+        TourPoint endPoint = null;
         if (tourPointsList.size() > 1) {
             TourPoint startPoint = tourPointsList.get(0);
+            endPoint = tourPointsList.get(tourPointsList.size()-1);
             for (int i = 1; i < tourPointsList.size(); i++) {
                 TourPoint p = tourPointsList.get(i);
                 distance += p.distanceTo(startPoint);
@@ -810,10 +915,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 tour.getEndTime(),
                 tour.getEndTime(),
                 Tour.TOUR_CLOSED,
+                endPoint,
                 duration,
                 distance
         );
         tour.addCardInfo(tourTimestamp);
+
+        //new SnapshotAsyncTask().execute(tourTimestamp);
+        tourTimestampList.add(tourTimestamp);
     }
 
     private void scrollToLastCard() {

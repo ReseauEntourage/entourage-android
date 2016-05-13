@@ -114,6 +114,14 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
         else {
             mLocationDuration.setVisibility(View.GONE);
         }
+
+        if (tourTimestamp.getSnapshot() != null) {
+            mLocationImage.setImageBitmap(tourTimestamp.getSnapshot());
+            mLocationImage.setVisibility(View.VISIBLE);
+        }
+        else {
+            mLocationImage.setVisibility(View.GONE);
+        }
     }
 
     public static int getLayoutResource() {

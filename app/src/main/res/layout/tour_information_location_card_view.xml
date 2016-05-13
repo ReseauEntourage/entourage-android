@@ -29,7 +29,9 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:id="@+id/tic_location_image"
-            android:visibility="gone"/>
+            android:visibility="invisible"
+            android:padding="5dp"
+            android:scaleType="centerInside"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,7 +41,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+            android:layout_toRightOf="@+id/tic_location_image"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,9 +50,9 @@
             android:id="@+id/tic_location_duration"
             android:textSize="20sp"
             android:textColor="@color/white"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tic_location_title"/>
+            android:layout_below="@+id/tic_location_title"
+            android:layout_toRightOf="@+id/tic_location_image"
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,8 +61,8 @@
             android:id="@+id/tic_location_distance"
             android:textSize="20sp"
             android:textColor="@color/white"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/tic_location_duration"/>
+            android:layout_below="@+id/tic_location_duration"
+            android:layout_toRightOf="@+id/tic_location_image"/>
     </RelativeLayout>
 </LinearLayout>
