@@ -100,6 +100,7 @@ import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
+import social.entourage.android.map.filter.MapFilterFragment;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
@@ -954,6 +955,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @OnClick(R.id.map_longclick_button_entourage_contribution)
     protected void onCreateEntourageContribution() {
         createEntourage(Entourage.TYPE_CONTRIBUTION);
+    }
+
+    @OnClick(R.id.fragment_map_filter_button)
+    protected void onShowFilter() {
+        MapFilterFragment mapFilterFragment = new MapFilterFragment();
+        mapFilterFragment.show(getFragmentManager(), MapFilterFragment.TAG);
     }
 
     // ----------------------------------

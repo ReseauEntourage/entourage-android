@@ -1,0 +1,377 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="social.entourage.android.map.filter.MapFilterFragment"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/map_filter_title_layout">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/map_filter_close_button"
+            android:src="@drawable/ic_close"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"/>
+
+        <TextView
+            style="@style/EntourageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/map_filter_title"
+            android:id="@+id/map_filter_title"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"/>
+
+        <Button
+            style="@style/TransparentAccentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:id="@+id/map_filter_validate_button"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/map_filter_content_scrollview"
+        android:background="@color/background_light">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/map_filter_tour_type_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map_filter_tour_type_title"
+                    android:id="@+id/map_filter_tour_type_title"
+                    style="@style/EntourageTitle"
+                    android:textSize="18sp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:paddingLeft="10dp"
+                    android:id="@+id/map_filter_tour_medical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_tour_medical_image"
+                        android:src="@drawable/ic_medical_active"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tour_type_medical"
+                        android:id="@+id/map_filter_tour_medical_text"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/map_filter_tour_medical_image"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"/>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_tour_medical_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="16dp"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/greyish"
+                        android:layout_alignParentBottom="false"
+                        android:layout_below="@+id/map_filter_tour_medical_image"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/map_filter_tour_social"
+                    android:background="@color/background"
+                    android:paddingLeft="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_tour_social_image"
+                        android:src="@drawable/ic_social_active"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tour_type_bare_hands"
+                        android:id="@+id/map_filter_tour_social_text"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/map_filter_tour_social_image"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/map_filter_tour_social_switch"/>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_tour_social_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="16dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/greyish"
+                        android:layout_alignParentBottom="false"
+                        android:layout_below="@+id/map_filter_tour_social_image"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:id="@+id/map_filter_tour_distributive"
+                    android:paddingLeft="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_tour_distributive_image"
+                        android:src="@drawable/ic_distributive_active"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tour_type_alimentary"
+                        android:id="@+id/map_filter_tour_distributive_text"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/map_filter_tour_distributive_image"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/map_filter_tour_distributive_switch"/>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_tour_distributive_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="16dp"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/map_filter_entourage_layout"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map_filter_entourage_type_title"
+                    android:id="@+id/map_filter_entourage_type_title"
+                    style="@style/EntourageTitle"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:background="@color/background"
+                    android:id="@+id/map_filter_entourage_demand">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/entourage_type_demand"
+                        android:id="@+id/map_filter_entourage_demand_title"
+                        android:textSize="18sp"
+                        android:textColor="@color/greyish_brown"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_demand_switch"/>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_entourage_demand_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="16dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/greyish"
+                        android:layout_below="@+id/map_filter_entourage_demand_title"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:background="@color/background"
+                    android:id="@+id/map_filter_entourage_contribution">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/entourage_type_contribution"
+                        android:id="@+id/map_filter_entourage_contribution_title"
+                        android:textSize="18sp"
+                        android:textColor="@color/greyish_brown"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_contribution_switch"/>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_entourage_contribution_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="16dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/greyish"
+                        android:layout_below="@+id/map_filter_entourage_contribution_title"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:id="@+id/map_filter_entourage_tours"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/map_filter_tours_text"
+                        android:id="@+id/map_filter_entourage_tours_text"
+                        android:textSize="18sp"
+                        android:textColor="@color/greyish_brown"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_tours_switch"/>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_entourage_tours_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="16dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/greyish"
+                        android:layout_below="@+id/map_filter_entourage_tours_text"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/map_filter_entourage_user_only"
+                    android:paddingLeft="10dp"
+                    android:background="@color/background">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/map_filter_user_only_text"
+                        android:id="@+id/map_filter_entourage_user_only_text"
+                        android:textSize="18sp"
+                        android:textColor="@color/greyish_brown"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_user_only_switch"/>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_entourage_user_only_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="16dp"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/map_filter_time_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map_filter_time_title"
+                    android:id="@+id/map_filter_time_title"
+                    style="@style/EntourageTitle"
+                    android:singleLine="true"/>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:background="@color/background"
+                    android:layout_weight="1"
+                    >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_time_days_1"
+                        android:layout_weight="1"
+                        />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_time_days_2"
+                        android:layout_weight="1"/>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/map_filter_time_days_3"
+                        android:layout_weight="1"/>
+                </RadioGroup>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
