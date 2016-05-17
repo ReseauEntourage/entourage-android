@@ -245,4 +245,14 @@ public class Events {
         }
 
     }
+
+    /**
+     * Event signaling that the map filter was changed
+     */
+    public static class OnMapFilterChanged {
+
+        public OnMapFilterChanged() {
+        }
+
+    }
 }

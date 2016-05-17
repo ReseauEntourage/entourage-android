@@ -15,6 +15,9 @@ public interface NewsfeedRequest {
             @Query("page") int page,
             @Query("per") int per,
             @Query("longitude") double longitude,
-            @Query("latitude") double latitude
+            @Query("latitude") double latitude,
+            @Query("tour_types") String tourTypes,
+            @Query("show_tours") boolean showTours,
+            @Query("entourage_types") String entourageTypes
     );
 }

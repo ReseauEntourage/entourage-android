@@ -538,6 +538,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         toursListView.scrollToPosition(0);
     }
 
+    @Subscribe
+    public void onMapFilterChanged(Events.OnMapFilterChanged event) {
+        if (tourService != null) {
+            clearAll();
+            tourService.updateNewsfeed(pagination);
+        }
+    }
+
     // ----------------------------------
     // SERVICE BINDING METHODS
     // ----------------------------------
@@ -710,18 +718,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onTourClosed(boolean closed, Tour tour) {
         if (getActivity() != null) {
             if (closed) {
-                map.clear();
 
-                currentTourLines.clear();
-                drawnToursMap.clear();
-                drawnUserHistory.clear();
-
-                displayedTourHeads = 0;
-
-                newsfeedAdapter.removeAll();
-                pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
-
-                previousCoordinates = null;
+                 clearAll();
 
                 //mapPin.setVisibility(View.GONE);
                 if (tour.getId() == currentTourId) {
@@ -959,7 +957,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_filter_button)
     protected void onShowFilter() {
-        MapFilterFragment mapFilterFragment = new MapFilterFragment();
+        MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(tourService != null ? tourService.isRunning() : false);
         mapFilterFragment.show(getFragmentManager(), MapFilterFragment.TAG);
     }
 
@@ -1604,6 +1602,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             markersMap.put(tour.hashString(), map.addMarker(markerOptions));
             presenter.getOnClickListener().addTourMarker(position, tour);
         }
+    }
+
+    private void clearAll() {
+        map.clear();
+
+        currentTourLines.clear();
+        drawnToursMap.clear();
+        drawnUserHistory.clear();
+
+        displayedTourHeads = 0;
+
+        newsfeedAdapter.removeAll();
+        pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+
+        previousCoordinates = null;
     }
 
     private void hideToursList() {

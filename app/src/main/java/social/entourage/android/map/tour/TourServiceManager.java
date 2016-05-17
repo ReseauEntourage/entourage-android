@@ -55,6 +55,7 @@ import social.entourage.android.api.tape.EncounterTaskResult;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
+import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.tools.BusProvider;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
@@ -540,7 +541,16 @@ public class TourServiceManager {
         CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
-            Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveFeed(page, per, location.longitude, location.latitude);
+            MapFilter mapFilter = MapFilter.getInstance();
+            Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveFeed(
+                    page,
+                    per,
+                    location.longitude,
+                    location.latitude,
+                    mapFilter.getTourTypes(),
+                    mapFilter.showTours,
+                    mapFilter.getEntourageTypes()
+                    );
             call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
                 @Override
                 public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
