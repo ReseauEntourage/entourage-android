@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -51,6 +52,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.VisibleRegion;
+import com.google.maps.android.MarkerManager;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -197,7 +200,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private GoogleMap hiddenGoogleMap;
     private boolean isTakingSnapshot = false;
     private Bitmap mapSnapshot;
-    CameraPosition oldCameraPosition;
+    private boolean takeSnapshotOnCameraMove = false;
     List<TourTimestamp> tourTimestampList = new ArrayList<>();
 
     OnTourInformationFragmentFinish mListener;
@@ -664,9 +667,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
                 if (tourTimestampList.size() > 0) {
                     TourTimestamp tourTimestamp = tourTimestampList.get(0);
-                    //move the camera
-                    CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
-                    googleMap.moveCamera(camera);
+                    if (tourTimestamp.getTourPoint() != null) {
+                        //put the pin
+                        MarkerOptions pin = new MarkerOptions().position(tourTimestamp.getTourPoint().getLocation());
+                        googleMap.addMarker(pin);
+                        //move the camera
+                        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
+                        googleMap.moveCamera(camera);
+                    }
                 }
                 else {
                     googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM));
@@ -675,7 +683,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
-                        Log.d("tourmap", "onMapLoaded");
                         getMapSnapshot();
                     }
                 });
@@ -683,7 +690,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                     @Override
                     public void onCameraChange(final CameraPosition cameraPosition) {
-                        Log.d("tourmap", "onCameraChange");
+                        if (takeSnapshotOnCameraMove) {
+                            getMapSnapshot();
+                        }
                     }
                 });
 
@@ -701,20 +710,33 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         hiddenGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
             @Override
             public void onSnapshotReady(final Bitmap bitmap) {
-                Log.d("tourmap", "onSnapshotReady");
                 //save the snapshot
                 mapSnapshot = bitmap;
                 snapshotTaken(tourTimestamp);
                 //signal it has finished taking the snapshot
                 isTakingSnapshot = false;
                 //check if we need more snapshots
-                tourTimestampList.remove(tourTimestamp);
-                if (tourTimestampList.size() > 0) {
-                    TourTimestamp tourTimestamp = tourTimestampList.get(0);
-                    //move the camera
-                    CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
-                    hiddenGoogleMap.moveCamera(camera);
+                if (tourTimestampList.size() > 1) {
+                    TourTimestamp nextTourTimestamp = tourTimestampList.get(1);
+                    if (nextTourTimestamp.getTourPoint() != null) {
+                        float distance = nextTourTimestamp.getTourPoint().distanceTo(tourTimestamp.getTourPoint());
+                        VisibleRegion visibleRegion = hiddenGoogleMap.getProjection().getVisibleRegion();
+                        LatLng nearLeft = visibleRegion.nearLeft;
+                        LatLng nearRight = visibleRegion.nearRight;
+                        float[] result = {0};
+                        Location.distanceBetween(nearLeft.latitude, nearLeft.longitude, nearRight.latitude, nearRight.longitude, result);
+                        takeSnapshotOnCameraMove = (distance < result[0]);
+
+                        //put the pin
+                        hiddenGoogleMap.clear();
+                        MarkerOptions pin = new MarkerOptions().position(nextTourTimestamp.getTourPoint().getLocation());
+                        hiddenGoogleMap.addMarker(pin);
+                        //move the camera
+                        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
+                        hiddenGoogleMap.moveCamera(camera);
+                    }
                 }
+                tourTimestampList.remove(tourTimestamp);
             }
         });
         return true;
