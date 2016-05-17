@@ -24,6 +24,7 @@
     <string name="tour_type_alimentary">Distributive</string>
     <string name="tour_create_encounter_button">Créer une rencontre</string>
     <string name="tour_text_separator">-</string>
+    <string name="tour_create_choose_type">Sélectionnez votre type de maraude:</string>
 
     <!-- Tour info -->
     <string name="tour_info_title">MARAUDE</string>

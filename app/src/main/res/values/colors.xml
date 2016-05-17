@@ -56,6 +56,11 @@
     <!-- Notifications -->
     <color name="battleship_grey">#797a7c</color>
 
+    <!-- Tour Types -->
+    <color name="tour_type_medical">#ff9999</color>
+    <color name="tour_type_social">#97d791</color>
+    <color name="tour_type_distributive">#ffc57f</color>
+
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>
