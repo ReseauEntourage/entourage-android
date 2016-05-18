@@ -59,7 +59,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/map_filter_tour_type_layout">
+                android:id="@+id/map_filter_tour_type_layout"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -348,26 +349,50 @@
                     android:orientation="horizontal"
                     android:background="@color/background"
                     android:layout_weight="1"
-                    >
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/map_filter_time_days_1"
-                        android:layout_weight="1"
-                        />
+                        android:text="@string/map_filter_time_option1"
+                        style="@style/FilterRadioButton"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/map_filter_time_days_2"
-                        android:layout_weight="1"/>
+                        style="@style/FilterRadioButton"
+                        android:text="@string/map_filter_time_option2"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/map_filter_time_days_3"
-                        android:layout_weight="1"/>
+                        style="@style/FilterRadioButton"
+                        android:text="@string/map_filter_time_option3"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
                 </RadioGroup>
             </LinearLayout>
 

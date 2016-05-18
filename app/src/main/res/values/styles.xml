@@ -141,4 +141,11 @@
         <item name="android:textColor">@color/greyish_brown</item>
     </style>
 
+    <style name="FilterRadioButton" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/rb_map_filter_textcolor</item>
+        <item name="android:background">@drawable/rb_map_filter_bg</item>
+    </style>
+
 </resources>
