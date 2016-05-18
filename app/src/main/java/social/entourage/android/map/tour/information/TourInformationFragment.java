@@ -83,6 +83,7 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
@@ -1197,10 +1198,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     @Override
-    public void onUserStatusChanged(final TourUser user, final TimestampedObject timestampedObject) {
+    public void onUserStatusChanged(final TourUser user, final BaseEntourage baseEntourage) {
         //ignore requests that are not related to our tour
-        if (timestampedObject.getType() != TimestampedObject.TOUR_CARD) return;
-        Tour tour = (Tour)timestampedObject;
+        if (baseEntourage.getType() != TimestampedObject.TOUR_CARD) return;
+        Tour tour = (Tour)baseEntourage;
         if (tour.getId() != this.tour.getId()) return;
 
         hideProgressBar();

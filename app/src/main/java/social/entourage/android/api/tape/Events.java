@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
@@ -100,19 +101,19 @@ public class Events {
         public static String ACT_QUIT = "quit";
 
         private String act;
-        private TimestampedObject timestampedObject;
+        private BaseEntourage baseEntourage;
 
-        public OnUserActEvent(String act, TimestampedObject timestampedObject) {
+        public OnUserActEvent(String act, BaseEntourage baseEntourage) {
             this.act = act;
-            this.timestampedObject = timestampedObject;
+            this.baseEntourage = baseEntourage;
         }
 
         public String getAct() {
             return act;
         }
 
-        public TimestampedObject getTimestampedObject() {
-            return timestampedObject;
+        public BaseEntourage getBaseEntourage() {
+            return baseEntourage;
         }
     }
 
@@ -135,16 +136,16 @@ public class Events {
     /**
      * Event signaling that tour info view is requested
      */
-    public static class OnTourInfoViewRequestedEvent {
+    public static class OnEntourageInfoViewRequestedEvent {
 
-        private Tour tour;
+        private BaseEntourage baseEntourage;
 
-        public OnTourInfoViewRequestedEvent(Tour tour) {
-            this.tour = tour;
+        public OnEntourageInfoViewRequestedEvent(BaseEntourage baseEntourage) {
+            this.baseEntourage = baseEntourage;
         };
 
-        public Tour getTour() {
-            return tour;
+        public BaseEntourage getBaseEntourage() {
+            return baseEntourage;
         }
     }
 
@@ -167,16 +168,16 @@ public class Events {
     /**
      * Event signaling that the tour needs to be closed/freezed
      */
-    public static class OnTourCloseRequestEvent {
+    public static class OnEntourageCloseRequestEvent {
 
-        private Tour tour;
+        private BaseEntourage baseEntourage;
 
-        public OnTourCloseRequestEvent(Tour tour) {
-            this.tour = tour;
+        public OnEntourageCloseRequestEvent(BaseEntourage baseEntourage) {
+            this.baseEntourage = baseEntourage;
         };
 
-        public Tour getTour() {
-            return tour;
+        public BaseEntourage getBaseEntourage() {
+            return baseEntourage;
         }
     }
 

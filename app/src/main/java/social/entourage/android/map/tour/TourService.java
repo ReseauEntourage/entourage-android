@@ -38,6 +38,7 @@ import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
@@ -448,9 +449,9 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersUserStatusChanged(TourUser user, TimestampedObject timestampedObject) {
+    public void notifyListenersUserStatusChanged(TourUser user, BaseEntourage baseEntourage) {
         for (TourServiceListener listener : listeners) {
-            listener.onUserStatusChanged(user, timestampedObject);
+            listener.onUserStatusChanged(user, baseEntourage);
         }
     }
 
@@ -475,7 +476,7 @@ public class TourService extends Service {
         void onToursFound(Map<Long, Tour> tours);
         void onTourClosed(boolean closed, Tour tour);
         void onGpsStatusChanged(boolean active);
-        void onUserStatusChanged(TourUser user, TimestampedObject timestampedObject);
+        void onUserStatusChanged(TourUser user, BaseEntourage baseEntourage);
         void onRetrieveNewsfeed(List<Newsfeed> newsfeedList);
     }
 }

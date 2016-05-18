@@ -85,6 +85,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
@@ -771,7 +772,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onUserStatusChanged(TourUser user, TimestampedObject timestampedObject) {
+    public void onUserStatusChanged(TourUser user, BaseEntourage baseEntourage) {
         if (user == null) {
             //error changing the status
             if (isRequestingToJoin > 0) {
@@ -779,8 +780,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
         }
         else {
-            if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
-                Tour tour = (Tour)timestampedObject;
+            if (baseEntourage.getType() == TimestampedObject.TOUR_CARD) {
+                Tour tour = (Tour)baseEntourage;
                 tour.setJoinStatus(user.getStatus());
                 if (user.getStatus().equals(Tour.JOIN_STATUS_PENDING)) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -788,10 +789,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
                 }
             }
-            else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                ((Entourage)timestampedObject).setJoinStatus(user.getStatus());
+            else if (baseEntourage.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                ((Entourage)baseEntourage).setJoinStatus(user.getStatus());
             }
-            updateNewsfeedJoinStatus(timestampedObject);
+            updateNewsfeedJoinStatus(baseEntourage);
         }
         isRequestingToJoin--;
     }
@@ -1269,7 +1270,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 TourUser user = new TourUser();
                 user.setUserId(userId);
                 user.setStatus(status);
-                tourService.notifyListenersUserStatusChanged(user, timestampedObject);
+                tourService.notifyListenersUserStatusChanged(user, (BaseEntourage)timestampedObject);
             }
         }
     }

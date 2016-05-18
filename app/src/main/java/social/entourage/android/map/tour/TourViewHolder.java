@@ -242,11 +242,11 @@ public class TourViewHolder extends BaseCardViewHolder {
             else if (v == actButton) {
                 String joinStatus = tour.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                    BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
+                    BusProvider.getInstance().post(new Events.OnEntourageInfoViewRequestedEvent(tour));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
                     if (tour.getAuthor() != null) {
                         if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
-                            BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
+                            BusProvider.getInstance().post(new Events.OnEntourageCloseRequestEvent(tour));
                             return;
                         }
                     }
@@ -259,7 +259,7 @@ public class TourViewHolder extends BaseCardViewHolder {
 
             }
             else if (v == itemView) {
-                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
+                BusProvider.getInstance().post(new Events.OnEntourageInfoViewRequestedEvent(tour));
             }
         }
 

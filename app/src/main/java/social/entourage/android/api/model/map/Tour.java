@@ -1,7 +1,5 @@
 package social.entourage.android.api.model.map;
 
-import android.location.Address;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,7 +17,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 
 @SuppressWarnings("unused")
-public class Tour extends TimestampedObject implements Serializable {
+public class Tour extends BaseEntourage implements Serializable {
 
     // ----------------------------------
     // CONSTANTS
@@ -46,9 +44,6 @@ public class Tour extends TimestampedObject implements Serializable {
     // ATTRIBUTES
     // ----------------------------------
 
-    @Expose(serialize = false, deserialize = true)
-    private long id;
-
     @SerializedName("user_id")
     @Expose(serialize = false, deserialize = true)
     private int userId;
@@ -58,12 +53,6 @@ public class Tour extends TimestampedObject implements Serializable {
 
     @SerializedName("tour_type")
     private String tourType = TourType.BARE_HANDS.getName();
-
-    @SerializedName("status")
-    private String tourStatus = TOUR_ON_GOING;
-
-    @Expose(serialize = false, deserialize = false)
-    private Date date;
 
     @SerializedName("start_time")
     @Expose(serialize = true, deserialize = true)
@@ -93,24 +82,6 @@ public class Tour extends TimestampedObject implements Serializable {
 
     @Expose(serialize = false)
     private List<Encounter> encounters;
-
-    @Expose(serialize = false, deserialize = false)
-    private transient Address startAddress;
-
-    @Expose(serialize = false, deserialize = true)
-    @SerializedName("number_of_people")
-    private int numberOfPeople;
-
-    @Expose(serialize = false, deserialize = true)
-    @SerializedName("author")
-    private TourAuthor author;
-
-    @Expose(serialize = false, deserialize = true)
-    @SerializedName("join_status")
-    private String joinStatus;
-
-    @Expose(serialize = false, deserialize = false)
-    private int badgeCount = 0;
 
     //CardInfo cache support
 
@@ -146,10 +117,6 @@ public class Tour extends TimestampedObject implements Serializable {
     // GETTERS & SETTERS
     // ----------------------------------
 
-    public long getId() {
-        return id;
-    }
-
     public int getUserId() {
         return userId;
     }
@@ -163,11 +130,7 @@ public class Tour extends TimestampedObject implements Serializable {
     }
 
     public String getTourStatus() {
-        return tourStatus;
-    }
-
-    public Date getDate() {
-        return date;
+        return getStatus();
     }
 
     public Date getStartTime() {
@@ -202,32 +165,12 @@ public class Tour extends TimestampedObject implements Serializable {
         return encounters;
     }
 
-    public Address getStartAddress() {
-        return startAddress;
-    }
-
-    public int getNumberOfPeople() {
-        return numberOfPeople;
-    }
-
-    public TourAuthor getAuthor() {
-        return author;
-    }
-
-    public String getJoinStatus() {
-        return joinStatus;
-    }
-
     public List<TimestampedObject> getCachedCardInfoList() {
         return cachedCardInfoList;
     }
 
     public List<TimestampedObject> getAddedCardInfoList() {
         return addedCardInfoList;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setUserId(int userId) {
@@ -243,11 +186,7 @@ public class Tour extends TimestampedObject implements Serializable {
     }
 
     public void setTourStatus(String tourStatus) {
-        this.tourStatus = tourStatus;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+        this.status = tourStatus;
     }
 
     public void setStartTime(Date startTime) {
@@ -270,33 +209,9 @@ public class Tour extends TimestampedObject implements Serializable {
         this.tourPoints = tourPoints;
     }
 
-    public void setStartAddress(final Address startAddress) {
-        this.startAddress = startAddress;
-    }
-
-    public void setAuthor(TourAuthor author) {
-        this.author = author;
-    }
-
-    public void setJoinStatus(String joinStatus) {
-        this.joinStatus = joinStatus;
-    }
-
-    public int getBadgeCount() {
-        return badgeCount;
-    }
-
-    public void setBadgeCount(final int badgeCount) {
-        this.badgeCount = badgeCount;
-    }
-
-    public void increaseBadgeCount() {
-        badgeCount++;
-    }
-
     @Override
     public String toString() {
-        return "tour : " + id + ", vehicule : " + tourVehicleType + ", type : " + tourType + ", status : " + tourStatus + ", points : " + tourPoints.size();
+        return "tour : " + id + ", vehicule : " + tourVehicleType + ", type : " + tourType + ", status : " + status + ", points : " + tourPoints.size();
     }
 
     // ----------------------------------
@@ -316,7 +231,7 @@ public class Tour extends TimestampedObject implements Serializable {
     }
 
     public boolean isClosed() {
-        return !tourStatus.equals(TOUR_ON_GOING);
+        return !status.equals(TOUR_ON_GOING);
     }
 
     public boolean isPrivate() {
@@ -324,7 +239,7 @@ public class Tour extends TimestampedObject implements Serializable {
     }
 
     public boolean isFreezed() {
-        return tourStatus.equals(TOUR_FREEZED);
+        return status.equals(TOUR_FREEZED);
     }
 
     public void addCardInfo(TimestampedObject cardInfo) {
@@ -370,15 +285,13 @@ public class Tour extends TimestampedObject implements Serializable {
     }
 
     public boolean isSame(Tour tour) {
-        boolean isSame = true;
-
         if (tour == null) return false;
         if (id != tour.id) return false;
         if (tourPoints.size() != tour.tourPoints.size()) return false;
-        if (!tourStatus.equals(tour.tourStatus)) return false;
+        if (!status.equals(tour.status)) return false;
         if (!joinStatus.equals(tour.joinStatus)) return false;
 
-        return isSame;
+        return true;
     }
 
     // ----------------------------------
@@ -404,6 +317,20 @@ public class Tour extends TimestampedObject implements Serializable {
     @Override
     public int getType() {
         return TOUR_CARD;
+    }
+
+    // ----------------------------------
+    // BaseEntourage overrides
+    // ----------------------------------
+
+    @Override
+    public String getTitle() {
+        return organizationName;
+    }
+
+    @Override
+    public String getDescription() {
+        return organizationDescription;
     }
 
     // ----------------------------------

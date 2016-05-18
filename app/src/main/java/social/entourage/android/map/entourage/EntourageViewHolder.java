@@ -238,15 +238,15 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             else if (v == actButton) {
                 String joinStatus = entourage.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-        //                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
+                        BusProvider.getInstance().post(new Events.OnEntourageInfoViewRequestedEvent(entourage));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-        //                if (entourage.getAuthor() != null) {
-        //                    if (entourage.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
-        //                        BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
-        //                        return;
-        //                    }
-        //                }
-        //                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, entourage));
+                        if (entourage.getAuthor() != null) {
+                            if (entourage.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+                                BusProvider.getInstance().post(new Events.OnEntourageCloseRequestEvent(entourage));
+                                return;
+                            }
+                        }
+                        BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, entourage));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //What to do on rejected status ?
                 } else {
@@ -255,7 +255,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
 
             }
             else if (v == itemView) {
-//                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(entourage));
+                BusProvider.getInstance().post(new Events.OnEntourageInfoViewRequestedEvent(entourage));
             }
         }
 

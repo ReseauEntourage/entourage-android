@@ -45,7 +45,9 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.about.AboutActivity;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
@@ -555,17 +557,20 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Subscribe
-    public void tourInfoViewRequested(OnTourInfoViewRequestedEvent event) {
+    public void tourInfoViewRequested(OnEntourageInfoViewRequestedEvent event) {
         if (mapEntourageFragment != null) {
-            Tour tour = event.getTour();
-            if (tour == null) return;
-            mapEntourageFragment.displayChosenTour(tour);
-            //decrease the badge count
-            int tourBadgeCount = tour.getBadgeCount();
-            decreaseBadgeCount(tourBadgeCount);
-            removePushNotificationsForTour(tour.getId());
-            //update the tour card
-            mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+            BaseEntourage baseEntourage = event.getBaseEntourage();
+            if (baseEntourage == null) return;
+            if (baseEntourage.getType() == TimestampedObject.TOUR_CARD) {
+                Tour tour = (Tour)baseEntourage;
+                mapEntourageFragment.displayChosenTour(tour);
+                //decrease the badge count
+                int tourBadgeCount = tour.getBadgeCount();
+                decreaseBadgeCount(tourBadgeCount);
+                removePushNotificationsForTour(tour.getId());
+                //update the tour card
+                mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+            }
         }
     }
 
@@ -573,7 +578,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void userActRequested(final OnUserActEvent event) {
         if (OnUserActEvent.ACT_JOIN.equals(event.getAct())) {
             if (mapEntourageFragment != null) {
-                mapEntourageFragment.act(event.getTimestampedObject());
+                mapEntourageFragment.act(event.getBaseEntourage());
             }
         }
         else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
@@ -592,7 +597,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                                     Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                                 }
                                 else {
-                                    mapEntourageFragment.removeUserFromNewsfeedCard(event.getTimestampedObject(), me.getId());
+                                    mapEntourageFragment.removeUserFromNewsfeedCard(event.getBaseEntourage(), me.getId());
                                 }
                             }
                         }
@@ -612,13 +617,17 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Subscribe
-    public void tourCloseRequested(OnTourCloseRequestEvent event) {
-        Tour tour = event.getTour();
-        if (mapEntourageFragment != null) {
-            if (!tour.isClosed()) {
-                mapEntourageFragment.stopTour(tour);
-            } else {
-                mapEntourageFragment.freezeTour(tour);
+    public void entourageCloseRequested(OnEntourageCloseRequestEvent event) {
+        BaseEntourage baseEntourage = event.getBaseEntourage();
+        if (baseEntourage == null) return;
+        if (baseEntourage.getType() == TimestampedObject.TOUR_CARD) {
+            Tour tour = (Tour)baseEntourage;
+            if (mapEntourageFragment != null) {
+                if (!tour.isClosed()) {
+                    mapEntourageFragment.stopTour(tour);
+                } else {
+                    mapEntourageFragment.freezeTour(tour);
+                }
             }
         }
     }

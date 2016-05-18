@@ -13,7 +13,7 @@ import social.entourage.android.api.model.TimestampedObject;
 /**
  * Created by mihaiionescu on 28/04/16.
  */
-public class Entourage extends TimestampedObject implements Serializable {
+public class Entourage extends BaseEntourage implements Serializable {
 
     // ----------------------------------
     // Constants
@@ -30,9 +30,6 @@ public class Entourage extends TimestampedObject implements Serializable {
     // Attributes
     // ----------------------------------
 
-    @Expose(serialize = false, deserialize = true)
-    private long id;
-
     @SerializedName("updated_at")
     private Date updatedTime;
 
@@ -48,23 +45,6 @@ public class Entourage extends TimestampedObject implements Serializable {
 
     private TourPoint location;
 
-    private String status;
-
-    private TourAuthor author;
-
-    @Expose(serialize = false, deserialize = false)
-    private transient Address startAddress;
-
-    @Expose(serialize = false, deserialize = true)
-    @SerializedName("number_of_people")
-    private int numberOfPeople;
-
-    @Expose(serialize = false, deserialize = true)
-    @SerializedName("join_status")
-    private String joinStatus;
-
-    @Expose(serialize = false, deserialize = false)
-    private int badgeCount = 0;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -85,15 +65,6 @@ public class Entourage extends TimestampedObject implements Serializable {
     // GETTERS & SETTERS
     // ----------------------------------
 
-
-    public TourAuthor getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(final TourAuthor author) {
-        this.author = author;
-    }
-
     public Date getCreatedTime() {
         return createdTime;
     }
@@ -110,28 +81,12 @@ public class Entourage extends TimestampedObject implements Serializable {
         this.description = description;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(final long id) {
-        this.id = id;
-    }
-
     public TourPoint getLocation() {
         return location;
     }
 
     public void setLocation(final TourPoint location) {
         this.location = location;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
     }
 
     public String getTitle() {
@@ -156,42 +111,6 @@ public class Entourage extends TimestampedObject implements Serializable {
 
     public void setUpdatedTime(final Date updatedTime) {
         this.updatedTime = updatedTime;
-    }
-
-    public int getBadgeCount() {
-        return badgeCount;
-    }
-
-    public void setBadgeCount(final int badgeCount) {
-        this.badgeCount = badgeCount;
-    }
-
-    public void increaseBadgeCount() {
-        badgeCount++;
-    }
-
-    public int getNumberOfPeople() {
-        return numberOfPeople;
-    }
-
-    public void setNumberOfPeople(final int numberOfPeople) {
-        this.numberOfPeople = numberOfPeople;
-    }
-
-    public Address getStartAddress() {
-        return startAddress;
-    }
-
-    public void setStartAddress(final Address startAddress) {
-        this.startAddress = startAddress;
-    }
-
-    public String getJoinStatus() {
-        return joinStatus;
-    }
-
-    public void setJoinStatus(final String joinStatus) {
-        this.joinStatus = joinStatus;
     }
 
     public Date getStartTime() {
