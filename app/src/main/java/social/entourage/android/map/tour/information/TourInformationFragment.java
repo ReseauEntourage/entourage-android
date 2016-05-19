@@ -33,10 +33,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,6 +72,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
@@ -125,23 +129,35 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = false;
 
-    @Bind(R.id.tour_info_organization)
+    @Bind(R.id.tour_card_title)
     TextView tourOrganization;
 
-    @Bind(R.id.tour_info_author_photo)
+    @Bind(R.id.tour_card_photo)
     ImageView tourAuthorPhoto;
 
-    @Bind(R.id.tour_info_type)
+    @Bind(R.id.tour_card_type)
     TextView tourType;
 
-    @Bind(R.id.tour_info_author_name)
+    @Bind(R.id.tour_card_author)
     TextView tourAuthorName;
 
-    @Bind(R.id.tour_info_location)
+    @Bind(R.id.tour_card_location)
     TextView tourLocation;
 
-    @Bind(R.id.tour_info_people_count)
+    @Bind(R.id.tour_card_people_count)
     TextView tourPeopleCount;
+
+    @Bind(R.id.tour_card_act_layout)
+    RelativeLayout headerActLayout;
+
+    @Bind(R.id.tour_info_details_selector)
+    RadioGroup detailsSelectorRadioGroup;
+
+    @Bind(R.id.tour_info_chat_rb)
+    RadioButton chatRB;
+
+    @Bind(R.id.tour_info_information_rb)
+    RadioButton informationRB;
 
     @Bind(R.id.tour_info_discussion_view)
     RecyclerView discussionView;
@@ -352,7 +368,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    @OnClick({R.id.tour_info_author_name, R.id.tour_info_author_photo})
+    @OnClick({R.id.tour_card_author, R.id.tour_card_photo})
     protected void onAuthorClicked() {
         BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
     }
@@ -465,6 +481,20 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
+    @OnCheckedChanged({R.id.tour_info_chat_rb, R.id.tour_info_information_rb})
+    protected void onChatSelected(CompoundButton button, boolean checked) {
+        if (button == chatRB && checked == true) {
+            publicSection.setVisibility(View.GONE);
+            privateSection.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (button == informationRB && checked == true) {
+            publicSection.setVisibility(View.VISIBLE);
+            privateSection.setVisibility(View.GONE);
+            return;
+        }
+    }
+
     public boolean onPushNotificationChatMessageReceived(Message message) {
         //we received a chat notification
         //check if it is referring to this tour
@@ -523,6 +553,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", location));
 
         tourPeopleCount.setText("" + tour.getNumberOfPeople());
+
+        headerActLayout.setVisibility(View.GONE);
 
         if (tour.isPrivate()) {
             switchToPrivateSection();
@@ -764,7 +796,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             return MapEntourageFragment.getTransparentColor(color);
         }
 
-        return Color.argb(0, Color.red(color), Color.green(color), Color.blue(color));
+        //return Color.argb(0, Color.red(color), Color.green(color), Color.blue(color));
+        return color;
     }
 
     private void initializeCommentEditText() {
@@ -790,6 +823,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void switchToPublicSection() {
+        detailsSelectorRadioGroup.setVisibility(View.GONE);
+        actLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.VISIBLE);
         privateSection.setVisibility(View.GONE);
 
@@ -800,11 +835,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void switchToPrivateSection() {
-        publicSection.setVisibility(View.GONE);
-        privateSection.setVisibility(View.VISIBLE);
-        if (mapFragment != null) {
-            getChildFragmentManager().beginTransaction().remove(mapFragment).commit();
-            mapFragment = null;
+        detailsSelectorRadioGroup.setVisibility(View.VISIBLE);
+        actLayout.setVisibility(View.GONE);
+//        publicSection.setVisibility(View.GONE);
+//        privateSection.setVisibility(View.VISIBLE);
+        if (mapFragment == null) {
+            initializeMap();
         }
 
         if (hiddenMapFragment == null) {

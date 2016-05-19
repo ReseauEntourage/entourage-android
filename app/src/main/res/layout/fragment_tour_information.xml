@@ -68,102 +68,14 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-    <GridLayout
-        android:layout_width="match_parent"
+    <include
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rowCount="3"
-        android:columnCount="2"
-        android:background="@color/background"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentTop="false"
-        android:id="@+id/tour_info_details_layout"
+        layout="@layout/layout_tour_card"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/tour_info_title_layout"
-        android:layout_marginTop="20dp"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/tour_info_organization"
-            />
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:id="@+id/tour_info_author_photo"
-            android:layout_gravity="right"
-            android:layout_rowSpan="2"
-            android:src="@drawable/ic_user_photo_small"
-            android:scaleType="centerInside"
-            />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/greyish_brown"
-                android:text="Small Text"
-                android:id="@+id/tour_info_type"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/greyish_brown"
-                android:textStyle="bold"
-                android:text="Small Text"
-                android:id="@+id/tour_info_author_name"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_columnSpan="2"
-            android:id="@+id/tour_info_details_public">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/greyish"
-                android:text="Small Text"
-                android:id="@+id/tour_info_location"
-                android:lines="1"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_friends"
-                    android:id="@+id/tour_info_people_image"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/greyish_brown"
-                    android:text="1"
-                    android:id="@+id/tour_info_people_count"
-                    android:paddingLeft="3dp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-        </LinearLayout>
-    </GridLayout>
+        android:id="@+id/tour_info_header_layout"
+        android:layout_marginTop="10dp"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleSmall"
@@ -176,20 +88,57 @@
         android:indeterminateDrawable="@drawable/circular_progress_bar"
         android:visibility="visible"/>
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tour_info_header_layout"
+        android:background="@color/background_light"
+        android:orientation="horizontal"
+        android:id="@+id/tour_info_details_selector"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tour_info_chat_rb"
+            android:button="@drawable/rb_tour_info_chat"
+            android:layout_marginRight="10dp"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tour_info_information_rb"
+            android:button="@drawable/rb_tour_info_information"
+            android:layout_marginLeft="10dp"
+            android:checked="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </RadioGroup>
+
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/layout_private_tour_information"
-        android:layout_below="@+id/tour_info_details_layout"
         android:id="@+id/tour_info_private_section"
-        android:visibility = "gone"/>
+        android:visibility = "gone"
+        android:layout_below="@+id/tour_info_details_selector"/>
 
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/layout_public_tour_information"
-        android:layout_below="@+id/tour_info_details_layout"
-        android:id="@+id/tour_info_public_section"/>
+        android:id="@+id/tour_info_public_section"
+        android:layout_below="@+id/tour_info_details_selector"/>
 
     <LinearLayout
         android:orientation="vertical"

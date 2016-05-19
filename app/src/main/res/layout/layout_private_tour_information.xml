@@ -18,7 +18,8 @@
         android:textSize="14sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@color/background_light"/>
+        android:background="@color/background_light"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:orientation="horizontal"
