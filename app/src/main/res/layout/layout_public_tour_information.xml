@@ -10,7 +10,18 @@
         android:layout_height="200dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:id="@+id/tour_info_map_layout"/>
+        android:id="@+id/tour_info_map_layout"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tour_info_description"
+        android:layout_below="@+id/tour_info_map_layout"
+        android:layout_above="@+id/tour_info_act_layout"
+        android:padding="10dp"
+        android:textColor="@color/greyish_brown"
+        android:textSize="16sp"/>
 
     <RelativeLayout
         android:orientation="horizontal"

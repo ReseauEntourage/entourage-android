@@ -1,9 +1,13 @@
 package social.entourage.android.api.model.map;
 
+import android.content.Context;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import social.entourage.android.R;
 
 /**
  * Created by mihaiionescu on 28/04/16.
@@ -20,6 +24,8 @@ public class Entourage extends FeedItem implements Serializable {
     public static final String TYPE_DEMAND = "ask_for_help";
 
     public static final String NEWSFEED_TYPE = "Entourage";
+
+    public static final float HEATMAP_SIZE = 100; //meters
 
     // ----------------------------------
     // Attributes
@@ -46,10 +52,11 @@ public class Entourage extends FeedItem implements Serializable {
     // ----------------------------------
 
     public Entourage() {
-
+        super();
     }
 
     public Entourage(String entourageType, String title, String description, TourPoint location) {
+        super();
         this.entourageType = entourageType;
         this.title = title;
         this.description = description;
@@ -134,6 +141,19 @@ public class Entourage extends FeedItem implements Serializable {
     @Override
     public String getFeedType() {
         return entourageType;
+    }
+
+    @Override
+    public String getFeedTypeLong(Context context) {
+        if (entourageType != null) {
+            if (TYPE_DEMAND.equals(entourageType)) {
+                return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));
+            }
+            else if (TYPE_CONTRIBUTION.equals(entourageType)) {
+                return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_contribution));
+            }
+        }
+        return "";
     }
 
     @Override

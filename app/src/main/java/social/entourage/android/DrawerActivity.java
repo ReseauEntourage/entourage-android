@@ -566,12 +566,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (mapEntourageFragment != null) {
             FeedItem feedItem = event.getFeedItem();
             if (feedItem == null) return;
+            mapEntourageFragment.displayChosenFeedItem(feedItem);
+            //decrease the badge count
+            int tourBadgeCount = feedItem.getBadgeCount();
+            decreaseBadgeCount(tourBadgeCount);
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 Tour tour = (Tour) feedItem;
-                mapEntourageFragment.displayChosenFeedItem(tour);
-                //decrease the badge count
-                int tourBadgeCount = tour.getBadgeCount();
-                decreaseBadgeCount(tourBadgeCount);
                 removePushNotificationsForTour(tour.getId());
                 //update the tour card
                 mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());

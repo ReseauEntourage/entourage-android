@@ -1,11 +1,13 @@
 package social.entourage.android.api.model.map;
 
+import android.content.Context;
 import android.location.Address;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -22,6 +24,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // CONSTANTS
     // ----------------------------------
 
+    public static final String STATUS_OPEN = "open";
     public static final String STATUS_CLOSED = "closed";
     public static final String STATUS_ON_GOING = "ongoing";
     public static final String STATUS_FREEZED = "freezed";
@@ -63,6 +66,15 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     @Expose(serialize = false, deserialize = false)
     transient List<TimestampedObject> addedCardInfoList;
+
+    // ----------------------------------
+    // CONSTRUCTORS
+    // ----------------------------------
+
+    public FeedItem() {
+        this.cachedCardInfoList = new ArrayList<>();
+        this.addedCardInfoList = new ArrayList<>();
+    }
 
     // ----------------------------------
     // GETTERS & SETTERS
@@ -139,7 +151,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     }
 
     public boolean isClosed() {
-        return !status.equals(STATUS_ON_GOING);
+        return status.equals(STATUS_CLOSED) || status.equals(STATUS_FREEZED);
     }
 
     public boolean isPrivate() {
@@ -192,6 +204,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // ----------------------------------
 
     public abstract String getFeedType();
+    public abstract String getFeedTypeLong(Context context);
 
     public abstract String getTitle();
 

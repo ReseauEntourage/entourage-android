@@ -87,8 +87,10 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
     }
 
     public void populate(TourTimestamp tourTimestamp) {
-        SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
-        mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()));
+        if (tourTimestamp.getDate() != null) {
+            SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
+            mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()));
+        }
 
         if (FeedItem.STATUS_ON_GOING.equals(tourTimestamp.getStatus())) {
             mLocationTitle.setText(R.string.tour_info_text_ongoing);

@@ -1,5 +1,7 @@
 package social.entourage.android.api.model.map;
 
+import android.content.Context;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import social.entourage.android.Constants;
+import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 
@@ -81,10 +84,12 @@ public class Tour extends FeedItem implements Serializable {
     // ----------------------------------
 
     public Tour() {
+        super();
         init();
     }
 
     public Tour(String tourVehicleType, String tourType) {
+        super();
         this.tourVehicleType = tourVehicleType;
         this.tourType = tourType;
         this.startTime = new Date();
@@ -94,8 +99,6 @@ public class Tour extends FeedItem implements Serializable {
     private void init() {
         this.tourPoints = new ArrayList<>();
         this.encounters = new ArrayList<>();
-        this.cachedCardInfoList = new ArrayList<>();
-        this.addedCardInfoList = new ArrayList<>();
     }
 
     // ----------------------------------
@@ -260,13 +263,27 @@ public class Tour extends FeedItem implements Serializable {
     }
 
     @Override
+    public String getFeedTypeLong(Context context) {
+        if (tourType != null) {
+            if (tourType.equals(TourType.MEDICAL.getName())) {
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_medical));
+            } else if (tourType.equals(TourType.ALIMENTARY.getName())) {
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_alimentary));
+            } else if (tourType.equals(TourType.BARE_HANDS.getName())) {
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_bare_hands));
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String getTitle() {
         return organizationName;
     }
 
     @Override
     public String getDescription() {
-        return organizationDescription;
+        return "";
     }
 
     public TourPoint getStartPoint() {

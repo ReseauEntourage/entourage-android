@@ -120,8 +120,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private static final long REFRESH_TOURS_INTERVAL = 60000; //1 minute in ms
 
-    private static final float ENTOURAGE_HEATMAP_SIZE = 100; //meters
-
     private static final int MAX_SCROLL_DELTA_Y = 20;
 
     // ----------------------------------
@@ -1519,7 +1517,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.heat_zone);
                     GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
                             .image(icon)
-                            .position(position, ENTOURAGE_HEATMAP_SIZE, ENTOURAGE_HEATMAP_SIZE)
+                            .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
                             .clickable(true)
                             .anchor(0.5f, 0.5f);
 

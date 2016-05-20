@@ -50,7 +50,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -131,6 +134,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = false;
 
+    @Bind(R.id.tour_info_title)
+    TextView fragmentTitle;
+
     @Bind(R.id.tour_card_title)
     TextView tourOrganization;
 
@@ -160,6 +166,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Bind(R.id.tour_info_information_rb)
     RadioButton informationRB;
+
+    @Bind(R.id.tour_info_description)
+    TextView tourDescription;
 
     @Bind(R.id.tour_info_discussion_view)
     RecyclerView discussionView;
@@ -264,7 +273,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
-        feedItem = (Tour) getArguments().getSerializable(KEY_FEEDITEM);
+        feedItem = (FeedItem) getArguments().getSerializable(KEY_FEEDITEM);
         if (feedItem != null) {
             initializeView();
         }
@@ -542,17 +551,25 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         apiRequestsCount = 0;
 
+        // Initialize the header
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            fragmentTitle.setText(R.string.tour_info_title);
+        }
+        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            if (feedItem.getFeedType().equals(Entourage.TYPE_DEMAND)) {
+                fragmentTitle.setText(R.string.entourage_type_demand);
+            }
+            else {
+                fragmentTitle.setText(R.string.entourage_type_contribution);
+            }
+        }
+
+        // Initialize the header
         tourOrganization.setText(feedItem.getTitle());
 
-        String type = feedItem.getFeedType();
-        if (type != null) {
-            if (type.equals(TourType.MEDICAL.getName())) {
-                tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_type_medical)));
-            } else if (type.equals(TourType.ALIMENTARY.getName())) {
-                tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_type_alimentary)));
-            } else if (type.equals(TourType.BARE_HANDS.getName())) {
-                tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_type_bare_hands)));
-            }
+        String displayType = feedItem.getFeedTypeLong(this.getActivity());
+        if (displayType != null) {
+            tourType.setText(displayType);
         } else {
             tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_info_unknown)));
         }
@@ -580,6 +597,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         headerActLayout.setVisibility(View.GONE);
 
+        // update description
+        tourDescription.setText(feedItem.getDescription());
+
+        // switch to appropiate section
         if (feedItem.isPrivate()) {
             switchToPrivateSection();
         }
@@ -709,7 +730,24 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     }
                 }
                 else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                    //TODO Display heatmap
+                    TourPoint startPoint = feedItem.getStartPoint();
+                    if (startPoint != null) {
+                        LatLng position = startPoint.getLocation();
+
+                        // move camera
+                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR, 0, 0);
+                        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                        // add heatmap
+                        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.heat_zone);
+                        GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
+                                .image(icon)
+                                .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
+                                .clickable(true)
+                                .anchor(0.5f, 0.5f);
+
+                        googleMap.addGroundOverlay(groundOverlayOptions);
+                    }
                 }
             }
         });
@@ -974,9 +1012,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         );
         feedItem.addCardInfo(tourTimestamp);
 
-        tourTimestampList.add(tourTimestamp);
-        //new SnapshotAsyncTask().execute(tourTimestamp);
-        //getMapSnapshot(tourTimestamp);
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            tourTimestampList.add(tourTimestamp);
+        }
     }
 
     private void addDiscussionTourEndCard() {
