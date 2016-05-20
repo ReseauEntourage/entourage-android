@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 
 @SuppressWarnings("unused")
-public class Tour extends BaseEntourage implements Serializable {
+public class Tour extends FeedItem implements Serializable {
 
     // ----------------------------------
     // CONSTANTS
@@ -28,15 +27,9 @@ public class Tour extends BaseEntourage implements Serializable {
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
     public static final String KEY_TOUR_ID = "social.entourage.android.KEY_TOUR_ID";
     public static final String KEY_TOURS = "social.entourage.android.KEY_TOURS";
-    public static final String TOUR_CLOSED = "closed";
-    public static final String TOUR_ON_GOING = "ongoing";
-    public static final String TOUR_FREEZED = "freezed";
+
     private static final String TOUR_FEET = "feet";
     private static final String TOUR_CAR = "car";
-    public static final String JOIN_STATUS_NOT_REQUESTED = "not_requested";
-    public static final String JOIN_STATUS_PENDING = "pending";
-    public static final String JOIN_STATUS_ACCEPTED = "accepted";
-    public static final String JOIN_STATUS_REJECTED = "rejected";
 
     public static final String NEWSFEED_TYPE = "Tour";
 
@@ -82,14 +75,6 @@ public class Tour extends BaseEntourage implements Serializable {
 
     @Expose(serialize = false)
     private List<Encounter> encounters;
-
-    //CardInfo cache support
-
-    @Expose(serialize = false, deserialize = false)
-    transient List<TimestampedObject> cachedCardInfoList;
-
-    @Expose(serialize = false, deserialize = false)
-    transient List<TimestampedObject> addedCardInfoList;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -165,14 +150,6 @@ public class Tour extends BaseEntourage implements Serializable {
         return encounters;
     }
 
-    public List<TimestampedObject> getCachedCardInfoList() {
-        return cachedCardInfoList;
-    }
-
-    public List<TimestampedObject> getAddedCardInfoList() {
-        return addedCardInfoList;
-    }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -230,51 +207,6 @@ public class Tour extends BaseEntourage implements Serializable {
         this.encounters.add(encounter);
     }
 
-    public boolean isClosed() {
-        return !status.equals(TOUR_ON_GOING);
-    }
-
-    public boolean isPrivate() {
-        return joinStatus.equals(JOIN_STATUS_ACCEPTED);
-    }
-
-    public boolean isFreezed() {
-        return status.equals(TOUR_FREEZED);
-    }
-
-    public void addCardInfo(TimestampedObject cardInfo) {
-        if (cardInfo == null) return;
-        if (cachedCardInfoList.contains(cardInfo)) {
-            return;
-        }
-        cachedCardInfoList.add(cardInfo);
-        addedCardInfoList.add(cardInfo);
-
-        Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
-    }
-
-    public int addCardInfoList(List<TimestampedObject> cardInfoList) {
-        if (cardInfoList == null) return 0;
-        Iterator<TimestampedObject> iterator = cardInfoList.iterator();
-        while (iterator.hasNext()) {
-            TimestampedObject timestampedObject = iterator.next();
-            if (cachedCardInfoList.contains(timestampedObject)) {
-                continue;
-            }
-            cachedCardInfoList.add(timestampedObject);
-            addedCardInfoList.add(timestampedObject);
-        }
-        if (addedCardInfoList.size() > 0) {
-            Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
-            Collections.sort(addedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
-        }
-        return addedCardInfoList.size();
-    }
-
-    public void clearAddedCardInfoList() {
-        addedCardInfoList.clear();
-    }
-
     public static long getHoursDiffToNow(Date fromDate) {
         long currentHours = System.currentTimeMillis() / Constants.MILLIS_HOUR;
         long startHours = currentHours;
@@ -320,8 +252,12 @@ public class Tour extends BaseEntourage implements Serializable {
     }
 
     // ----------------------------------
-    // BaseEntourage overrides
+    // FeedItem overrides
     // ----------------------------------
+
+    public String getFeedType() {
+        return tourType;
+    }
 
     @Override
     public String getTitle() {
@@ -331,6 +267,16 @@ public class Tour extends BaseEntourage implements Serializable {
     @Override
     public String getDescription() {
         return organizationDescription;
+    }
+
+    public TourPoint getStartPoint() {
+        if (tourPoints == null || tourPoints.size() == 0) return null;
+        return tourPoints.get(0);
+    }
+
+    public TourPoint getEndPoint() {
+        if (tourPoints == null || tourPoints.size() < 1) return null;
+        return tourPoints.get(tourPoints.size()-1);
     }
 
     // ----------------------------------

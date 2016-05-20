@@ -35,6 +35,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.map.tour.ToursAdapter;
@@ -179,9 +180,9 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
 
     private void initializeTabHost() {
         tabHost.setup();
-        setupTab(R.id.mytours_ongoing_layout, Tour.TOUR_ON_GOING, getString(R.string.mytours_ongoing));
-        setupTab(R.id.mytours_recorded_layout, Tour.TOUR_CLOSED, getString(R.string.mytours_recorded));
-        setupTab(R.id.mytours_frozen_layout, Tour.TOUR_FREEZED, getString(R.string.mytours_frozen));
+        setupTab(R.id.mytours_ongoing_layout, FeedItem.STATUS_ON_GOING, getString(R.string.mytours_ongoing));
+        setupTab(R.id.mytours_recorded_layout, FeedItem.STATUS_CLOSED, getString(R.string.mytours_recorded));
+        setupTab(R.id.mytours_frozen_layout, FeedItem.STATUS_FREEZED, getString(R.string.mytours_frozen));
 
         TabWidget tabWidget = tabHost.getTabWidget();
         tabWidget.getChildTabViewAt(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_tabitem_left));
@@ -209,17 +210,17 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
         ongoingToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ongoingToursAdapter = new ToursAdapter();
         ongoingToursRecyclerView.setAdapter(ongoingToursAdapter);
-        paginationHashMap.put(Tour.TOUR_ON_GOING, ongoingToursPagination);
+        paginationHashMap.put(FeedItem.STATUS_ON_GOING, ongoingToursPagination);
 
         recordedToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recordedToursAdapter = new ToursAdapter();
         recordedToursRecyclerView.setAdapter(recordedToursAdapter);
-        paginationHashMap.put(Tour.TOUR_CLOSED, recordedToursPagination);
+        paginationHashMap.put(FeedItem.STATUS_CLOSED, recordedToursPagination);
 
         frozenToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         frozenToursAdapter = new ToursAdapter();
         frozenToursRecyclerView.setAdapter(frozenToursAdapter);
-        paginationHashMap.put(Tour.TOUR_FREEZED, frozenToursPagination);
+        paginationHashMap.put(FeedItem.STATUS_FREEZED, frozenToursPagination);
     }
 
     protected void showProgressBar() {
@@ -269,10 +270,10 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
                 if (activity != null) {
                     tour.setBadgeCount(activity.getPushNotificationsCountForTour(tour.getId()));
                 }
-                if (tour.getTourStatus().equals(Tour.TOUR_ON_GOING)) {
+                if (tour.getTourStatus().equals(FeedItem.STATUS_ON_GOING)) {
                     ongoingToursAdapter.add(tour);
                 }
-                else if (tour.getTourStatus().equals(Tour.TOUR_CLOSED)) {
+                else if (tour.getTourStatus().equals(FeedItem.STATUS_CLOSED)) {
                     recordedToursAdapter.add(tour);
                 }
                 else {

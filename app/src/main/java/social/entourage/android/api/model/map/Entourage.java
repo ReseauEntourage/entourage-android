@@ -1,19 +1,14 @@
 package social.entourage.android.api.model.map;
 
-import android.location.Address;
-
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import social.entourage.android.api.model.TimestampedObject;
-
 /**
  * Created by mihaiionescu on 28/04/16.
  */
-public class Entourage extends BaseEntourage implements Serializable {
+public class Entourage extends FeedItem implements Serializable {
 
     // ----------------------------------
     // Constants
@@ -113,10 +108,6 @@ public class Entourage extends BaseEntourage implements Serializable {
         this.updatedTime = updatedTime;
     }
 
-    public Date getStartTime() {
-        return createdTime;
-    }
-
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -134,6 +125,37 @@ public class Entourage extends BaseEntourage implements Serializable {
         if (!joinStatus.equals(entourage.joinStatus)) return false;
 
         return isSame;
+    }
+
+    // ----------------------------------
+    // FeedItem overrides
+    // ----------------------------------
+
+    @Override
+    public String getFeedType() {
+        return entourageType;
+    }
+
+    @Override
+    public Date getStartTime() {
+        return createdTime;
+    }
+
+    @Override
+    public Date getEndTime() {
+        return null;
+    }
+
+    public void setEndTime(Date endTime) {}
+
+    @Override
+    public TourPoint getStartPoint() {
+        return location;
+    }
+
+    @Override
+    public TourPoint getEndPoint() {
+        return null;
     }
 
     // ----------------------------------

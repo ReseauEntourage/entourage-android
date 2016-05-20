@@ -12,6 +12,7 @@ import java.util.TimeZone;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
@@ -89,7 +90,7 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
         SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
         mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()));
 
-        if (Tour.TOUR_ON_GOING.equals(tourTimestamp.getStatus())) {
+        if (FeedItem.STATUS_ON_GOING.equals(tourTimestamp.getStatus())) {
             mLocationTitle.setText(R.string.tour_info_text_ongoing);
         }
         else {

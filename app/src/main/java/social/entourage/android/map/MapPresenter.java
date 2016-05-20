@@ -1,7 +1,5 @@
 package social.entourage.android.map;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
@@ -16,12 +14,13 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import social.entourage.android.api.MapRequest;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.entourage.CreateEntourageFragment;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.tools.BusProvider;
@@ -82,18 +81,18 @@ public class MapPresenter {
         fragment.putEncounterOnMap(encounter, onClickListener);
     }
 
-    public void openTour(Tour tour) {
+    public void openFeedItem(FeedItem feedItem) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tour);
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItem);
             tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }
 
-    public void openTour(long tourId) {
+    public void openFeedItem(long feedItemId, int feedItemType) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(tourId);
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemId, feedItemType);
             tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }
@@ -145,7 +144,7 @@ public class MapPresenter {
                 openEncounter(encounterMarkerHashMap.get(markerPosition));
             }
             else if (tourMarkerHashMap.get(markerPosition) != null){
-                openTour(tourMarkerHashMap.get(markerPosition));
+                openFeedItem(tourMarkerHashMap.get(markerPosition));
             }
             return false;
         }

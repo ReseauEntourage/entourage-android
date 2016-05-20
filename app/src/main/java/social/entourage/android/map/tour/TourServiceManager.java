@@ -48,6 +48,7 @@ import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
@@ -301,7 +302,7 @@ public class TourServiceManager {
     }
 
     private void closeTour() {
-        tour.setTourStatus(Tour.TOUR_CLOSED);
+        tour.setTourStatus(FeedItem.STATUS_CLOSED);
         tour.setEndTime(new Date());
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
@@ -331,7 +332,7 @@ public class TourServiceManager {
     }
 
     private void closeTour(final Tour tour) {
-        tour.setTourStatus(Tour.TOUR_CLOSED);
+        tour.setTourStatus(FeedItem.STATUS_CLOSED);
         tour.setEndTime(new Date());
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
@@ -357,7 +358,7 @@ public class TourServiceManager {
 
     protected void freezeTour(final Tour tour) {
         if (tour == null) return;
-        tour.setTourStatus(Tour.TOUR_FREEZED);
+        tour.setTourStatus(FeedItem.STATUS_FREEZED);
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
         Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getId(), tourWrapper);

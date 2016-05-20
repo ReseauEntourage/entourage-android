@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.RemoteViews;
 
@@ -37,8 +36,7 @@ import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.Newsfeed;
-import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
@@ -449,9 +447,9 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersUserStatusChanged(TourUser user, BaseEntourage baseEntourage) {
+    public void notifyListenersUserStatusChanged(TourUser user, FeedItem feedItem) {
         for (TourServiceListener listener : listeners) {
-            listener.onUserStatusChanged(user, baseEntourage);
+            listener.onUserStatusChanged(user, feedItem);
         }
     }
 
@@ -476,7 +474,7 @@ public class TourService extends Service {
         void onToursFound(Map<Long, Tour> tours);
         void onTourClosed(boolean closed, Tour tour);
         void onGpsStatusChanged(boolean active);
-        void onUserStatusChanged(TourUser user, BaseEntourage baseEntourage);
+        void onUserStatusChanged(TourUser user, FeedItem feedItem);
         void onRetrieveNewsfeed(List<Newsfeed> newsfeedList);
     }
 }

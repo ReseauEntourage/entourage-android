@@ -47,7 +47,7 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
@@ -527,8 +527,13 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
             Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             PushNotificationContent content = message.getContent();
-            if (content != null && content.isTourRelated()) {
-                mapEntourageFragment.displayChosenTour(content.getJoinableId());
+            if (content != null) {
+                if (content.isTourRelated()) {
+                    mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.TOUR_CARD);
+                }
+                else if (content.isEntourageRelated()) {
+                    mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD);
+                }
             }
         }
         intentAction = null;
@@ -557,13 +562,13 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Subscribe
-    public void tourInfoViewRequested(OnEntourageInfoViewRequestedEvent event) {
+    public void tourInfoViewRequested(OnFeedItemInfoViewRequestedEvent event) {
         if (mapEntourageFragment != null) {
-            BaseEntourage baseEntourage = event.getBaseEntourage();
-            if (baseEntourage == null) return;
-            if (baseEntourage.getType() == TimestampedObject.TOUR_CARD) {
-                Tour tour = (Tour)baseEntourage;
-                mapEntourageFragment.displayChosenTour(tour);
+            FeedItem feedItem = event.getFeedItem();
+            if (feedItem == null) return;
+            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                Tour tour = (Tour) feedItem;
+                mapEntourageFragment.displayChosenFeedItem(tour);
                 //decrease the badge count
                 int tourBadgeCount = tour.getBadgeCount();
                 decreaseBadgeCount(tourBadgeCount);
@@ -578,7 +583,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void userActRequested(final OnUserActEvent event) {
         if (OnUserActEvent.ACT_JOIN.equals(event.getAct())) {
             if (mapEntourageFragment != null) {
-                mapEntourageFragment.act(event.getBaseEntourage());
+                mapEntourageFragment.act(event.getFeedItem());
             }
         }
         else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
@@ -597,7 +602,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                                     Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                                 }
                                 else {
-                                    mapEntourageFragment.removeUserFromNewsfeedCard(event.getBaseEntourage(), me.getId());
+                                    mapEntourageFragment.removeUserFromNewsfeedCard(event.getFeedItem(), me.getId());
                                 }
                             }
                         }
@@ -617,11 +622,11 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Subscribe
-    public void entourageCloseRequested(OnEntourageCloseRequestEvent event) {
-        BaseEntourage baseEntourage = event.getBaseEntourage();
-        if (baseEntourage == null) return;
-        if (baseEntourage.getType() == TimestampedObject.TOUR_CARD) {
-            Tour tour = (Tour)baseEntourage;
+    public void entourageCloseRequested(OnFeedItemCloseRequestEvent event) {
+        FeedItem feedItem = event.getFeedItem();
+        if (feedItem == null) return;
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            Tour tour = (Tour) feedItem;
             if (mapEntourageFragment != null) {
                 if (!tour.isClosed()) {
                     mapEntourageFragment.stopTour(tour);
@@ -756,7 +761,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (tour != null) {
             if (mainFragment instanceof MapEntourageFragment) {
                 MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                mapEntourageFragment.displayChosenTour(tour);
+                mapEntourageFragment.displayChosenFeedItem(tour);
             }
         }
     }

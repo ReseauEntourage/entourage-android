@@ -47,13 +47,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.ui.IconGenerator;
 import com.squareup.otto.Subscribe;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,7 +83,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
@@ -406,28 +404,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         centerMap(EntourageLocation.getInstance().getLastCameraPosition());
     }
 
-    public void displayChosenTour(long tourId) {
+    public void displayChosenFeedItem(long feedItemId, int feedItemType) {
         //check if we are not already displaying the tour
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
-        if (tourInformationFragment != null && tourInformationFragment.getTourId() == tourId) {
+        if (tourInformationFragment != null && tourInformationFragment.getFeedItemType() == feedItemId && tourInformationFragment.getFeedItemId() == feedItemId) {
+            //TODO refresh the tour info screen
             return;
         }
-        //display the tour
-        Tour tour = (Tour)newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, tourId);
-        if (tour != null) {
-            displayChosenTour(tour);
+        //display the feed item
+        FeedItem feedItem = (FeedItem) newsfeedAdapter.findCard(feedItemType, feedItemId);
+        if (feedItem != null) {
+            displayChosenFeedItem(feedItem);
         }
         else {
             if (presenter != null) {
-                presenter.openTour(tourId);
+                presenter.openFeedItem(feedItemId, feedItemType);
             }
         }
     }
 
-    public void displayChosenTour(Tour tour) {
+    public void displayChosenFeedItem(FeedItem feedItem) {
         if (presenter != null) {
-            presenter.openTour(tour);
+            presenter.openFeedItem(feedItem);
         }
     }
 
@@ -709,7 +708,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     choiceFragment.show(fragmentManager, "fragment_choice");
                 } else {
                     TreeMap<Long, Tour> toursTree = new TreeMap<>(tours);
-                    presenter.openTour(toursTree.firstEntry().getValue());
+                    presenter.openFeedItem(toursTree.firstEntry().getValue());
                 }
             }
         }
@@ -740,7 +739,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
 
                 @StringRes int tourStatusStringId =  R.string.local_service_stopped;
-                if (tour.getTourStatus().equals(Tour.TOUR_FREEZED)) {
+                if (tour.getTourStatus().equals(FeedItem.STATUS_FREEZED)) {
                     tourStatusStringId = R.string.tour_freezed;
                 }
 
@@ -748,7 +747,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
             } else {
                 @StringRes int tourClosedFailedId = R.string.tour_close_fail;
-                if (tour.getTourStatus().equals(Tour.TOUR_FREEZED)) {
+                if (tour.getTourStatus().equals(FeedItem.STATUS_FREEZED)) {
                     tourClosedFailedId = R.string.tour_freezed;
                 }
                 Toast.makeText(getActivity(), tourClosedFailedId, Toast.LENGTH_SHORT).show();
@@ -772,7 +771,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onUserStatusChanged(TourUser user, BaseEntourage baseEntourage) {
+    public void onUserStatusChanged(TourUser user, FeedItem feedItem) {
         if (user == null) {
             //error changing the status
             if (isRequestingToJoin > 0) {
@@ -780,8 +779,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
         }
         else {
-            if (baseEntourage.getType() == TimestampedObject.TOUR_CARD) {
-                Tour tour = (Tour)baseEntourage;
+            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                Tour tour = (Tour) feedItem;
                 tour.setJoinStatus(user.getStatus());
                 if (user.getStatus().equals(Tour.JOIN_STATUS_PENDING)) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -789,10 +788,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
                 }
             }
-            else if (baseEntourage.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                ((Entourage)baseEntourage).setJoinStatus(user.getStatus());
+            else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                ((Entourage) feedItem).setJoinStatus(user.getStatus());
             }
-            updateNewsfeedJoinStatus(baseEntourage);
+            updateNewsfeedJoinStatus(feedItem);
         }
         isRequestingToJoin--;
     }
@@ -1270,7 +1269,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 TourUser user = new TourUser();
                 user.setUserId(userId);
                 user.setStatus(status);
-                tourService.notifyListenersUserStatusChanged(user, (BaseEntourage)timestampedObject);
+                tourService.notifyListenersUserStatusChanged(user, (FeedItem)timestampedObject);
             }
         }
     }
@@ -1504,9 +1503,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 //addTourCard(tour);
             }
             if (tour.getTourStatus() == null) {
-                tour.setTourStatus(Tour.TOUR_CLOSED);
+                tour.setTourStatus(FeedItem.STATUS_CLOSED);
             }
-            if (Tour.TOUR_ON_GOING.equalsIgnoreCase(tour.getTourStatus()) && !existingTour) {
+            if (FeedItem.STATUS_ON_GOING.equalsIgnoreCase(tour.getTourStatus()) && !existingTour) {
                 addTourHead(tour);
             }
         }

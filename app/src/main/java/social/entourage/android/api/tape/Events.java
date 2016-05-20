@@ -3,11 +3,9 @@ package social.entourage.android.api.tape;
 import com.google.android.gms.maps.model.LatLng;
 
 import social.entourage.android.api.model.Message;
-import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.Tour;
 
 public class Events {
 
@@ -101,19 +99,19 @@ public class Events {
         public static String ACT_QUIT = "quit";
 
         private String act;
-        private BaseEntourage baseEntourage;
+        private FeedItem feedItem;
 
-        public OnUserActEvent(String act, BaseEntourage baseEntourage) {
+        public OnUserActEvent(String act, FeedItem feedItem) {
             this.act = act;
-            this.baseEntourage = baseEntourage;
+            this.feedItem = feedItem;
         }
 
         public String getAct() {
             return act;
         }
 
-        public BaseEntourage getBaseEntourage() {
-            return baseEntourage;
+        public FeedItem getFeedItem() {
+            return feedItem;
         }
     }
 
@@ -136,16 +134,16 @@ public class Events {
     /**
      * Event signaling that tour info view is requested
      */
-    public static class OnEntourageInfoViewRequestedEvent {
+    public static class OnFeedItemInfoViewRequestedEvent {
 
-        private BaseEntourage baseEntourage;
+        private FeedItem feedItem;
 
-        public OnEntourageInfoViewRequestedEvent(BaseEntourage baseEntourage) {
-            this.baseEntourage = baseEntourage;
+        public OnFeedItemInfoViewRequestedEvent(FeedItem feedItem) {
+            this.feedItem = feedItem;
         };
 
-        public BaseEntourage getBaseEntourage() {
-            return baseEntourage;
+        public FeedItem getFeedItem() {
+            return feedItem;
         }
     }
 
@@ -168,16 +166,16 @@ public class Events {
     /**
      * Event signaling that the tour needs to be closed/freezed
      */
-    public static class OnEntourageCloseRequestEvent {
+    public static class OnFeedItemCloseRequestEvent {
 
-        private BaseEntourage baseEntourage;
+        private FeedItem feedItem;
 
-        public OnEntourageCloseRequestEvent(BaseEntourage baseEntourage) {
-            this.baseEntourage = baseEntourage;
+        public OnFeedItemCloseRequestEvent(FeedItem feedItem) {
+            this.feedItem = feedItem;
         };
 
-        public BaseEntourage getBaseEntourage() {
-            return baseEntourage;
+        public FeedItem getFeedItem() {
+            return feedItem;
         }
     }
 
