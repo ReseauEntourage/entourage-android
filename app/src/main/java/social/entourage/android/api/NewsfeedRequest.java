@@ -18,6 +18,7 @@ public interface NewsfeedRequest {
             @Query("latitude") double latitude,
             @Query("tour_types") String tourTypes,
             @Query("show_tours") boolean showTours,
+            @Query("show_my_entourages_only") boolean onlyMyEntourages,
             @Query("entourage_types") String entourageTypes
     );
 }

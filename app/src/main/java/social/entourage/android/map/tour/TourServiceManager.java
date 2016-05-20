@@ -550,6 +550,7 @@ public class TourServiceManager {
                     location.latitude,
                     mapFilter.getTourTypes(),
                     mapFilter.showTours,
+                    mapFilter.onlyMyEntourages,
                     mapFilter.getEntourageTypes()
                     );
             call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
