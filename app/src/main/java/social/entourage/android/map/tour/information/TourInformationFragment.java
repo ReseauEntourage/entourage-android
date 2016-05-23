@@ -432,38 +432,42 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick(R.id.tour_info_button_stop_tour)
     public void onStopTourButton() {
-        if (feedItem.getType() != TimestampedObject.TOUR_CARD) return;
-        Tour tour = (Tour)feedItem;
-        if (tour.getStatus().equals(FeedItem.STATUS_ON_GOING)) {
-            //compute distance
-            float distance = 0.0f;
-            List<TourPoint> tourPointsList = tour.getTourPoints();
-            TourPoint startPoint = tourPointsList.get(0);
-            for (int i = 1; i < tourPointsList.size(); i++) {
-                TourPoint p = tourPointsList.get(i);
-                distance += p.distanceTo(startPoint);
-                startPoint = p;
+        if (feedItem.getStatus().equals(FeedItem.STATUS_ON_GOING) || feedItem.getStatus().equals(FeedItem.STATUS_OPEN)) {
+            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                Tour tour = (Tour)feedItem;
+                //compute distance
+                float distance = 0.0f;
+                List<TourPoint> tourPointsList = tour.getTourPoints();
+                TourPoint startPoint = tourPointsList.get(0);
+                for (int i = 1; i < tourPointsList.size(); i++) {
+                    TourPoint p = tourPointsList.get(i);
+                    distance += p.distanceTo(startPoint);
+                    startPoint = p;
+                }
+                tour.setDistance(distance);
+
+                //duration
+                Date now = new Date();
+                Date duration = new Date(now.getTime() - tour.getStartTime().getTime());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                tour.setDuration(dateFormat.format(duration));
+
+                //hide the options
+                optionsLayout.setVisibility(View.GONE);
+
+                //show stop tour activity
+                if (mListener != null) {
+                    mListener.showStopTourActivity(tour);
+                }
             }
-            tour.setDistance(distance);
-
-            //duration
-            Date now = new Date();
-            Date duration = new Date(now.getTime() - tour.getStartTime().getTime());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            tour.setDuration(dateFormat.format(duration));
-
-            //hide the options
-            optionsLayout.setVisibility(View.GONE);
-
-            //show stop tour activity
-            if (mListener != null) {
-                mListener.showStopTourActivity(tour);
+            else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                tourService.stopFeedItem(feedItem);
             }
         }
-        else if (tour.getTourStatus().equals(FeedItem.STATUS_CLOSED)) {
+        else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
             if (tourService != null) {
-                tourService.freezeTour(tour);
+                tourService.freezeTour((Tour)feedItem);
             }
         }
     }

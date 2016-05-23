@@ -653,6 +653,7 @@ public class TourServiceManager {
     }
 
     protected void closeEntourage(final Entourage entourage) {
+        final String oldStatus = entourage.getStatus();
         entourage.setStatus(FeedItem.STATUS_CLOSED);
         entourage.setEndTime(new Date());
         final Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
@@ -665,6 +666,7 @@ public class TourServiceManager {
                     Log.d("Success", response.body().getEntourage().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getEntourage());
                 } else {
+                    entourage.setStatus(oldStatus);
                     tourService.notifyListenersFeedItemClosed(false, entourage);
                 }
             }
@@ -672,6 +674,7 @@ public class TourServiceManager {
             @Override
             public void onFailure(Call<Entourage.EntourageWrapper> call, Throwable t) {
                 Log.e("Error", t.getLocalizedMessage());
+                entourage.setStatus(oldStatus);
                 tourService.notifyListenersFeedItemClosed(false, entourage);
             }
         });
