@@ -551,7 +551,8 @@ public class TourServiceManager {
                     mapFilter.getTourTypes(),
                     mapFilter.showTours,
                     mapFilter.onlyMyEntourages,
-                    mapFilter.getEntourageTypes()
+                    mapFilter.getEntourageTypes(),
+                    mapFilter.timeframe
                     );
             call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
                 @Override
