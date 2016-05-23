@@ -195,6 +195,19 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return addedCardInfoList.size();
     }
 
+    public List<TimestampedObject> getTypedCardInfoList(int cardType) {
+        List<TimestampedObject> typedCardInfoList = new ArrayList<>();
+        if (cachedCardInfoList == null) return typedCardInfoList;
+        Iterator<TimestampedObject> iterator = cachedCardInfoList.iterator();
+        while (iterator.hasNext()) {
+            TimestampedObject timestampedObject = iterator.next();
+            if (timestampedObject.getType() == cardType) {
+                typedCardInfoList.add(timestampedObject);
+            }
+        }
+        return typedCardInfoList;
+    }
+
     public void clearAddedCardInfoList() {
         addedCardInfoList.clear();
     }

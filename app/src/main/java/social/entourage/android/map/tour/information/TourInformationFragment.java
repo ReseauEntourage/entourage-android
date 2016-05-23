@@ -60,6 +60,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,9 +99,11 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
+import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
 
 public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener {
@@ -210,6 +214,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Bind(R.id.tour_info_join_button)
     Button joinButton;
+
+    @Bind(R.id.tour_info_members_layout)
+    LinearLayout membersLayout;
+
+    @Bind(R.id.tour_info_member_count)
+    TextView membersCountTextView;
+
+    @Bind(R.id.tour_info_members)
+    RecyclerView membersView;
+
+    MembersAdapter membersAdapter;
+    List<TimestampedObject> membersList = new ArrayList<>();
 
     int apiRequestsCount;
 
@@ -897,11 +913,28 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         });
     }
 
+    private void initializeMembersView() {
+
+        // Show the members count
+        membersCountTextView.setText(getString(R.string.tour_info_members_count, membersList.size()));
+
+        if (membersAdapter == null) {
+            // Initialize the recycler view
+            membersView.setLayoutManager(new LinearLayoutManager(getContext()));
+            membersAdapter = new MembersAdapter();
+            membersView.setAdapter(membersAdapter);
+        }
+
+        // add the members
+        membersAdapter.addItems(membersList);
+    }
+
     private void switchToPublicSection() {
         detailsSelectorRadioGroup.setVisibility(View.GONE);
         actLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.VISIBLE);
         privateSection.setVisibility(View.GONE);
+        membersLayout.setVisibility(View.GONE);
 
         updateHeaderButtons();
         updateJoinStatus();
@@ -912,6 +945,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private void switchToPrivateSection() {
         detailsSelectorRadioGroup.setVisibility(View.VISIBLE);
         actLayout.setVisibility(View.GONE);
+        membersLayout.setVisibility(View.VISIBLE);
 //        publicSection.setVisibility(View.GONE);
 //        privateSection.setVisibility(View.VISIBLE);
         if (mapFragment == null) {
@@ -931,6 +965,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
 
         initializeDiscussionList();
+        initializeMembersView();
     }
 
     private void loadPrivateCards() {
@@ -1056,7 +1091,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         );
         feedItem.addCardInfo(tourTimestamp);
 
-        //new SnapshotAsyncTask().execute(tourTimestamp);
         tourTimestampList.add(tourTimestamp);
     }
 
@@ -1105,6 +1139,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 TourUser tourUser =  iterator.next();
                 //skip the author
                 if (tourUser.getUserId() == feedItem.getAuthor().getUserID()) {
+                    TourUser clone = tourUser.clone();
+                    clone.setDisplayedAsMember(true);
+                    membersList.add(clone);
                     continue;
                 }
                 //show only the accepted users
@@ -1112,8 +1149,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     continue;
                 }
                 timestampedObjectList.add(tourUser);
+
+                TourUser clone = tourUser.clone();
+                clone.setDisplayedAsMember(true);
+                membersList.add(clone);
             }
             feedItem.addCardInfoList(timestampedObjectList);
+
+            initializeMembersView();
         }
 
         //hide the progress bar

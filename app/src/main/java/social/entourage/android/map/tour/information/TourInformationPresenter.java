@@ -101,8 +101,22 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            //TODO get entourage users
-            fragment.onFeedItemUsersReceived(null);
+            Call<TourUser.TourUsersWrapper> call = entourageRequest.retrieveEntourageUsers(fragment.feedItem.getId());
+            call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
+                @Override
+                public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
+                    if (response.isSuccess()) {
+                        fragment.onFeedItemUsersReceived(response.body().getUsers());
+                    } else {
+                        fragment.onFeedItemUsersReceived(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<TourUser.TourUsersWrapper> call, final Throwable t) {
+                    fragment.onFeedItemUsersReceived(null);
+                }
+            });
         }
         else {
             fragment.onFeedItemUsersReceived(null);

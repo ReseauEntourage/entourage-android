@@ -27,8 +27,8 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
                 new ViewHolderFactory.ViewHolderType(LocationCardViewHolder.class, LocationCardViewHolder.getLayoutResource())
         );
         ViewHolderFactory.registerViewHolder(
-                TimestampedObject.TOUR_USER,
-                new ViewHolderFactory.ViewHolderType(UserCardViewHolder.class, UserCardViewHolder.getLayoutResource())
+                TimestampedObject.TOUR_USER_JOIN,
+                new ViewHolderFactory.ViewHolderType(UserJoinCardViewHolder.class, UserJoinCardViewHolder.getLayoutResource())
         );
         ViewHolderFactory.registerViewHolder(
                 TimestampedObject.ENCOUNTER,

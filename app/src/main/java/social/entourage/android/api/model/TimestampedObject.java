@@ -15,11 +15,12 @@ public abstract class TimestampedObject {
     public static final int SEPARATOR = 0;
     public static final int CHAT_MESSAGE_ME = 1;
     public static final int CHAT_MESSAGE_OTHER = 2;
-    public static final int TOUR_USER = 3;
+    public static final int TOUR_USER_JOIN = 3;
     public static final int TOUR_STATUS = 4;
     public static final int ENCOUNTER = 5;
     public static final int TOUR_CARD = 6;
     public static final int ENTOURAGE_CARD = 7;
+    public static final int FEED_MEMBER_CARD = 8;
 
     @Expose(serialize = false)
     private int hashCode;

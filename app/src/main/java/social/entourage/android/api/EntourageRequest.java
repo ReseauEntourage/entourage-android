@@ -30,6 +30,11 @@ public interface EntourageRequest {
     @PUT("entourages/{id}.json")
     Call<Entourage.EntourageWrapper> closeEntourage(@Path("id") long entourageId, @Body Entourage.EntourageWrapper entourageWrapper);
 
+    @GET("entourages/{entourage_id}/users.json")
+    Call<TourUser.TourUsersWrapper> retrieveEntourageUsers(
+            @Path("entourage_id") long entourageId
+    );
+
     @POST("entourages/{entourage_id}/users")
     Call<TourUser.TourUserWrapper> requestToJoinEntourage(
             @Path("entourage_id") long entourageId
