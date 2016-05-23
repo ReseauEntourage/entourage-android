@@ -33,6 +33,8 @@
 
     <string name="entourage_info_quit_entourage_title">!!Quitter la entourage</string>
     <string name="entourage_info_quit_entourage_description">!!Voulez-vous vraiment quitter la entourage ?</string>
+    <string name="entourage_info_text_open">!!Entourage en cours</string>
+    <string name="entourage_info_text_close">!!Entourage terminée</string>
 
 
 </resources>

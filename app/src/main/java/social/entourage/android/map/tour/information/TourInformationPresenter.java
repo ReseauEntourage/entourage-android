@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;
@@ -28,6 +29,9 @@ public class TourInformationPresenter {
 
     @Inject
     TourRequest tourRequest;
+
+    @Inject
+    EntourageRequest entourageRequest;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -135,8 +139,22 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            //TODO get entourage messages
-            fragment.onFeedItemMessagesReceived(null);
+            Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveTourMessages(fragment.feedItem.getId(), lastMessageDate);
+            call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
+                @Override
+                public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
+                    if (response.isSuccess()) {
+                        fragment.onFeedItemMessagesReceived(response.body().getChatMessages());
+                    } else {
+                        fragment.onFeedItemMessagesReceived(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<ChatMessage.ChatMessagesWrapper> call, final Throwable t) {
+                    fragment.onFeedItemMessagesReceived(null);
+                }
+            });
         }
         else {
             fragment.onFeedItemMessagesReceived(null);
@@ -173,8 +191,22 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            //TODO send entourage message
-            fragment.onFeedItemMessageSent(null);
+            Call<ChatMessage.ChatMessageWrapper> call = entourageRequest.chatMessage(fragment.feedItem.getId(), chatMessageWrapper);
+            call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
+                @Override
+                public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
+                    if (response.isSuccess()) {
+                        fragment.onFeedItemMessageSent(response.body().getChatMessage());
+                    } else {
+                        fragment.onFeedItemMessageSent(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
+                    fragment.onFeedItemMessageSent(null);
+                }
+            });
         }
         else {
             fragment.onFeedItemMessageSent(null);

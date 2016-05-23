@@ -92,11 +92,21 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
             mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()));
         }
 
-        if (FeedItem.STATUS_ON_GOING.equals(tourTimestamp.getStatus())) {
-            mLocationTitle.setText(R.string.tour_info_text_ongoing);
+        if (FeedItem.STATUS_ON_GOING.equals(tourTimestamp.getStatus()) || FeedItem.STATUS_OPEN.equals(tourTimestamp.getStatus())) {
+            if (tourTimestamp.getFeedType() == TimestampedObject.TOUR_CARD) {
+                mLocationTitle.setText(R.string.tour_info_text_ongoing);
+            }
+            else if (tourTimestamp.getFeedType() == TimestampedObject.ENTOURAGE_CARD) {
+                mLocationTitle.setText(R.string.entourage_info_text_open);
+            }
         }
         else {
-            mLocationTitle.setText(R.string.tour_info_text_closed);
+            if (tourTimestamp.getFeedType() == TimestampedObject.TOUR_CARD) {
+                mLocationTitle.setText(R.string.tour_info_text_closed);
+            }
+            else if (tourTimestamp.getFeedType() == TimestampedObject.ENTOURAGE_CARD) {
+                mLocationTitle.setText(R.string.entourage_info_text_close);
+            }
         }
 
         if (tourTimestamp.getDistance() > 0) {

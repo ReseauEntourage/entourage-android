@@ -1,5 +1,7 @@
 package social.entourage.android.api.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -19,6 +21,7 @@ public abstract class TimestampedObject {
     public static final int TOUR_CARD = 6;
     public static final int ENTOURAGE_CARD = 7;
 
+    @Expose(serialize = false)
     private int hashCode;
 
     public abstract Date getTimestamp();

@@ -1012,6 +1012,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         TourTimestamp tourTimestamp = new TourTimestamp(
                 feedItem.getStartTime(),
                 timestamp,
+                feedItem.getType(),
                 FeedItem.STATUS_ON_GOING,
                 startPoint,
                 duration,
@@ -1047,6 +1048,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         TourTimestamp tourTimestamp = new TourTimestamp(
                 feedItem.getEndTime(),
                 feedItem.getEndTime(),
+                feedItem.getType(),
                 FeedItem.STATUS_CLOSED,
                 endPoint,
                 duration,

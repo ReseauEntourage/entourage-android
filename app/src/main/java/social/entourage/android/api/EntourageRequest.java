@@ -2,14 +2,18 @@ package social.entourage.android.api;
 
 import com.squareup.okhttp.ResponseBody;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
+import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.TourUser;
 
@@ -24,7 +28,7 @@ public interface EntourageRequest {
     );
 
     @PUT("entourages/{id}.json")
-    Call<Entourage.EntourageWrapper> closeEntourage(@Path("id") long tourId, @Body Entourage.EntourageWrapper entourageWrapper);
+    Call<Entourage.EntourageWrapper> closeEntourage(@Path("id") long entourageId, @Body Entourage.EntourageWrapper entourageWrapper);
 
     @POST("entourages/{entourage_id}/users")
     Call<TourUser.TourUserWrapper> requestToJoinEntourage(
@@ -42,6 +46,23 @@ public interface EntourageRequest {
     Call<TourUser.TourUserWrapper> removeUserFromEntourage(
             @Path("entourage_id") long entourageId,
             @Path("user_id") int userId
+    );
+
+    @POST("entourages/{entourage_id}/chat_messages.json")
+    Call<ChatMessage.ChatMessageWrapper> chatMessage(
+            @Path("entourage_id") long entourageId,
+            @Body ChatMessage.ChatMessageWrapper message
+    );
+
+    @GET("entourages/{entourage_id}/chat_messages.json")
+    Call<ChatMessage.ChatMessagesWrapper> retrieveTourMessages(
+            @Path("entourage_id") long entourageId
+    );
+
+    @GET("entourages/{entourage_id}/chat_messages.json")
+    Call<ChatMessage.ChatMessagesWrapper> retrieveTourMessages(
+            @Path("entourage_id") long entourageId,
+            @Query("before") Date pagination
     );
 
 }

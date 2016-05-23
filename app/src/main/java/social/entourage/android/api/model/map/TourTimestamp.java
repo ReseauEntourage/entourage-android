@@ -19,6 +19,7 @@ public class TourTimestamp extends TimestampedObject {
 
     private Date date;
     private Date timestamp;
+    private int feedType;
     private String status;
     private TourPoint tourPoint;
     private long duration; //millis
@@ -36,9 +37,10 @@ public class TourTimestamp extends TimestampedObject {
         distance = 0.0f;
     }
 
-    public TourTimestamp(Date date, Date timestamp, String status, TourPoint tourPoint, long duration, float distance) {
+    public TourTimestamp(Date date, Date timestamp, int feedType, String status, TourPoint tourPoint, long duration, float distance) {
         this.date = date;
         this.timestamp = timestamp;
+        this.feedType = feedType;
         this.status = status;
         this.tourPoint = tourPoint;
         this.duration = duration;
@@ -95,6 +97,10 @@ public class TourTimestamp extends TimestampedObject {
 
     public void setSnapshot(final Bitmap snapshot) {
         this.snapshot = snapshot;
+    }
+
+    public int getFeedType() {
+        return feedType;
     }
 
     // ----------------------------------
