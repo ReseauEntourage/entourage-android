@@ -35,8 +35,6 @@ import java.util.concurrent.Future;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
@@ -317,16 +315,16 @@ public class TourServiceManager {
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     updateLocationServiceFrequency();
-                    tourService.notifyListenersTourClosed(true, response.body().getTour());
+                    tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                 } else {
-                    tourService.notifyListenersTourClosed(false, tour);
+                    tourService.notifyListenersFeedItemClosed(false, tour);
                 }
             }
 
             @Override
             public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
                 Log.e("Error", t.getLocalizedMessage());
-                tourService.notifyListenersTourClosed(false, tour);
+                tourService.notifyListenersFeedItemClosed(false, tour);
             }
         });
     }
@@ -342,16 +340,16 @@ public class TourServiceManager {
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
                 if (response.isSuccess()) {
                     Log.d("Success", response.body().getTour().toString());
-                    tourService.notifyListenersTourClosed(true, response.body().getTour());
+                    tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                 } else {
-                    tourService.notifyListenersTourClosed(false, tour);
+                    tourService.notifyListenersFeedItemClosed(false, tour);
                 }
             }
 
             @Override
             public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
                 Log.e("Error", t.getLocalizedMessage());
-                tourService.notifyListenersTourClosed(false, tour);
+                tourService.notifyListenersFeedItemClosed(false, tour);
             }
         });
     }
@@ -367,16 +365,16 @@ public class TourServiceManager {
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
                 if (response.isSuccess()) {
                     Log.d("Success", response.body().getTour().toString());
-                    tourService.notifyListenersTourClosed(true, response.body().getTour());
+                    tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                 } else {
-                    tourService.notifyListenersTourClosed(false, tour);
+                    tourService.notifyListenersFeedItemClosed(false, tour);
                 }
             }
 
             @Override
             public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
                 Log.e("Error", t.getLocalizedMessage());
-                tourService.notifyListenersTourClosed(false, tour);
+                tourService.notifyListenersFeedItemClosed(false, tour);
             }
         });
     }
@@ -404,7 +402,7 @@ public class TourServiceManager {
                 }
                 else {
                     if (isTourClosing) {
-                        tourService.notifyListenersTourClosed(false, tour);
+                        tourService.notifyListenersFeedItemClosed(false, tour);
                     }
                 }
                 isTourClosing = false;
@@ -413,7 +411,7 @@ public class TourServiceManager {
             @Override
             public void onFailure(Call<Tour.TourWrapper> call, Throwable t) {
                 if (isTourClosing) {
-                    tourService.notifyListenersTourClosed(false, tour);
+                    tourService.notifyListenersFeedItemClosed(false, tour);
                 }
                 isTourClosing = false;
                 Log.e(this.getClass().getSimpleName(), t.getLocalizedMessage());
@@ -652,6 +650,31 @@ public class TourServiceManager {
         else {
             tourService.notifyListenersUserStatusChanged(null, tour);
         }
+    }
+
+    protected void closeEntourage(final Entourage entourage) {
+        entourage.setStatus(FeedItem.STATUS_CLOSED);
+        entourage.setEndTime(new Date());
+        final Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
+        entourageWrapper.setEntourage(entourage);
+        Call<Entourage.EntourageWrapper> call = entourageRequest.closeEntourage(entourage.getId(), entourageWrapper);
+        call.enqueue(new Callback<Entourage.EntourageWrapper>() {
+            @Override
+            public void onResponse(Call<Entourage.EntourageWrapper> call, Response<Entourage.EntourageWrapper> response) {
+                if (response.isSuccess()) {
+                    Log.d("Success", response.body().getEntourage().toString());
+                    tourService.notifyListenersFeedItemClosed(true, response.body().getEntourage());
+                } else {
+                    tourService.notifyListenersFeedItemClosed(false, entourage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Entourage.EntourageWrapper> call, Throwable t) {
+                Log.e("Error", t.getLocalizedMessage());
+                tourService.notifyListenersFeedItemClosed(false, entourage);
+            }
+        });
     }
 
     protected void requestToJoinEntourage(final Entourage entourage) {

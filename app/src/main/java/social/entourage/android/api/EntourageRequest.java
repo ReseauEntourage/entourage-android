@@ -23,6 +23,9 @@ public interface EntourageRequest {
             @Body Entourage.EntourageWrapper entourageWrapper
     );
 
+    @PUT("entourages/{id}.json")
+    Call<Entourage.EntourageWrapper> closeEntourage(@Path("id") long tourId, @Body Entourage.EntourageWrapper entourageWrapper);
+
     @POST("entourages/{entourage_id}/users")
     Call<TourUser.TourUserWrapper> requestToJoinEntourage(
             @Path("entourage_id") long entourageId

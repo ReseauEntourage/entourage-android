@@ -1253,7 +1253,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         for (Tour receivedTour:tours) {
             if (receivedTour.getId() == this.feedItem.getId()) {
                 if(!receivedTour.isSame((Tour)this.feedItem)) {
-                    onTourClosed(true, receivedTour);
+                    onFeedItemClosed(true, receivedTour);
                 }
             }
         }
@@ -1275,19 +1275,19 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     @Override
-    public void onTourClosed(final boolean closed, final Tour tour) {
-        //ignore requests that are not related to our tour
-        if (feedItem.getType() != TimestampedObject.TOUR_CARD) return;
-        if (tour.getId() != this.feedItem.getId()) return;
+    public void onFeedItemClosed(final boolean closed, final FeedItem feedItem) {
+        //ignore requests that are not related to our feed item
+        if (this.feedItem.getType() != feedItem.getType()) return;
+        if (feedItem.getId() != this.feedItem.getId()) return;
 
         if (closed) {
-            this.feedItem.setStatus(tour.getTourStatus());
-            this.feedItem.setEndTime(tour.getEndTime());
-            if (tour.getTourStatus().equals(FeedItem.STATUS_CLOSED) && tour.isPrivate()) {
+            this.feedItem.setStatus(feedItem.getStatus());
+            this.feedItem.setEndTime(feedItem.getEndTime());
+            if (feedItem.getStatus().equals(FeedItem.STATUS_CLOSED) && feedItem.isPrivate()) {
                     addDiscussionTourEndCard();
                     updateDiscussionList();
                 }
-                else if (tour.getTourStatus().equals(FeedItem.STATUS_FREEZED)){
+                else if (feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)){
                     commentLayout.setVisibility(View.GONE);
             }
             optionsLayout.setVisibility(View.GONE);

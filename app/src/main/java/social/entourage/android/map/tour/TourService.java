@@ -330,8 +330,13 @@ public class TourService extends Service {
         }
     }
 
-    public void stopOtherTour(Tour tour) {
-        tourServiceManager.finishTour(tour);
+    public void stopFeedItem(FeedItem feedItem) {
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            tourServiceManager.finishTour((Tour)feedItem);
+        }
+        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            tourServiceManager.closeEntourage((Entourage)feedItem);
+        }
     }
 
     public void freezeTour(Tour tour) {
@@ -401,13 +406,13 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersTourClosed(boolean closed, Tour tour) {
-        if (closed) {
+    public void notifyListenersFeedItemClosed(boolean closed, FeedItem feedItem) {
+        if (closed && isRunning()) {
             removeNotification();
             isPaused = false;
         }
         for (TourServiceListener listener : listeners) {
-            listener.onTourClosed(closed, tour);
+            listener.onFeedItemClosed(closed, feedItem);
         }
     }
 
@@ -478,7 +483,7 @@ public class TourService extends Service {
         void onRetrieveToursByUserId(List<Tour> tours);
         void onUserToursFound(Map<Long, Tour> tours);
         void onToursFound(Map<Long, Tour> tours);
-        void onTourClosed(boolean closed, Tour tour);
+        void onFeedItemClosed(boolean closed, FeedItem feedItem);
         void onGpsStatusChanged(boolean active);
         void onUserStatusChanged(TourUser user, FeedItem feedItem);
         void onRetrieveNewsfeed(List<Newsfeed> newsfeedList);

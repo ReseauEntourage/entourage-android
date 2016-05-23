@@ -625,12 +625,12 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void entourageCloseRequested(OnFeedItemCloseRequestEvent event) {
         FeedItem feedItem = event.getFeedItem();
         if (feedItem == null) return;
-        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            Tour tour = (Tour) feedItem;
-            if (mapEntourageFragment != null) {
-                if (!tour.isClosed()) {
-                    mapEntourageFragment.stopTour(tour);
-                } else {
+        if (mapEntourageFragment != null) {
+            if (!feedItem.isClosed()) {
+                mapEntourageFragment.stopFeedItem(feedItem);
+            } else {
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                    Tour tour = (Tour) feedItem;
                     mapEntourageFragment.freezeTour(tour);
                 }
             }
