@@ -1272,14 +1272,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void removeUserFromNewsfeedCard(TimestampedObject card, int userId) {
+    public void removeUserFromNewsfeedCard(FeedItem card, int userId) {
         if (tourService != null) {
-            if (card.getType() == TimestampedObject.TOUR_CARD) {
-                tourService.removeUserFromTour((Tour)card, userId);
-            }
-            else if (card.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                //TODO Remove user from entourage
-            }
+            tourService.removeUserFromFeedItem(card, userId);
         }
     }
 

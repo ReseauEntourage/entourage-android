@@ -36,6 +36,7 @@ import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
@@ -341,8 +342,13 @@ public class TourService extends Service {
         tourServiceManager.requestToJoinTour(tour);
     }
 
-    public void removeUserFromTour(Tour tour, int userId) {
-        tourServiceManager.removeUserFromTour(tour, userId);
+    public void removeUserFromFeedItem(FeedItem feedItem, int userId) {
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            tourServiceManager.removeUserFromTour((Tour)feedItem, userId);
+        }
+        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            tourServiceManager.removeUserFromEntourage((Entourage)feedItem, userId);
+        }
     }
 
     public void requestToJoinEntourage(Entourage entourage) {

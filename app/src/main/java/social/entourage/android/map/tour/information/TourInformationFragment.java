@@ -471,8 +471,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @OnClick(R.id.tour_info_button_quit_tour)
     public void onQuitTourButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.tour_info_quit_tour_title)
-                .setMessage(R.string.tour_info_quit_tour_description)
+        int titleId = R.string.tour_info_quit_tour_title;
+        int messageId = R.string.tour_info_quit_tour_description;
+        if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            titleId = R.string.entourage_info_quit_entourage_title;
+            messageId = R.string.entourage_info_quit_entourage_description;
+        }
+        builder.setTitle(titleId)
+                .setMessage(messageId)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
@@ -486,10 +492,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                                 Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                // TODO Quit Entourage
-                                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                                    tourService.removeUserFromTour((Tour)feedItem, me.getId());
-                                }
+                                tourService.removeUserFromFeedItem(feedItem, me.getId());
                             }
                         }
                     }

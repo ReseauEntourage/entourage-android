@@ -680,6 +680,32 @@ public class TourServiceManager {
         }
     }
 
+    protected void removeUserFromEntourage(final Entourage entourage, int userId) {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourage.getId(), userId);
+            call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+                @Override
+                public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+                    if (response.isSuccess()) {
+                        tourService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
+                    }
+                    else {
+                        tourService.notifyListenersUserStatusChanged(null, entourage);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call call, final Throwable t) {
+                    tourService.notifyListenersUserStatusChanged(null, entourage);
+                }
+            });
+        }
+        else {
+            tourService.notifyListenersUserStatusChanged(null, entourage);
+        }
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
