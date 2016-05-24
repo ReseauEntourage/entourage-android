@@ -408,8 +408,16 @@ public class TourService extends Service {
 
     public void notifyListenersFeedItemClosed(boolean closed, FeedItem feedItem) {
         if (closed && feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            removeNotification();
-            isPaused = false;
+            Tour ongoingTour = tourServiceManager.getTour();
+            if (ongoingTour != null) {
+                if (ongoingTour.getId() == feedItem.getId()) {
+                    removeNotification();
+                    isPaused = false;
+                }
+            } else {
+                removeNotification();
+                isPaused = false;
+            }
         }
         for (TourServiceListener listener : listeners) {
             listener.onFeedItemClosed(closed, feedItem);

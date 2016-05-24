@@ -126,6 +126,7 @@ public class TourServiceManager {
     }
 
     public long getTourId() {
+        if (this.tour != null) return this.tour.getId();
         return tourId;
     }
 

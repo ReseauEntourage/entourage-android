@@ -1228,22 +1228,34 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void stopFeedItem(FeedItem feedItem) {
         if (getActivity() != null) {
             if (tourService != null) {
-                if (feedItem != null && tourService.getCurrentTour() == null) {
-                    if (feedItem.getType() == TimestampedObject.TOUR_CARD && tourService.getCurrentTourId() == feedItem.getId()) {
-                        if (tourService.isRunning()) {
-                            loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
-                            loaderStop.setCancelable(true);
-                            tourService.endTreatment();
-                            FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
-                        }
-                    }
-                    else {
+                if (feedItem != null) {
+                    if (!tourService.isRunning()) {
+                        // Not ongoing tour, just stop the feed item
                         loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                         loaderStop.setCancelable(true);
                         FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
                         tourService.stopFeedItem(feedItem);
                         return;
                     }
+                    else {
+                        if (feedItem.getType() == TimestampedObject.TOUR_CARD && tourService.getCurrentTourId() == feedItem.getId()) {
+                            // ongoing tour
+                            loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
+                            loaderStop.setCancelable(true);
+                            tourService.endTreatment();
+                            FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+                        }
+                        else {
+                            // Not ongoing tour, just stop the feed item
+                            loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
+                            loaderStop.setCancelable(true);
+                            FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+                            tourService.stopFeedItem(feedItem);
+                            return;
+                        }
+                    }
+
+
                 }
                 else {
                     if (tourService.isRunning()) {
@@ -1467,7 +1479,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void drawCurrentTour(List<TourPoint> pointsToDraw, String tourType, Date startDate) {
-        if (!pointsToDraw.isEmpty()) {
+        if (map != null && !pointsToDraw.isEmpty()) {
             PolylineOptions line = new PolylineOptions();
             color = getTrackColor(true, tourType, startDate);
             line.zIndex(2f);
@@ -1558,7 +1570,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (newsfeedAdapter.findCard(tour) != null) {
             newsfeedAdapter.updateCard(tour);
         } else {
-            newsfeedAdapter.addCardInfo(tour);
+            newsfeedAdapter.addCardInfoBeforeTimestamp(tour);
         }
     }
 
