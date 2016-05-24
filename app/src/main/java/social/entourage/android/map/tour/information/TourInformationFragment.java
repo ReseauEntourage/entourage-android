@@ -296,7 +296,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         else {
             requestedFeedItemId = getArguments().getLong(KEY_FEEDITEM_ID);
             requestedFeedItemType = getArguments().getInt(KEY_FEEDITEM_TYPE);
-            if (requestedFeedItemType == TimestampedObject.TOUR_CARD) {
+            if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
                 presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType);
             }
         }

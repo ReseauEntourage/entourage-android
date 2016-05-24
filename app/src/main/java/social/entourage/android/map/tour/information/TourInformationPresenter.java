@@ -12,6 +12,7 @@ import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 
@@ -67,8 +68,22 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            //TODO get entourage
-            fragment.onFeedItemReceived(null);
+            Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(feedItemId);
+            call.enqueue(new Callback<Entourage.EntourageWrapper>() {
+                @Override
+                public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
+                    if (response.isSuccess()) {
+                        fragment.onFeedItemReceived(response.body().getEntourage());
+                    } else {
+                        fragment.onFeedItemReceived(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
+                    fragment.onFeedItemReceived(null);
+                }
+            });
         }
         else {
             fragment.onFeedItemReceived(null);

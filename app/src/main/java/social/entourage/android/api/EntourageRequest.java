@@ -27,6 +27,11 @@ public interface EntourageRequest {
             @Body Entourage.EntourageWrapper entourageWrapper
     );
 
+    @GET("entourages/{entourage_id}")
+    Call<Entourage.EntourageWrapper> retrieveEntourageById(
+            @Path("entourage_id") long entourageId
+    );
+
     @PUT("entourages/{id}.json")
     Call<Entourage.EntourageWrapper> closeEntourage(@Path("id") long entourageId, @Body Entourage.EntourageWrapper entourageWrapper);
 
