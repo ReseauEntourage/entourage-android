@@ -1,7 +1,6 @@
 package social.entourage.android.map.tour.my;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -18,7 +17,6 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,11 +32,13 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.base.EntouragePagination;
-import social.entourage.android.map.tour.ToursAdapter;
+import social.entourage.android.newsfeed.NewsfeedAdapter;
 
 public class MyToursFragment extends DialogFragment implements TabHost.OnTabChangeListener {
 
@@ -62,29 +62,29 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     @Bind(R.id.mytours_tabHost)
     TabHost tabHost;
 
-    @Bind(R.id.mytours_ongoing)
-    RecyclerView ongoingToursRecyclerView;
+//    @Bind(R.id.mytours_ongoing)
+//    RecyclerView ongoingToursRecyclerView;
+//
+//    ToursAdapter ongoingToursAdapter;
 
-    ToursAdapter ongoingToursAdapter;
+    @Bind(R.id.mytours_active)
+    RecyclerView activeFeedsRecyclerView;
 
-    @Bind(R.id.mytours_recorded)
-    RecyclerView recordedToursRecyclerView;
-
-    ToursAdapter recordedToursAdapter;
+    NewsfeedAdapter activeFeedsAdapter;
 
     @Bind(R.id.mytours_frozen)
-    RecyclerView frozenToursRecyclerView;
+    RecyclerView frozenFeedsRecyclerView;
 
-    ToursAdapter frozenToursAdapter;
+    NewsfeedAdapter frozenFeedsAdapter;
 
     @Bind(R.id.mytours_progress_bar)
     ProgressBar progressBar;
 
     private int apiRequestsCount = 0;
 
-    private EntouragePagination ongoingToursPagination= new EntouragePagination(Constants.ITEMS_PER_PAGE);
-    private EntouragePagination recordedToursPagination= new EntouragePagination(Constants.ITEMS_PER_PAGE);
-    private EntouragePagination frozenToursPagination= new EntouragePagination(Constants.ITEMS_PER_PAGE);
+//    private EntouragePagination ongoingToursPagination= new EntouragePagination(Constants.ITEMS_PER_PAGE);
+    private EntouragePagination activeFeedsPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+    private EntouragePagination frozenFeedsPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
     private HashMap<String, EntouragePagination> paginationHashMap = new HashMap<>();
 
@@ -115,7 +115,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
-        retrieveMyTours(tabHost.getCurrentTabTag());
+        retrieveMyFeeds(tabHost.getCurrentTabTag());
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -155,18 +155,18 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.background)));
 
-        ongoingToursRecyclerView.addOnScrollListener(scrollListener);
-        recordedToursRecyclerView.addOnScrollListener(scrollListener);
-        frozenToursRecyclerView.addOnScrollListener(scrollListener);
+//        ongoingToursRecyclerView.addOnScrollListener(scrollListener);
+        activeFeedsRecyclerView.addOnScrollListener(scrollListener);
+        frozenFeedsRecyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        ongoingToursRecyclerView.removeOnScrollListener(scrollListener);
-        recordedToursRecyclerView.removeOnScrollListener(scrollListener);
-        frozenToursRecyclerView.removeOnScrollListener(scrollListener);
+//        ongoingToursRecyclerView.removeOnScrollListener(scrollListener);
+        activeFeedsRecyclerView.removeOnScrollListener(scrollListener);
+        frozenFeedsRecyclerView.removeOnScrollListener(scrollListener);
     }
 
     // ----------------------------------
@@ -180,9 +180,9 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
 
     private void initializeTabHost() {
         tabHost.setup();
-        setupTab(R.id.mytours_ongoing_layout, FeedItem.STATUS_ON_GOING, getString(R.string.mytours_ongoing));
-        setupTab(R.id.mytours_recorded_layout, FeedItem.STATUS_CLOSED, getString(R.string.mytours_recorded));
-        setupTab(R.id.mytours_frozen_layout, FeedItem.STATUS_FREEZED, getString(R.string.mytours_frozen));
+        //setupTab(R.id.mytours_ongoing_layout, FeedItem.STATUS_ON_GOING, getString(R.string.mytours_ongoing));
+        setupTab(R.id.mytours_active_layout, Newsfeed.STATUS_ACTIVE, getString(R.string.mytours_recorded));
+        setupTab(R.id.mytours_frozen_layout, Newsfeed.STATUS_CLOSED, getString(R.string.mytours_frozen));
 
         TabWidget tabWidget = tabHost.getTabWidget();
         tabWidget.getChildTabViewAt(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_tabitem_left));
@@ -207,20 +207,20 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     }
 
     private void initializeRecyclerViews() {
-        ongoingToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ongoingToursAdapter = new ToursAdapter();
-        ongoingToursRecyclerView.setAdapter(ongoingToursAdapter);
-        paginationHashMap.put(FeedItem.STATUS_ON_GOING, ongoingToursPagination);
+//        ongoingToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        ongoingToursAdapter = new ToursAdapter();
+//        ongoingToursRecyclerView.setAdapter(ongoingToursAdapter);
+//        paginationHashMap.put(FeedItem.STATUS_ON_GOING, ongoingToursPagination);
 
-        recordedToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recordedToursAdapter = new ToursAdapter();
-        recordedToursRecyclerView.setAdapter(recordedToursAdapter);
-        paginationHashMap.put(FeedItem.STATUS_CLOSED, recordedToursPagination);
+        activeFeedsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        activeFeedsAdapter = new NewsfeedAdapter();
+        activeFeedsRecyclerView.setAdapter(activeFeedsAdapter);
+        paginationHashMap.put(Newsfeed.STATUS_ACTIVE, activeFeedsPagination);
 
-        frozenToursRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        frozenToursAdapter = new ToursAdapter();
-        frozenToursRecyclerView.setAdapter(frozenToursAdapter);
-        paginationHashMap.put(FeedItem.STATUS_FREEZED, frozenToursPagination);
+        frozenFeedsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        frozenFeedsAdapter = new NewsfeedAdapter();
+        frozenFeedsRecyclerView.setAdapter(frozenFeedsAdapter);
+        paginationHashMap.put(Newsfeed.STATUS_CLOSED, frozenFeedsPagination);
     }
 
     protected void showProgressBar() {
@@ -236,12 +236,12 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
         }
     }
 
-    private void retrieveMyTours(String status) {
+    private void retrieveMyFeeds(String status) {
         EntouragePagination pagination = paginationHashMap.get(status);
         if (pagination != null && !pagination.isLoading) {
             showProgressBar();
             pagination.isLoading = true;
-            presenter.getMyTours(pagination.page, pagination.itemsPerPage, status);
+            presenter.getMyFeeds(pagination.page, pagination.itemsPerPage, status);
         }
     }
 
@@ -249,7 +249,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     // Presenter callbacks
     // ----------------------------------
 
-    protected void onToursReceived(List<Tour> tourList, String status) {
+    protected void onNewsfeedReceived(List<Newsfeed> newsfeedList, String status) {
         hideProgressBar();
         //reset the loading indicator
         EntouragePagination pagination = paginationHashMap.get(status);
@@ -257,32 +257,46 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
             pagination.isLoading = false;
         }
         //ignore errors
-        if (tourList == null) return;
+        if (newsfeedList == null) return;
         //add the tours
-        if (tourList.size() > 0) {
+        if (newsfeedList.size() > 0) {
             DrawerActivity activity = null;
             if (getActivity() instanceof DrawerActivity) {
                 activity = (DrawerActivity) getActivity();
             }
-            Iterator<Tour> iterator = tourList.iterator();
+            Iterator<Newsfeed> iterator = newsfeedList.iterator();
             while (iterator.hasNext()) {
-                Tour tour = iterator.next();
+                Newsfeed newsfeed = iterator.next();
+                FeedItem feedItem = (FeedItem)newsfeed.getData();
+                if (feedItem == null || !(feedItem instanceof FeedItem)) {
+                    continue;
+                }
                 if (activity != null) {
-                    tour.setBadgeCount(activity.getPushNotificationsCountForTour(tour.getId()));
+                    feedItem.setBadgeCount(activity.getPushNotificationsCountForTour(feedItem.getId()));
                 }
-                if (tour.getTourStatus().equals(FeedItem.STATUS_ON_GOING)) {
-                    ongoingToursAdapter.add(tour);
+//                if (tour.getTourStatus().equals(FeedItem.STATUS_ON_GOING)) {
+//                    ongoingToursAdapter.add(tour);
+//                }
+                if (status.equals(Newsfeed.STATUS_ACTIVE)) {
+                    if (activeFeedsAdapter.findCard((TimestampedObject)feedItem) == null) {
+                        activeFeedsAdapter.addCardInfoBeforeTimestamp((TimestampedObject) feedItem);
+                    }
+                    else {
+                        activeFeedsAdapter.updateCard((TimestampedObject) feedItem);
+                    }
                 }
-                else if (tour.getTourStatus().equals(FeedItem.STATUS_CLOSED)) {
-                    recordedToursAdapter.add(tour);
-                }
-                else {
-                    frozenToursAdapter.add(tour);
+                else if (status.equals(Newsfeed.STATUS_CLOSED)) {
+                    if (frozenFeedsAdapter.findCard((TimestampedObject)feedItem) == null) {
+                        frozenFeedsAdapter.addCardInfoBeforeTimestamp((TimestampedObject) feedItem);
+                    }
+                    else {
+                        frozenFeedsAdapter.updateCard((TimestampedObject) feedItem);
+                    }
                 }
             }
             //increase page and items count
             if (pagination != null) {
-                pagination.loadedItems(tourList.size());
+                pagination.loadedItems(newsfeedList.size());
             }
         }
     }
@@ -310,7 +324,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
             if (pagination.page > 1) {
                 pagination.page --;
             }
-            retrieveMyTours(currentTabTag);
+            retrieveMyFeeds(currentTabTag);
         }
         scrollDeltaY = 0;
     }
@@ -322,47 +336,52 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     public void onPushNotificationReceived(Message message) {
         PushNotificationContent content = message.getContent();
         if (content == null) return;
-        if (content.isEntourageRelated()) return;
-        long tourId = content.getJoinableId();
-        Tour tour;
-        tour = ongoingToursAdapter.findTour(tourId);
-        if (tour != null) {
-            tour.increaseBadgeCount();
-            ongoingToursAdapter.updateTour(tour);
+        String joinableTypeString = content.getType();
+        int cardType = 0;
+        if (content.isTourRelated()) cardType = TimestampedObject.TOUR_CARD;
+        else if (content.isEntourageRelated()) cardType = TimestampedObject.ENTOURAGE_CARD;
+        else return;
+        long joinableId = content.getJoinableId();
+
+//        Tour tour;
+//        tour = ongoingToursAdapter.findTour(tourId);
+//        if (tour != null) {
+//            tour.increaseBadgeCount();
+//            ongoingToursAdapter.updateTour(tour);
+//            return;
+//        }
+        TimestampedObject card = activeFeedsAdapter.findCard(cardType, joinableId);
+        if (card != null && card instanceof FeedItem) {
+            ((FeedItem)card).increaseBadgeCount();
+            activeFeedsAdapter.updateCard(card);
             return;
         }
-        tour = recordedToursAdapter.findTour(tourId);
-        if (tour != null) {
-            tour.increaseBadgeCount();
-            recordedToursAdapter.updateTour(tour);
-            return;
-        }
-        tour = frozenToursAdapter.findTour(tourId);
-        if (tour != null) {
-            tour.increaseBadgeCount();
-            frozenToursAdapter.updateTour(tour);
+        card = frozenFeedsAdapter.findCard(cardType, joinableId);
+        if (card != null && card instanceof FeedItem) {
+            ((FeedItem)card).increaseBadgeCount();
+            frozenFeedsAdapter.updateCard(card);
             return;
         }
     }
 
     public void onPushNotificationConsumedForTour(long tourId) {
-        Tour tour;
-        tour = ongoingToursAdapter.findTour(tourId);
-        if (tour != null) {
-            tour.setBadgeCount(0);
-            ongoingToursAdapter.updateTour(tour);
+//        Tour tour;
+//        tour = ongoingToursAdapter.findTour(tourId);
+//        if (tour != null) {
+//            tour.setBadgeCount(0);
+//            ongoingToursAdapter.updateTour(tour);
+//            return;
+//        }
+        TimestampedObject card = activeFeedsAdapter.findCard(TimestampedObject.TOUR_CARD, tourId);
+        if (card != null && card instanceof Tour) {
+            ((Tour)card).setBadgeCount(0);
+            activeFeedsAdapter.updateCard(card);
             return;
         }
-        tour = recordedToursAdapter.findTour(tourId);
-        if (tour != null) {
-            tour.setBadgeCount(0);
-            recordedToursAdapter.updateTour(tour);
-            return;
-        }
-        tour = frozenToursAdapter.findTour(tourId);
-        if (tour != null) {
-            tour.setBadgeCount(0);
-            frozenToursAdapter.updateTour(tour);
+        card = frozenFeedsAdapter.findCard(TimestampedObject.TOUR_CARD, tourId);
+        if (card != null && card instanceof Tour) {
+            ((Tour)card).setBadgeCount(0);
+            frozenFeedsAdapter.updateCard(card);
             return;
         }
     }
@@ -389,7 +408,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int position = linearLayoutManager.findLastVisibleItemPosition();
                 if (position == recyclerView.getAdapter().getItemCount()-1) {
-                    retrieveMyTours(currentTabTag);
+                    retrieveMyFeeds(currentTabTag);
                 }
 
                 scrollDeltaY = 0;

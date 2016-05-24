@@ -5,8 +5,6 @@
              tools:context="social.entourage.android.map.tour.my.MyToursFragment"
                 android:background="@color/background_light">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -69,7 +67,7 @@
                 >
 
                 <LinearLayout
-                    android:id="@+id/mytours_ongoing_layout"
+                    android:id="@+id/mytours_active_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -77,19 +75,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/mytours_ongoing"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/mytours_recorded_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/mytours_recorded"/>
+                        android:id="@+id/mytours_active"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,5 +99,18 @@
         android:id="@+id/mytours_progress_bar"
         android:layout_gravity="center_horizontal"
         android:layout_centerInParent="true"/>
+
+    <LinearLayout
+        android:id="@+id/mytours_ongoing_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mytours_ongoing"/>
+    </LinearLayout>
 
 </RelativeLayout>

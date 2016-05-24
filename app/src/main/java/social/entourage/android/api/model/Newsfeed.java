@@ -26,6 +26,10 @@ public class Newsfeed {
     // CONSTANTS
     // ----------------------------------
 
+    public static final String STATUS_ALL = "ALL";
+    public static final String STATUS_ACTIVE = "ACTIVE";
+    public static final String STATUS_CLOSED = "CLOSED";
+
     static final String TYPE = "type";
     static final String DATA = "data";
 
