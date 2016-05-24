@@ -22,4 +22,11 @@ public interface NewsfeedRequest {
             @Query("entourage_types") String entourageTypes,
             @Query("time_frame") int timeFrame
     );
+
+    @GET("myfeeds")
+    Call<Newsfeed.NewsfeedWrapper> retrieveMyFeeds(
+            @Query("page") int page,
+            @Query("per") int per,
+            @Query("status") String status
+    );
 }
