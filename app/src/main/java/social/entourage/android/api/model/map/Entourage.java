@@ -25,7 +25,7 @@ public class Entourage extends FeedItem implements Serializable {
 
     public static final String NEWSFEED_TYPE = "Entourage";
 
-    public static final float HEATMAP_SIZE = 100; //meters
+    public static final float HEATMAP_SIZE = 500; //meters
 
     // ----------------------------------
     // Attributes
