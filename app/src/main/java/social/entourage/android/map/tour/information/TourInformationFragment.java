@@ -665,7 +665,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         Date now = new Date();
 
         //add the start time
-        addDiscussionTourStartCard(now);
+        if (feedItem.getType() != TimestampedObject.ENTOURAGE_CARD || FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
+            addDiscussionTourStartCard(now);
+        }
 
         //check if we need to add the Tour closed card
         if (feedItem.isClosed()) {
@@ -1091,7 +1093,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         );
         feedItem.addCardInfo(tourTimestamp);
 
-        tourTimestampList.add(tourTimestamp);
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            tourTimestampList.add(tourTimestamp);
+        }
     }
 
     private void scrollToLastCard() {

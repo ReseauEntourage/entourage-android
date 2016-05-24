@@ -163,7 +163,7 @@ public class Entourage extends FeedItem implements Serializable {
 
     @Override
     public Date getEndTime() {
-        return null;
+        return createdTime;
     }
 
     public void setEndTime(Date endTime) {}
