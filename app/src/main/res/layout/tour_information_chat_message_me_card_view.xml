@@ -27,4 +27,10 @@
         android:src="@drawable/ic_user_photo_small"
         android:visibility="gone"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tic_chat_user_name"
+        android:visibility="gone"/>
+
 </LinearLayout>

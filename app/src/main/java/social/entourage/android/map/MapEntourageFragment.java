@@ -1254,8 +1254,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             return;
                         }
                     }
-
-
                 }
                 else {
                     if (tourService.isRunning()) {

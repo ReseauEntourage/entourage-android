@@ -21,6 +21,7 @@ import social.entourage.android.tools.BusProvider;
 public class ChatMessageCardViewHolder extends BaseCardViewHolder {
 
     private ImageView mUserPhotoView;
+    private TextView mUserNameView;
     private TextView mMessageView;
 
     private int userId = 0;
@@ -33,6 +34,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
     protected void bindFields() {
 
         mUserPhotoView = (ImageView) itemView.findViewById(R.id.tic_chat_user_photo);
+        mUserNameView = (TextView) itemView.findViewById(R.id.tic_chat_user_name);
         mMessageView = (TextView) itemView.findViewById(R.id.tic_chat_message);
 
         mUserPhotoView.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +58,10 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
             Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
                     .transform(new CropCircleTransformation())
                     .into(mUserPhotoView);
+        }
+
+        if (chatMessage.getUserName() != null) {
+            mUserNameView.setText(chatMessage.getUserName());
         }
 
         mMessageView.setText(chatMessage.getContent());
