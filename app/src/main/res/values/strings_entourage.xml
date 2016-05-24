@@ -8,7 +8,7 @@
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_hint">Description détaillée</string>
 
-    <string name="entourage_create_error">L'entourage n'a pas été créé!</string>
+    <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
     <string name="entourage_create_error_title_empty">Le titre ne peut pas être vide</string>
     <string name="entourage_create_error_title_too_long">Le titre est trop long</string>
@@ -25,14 +25,14 @@
     <!-- Entourage Location -->
     <string name="entourage_location_title">MA POSITION</string>
     <string name="entourage_location_search_hint">Chercher ou déplacer la carte</string>
-    <string name="entourage_location_address_not_found">L'adresse n'a pas été trouvée</string>
+    <string name="entourage_location_address_not_found">L\'adresse n\'a pas été trouvée</string>
 
     <!-- Entourage Notifications -->
     <string name="entourage_join_request_received">%1$s souhaite rejoindre votre entourage</string>
     <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre entourage]]></string>
 
-    <string name="entourage_info_quit_entourage_title">Quitter l'entourage</string>
-    <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter l'entourage ?</string>
+    <string name="entourage_info_quit_entourage_title">Quitter l\'entourage</string>
+    <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter l\'entourage ?</string>
     <string name="entourage_info_text_open">Entourage actif</string>
     <string name="entourage_info_text_close">Entourage fermé</string>
 
