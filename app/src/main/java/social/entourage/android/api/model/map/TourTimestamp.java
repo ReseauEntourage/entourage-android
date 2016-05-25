@@ -1,5 +1,7 @@
 package social.entourage.android.api.model.map;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 import social.entourage.android.api.model.TimestampedObject;
@@ -17,9 +19,12 @@ public class TourTimestamp extends TimestampedObject {
 
     private Date date;
     private Date timestamp;
+    private int feedType;
     private String status;
+    private TourPoint tourPoint;
     private long duration; //millis
     private float distance; //meters
+    private Bitmap snapshot;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -32,10 +37,12 @@ public class TourTimestamp extends TimestampedObject {
         distance = 0.0f;
     }
 
-    public TourTimestamp(Date date, Date timestamp, String status, long duration, float distance) {
+    public TourTimestamp(Date date, Date timestamp, int feedType, String status, TourPoint tourPoint, long duration, float distance) {
         this.date = date;
         this.timestamp = timestamp;
+        this.feedType = feedType;
         this.status = status;
+        this.tourPoint = tourPoint;
         this.duration = duration;
         this.distance = distance;
     }
@@ -76,9 +83,28 @@ public class TourTimestamp extends TimestampedObject {
         this.status = status;
     }
 
+    public TourPoint getTourPoint() {
+        return tourPoint;
+    }
+
+    public void setTourPoint(final TourPoint tourPoint) {
+        this.tourPoint = tourPoint;
+    }
+
+    public Bitmap getSnapshot() {
+        return snapshot;
+    }
+
+    public void setSnapshot(final Bitmap snapshot) {
+        this.snapshot = snapshot;
+    }
+
+    public int getFeedType() {
+        return feedType;
+    }
 
     // ----------------------------------
-    // TimestampedObject ovverides
+    // TimestampedObject overrides
     // ----------------------------------
 
     @Override
@@ -102,4 +128,10 @@ public class TourTimestamp extends TimestampedObject {
     public int getType() {
         return TOUR_STATUS;
     }
+
+    @Override
+    public long getId() {
+        return 0;
+    }
+
 }

@@ -24,6 +24,7 @@
     <string name="tour_type_alimentary">Distributive</string>
     <string name="tour_create_encounter_button">Créer une rencontre</string>
     <string name="tour_text_separator">-</string>
+    <string name="tour_create_choose_type">Sélectionnez votre type de maraude:</string>
 
     <!-- Tour info -->
     <string name="tour_info_title">MARAUDE</string>
@@ -42,7 +43,7 @@
     <string name="tour_info_text_cancel">Annuler</string>
     <string name="tour_info_button_close">Fermer</string>
     <string name="tour_info_location_card_date_format">c. HH:mm</string>
-    <string name="tour_info_text_join_accepted">\u0020a rejoint votre maraude.</string>
+    <string name="tour_info_text_join_accepted">\u0020a rejoint la maraude.</string>
     <string name="tour_info_text_join_rejected">\u0020 rejeté</string>
     <string name="tour_info_text_join_pending">\u0020 en attente</string>
     <string name="tour_info_error_chat_message">Message non envoyé</string>
@@ -55,6 +56,7 @@
     <string name="tour_info_quit_tour_description">Voulez-vous vraiment quitter la maraude ?</string>
     <string name="tour_info_quit_tour_error">Echec d\'envoi de la requête</string>
     <string name="tour_info_request_error">Erreur d\'envoi de la requête</string>
+    <string name="tour_info_members_count">Members (%1$d)</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>
@@ -90,7 +92,7 @@
     <string name="tour_join_request_error">Erreur d\'envoi de la requête</string>
     <string name="tour_join_request_title">MERCI !</string>
     <string name="tour_join_request_description">Cette maraude étant privée, votre demande a été transmise au créateur.</string>
-    <string name="tour_join_request_message_hint">Si vous le souhaitez,  envoyez-lui un message :</string>
+    <string name="tour_join_request_message_hint">Si vous le souhaitez, envoyez-lui un message :</string>
     <string name="tour_join_request_send">Envoyer</string>
     <string name="tour_join_request_message_sent">Message envoyé</string>
     <string name="tour_join_request_message_error">Erreur d\'envoi du message</string>

@@ -5,8 +5,7 @@
                 android:background="@color/white"
                 android:alpha="0.88">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/map_longclick_buttons">
@@ -15,14 +14,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/map_longclick_button_start_tour_launcher"
-            android:src="@drawable/ic_button_create_maraude"/>
+            android:src="@drawable/ic_button_create_maraude"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="25dp"
+            android:visibility="visible"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/map_longclick_button_create_encounter"
             android:src="@drawable/ic_encounter"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/map_longclick_button_start_tour_launcher"/>
 
-    </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/map_longclick_button_entourage_demand"
+            android:src="@drawable/ic_entourage_demand"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:layout_toRightOf="@+id/map_longclick_button_start_tour_launcher"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/map_longclick_button_entourage_contribution"
+            android:src="@drawable/ic_entourage_contribution"
+            android:layout_toRightOf="@+id/map_longclick_button_entourage_demand"
+            android:layout_marginTop="25dp"/>
+
+    </RelativeLayout>
 </RelativeLayout>

@@ -8,8 +8,10 @@ import dagger.Component;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.EncounterRequest;
+import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.MapRequest;
+import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.tape.EncounterTapeService;
@@ -45,4 +47,6 @@ public interface EntourageComponent {
     MapRequest getMapRequest();
     TourRequest getTourRequest();
     UserRequest getUserRequest();
+    EntourageRequest getEntourageRequest();
+    NewsfeedRequest getNewsfeedRequest();
 }

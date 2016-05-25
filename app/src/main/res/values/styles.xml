@@ -94,6 +94,13 @@
         <item name="android:textSize">0dp</item>
     </style>
 
+    <style name="TransparentAccentButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
     <style name="NotificationButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@drawable/bg_button_notification</item>
         <item name="android:textColor">@android:color/white</item>
@@ -132,6 +139,13 @@
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+
+    <style name="FilterRadioButton" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/rb_map_filter_textcolor</item>
+        <item name="android:background">@drawable/rb_map_filter_bg</item>
     </style>
 
 </resources>

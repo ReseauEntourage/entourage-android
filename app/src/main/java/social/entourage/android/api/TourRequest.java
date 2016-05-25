@@ -20,6 +20,7 @@ import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourJoinMessage;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 
@@ -103,6 +104,13 @@ public interface TourRequest {
     @POST("tours/{tour_id}/users")
     Call<TourUser.TourUserWrapper> requestToJoinTour(
             @Path("tour_id") long tourId
+    );
+
+    @PUT("tours/{tour_id}/users/{user_id}")
+    Call<TourUser.TourUserWrapper> updateJoinTourMessage(
+            @Path("tour_id") long tourId,
+            @Path("user_id") int userId,
+            @Body TourJoinMessage.TourJoinMessageWrapper messageWrapper
     );
 
     @PUT("tours/{tour_id}/users/{user_id}")

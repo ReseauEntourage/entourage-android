@@ -23,6 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
+import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationInterceptor;
 import social.entourage.android.map.encounter.CreateEncounterPresenter;
@@ -63,6 +64,7 @@ public class ApiModule {
                     }
                 })
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                .registerTypeAdapter(Newsfeed.class, new Newsfeed.NewsfeedJsonAdapter())
                 .create();
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -121,6 +123,18 @@ public class ApiModule {
     @Singleton
     public UserRequest providesUserRequest(final Retrofit restAdapter) {
         return restAdapter.create(UserRequest.class);
+    }
+
+    @Provides
+    @Singleton
+    public EntourageRequest providesEntourageRequest(final Retrofit restAdapter) {
+        return restAdapter.create(EntourageRequest.class);
+    }
+
+    @Provides
+    @Singleton
+    public NewsfeedRequest providesNewsfeedRequest(final Retrofit restAdapter) {
+        return restAdapter.create(NewsfeedRequest.class);
     }
 
     @Provides

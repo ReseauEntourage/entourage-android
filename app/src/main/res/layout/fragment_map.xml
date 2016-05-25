@@ -19,7 +19,8 @@
             android:layout_marginLeft="0dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
-            android:id="@+id/fragment_map_main_layout">
+            android:id="@+id/fragment_map_main_layout"
+            android:layout_above="@+id/fragment_map_filter_layout">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -98,19 +99,57 @@
                 android:gravity="center"
                 android:layout_weight="0.5"
                 android:textColor="@drawable/map_type_tab_text_color"/>
+
         </RadioGroup>
 
-        <ImageButton
-            android:id="@+id/fragment_map_follow_button"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.5"
-            android:layout_gravity="end|top"
-            android:src="@drawable/ic_action_center_map"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="8dp"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@color/white"
+            android:id="@+id/fragment_map_filter_layout">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/greyish"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_map_filter_button"
+                android:src="@drawable/ic_filters"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_map_follow_button"
+                android:src="@drawable/ic_geoloc"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp"
+                android:layout_toRightOf="@+id/fragment_map_filter_button"
+                android:layout_marginLeft="5dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/fragment_map_title"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textColor="@color/greyish_brown"
+                android:textSize="14sp"
+                android:text="@string/activity_map_title_small"/>
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/fragment_map_pin"

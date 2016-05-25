@@ -1,9 +1,12 @@
 package social.entourage.android.guide;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,7 +98,9 @@ public class GuideMapEntourageFragment extends Fragment {
                     clusterManager.setRenderer(poiRenderer);
                     clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
                     googleMap.setOnMarkerClickListener(clusterManager);
-                    googleMap.setMyLocationEnabled(true);
+                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                        googleMap.setMyLocationEnabled(true);
+                    }
                     googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                     googleMap.getUiSettings().setMapToolbarEnabled(false);
                     googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {

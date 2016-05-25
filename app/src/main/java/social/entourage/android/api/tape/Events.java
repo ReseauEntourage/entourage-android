@@ -3,8 +3,9 @@ package social.entourage.android.api.tape;
 import com.google.android.gms.maps.model.LatLng;
 
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.Entourage;
 
 public class Events {
 
@@ -98,19 +99,19 @@ public class Events {
         public static String ACT_QUIT = "quit";
 
         private String act;
-        private Tour tour;
+        private FeedItem feedItem;
 
-        public OnUserActEvent(String act, Tour tour) {
+        public OnUserActEvent(String act, FeedItem feedItem) {
             this.act = act;
-            this.tour = tour;
+            this.feedItem = feedItem;
         }
 
         public String getAct() {
             return act;
         }
 
-        public Tour getTour() {
-            return tour;
+        public FeedItem getFeedItem() {
+            return feedItem;
         }
     }
 
@@ -133,16 +134,16 @@ public class Events {
     /**
      * Event signaling that tour info view is requested
      */
-    public static class OnTourInfoViewRequestedEvent {
+    public static class OnFeedItemInfoViewRequestedEvent {
 
-        private Tour tour;
+        private FeedItem feedItem;
 
-        public OnTourInfoViewRequestedEvent(Tour tour) {
-            this.tour = tour;
+        public OnFeedItemInfoViewRequestedEvent(FeedItem feedItem) {
+            this.feedItem = feedItem;
         };
 
-        public Tour getTour() {
-            return tour;
+        public FeedItem getFeedItem() {
+            return feedItem;
         }
     }
 
@@ -165,16 +166,16 @@ public class Events {
     /**
      * Event signaling that the tour needs to be closed/freezed
      */
-    public static class OnTourCloseRequestEvent {
+    public static class OnFeedItemCloseRequestEvent {
 
-        private Tour tour;
+        private FeedItem feedItem;
 
-        public OnTourCloseRequestEvent(Tour tour) {
-            this.tour = tour;
+        public OnFeedItemCloseRequestEvent(FeedItem feedItem) {
+            this.feedItem = feedItem;
         };
 
-        public Tour getTour() {
-            return tour;
+        public FeedItem getFeedItem() {
+            return feedItem;
         }
     }
 
@@ -223,6 +224,33 @@ public class Events {
 
         public Encounter getEncounter() {
             return encounter;
+        }
+
+    }
+
+    /**
+     * Event signaling that an entourage was created
+     */
+    public static class OnEntourageCreated {
+
+        private Entourage entourage;
+
+        public OnEntourageCreated(Entourage entourage) {
+            this.entourage = entourage;
+        }
+
+        public Entourage getEntourage() {
+            return entourage;
+        }
+
+    }
+
+    /**
+     * Event signaling that the map filter was changed
+     */
+    public static class OnMapFilterChanged {
+
+        public OnMapFilterChanged() {
         }
 
     }

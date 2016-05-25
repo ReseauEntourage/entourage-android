@@ -12,9 +12,11 @@ import java.util.TimeZone;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
+import social.entourage.android.base.BaseCardViewHolder;
 
 /**
  * Linear Layout that represents a location card in the tour info screen
@@ -85,14 +87,26 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
     }
 
     public void populate(TourTimestamp tourTimestamp) {
-        SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
-        mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()));
+        if (tourTimestamp.getDate() != null) {
+            SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
+            mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()));
+        }
 
-        if (Tour.TOUR_ON_GOING.equals(tourTimestamp.getStatus())) {
-            mLocationTitle.setText(R.string.tour_info_text_ongoing);
+        if (FeedItem.STATUS_ON_GOING.equals(tourTimestamp.getStatus()) || FeedItem.STATUS_OPEN.equals(tourTimestamp.getStatus())) {
+            if (tourTimestamp.getFeedType() == TimestampedObject.TOUR_CARD) {
+                mLocationTitle.setText(R.string.tour_info_text_ongoing);
+            }
+            else if (tourTimestamp.getFeedType() == TimestampedObject.ENTOURAGE_CARD) {
+                mLocationTitle.setText(R.string.entourage_info_text_open);
+            }
         }
         else {
-            mLocationTitle.setText(R.string.tour_info_text_closed);
+            if (tourTimestamp.getFeedType() == TimestampedObject.TOUR_CARD) {
+                mLocationTitle.setText(R.string.tour_info_text_closed);
+            }
+            else if (tourTimestamp.getFeedType() == TimestampedObject.ENTOURAGE_CARD) {
+                mLocationTitle.setText(R.string.entourage_info_text_close);
+            }
         }
 
         if (tourTimestamp.getDistance() > 0) {
@@ -112,6 +126,14 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
         }
         else {
             mLocationDuration.setVisibility(View.GONE);
+        }
+
+        if (tourTimestamp.getSnapshot() != null) {
+            mLocationImage.setImageBitmap(tourTimestamp.getSnapshot());
+            mLocationImage.setVisibility(View.VISIBLE);
+        }
+        else {
+            mLocationImage.setVisibility(View.GONE);
         }
     }
 

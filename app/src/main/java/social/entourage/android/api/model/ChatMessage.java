@@ -78,6 +78,11 @@ public class ChatMessage extends TimestampedObject implements Serializable {
         return user.getAvatarURL();
     }
 
+    public String getUserName() {
+        if (user == null) return null;
+        return user.getDisplayName();
+    }
+
     public boolean isMe() {
         return isMe;
     }
@@ -105,6 +110,11 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     @Override
     public int getType() {
         return isMe ? CHAT_MESSAGE_ME : CHAT_MESSAGE_OTHER;
+    }
+
+    @Override
+    public long getId() {
+        return chatId;
     }
 
     // ----------------------------------

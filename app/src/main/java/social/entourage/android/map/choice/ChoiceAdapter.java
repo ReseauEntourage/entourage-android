@@ -52,7 +52,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
                 holder.cardTextType.setText(R.string.tour_type_medical);
             }
             else if (tour.getTourType().equals(TourType.ALIMENTARY.getName())) {
-                holder.cardImage.setImageResource(R.drawable.ic_distibutive_active);
+                holder.cardImage.setImageResource(R.drawable.ic_distributive_active);
                 holder.cardTextType.setText(R.string.tour_type_alimentary);
             }
             else if (tour.getTourType().equals(TourType.BARE_HANDS.getName())) {

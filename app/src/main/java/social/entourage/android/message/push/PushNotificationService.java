@@ -68,6 +68,9 @@ public class PushNotificationService extends IntentService {
             if (content != null && PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
                 RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.push_notification);
                 String notificationText = getString(R.string.tour_join_request_received_message, message.getAuthor());
+                if (content.isEntourageRelated()) {
+                    notificationText = getString(R.string.entourage_join_request_received, message.getAuthor());
+                }
                 remoteViews.setTextViewText(R.id.push_notification_text, notificationText);
                 builder.setContent(remoteViews);
             }
@@ -91,7 +94,7 @@ public class PushNotificationService extends IntentService {
         if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(messageType)) {
             messageIntent = new Intent(this, TourJoinRequestReceivedActivity.class);
         }
-        else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType)) {
+        else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(messageType)) {
             messageIntent = new Intent(this, DrawerActivity.class);
         }
         else {

@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.RemoteViews;
 
@@ -33,11 +32,18 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.EncounterRequest;
+import social.entourage.android.api.EntourageRequest;
+import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.base.EntouragePagination;
 
 /**
  * Background service handling location updates
@@ -65,6 +71,10 @@ public class TourService extends Service {
     TourRequest tourRequest;
     @Inject
     EncounterRequest encounterRequest;
+    @Inject
+    NewsfeedRequest newsfeedRequest;
+    @Inject
+    EntourageRequest entourageRequest;
 
     private TourServiceManager tourServiceManager;
 
@@ -96,10 +106,12 @@ public class TourService extends Service {
             }
             else if (KEY_GPS_DISABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(false);
+                if(isRunning()) {
                 Intent newIntent = new Intent(context, DrawerActivity.class);
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
+            }
             }
             else if (KEY_GPS_ENABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(true);
@@ -122,7 +134,7 @@ public class TourService extends Service {
         super.onCreate();
         EntourageApplication.get(this).getEntourageComponent().inject(this);
 
-        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest);
+        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest, newsfeedRequest, entourageRequest);
 
         listeners =  new ArrayList<>();
         isPaused = false;
@@ -265,6 +277,12 @@ public class TourService extends Service {
         tourServiceManager.retrieveToursNearbyLarge();
     }
 
+    public void updateNewsfeed(EntouragePagination pagination) {
+        if (pagination.isLoading) return;
+        pagination.isLoading = true;
+        tourServiceManager.retrieveNewsfeed(pagination.page, pagination.itemsPerPage);
+    }
+
     public void updateUserHistory(int userId, int page, int per) {
         tourServiceManager.retrieveToursByUserId(userId, page, per);
     }
@@ -312,8 +330,13 @@ public class TourService extends Service {
         }
     }
 
-    public void stopOtherTour(Tour tour) {
-        tourServiceManager.finishTour(tour);
+    public void stopFeedItem(FeedItem feedItem) {
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            tourServiceManager.finishTour((Tour)feedItem);
+        }
+        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            tourServiceManager.closeEntourage((Entourage)feedItem);
+        }
     }
 
     public void freezeTour(Tour tour) {
@@ -324,8 +347,17 @@ public class TourService extends Service {
         tourServiceManager.requestToJoinTour(tour);
     }
 
-    public void removeUserFromTour(Tour tour, int userId) {
-        tourServiceManager.removeUserFromTour(tour, userId);
+    public void removeUserFromFeedItem(FeedItem feedItem, int userId) {
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            tourServiceManager.removeUserFromTour((Tour)feedItem, userId);
+        }
+        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            tourServiceManager.removeUserFromEntourage((Entourage)feedItem, userId);
+        }
+    }
+
+    public void requestToJoinEntourage(Entourage entourage) {
+        tourServiceManager.requestToJoinEntourage(entourage);
     }
 
     public void register(TourServiceListener listener) {
@@ -374,13 +406,21 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersTourClosed(boolean closed, Tour tour) {
-        if (closed) {
-            removeNotification();
-            isPaused = false;
+    public void notifyListenersFeedItemClosed(boolean closed, FeedItem feedItem) {
+        if (closed && feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            Tour ongoingTour = tourServiceManager.getTour();
+            if (ongoingTour != null) {
+                if (ongoingTour.getId() == feedItem.getId()) {
+                    removeNotification();
+                    isPaused = false;
+                }
+            } else {
+                removeNotification();
+                isPaused = false;
+            }
         }
         for (TourServiceListener listener : listeners) {
-            listener.onTourClosed(closed, tour);
+            listener.onFeedItemClosed(closed, feedItem);
         }
     }
 
@@ -426,9 +466,15 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersUserStatusChanged(TourUser user, Tour tour) {
+    public void notifyListenersUserStatusChanged(TourUser user, FeedItem feedItem) {
         for (TourServiceListener listener : listeners) {
-            listener.onUserStatusChanged(user, tour);
+            listener.onUserStatusChanged(user, feedItem);
+        }
+    }
+
+    public void notifyListenersNewsfeed(List<Newsfeed> newsfeedList) {
+        for (TourServiceListener listener : listeners) {
+            listener.onRetrieveNewsfeed(newsfeedList);
         }
     }
 
@@ -445,8 +491,9 @@ public class TourService extends Service {
         void onRetrieveToursByUserId(List<Tour> tours);
         void onUserToursFound(Map<Long, Tour> tours);
         void onToursFound(Map<Long, Tour> tours);
-        void onTourClosed(boolean closed, Tour tour);
+        void onFeedItemClosed(boolean closed, FeedItem feedItem);
         void onGpsStatusChanged(boolean active);
-        void onUserStatusChanged(TourUser user, Tour tour);
+        void onUserStatusChanged(TourUser user, FeedItem feedItem);
+        void onRetrieveNewsfeed(List<Newsfeed> newsfeedList);
     }
 }

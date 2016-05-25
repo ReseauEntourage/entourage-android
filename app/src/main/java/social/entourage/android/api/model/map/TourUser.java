@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +30,12 @@ public class TourUser extends TimestampedObject implements Serializable {
 
     @SerializedName("requested_at")
     private Date requestDate;
+
+    private String message;
+
+    private String avatarURLAsString;
+
+    private boolean isDisplayedAsMember = false;
 
     public String getEmail() {
         return email;
@@ -72,6 +77,30 @@ public class TourUser extends TimestampedObject implements Serializable {
         this.userId = userId;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(final String message) {
+        this.message = message;
+    }
+
+    public String getAvatarURLAsString() {
+        return avatarURLAsString;
+    }
+
+    public void setAvatarURLAsString(final String avatarURLAsString) {
+        this.avatarURLAsString = avatarURLAsString;
+    }
+
+    public boolean isDisplayedAsMember() {
+        return isDisplayedAsMember;
+    }
+
+    public void setDisplayedAsMember(final boolean displayedAsMember) {
+        isDisplayedAsMember = displayedAsMember;
+    }
+
     @Override
     public Date getTimestamp() {
         return requestDate;
@@ -84,13 +113,32 @@ public class TourUser extends TimestampedObject implements Serializable {
 
     @Override
     public int getType() {
-        return TOUR_USER;
+        return isDisplayedAsMember ? FEED_MEMBER_CARD : TOUR_USER_JOIN;
+    }
+
+    @Override
+    public long getId() {
+        return userId;
     }
 
     @Override
     public boolean equals(final Object o) {
         if (o == null || o.getClass() != this.getClass()) return false;
         return (this.userId == ((TourUser)o).userId) && (this.status.equals(((TourUser)o).status));
+    }
+
+    public TourUser clone() {
+        TourUser clone = new TourUser();
+        clone.userId = this.userId;
+        clone.displayName = this.displayName;
+        clone.email = this.email;
+        clone.status = this.status;
+        clone.requestDate = this.requestDate;
+        clone.message = this.message;
+        clone.avatarURLAsString = this.avatarURLAsString;
+        clone.isDisplayedAsMember = this.isDisplayedAsMember;
+
+        return clone;
     }
 
     // ----------------------------------

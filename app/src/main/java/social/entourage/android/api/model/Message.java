@@ -48,6 +48,7 @@ public class Message implements Serializable {
     }
 
     public String getMessage() {
+        if (content == null) return "";
         return content.message;
     }
 

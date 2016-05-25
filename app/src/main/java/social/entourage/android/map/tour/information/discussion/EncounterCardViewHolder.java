@@ -16,6 +16,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
 
 /**

@@ -18,7 +18,8 @@
         android:textSize="14sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@color/background_light"/>
+        android:background="@color/background_light"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -80,4 +81,12 @@
         android:layout_above="@+id/tour_info_comment_layout"
         android:layout_alignParentLeft="true"
         android:background="@color/background"/>
+
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/tour_info_hidden_map_layout"
+        android:background="@color/accent"
+        android:layout_marginLeft="1000dp">
+    </FrameLayout>
 </RelativeLayout>

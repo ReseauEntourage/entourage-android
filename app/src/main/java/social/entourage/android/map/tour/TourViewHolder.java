@@ -6,7 +6,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +22,18 @@ import java.util.Locale;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
 
 /**
  * Created by mihaiionescu on 11/03/16.
  */
-public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class TourViewHolder extends BaseCardViewHolder {
 
     private TextView tourTitle;
     private ImageView photoView;
@@ -49,8 +50,14 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     private GeocoderTask geocoderTask;
 
+    private OnClickListener onClickListener;
+
     public TourViewHolder(final View itemView) {
         super(itemView);
+    }
+
+    @Override
+    protected void bindFields() {
 
         tourTitle = (TextView)itemView.findViewById(R.id.tour_card_title);
         photoView = (ImageView)itemView.findViewById(R.id.tour_card_photo);
@@ -61,10 +68,12 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
         actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
 
-        itemView.setOnClickListener(this);
-        tourAuthor.setOnClickListener(this);
-        photoView.setOnClickListener(this);
-        actButton.setOnClickListener(this);
+        onClickListener = new OnClickListener();
+
+        itemView.setOnClickListener(onClickListener);
+        tourAuthor.setOnClickListener(onClickListener);
+        photoView.setOnClickListener(onClickListener);
+        actButton.setOnClickListener(onClickListener);
 
         context = itemView.getContext();
     }
@@ -72,6 +81,15 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public static TourViewHolder fromParent(final ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_tour_card, parent, false);
         return new TourViewHolder(view);
+    }
+
+    public static final int getLayoutResource() {
+        return R.layout.layout_tour_card;
+    }
+
+    @Override
+    public void populate(final TimestampedObject data) {
+        populate((Tour)data);
     }
 
     public void populate(Tour tour) {
@@ -180,35 +198,11 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         geocoderTask = null;
     }
 
-    @Override
-    public void onClick(final View v) {
-        if (tour == null) return;
-        if (v == photoView || v == tourAuthor) {
-            BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
-        }
-        else if (v == actButton) {
-            String joinStatus = tour.getJoinStatus();
-            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
-            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                if (tour.getAuthor() != null) {
-                    if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
-                        BusProvider.getInstance().post(new Events.OnTourCloseRequestEvent(tour));
-                        return;
-                    }
-                }
-                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
-            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-                //What to do on rejected status ?
-            } else {
-                BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, tour));
-            }
 
-        }
-        else if (v == itemView) {
-            BusProvider.getInstance().post(new Events.OnTourInfoViewRequestedEvent(tour));
-        }
-    }
+
+    //--------------------------
+    // INNER CLASSES
+    //--------------------------
 
     private class GeocoderTask extends AsyncTask<Tour, Void, Tour> {
 
@@ -235,5 +229,39 @@ public class TourViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         protected void onPostExecute(final Tour tour) {
             updateStartLocation(tour);
         }
+    }
+
+    private class OnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(final View v) {
+            if (tour == null) return;
+            if (v == photoView || v == tourAuthor) {
+                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(tour.getAuthor().getUserID()));
+            }
+            else if (v == actButton) {
+                String joinStatus = tour.getJoinStatus();
+                if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(tour));
+                } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                    if (tour.getAuthor() != null) {
+                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+                            BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
+                            return;
+                        }
+                    }
+                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
+                } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+                    //What to do on rejected status ?
+                } else {
+                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, tour));
+                }
+
+            }
+            else if (v == itemView) {
+                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(tour));
+            }
+        }
+
     }
 }

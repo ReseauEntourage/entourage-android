@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
+import social.entourage.android.base.BaseCardViewHolder;
+
 /**
  * Created by mihaiionescu on 02/03/16.
  */

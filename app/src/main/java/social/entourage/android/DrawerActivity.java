@@ -45,7 +45,10 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.about.AboutActivity;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.badge.BadgeView;
@@ -289,6 +292,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
             }
+            else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
+            }
         }
         else if (action != null) {
             getIntent().setAction(null);
@@ -303,6 +309,9 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             }
             else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
+            }
+            else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
             }
         }
     }
@@ -515,11 +524,16 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
         mapEntourageFragment.checkAction(intentAction, intentTour);
-        if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
+        if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
             Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             PushNotificationContent content = message.getContent();
             if (content != null) {
-                mapEntourageFragment.displayChosenTour(content.getTourId());
+                if (content.isTourRelated()) {
+                    mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.TOUR_CARD);
+                }
+                else if (content.isEntourageRelated()) {
+                    mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD);
+                }
             }
         }
         intentAction = null;
@@ -548,17 +562,20 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Subscribe
-    public void tourInfoViewRequested(OnTourInfoViewRequestedEvent event) {
+    public void tourInfoViewRequested(OnFeedItemInfoViewRequestedEvent event) {
         if (mapEntourageFragment != null) {
-            Tour tour = event.getTour();
-            if (tour == null) return;
-            mapEntourageFragment.displayChosenTour(tour);
+            FeedItem feedItem = event.getFeedItem();
+            if (feedItem == null) return;
+            mapEntourageFragment.displayChosenFeedItem(feedItem);
             //decrease the badge count
-            int tourBadgeCount = tour.getBadgeCount();
+            int tourBadgeCount = feedItem.getBadgeCount();
             decreaseBadgeCount(tourBadgeCount);
-            removePushNotificationsForTour(tour.getId());
-            //update the tour card
-            mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                Tour tour = (Tour) feedItem;
+                removePushNotificationsForTour(tour.getId());
+                //update the tour card
+                mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+            }
         }
     }
 
@@ -566,7 +583,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     public void userActRequested(final OnUserActEvent event) {
         if (OnUserActEvent.ACT_JOIN.equals(event.getAct())) {
             if (mapEntourageFragment != null) {
-                mapEntourageFragment.act(event.getTour());
+                mapEntourageFragment.act(event.getFeedItem());
             }
         }
         else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
@@ -585,7 +602,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                                     Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                                 }
                                 else {
-                                    mapEntourageFragment.removeUserFromTour(event.getTour(), me.getId());
+                                    mapEntourageFragment.removeUserFromNewsfeedCard(event.getFeedItem(), me.getId());
                                 }
                             }
                         }
@@ -605,13 +622,17 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     }
 
     @Subscribe
-    public void tourCloseRequested(OnTourCloseRequestEvent event) {
-        Tour tour = event.getTour();
+    public void entourageCloseRequested(OnFeedItemCloseRequestEvent event) {
+        FeedItem feedItem = event.getFeedItem();
+        if (feedItem == null) return;
         if (mapEntourageFragment != null) {
-            if (!tour.isClosed()) {
-                mapEntourageFragment.stopTour(tour);
+            if (!feedItem.isClosed()) {
+                mapEntourageFragment.stopFeedItem(feedItem);
             } else {
-                mapEntourageFragment.freezeTour(tour);
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                    Tour tour = (Tour) feedItem;
+                    mapEntourageFragment.freezeTour(tour);
+                }
             }
         }
     }
@@ -623,7 +644,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
-        if (message != null && message.getContent() != null && message.getContent().getTourId() != 0) {
+        if (message != null && message.getContent() != null && message.getContent().getJoinableId() != 0) {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override
@@ -639,7 +660,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                             addPushNotification(message);
                             if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
                                 if (mapEntourageFragment != null) {
-                                    mapEntourageFragment.userStatusChanged(content.getTourId(), content.getUserId(), Tour.JOIN_STATUS_ACCEPTED);
+                                    mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
                                 }
                             }
                         }
@@ -673,7 +694,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         for (int i = 0; i < pushNotifications.size(); i++) {
             Message message = pushNotifications.get(i);
             PushNotificationContent content = message.getContent();
-            if (content != null && content.getTourId() == tourId) {
+            if (content != null && content.isTourRelated() && content.getJoinableId() == tourId) {
                 pushNotifications.remove(i);
                 i--;
             }
@@ -685,7 +706,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         for (int i = 0; i < pushNotifications.size(); i++) {
             Message message = pushNotifications.get(i);
             PushNotificationContent content = message.getContent();
-            if (content != null && content.getTourId() == tourId) {
+            if (content != null && content.isTourRelated() && content.getJoinableId() == tourId) {
                 count++;
             }
         }
@@ -740,7 +761,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (tour != null) {
             if (mainFragment instanceof MapEntourageFragment) {
                 MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                mapEntourageFragment.displayChosenTour(tour);
+                mapEntourageFragment.displayChosenFeedItem(tour);
             }
         }
     }
@@ -791,6 +812,20 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+        }
+    }
+
+    @OnClick(R.id.button_create_entourage_contribution)
+    protected void onCreateEntourageContributionClicked() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment.createEntourage(Entourage.TYPE_CONTRIBUTION);
+        }
+    }
+
+    @OnClick(R.id.button_create_entourage_demand)
+    protected void onCreateEntouragDemandClicked() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment.createEntourage(Entourage.TYPE_DEMAND);
         }
     }
 

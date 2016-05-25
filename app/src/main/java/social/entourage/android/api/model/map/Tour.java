@@ -1,6 +1,6 @@
 package social.entourage.android.api.model.map;
 
-import android.location.Address;
+import android.content.Context;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,40 +10,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import social.entourage.android.Constants;
+import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 
 @SuppressWarnings("unused")
-public class Tour implements Serializable {
+public class Tour extends FeedItem implements Serializable {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
+    private final static String HASH_STRING_HEAD = "Tour-";
+
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
     public static final String KEY_TOUR_ID = "social.entourage.android.KEY_TOUR_ID";
     public static final String KEY_TOURS = "social.entourage.android.KEY_TOURS";
-    public static final String TOUR_CLOSED = "closed";
-    public static final String TOUR_ON_GOING = "ongoing";
-    public static final String TOUR_FREEZED = "freezed";
+
     private static final String TOUR_FEET = "feet";
     private static final String TOUR_CAR = "car";
-    public static final String JOIN_STATUS_NOT_REQUESTED = "not_requested";
-    public static final String JOIN_STATUS_PENDING = "pending";
-    public static final String JOIN_STATUS_ACCEPTED = "accepted";
-    public static final String JOIN_STATUS_REJECTED = "rejected";
+
+    public static final String NEWSFEED_TYPE = "Tour";
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-
-    @Expose(serialize = false, deserialize = true)
-    private long id;
 
     @SerializedName("user_id")
     @Expose(serialize = false, deserialize = true)
@@ -54,12 +49,6 @@ public class Tour implements Serializable {
 
     @SerializedName("tour_type")
     private String tourType = TourType.BARE_HANDS.getName();
-
-    @SerializedName("status")
-    private String tourStatus = TOUR_ON_GOING;
-
-    @Expose(serialize = false, deserialize = false)
-    private Date date;
 
     @SerializedName("start_time")
     @Expose(serialize = true, deserialize = true)
@@ -90,41 +79,17 @@ public class Tour implements Serializable {
     @Expose(serialize = false)
     private List<Encounter> encounters;
 
-    @Expose(serialize = false, deserialize = false)
-    private transient Address startAddress;
-
-    @Expose(serialize = false, deserialize = true)
-    @SerializedName("number_of_people")
-    private int numberOfPeople;
-
-    @Expose(serialize = false, deserialize = true)
-    @SerializedName("author")
-    private TourAuthor author;
-
-    @Expose(serialize = false, deserialize = true)
-    @SerializedName("join_status")
-    private String joinStatus;
-
-    @Expose(serialize = false, deserialize = false)
-    private int badgeCount = 0;
-
-    //CardInfo cache support
-
-    @Expose(serialize = false, deserialize = false)
-    transient List<TimestampedObject> cachedCardInfoList;
-
-    @Expose(serialize = false, deserialize = false)
-    transient List<TimestampedObject> addedCardInfoList;
-
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
 
     public Tour() {
+        super();
         init();
     }
 
     public Tour(String tourVehicleType, String tourType) {
+        super();
         this.tourVehicleType = tourVehicleType;
         this.tourType = tourType;
         this.startTime = new Date();
@@ -134,17 +99,11 @@ public class Tour implements Serializable {
     private void init() {
         this.tourPoints = new ArrayList<>();
         this.encounters = new ArrayList<>();
-        this.cachedCardInfoList = new ArrayList<>();
-        this.addedCardInfoList = new ArrayList<>();
     }
 
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
-
-    public long getId() {
-        return id;
-    }
 
     public int getUserId() {
         return userId;
@@ -159,11 +118,7 @@ public class Tour implements Serializable {
     }
 
     public String getTourStatus() {
-        return tourStatus;
-    }
-
-    public Date getDate() {
-        return date;
+        return getStatus();
     }
 
     public Date getStartTime() {
@@ -198,34 +153,6 @@ public class Tour implements Serializable {
         return encounters;
     }
 
-    public Address getStartAddress() {
-        return startAddress;
-    }
-
-    public int getNumberOfPeople() {
-        return numberOfPeople;
-    }
-
-    public TourAuthor getAuthor() {
-        return author;
-    }
-
-    public String getJoinStatus() {
-        return joinStatus;
-    }
-
-    public List<TimestampedObject> getCachedCardInfoList() {
-        return cachedCardInfoList;
-    }
-
-    public List<TimestampedObject> getAddedCardInfoList() {
-        return addedCardInfoList;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -239,11 +166,7 @@ public class Tour implements Serializable {
     }
 
     public void setTourStatus(String tourStatus) {
-        this.tourStatus = tourStatus;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+        this.status = tourStatus;
     }
 
     public void setStartTime(Date startTime) {
@@ -266,33 +189,9 @@ public class Tour implements Serializable {
         this.tourPoints = tourPoints;
     }
 
-    public void setStartAddress(final Address startAddress) {
-        this.startAddress = startAddress;
-    }
-
-    public void setAuthor(TourAuthor author) {
-        this.author = author;
-    }
-
-    public void setJoinStatus(String joinStatus) {
-        this.joinStatus = joinStatus;
-    }
-
-    public int getBadgeCount() {
-        return badgeCount;
-    }
-
-    public void setBadgeCount(final int badgeCount) {
-        this.badgeCount = badgeCount;
-    }
-
-    public void increaseBadgeCount() {
-        badgeCount++;
-    }
-
     @Override
     public String toString() {
-        return "tour : " + id + ", vehicule : " + tourVehicleType + ", type : " + tourType + ", status : " + tourStatus + ", points : " + tourPoints.size();
+        return "tour : " + id + ", vehicule : " + tourVehicleType + ", type : " + tourType + ", status : " + status + ", points : " + tourPoints.size();
     }
 
     // ----------------------------------
@@ -311,51 +210,6 @@ public class Tour implements Serializable {
         this.encounters.add(encounter);
     }
 
-    public boolean isClosed() {
-        return !tourStatus.equals(TOUR_ON_GOING);
-    }
-
-    public boolean isPrivate() {
-        return joinStatus.equals(JOIN_STATUS_ACCEPTED);
-    }
-
-    public boolean isFreezed() {
-        return tourStatus.equals(TOUR_FREEZED);
-    }
-
-    public void addCardInfo(TimestampedObject cardInfo) {
-        if (cardInfo == null) return;
-        if (cachedCardInfoList.contains(cardInfo)) {
-            return;
-        }
-        cachedCardInfoList.add(cardInfo);
-        addedCardInfoList.add(cardInfo);
-
-        Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
-    }
-
-    public int addCardInfoList(List<TimestampedObject> cardInfoList) {
-        if (cardInfoList == null) return 0;
-        Iterator<TimestampedObject> iterator = cardInfoList.iterator();
-        while (iterator.hasNext()) {
-            TimestampedObject timestampedObject = iterator.next();
-            if (cachedCardInfoList.contains(timestampedObject)) {
-                continue;
-            }
-            cachedCardInfoList.add(timestampedObject);
-            addedCardInfoList.add(timestampedObject);
-        }
-        if (addedCardInfoList.size() > 0) {
-            Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
-            Collections.sort(addedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
-        }
-        return addedCardInfoList.size();
-    }
-
-    public void clearAddedCardInfoList() {
-        addedCardInfoList.clear();
-    }
-
     public static long getHoursDiffToNow(Date fromDate) {
         long currentHours = System.currentTimeMillis() / Constants.MILLIS_HOUR;
         long startHours = currentHours;
@@ -366,14 +220,80 @@ public class Tour implements Serializable {
     }
 
     public boolean isSame(Tour tour) {
-        boolean isSame = true;
-
         if (tour == null) return false;
         if (id != tour.id) return false;
         if (tourPoints.size() != tour.tourPoints.size()) return false;
-        if (!tourStatus.equals(tour.tourStatus)) return false;
+        if (!status.equals(tour.status)) return false;
+        if (!joinStatus.equals(tour.joinStatus)) return false;
 
-        return isSame;
+        return true;
+    }
+
+    // ----------------------------------
+    // TimestampedObject overrides
+    // ----------------------------------
+
+    @Override
+    public Date getTimestamp() {
+        return startTime;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + id;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || o.getClass() != this.getClass()) return false;
+        return this.id == ((Tour)o).id;
+    }
+
+    @Override
+    public int getType() {
+        return TOUR_CARD;
+    }
+
+    // ----------------------------------
+    // FeedItem overrides
+    // ----------------------------------
+
+    public String getFeedType() {
+        return tourType;
+    }
+
+    @Override
+    public String getFeedTypeLong(Context context) {
+        if (tourType != null) {
+            if (tourType.equals(TourType.MEDICAL.getName())) {
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_medical));
+            } else if (tourType.equals(TourType.ALIMENTARY.getName())) {
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_alimentary));
+            } else if (tourType.equals(TourType.BARE_HANDS.getName())) {
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_bare_hands));
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getTitle() {
+        return organizationName;
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
+    public TourPoint getStartPoint() {
+        if (tourPoints == null || tourPoints.size() == 0) return null;
+        return tourPoints.get(0);
+    }
+
+    public TourPoint getEndPoint() {
+        if (tourPoints == null || tourPoints.size() < 1) return null;
+        return tourPoints.get(tourPoints.size()-1);
     }
 
     // ----------------------------------

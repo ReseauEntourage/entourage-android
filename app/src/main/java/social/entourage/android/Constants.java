@@ -4,7 +4,7 @@ public class Constants {
 
     //TODO: should be changed after each release
     // API Key
-    public static final String API_KEY = "7a8c1f9f4b973384aaff3ed3";
+    public static final String API_KEY = "2b8259ac4aad2cfd0b46be77";
 
     // Filenames
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
@@ -54,10 +54,13 @@ public class Constants {
     public static final long UPDATE_TIMER_MILLIS_OFF_TOUR = 20000;
     public static final long UPDATE_TIMER_MILLIS_ON_TOUR_FEET = 5000;
     public static final long UPDATE_TIMER_MILLIS_ON_TOUR_CAR = 3000;
-    public static final float DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR = 30;
-    public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET = 5;
-    public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR = 3;
+    public static final float DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR = 0;//30;
+    public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET = 0;//5;
+    public static final float DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR = 0;//3;
 
     //Time constants
     public static final long MILLIS_HOUR = 3600000; //1000 * 60 * 60
+
+    // Items per pagination
+    public static final int ITEMS_PER_PAGE = 10;
 }
