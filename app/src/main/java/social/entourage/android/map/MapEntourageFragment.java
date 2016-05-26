@@ -1137,11 +1137,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         if (getActivity() != null) {
                             if (toursListView.getVisibility() == View.VISIBLE) {
                                 hideToursList();
-                            } else {
+                            }
+                            // EMA-341 Disabling the search tour feature
+                            /*
+                            else {
                                 loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
                                 loaderSearchTours.setCancelable(true);
                                 tourService.searchToursFromPoint(latLng, userHistory, userId, 1, 500);
                             }
+                            */
                         }
                     }
                 });
