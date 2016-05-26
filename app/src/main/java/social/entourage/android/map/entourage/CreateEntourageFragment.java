@@ -85,6 +85,8 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     private String entourageType;
     private LatLng location;
 
+    private boolean isSaving = false;
+
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -172,8 +174,10 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     @OnClick(R.id.create_entourage_validate_button)
     protected void onValidateClicked() {
+        if (isSaving) return;
         if (isValid()) {
             if (presenter != null) {
+                isSaving = true;
                 TourPoint entourageLocation = new TourPoint(0, 0);
                 if (location != null) {
                     entourageLocation.setLatitude(location.latitude);
@@ -201,6 +205,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     // ----------------------------------
 
     protected void onEntourageCreated(Entourage entourage) {
+        isSaving = false;
         if (entourage == null) {
             Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
         } else {
