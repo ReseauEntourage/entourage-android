@@ -820,12 +820,38 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.createEntourage(Entourage.TYPE_CONTRIBUTION);
         }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.map_poi_create_entourage_error)
+                    .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            onPOILauncherClicked();
+                            mapEntourageFragment.createEntourage(Entourage.TYPE_CONTRIBUTION);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null);
+            builder.show();
+        }
     }
 
     @OnClick(R.id.button_create_entourage_demand)
     protected void onCreateEntouragDemandClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.createEntourage(Entourage.TYPE_DEMAND);
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.map_poi_create_entourage_error)
+                    .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            onPOILauncherClicked();
+                            mapEntourageFragment.createEntourage(Entourage.TYPE_DEMAND);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null);
+            builder.show();
         }
     }
 
