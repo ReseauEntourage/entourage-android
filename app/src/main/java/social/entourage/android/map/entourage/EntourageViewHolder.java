@@ -210,7 +210,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
                 if (entourage.getLocation() == null) return null;
                 TourPoint tourPoint = entourage.getLocation();
                 List<Address> addresses = geoCoder.getFromLocation(tourPoint.getLatitude(), tourPoint.getLongitude(), 1);
-                if (addresses.size() > 0) {
+                if (addresses != null && addresses.size() > 0) {
                     entourage.setStartAddress(addresses.get(0));
                 }
                 return entourage;

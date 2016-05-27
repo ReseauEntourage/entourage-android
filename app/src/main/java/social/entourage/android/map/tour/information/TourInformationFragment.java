@@ -1230,7 +1230,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     protected void onFeedItemEncountersReceived(List<Encounter> encounterList) {
         if (encounterList != null) {
-            User me = EntourageApplication.me(getActivity());
+            User me = EntourageApplication.me(getContext());
             if (me != null) {
                 for (int i = 0; i < encounterList.size(); i++) {
                     Encounter encounter = encounterList.get(i);
@@ -1415,7 +1415,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 int adapterPosition = recyclerView.findViewHolderForLayoutPosition(firstVisibleItemPosition).getAdapterPosition();
                 TimestampedObject timestampedObject = discussionAdapter.getCardAt(adapterPosition);
                 Date timestamp = timestampedObject.getTimestamp();
-                if (timestamp != null && timestamp.before(oldestChatMessageDate)) {
+                if (timestamp != null && oldestChatMessageDate != null && timestamp.before(oldestChatMessageDate)) {
                     presenter.getFeedItemMessages(oldestChatMessageDate);
                 }
                 scrollDeltaY = 0;

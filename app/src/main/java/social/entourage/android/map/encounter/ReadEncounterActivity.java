@@ -141,7 +141,7 @@ public class ReadEncounterActivity extends EntourageActivity {
                 Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 Encounter encounter = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(encounter.getLatitude(), encounter.getLongitude(), 1);
-                if (addresses.size() > 0) {
+                if (addresses != null && addresses.size() > 0) {
                     encounter.setAddress(addresses.get(0));
                 }
                 return encounter;

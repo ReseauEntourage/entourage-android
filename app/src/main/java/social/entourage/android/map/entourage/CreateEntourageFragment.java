@@ -326,7 +326,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
                 LatLng location = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
                 String addressLine = "";
-                if (addresses.size() > 0) {
+                if (addresses != null && addresses.size() > 0) {
                     Address address = addresses.get(0);
                     if (address.getMaxAddressLineIndex() >= 0) {
                         addressLine = addresses.get(0).getAddressLine(0);
