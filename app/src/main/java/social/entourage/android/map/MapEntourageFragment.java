@@ -160,6 +160,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private Map<Long, Polyline> drawnUserHistory;
     private Map<String, Object> markersMap;
     private Map<Long, Tour> retrievedHistory;
+    private boolean initialNewsfeedLoaded = false;
 
     private LayoutInflater inflater;
 
@@ -804,7 +805,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveNewsfeed(List<Newsfeed> newsfeedList) {
-        int previousToursCount = newsfeedAdapter.getItemCount();
         if (newsfeedList != null) {
             newsfeedList = removeRedundantNewsfeed(newsfeedList, false);
 //        Collections.sort(tours, new Tour.TourComparatorOldToNew());
@@ -861,8 +861,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (newsfeedAdapter.getItemCount() == 0) {
             hideToursList();
         }
-        else if (previousToursCount == 0) {
+        else if (!initialNewsfeedLoaded) {
             showToursList();
+            initialNewsfeedLoaded = true;
         }
         /*
         if (newsfeedAdapter.getItemCount() > 0) {
