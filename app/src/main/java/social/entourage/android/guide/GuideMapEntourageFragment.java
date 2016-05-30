@@ -11,14 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Collection;
@@ -29,7 +32,9 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -58,6 +63,7 @@ public class GuideMapEntourageFragment extends Fragment {
     private View toReturn;
 
     private SupportMapFragment mapFragment;
+    private GoogleMap map;
     private Location previousCameraLocation;
     private float previousCameraZoom = 1.0f;
     private ClusterManager<Poi> clusterManager;
@@ -101,7 +107,7 @@ public class GuideMapEntourageFragment extends Fragment {
                     if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                         googleMap.setMyLocationEnabled(true);
                     }
-                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                     googleMap.getUiSettings().setMapToolbarEnabled(false);
                     googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                         @Override
@@ -117,6 +123,7 @@ public class GuideMapEntourageFragment extends Fragment {
                             }
                         }
                     });
+                    map = googleMap;
                 }
             });
         }
@@ -142,6 +149,15 @@ public class GuideMapEntourageFragment extends Fragment {
     public void onStart() {
         super.onStart();
         presenter.start();
+    }
+
+    @OnClick(R.id.fragment_guide_follow_button)
+    void onFollowGeolocation() {
+        Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+        if (currentLocation != null && map != null) {
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            map.moveCamera(cameraUpdate);
+        }
     }
 
     // ----------------------------------
