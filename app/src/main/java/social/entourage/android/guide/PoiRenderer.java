@@ -51,6 +51,9 @@ public class PoiRenderer extends DefaultClusterRenderer<Poi> {
                 }
             }
         }
+        else {
+            return CategoryType.findCategoryTypeById(categoryId);
+        }
         return CategoryType.OTHER;
     }
 
