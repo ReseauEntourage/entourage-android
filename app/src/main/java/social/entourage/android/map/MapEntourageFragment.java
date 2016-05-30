@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -211,6 +212,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     FloatingActionButton tourStopButton;
 
     FloatingActionMenu mapOptionsMenu;
+
+    @Bind(R.id.fragment_map_title)
+    TextView bottomTitleTextView;
 
     Timer refreshToursTimer;
     TimerTask refreshToursTimerTask;
@@ -584,6 +588,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 mapOptionsMenu.setVisibility(View.VISIBLE);
                 updateFloatingMenuOptions();
                 tourStopButton.setVisibility(View.VISIBLE);
+
+                bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
             } else {
                 Toast.makeText(getActivity(), R.string.tour_creation_fail, Toast.LENGTH_SHORT).show();
             }
@@ -725,6 +731,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         mapOptionsMenu.setVisibility(View.VISIBLE);
                         updateFloatingMenuOptions();
                         tourStopButton.setVisibility(View.GONE);
+                        bottomTitleTextView.setText(R.string.activity_map_title_small);
 
                         currentTourId = -1;
                     } else {
@@ -1786,6 +1793,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                     currentTourId = tourService.getCurrentTourId();
                     //mapPin.setVisibility(View.VISIBLE);
+                    bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
 
                     addCurrentTourEncounters();
                 }
