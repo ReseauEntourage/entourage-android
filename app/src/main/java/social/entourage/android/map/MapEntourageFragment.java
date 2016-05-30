@@ -822,6 +822,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     //redraw the map
                     map.clear();
                     markersMap.clear();
+                    drawnToursMap.clear();
                     //redraw the whole newsfeed
                     for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
                         if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
