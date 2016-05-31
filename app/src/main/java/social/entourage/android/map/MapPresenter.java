@@ -14,7 +14,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import social.entourage.android.api.MapRequest;
-import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -131,10 +130,6 @@ public class MapPresenter {
 
         public void addTourMarker(LatLng markerPosition, Tour tour) {
             tourMarkerHashMap.put(markerPosition, tour);
-        }
-
-        public void removeMarker(long tourId) {
-            tourMarkerHashMap.remove(tourId);
         }
 
         @Override

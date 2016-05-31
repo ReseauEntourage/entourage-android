@@ -60,8 +60,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -99,7 +97,6 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
@@ -347,7 +344,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             if (resultCode == Activity.RESULT_OK) {
                 List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 if (!textMatchList.isEmpty()) {
-                    if (commentEditText.getText().equals("")) {
+                    if (commentEditText.getText().toString().equals("")) {
                         commentEditText.setText(textMatchList.get(0));
                     } else {
                         commentEditText.setText(commentEditText.getText() + " " + textMatchList.get(0));
@@ -539,15 +536,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnCheckedChanged({R.id.tour_info_chat_rb, R.id.tour_info_information_rb})
     protected void onChatSelected(CompoundButton button, boolean checked) {
-        if (button == chatRB && checked == true) {
+        if (button == chatRB && checked) {
             publicSection.setVisibility(View.GONE);
             privateSection.setVisibility(View.VISIBLE);
             return;
         }
-        if (button == informationRB && checked == true) {
+        if (button == informationRB && checked) {
             publicSection.setVisibility(View.VISIBLE);
             privateSection.setVisibility(View.GONE);
-            return;
         }
     }
 
@@ -1253,7 +1249,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         hideProgressBar();
         if (status == null) {
             Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-            return;
         }
     }
 

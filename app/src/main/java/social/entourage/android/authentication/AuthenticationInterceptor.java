@@ -1,9 +1,5 @@
 package social.entourage.android.authentication;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import java.io.IOException;
 
 import javax.inject.Inject;

@@ -3,7 +3,6 @@ package social.entourage.android.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.os.Build;
 import android.text.Html;
 import android.util.AttributeSet;

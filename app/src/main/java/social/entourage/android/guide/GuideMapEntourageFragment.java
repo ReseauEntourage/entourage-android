@@ -7,12 +7,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdate;
@@ -32,7 +29,6 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
@@ -49,6 +45,8 @@ public class GuideMapEntourageFragment extends Fragment {
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
+
+    public static final String TAG = "social.entourage.android.fragment_guide";
 
     public static final float ZOOM_REDRAW_LIMIT = 1.1f;
     public static final int REDRAW_LIMIT = 300;

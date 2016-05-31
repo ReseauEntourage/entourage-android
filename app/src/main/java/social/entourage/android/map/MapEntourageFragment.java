@@ -114,6 +114,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // CONSTANTS
     // ----------------------------------
 
+    public static final String TAG = "social.entourage.android.fragment_map";
+
     public static final float ZOOM_REDRAW_LIMIT = 1.1f;
     private static final int REDRAW_LIMIT = 300;
     private static final int PERMISSIONS_REQUEST_LOCATION = 1;
@@ -796,7 +798,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
             }
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                ((Entourage) feedItem).setJoinStatus(user.getStatus());
+                feedItem.setJoinStatus(user.getStatus());
             }
             updateNewsfeedJoinStatus(feedItem);
         }
@@ -965,7 +967,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_filter_button)
     protected void onShowFilter() {
-        MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(tourService != null ? tourService.isRunning() : false);
+        MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(tourService != null && tourService.isRunning());
         mapFilterFragment.show(getFragmentManager(), MapFilterFragment.TAG);
     }
 
@@ -986,7 +988,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         else {
             User me = EntourageApplication.me(getActivity());
-            boolean isPro = ( me != null ? me.isPro() : true );
+            boolean isPro = ( me != null ? me.isPro() : false );
 
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.VISIBLE : View.GONE);
@@ -1027,7 +1029,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //update the visible buttons
         boolean isTourRunning = tourService != null && tourService.isRunning();
         User me = EntourageApplication.me(getActivity());
-        boolean isPro = ( me != null ? me.isPro() : true );
+        boolean isPro = ( me != null ? me.isPro() : false );
         mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility( isTourRunning ? View.INVISIBLE : (isPro ? View.VISIBLE : View.GONE) );
         mapLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning?View.VISIBLE:View.GONE);
         if (!isPro) {
@@ -1092,7 +1094,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
-                return;
             }
         }
     }
@@ -1248,7 +1249,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         loaderStop.setCancelable(true);
                         FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
                         tourService.stopFeedItem(feedItem);
-                        return;
                     }
                     else {
                         if (feedItem.getType() == TimestampedObject.TOUR_CARD && tourService.getCurrentTourId() == feedItem.getId()) {
@@ -1264,7 +1264,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             loaderStop.setCancelable(true);
                             FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
                             tourService.stopFeedItem(feedItem);
-                            return;
                         }
                     }
                 }
@@ -1357,7 +1356,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 if (card == null || !(card instanceof TimestampedObject)) {
                     iteratorNewsfeed.remove();
                 }
-                TimestampedObject retrievedCard = newsfeedAdapter.findCard((TimestampedObject)card);
+                TimestampedObject retrievedCard;
+                retrievedCard = newsfeedAdapter.findCard((TimestampedObject)card);
                 if (retrievedCard != null) {
                     if (Tour.NEWSFEED_TYPE.equals(newsfeed.getType())) {
                         if (((Tour)retrievedCard).isSame((Tour)card)) {
@@ -1516,7 +1516,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
-            DrawerActivity activity = null;
+            DrawerActivity activity;
             if (getActivity() instanceof DrawerActivity) {
                 activity = (DrawerActivity) getActivity();
                 tour.setBadgeCount(activity.getPushNotificationsCountForTour(tour.getId()));
@@ -1607,7 +1607,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         double longitude = lastPoint.getLongitude();
         LatLng position = new LatLng(latitude, longitude);
 
-        BitmapDescriptor icon = null;
+        BitmapDescriptor icon;
         /*
         if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
             icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_feet_active);

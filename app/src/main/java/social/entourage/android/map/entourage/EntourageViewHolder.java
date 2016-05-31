@@ -82,7 +82,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         return new EntourageViewHolder(view);
     }
 
-    public static final int getLayoutResource() {
+    public static int getLayoutResource() {
         return R.layout.layout_tour_card;
     }
 

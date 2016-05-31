@@ -20,7 +20,6 @@
         android:layout_toRightOf="@id/side_menu_item_icon"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/greyish_brown"
-        android:text="Some text"
         android:layout_centerVertical="true"/>
     <ImageView
         android:id="@+id/side_menu_item_divider"

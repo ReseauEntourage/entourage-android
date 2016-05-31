@@ -3,7 +3,6 @@ package social.entourage.android.map.tour.information;
 import dagger.Component;
 import social.entourage.android.ActivityScope;
 import social.entourage.android.EntourageComponent;
-import social.entourage.android.map.tour.TourService;
 
 /**
  * Component linked to TourInformationFragment lifecycle

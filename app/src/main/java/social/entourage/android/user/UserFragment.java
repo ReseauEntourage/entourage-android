@@ -281,7 +281,6 @@ public class UserFragment extends DialogFragment {
     protected void onUserUpdated(User user) {
         if (user == null) {
             displayToast(getString(R.string.user_text_update_ko));
-            return;
         }
         else {
             //update the current view

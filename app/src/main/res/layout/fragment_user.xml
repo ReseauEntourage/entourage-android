@@ -101,7 +101,7 @@
                     android:id="@+id/user_role"
                     android:layout_below="@+id/user_name"
                     android:layout_centerHorizontal="true"
-                    android:textSize="17dp"
+                    android:textSize="17sp"
                     android:textColor="@color/greyish_brown"
                     android:textStyle="bold"
                     android:visibility="gone"/>

@@ -1,8 +1,6 @@
 package social.entourage.android;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.flurry.android.FlurryAgent;
@@ -11,7 +9,6 @@ import javax.inject.Inject;
 
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.LoginActivity;
-import social.entourage.android.message.push.RegisterGCMService;
 
 /**
  * Base Activity that only runs if the user is currently logged

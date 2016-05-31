@@ -103,7 +103,7 @@
             android:id="@+id/tour_card_people_count"
             android:paddingLeft="3dp"
             android:textStyle="bold"
-            android:textSize="18dp"/>
+            android:textSize="18sp"/>
     </LinearLayout>
 
     <TextView

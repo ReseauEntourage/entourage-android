@@ -124,14 +124,12 @@ public class Entourage extends FeedItem implements Serializable {
     }
 
     public boolean isSame(Entourage entourage) {
-        boolean isSame = true;
-
         if (entourage == null) return false;
         if (id != entourage.id) return false;
         if (!status.equals(entourage.status)) return false;
         if (!joinStatus.equals(entourage.joinStatus)) return false;
 
-        return isSame;
+        return true;
     }
 
     // ----------------------------------

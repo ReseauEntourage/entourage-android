@@ -83,7 +83,7 @@ public class TourViewHolder extends BaseCardViewHolder {
         return new TourViewHolder(view);
     }
 
-    public static final int getLayoutResource() {
+    public static int getLayoutResource() {
         return R.layout.layout_tour_card;
     }
 

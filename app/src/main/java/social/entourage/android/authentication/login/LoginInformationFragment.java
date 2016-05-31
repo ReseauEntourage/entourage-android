@@ -132,7 +132,10 @@ public class LoginInformationFragment extends DialogFragment {
 
     @OnClick(R.id.login_button_close_info)
     void closeFragment() {
-        getOnInformationFragmentFinish().closeEntourageInformationFragment();
+        OnEntourageInformationFragmentFinish fragmentFinish = getOnInformationFragmentFinish();
+        if (fragmentFinish != null) {
+            fragmentFinish.closeEntourageInformationFragment();
+        }
     }
 
     @OnClick(R.id.login_button_facebook)
@@ -167,7 +170,10 @@ public class LoginInformationFragment extends DialogFragment {
                 Toast.makeText(getActivity(), R.string.login_text_newsletter_fail, Toast.LENGTH_SHORT).show();
                 FlurryAgent.logEvent(Constants.EVENT_NEWSLETTER_INSCRIPTION_FAILED);
             }
-            getOnInformationFragmentFinish().closeEntourageInformationFragment();
+            OnEntourageInformationFragmentFinish fragmentFinish = getOnInformationFragmentFinish();
+            if (fragmentFinish != null) {
+                fragmentFinish.closeEntourageInformationFragment();
+            }
         }
     }
 
