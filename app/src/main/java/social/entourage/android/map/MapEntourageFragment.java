@@ -1112,7 +1112,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 initializeMapZoom();
                 setOnMarkerClickListener(presenter.getOnClickListener());
-                map.setOnGroundOverlayClickListener(presenter.getOnGroundOverlayClickListener());
+                //map.setOnGroundOverlayClickListener(presenter.getOnGroundOverlayClickListener());
 
                 googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                     @Override
@@ -1547,13 +1547,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
                             .image(icon)
                             .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
-                            .clickable(true)
+                            .clickable(false)
                             .anchor(0.5f, 0.5f);
 
                     markersMap.put(entourage.hashString(), map.addGroundOverlay(groundOverlayOptions));
-                    if (presenter != null) {
-                        presenter.getOnGroundOverlayClickListener().addEntourageGroundOverlay(position, entourage);
-                    }
+//                    if (presenter != null) {
+//                        presenter.getOnGroundOverlayClickListener().addEntourageGroundOverlay(position, entourage);
+//                    }
                 }
             }
 
