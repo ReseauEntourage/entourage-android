@@ -1,5 +1,7 @@
 package social.entourage.android.base;
 
+import java.util.Date;
+
 import social.entourage.android.Constants;
 
 /**
@@ -11,9 +13,12 @@ public class EntouragePagination {
     // ATTRIBUTES
     // ----------------------------------
     public int page = 1;
-    public boolean isLoading = false;
     public int itemsPerPage = 0;
+    private Date beforeDate = new Date();
+    private Date newestDate = null;
+    public boolean isLoading = false;
     public boolean isRefreshing = false;
+    public boolean newItemsAvailable = false;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -31,6 +36,15 @@ public class EntouragePagination {
     // GETTERS AND SETTERS
     // ---------------------------------
 
+    public Date getBeforeDate() {
+        return (isRefreshing ? new Date() : beforeDate);
+    }
+
+    public void setBeforeDate(final Date beforeDate) {
+        this.beforeDate = beforeDate;
+    }
+
+
     // ----------------------------------
     // METHODS
     // ---------------------------------
@@ -38,6 +52,28 @@ public class EntouragePagination {
     public void loadedItems(int loadedItems) {
         if (!isRefreshing && loadedItems >= itemsPerPage) {
             page++;
+        }
+        isLoading = false;
+    }
+
+    public void loadedItems(Date newestDate, Date oldestDate) {
+        if (newestDate == null) {
+            newItemsAvailable = false;
+        }
+        else {
+            if (this.newestDate == null) {
+                this.newestDate = newestDate;
+            }
+            if (!isRefreshing) {
+                beforeDate = oldestDate;
+
+            }
+            else {
+                if (this.newestDate.before(newestDate)) {
+                    this.newestDate = newestDate;
+                    newItemsAvailable = true;
+                }
+            }
         }
         isLoading = false;
     }

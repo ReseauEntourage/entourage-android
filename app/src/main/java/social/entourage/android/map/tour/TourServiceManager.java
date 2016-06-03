@@ -42,6 +42,7 @@ import social.entourage.android.api.EncounterResponse;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.model.EntourageDate;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
@@ -537,14 +538,13 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveNewsfeed(int page, int per) {
+    protected void retrieveNewsfeed(Date beforeDate) {
         CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
             MapFilter mapFilter = MapFilter.getInstance();
             Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveFeed(
-                    page,
-                    per,
+                    ( beforeDate == null ? null : new EntourageDate(beforeDate) ),
                     location.longitude,
                     location.latitude,
                     mapFilter.getTourTypes(),

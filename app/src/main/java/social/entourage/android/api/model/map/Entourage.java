@@ -31,9 +31,6 @@ public class Entourage extends FeedItem implements Serializable {
     // Attributes
     // ----------------------------------
 
-    @SerializedName("updated_at")
-    private Date updatedTime;
-
     @SerializedName("created_at")
     private Date createdTime;
 
@@ -105,14 +102,6 @@ public class Entourage extends FeedItem implements Serializable {
 
     public void setEntourageType(final String entourageType) {
         this.entourageType = entourageType;
-    }
-
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(final Date updatedTime) {
-        this.updatedTime = updatedTime;
     }
 
     // ----------------------------------

@@ -726,7 +726,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             if (closed) {
 
-                 clearAll();
+                clearAll();
 
                 //mapPin.setVisibility(View.GONE);
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
@@ -807,6 +807,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveNewsfeed(List<Newsfeed> newsfeedList) {
+        int previousItemCount = newsfeedAdapter.getItemCount();
         if (newsfeedList != null) {
             newsfeedList = removeRedundantNewsfeed(newsfeedList, false);
 //        Collections.sort(tours, new Tour.TourComparatorOldToNew());
@@ -819,9 +820,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         //drawNearbyNewsfeed(newsfeed, false);
                     }
                 }
-                pagination.loadedItems(newsfeedList.size());
+                updatePagination(newsfeedList);
                 if (newsfeedList.size() > 0) {
-                    //redraw the map
+                    // redraw the map
                     map.clear();
                     markersMap.clear();
                     drawnToursMap.clear();
@@ -866,6 +867,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         else if (!initialNewsfeedLoaded) {
             showToursList();
             initialNewsfeedLoaded = true;
+        }
+        else {
+
         }
         /*
         if (newsfeedAdapter.getItemCount() > 0) {
@@ -1708,6 +1712,42 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         anim.start();
     }
 
+    private void updatePagination(List<Newsfeed> newsfeedList) {
+        if (newsfeedList == null || newsfeedList.size() == 0) {
+            pagination.loadedItems(null, null);
+            return;
+        }
+        Date newestUpdatedDate = null;
+        Date oldestUpdateDate = null;
+        for (Newsfeed newsfeed : newsfeedList) {
+            Object newsfeedData = newsfeed.getData();
+            if (newsfeedData != null && (newsfeedData instanceof FeedItem)) {
+                FeedItem feedItem = (FeedItem)newsfeedData;
+                if (feedItem.getUpdatedTime() != null) {
+                    Date feedUpdatedDate = feedItem.getUpdatedTime();
+                    if (newestUpdatedDate == null) {
+                        newestUpdatedDate = feedUpdatedDate;
+                    }
+                    else {
+                        if (newestUpdatedDate.before(feedUpdatedDate)) {
+                            newestUpdatedDate = feedUpdatedDate;
+                        }
+                    }
+                    if (oldestUpdateDate == null) {
+                        oldestUpdateDate = feedUpdatedDate;
+                    }
+                    else {
+                        if (oldestUpdateDate.after(feedUpdatedDate)) {
+                            oldestUpdateDate = feedUpdatedDate;
+                        }
+                    }
+                }
+            }
+        }
+
+        pagination.loadedItems(newestUpdatedDate, oldestUpdateDate);
+    }
+
     // ----------------------------------
     // Push handling
     // ----------------------------------
@@ -1715,6 +1755,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onPushNotificationReceived(Message message) {
         //refresh the newsfeed
         if (tourService != null) {
+            pagination.isRefreshing = true;
             tourService.updateNewsfeed(pagination);
         }
         //update the badge count on tour card
@@ -1759,9 +1800,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void run() {
                         if (tourService != null) {
-                            EntouragePagination firstPageRefresh = new EntouragePagination();
-                            firstPageRefresh.isRefreshing = true;
-                            tourService.updateNewsfeed(firstPageRefresh);
+                            pagination.isRefreshing = true;
+                            tourService.updateNewsfeed(pagination);
                         }
                     }
                 });
