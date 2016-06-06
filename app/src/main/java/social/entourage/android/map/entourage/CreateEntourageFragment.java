@@ -46,7 +46,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     public static final String TAG = "social.entourage.android.createentourage";
 
-    private static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
+    protected static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
     private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
 
     private static final int TITLE_MAX_CHAR_COUNT = 150;

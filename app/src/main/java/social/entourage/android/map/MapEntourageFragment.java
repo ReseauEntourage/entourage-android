@@ -453,7 +453,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void createEntourage(String entourageType) {
+    public void displayEntourageDisclaimer(String entourageType) {
+        // Hide the create entourage menu ui
         mapLongClickView.setVisibility(View.GONE);
         if (mapOptionsMenu.isOpened()) {
             mapOptionsMenu.toggle(false);
@@ -462,6 +463,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService != null && tourService.isRunning()) {
             tourStopButton.setVisibility(View.VISIBLE);
         }
+        // Check if we need to show the entourage disclaimer
+        User me = EntourageApplication.me(getActivity());
+        if (me == null) return;
+        if (me.isEntourageDisclaimerShown()) {
+            // Already shown, display the create entourage fragment
+            createEntourage(entourageType);
+        }
+        else {
+            // Show the disclaimer fragment
+            if (presenter != null) {
+                presenter.displayEntourageDisclaimer(entourageType);
+            }
+        }
+    }
+
+    public void createEntourage(String entourageType) {
         LatLng location = EntourageLocation.getInstance().getLastCameraPosition().target;
         if (longTapCoordinates != null) {
             location = longTapCoordinates;
@@ -961,12 +978,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.map_longclick_button_entourage_demand)
     protected void onCreateEntourageDemand() {
-        createEntourage(Entourage.TYPE_DEMAND);
+        displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
     }
 
     @OnClick(R.id.map_longclick_button_entourage_contribution)
     protected void onCreateEntourageContribution() {
-        createEntourage(Entourage.TYPE_CONTRIBUTION);
+        displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
     }
 
     @OnClick(R.id.fragment_map_filter_button)

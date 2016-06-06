@@ -58,6 +58,8 @@ public class User implements Serializable {
     @SerializedName("user_type")
     private String type = TYPE_PRO;
 
+    private boolean entourageDisclaimerShown = false;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -156,6 +158,14 @@ public class User implements Serializable {
 
     public void setSmsCode(final String smsCode) {
         this.smsCode = smsCode;
+    }
+
+    public boolean isEntourageDisclaimerShown() {
+        return entourageDisclaimerShown;
+    }
+
+    public void setEntourageDisclaimerShown(final boolean entourageDisclaimerShown) {
+        this.entourageDisclaimerShown = entourageDisclaimerShown;
     }
 
     public void incrementTours() {

@@ -57,6 +57,7 @@ import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
+import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.my.MyToursFragment;
@@ -66,7 +67,7 @@ import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
 
-public class DrawerActivity extends EntourageSecuredActivity implements TourInformationFragment.OnTourInformationFragmentFinish, ChoiceFragment.OnChoiceFragmentFinish, MyToursFragment.OnFragmentInteractionListener {
+public class DrawerActivity extends EntourageSecuredActivity implements TourInformationFragment.OnTourInformationFragmentFinish, ChoiceFragment.OnChoiceFragmentFinish, MyToursFragment.OnFragmentInteractionListener, EntourageDisclaimerFragment.OnFragmentInteractionListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -771,6 +772,23 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
 
     }
 
+    @Override
+    public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment, final String entourageType) {
+        // Save the entourage disclaimer shown flag
+        User me = EntourageApplication.me(this);
+        me.setEntourageDisclaimerShown(true);
+        getAuthenticationController().saveUser(me);
+
+        // Dismiss the disclaimer fragment
+        fragment.dismiss();
+
+        // Show the create entourage fragment
+        if (mainFragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+            ((MapEntourageFragment) mainFragment).createEntourage(entourageType);
+        }
+    }
+
     // ----------------------------------
     // Floating Action Buttons handling
     // ----------------------------------
@@ -818,7 +836,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @OnClick(R.id.button_create_entourage_contribution)
     protected void onCreateEntourageContributionClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.createEntourage(Entourage.TYPE_CONTRIBUTION);
+            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -827,7 +845,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
                             onPOILauncherClicked();
-                            mapEntourageFragment.createEntourage(Entourage.TYPE_CONTRIBUTION);
+                            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
                         }
                     })
                     .setNegativeButton(R.string.cancel, null);
@@ -838,7 +856,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
     @OnClick(R.id.button_create_entourage_demand)
     protected void onCreateEntouragDemandClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.createEntourage(Entourage.TYPE_DEMAND);
+            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -847,7 +865,7 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
                             onPOILauncherClicked();
-                            mapEntourageFragment.createEntourage(Entourage.TYPE_DEMAND);
+                            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
                         }
                     })
                     .setNegativeButton(R.string.cancel, null);
