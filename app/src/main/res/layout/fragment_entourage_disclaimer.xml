@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/entourage_disclaimer_scrollview"
-        >
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -36,11 +36,11 @@
             android:text="@string/entourage_disclaimer_text"
             android:id="@+id/entourage_disclaimer_text"
             android:autoLink="web"
-            android:layout_marginTop="10dp"
             android:textSize="16sp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:linksClickable="false"/>
+            android:linksClickable="true"
+            android:paddingBottom="5dp"/>
     </ScrollView>
 
     <CheckBox
