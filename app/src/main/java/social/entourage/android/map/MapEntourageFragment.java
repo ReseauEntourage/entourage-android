@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -166,7 +167,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private LayoutInflater inflater;
 
-    private float originalMapLayoutWeight;
+    private int originalMapLayoutHeight;
 
     private int isRequestingToJoin = 0;
 
@@ -200,7 +201,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     FrameLayout layoutMapMain;
 
     @Bind(R.id.fragment_map_main_layout)
-    LinearLayout layoutMain;
+    RelativeLayout layoutMain;
 
     @Bind(R.id.map_display_type)
     RadioGroup mapDisplayTypeRadioGroup;
@@ -218,6 +219,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.fragment_map_title)
     TextView bottomTitleTextView;
+
+    @Bind(R.id.fragment_map_new_entourages_button)
+    Button newEntouragesButton;
 
     Timer refreshToursTimer;
     TimerTask refreshToursTimerTask;
@@ -886,7 +890,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             initialNewsfeedLoaded = true;
         }
         else {
-
+            // Show the newEntourages button, if necessary
+            if (newsfeedAdapter.getItemCount() > previousItemCount && pagination.isRefreshing) {
+                if (toursListView.getVisibility() != View.GONE) {
+                    newEntouragesButton.setVisibility(View.VISIBLE);
+                }
+            }
         }
         /*
         if (newsfeedAdapter.getItemCount() > 0) {
@@ -990,6 +999,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     protected void onShowFilter() {
         MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(tourService != null && tourService.isRunning());
         mapFilterFragment.show(getFragmentManager(), MapFilterFragment.TAG);
+    }
+
+    @OnClick(R.id.fragment_map_new_entourages_button)
+    protected void onNewEntouragesReceivedButton() {
+        toursListView.scrollToPosition(0);
+        newEntouragesButton.setVisibility(View.GONE);
     }
 
     // ----------------------------------
@@ -1676,20 +1691,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         mapDisplayTypeRadioGroup.check(R.id.map_display_type_carte);
         mapDisplayTypeRadioGroup.setVisibility(View.VISIBLE);
 
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
-        originalMapLayoutWeight = lp.weight;
-//        lp.weight = layoutMain.getWeightSum();
-//        layoutMapMain.setLayoutParams(lp);
-//        layoutMain.forceLayout();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+        originalMapLayoutHeight = lp.height;
 
-        final float targetHeight = layoutMain.getWeightSum();
-        ValueAnimator anim = ValueAnimator.ofFloat(originalMapLayoutWeight, targetHeight);
+        final int targetHeight = layoutMain.getMeasuredHeight();
+        ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float val = (Float) valueAnimator.getAnimatedValue();
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                layoutParams.weight = val;
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                layoutParams.height = val;
                 layoutMapMain.setLayoutParams(layoutParams);
                 layoutMain.forceLayout();
             }
@@ -1708,18 +1720,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         mapDisplayTypeRadioGroup.setVisibility(View.GONE);
 
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
-//        lp.weight = originalMapLayoutWeight;
-//        layoutMapMain.setLayoutParams(lp);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
 
-        float targetHeight = layoutMain.getWeightSum();
-        ValueAnimator anim = ValueAnimator.ofFloat(lp.weight, originalMapLayoutWeight);
+        ValueAnimator anim = ValueAnimator.ofInt(layoutMapMain.getMeasuredHeight(), originalMapLayoutHeight);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float val = (Float) valueAnimator.getAnimatedValue();
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                layoutParams.weight = val;
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                layoutParams.height = val;
                 layoutMapMain.setLayoutParams(layoutParams);
                 layoutMain.forceLayout();
             }
