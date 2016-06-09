@@ -20,8 +20,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"/>
     <ImageView
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
         android:id="@+id/toolbar_entourage_logo"
         android:src="@drawable/entourage_logo_grey"
         android:scaleType="fitCenter"
@@ -34,7 +34,7 @@
         android:layout_weight="1"
         android:icon="@drawable/ic_discussion"
         android:gravity="right"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="16dp"/>
 
     </LinearLayout>
 
