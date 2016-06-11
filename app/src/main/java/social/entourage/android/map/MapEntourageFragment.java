@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -191,6 +192,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.launcher_tour_type)
     RadioGroup radioGroupType;
+
+    @Bind(R.id.launcher_tour_progressBar)
+    ProgressBar launcherProgressBar;
 
     @Bind(R.id.fragment_map_tours_view)
     RecyclerView toursListView;
@@ -598,6 +602,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onTourCreated(boolean created, long tourId) {
         buttonLaunchTour.setEnabled(true);
+        launcherProgressBar.setVisibility(View.GONE);
         if (getActivity() != null) {
             if (created) {
                 isFollowing = true;
@@ -930,6 +935,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @OnClick(R.id.launcher_tour_go)
     void onStartNewTour() {
         buttonLaunchTour.setEnabled(false);
+        launcherProgressBar.setVisibility(View.VISIBLE);
         TourTransportMode tourTransportMode = TourTransportMode.findByRessourceId(radioGroupTransportMode.getCheckedRadioButtonId());
         TourType tourType = TourType.findByRessourceId(radioGroupType.getCheckedRadioButtonId());
         startTour(tourTransportMode.getName(), tourType.getName());

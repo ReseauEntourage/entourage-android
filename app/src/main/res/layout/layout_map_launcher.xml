@@ -166,6 +166,15 @@
             android:src="@drawable/tour_start"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="40dp"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/launcher_tour_progressBar"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:indeterminate="true"/>
     </RelativeLayout>
 
 </LinearLayout>
