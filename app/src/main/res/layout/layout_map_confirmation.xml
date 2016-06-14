@@ -4,158 +4,175 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:gravity="bottom">
+    android:gravity="bottom"
+    >
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="17sp"
-        android:text="@string/tour_end_confirmation"
-        android:textColor="@color/greyish_brown"/>
-
-    <TextView
-        android:id="@+id/confirmation_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="60sp"
-        android:gravity="center"
-        android:textColor="@color/greyish"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/tour_end_duration"
-        android:id="@+id/confirmation_duration_explanation"
-        android:textSize="17sp"
-        android:textColor="@color/greyish"
-        android:gravity="center_horizontal"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/greyish"
-        android:layout_marginTop="20dp"
-        android:alpha="0.5"/>
+        android:layout_height="0dp"
+        android:id="@+id/confirmation_filler"
+        android:layout_weight="1"/>
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="left"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:background="@color/background">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:gravity="center"
+            android:textSize="17sp"
+            android:text="@string/tour_end_confirmation"
+            android:textColor="@color/greyish_brown"
+            android:layout_marginTop="5dp"/>
 
-            <TextView
-                android:id="@+id/confirmation_encounters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="40sp"
-                android:gravity="center_horizontal"
-                android:textIsSelectable="false"
-                android:textColor="@color/greyish"/>
+        <TextView
+            android:id="@+id/confirmation_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="60sp"
+            android:gravity="center"
+            android:textColor="@color/greyish"
+            />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tour_end_encounters"
-                android:id="@+id/confirmation_encounters_explanation"
-                android:gravity="center_horizontal"
-                android:textSize="15sp"
-                android:textColor="@color/greyish"/>
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_end_duration"
+            android:id="@+id/confirmation_duration_explanation"
+            android:textSize="17sp"
+            android:textColor="@color/greyish"
+            android:gravity="center_horizontal"
+            />
 
         <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:background="@color/greyish"
+            android:layout_marginTop="20dp"
             android:alpha="0.5"/>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            >
 
-            <TextView
-                android:id="@+id/confirmation_distance"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="40sp"
-                android:text=""
-                android:textColor="@color/greyish"
-                android:gravity="center_horizontal"/>
+                android:layout_weight="1">
 
-            <TextView
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/confirmation_encounters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:gravity="center_horizontal"
+                    android:textIsSelectable="false"
+                    android:textColor="@color/greyish"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tour_end_encounters"
+                    android:id="@+id/confirmation_encounters_explanation"
+                    android:gravity="center_horizontal"
+                    android:textSize="15sp"
+                    android:textColor="@color/greyish"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/greyish"
+                android:alpha="0.5"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/tour_end_distance"
-                android:id="@+id/confirmation_distance_explanation"
-                android:gravity="center_horizontal"
-                android:textColor="@color/greyish"
-                android:textSize="15sp"/>
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/confirmation_distance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:text=""
+                    android:textColor="@color/greyish"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tour_end_distance"
+                    android:id="@+id/confirmation_distance_explanation"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/greyish"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
         </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:background="@color/background_light"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/confirmation_end_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tour_stop"
-                android:drawableBottom="@drawable/tour_stop"
-                android:textColor="@color/greyish_brown"
-                android:background="?android:attr/selectableItemBackground"
-                android:textSize="25sp"
-                android:textAllCaps="false"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:background="@color/background_light"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
 
-            <Button
-                android:id="@+id/confirmation_resume_button"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/confirmation_end_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tour_stop"
+                    android:drawableBottom="@drawable/tour_stop"
+                    android:textColor="@color/greyish_brown"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textSize="25sp"
+                    android:textAllCaps="false"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/tour_resume"
-                android:background="?android:attr/selectableItemBackground"
-                android:drawableBottom="@drawable/tour_start"
-                android:textAllCaps="false"
-                android:textColor="@color/greyish_brown"
-                android:textSize="25sp"/>
-        </LinearLayout>
+                android:layout_weight="1"
+                android:gravity="center">
 
+                <Button
+                    android:id="@+id/confirmation_resume_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/tour_resume"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableBottom="@drawable/tour_start"
+                    android:textAllCaps="false"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="25sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
