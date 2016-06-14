@@ -50,4 +50,12 @@
     <string name="user_delete_account_in_progress">Suppression en cours</string>
     <string name="user_delete_account_failure">Erreur lors de la suppression du compte</string>
 
+    <!-- Photo wizard -->
+    <string name="user_photo_choose_description_title">Ajouter une photo ?</string>
+    <string name="user_photo_choose_description">Avec une photo, c’est tout de suite plus sympa.\nMontrez-nous votre sourire le plus chaleureux.</string>
+    <string name="user_photo_choose_photo">Choisir une photo</string>
+    <string name="user_photo_take_photo">Prendre une photo</string>
+    <string name="user_photo_error_no_camera">!!Camera not detected</string>
+    <string name="user_photo_error_photo_path">!!Cannot make room for a photo</string>
+
 </resources>

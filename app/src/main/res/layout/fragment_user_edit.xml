@@ -80,6 +80,17 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="20dp"/>
 
+                <ImageButton
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/user_photo_button"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignBottom="@+id/user_photo"
+                    android:src="@drawable/camera_square"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="centerInside"
+                    android:layout_marginBottom="10dp"/>
+
             </RelativeLayout>
 
             <LinearLayout

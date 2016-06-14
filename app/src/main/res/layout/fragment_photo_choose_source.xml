@@ -1,0 +1,94 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="social.entourage.android.user.edit.photo.PhotoChooseSourceFragment"
+              android:background="@color/accent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/photo_choose_title_layout"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/photo_choose_back_button"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_action_back"
+            android:padding="5dp"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ignore"
+            android:id="@+id/photo_choose_ignore_button"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="22sp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/photo_choose_photo_img"
+            android:src="@drawable/camera_square"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/user_photo_choose_description_title"
+            android:id="@+id/photo_choose_description_title"
+            android:layout_below="@+id/photo_choose_photo_img"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/user_photo_choose_description"
+            android:id="@+id/photo_choose_description"
+            android:layout_below="@+id/photo_choose_description_title"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            style="@style/WhiteButton.RoundedCorners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_photo_choose_photo"
+            android:id="@+id/photo_choose_photo_button"
+            android:layout_above="@+id/photo_choose_take_photo_button"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_photo_take_photo"
+            android:id="@+id/photo_choose_take_photo_button"
+            android:layout_alignParentBottom="true"
+            style="@style/WhiteButton.RoundedCorners"/>
+    </RelativeLayout>
+
+</LinearLayout>

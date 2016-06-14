@@ -32,6 +32,7 @@ import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.UserOrganizationsAdapter;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 
 public class UserEditFragment extends DialogFragment {
 
@@ -192,6 +193,12 @@ public class UserEditFragment extends DialogFragment {
         if (fragment != null) {
             fragment.saveAccount(editedUser);
         }
+    }
+
+    @OnClick(R.id.user_photo_button)
+    protected void onPhotoClicked() {
+        PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+        fragment.show(getFragmentManager(), PhotoChooseSourceFragment.TAG);
     }
 
     private void showEditProfile(int editType) {
