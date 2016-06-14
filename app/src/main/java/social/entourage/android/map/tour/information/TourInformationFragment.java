@@ -958,7 +958,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         initializeOptionsView();
 
         //hide the comment section if the user is not accepted or tour is freezed
-        if (!feedItem.getJoinStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED) || feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)) {
+        if (!feedItem.getJoinStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED) || feedItem.isFreezed()) {
             commentLayout.setVisibility(View.GONE);
         }
 
@@ -1332,11 +1332,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             this.feedItem.setStatus(feedItem.getStatus());
             this.feedItem.setEndTime(feedItem.getEndTime());
             if (feedItem.getStatus().equals(FeedItem.STATUS_CLOSED) && feedItem.isPrivate()) {
-                    addDiscussionTourEndCard();
-                    updateDiscussionList();
-                }
-                else if (feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)){
-                    commentLayout.setVisibility(View.GONE);
+                addDiscussionTourEndCard();
+                updateDiscussionList();
+            }
+            if (feedItem.isFreezed()){
+                commentLayout.setVisibility(View.GONE);
             }
             optionsLayout.setVisibility(View.GONE);
             initializeOptionsView();

@@ -46,7 +46,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     protected TourAuthor author;
 
     @SerializedName("updated_at")
-    private Date updatedTime;
+    protected Date updatedTime;
 
     @Expose(serialize = false, deserialize = false)
     protected transient Address startAddress;

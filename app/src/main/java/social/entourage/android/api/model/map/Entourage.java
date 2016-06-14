@@ -109,7 +109,7 @@ public class Entourage extends FeedItem implements Serializable {
     // ----------------------------------
 
     public boolean isFreezed() {
-        return false;
+        return STATUS_CLOSED.equals(status);
     }
 
     public boolean isSame(Entourage entourage) {
@@ -150,7 +150,7 @@ public class Entourage extends FeedItem implements Serializable {
 
     @Override
     public Date getEndTime() {
-        return createdTime;
+        return updatedTime;
     }
 
     public void setEndTime(Date endTime) {}

@@ -774,8 +774,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
 
                 @StringRes int tourStatusStringId =  R.string.local_service_stopped;
-                if (feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)) {
+                if (feedItem.isFreezed()) {
                     tourStatusStringId = R.string.tour_freezed;
+                    if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                        tourStatusStringId = R.string.entourage_info_text_close;
+                    }
                 }
 
                 Toast.makeText(getActivity(), tourStatusStringId, Toast.LENGTH_SHORT).show();
@@ -896,7 +899,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         else {
             // Show the newEntourages button, if necessary
-            if (newsfeedAdapter.getItemCount() > previousItemCount && pagination.isRefreshing) {
+            if (previousItemCount > 0 && newsfeedAdapter.getItemCount() > previousItemCount && pagination.isRefreshing) {
                 if (toursListView.getVisibility() != View.GONE) {
                     newEntouragesButton.setVisibility(View.VISIBLE);
                 }
