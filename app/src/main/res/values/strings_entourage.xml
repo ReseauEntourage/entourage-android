@@ -37,9 +37,14 @@
     <string name="entourage_info_text_close">Entourage fermé</string>
 
     <!-- Entourage disclaimer -->
-    <string name="entourage_disclaimer_text">Bonjour,\nnous vous rappelons qu\'en vertu de la charte d\'Entourage (http://entourage.social/cgu), vous devez vous assurer que les personnes que vous rencontrerez consentent à ce que des données sur vos échanges soient stockées et échangées au sein de votre association.</string>
+    <string name="entourage_disclaimer_text">Bonjour,\nnous vous rappelons qu\'en vertu de la charte d\'Entourage (http://entourage.social/cgu), vous devez vous assurer que les personnes que vous rencontrerez consentent à ce que des données sur vos échanges soient stockées et échangées au sein de votre association.\nNous vous rappellons que la position précise des entourages restera privée et ne sera pas diffusée.</string>
     <string name="entourage_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
-    <string name="entourage_disclaimer_error_notaccepted">!!Please accept the CGU first.</string>
+    <string name="entourage_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
+
+    <!-- Entourage pro disclaimer -->
+    <string name="encounter_disclaimer_text">Bonjour,\nnous vous rappelons qu\'en vertu de la charte d\'Entourage (http://entourage.social/cgu), vous devez vous assurer que les personnes que vous rencontrerez consentent à ce que des données sur vos échanges soient stockées et échangées au sein de votre association.</string>
+    <string name="encounter_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
+    <string name="encounter_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
 
 
 </resources>

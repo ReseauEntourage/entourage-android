@@ -59,6 +59,7 @@ public class User implements Serializable {
     private String type = TYPE_PRO;
 
     private boolean entourageDisclaimerShown = false;
+    private boolean encounterDisclaimerShown = false;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -166,6 +167,14 @@ public class User implements Serializable {
 
     public void setEntourageDisclaimerShown(final boolean entourageDisclaimerShown) {
         this.entourageDisclaimerShown = entourageDisclaimerShown;
+    }
+
+    public boolean isEncounterDisclaimerShown() {
+        return encounterDisclaimerShown;
+    }
+
+    public void setEncounterDisclaimerShown(final boolean encounterDisclaimerShown) {
+        this.encounterDisclaimerShown = encounterDisclaimerShown;
     }
 
     public void incrementTours() {

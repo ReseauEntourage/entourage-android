@@ -35,6 +35,7 @@ public class AuthenticationController {
             user.setSmsCode(loggedUser.getSmsCode());
             if (user != loggedUser) {
                 user.setEntourageDisclaimerShown(loggedUser.isEntourageDisclaimerShown());
+                user.setEncounterDisclaimerShown(loggedUser.isEncounterDisclaimerShown());
             }
         }
         loggedUser = user;
