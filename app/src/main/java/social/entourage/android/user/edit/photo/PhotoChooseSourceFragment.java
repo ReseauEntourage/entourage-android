@@ -85,6 +85,12 @@ public class PhotoChooseSourceFragment extends DialogFragment {
     }
 
     @Override
+    public void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -101,9 +107,7 @@ public class PhotoChooseSourceFragment extends DialogFragment {
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                if (mListener != null) {
-                    mListener.onPhotoChosen(bitmap);
-                }
+                showNextStep(bitmap);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -114,10 +118,7 @@ public class PhotoChooseSourceFragment extends DialogFragment {
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, null);
-            //TODO Show the next step
-            if (mListener != null) {
-                mListener.onPhotoChosen(bitmap);
-            }
+            showNextStep(bitmap);
         }
     }
 
@@ -188,6 +189,15 @@ public class PhotoChooseSourceFragment extends DialogFragment {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
+    }
+
+    private void showNextStep(Bitmap photo) {
+        if (photo == null) {
+            Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        PhotoEditFragment fragment = PhotoEditFragment.newInstance(photo);
+        fragment.show(getFragmentManager(), PhotoEditFragment.TAG);
     }
 
 }

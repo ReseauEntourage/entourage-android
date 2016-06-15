@@ -26,6 +26,7 @@ import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 /**
  * Presenter controlling the DrawerActivity
@@ -228,10 +229,18 @@ public class DrawerPresenter {
                             if (activity.authenticationController.isAuthenticated()) {
                                 activity.authenticationController.saveUser(response.body().getUser());
                             }
+                            PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                            if (photoEditFragment != null) {
+                                photoEditFragment.onPhotoSent(true);
+                            }
                             Log.d(LOG_TAG, "success");
                         }
                         else {
                             Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                            PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                            if (photoEditFragment != null) {
+                                photoEditFragment.onPhotoSent(false);
+                            }
                         }
                     }
 
@@ -239,6 +248,10 @@ public class DrawerPresenter {
                     public void onFailure(Call<UserResponse> call, Throwable t) {
                         Log.d(LOG_TAG, t.getLocalizedMessage());
                         Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            photoEditFragment.onPhotoSent(false);
+                        }
                     }
                 });
             }
