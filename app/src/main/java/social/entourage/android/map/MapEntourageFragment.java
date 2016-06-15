@@ -955,11 +955,31 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.map_longclick_button_create_encounter)
     public void onAddEncounter() {
-        if (getActivity() != null) {
-            mapLongClickView.setVisibility(View.GONE);
-            if (mapOptionsMenu.isOpened()) {
-                mapOptionsMenu.toggle(false);
+        if(getActivity()==null) {
+            return;
+        }
+        // Hide the create entourage menu ui
+        mapLongClickView.setVisibility(View.GONE);
+        if (mapOptionsMenu.isOpened()) {
+            mapOptionsMenu.toggle(false);
+        }
+        // Check if we need to show the encounter disclaimer
+        User me = EntourageApplication.me(getActivity());
+        if (me == null) return;
+        if (me.isEncounterDisclaimerShown()) {
+            // Already shown, display the create entourage fragment
+            addEncounter();
+        }
+        else {
+            // Show the disclaimer fragment
+            if (presenter != null) {
+                presenter.displayEncounterDisclaimer();
             }
+        }
+    }
+
+    public void addEncounter() {
+        if (getActivity() != null) {
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
             saveCameraPosition();
             Bundle args = new Bundle();

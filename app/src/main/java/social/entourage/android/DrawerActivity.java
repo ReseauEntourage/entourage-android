@@ -56,6 +56,7 @@ import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
+import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.map.tour.information.TourInformationFragment;
@@ -67,7 +68,12 @@ import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
 
-public class DrawerActivity extends EntourageSecuredActivity implements TourInformationFragment.OnTourInformationFragmentFinish, ChoiceFragment.OnChoiceFragmentFinish, MyToursFragment.OnFragmentInteractionListener, EntourageDisclaimerFragment.OnFragmentInteractionListener {
+public class DrawerActivity extends EntourageSecuredActivity
+        implements TourInformationFragment.OnTourInformationFragmentFinish,
+        ChoiceFragment.OnChoiceFragmentFinish,
+        MyToursFragment.OnFragmentInteractionListener,
+        EntourageDisclaimerFragment.OnFragmentInteractionListener,
+        EncounterDisclaimerFragment.OnFragmentInteractionListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -789,6 +795,23 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
         }
     }
 
+    @Override
+    public void onEncounterDisclaimerAccepted(EncounterDisclaimerFragment fragment) {
+        // Save the entourage disclaimer shown flag
+        User me = EntourageApplication.me(this);
+        me.setEncounterDisclaimerShown(true);
+        getAuthenticationController().saveUser(me);
+
+        // Dismiss the disclaimer fragment
+        fragment.dismiss();
+
+        // Show the create encounter fragment
+        if (mainFragment instanceof MapEntourageFragment) {
+            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+            ((MapEntourageFragment) mainFragment).addEncounter();
+        }
+    }
+
     // ----------------------------------
     // Floating Action Buttons handling
     // ----------------------------------
@@ -888,4 +911,5 @@ public class DrawerActivity extends EntourageSecuredActivity implements TourInfo
             selectItem(R.id.action_tours);
         }
     }
+
 }
