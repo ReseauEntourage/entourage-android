@@ -57,5 +57,6 @@
     <string name="user_photo_take_photo">Prendre une photo</string>
     <string name="user_photo_error_no_camera">!!Camera not detected</string>
     <string name="user_photo_error_photo_path">!!Cannot make room for a photo</string>
+    <string name="user_photo_error_not_saved">!!Photo not saved</string>
 
 </resources>

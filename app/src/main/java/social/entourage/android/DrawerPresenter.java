@@ -206,6 +206,45 @@ public class DrawerPresenter {
         }
     }
 
+    public void updateUserPhoto(String base64Photo) {
+        if (activity != null) {
+
+            String deviceId = activity.getApplicationContext()
+                    .getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE)
+                    .getString(RegisterGCMService.KEY_REGISTRATION_ID, null);
+
+            if (deviceId != null) {
+
+                ArrayMap<String, Object> user = new ArrayMap<>();
+                user.put("avatar", base64Photo);
+                ArrayMap<String, Object> request = new ArrayMap<>();
+                request.put("user", user);
+
+                Call<UserResponse> call = userRequest.updateUser(request);
+                call.enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        if (response.isSuccess()) {
+                            if (activity.authenticationController.isAuthenticated()) {
+                                activity.authenticationController.saveUser(response.body().getUser());
+                            }
+                            Log.d(LOG_TAG, "success");
+                        }
+                        else {
+                            Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        Log.d(LOG_TAG, t.getLocalizedMessage());
+                        Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+    }
+
     public void updateApplicationInfo(String pushNotificationToken) {
         if (activity == null) {
             return;
