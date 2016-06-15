@@ -525,8 +525,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 tourService.requestToJoinTour((Tour)feedItem);
             }
-            else if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 tourService.requestToJoinEntourage((Entourage) feedItem);
+            }
+            else {
+                hideProgressBar();
             }
         }
         else {
