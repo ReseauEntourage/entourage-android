@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -21,7 +22,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,6 +37,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -67,13 +71,15 @@ import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
+import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 
 public class DrawerActivity extends EntourageSecuredActivity
         implements TourInformationFragment.OnTourInformationFragmentFinish,
         ChoiceFragment.OnChoiceFragmentFinish,
         MyToursFragment.OnFragmentInteractionListener,
         EntourageDisclaimerFragment.OnFragmentInteractionListener,
-        EncounterDisclaimerFragment.OnFragmentInteractionListener {
+        EncounterDisclaimerFragment.OnFragmentInteractionListener,
+        PhotoChooseInterface {
 
     // ----------------------------------
     // CONSTANTS
@@ -809,6 +815,32 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment instanceof MapEntourageFragment) {
             MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
             ((MapEntourageFragment) mainFragment).addEncounter();
+        }
+    }
+
+    @Override
+    public void onPhotoChosen(final Bitmap photo) {
+        // Get the image as byte array
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if (!photo.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+            Log.d("UserPhoto", "Cannot compress to stream");
+            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        byte[] byteArray = stream.toByteArray();
+        // Get the base 64 representation
+        String base64Photo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        if (base64Photo == null || base64Photo.length() == 0) {
+            Log.d("UserPhoto", "Invalid or empty base64 string");
+            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Update the user
+        if (presenter != null) {
+            presenter.updateUserPhoto(base64Photo);
+        }
+        else {
+            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
         }
     }
 

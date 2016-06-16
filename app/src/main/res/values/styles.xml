@@ -82,6 +82,10 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="WhiteButton.RoundedCorners">
+        <item name="android:background">@drawable/bg_button_white_rounded</item>
+    </style>
+
     <style name="ActButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:textColor">@drawable/button_act_text_color</item>

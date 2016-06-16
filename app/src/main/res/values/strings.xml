@@ -21,5 +21,6 @@
     <string name="send">Envoyer</string>
     <string name="validate">Valider</string>
     <string name="register">Enregistrer</string>
+    <string name="ignore">Ignorer</string>
 
 </resources>

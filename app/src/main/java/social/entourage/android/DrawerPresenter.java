@@ -26,6 +26,7 @@ import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 /**
  * Presenter controlling the DrawerActivity
@@ -202,6 +203,57 @@ public class DrawerPresenter {
                         Log.d(LOG_TAG, error.getLocalizedMessage());
                     }
                 });*/
+            }
+        }
+    }
+
+    public void updateUserPhoto(String base64Photo) {
+        if (activity != null) {
+
+            String deviceId = activity.getApplicationContext()
+                    .getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE)
+                    .getString(RegisterGCMService.KEY_REGISTRATION_ID, null);
+
+            if (deviceId != null) {
+
+                ArrayMap<String, Object> user = new ArrayMap<>();
+                user.put("avatar", base64Photo);
+                ArrayMap<String, Object> request = new ArrayMap<>();
+                request.put("user", user);
+
+                Call<UserResponse> call = userRequest.updateUser(request);
+                call.enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        if (response.isSuccess()) {
+                            if (activity.authenticationController.isAuthenticated()) {
+                                activity.authenticationController.saveUser(response.body().getUser());
+                            }
+                            PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                            if (photoEditFragment != null) {
+                                photoEditFragment.onPhotoSent(true);
+                            }
+                            Log.d(LOG_TAG, "success");
+                        }
+                        else {
+                            Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                            PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                            if (photoEditFragment != null) {
+                                photoEditFragment.onPhotoSent(false);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        Log.d(LOG_TAG, t.getLocalizedMessage());
+                        Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            photoEditFragment.onPhotoSent(false);
+                        }
+                    }
+                });
             }
         }
     }
