@@ -60,5 +60,7 @@
     <string name="user_photo_error_photo_path">!!Cannot make room for a photo</string>
     <string name="user_photo_error_no_photo">!!Image could not be read</string>
     <string name="user_photo_error_not_saved">!!Photo not saved</string>
+    <string name="user_photo_error_camera_permission">!!Cancelling, required permissions are not granted</string>
+    <string name="user_photo_error_read_permission">!!Cancelling, required permissions are not granted</string>
 
 </resources>

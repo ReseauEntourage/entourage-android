@@ -1,8 +1,10 @@
 package social.entourage.android.user.edit.photo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,12 +13,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.PermissionChecker;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
+
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +44,8 @@ public class PhotoChooseSourceFragment extends DialogFragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_TAKE_PHOTO = 2;
 
+    private static final int READ_STORAGE_PERMISSION_CODE = 3;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -45,6 +53,7 @@ public class PhotoChooseSourceFragment extends DialogFragment {
     private PhotoChooseInterface mListener;
 
     String mCurrentPhotoPath;
+    Uri pickedImageUri = null;
 
     // ----------------------------------
     // LIFECYCLE
@@ -105,12 +114,11 @@ public class PhotoChooseSourceFragment extends DialogFragment {
 
             Uri uri = data.getData();
 
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                showNextStep(bitmap);
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                pickedImageUri = uri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION_CODE);
+            } else {
+                loadPickedImage(uri);
             }
 
             return;
@@ -119,6 +127,28 @@ public class PhotoChooseSourceFragment extends DialogFragment {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, null);
             showNextStep(bitmap);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showTakePhotoActivity();
+            } else {
+                Toast.makeText(getActivity(), R.string.user_photo_error_camera_permission, Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
+
+        if (requestCode == READ_STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (pickedImageUri != null) {
+                    loadPickedImage(pickedImageUri);
+                }
+            } else {
+                Toast.makeText(getActivity(), R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -138,6 +168,7 @@ public class PhotoChooseSourceFragment extends DialogFragment {
 
     @OnClick(R.id.photo_choose_photo_button)
     protected void onChoosePhotoClicked() {
+
         Intent intent = new Intent();
         // Show only images, no videos or anything else
         intent.setType("image/*");
@@ -148,6 +179,32 @@ public class PhotoChooseSourceFragment extends DialogFragment {
 
     @OnClick(R.id.photo_choose_take_photo_button)
     protected void onTakePhotoClicked() {
+
+        if (CropImage.isExplicitCameraPermissionRequired(getActivity())) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
+        } else {
+            showTakePhotoActivity();
+        }
+
+    }
+
+    // ----------------------------------
+    // Private methods
+    // ----------------------------------
+
+    private void loadPickedImage(Uri uri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+            showNextStep(bitmap);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pickedImageUri = null;
+    }
+
+    private void showTakePhotoActivity() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) == null) {
@@ -169,10 +226,6 @@ public class PhotoChooseSourceFragment extends DialogFragment {
             }
         }
     }
-
-    // ----------------------------------
-    // Private methods
-    // ----------------------------------
 
     private File createImageFile() throws IOException {
         // Create an image file name
