@@ -58,28 +58,22 @@
             android:layout_height="wrap_content"
             android:text="@string/login_button_register"
             android:id="@+id/login_button_register"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/login_signup_form"
-            android:textColor="@color/accent"
-            android:ellipsize="none"
-            android:textSize="17sp"
-            android:textAllCaps="false"/>
+            style="@style/WhiteButton.RoundedCorners"
+            android:layout_marginBottom="10dp"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login_button_login"
             android:id="@+id/login_button_login"
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="80dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/white"
-            android:background="#00ffffff"
-            android:textSize="17sp"
-            android:textAllCaps="false"/>
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            style="@style/WhiteButtonTransparent"/>
     </LinearLayout>
 
 </RelativeLayout>

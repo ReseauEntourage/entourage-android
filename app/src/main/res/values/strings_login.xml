@@ -51,7 +51,7 @@
     <string name="login_permission_title">Entourage doit accéder l\'état de votre téléphone</string>
     <string name="login_permission_description">Permet d\'afficher votre numéro de téléphone.</string>
 
-    <string name="login_button_register">Inscription</string>
+    <string name="login_button_register">S’inscrire sur Entourage</string>
     <string name="login_button_login">Connexion</string>
 
     <string name="login_permission_notification_description">Autorisez-vous Entourage à vous envoyer des notifications</string>

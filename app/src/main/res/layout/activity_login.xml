@@ -8,8 +8,8 @@
     android:background="@color/login_view">
 
     <include
-        android:id="@+id/login_include_signup"
-        layout="@layout/login_signup"/>
+        android:id="@+id/login_include_signin"
+        layout="@layout/login_signin"/>
 
     <include
         android:id="@+id/login_include_lost_code"

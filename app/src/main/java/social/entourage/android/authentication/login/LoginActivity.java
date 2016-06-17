@@ -69,8 +69,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Signup View
      ************************/
 
-    @Bind(R.id.login_include_signup)
-    View loginSignup;
+    @Bind(R.id.login_include_signin)
+    View loginSignin;
 
     @Bind(R.id.login_edit_phone)
     EditText phoneEditText;
@@ -188,7 +188,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_START);
 
-        loginSignup.setVisibility(View.GONE);
+        loginSignin.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
@@ -228,16 +228,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void onBackPressed() {
-        if (loginSignup.getVisibility() == View.VISIBLE) {
+        if (loginSignin.getVisibility() == View.VISIBLE) {
             phoneEditText.setText("");
             passwordEditText.setText("");
-            loginSignup.setVisibility(View.GONE);
+            loginSignin.setVisibility(View.GONE);
             loginStartup.setVisibility(View.VISIBLE);
         }
         else if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);
-            loginSignup.setVisibility(View.VISIBLE);
+            loginSignin.setVisibility(View.VISIBLE);
             showKeyboard(phoneEditText);
         }
         else if (loginTutorial.getVisibility() == View.VISIBLE) {
@@ -248,7 +248,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             newsletterEmail.setText("");
             loginNewsletter.setVisibility(View.GONE);
             previousView.setVisibility(View.VISIBLE);
-            if (previousView == loginSignup) {
+            if (previousView == loginSignin) {
                 showKeyboard(phoneEditText);
             }
         }
@@ -346,7 +346,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     public void launchFillInProfileView(String phoneNumber, User user) {
         loggedPhoneNumber = phoneNumber;
-        loginSignup.setVisibility(View.GONE);
+        loginSignin.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.VISIBLE);
         if (user.getEmail() != null) {
@@ -394,7 +394,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_text_lost_code)
     void onLostCodeClick() {
         hideKeyboard();
-        loginSignup.setVisibility(View.GONE);
+        loginSignin.setVisibility(View.GONE);
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.VISIBLE);
         lostCodeButtonBlock.setVisibility(View.VISIBLE);
@@ -405,9 +405,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_welcome_more)
     void onMoreClick() {
-        loginSignup.setVisibility(View.GONE);
+        loginSignin.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.VISIBLE);
-        previousView = loginSignup;
+        previousView = loginSignin;
         showKeyboard(newsletterEmail);
     }
 
@@ -433,7 +433,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         confirmationBlock.setVisibility(View.GONE);
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.GONE);
-        loginSignup.setVisibility(View.VISIBLE);
+        loginSignin.setVisibility(View.VISIBLE);
         showKeyboard(phoneEditText);
     }
 
@@ -538,7 +538,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_button_login)
     void showLoginScreen() {
         loginStartup.setVisibility(View.GONE);
-        loginSignup.setVisibility(View.VISIBLE);
+        loginSignin.setVisibility(View.VISIBLE);
         showKeyboard(phoneEditText);
     }
 
