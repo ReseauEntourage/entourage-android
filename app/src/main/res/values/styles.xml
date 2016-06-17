@@ -46,7 +46,7 @@
         <item name="android:textColor">@color/greyish_brown</item>
     </style>
 
-    <!-- Dialog fragment theme with slide animation. -->
+    <!-- Dialog fragment theme with slide from bottom animation. -->
     <style name="CustomDialogFragmentSlide" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>

@@ -1,0 +1,85 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="social.entourage.android.authentication.login.register.RegisterWelcomeFragment"
+              android:orientation="vertical"
+              android:background="@color/accent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/register_welcome_title_layout"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/register_welcome_back_button"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_action_back"
+            android:padding="5dp"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/registration_welcome_signin"
+            android:id="@+id/register_welcome_signin_button"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="22sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="74dp"
+            android:id="@+id/register_welcome_logo"
+            android:src="@drawable/entourage_logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/registration_welcome_title"
+            android:id="@+id/register_welcome_title"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:layout_below="@+id/register_welcome_logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/register_welcome_description"
+            android:layout_below="@+id/register_welcome_title"
+            android:layout_above="@+id/register_welcome_start_button"
+            android:textColor="@color/white"
+            android:text="@string/registration_welcome_description"
+            android:textColorLink="@color/white"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registration_welcome_start"
+            android:id="@+id/register_welcome_start_button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            style="@style/WhiteButton.RoundedCorners"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

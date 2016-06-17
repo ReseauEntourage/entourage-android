@@ -37,13 +37,15 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.login.register.OnRegisterUserListener;
+import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.view.HtmlTextView;
 
 /**
  * Activity providing the login steps
  */
-public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish {
+public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -66,7 +68,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     LoginPresenter loginPresenter;
 
     /************************
-     * Signup View
+     * Signin View
      ************************/
 
     @Bind(R.id.login_include_signin)
@@ -298,6 +300,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         hideKeyboard();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_OK);
         startActivity(new Intent(this, DrawerActivity.class));
+        finish();
     }
 
     public void loginFail(boolean networkError) {
@@ -367,12 +370,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
     }
 
-    // ----------------------------------
+    @Override
+    public void registerShowSignIn() {
+        showLoginScreen();
+    }
+
+// ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
 
     /************************
-     * Signup View
+     * Signin View
      ************************/
 
     /*
@@ -543,11 +551,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     @OnClick(R.id.login_button_register)
-    void showNewsletterScreen() {
-        loginStartup.setVisibility(View.GONE);
-        loginNewsletter.setVisibility(View.VISIBLE);
-        previousView = loginStartup;
-        showKeyboard(newsletterEmail);
+    void showRegisterScreen() {
+        RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
+        registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
     }
 
     /************************
