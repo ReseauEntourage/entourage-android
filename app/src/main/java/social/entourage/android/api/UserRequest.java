@@ -7,6 +7,8 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface UserRequest {
@@ -22,4 +24,7 @@ public interface UserRequest {
 
     @DELETE("users/me.json")
     Call<UserResponse> deleteUser();
+
+    @POST("users")
+    Call<UserResponse> registerUser(@Body ArrayMap<String, Object> userInfo);
 }

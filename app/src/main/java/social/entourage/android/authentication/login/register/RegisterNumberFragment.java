@@ -2,42 +2,42 @@ package social.entourage.android.authentication.login.register;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.authentication.login.LoginPresenter;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
 
 
-public class RegisterWelcomeFragment extends EntourageDialogFragment {
+public class RegisterNumberFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
-    public static final String TAG = "social.entourage.android.RegisterWelcome";
+    public static final String TAG = "social.entourage.android.RegisterNumber";
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
-    private OnRegisterUserListener mListener;
+    @Bind(R.id.register_number_phone_number)
+    EditText phoneNumberEditText;
 
-    @Bind(R.id.register_welcome_description)
-    TextView descriptionTextView;
+    private OnRegisterUserListener mListener;
 
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
 
-    public RegisterWelcomeFragment() {
+    public RegisterNumberFragment() {
         // Required empty public constructor
     }
 
@@ -47,17 +47,10 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_register_welcome, container, false);
+        View view = inflater.inflate(R.layout.fragment_register_number, container, false);
         ButterKnife.bind(this, view);
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        initialiseView();
     }
 
     @Override
@@ -67,7 +60,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
             mListener = (OnRegisterUserListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnRegisterUserListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -81,31 +74,23 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
     // Click handlers
     // ----------------------------------
 
-    @OnClick(R.id.register_welcome_back_button)
+    @OnClick(R.id.register_number_back_button)
     protected void onBackClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.register_welcome_signin_button)
-    protected void onSigninClicked() {
-        mListener.registerShowSignIn();
-        dismiss();
-    }
-
-    @OnClick(R.id.register_welcome_start_button)
-    protected void onStartClicked() {
-        RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
-        registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);
-    }
-
-    // ----------------------------------
-    // Private Methods
-    // ----------------------------------
-
-    private void initialiseView() {
-
-        descriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
-
+    @OnClick(R.id.register_number_next_button)
+    protected void onNextClicked() {
+        // Check the phone
+        String phoneNumber = LoginPresenter.checkPhoneNumberFormat(phoneNumberEditText.getText().toString());
+        if (phoneNumber == null) {
+            Toast.makeText(getActivity(), R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            // Save the phone
+            mListener.registerSavePhoneNumber(phoneNumber);
+            // Show the next step
+        }
     }
 
 }

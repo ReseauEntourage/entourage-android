@@ -22,5 +22,6 @@
     <string name="validate">Valider</string>
     <string name="register">Enregistrer</string>
     <string name="ignore">Ignorer</string>
+    <string name="next">Continuer</string>
 
 </resources>

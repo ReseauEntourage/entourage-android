@@ -65,7 +65,7 @@ public class LoginPresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public String checkPhoneNumberFormat(String phoneNumber) {
+    public static String checkPhoneNumberFormat(String phoneNumber) {
 
         if (phoneNumber.startsWith("0")) {
             phoneNumber = "+33" + phoneNumber.substring(1);
@@ -209,5 +209,30 @@ public class LoginPresenter {
                 activity.displayToast(activity.getString(R.string.login_text_invalid_email));
             }
         }
+    }
+
+    public void registerUserPhone(String phoneNumber) {
+        Map<String, String> user = new ArrayMap<>();
+        user.put("phone", phoneNumber);
+
+        ArrayMap<String, Object> request = new ArrayMap<>();
+        request.put("user", user);
+
+        Call<UserResponse> call = userRequest.registerUser(request);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+                if (response.isSuccess()) {
+                    activity.registerPhoneNumberSent();
+                } else {
+                    activity.displayToast(R.string.login_text_invalid_format);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<UserResponse> call, final Throwable t) {
+                activity.displayToast(R.string.login_login_error_network);
+            }
+        });
     }
 }

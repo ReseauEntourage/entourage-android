@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
@@ -66,6 +67,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Inject
     LoginPresenter loginPresenter;
+
+    private User onboardingUser;
 
     /************************
      * Signin View
@@ -319,6 +322,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         builder.create().show();
     }
 
+    public void displayToast(@StringRes int messageId) {
+        Toast.makeText(this, messageId, Toast.LENGTH_SHORT).show();
+    }
+
     public void displayToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -370,12 +377,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
     }
 
-    @Override
-    public void registerShowSignIn() {
-        showLoginScreen();
-    }
-
-// ----------------------------------
+    // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
 
@@ -552,6 +554,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_register)
     void showRegisterScreen() {
+        this.onboardingUser = new User();
         RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
         registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
     }
@@ -613,6 +616,30 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginVerifyCode.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.VISIBLE);
         showKeyboard(lostCodePhone);
+    }
+
+    /************************
+     * Register
+     ************************/
+
+    // OnRegisterUserListener
+
+    @Override
+    public void registerShowSignIn() {
+        showLoginScreen();
+    }
+
+    @Override
+    public void registerSavePhoneNumber(String phoneNumber) {
+        if (loginPresenter != null) {
+            loginPresenter.registerUserPhone(phoneNumber);
+        } else {
+            Toast.makeText(this, R.string.registration_number_error_server, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void registerPhoneNumberSent() {
+        displayToast("SMS sent");
     }
 
 }
