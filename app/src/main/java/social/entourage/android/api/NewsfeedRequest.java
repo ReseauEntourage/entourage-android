@@ -23,7 +23,7 @@ public interface NewsfeedRequest {
             @Query("show_tours") boolean showTours,
             @Query("show_my_entourages_only") boolean onlyMyEntourages,
             @Query("entourage_types") String entourageTypes,
-            @Query("time_frame") int timeFrame
+            @Query("time_range") int timeFrame
     );
 
     @GET("feeds")
@@ -36,7 +36,7 @@ public interface NewsfeedRequest {
             @Query("show_tours") boolean showTours,
             @Query("show_my_entourages_only") boolean onlyMyEntourages,
             @Query("entourage_types") String entourageTypes,
-            @Query("time_frame") int timeFrame
+            @Query("time_range") int timeFrame
     );
 
     @GET("myfeeds")
