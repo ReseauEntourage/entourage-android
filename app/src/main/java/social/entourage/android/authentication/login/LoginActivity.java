@@ -513,6 +513,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
         //start the activity
         startActivity(new Intent(this, DrawerActivity.class));
+        finish();
     }
 
     /*
