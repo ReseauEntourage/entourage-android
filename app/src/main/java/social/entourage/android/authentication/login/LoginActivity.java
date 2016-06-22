@@ -39,6 +39,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.login.register.OnRegisterUserListener;
+import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.view.HtmlTextView;
@@ -641,6 +642,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     protected void registerPhoneNumberSent() {
         displayToast("SMS sent");
+        RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
+        fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
     }
 
 }

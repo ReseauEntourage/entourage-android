@@ -74,4 +74,9 @@
     <string name="registration_number_hint">Numéro de portable</string>
     <string name="registration_number_error_server">!!Error sending the number to the server</string>
 
+    <string name="registration_smscode_title">Code de vérification</string>
+    <string name="registration_smscode_description">Veuillez saisir le code reçu par SMS.</string>
+    <string name="registration_smscode_hint">Code</string>
+    <string name="registration_smscode_validate">Valider</string>
+
 </resources>

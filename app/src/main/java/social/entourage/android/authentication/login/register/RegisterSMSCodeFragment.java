@@ -1,35 +1,29 @@
 package social.entourage.android.authentication.login.register;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.authentication.login.LoginPresenter;
-import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
+import social.entourage.android.base.EntourageDialogFragment;
 
-
-public class RegisterNumberFragment extends EntourageDialogFragment {
+public class RegisterSMSCodeFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
-    public static final String TAG = "social.entourage.android.RegisterNumber";
+    public static final String TAG = "social.entourage.android.RegisterSMSCode";
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-
-    @Bind(R.id.register_number_phone_number)
-    EditText phoneNumberEditText;
 
     private OnRegisterUserListener mListener;
 
@@ -37,7 +31,7 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
     // LIFECYCLE
     // ----------------------------------
 
-    public RegisterNumberFragment() {
+    public RegisterSMSCodeFragment() {
         // Required empty public constructor
     }
 
@@ -47,7 +41,7 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_register_number, container, false);
+        View view = inflater.inflate(R.layout.fragment_register_smscode, container, false);
         ButterKnife.bind(this, view);
 
         return view;
@@ -74,22 +68,13 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
     // Click handlers
     // ----------------------------------
 
-    @OnClick(R.id.register_number_back_button)
+    @OnClick(R.id.register_smscode_back_button)
     protected void onBackClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.register_number_next_button)
-    protected void onNextClicked() {
-        // Check the phone
-        String phoneNumber = LoginPresenter.checkPhoneNumberFormat(phoneNumberEditText.getText().toString());
-        if (phoneNumber == null) {
-            Toast.makeText(getActivity(), R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show();
-        }
-        else {
-            // Save the phone
-            mListener.registerSavePhoneNumber(phoneNumber);
-        }
-    }
+    @OnClick(R.id.register_smscode_validate_button)
+    protected void onValidateClicked() {
 
+    }
 }
