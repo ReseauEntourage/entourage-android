@@ -1,14 +1,10 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="social.entourage.android.authentication.login.register.RegisterNumberFragment"
             android:background="@color/accent"
             android:fillViewport="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,46 +26,54 @@
 
         </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/register_number_content_scrollview"
+        android:layout_below="@+id/register_number_navigation_layout"
+        android:layout_above="@+id/register_number_form">
+
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/register_number_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:orientation="vertical"
-            android:layout_below="@+id/register_number_navigation_layout">
-
-            <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/register_number_phone_image"
-                android:src="@drawable/phone"
-                android:layout_alignParentTop="true"/>
+                android:id="@+id/register_number_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:orientation="vertical"
+            >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/registration_number_title"
-                android:id="@+id/register_number_title"
-                android:textSize="28sp"
-                android:textColor="@color/white"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/register_number_phone_image"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/register_number_phone_image"
+                    android:src="@drawable/phone"
+                    android:layout_alignParentTop="true"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/registration_number_description"
-                android:id="@+id/register_number_description"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/register_number_title"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/registration_number_title"
+                    android:id="@+id/register_number_title"
+                    android:textSize="28sp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/register_number_phone_image"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/registration_number_description"
+                    android:id="@+id/register_number_description"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/register_number_title"/>
+
+            </RelativeLayout>
+    </ScrollView>
 
     <LinearLayout
         android:orientation="vertical"
@@ -78,7 +82,7 @@
         android:layout_alignParentBottom="true"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:layout_below="@+id/register_number_content">
+        android:id="@+id/register_number_form">
 
         <EditText
             android:layout_width="match_parent"
@@ -109,6 +113,4 @@
             android:layout_marginBottom="20dp"/>
     </LinearLayout>
 
-        </RelativeLayout>
-
-</ScrollView>
+</RelativeLayout>
