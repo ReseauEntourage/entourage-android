@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,43 +8,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="social.entourage.android.authentication.login.LoginActivity"
-    android:background="@color/background_login_grey"
+    android:background="@color/accent"
     android:weightSum="8">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_height="wrap_content"
+        android:id="@+id/login_email_navigation"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentTop="true">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_email_back_button"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_action_back"
+            android:padding="5dp"
+            android:background="?android:attr/selectableItemBackground"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/login_email_content_layout"
+        android:layout_below="@+id/login_email_navigation"
+        android:layout_marginRight="20dp">
 
         <ImageView
             android:id="@+id/login_user_photo"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:src="@drawable/ic_user_photo"
-            android:layout_centerInParent="true"/>
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/login_text_email_title"
+            android:id="@+id/login_email_title"
+            android:textColor="@color/white"
+            android:layout_below="@+id/login_user_photo"
+            android:layout_marginTop="10dp"
+            android:textSize="28sp"/>
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_login_light">
-
-        <EditText
-            android:id="@+id/login_edit_name_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/login_hint_name"
-            android:textColorHint="@color/login_edittext_hint"
-            android:gravity="center"
-            style="@style/CustomEditTextTheme"
-            android:textColor="@color/black"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:inputType="textCapWords"
-            android:visibility="gone"/>
+        android:id="@+id/login_email_form_layout"
+        android:layout_below="@+id/login_email_content_layout"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <EditText
             style="@style/CustomEditTextTheme"
@@ -53,24 +75,33 @@
             android:layout_height="wrap_content"
             android:inputType="textWebEmailAddress"
             android:hint="@string/login_hint_email"
-            android:textColorHint="@color/login_edittext_hint"
-            android:gravity="center"
-            android:textColor="@color/black"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:focusable="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            android:alpha=".5"/>
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/login_button_go"
-        android:layout_width="match_parent"
+    <com.github.clans.fab.FloatingActionButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/login_button_go"
-        android:textAllCaps="false"
-        style="@style/AccentButton"
-        />
+        android:id="@+id/login_button_go"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_forward"
+        app:fab_colorNormal="@color/white"
+        app:fab_colorPressed="@color/custom_button_white_pressed"
+        app:fab_colorRipple="@color/white"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"/>
 
-</LinearLayout>
+</RelativeLayout>

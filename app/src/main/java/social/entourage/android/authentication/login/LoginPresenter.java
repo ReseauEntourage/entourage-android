@@ -211,7 +211,7 @@ public class LoginPresenter {
         }
     }
 
-    public void registerUserPhone(String phoneNumber) {
+    public void registerUserPhone(final String phoneNumber) {
         Map<String, String> user = new ArrayMap<>();
         user.put("phone", phoneNumber);
 
@@ -223,7 +223,7 @@ public class LoginPresenter {
             @Override
             public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
                 if (response.isSuccess()) {
-                    activity.registerPhoneNumberSent();
+                    activity.registerPhoneNumberSent(phoneNumber);
                 } else {
                     activity.displayToast(R.string.login_text_invalid_format);
                 }

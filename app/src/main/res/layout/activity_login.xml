@@ -26,6 +26,12 @@
         layout="@layout/login_welcome"/>
 
     <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/login_name"
+        android:id="@+id/login_include_name"/>
+
+    <include
         android:id="@+id/login_include_tutorial"
         layout="@layout/login_tutorial"/>
 

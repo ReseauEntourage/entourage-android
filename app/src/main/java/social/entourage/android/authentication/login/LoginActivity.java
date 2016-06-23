@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.github.clans.fab.FloatingActionButton;
 
 import java.util.HashSet;
 
@@ -128,14 +129,21 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_edit_email_profile)
     EditText profileEmail;
 
-    @Bind(R.id.login_edit_name_profile)
-    EditText profileName;
+    //@Bind(R.id.login_edit_name_profile)
+    //EditText profileName;
 
     @Bind(R.id.login_user_photo)
     ImageView profilePhoto;
 
     @Bind(R.id.login_button_go)
-    Button goButton;
+    FloatingActionButton goButton;
+
+    /************************
+     * Enter Name View
+     ************************/
+
+    @Bind(R.id.login_include_name)
+    View loginNameView;
 
     /************************
      * Tutorial View
@@ -198,6 +206,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginLostCode.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
+        loginNameView.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.GONE);
 
@@ -249,6 +258,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         else if (loginTutorial.getVisibility() == View.VISIBLE) {
             loginTutorial.setVisibility(View.GONE);
             loginWelcome.setVisibility(View.VISIBLE);
+        }
+        else if (loginNameView.getVisibility() == View.VISIBLE) {
+            loginNameView.setVisibility(View.GONE);
+            loginTutorial.setVisibility(View.VISIBLE);
         }
         else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
             newsletterEmail.setText("");
@@ -356,6 +369,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     public void launchFillInProfileView(String phoneNumber, User user) {
+
+        while (getSupportFragmentManager().popBackStackImmediate()){};
+
         loggedPhoneNumber = phoneNumber;
         loginSignin.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
@@ -478,28 +494,29 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     }
 
-    @OnClick(R.id.login_button_go)
-    void finishTutorial() {
-        loginPresenter.updateUserEmail(profileEmail.getText().toString());
-        //show the notifications dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.login_permission_notification_description)
-            .setPositiveButton(R.string.login_permission_notification_accept,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            showNewsfeedScreenWithNotifications(true);
-                        }
-                    })
-            .setNegativeButton(R.string.login_permission_notification_refuse,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            showNewsfeedScreenWithNotifications(false);
-                        }
-                    })
-            .create().show();
+    @OnClick(R.id.login_email_back_button)
+    void onEmailBackClicked() {
+        onBackPressed();
     }
+
+    @OnClick(R.id.login_button_go)
+    void saveEmail() {
+        // TODO Save it locally and update it when tutorial is done
+        loginPresenter.updateUserEmail(profileEmail.getText().toString());
+
+        loginWelcome.setVisibility(View.GONE);
+        loginNameView.setVisibility(View.VISIBLE);
+    }
+
+    /************************
+     * Enter Name View
+     ************************/
+
+
+
+    /************************
+     * Private Methods
+     ************************/
 
     private void showNewsfeedScreenWithNotifications(boolean enabled) {
         //remember the choice
@@ -515,6 +532,27 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         //start the activity
         startActivity(new Intent(this, DrawerActivity.class));
         finish();
+    }
+
+    private void finishTutorial() {
+        //show the notifications dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.login_permission_notification_description)
+                .setPositiveButton(R.string.login_permission_notification_accept,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int which) {
+                                showNewsfeedScreenWithNotifications(true);
+                            }
+                        })
+                .setNegativeButton(R.string.login_permission_notification_refuse,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int which) {
+                                showNewsfeedScreenWithNotifications(false);
+                            }
+                        })
+                .create().show();
     }
 
     /*
@@ -640,8 +678,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
     }
 
-    protected void registerPhoneNumberSent() {
-        displayToast("SMS sent");
+    @Override
+    public void registerCheckCode(final String smsCode) {
+        loginPresenter.login(onboardingUser.getPhone(), smsCode);
+    }
+
+    protected void registerPhoneNumberSent(String phoneNumber) {
+        displayToast(R.string.registration_smscode_sent);
+        onboardingUser.setPhone(phoneNumber);
         RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
         fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
     }

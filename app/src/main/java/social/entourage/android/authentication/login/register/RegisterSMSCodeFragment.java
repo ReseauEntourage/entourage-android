@@ -7,7 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
@@ -26,6 +29,9 @@ public class RegisterSMSCodeFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private OnRegisterUserListener mListener;
+
+    @Bind(R.id.register_smscode_code)
+    EditText codeEditText;
 
     // ----------------------------------
     // LIFECYCLE
@@ -75,6 +81,21 @@ public class RegisterSMSCodeFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.register_smscode_validate_button)
     protected void onValidateClicked() {
-
+        if (!checkValidLocalSMSCode()) {
+            Toast.makeText(getActivity(), R.string.registration_smscode_error_code, Toast.LENGTH_SHORT).show();
+        } else {
+            mListener.registerCheckCode(codeEditText.getText().toString());
+        }
     }
+
+    // ----------------------------------
+    // Private methods
+    // ----------------------------------
+
+    private boolean checkValidLocalSMSCode() {
+        String code = codeEditText.getText().toString();
+        if (code == null || code.trim().length() == 0) return false;
+        return true;
+    }
+
 }
