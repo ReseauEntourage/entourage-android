@@ -145,6 +145,15 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_include_name)
     View loginNameView;
 
+    @Bind(R.id.login_name_firstname)
+    EditText firstnameEditText;
+
+    @Bind(R.id.login_name_lastname)
+    EditText lastnameEditText;
+
+    @Bind(R.id.login_name_go_button)
+    FloatingActionButton nameGoButton;
+
     /************************
      * Tutorial View
      ************************/
@@ -354,6 +363,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         newsletterButton.setEnabled(false);
         verifyCodeButton.setText(R.string.button_loading);
         verifyCodeButton.setEnabled(false);
+        nameGoButton.setEnabled(false);
     }
 
     public void stopLoader() {
@@ -366,6 +376,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         newsletterButton.setEnabled(true);
         verifyCodeButton.setText(R.string.login_button_verify_code);
         verifyCodeButton.setEnabled(true);
+        nameGoButton.setEnabled(true);
     }
 
     public void launchFillInProfileView(String phoneNumber, User user) {
@@ -489,11 +500,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Welcome View
      ************************/
 
-    @OnClick(R.id.login_user_photo)
-    void addPhoto() {
-
-    }
-
     @OnClick(R.id.login_email_back_button)
     void onEmailBackClicked() {
         onBackPressed();
@@ -501,18 +507,43 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_go)
     void saveEmail() {
-        // TODO Save it locally and update it when tutorial is done
         loginPresenter.updateUserEmail(profileEmail.getText().toString());
 
         loginWelcome.setVisibility(View.GONE);
-        loginNameView.setVisibility(View.VISIBLE);
+        showNameView();
     }
 
     /************************
      * Enter Name View
      ************************/
 
+    void showNameView() {
+        loginNameView.setVisibility(View.VISIBLE);
 
+        User user = loginPresenter.authenticationController.getUser();
+        if (user.getFirstName() != null) {
+            firstnameEditText.setText(user.getFirstName());
+        }
+        if (user.getLastName() != null) {
+            lastnameEditText.setText(user.getLastName());
+        }
+
+        firstnameEditText.requestFocus();
+    }
+
+    @OnClick(R.id.login_name_back_button)
+    void onNameBackClicked() {
+        onBackPressed();
+    }
+
+    @OnClick(R.id.login_name_go_button)
+    void onNameGoClicked() {
+        loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
+    }
+
+    protected void onUserUpdated() {
+        finishTutorial();
+    }
 
     /************************
      * Private Methods

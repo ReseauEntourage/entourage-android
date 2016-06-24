@@ -3,6 +3,7 @@ package social.entourage.android.authentication.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 import android.util.Patterns;
 
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import social.entourage.android.api.LoginResponse;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.Newsletter;
+import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**
@@ -43,7 +45,7 @@ public class LoginPresenter {
     private final LoginActivity activity;
     private final LoginRequest loginRequest;
     private final UserRequest userRequest;
-    private final AuthenticationController authenticationController;
+    protected final AuthenticationController authenticationController;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -161,25 +163,50 @@ public class LoginPresenter {
     }
 
     public void updateUserEmail(final String email) {
-        /*if (activity != null) {
+        authenticationController.getUser().setEmail(email);
+    }
+
+    public void updateUserName(String firstname, String lastname) {
+        authenticationController.getUser().setFirstName(firstname);
+        authenticationController.getUser().setLastName(lastname);
+
+        updateUserToServer();
+    }
+
+    private void updateUserToServer() {
+        User user = authenticationController.getUser();
+
+        if (activity != null) {
             activity.startLoader();
-            HashMap<String, String> user = new HashMap<>();
-            user.put("email", email);
-            userRequest.updateUser(user, new Callback<UserResponse>() {
+            HashMap<String, String> userMap = new HashMap<>();
+            userMap.put("email", user.getEmail());
+            userMap.put("firstname", user.getFirstName());
+            userMap.put("lastname", user.getLastName());
+
+            final ArrayMap<String, Object> request = new ArrayMap<>();
+            request.put("user", user);
+
+            Call<UserResponse> call = userRequest.updateUser(request);
+            call.enqueue(new Callback<UserResponse>() {
                 @Override
-                public void success(UserResponse userResponse, Response response) {
-                    Log.d("login update:", "success");
-                    authenticationController.getUser().setEmail(email);
-                    activity.displayToast(activity.getString(R.string.login_text_email_update_success));
+                public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+                    activity.stopLoader();
+                    if (response.isSuccess()) {
+                        activity.onUserUpdated();
+                        activity.displayToast(activity.getString(R.string.login_text_email_update_success));
+                    }
+                    else {
+                        activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
+                    }
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
-                    Log.d("login update:", "failure");
+                public void onFailure(final Call<UserResponse> call, final Throwable t) {
+                    activity.stopLoader();
                     activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
                 }
             });
-        }*/
+        }
     }
 
     public void subscribeToNewsletter(final String email) {
