@@ -1461,10 +1461,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             color = Color.RED;
         }
         else if (TourType.ALIMENTARY.getName().equals(type)) {
-            color = Color.GREEN;
+            color = Color.BLUE;
         }
         else if (TourType.BARE_HANDS.getName().equals(type)) {
-            color = Color.BLUE;
+            color = Color.GREEN;
         }
         if (!isToday(date)) {
             color = getTransparentColor(color);
