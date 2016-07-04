@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,9 +24,11 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:id="@+id/layout_map">
+                android:layout_height="155dp"
+                android:id="@+id/layout_map"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                >
 
                 <fragment android:id="@+id/fragment_map"
                     android:layout_width="match_parent"
@@ -37,11 +39,23 @@
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:id="@+id/fragment_map_tours_view"
-                android:layout_weight="6"/>
+                android:layout_below="@+id/layout_map"/>
 
-        </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_map_new_entourages"
+                android:id="@+id/fragment_map_new_entourages_button"
+                android:layout_centerInParent="true"
+                android:background="@drawable/new_entourages"
+                android:textColor="@color/white"
+                android:drawableLeft="@drawable/arrow_new_entourages"
+                android:textAllCaps="false"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/fragment_map_gps_layout"
@@ -126,7 +140,9 @@
                 android:padding="5dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -136,7 +152,9 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:padding="5dp"
                 android:layout_toRightOf="@+id/fragment_map_filter_button"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"/>
 
             <TextView
                 android:layout_width="match_parent"

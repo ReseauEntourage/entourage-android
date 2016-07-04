@@ -5,13 +5,9 @@ import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
 import android.util.Patterns;
 
-import com.squareup.okhttp.ResponseBody;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 

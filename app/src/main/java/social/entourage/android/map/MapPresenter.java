@@ -14,14 +14,15 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import social.entourage.android.api.MapRequest;
-import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.entourage.CreateEntourageFragment;
+import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.tools.BusProvider;
 
@@ -105,6 +106,22 @@ public class MapPresenter {
         }
     }
 
+    public void displayEntourageDisclaimer(String entourageType) {
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(entourageType);
+            fragment.show(fragmentManager, EntourageDisclaimerFragment.TAG);
+        }
+    }
+
+    public void displayEncounterDisclaimer() {
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            EncounterDisclaimerFragment fragment = EncounterDisclaimerFragment.newInstance();
+            fragment.show(fragmentManager, EncounterDisclaimerFragment.TAG);
+        }
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -131,10 +148,6 @@ public class MapPresenter {
 
         public void addTourMarker(LatLng markerPosition, Tour tour) {
             tourMarkerHashMap.put(markerPosition, tour);
-        }
-
-        public void removeMarker(long tourId) {
-            tourMarkerHashMap.remove(tourId);
         }
 
         @Override

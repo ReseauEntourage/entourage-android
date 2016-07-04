@@ -83,7 +83,7 @@ public class TourViewHolder extends BaseCardViewHolder {
         return new TourViewHolder(view);
     }
 
-    public static final int getLayoutResource() {
+    public static int getLayoutResource() {
         return R.layout.layout_tour_card;
     }
 
@@ -214,7 +214,7 @@ public class TourViewHolder extends BaseCardViewHolder {
                 if (tour.getTourPoints().isEmpty()) return null;
                 TourPoint tourPoint = tour.getTourPoints().get(0);
                 List<Address> addresses = geoCoder.getFromLocation(tourPoint.getLatitude(), tourPoint.getLongitude(), 1);
-                if (addresses.size() > 0) {
+                if (addresses != null && addresses.size() > 0) {
                     tour.setStartAddress(addresses.get(0));
                 }
                 return tour;

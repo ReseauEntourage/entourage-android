@@ -87,7 +87,7 @@ public class Events {
      */
     public static class OnUserInfoUpdatedEvent {
 
-        public OnUserInfoUpdatedEvent() {};
+        public OnUserInfoUpdatedEvent() {}
     }
 
     /**
@@ -124,7 +124,7 @@ public class Events {
 
         public OnUserViewRequestedEvent(int userId) {
             this.userId = userId;
-        };
+        }
 
         public int getUserId() {
             return userId;
@@ -140,7 +140,7 @@ public class Events {
 
         public OnFeedItemInfoViewRequestedEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
-        };
+        }
 
         public FeedItem getFeedItem() {
             return feedItem;
@@ -156,7 +156,7 @@ public class Events {
 
         public OnTourEncounterViewRequestedEvent(Encounter encounter) {
             this.encounter = encounter;
-        };
+        }
 
         public Encounter getEncounter() {
             return encounter;
@@ -172,7 +172,7 @@ public class Events {
 
         public OnFeedItemCloseRequestEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
-        };
+        }
 
         public FeedItem getFeedItem() {
             return feedItem;

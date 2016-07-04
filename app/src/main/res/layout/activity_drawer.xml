@@ -33,7 +33,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:paddingRight="10dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="5dp"
             app:menu_labels_singleLine="true"
             app:menu_backgroundColor="#ccffffff"
             app:menu_labels_style="@style/MapActionLabelStyle"

@@ -47,7 +47,7 @@ public class MapFilter {
     // ----------------------------------
 
     public String getTourTypes() {
-        StringBuffer tourTypes = new StringBuffer("");
+        StringBuilder tourTypes = new StringBuilder("");
         if (tourTypeMedical) {
             tourTypes.append(TourType.MEDICAL.getName());
         }
@@ -64,7 +64,7 @@ public class MapFilter {
     }
 
     public String getEntourageTypes() {
-        StringBuffer entourageTypes = new StringBuffer("");
+        StringBuilder entourageTypes = new StringBuilder("");
 
         if (entourageTypeDemand) {
             entourageTypes.append(Entourage.TYPE_DEMAND);

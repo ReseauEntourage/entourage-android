@@ -2,15 +2,11 @@ package social.entourage.android.map.encounter;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -126,7 +122,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             if (resultCode == RESULT_OK) {
                 List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 if (!textMatchList.isEmpty()) {
-                    if (messageEditText.getText().equals("")) {
+                    if (messageEditText.getText().toString().equals("")) {
                         messageEditText.setText(textMatchList.get(0));
                     } else {
                         messageEditText.setText(messageEditText.getText() + " " + textMatchList.get(0));

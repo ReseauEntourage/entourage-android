@@ -78,17 +78,6 @@
         android:id="@+id/tour_info_header_layout"
         android:layout_marginTop="10dp"/>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/tour_info_progress_bar"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/circular_progress_bar"
-        android:visibility="visible"/>
-
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -140,6 +129,17 @@
         layout="@layout/layout_public_tour_information"
         android:id="@+id/tour_info_public_section"
         android:layout_below="@+id/tour_info_details_selector"/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/tour_info_progress_bar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/circular_progress_bar"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:orientation="vertical"

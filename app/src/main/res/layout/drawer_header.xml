@@ -30,7 +30,6 @@
             android:layout_width="40dp"
             android:layout_height="20dp"
             android:id="@+id/drawer_header_back"
-            android:layout_weight="1.13"
             android:src="@drawable/ic_forward"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

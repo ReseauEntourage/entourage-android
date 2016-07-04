@@ -45,6 +45,9 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     protected TourAuthor author;
 
+    @SerializedName("updated_at")
+    protected Date updatedTime;
+
     @Expose(serialize = false, deserialize = false)
     protected transient Address startAddress;
 
@@ -140,6 +143,14 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public void setStatus(final String status) {
         this.status = status;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(final Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public List<TimestampedObject> getCachedCardInfoList() {

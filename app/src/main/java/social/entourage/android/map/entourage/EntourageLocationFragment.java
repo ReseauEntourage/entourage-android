@@ -1,8 +1,6 @@
 package social.entourage.android.map.entourage;
 
 import android.Manifest;
-import android.app.usage.UsageEvents;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -14,9 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -325,7 +320,7 @@ public class EntourageLocationFragment extends DialogFragment {
                 LatLng location = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
                 String addressLine = "";
-                if (addresses.size() > 0) {
+                if (addresses != null && addresses.size() > 0) {
                     Address address = addresses.get(0);
                     if (address.getMaxAddressLineIndex() >= 0) {
                         addressLine = addresses.get(0).getAddressLine(0);
@@ -354,8 +349,7 @@ public class EntourageLocationFragment extends DialogFragment {
                 String address = params[0];
                 List<Address> addresses = geoCoder.getFromLocationName(address, 1);
                 if (addresses.size() > 0) {
-                    Address geoaddress = addresses.get(0);
-                    return geoaddress;
+                    return addresses.get(0);
                 }
                 return null;
             }

@@ -76,7 +76,6 @@
             android:gravity="right|end"
             android:textColor="@color/accent"
             android:textSize="14sp"
-            android:text="v1.1"
             android:layout_gravity="center_vertical"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/about_arrow_rate_us"/>

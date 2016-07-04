@@ -1,11 +1,8 @@
 package social.entourage.android.map.tour.join.received;
 
-import android.util.ArrayMap;
-
 import com.squareup.okhttp.ResponseBody;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -14,7 +11,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 

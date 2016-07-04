@@ -65,12 +65,12 @@ public interface EntourageRequest {
     );
 
     @GET("entourages/{entourage_id}/chat_messages.json")
-    Call<ChatMessage.ChatMessagesWrapper> retrieveTourMessages(
+    Call<ChatMessage.ChatMessagesWrapper> retrieveEntourageMessages(
             @Path("entourage_id") long entourageId
     );
 
     @GET("entourages/{entourage_id}/chat_messages.json")
-    Call<ChatMessage.ChatMessagesWrapper> retrieveTourMessages(
+    Call<ChatMessage.ChatMessagesWrapper> retrieveEntourageMessages(
             @Path("entourage_id") long entourageId,
             @Query("before") Date pagination
     );

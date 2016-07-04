@@ -24,10 +24,8 @@ import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
-import social.entourage.android.api.tape.Events;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
-import social.entourage.android.tools.BusProvider;
 
 /**
  * Presenter controlling the DrawerActivity
@@ -82,18 +80,20 @@ public class DrawerPresenter {
                 .create();
         dialog.show();
         Button updateButton = (Button) dialog.findViewById(R.id.update_dialog_button);
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Uri uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
-                    activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                } catch (Exception e) {
-                    Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();
-                    dialog.cancel();
+        if (updateButton != null) {
+            updateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Uri uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
+                        activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    } catch (Exception e) {
+                        Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     protected void displayMyTours() {

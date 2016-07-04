@@ -60,8 +60,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -99,7 +97,6 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
@@ -347,7 +344,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             if (resultCode == Activity.RESULT_OK) {
                 List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 if (!textMatchList.isEmpty()) {
-                    if (commentEditText.getText().equals("")) {
+                    if (commentEditText.getText().toString().equals("")) {
                         commentEditText.setText(textMatchList.get(0));
                     } else {
                         commentEditText.setText(commentEditText.getText() + " " + textMatchList.get(0));
@@ -528,8 +525,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 tourService.requestToJoinTour((Tour)feedItem);
             }
-            else if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 tourService.requestToJoinEntourage((Entourage) feedItem);
+            }
+            else {
+                hideProgressBar();
             }
         }
         else {
@@ -539,15 +539,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnCheckedChanged({R.id.tour_info_chat_rb, R.id.tour_info_information_rb})
     protected void onChatSelected(CompoundButton button, boolean checked) {
-        if (button == chatRB && checked == true) {
+        if (button == chatRB && checked) {
             publicSection.setVisibility(View.GONE);
             privateSection.setVisibility(View.VISIBLE);
             return;
         }
-        if (button == informationRB && checked == true) {
+        if (button == informationRB && checked) {
             publicSection.setVisibility(View.VISIBLE);
             privateSection.setVisibility(View.GONE);
-            return;
         }
     }
 
@@ -975,7 +974,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         initializeOptionsView();
 
         //hide the comment section if the user is not accepted or tour is freezed
-        if (!feedItem.getJoinStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED) || feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)) {
+        if (!feedItem.getJoinStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED) || feedItem.isFreezed()) {
             commentLayout.setVisibility(View.GONE);
         }
 
@@ -1243,7 +1242,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     protected void onFeedItemEncountersReceived(List<Encounter> encounterList) {
         if (encounterList != null) {
-            User me = EntourageApplication.me(getActivity());
+            User me = EntourageApplication.me(getContext());
             if (me != null) {
                 for (int i = 0; i < encounterList.size(); i++) {
                     Encounter encounter = encounterList.get(i);
@@ -1266,7 +1265,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         hideProgressBar();
         if (status == null) {
             Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-            return;
         }
     }
 
@@ -1350,11 +1348,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             this.feedItem.setStatus(feedItem.getStatus());
             this.feedItem.setEndTime(feedItem.getEndTime());
             if (feedItem.getStatus().equals(FeedItem.STATUS_CLOSED) && feedItem.isPrivate()) {
-                    addDiscussionTourEndCard();
-                    updateDiscussionList();
-                }
-                else if (feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)){
-                    commentLayout.setVisibility(View.GONE);
+                addDiscussionTourEndCard();
+                updateDiscussionList();
+            }
+            if (feedItem.isFreezed()){
+                commentLayout.setVisibility(View.GONE);
             }
             optionsLayout.setVisibility(View.GONE);
             initializeOptionsView();
@@ -1428,7 +1426,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 int adapterPosition = recyclerView.findViewHolderForLayoutPosition(firstVisibleItemPosition).getAdapterPosition();
                 TimestampedObject timestampedObject = discussionAdapter.getCardAt(adapterPosition);
                 Date timestamp = timestampedObject.getTimestamp();
-                if (timestamp != null && timestamp.before(oldestChatMessageDate)) {
+                if (timestamp != null && oldestChatMessageDate != null && timestamp.before(oldestChatMessageDate)) {
                     presenter.getFeedItemMessages(oldestChatMessageDate);
                 }
                 scrollDeltaY = 0;

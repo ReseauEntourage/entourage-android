@@ -33,6 +33,10 @@ public class AuthenticationController {
         if (loggedUser != null && loggedUser.getId() == user.getId()) {
             user.setPhone(loggedUser.getPhone());
             user.setSmsCode(loggedUser.getSmsCode());
+            if (user != loggedUser) {
+                user.setEntourageDisclaimerShown(loggedUser.isEntourageDisclaimerShown());
+                user.setEncounterDisclaimerShown(loggedUser.isEncounterDisclaimerShown());
+            }
         }
         loggedUser = user;
         userSharedPref.putObject(PREF_KEY_USER, user);

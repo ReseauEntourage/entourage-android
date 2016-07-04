@@ -267,10 +267,11 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
             Iterator<Newsfeed> iterator = newsfeedList.iterator();
             while (iterator.hasNext()) {
                 Newsfeed newsfeed = iterator.next();
-                FeedItem feedItem = (FeedItem)newsfeed.getData();
-                if (feedItem == null || !(feedItem instanceof FeedItem)) {
+                Object feedData = newsfeed.getData();
+                if (feedData == null || !(feedData instanceof FeedItem)) {
                     continue;
                 }
+                FeedItem feedItem = (FeedItem)newsfeed.getData();
                 if (activity != null) {
                     feedItem.setBadgeCount(activity.getPushNotificationsCountForTour(feedItem.getId()));
                 }
@@ -278,19 +279,19 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
 //                    ongoingToursAdapter.add(tour);
 //                }
                 if (status.equals(Newsfeed.STATUS_ACTIVE)) {
-                    if (activeFeedsAdapter.findCard((TimestampedObject)feedItem) == null) {
-                        activeFeedsAdapter.addCardInfoBeforeTimestamp((TimestampedObject) feedItem);
+                    if (activeFeedsAdapter.findCard(feedItem) == null) {
+                        activeFeedsAdapter.addCardInfoBeforeTimestamp(feedItem);
                     }
                     else {
-                        activeFeedsAdapter.updateCard((TimestampedObject) feedItem);
+                        activeFeedsAdapter.updateCard(feedItem);
                     }
                 }
                 else if (status.equals(Newsfeed.STATUS_CLOSED)) {
-                    if (frozenFeedsAdapter.findCard((TimestampedObject)feedItem) == null) {
-                        frozenFeedsAdapter.addCardInfoBeforeTimestamp((TimestampedObject) feedItem);
+                    if (frozenFeedsAdapter.findCard(feedItem) == null) {
+                        frozenFeedsAdapter.addCardInfoBeforeTimestamp(feedItem);
                     }
                     else {
-                        frozenFeedsAdapter.updateCard((TimestampedObject) feedItem);
+                        frozenFeedsAdapter.updateCard(feedItem);
                     }
                 }
             }

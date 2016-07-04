@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import social.entourage.android.R;
@@ -44,8 +42,7 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_user_profile_organization, parent, false);
-        OrganizationViewHolder viewHolder = new OrganizationViewHolder(v);
-        return viewHolder;
+        return new OrganizationViewHolder(v);
     }
 
     @Override

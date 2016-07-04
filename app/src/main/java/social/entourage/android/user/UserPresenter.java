@@ -2,15 +2,11 @@ package social.entourage.android.user;
 
 import android.support.v4.util.ArrayMap;
 
-import java.util.HashMap;
-
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.R;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.User;
