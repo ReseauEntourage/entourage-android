@@ -1,5 +1,7 @@
 package social.entourage.android.user;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,6 +25,7 @@ import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,6 +42,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditFragment;
 
@@ -268,6 +272,11 @@ public class UserFragment extends DialogFragment {
             ((EntourageActivity) getActivity()).dismissProgressDialog();
         }
         if (success) {
+            //remove the tutorial flag
+            SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+            HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+            loggedNumbers.remove(this.user.getPhone());
+            sharedPreferences.edit().putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers).commit();
             //go back to login screen
             if (getActivity() instanceof DrawerActivity) {
                 ((DrawerActivity) getActivity()).selectItem(R.id.action_logout);

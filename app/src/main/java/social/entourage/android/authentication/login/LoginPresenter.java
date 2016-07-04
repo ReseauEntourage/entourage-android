@@ -104,6 +104,7 @@ public class LoginPresenter {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         if (response.isSuccess()) {
+                            activity.stopLoader();
                             authenticationController.saveUser(response.body().getUser());
                             authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode);
                             authenticationController.saveUserToursOnly(false);

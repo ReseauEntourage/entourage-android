@@ -2,6 +2,7 @@ package social.entourage.android.authentication.login;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.login.register.OnRegisterUserListener;
+import social.entourage.android.authentication.login.register.RegisterNumberFragment;
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
 import social.entourage.android.message.push.RegisterGCMService;
@@ -381,9 +383,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     public void launchFillInProfileView(String phoneNumber, User user) {
 
-        while (getSupportFragmentManager().popBackStackImmediate()){};
+        //TODO Need a better approach
+        DialogFragment fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
+        if (fragment != null) fragment.dismiss();
+        fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
+        if (fragment != null) fragment.dismiss();
+        fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterWelcomeFragment.TAG);
+        if (fragment != null) fragment.dismiss();
 
         loggedPhoneNumber = phoneNumber;
+        loginStartup.setVisibility(View.GONE);
         loginSignin.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.VISIBLE);

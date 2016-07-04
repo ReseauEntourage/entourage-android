@@ -30,43 +30,50 @@
             android:background="?android:attr/selectableItemBackground"/>
     </RelativeLayout>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/login_email_content_layout"
+        android:layout_height="match_parent"
+        android:id="@+id/login_email_content_scrollview"
         android:layout_below="@+id/login_email_navigation"
-        android:layout_marginRight="20dp">
+        android:layout_above="@+id/login_email_form_layout">
 
-        <ImageView
-            android:id="@+id/login_user_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_user_photo"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/login_text_email_title"
-            android:id="@+id/login_email_title"
-            android:textColor="@color/white"
-            android:layout_below="@+id/login_user_photo"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:textSize="28sp"/>
-    </RelativeLayout>
+            android:id="@+id/login_email_content_layout"
+            android:layout_marginRight="20dp">
+
+            <ImageView
+                android:id="@+id/login_user_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_user_photo"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/login_text_email_title"
+                android:id="@+id/login_email_title"
+                android:textColor="@color/white"
+                android:layout_below="@+id/login_user_photo"
+                android:layout_marginTop="10dp"
+                android:textSize="28sp"/>
+        </RelativeLayout>
+    </ScrollView>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/login_email_form_layout"
-        android:layout_below="@+id/login_email_content_layout"
         android:layout_marginTop="20dp"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:layout_alignParentBottom="true">
 
         <EditText
             style="@style/CustomEditTextTheme"
@@ -89,19 +96,26 @@
             android:background="@color/white"
             android:alpha=".5"/>
 
-    </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
 
-    <com.github.clans.fab.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/login_button_go"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_forward"
-        app:fab_colorNormal="@color/white"
-        app:fab_colorPressed="@color/custom_button_white_pressed"
-        app:fab_colorRipple="@color/white"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"/>
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_button_go"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_forward"
+                app:fab_colorNormal="@color/white"
+                app:fab_colorPressed="@color/custom_button_white_pressed"
+                app:fab_colorRipple="@color/white"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
