@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Entourage;
@@ -126,8 +128,9 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         //author
         entourageAuthor.setText(String.format(res.getString(R.string.tour_cell_author), entourage.getAuthor().getUserName()));
 
-        //date and location i.e 1h - Arc de Triomphe
-        String location = "";
+        //date and distance
+        String distanceAsString = "";
+        /*
         Address tourAddress = entourage.getStartAddress();
         if (tourAddress != null) {
             location = tourAddress.getAddressLine(0);
@@ -142,7 +145,18 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             geocoderTask = new GeocoderTask();
             geocoderTask.execute(entourage);
         }
-        entourageLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(entourage.getStartTime()), "h", location));
+        */
+
+        TourPoint location = entourage.getLocation();
+        if (location != null) {
+            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+            if (currentLocation != null) {
+                float distance = location.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                distanceAsString = String.format("%.2f km", distance/1000.0f);
+            }
+        }
+
+        entourageLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(entourage.getStartTime()), "h", distanceAsString));
 
         //tour members
         numberOfPeopleTextView.setText(""+entourage.getNumberOfPeople());

@@ -606,13 +606,26 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
 
         String location = "";
-        Address tourAddress = feedItem.getStartAddress();
-        if (tourAddress != null) {
-            location = tourAddress.getAddressLine(0);
-            if (tourLocation == null) {
-                location = "";
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            Address tourAddress = feedItem.getStartAddress();
+            if (tourAddress != null) {
+                location = tourAddress.getAddressLine(0);
+                if (tourLocation == null) {
+                    location = "";
+                }
             }
         }
+        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            TourPoint entourageLocation = ((Entourage)feedItem).getLocation();
+            if (entourageLocation != null) {
+                Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                if (currentLocation != null) {
+                    float distance = entourageLocation.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                    location = String.format("%.2f km", distance/1000.0f);
+                }
+            }
+        }
+
         tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(feedItem.getStartTime()), "h", location));
 
         tourPeopleCount.setText("" + feedItem.getNumberOfPeople());
