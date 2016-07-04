@@ -1026,7 +1026,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_filter_button)
     protected void onShowFilter() {
-        MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(tourService != null && tourService.isRunning());
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = (me != null && me.isPro());
+        MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(isPro);
         mapFilterFragment.show(getFragmentManager(), MapFilterFragment.TAG);
     }
 
@@ -1053,7 +1055,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         else {
             User me = EntourageApplication.me(getActivity());
-            boolean isPro = ( me != null ? me.isPro() : false );
+            boolean isPro = (me != null && me.isPro());
 
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.VISIBLE : View.GONE);
