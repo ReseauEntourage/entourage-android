@@ -192,69 +192,53 @@ public class DrawerPresenter {
                         Log.d(LOG_TAG, t.getLocalizedMessage());
                     }
                 });
-                /*userRequest.updateUser(user, new Callback<UserResponse>() {
-                    @Override
-                    public void success(UserResponse userResponse, Response response) {
-                        Log.d(LOG_TAG, "success");
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d(LOG_TAG, error.getLocalizedMessage());
-                    }
-                });*/
             }
         }
     }
 
-    public void updateUserPhoto(String base64Photo) {
+    public void updateUserPhoto(String amazonFile) {
         if (activity != null) {
 
-            String deviceId = activity.getApplicationContext()
-                    .getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE)
-                    .getString(RegisterGCMService.KEY_REGISTRATION_ID, null);
+            ArrayMap<String, Object> user = new ArrayMap<>();
+            user.put("avatar_key", amazonFile);
+            ArrayMap<String, Object> request = new ArrayMap<>();
+            request.put("user", user);
 
-            if (deviceId != null) {
-
-                ArrayMap<String, Object> user = new ArrayMap<>();
-                user.put("avatar", base64Photo);
-                ArrayMap<String, Object> request = new ArrayMap<>();
-                request.put("user", user);
-
-                Call<UserResponse> call = userRequest.updateUser(request);
-                call.enqueue(new Callback<UserResponse>() {
-                    @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        if (response.isSuccess()) {
-                            if (activity.authenticationController.isAuthenticated()) {
-                                activity.authenticationController.saveUser(response.body().getUser());
-                            }
-                            PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-                            if (photoEditFragment != null) {
-                                photoEditFragment.onPhotoSent(true);
-                            }
-                            Log.d(LOG_TAG, "success");
+            Call<UserResponse> call = userRequest.updateUser(request);
+            call.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    activity.dismissProgressDialog();
+                    if (response.isSuccess()) {
+                        if (activity.authenticationController.isAuthenticated()) {
+                            activity.authenticationController.saveUser(response.body().getUser());
                         }
-                        else {
-                            Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
-                            PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-                            if (photoEditFragment != null) {
-                                photoEditFragment.onPhotoSent(false);
-                            }
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            photoEditFragment.onPhotoSent(true);
                         }
+                        Log.d(LOG_TAG, "success");
                     }
-
-                    @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
-                        Log.d(LOG_TAG, t.getLocalizedMessage());
+                    else {
                         Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
                         PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                         if (photoEditFragment != null) {
                             photoEditFragment.onPhotoSent(false);
                         }
                     }
-                });
-            }
+                }
+
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    activity.dismissProgressDialog();
+                    Log.d(LOG_TAG, t.getLocalizedMessage());
+                    Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                    PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                    if (photoEditFragment != null) {
+                        photoEditFragment.onPhotoSent(false);
+                    }
+                }
+            });
         }
     }
 

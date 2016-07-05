@@ -42,6 +42,9 @@ dependencies {
     compile 'com.github.clans:fab:1.6.2'
     compile 'net.danlew:android.joda:2.7.1'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.2.2'
+    compile 'com.amazonaws:aws-android-sdk-core:2.2.+'
+    compile 'com.amazonaws:aws-android-sdk-s3:2.2.+'
+    compile 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
 }
 
 android {
@@ -57,6 +60,9 @@ android {
 
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
         buildConfigField 'String', 'FLURRY_API_KEY', "\"${flurryApiKey}\""
+        buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
+        buildConfigField 'String', 'AWS_KEY', '"AKIAIO6YWWW4OL4JO4BA"'
+        buildConfigField 'String', 'AWS_SECRET', '"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"'
     }
 
     signingConfigs {
@@ -80,6 +86,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
+            buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
         }
         preprod {
             signingConfig signingConfigs.debug

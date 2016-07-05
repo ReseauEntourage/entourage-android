@@ -32,12 +32,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.RegionUtils;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -72,6 +84,7 @@ import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
+import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 public class DrawerActivity extends EntourageSecuredActivity
         implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -129,6 +142,8 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     private int badgeCount = 0;
     ArrayList<Message> pushNotifications = new ArrayList<>();
+
+    private TransferUtility mTransferUtility;
 
     // ----------------------------------
     // LIFECYCLE
@@ -819,7 +834,53 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    public void onPhotoChosen(final Bitmap photo) {
+    public void onPhotoChosen(final Uri photoUri) {
+
+        //Upload the photo to Amazon S3
+        showProgressDialog(R.string.user_photo_uploading);;
+
+        final String objectKey = "user_"+authenticationController.getUser().getId()+".jpg";
+        TransferUtility transferUtility = getTransferUtility();
+        TransferObserver transferObserver = transferUtility.upload(
+                BuildConfig.AWS_BUCKET,
+                "300x300/"+objectKey,
+                new File(photoUri.getPath()),
+                CannedAccessControlList.PublicRead
+        );
+        transferObserver.setTransferListener(new TransferListener() {
+            @Override
+            public void onStateChanged(final int id, final TransferState state) {
+                if (state == TransferState.COMPLETED) {
+                    if (presenter != null) {
+                        presenter.updateUserPhoto(objectKey);
+                    } else {
+                        Toast.makeText(DrawerActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            photoEditFragment.onPhotoSent(false);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onProgressChanged(final int id, final long bytesCurrent, final long bytesTotal) {
+
+            }
+
+            @Override
+            public void onError(final int id, final Exception ex) {
+                Toast.makeText(DrawerActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                dismissProgressDialog();
+                PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                if (photoEditFragment != null) {
+                    photoEditFragment.onPhotoSent(false);
+                }
+            }
+        });
+
+        /*
         // Get the image as byte array
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         if (!photo.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
@@ -842,6 +903,26 @@ public class DrawerActivity extends EntourageSecuredActivity
         else {
             Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
         }
+        */
+    }
+
+    private TransferUtility getTransferUtility() {
+        if (mTransferUtility != null) return mTransferUtility;
+
+//        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+//                getApplicationContext(),    /* get the context for the application */
+//                "COGNITO_IDENTITY_POOL",    /* Identity Pool ID */
+//                Regions.EU_WEST_1           /* Region for your identity pool--US_EAST_1 or EU_WEST_1*/
+//        );
+
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(BuildConfig.AWS_KEY, BuildConfig.AWS_SECRET);
+
+        AmazonS3Client s3Client = new AmazonS3Client(awsCredentials);
+        s3Client.setRegion(Region.getRegion(Regions.EU_WEST_1));
+
+        mTransferUtility = new TransferUtility(s3Client, this);
+
+        return mTransferUtility;
     }
 
     // ----------------------------------
