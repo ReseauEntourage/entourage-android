@@ -61,8 +61,8 @@ android {
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
         buildConfigField 'String', 'FLURRY_API_KEY', "\"${flurryApiKey}\""
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
-        buildConfigField 'String', 'AWS_KEY', '"**"'
-        buildConfigField 'String', 'AWS_SECRET', '"**"'
+        buildConfigField 'String', 'AWS_KEY', entourageAWSKey
+        buildConfigField 'String', 'AWS_SECRET', entourageAWSSecret
     }
 
     signingConfigs {
