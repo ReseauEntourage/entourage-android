@@ -7,17 +7,23 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -139,15 +145,23 @@ public class PhotoEditFragment extends DialogFragment {
 
     @OnClick(R.id.photo_edit_fab_button)
     protected void onOkClicked() {
-        Bitmap cropped = cropImageView.getCroppedImage();
-        if (mListener != null) {
-            fabButton.setEnabled(false);
-            mListener.onPhotoChosen(cropped);
+        fabButton.setEnabled(false);
+        cropImageView.setOnSaveCroppedImageCompleteListener(new CropImageView.OnSaveCroppedImageCompleteListener() {
+            @Override
+            public void onSaveCroppedImageComplete(final CropImageView view, final Uri uri, final Exception error) {
+                mListener.onPhotoChosen(uri);
+            }
+        });
+        try {
+            File croppedImageFile = createImageFile();
+            cropImageView.saveCroppedImageAsync(Uri.fromFile(croppedImageFile));
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show();
         }
     }
 
     // ----------------------------------
-    // Button handling
+    // Upload handling
     // ----------------------------------
 
     public void onPhotoSent(boolean success) {
@@ -156,6 +170,25 @@ public class PhotoEditFragment extends DialogFragment {
         } else {
             fabButton.setEnabled(true);
         }
+    }
+
+    // ----------------------------------
+    // Private methods
+    // ----------------------------------
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        return image;
     }
 
 }

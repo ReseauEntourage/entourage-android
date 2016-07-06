@@ -111,6 +111,9 @@
         <service
             android:name=".message.push.PushNotificationService"
             android:exported="false"/>
+        <service
+            android:name= "com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
 
         <!-- Receivers -->
         <receiver android:name=".message.push.GcmBroadcastReceiver">
