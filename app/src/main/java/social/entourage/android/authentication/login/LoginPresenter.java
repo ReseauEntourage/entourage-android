@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.util.Patterns;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 /**
  * Presenter controlling the LoginActivity
@@ -205,6 +207,37 @@ public class LoginPresenter {
                 public void onFailure(final Call<UserResponse> call, final Throwable t) {
                     activity.stopLoader();
                     activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
+                }
+            });
+        }
+    }
+
+    public void updateUserPhoto(String amazonFile) {
+        if (activity != null) {
+
+            ArrayMap<String, Object> user = new ArrayMap<>();
+            user.put("avatar_key", amazonFile);
+            ArrayMap<String, Object> request = new ArrayMap<>();
+            request.put("user", user);
+
+            Call<UserResponse> call = userRequest.updateUser(request);
+            call.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    if (response.isSuccess()) {
+                        if (authenticationController.isAuthenticated()) {
+                            authenticationController.saveUser(response.body().getUser());
+                        }
+                        activity.onUserPhotoUpdated(true);
+                    }
+                    else {
+                        activity.onUserPhotoUpdated(false);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    activity.onUserPhotoUpdated(false);
                 }
             });
         }

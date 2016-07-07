@@ -68,6 +68,7 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.badge.BadgeView;
+import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -142,8 +143,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     private int badgeCount = 0;
     ArrayList<Message> pushNotifications = new ArrayList<>();
-
-    private TransferUtility mTransferUtility;
 
     // ----------------------------------
     // LIFECYCLE
@@ -834,13 +833,18 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
+    public void onPhotoIgnore() {
+        // Do nothing
+    }
+
+    @Override
     public void onPhotoChosen(final Uri photoUri) {
 
         //Upload the photo to Amazon S3
         showProgressDialog(R.string.user_photo_uploading);;
 
         final String objectKey = "user_"+authenticationController.getUser().getId()+".jpg";
-        TransferUtility transferUtility = getTransferUtility();
+        TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
         TransferObserver transferObserver = transferUtility.upload(
                 BuildConfig.AWS_BUCKET,
                 "300x300/"+objectKey,
@@ -904,25 +908,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
         }
         */
-    }
-
-    private TransferUtility getTransferUtility() {
-        if (mTransferUtility != null) return mTransferUtility;
-
-//        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-//                getApplicationContext(),    /* get the context for the application */
-//                "COGNITO_IDENTITY_POOL",    /* Identity Pool ID */
-//                Regions.EU_WEST_1           /* Region for your identity pool--US_EAST_1 or EU_WEST_1*/
-//        );
-
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(BuildConfig.AWS_KEY, BuildConfig.AWS_SECRET);
-
-        AmazonS3Client s3Client = new AmazonS3Client(awsCredentials);
-        s3Client.setRegion(Region.getRegion(Regions.EU_WEST_1));
-
-        mTransferUtility = new TransferUtility(s3Client, this);
-
-        return mTransferUtility;
     }
 
     // ----------------------------------
