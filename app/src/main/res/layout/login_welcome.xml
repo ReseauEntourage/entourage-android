@@ -73,47 +73,41 @@
         android:layout_marginTop="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="20dp">
 
         <EditText
-            style="@style/CustomEditTextTheme"
+            style="@style/CustomEditTextThemeAccent"
             android:id="@+id/login_edit_email_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textWebEmailAddress"
             android:hint="@string/login_hint_email"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:textSize="22sp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/white"
-            android:alpha=".5"/>
+            />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="right">
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginTop="10dp">
 
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/login_button_go"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_forward"
                 app:fab_colorNormal="@color/white"
                 app:fab_colorPressed="@color/custom_button_white_pressed"
                 app:fab_colorRipple="@color/white"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="20dp"/>
+                />
         </LinearLayout>
 
     </LinearLayout>

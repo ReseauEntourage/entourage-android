@@ -73,10 +73,8 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/login_name_firstname"
-            style="@style/CustomEditTextTheme"
+            style="@style/CustomEditTextThemeAccent"
             android:textSize="22sp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
             android:hint="@string/login_name_firstname_hint"/>
 
         <View
@@ -90,10 +88,8 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/login_name_lastname"
-            style="@style/CustomEditTextTheme"
+            style="@style/CustomEditTextThemeAccent"
             android:textSize="22sp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
             android:layout_marginTop="10dp"
             android:hint="@string/login_name_lastname_hint"/>
 
@@ -113,8 +109,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/login_name_go_button"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_forward"
                 app:fab_colorNormal="@color/white"
                 app:fab_colorPressed="@color/custom_button_white_pressed"

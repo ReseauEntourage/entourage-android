@@ -25,6 +25,7 @@
     <color name="background_login_grey">#F7F7F7</color>
     <color name="text_dark">#4F4F4F</color>
     <color name="login_divider">@color/greyish</color>
+    <color name="login_edittext_hint_alpha">#b2ffffff</color>
 
     <!-- Profile -->
     <color name="background_user_category">#CFCFCF</color>

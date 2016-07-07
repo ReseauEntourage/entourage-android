@@ -90,12 +90,10 @@
             android:inputType="phone"
             android:ems="10"
             android:id="@+id/register_number_phone_number"
-            style="@style/CustomEditTextTheme"
+            style="@style/CustomEditTextThemeAccent"
             android:layout_marginTop="10dp"
             android:textSize="22sp"
             android:hint="@string/registration_number_hint"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
             />
         <View
             android:layout_width="match_parent"
