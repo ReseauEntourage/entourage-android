@@ -212,6 +212,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_info_join_button)
     Button joinButton;
 
+    @Bind(R.id.tour_info_invite_source_layout)
+    RelativeLayout inviteSourceLayout;
+
     @Bind(R.id.tour_info_members_layout)
     LinearLayout membersLayout;
 
@@ -548,6 +551,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             publicSection.setVisibility(View.VISIBLE);
             privateSection.setVisibility(View.GONE);
         }
+    }
+
+    @OnClick(R.id.tour_info_user_add_button)
+    protected void onUserAddClicked() {
+        inviteSourceLayout.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.invite_source_close_button, R.id.invite_source_close_bottom_button})
+    protected void onCloseInviteSourceClicked() {
+        inviteSourceLayout.setVisibility(View.GONE);
     }
 
     public boolean onPushNotificationChatMessageReceived(Message message) {

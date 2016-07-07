@@ -57,7 +57,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_user_plus"
             android:background="?android:attr/selectableItemBackground"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -140,6 +140,13 @@
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/circular_progress_bar"
         android:visibility="gone"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/layout_invite_source"
+        android:id="@+id/tour_info_invite_source_layout"
+        android:visibility = "gone"/>
 
     <LinearLayout
         android:orientation="vertical"
