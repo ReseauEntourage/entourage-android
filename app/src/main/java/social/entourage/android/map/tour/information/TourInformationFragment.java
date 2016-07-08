@@ -97,6 +97,7 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
@@ -561,6 +562,15 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @OnClick({R.id.invite_source_close_button, R.id.invite_source_close_bottom_button})
     protected void onCloseInviteSourceClicked() {
         inviteSourceLayout.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.invite_source_contacts_button)
+    protected void onInviteContactsClicked() {
+        // close the invite source view
+        onCloseInviteSourceClicked();
+        // open the contacts fragment
+        InviteContactsFragment fragment = new InviteContactsFragment();
+        fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
     }
 
     public boolean onPushNotificationChatMessageReceived(Message message) {
