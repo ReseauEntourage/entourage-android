@@ -63,5 +63,6 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/invite_contacts_listView"/>
+        android:id="@+id/invite_contacts_listView"
+        android:choiceMode="multipleChoice"/>
 </LinearLayout>

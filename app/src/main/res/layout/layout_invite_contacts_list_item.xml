@@ -3,7 +3,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+                android:paddingRight="20dp"
+                android:clickable="false"
+                android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:layout_width="match_parent"
@@ -22,7 +24,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/contact_checkBox"
         android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/contact_name"/>
+        android:layout_alignBaseline="@+id/contact_name"
+        android:visibility="visible"/>
 
     <View
         android:layout_width="match_parent"

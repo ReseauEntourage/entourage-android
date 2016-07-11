@@ -12,16 +12,21 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,6 +62,9 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     private static final String SELECTION =
             ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " LIKE ? " + "AND " +
                     ContactsContract.Contacts.HAS_PHONE_NUMBER + " = '1'";
+    // Sort order
+    private static final String SORT_ORDER =
+            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " ASC ";
     // Contacts Loader ID
     private static final int CONTACTS_LOADER_ID = 0;
 
@@ -102,6 +110,8 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     @Bind(R.id.invite_contacts_search)
     EditText searchEditText;
 
+    @Bind(R.id.invite_contacts_send_button)
+    Button sendButton;
 
     // ----------------------------------
     // LIFECYCLE
@@ -149,12 +159,15 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
                 if (event == null) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         mSearchString = v.getText().toString().trim();
-                        getLoaderManager().restartLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
+                        getLoaderManager().destroyLoader(CONTACTS_LOADER_ID);
+                        getLoaderManager().initLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
                     }
                 }
                 else if (event.getKeyCode() == KeyEvent.ACTION_DOWN) {
                     mSearchString = v.getText().toString().trim();
-                    getLoaderManager().restartLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
+                    //getLoaderManager().restartLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
+                    getLoaderManager().destroyLoader(CONTACTS_LOADER_ID);
+                    getLoaderManager().initLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
                 }
                 return false;
             }
@@ -178,6 +191,20 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     @Override
     public void onItemClick(
             AdapterView<?> parent, View item, int position, long rowID) {
+        // Toggle the checkbox
+        CheckBox contactCheckbox = (CheckBox)item.findViewById(R.id.contact_checkBox);
+        if (contactCheckbox == null) return;
+
+        if (!contactCheckbox.isChecked()) {
+            sendButton.setEnabled(true);
+        }
+        contactCheckbox.setChecked(!contactCheckbox.isChecked());
+
+        contactsList.setItemChecked(position, contactCheckbox.isChecked());
+
+        // Enable or disable the send button
+        sendButton.setEnabled( contactsList.getCheckedItemCount() > 0 );
+
         // Get the Cursor
         Cursor cursor = ((SimpleCursorAdapter)parent.getAdapter()).getCursor();
         // Move to the selected contact
@@ -200,6 +227,9 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
+        // Reset the checked items
+        contactsList.clearChoices();
+        sendButton.setEnabled(false);
         /*
          * Makes search string into pattern and
          * stores it in the selection array
@@ -212,7 +242,7 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
                 PROJECTION,
                 SELECTION,
                 mSelectionArgs,
-                null
+                SORT_ORDER
         );
     }
 
@@ -226,7 +256,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     public void onLoaderReset(Loader<Cursor> loader) {
         // Delete the reference to the existing Cursor
         mCursorAdapter.swapCursor(null);
-
     }
 
 }
