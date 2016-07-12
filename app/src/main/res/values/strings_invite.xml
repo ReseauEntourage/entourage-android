@@ -10,5 +10,7 @@
     <!-- Invite Contacts -->
     <string name="invite_contacts_title">CONTACTS</string>
     <string name="invite_contacts_search_hint">Rechercher</string>
+    <string name="invite_contacts_retrieving_phone_numbers">!!Retrieving phone numbers</string>
+    <string name="invite_contacts_inviting">!!Sending invites</string>
 
 </resources>

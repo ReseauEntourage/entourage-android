@@ -569,7 +569,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         // close the invite source view
         onCloseInviteSourceClicked();
         // open the contacts fragment
-        InviteContactsFragment fragment = new InviteContactsFragment();
+        InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
     }
 

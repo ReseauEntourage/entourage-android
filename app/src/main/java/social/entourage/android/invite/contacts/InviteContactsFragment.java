@@ -2,11 +2,11 @@ package social.entourage.android.invite.contacts;
 
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -26,11 +26,14 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import java.util.HashMap;
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 
@@ -46,6 +49,9 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     // ----------------------------------
 
     public static final String TAG = "social.entourage.android.invite_contacts";
+
+    private static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
+    private static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
 
     private static final String[] PROJECTION =
             {
@@ -68,9 +74,28 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     // Contacts Loader ID
     private static final int CONTACTS_LOADER_ID = 0;
 
+    // Contact's phone number
+    private static final String[] PHONE_PROJECTION =
+            {
+                    ContactsContract.CommonDataKinds.Phone._ID,
+                    ContactsContract.CommonDataKinds.Phone.NUMBER
+            };
+    @SuppressLint("InlinedApi")
+    private static final String PHONE_SELECTION =
+            ContactsContract.Data.CONTACT_ID + " IN (?) ";// + " AND " +
+                    //ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "'";
+    // Phone Loader ID
+    private static final int PHONE_LOADER_ID = 1;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    @Inject
+    InviteContactsPresenter presenter;
+
+    long feedItemId;
+    int feedItemType;
 
     /*
      * Defines an array that contains column names to move from
@@ -92,13 +117,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     @Bind(R.id.invite_contacts_listView)
     ListView contactsList;
 
-    // Define variables for the contact the user selects
-    // The contact's _ID value
-    long mContactId;
-    // The contact's LOOKUP_KEY
-    String mContactKey;
-    // A content URI for the selected contact
-    Uri mContactUri;
     // An adapter that binds the result Cursor to the ListView
     private SimpleCursorAdapter mCursorAdapter;
 
@@ -106,6 +124,14 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     private String mSearchString = "";
     // Defines the array to hold values that replace the ?
     private String[] mSelectionArgs = { mSearchString };
+
+    // Defines a variable for the list of contact ids
+    private String mContactIds = "";
+    // Defines the array to hold values that replace the ?
+    private String[] mContactIdsSelectionArgs = { mContactIds };
+
+    // Number of server requests made
+    private int serverRequestsCount;
 
     @Bind(R.id.invite_contacts_search)
     EditText searchEditText;
@@ -121,6 +147,16 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
         // Required empty public constructor
     }
 
+    public static InviteContactsFragment newInstance(long feedId, int feedItemType) {
+        InviteContactsFragment fragment = new InviteContactsFragment();
+        Bundle args = new Bundle();
+        args.putLong(KEY_FEEDITEM_ID, feedId);
+        args.putInt(KEY_FEEDITEM_TYPE, feedItemType);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,6 +167,25 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
         ButterKnife.bind(this, view);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+
+        if (getArguments() != null) {
+            feedItemId = getArguments().getLong(KEY_FEEDITEM_ID);
+            feedItemType = getArguments().getInt(KEY_FEEDITEM_TYPE);
+        }
+    }
+
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerInviteContactsComponent.builder()
+                .entourageComponent(entourageComponent)
+                .inviteContactsModule(new InviteContactsModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -184,6 +239,50 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
         dismiss();
     }
 
+    @OnClick(R.id.invite_contacts_send_button)
+    protected void onSendClicked() {
+        // Disable the send button
+        sendButton.setEnabled(false);
+        // Show the progress dialog
+        ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_retrieving_phone_numbers);
+        // Get the Cursor
+        Cursor cursor = ((SimpleCursorAdapter)contactsList.getAdapter()).getCursor();
+        // Get the selected contacts
+        int selectedContactsCount = 0;
+        StringBuffer contactIds = new StringBuffer();
+        SparseBooleanArray checkedItems = contactsList.getCheckedItemPositions();
+        for (int i = 0; i < contactsList.getCount(); i++) {
+            if (checkedItems.valueAt(i)) {
+                selectedContactsCount++;
+            }
+        }
+        if (selectedContactsCount == 0) {
+            sendButton.setEnabled(true);
+            return;
+        }
+        mContactIdsSelectionArgs = new String[selectedContactsCount];
+        int index = 0;
+        for (int i = 0; i < contactsList.getCount(); i++) {
+            if (checkedItems.valueAt(i)) {
+                int position = checkedItems.keyAt(i);
+                // Move to the selected contact
+                cursor.moveToPosition(position);
+                // Get the _ID value
+                String contactId = cursor.getString(CONTACT_ID_INDEX);
+                mContactIdsSelectionArgs[index] = contactId;
+                index++;
+                if (contactIds.length() > 0) {
+                    contactIds.append(",");
+                }
+                contactIds.append("?");
+            }
+        }
+        mContactIds = contactIds.toString();
+
+        getLoaderManager().destroyLoader(PHONE_LOADER_ID);
+        getLoaderManager().initLoader(PHONE_LOADER_ID, null, this);
+    }
+
     // ----------------------------------
     // AdapterView.OnItemClickListener
     // ----------------------------------
@@ -204,21 +303,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
 
         // Enable or disable the send button
         sendButton.setEnabled( contactsList.getCheckedItemCount() > 0 );
-
-        // Get the Cursor
-        Cursor cursor = ((SimpleCursorAdapter)parent.getAdapter()).getCursor();
-        // Move to the selected contact
-        cursor.moveToPosition(position);
-        // Get the _ID value
-        mContactId = cursor.getLong(CONTACT_ID_INDEX);
-        // Get the selected LOOKUP KEY
-        mContactKey = cursor.getString(LOOKUP_KEY_INDEX);
-        // Create the contact's content Uri
-        mContactUri = ContactsContract.Contacts.getLookupUri(mContactId, mContactKey);
-        /*
-         * You can use mContactUri as the content URI for retrieving
-         * the details for a contact.
-         */
     }
 
     // ----------------------------------
@@ -227,35 +311,91 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
-        // Reset the checked items
-        contactsList.clearChoices();
-        sendButton.setEnabled(false);
-        /*
-         * Makes search string into pattern and
-         * stores it in the selection array
-         */
-        mSelectionArgs[0] = "%" + mSearchString + "%";
-        // Starts the query
-        return new CursorLoader(
-                getActivity(),
-                ContactsContract.Contacts.CONTENT_URI,
-                PROJECTION,
-                SELECTION,
-                mSelectionArgs,
-                SORT_ORDER
-        );
+        switch (loaderId) {
+            case CONTACTS_LOADER_ID:
+                // Reset the checked items
+                contactsList.clearChoices();
+                sendButton.setEnabled(false);
+                /*
+                 * Makes search string into pattern and
+                 * stores it in the selection array
+                 */
+                mSelectionArgs[0] = "%" + mSearchString + "%";
+                // Starts the query
+                return new CursorLoader(
+                        getActivity(),
+                        ContactsContract.Contacts.CONTENT_URI,
+                        PROJECTION,
+                        SELECTION,
+                        mSelectionArgs,
+                        SORT_ORDER
+                );
+            case PHONE_LOADER_ID:
+                // Starts the query
+                return new CursorLoader(
+                        getActivity(),
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        PHONE_PROJECTION,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " IN (" + mContactIds + ")",
+                        mContactIdsSelectionArgs,
+                        null
+                );
+        }
+        return null;
     }
 
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        // Put the result Cursor in the adapter for the ListView
-        mCursorAdapter.swapCursor(cursor);
+        switch (loader.getId()) {
+            case CONTACTS_LOADER_ID:
+                // Put the result Cursor in the adapter for the ListView
+                mCursorAdapter.swapCursor(cursor);
 
+                break;
+
+            case PHONE_LOADER_ID:
+                // Update the progress dialog
+                ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_inviting);
+                // Get the phone numbers
+                while (cursor.moveToNext()) {
+                    String phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    // Send the phone number to server
+                    serverRequestsCount++;
+                    presenter.inviteBySMS(feedItemId, feedItemType, phone);
+                }
+                if (serverRequestsCount == 0) {
+                    onInviteSent(false);
+                }
+                break;
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Delete the reference to the existing Cursor
-        mCursorAdapter.swapCursor(null);
+        switch (loader.getId()) {
+            case CONTACTS_LOADER_ID:
+                // Delete the reference to the existing Cursor
+                mCursorAdapter.swapCursor(null);
+
+                break;
+
+            case PHONE_LOADER_ID:
+                break;
+        }
+    }
+
+    // ----------------------------------
+    // Presenter callbacks
+    // ----------------------------------
+
+    protected void onInviteSent(boolean success) {
+        serverRequestsCount--;
+        if (serverRequestsCount <= 0) {
+            serverRequestsCount = 0;
+            // Hide the progress dialog
+            ((EntourageActivity)getActivity()).dismissProgressDialog();
+            // Re-enable the send button
+            sendButton.setEnabled(true);
+        }
     }
 
 }
