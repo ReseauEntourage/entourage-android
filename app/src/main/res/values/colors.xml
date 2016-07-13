@@ -25,6 +25,7 @@
     <color name="background_login_grey">#F7F7F7</color>
     <color name="text_dark">#4F4F4F</color>
     <color name="login_divider">@color/greyish</color>
+    <color name="login_edittext_hint_alpha">#b2ffffff</color>
 
     <!-- Profile -->
     <color name="background_user_category">#CFCFCF</color>
@@ -35,6 +36,7 @@
     <color name="custom_button_accent_focused">#E25E06</color>
     <color name="custom_button_accent_pressed">#D05706</color>
     <color name="custom_button_accent_disabled">#813619</color>
+    <color name="custom_button_accent_disabled_alpha">#55f26521</color>
     <color name="custom_button_white_enabled">#FFFFFF</color>
     <color name="custom_button_white_focused">#D4D4D4</color>
     <color name="custom_button_white_pressed">#F4F4F4</color>

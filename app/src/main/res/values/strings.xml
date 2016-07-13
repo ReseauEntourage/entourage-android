@@ -23,5 +23,6 @@
     <string name="register">Enregistrer</string>
     <string name="ignore">Ignorer</string>
     <string name="next">Continuer</string>
+    <string name="close">Fermer</string>
 
 </resources>

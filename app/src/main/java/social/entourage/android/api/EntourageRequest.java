@@ -14,6 +14,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.TourUser;
 
@@ -73,6 +74,12 @@ public interface EntourageRequest {
     Call<ChatMessage.ChatMessagesWrapper> retrieveEntourageMessages(
             @Path("entourage_id") long entourageId,
             @Query("before") Date pagination
+    );
+
+    @POST("entourages/{entourage_id}/invitations")
+    Call<Invitation.InvitationWrapper> inviteBySMS(
+            @Path("entourage_id") long entourageId,
+            @Body Invitation.InvitationWrapper invitation
     );
 
 }

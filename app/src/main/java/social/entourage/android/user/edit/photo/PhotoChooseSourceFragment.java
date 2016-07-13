@@ -147,6 +147,8 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.photo_choose_ignore_button)
     protected void onIgnoreClicked() {
+
+        mListener.onPhotoIgnore();
         dismiss();
     }
 

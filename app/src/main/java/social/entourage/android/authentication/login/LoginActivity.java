@@ -2,6 +2,7 @@ package social.entourage.android.authentication.login;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,9 +25,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 
+import java.io.File;
 import java.util.HashSet;
 
 import javax.inject.Inject;
@@ -34,6 +41,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
@@ -44,13 +52,17 @@ import social.entourage.android.authentication.login.register.OnRegisterUserList
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
+import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.user.edit.photo.PhotoChooseInterface;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
+import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.HtmlTextView;
 
 /**
  * Activity providing the login steps
  */
-public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener {
+public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface {
 
     // ----------------------------------
     // CONSTANTS
@@ -414,6 +426,59 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
     }
 
+    @Override
+    public void onPhotoIgnore() {
+        finishTutorial();
+    }
+
+    @Override
+    public void onPhotoChosen(final Uri photoUri) {
+
+        //Upload the photo to Amazon S3
+        showProgressDialog(R.string.user_photo_uploading);;
+
+        final String objectKey = "user_"+loginPresenter.authenticationController.getUser().getId()+".jpg";
+        TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
+        TransferObserver transferObserver = transferUtility.upload(
+                BuildConfig.AWS_BUCKET,
+                "300x300/"+objectKey,
+                new File(photoUri.getPath()),
+                CannedAccessControlList.PublicRead
+        );
+        transferObserver.setTransferListener(new TransferListener() {
+            @Override
+            public void onStateChanged(final int id, final TransferState state) {
+                if (state == TransferState.COMPLETED) {
+                    if (loginPresenter != null) {
+                        loginPresenter.updateUserPhoto(objectKey);
+                    } else {
+                        Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            photoEditFragment.onPhotoSent(false);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onProgressChanged(final int id, final long bytesCurrent, final long bytesTotal) {
+
+            }
+
+            @Override
+            public void onError(final int id, final Exception ex) {
+                Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                dismissProgressDialog();
+                PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                if (photoEditFragment != null) {
+                    photoEditFragment.onPhotoSent(false);
+                }
+            }
+        });
+    }
+
     // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
@@ -551,7 +616,25 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     protected void onUserUpdated() {
-        finishTutorial();
+        PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+        fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
+    }
+
+    protected void onUserPhotoUpdated(boolean updated) {
+        dismissProgressDialog();
+        PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+        if (photoEditFragment != null) {
+            photoEditFragment.onPhotoSent(updated);
+        }
+        if (updated) {
+            PhotoChooseSourceFragment fragment = (PhotoChooseSourceFragment)getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
+            if (fragment != null) {
+                fragment.dismiss();
+            }
+            finishTutorial();
+        } else {
+            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+        }
     }
 
     /************************

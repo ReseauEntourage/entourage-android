@@ -97,6 +97,7 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
@@ -211,6 +212,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Bind(R.id.tour_info_join_button)
     Button joinButton;
+
+    @Bind(R.id.tour_info_invite_source_layout)
+    RelativeLayout inviteSourceLayout;
 
     @Bind(R.id.tour_info_members_layout)
     LinearLayout membersLayout;
@@ -548,6 +552,25 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             publicSection.setVisibility(View.VISIBLE);
             privateSection.setVisibility(View.GONE);
         }
+    }
+
+    @OnClick(R.id.tour_info_user_add_button)
+    protected void onUserAddClicked() {
+        inviteSourceLayout.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.invite_source_close_button, R.id.invite_source_close_bottom_button})
+    protected void onCloseInviteSourceClicked() {
+        inviteSourceLayout.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.invite_source_contacts_button)
+    protected void onInviteContactsClicked() {
+        // close the invite source view
+        onCloseInviteSourceClicked();
+        // open the contacts fragment
+        InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
+        fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
     }
 
     public boolean onPushNotificationChatMessageReceived(Message message) {

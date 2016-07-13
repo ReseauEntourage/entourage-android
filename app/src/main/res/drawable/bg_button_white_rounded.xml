@@ -10,8 +10,8 @@
             <padding
                 android:bottom="7dp"
                 android:top="7dp"
-                android:left="40dp"
-                android:right="40dp" />
+                android:left="20dp"
+                android:right="20dp" />
             <stroke
                 android:width="0.5dp"
                 android:color="@color/grey_contour" />
@@ -27,8 +27,8 @@
             <padding
                 android:bottom="7dp"
                 android:top="7dp"
-                android:left="40dp"
-                android:right="40dp" />
+                android:left="20dp"
+                android:right="20dp" />
             <stroke
                 android:width="0.5dp"
                 android:color="@color/grey_contour" />
@@ -44,8 +44,8 @@
             <padding
                 android:bottom="7dp"
                 android:top="7dp"
-                android:left="40dp"
-                android:right="40dp" />
+                android:left="20dp"
+                android:right="20dp" />
             <stroke
                 android:width="0.5dp"
                 android:color="@color/grey_contour" />
@@ -61,8 +61,8 @@
             <padding
                 android:bottom="7dp"
                 android:top="7dp"
-                android:left="40dp"
-                android:right="40dp" />
+                android:left="20dp"
+                android:right="20dp" />
             <stroke
                 android:width="0.5dp"
                 android:color="@color/grey_contour" />

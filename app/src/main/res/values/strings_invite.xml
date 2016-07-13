@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Invite Source -->
+    <string name="invite_source_title">Inviter vos amis !</string>
+    <string name="invite_source_description">À rejoindre votre entourage.</string>
+    <string name="invite_source_contacts">Contacts</string>
+    <string name="invite_source_number">Numéro de portable</string>
+
+    <!-- Invite Contacts -->
+    <string name="invite_contacts_title">CONTACTS</string>
+    <string name="invite_contacts_search_hint">Rechercher</string>
+    <string name="invite_contacts_retrieving_phone_numbers">!!Retrieving phone numbers</string>
+    <string name="invite_contacts_inviting">!!Sending invites</string>
+
+</resources>
