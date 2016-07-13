@@ -204,6 +204,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_info_share_button)
     AppCompatImageButton shareButton;
 
+    @Bind(R.id.tour_info_user_add_button)
+    AppCompatImageButton addUserButton;
+
     @Bind(R.id.tour_info_more_button)
     AppCompatImageButton moreButton;
 
@@ -691,7 +694,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private void updateHeaderButtons() {
         boolean isTourPrivate = feedItem.isPrivate();
+        User me = EntourageApplication.me(getActivity());
+        int myId = 0;
+        if (me != null) {
+            myId = me.getId();
+        }
         shareButton.setVisibility(isTourPrivate ? View.GONE : ( (!feedItem.getJoinStatus().equals(Tour.JOIN_STATUS_NOT_REQUESTED) || feedItem.isFreezed()) ? View.GONE : View.VISIBLE ) );
+        addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && feedItem.getAuthor().getUserID() == myId ? View.VISIBLE : View.GONE) : View.GONE);
         moreButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
     }
 
