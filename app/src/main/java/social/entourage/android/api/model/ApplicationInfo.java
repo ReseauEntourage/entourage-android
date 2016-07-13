@@ -23,6 +23,9 @@ public class ApplicationInfo {
     @SerializedName("device_os")
     private String deviceOS;
 
+    @SerializedName("device_family")
+    private final String deviceFamily = "ANDROID";
+
     private String version;
 
     public ApplicationInfo(final String pushToken) {
