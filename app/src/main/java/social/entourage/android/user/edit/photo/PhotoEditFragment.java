@@ -102,6 +102,7 @@ public class PhotoEditFragment extends DialogFragment {
         if (photo != null) {
             cropImageView.setImageBitmap(photo);
         }
+        cropImageView.setCropShape(CropImageView.CropShape.OVAL);
     }
 
     @Override
