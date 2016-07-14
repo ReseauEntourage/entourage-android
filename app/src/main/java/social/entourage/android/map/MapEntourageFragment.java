@@ -836,6 +836,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onRetrieveNewsfeed(List<Newsfeed> newsfeedList) {
+        if (newsfeedAdapter == null) return;
         int previousItemCount = newsfeedAdapter.getItemCount();
         if (newsfeedList != null) {
             newsfeedList = removeRedundantNewsfeed(newsfeedList, false);
