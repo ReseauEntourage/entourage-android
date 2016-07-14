@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/login_name_photo"
-                android:src="@drawable/ic_user_photo_small"/>
+                android:src="@drawable/ic_user_white"/>
 
             <TextView
                 android:layout_width="wrap_content"
