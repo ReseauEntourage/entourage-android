@@ -63,4 +63,7 @@ public class Constants {
 
     // Items per pagination
     public static final int ITEMS_PER_PAGE = 10;
+
+    //Invite success automatic hide delay
+    public static final long INVITE_SUCCESS_HIDE_DELAY = 5000; //1000 * 5
 }

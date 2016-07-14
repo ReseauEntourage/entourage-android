@@ -12,5 +12,10 @@
     <string name="invite_contacts_search_hint">Rechercher</string>
     <string name="invite_contacts_retrieving_phone_numbers">!!Retrieving phone numbers</string>
     <string name="invite_contacts_inviting">!!Sending invites</string>
+    <string name="invite_contacts_send_error">!!Error sending the invite(s)</string>
+
+    <!-- Invite Success -->
+    <string name="invite_success_title">C’est envoyé !</string>
+    <string name="invite_success_description">Votre ami rejoindra l’entourage automatiquement, dès qu’il acceptera votre invitation.</string>
 
 </resources>

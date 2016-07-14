@@ -13,6 +13,7 @@ import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
@@ -97,6 +98,7 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
@@ -104,7 +106,7 @@ import social.entourage.android.map.tour.information.discussion.DiscussionAdapte
 import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
 
-public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener {
+public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -219,6 +221,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_info_invite_source_layout)
     RelativeLayout inviteSourceLayout;
 
+    @Bind(R.id.tour_info_invite_success_layout)
+    RelativeLayout inviteSuccessLayout;
+
     @Bind(R.id.tour_info_members_layout)
     LinearLayout membersLayout;
 
@@ -253,6 +258,15 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     List<TourTimestamp> tourTimestampList = new ArrayList<>();
 
     OnTourInformationFragmentFinish mListener;
+
+    // Handler to hide invite success layout
+    private Handler inviteSuccessHandler = new Handler();
+    private Runnable inviteSuccessRunnable = new Runnable() {
+        @Override
+        public void run() {
+            inviteSuccessLayout.setVisibility(View.GONE);
+        }
+    };
 
     // ----------------------------------
     // LIFECYCLE
@@ -379,6 +393,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onStop();
 
         discussionView.removeOnScrollListener(discussionScrollListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        inviteSuccessRunnable.run();
+        inviteSuccessHandler.removeCallbacks(inviteSuccessRunnable);
     }
 
     public long getFeedItemId() {
@@ -574,6 +596,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         // open the contacts fragment
         InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
+        // set the listener
+        fragment.setInviteFriendsListener(this);
     }
 
     public boolean onPushNotificationChatMessageReceived(Message message) {
@@ -1468,6 +1492,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         @Override
         public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
         }
+    }
+
+    // ----------------------------------
+    // InviteFriendsListener
+    // ----------------------------------
+
+    @Override
+    public void onInviteSent() {
+        // Show the success layout
+        inviteSuccessLayout.setVisibility(View.VISIBLE);
+        // Start the timer to hide the success layout
+        inviteSuccessHandler.postDelayed(inviteSuccessRunnable, Constants.INVITE_SUCCESS_HIDE_DELAY);
     }
 
 

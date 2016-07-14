@@ -148,6 +148,13 @@
         android:id="@+id/tour_info_invite_source_layout"
         android:visibility = "gone"/>
 
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/layout_invite_success"
+        android:id="@+id/tour_info_invite_success_layout"
+        android:visibility = "gone"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

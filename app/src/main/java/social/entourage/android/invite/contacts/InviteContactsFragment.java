@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -36,6 +37,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.invite.InviteFriendsListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -133,11 +135,16 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     // Number of server requests made
     private int serverRequestsCount;
 
+    // Number of successfully server requests
+    private int successfulyServerRequestCount = 0;
+
     @Bind(R.id.invite_contacts_search)
     EditText searchEditText;
 
     @Bind(R.id.invite_contacts_send_button)
     Button sendButton;
+
+    private InviteFriendsListener mInviteFriendsListener;
 
     // ----------------------------------
     // LIFECYCLE
@@ -227,6 +234,14 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
                 return false;
             }
         });
+    }
+
+    // ----------------------------------
+    // LISTENER
+    // ----------------------------------
+
+    public void setInviteFriendsListener(final InviteFriendsListener inviteFriendsListener) {
+        this.mInviteFriendsListener = inviteFriendsListener;
     }
 
 
@@ -389,12 +404,25 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
 
     protected void onInviteSent(boolean success) {
         serverRequestsCount--;
+        successfulyServerRequestCount += success ? 1 : -1;
         if (serverRequestsCount <= 0) {
             serverRequestsCount = 0;
             // Hide the progress dialog
             ((EntourageActivity)getActivity()).dismissProgressDialog();
             // Re-enable the send button
             sendButton.setEnabled(true);
+            // If success, close the fragment
+            if (successfulyServerRequestCount >= 0) {
+                // Notify the listener
+                if (mInviteFriendsListener != null) {
+                    mInviteFriendsListener.onInviteSent();
+                }
+                // Close the fragment
+                dismiss();
+            } else {
+                // Show error
+                Toast.makeText(getActivity(), R.string.invite_contacts_send_error, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
