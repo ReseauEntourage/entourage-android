@@ -218,6 +218,10 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     // ----------------------------------
 
     private void initializeView() {
+        Bundle args = getArguments();
+        if (args != null) {
+            entourageType = args.getString(KEY_ENTOURAGE_TYPE, Entourage.TYPE_CONTRIBUTION);
+        }
         initializeTypeTextView();
         initializeLocation();
         initializeTitleEditText();
@@ -225,14 +229,10 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     }
 
     private void initializeTypeTextView() {
-        Bundle args = getArguments();
-        if (args != null) {
-            entourageType = args.getString(KEY_ENTOURAGE_TYPE, Entourage.TYPE_CONTRIBUTION);
-            if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
-                typeTextView.setText(R.string.entourage_create_contribution_title);
-            } else {
-                typeTextView.setText(R.string.entourage_create_demand_title);
-            }
+        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
+            typeTextView.setText(R.string.entourage_create_contribution_title);
+        } else {
+            typeTextView.setText(R.string.entourage_create_demand_title);
         }
     }
 
@@ -248,6 +248,13 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     }
 
     private void initializeTitleEditText() {
+        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
+            titleHintTextView.setText(R.string.entourage_create_title_contribution_hint);
+            titleEditText.setHint(R.string.entourage_create_title_contribution_hint);
+        } else {
+            titleHintTextView.setText(R.string.entourage_create_title_demand_hint);
+            titleEditText.setHint(R.string.entourage_create_title_demand_hint);
+        }
         titleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
@@ -308,11 +315,13 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
             Toast.makeText(getActivity(), R.string.entourage_create_error_title_too_long, Toast.LENGTH_SHORT).show();
             return false;
         }
+        /*
         String description = descriptionEditText.getText().toString().trim();
         if (description.length() == 0) {
             Toast.makeText(getActivity(), R.string.entourage_create_error_description_empty, Toast.LENGTH_SHORT).show();
             return false;
         }
+        */
         return true;
     }
 

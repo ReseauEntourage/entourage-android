@@ -4,7 +4,8 @@
     <string name="entourage_create_demand_title">DEMANDE</string>
     <string name="entourage_create_contribution_title">CONTRIBUTION</string>
     <string name="entourage_create_position_description">Ma position</string>
-    <string name="entourage_create_title_hint">Titre de votre demande</string>
+    <string name="entourage_create_title_demand_hint">Titre de votre demande*</string>
+    <string name="entourage_create_title_contribution_hint">Titre de votre contribution*</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_hint">Description détaillée</string>
 
