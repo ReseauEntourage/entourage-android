@@ -211,6 +211,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_verify_code_code)
     TextView receivedCode;
 
+    /************************
+     * Geolocation view
+     ************************/
+
+    @Bind(R.id.login_include_geolocation)
+    View loginGeolocationView;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -232,6 +239,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginNameView.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.GONE);
+        loginGeolocationView.setVisibility(View.GONE);
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
         passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
@@ -428,7 +436,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void onPhotoIgnore() {
-        finishTutorial();
+        showNotificationPermissionView();
     }
 
     @Override
@@ -631,7 +639,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             if (fragment != null) {
                 fragment.dismiss();
             }
-            finishTutorial();
+            showNotificationPermissionView();
         } else {
             Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
         }
@@ -641,23 +649,31 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Private Methods
      ************************/
 
-    private void showNewsfeedScreenWithNotifications(boolean enabled) {
+    private void saveNotifications(boolean enabled) {
         //remember the choice
         final SharedPreferences notificationsPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = notificationsPreferences.edit();
         editor.putBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, enabled);
         editor.commit();
-        //set the tutorial as done
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-        HashSet<String>loggedNumbers = (HashSet) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
-        loggedNumbers.add(loggedPhoneNumber);
-        sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
+    }
+
+    private void showNewsfeedScreen() {
         //start the activity
         startActivity(new Intent(this, DrawerActivity.class));
         finish();
     }
 
     private void finishTutorial() {
+        //set the tutorial as done
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        HashSet<String>loggedNumbers = (HashSet) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
+        loggedNumbers.add(loggedPhoneNumber);
+        sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
+
+        showNewsfeedScreen();
+    }
+
+    private void showNotificationPermissionView() {
         //show the notifications dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.login_permission_notification_description)
@@ -665,14 +681,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(final DialogInterface dialog, final int which) {
-                                showNewsfeedScreenWithNotifications(true);
+                                saveNotifications(true);
+                                showGeolocationView();
                             }
                         })
                 .setNegativeButton(R.string.login_permission_notification_refuse,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(final DialogInterface dialog, final int which) {
-                                showNewsfeedScreenWithNotifications(false);
+                                saveNotifications(false);
+                                showGeolocationView();
                             }
                         })
                 .create().show();
@@ -811,6 +829,20 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         onboardingUser.setPhone(phoneNumber);
         RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
         fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
+    }
+
+    /************************
+     * Geolocation View
+     ************************/
+
+    private void showGeolocationView() {
+        loginGeolocationView.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.login_geolocation_ignore_button, R.id.login_geolocation_accept_button})
+    protected void onGeolocationAccepted() {
+        loginGeolocationView.setVisibility(View.GONE);
+        finishTutorial();
     }
 
 }

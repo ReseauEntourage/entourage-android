@@ -65,7 +65,7 @@
         android:layout_alignParentBottom="true"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="10dp">
 
         <EditText
             android:layout_width="match_parent"

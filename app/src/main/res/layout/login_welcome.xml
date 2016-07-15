@@ -48,7 +48,7 @@
             <ImageView
                 android:id="@+id/login_user_photo"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_user_white"
                 />
 

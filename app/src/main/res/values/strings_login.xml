@@ -59,6 +59,10 @@
     <string name="login_permission_notification_refuse">Refuser</string>
     <string name="login_permission_notification_accept">OK</string>
 
+    <string name="login_permission_geolocation_title">Activer la géolocalisation ?</string>
+    <string name="login_permission_geolocation_description">Entourage est un réseau local.\n\nLa géolocalisation nous permettra d’afficher les actions les plus proches de vous.</string>
+    <string name="login_permission_geolocation_accept">Oui, je l’active</string>
+
     <string name="login_login_error_title">Veuillez réessayer</string>
     <string name="login_login_error_invalid_credentials">Le numéro de téléphone et ce code d’accès ne correspondent pas.</string>
     <string name="login_login_error_network">Erreur de connexion</string>
