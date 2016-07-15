@@ -26,6 +26,7 @@ import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 /**
@@ -215,7 +216,12 @@ public class DrawerPresenter {
                         }
                         PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                         if (photoEditFragment != null) {
-                            photoEditFragment.onPhotoSent(true);
+                            if (photoEditFragment.onPhotoSent(true)) {
+                                PhotoChooseSourceFragment photoChooseSourceFragment = (PhotoChooseSourceFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
+                                if (photoChooseSourceFragment != null) {
+                                    photoChooseSourceFragment.dismiss();
+                                }
+                            }
                         }
                         Log.d(LOG_TAG, "success");
                     }

@@ -46,7 +46,7 @@ public class PhotoEditFragment extends DialogFragment {
 
     private PhotoChooseInterface mListener;
 
-    private Bitmap photo;
+    private Uri photoUri;
 
     @Bind(R.id.photo_edit_cropImageView)
     CropImageView cropImageView;
@@ -62,13 +62,16 @@ public class PhotoEditFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static PhotoEditFragment newInstance(Bitmap bitmap) {
+    public static PhotoEditFragment newInstance(Uri photoUri) {
         PhotoEditFragment fragment = new PhotoEditFragment();
+        Bundle args = new Bundle();
+        /*
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
-        Bundle args = new Bundle();
         args.putByteArray(PHOTO_PARAM, byteArray);
+        */
+        args.putParcelable(PHOTO_PARAM, photoUri);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,10 +80,13 @@ public class PhotoEditFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            /*
             byte[] byteArray = getArguments().getByteArray(PHOTO_PARAM);
             if (byteArray != null) {
                 photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             }
+            */
+            photoUri = getArguments().getParcelable(PHOTO_PARAM);
         }
     }
 
@@ -99,8 +105,9 @@ public class PhotoEditFragment extends DialogFragment {
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (photo != null) {
-            cropImageView.setImageBitmap(photo);
+        if (photoUri != null) {
+            //cropImageView.setImageBitmap(photo);
+            cropImageView.setImageUriAsync(photoUri);
         }
         cropImageView.setCropShape(CropImageView.CropShape.OVAL);
     }
@@ -165,12 +172,15 @@ public class PhotoEditFragment extends DialogFragment {
     // Upload handling
     // ----------------------------------
 
-    public void onPhotoSent(boolean success) {
+    public boolean onPhotoSent(boolean success) {
         if (success && !fabButton.isEnabled()) {
+            //getContext().getContentResolver().delete(photoUri, "", null);
             dismiss();
+            return true;
         } else {
             fabButton.setEnabled(true);
         }
+        return false;
     }
 
     // ----------------------------------

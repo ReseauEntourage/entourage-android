@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.PermissionChecker;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,9 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     private static final int REQUEST_TAKE_PHOTO = 2;
 
     private static final int READ_STORAGE_PERMISSION_CODE = 3;
+    private static final int WRITE_STORAGE_PERMISSION_CODE = 4;
+
+    private static final String KEY_PHOTO_PATH = "social.entourage.android.photo_path";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -60,6 +64,14 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            // Restore the photo path
+            mCurrentPhotoPath = savedInstanceState.getString(KEY_PHOTO_PATH);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,12 +103,19 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save the photo path
+        outState.putString(KEY_PHOTO_PATH, mCurrentPhotoPath);
+    }
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
 
-            Uri uri = data.getData();
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && intent != null && intent.getData() != null) {
+
+            Uri uri = intent.getData();
 
             if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 pickedImageUri = uri;
@@ -109,8 +128,15 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         }
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            if (intent != null && intent.getData() != null ) {
+                showNextStep(intent.getData());
+                return;
+            }
+            showNextStep(Uri.fromFile(new File(mCurrentPhotoPath)));
+            /*
             Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, null);
             showNextStep(bitmap);
+            */
         }
     }
 
@@ -118,7 +144,11 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showTakePhotoActivity();
+                if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_STORAGE_PERMISSION_CODE);
+                } else {
+                    showTakePhotoActivity();
+                }
             } else {
                 Toast.makeText(getActivity(), R.string.user_photo_error_camera_permission, Toast.LENGTH_LONG).show();
             }
@@ -133,6 +163,15 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             } else {
                 Toast.makeText(getActivity(), R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show();
             }
+        }
+
+        if (requestCode == WRITE_STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showTakePhotoActivity();
+            } else {
+                Toast.makeText(getActivity(), R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show();
+            }
+            return;
         }
     }
 
@@ -169,7 +208,11 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         if (CropImage.isExplicitCameraPermissionRequired(getActivity())) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
         } else {
-            showTakePhotoActivity();
+            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_STORAGE_PERMISSION_CODE);
+            } else {
+                showTakePhotoActivity();
+            }
         }
 
     }
@@ -179,6 +222,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private void loadPickedImage(Uri uri) {
+        /*
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
             showNextStep(bitmap);
@@ -186,6 +230,9 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
+
+        showNextStep(uri);
 
         pickedImageUri = null;
     }
@@ -226,16 +273,17 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
-    private void showNextStep(Bitmap photo) {
-        if (photo == null) {
+    private void showNextStep(Uri photoUri) {
+        if (photoUri == null) {
             Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
             return;
         }
-        PhotoEditFragment fragment = PhotoEditFragment.newInstance(photo);
+        PhotoEditFragment fragment = PhotoEditFragment.newInstance(photoUri);
         fragment.show(getFragmentManager(), PhotoEditFragment.TAG);
     }
 
