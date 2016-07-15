@@ -212,6 +212,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     TextView receivedCode;
 
     /************************
+     * Notifications Permissions View
+     ************************/
+
+    @Bind(R.id.login_include_notifications)
+    View loginNotificationsView;
+
+    /************************
      * Geolocation view
      ************************/
 
@@ -239,6 +246,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginNameView.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.GONE);
+        loginNotificationsView.setVisibility(View.GONE);
         loginGeolocationView.setVisibility(View.GONE);
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
@@ -673,29 +681,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         showNewsfeedScreen();
     }
 
-    private void showNotificationPermissionView() {
-        //show the notifications dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.login_permission_notification_description)
-                .setPositiveButton(R.string.login_permission_notification_accept,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialog, final int which) {
-                                saveNotifications(true);
-                                showGeolocationView();
-                            }
-                        })
-                .setNegativeButton(R.string.login_permission_notification_refuse,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialog, final int which) {
-                                saveNotifications(false);
-                                showGeolocationView();
-                            }
-                        })
-                .create().show();
-    }
-
     /*
     TODO: put this back when the tutorial content is ready
     @OnClick(R.id.login_button_go)
@@ -832,6 +817,26 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     /************************
+     * Notifications View
+     ************************/
+
+    private void showNotificationPermissionView() {
+        loginNotificationsView.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.login_notifications_ignore_button)
+    protected void onNotificationsIgnore() {
+        saveNotifications(false);
+        showGeolocationView();
+    }
+
+    @OnClick(R.id.login_notifications_accept)
+    protected void onNotificationsAccept() {
+        saveNotifications(true);
+        showGeolocationView();
+    }
+
+    /************************
      * Geolocation View
      ************************/
 
@@ -841,7 +846,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick({R.id.login_geolocation_ignore_button, R.id.login_geolocation_accept_button})
     protected void onGeolocationAccepted() {
-        loginGeolocationView.setVisibility(View.GONE);
         finishTutorial();
     }
 
