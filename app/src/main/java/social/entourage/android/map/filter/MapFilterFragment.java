@@ -48,6 +48,9 @@ public class MapFilterFragment extends DialogFragment {
     @Bind(R.id.map_filter_tour_type_layout)
     LinearLayout tourTypeLayout;
 
+    @Bind(R.id.map_filter_entourage_tours)
+    View showToursLayout;
+
     @Bind(R.id.map_filter_tour_medical_switch)
     Switch tourMedicalSwitch;
 
@@ -188,6 +191,7 @@ public class MapFilterFragment extends DialogFragment {
 
     private void initializeView() {
         tourTypeLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
+        showToursLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
 
         MapFilter mapFilter = MapFilter.getInstance();
 
