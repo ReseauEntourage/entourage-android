@@ -865,6 +865,12 @@ public class DrawerActivity extends EntourageSecuredActivity
                             photoEditFragment.onPhotoSent(false);
                         }
                     }
+                    // Delete the temporary file
+                    File tmpImageFile = new File(photoUri.getPath());
+                    if (!tmpImageFile.delete()) {
+                        // Failed to delete the file
+                        Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
+                    }
                 }
             }
 

@@ -665,12 +665,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         editor.commit();
     }
 
-    private void showNewsfeedScreen() {
-        //start the activity
-        startActivity(new Intent(this, DrawerActivity.class));
-        finish();
-    }
-
     private void finishTutorial() {
         //set the tutorial as done
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
@@ -678,7 +672,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loggedNumbers.add(loggedPhoneNumber);
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
 
-        showNewsfeedScreen();
+        startMapActivity();
     }
 
     /*
