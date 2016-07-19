@@ -82,7 +82,7 @@
     <string name="registration_number_title">Quel est votre numéro de portable ? </string>
     <string name="registration_number_description">Entourage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
     <string name="registration_number_hint">Numéro de portable</string>
-    <string name="registration_number_error_server">Echec de l'envoi du numéro</string>
+    <string name="registration_number_error_server">Echec de l’envoi du numéro</string>
 
     <string name="registration_smscode_title">Code de vérification</string>
     <string name="registration_smscode_description">Veuillez saisir le code reçu par SMS.</string>
