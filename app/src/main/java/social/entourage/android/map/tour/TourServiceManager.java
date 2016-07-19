@@ -218,7 +218,12 @@ public class TourServiceManager {
                     minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR;
                 }
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
+            try {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
+            }
+            catch (Exception ex) {
+                Log.d("Entourage", "No GPS Provider");
+            }
         }
     }
 
