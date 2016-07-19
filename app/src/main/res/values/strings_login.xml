@@ -82,13 +82,13 @@
     <string name="registration_number_title">Quel est votre numéro de portable ? </string>
     <string name="registration_number_description">Entourage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
     <string name="registration_number_hint">Numéro de portable</string>
-    <string name="registration_number_error_server">!!Error sending the number to the server</string>
+    <string name="registration_number_error_server">Echec de l’envoi du numéro</string>
 
     <string name="registration_smscode_title">Code de vérification</string>
     <string name="registration_smscode_description">Veuillez saisir le code reçu par SMS.</string>
     <string name="registration_smscode_hint">Code</string>
     <string name="registration_smscode_validate">Valider</string>
-    <string name="registration_smscode_error_code">!!Please enter a code!</string>
-    <string name="registration_smscode_sent">!!SMS Sent</string>
+    <string name="registration_smscode_error_code">Veuillez saisir le code !</string>
+    <string name="registration_smscode_sent">SMS envoyé</string>
 
 </resources>

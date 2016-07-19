@@ -56,12 +56,12 @@
     <string name="user_photo_choose_photo">Choisir une photo</string>
     <string name="user_photo_take_photo">Prendre une photo</string>
     <string name="user_photo_edit_description">Déplacer et zoomer pour ajuster la photo de profil.</string>
-    <string name="user_photo_error_no_camera">!!Camera not detected</string>
-    <string name="user_photo_error_photo_path">!!Cannot make room for a photo</string>
-    <string name="user_photo_error_no_photo">!!Image could not be read</string>
-    <string name="user_photo_error_not_saved">!!Photo not saved</string>
-    <string name="user_photo_error_camera_permission">!!Cancelling, required permissions are not granted</string>
-    <string name="user_photo_error_read_permission">!!Cancelling, required permissions are not granted</string>
-    <string name="user_photo_uploading">!!Uploading the photo</string>
+    <string name="user_photo_error_no_camera">Caméra non détectée</string>
+    <string name="user_photo_error_photo_path">Plus d’espace libre pour la photo</string>
+    <string name="user_photo_error_no_photo">L’image ne peut être lue</string>
+    <string name="user_photo_error_not_saved">Echec de la sauvegarde de la photo</string>
+    <string name="user_photo_error_camera_permission">Annulation: l’app n’a pas les permissions requises</string>
+    <string name="user_photo_error_read_permission">Annulation: l’app n’a pas les permissions requises</string>
+    <string name="user_photo_uploading">Envoi de la photo</string>
 
 </resources>
