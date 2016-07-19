@@ -57,7 +57,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_user_plus"
             android:background="?android:attr/selectableItemBackground"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <ImageButton
             android:layout_width="wrap_content"
