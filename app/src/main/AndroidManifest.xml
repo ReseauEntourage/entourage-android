@@ -11,7 +11,6 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false"/>
@@ -30,7 +29,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:name=".EntourageApplication"
@@ -55,9 +54,9 @@
         </activity>
         <activity
             android:name=".authentication.login.LoginActivity"
-            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_login"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".guide.poi.ReadPoiActivity"
@@ -81,8 +80,8 @@
             android:name=".map.encounter.CreateEncounterActivity"
             android:label="@string/activity_create_encounter_title"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".message.MessageActivity"
@@ -99,6 +98,9 @@
             android:name=".about.AboutActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".user.edit.photo.ChoosePhotoActivity">
+        </activity>
 
         <service
             android:name=".map.tour.TourService"
@@ -113,8 +115,8 @@
             android:name=".message.push.PushNotificationService"
             android:exported="false"/>
         <service
-            android:name= "com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
-            android:enabled="true" />
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true"/>
 
         <!-- Receivers -->
         <receiver android:name=".message.push.GcmBroadcastReceiver">

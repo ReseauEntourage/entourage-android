@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,6 +158,12 @@ public class PhotoEditFragment extends DialogFragment {
         cropImageView.setOnSaveCroppedImageCompleteListener(new CropImageView.OnSaveCroppedImageCompleteListener() {
             @Override
             public void onSaveCroppedImageComplete(final CropImageView view, final Uri uri, final Exception error) {
+                if (error != null) {
+                    Log.d("PhotoEdit", error.getMessage());
+                    Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
+                    fabButton.setEnabled(true);
+                    return;
+                }
                 mListener.onPhotoChosen(uri);
             }
         });

@@ -8,8 +8,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
@@ -29,7 +33,9 @@ import java.util.Date;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.tools.BusProvider;
 
 public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
@@ -90,6 +96,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         if (context instanceof PhotoChooseInterface) {
             mListener = (PhotoChooseInterface) context;
         }
+        BusProvider.getInstance().register(this);
 //        else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
@@ -100,6 +107,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -107,6 +115,23 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         super.onSaveInstanceState(outState);
         // Save the photo path
         outState.putString(KEY_PHOTO_PATH, mCurrentPhotoPath);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Check if we are returning from photo picker
+        // i.e. the pickedImageUri is set
+        if (pickedImageUri != null) {
+            // Check if we have reading rights
+            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION_CODE);
+            } else {
+                // Proceed to next step
+                loadPickedImage(pickedImageUri);
+            }
+        }
     }
 
     @Override
@@ -159,6 +184,8 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (pickedImageUri != null) {
                     loadPickedImage(pickedImageUri);
+                } else {
+                    showChoosePhotoActivity();
                 }
             } else {
                 Toast.makeText(getActivity(), R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show();
@@ -194,12 +221,21 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     @OnClick(R.id.photo_choose_photo_button)
     protected void onChoosePhotoClicked() {
 
+        if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION_CODE);
+        } else {
+            showChoosePhotoActivity();
+        }
+
+
+        /*
         Intent intent = new Intent();
         // Show only images, no videos or anything else
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         // Always show the chooser (if there are multiple options available)
         startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST);
+        */
     }
 
     @OnClick(R.id.photo_choose_take_photo_button)
@@ -222,19 +258,24 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private void loadPickedImage(Uri uri) {
-        /*
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-            showNextStep(bitmap);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
-
         showNextStep(uri);
-
         pickedImageUri = null;
+    }
+
+    private void showChoosePhotoActivity() {
+        if (Build.VERSION.SDK_INT <= 19) {
+            // Start a separate activity, to handle the issue with onActivityResult
+            Intent intent = new Intent(getContext(), ChoosePhotoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent();
+            // Show only images, no videos or anything else
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            // Always show the chooser (if there are multiple options available)
+            startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST);
+        }
     }
 
     private void showTakePhotoActivity() {
@@ -285,6 +326,15 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         }
         PhotoEditFragment fragment = PhotoEditFragment.newInstance(photoUri);
         fragment.show(getFragmentManager(), PhotoEditFragment.TAG);
+    }
+
+    // ----------------------------------
+    // Bus Listeners
+    // ----------------------------------
+
+    @Subscribe
+    public void onPhotoChosen(Events.OnPhotoChosen event) {
+        pickedImageUri = event.getPhotoUri();
     }
 
 }

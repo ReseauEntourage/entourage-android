@@ -1,5 +1,7 @@
 package social.entourage.android.api.tape;
 
+import android.net.Uri;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import social.entourage.android.api.model.Message;
@@ -254,4 +256,21 @@ public class Events {
         }
 
     }
+
+    /**
+     * Event signaling that a photo was taken/chosen
+     */
+    public static class OnPhotoChosen {
+
+        private Uri photoUri;
+
+        public OnPhotoChosen(Uri photoUri) {
+            this.photoUri = photoUri;
+        }
+
+        public Uri getPhotoUri() {
+            return photoUri;
+        }
+    }
+
 }
