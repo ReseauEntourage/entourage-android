@@ -286,7 +286,7 @@ public class LoginPresenter {
                 if (response.isSuccess()) {
                     activity.registerPhoneNumberSent(phoneNumber);
                 } else {
-                    activity.displayToast(R.string.login_text_invalid_format);
+                    activity.displayToast(R.string.registration_number_error_already_registered);
                 }
             }
 
