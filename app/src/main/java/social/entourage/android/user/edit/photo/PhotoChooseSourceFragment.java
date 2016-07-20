@@ -294,9 +294,20 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                if (Build.VERSION.SDK_INT <= 19) {
+                    // Start a separate activity, to handle the issue with onActivityResult
+                    Intent intent = new Intent(getContext(), TakePhotoActivity.class);
+                    intent.setData(Uri.fromFile(photoFile));
+                    if (mCurrentPhotoPath != null) {
+                        intent.putExtra(TakePhotoActivity.KEY_PHOTO_PATH, mCurrentPhotoPath);
+                    }
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } else {
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(photoFile));
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
             }
         }
     }

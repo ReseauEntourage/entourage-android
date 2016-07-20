@@ -101,6 +101,9 @@
         <activity
             android:name=".user.edit.photo.ChoosePhotoActivity">
         </activity>
+        <activity
+            android:name=".user.edit.photo.TakePhotoActivity">
+        </activity>
 
         <service
             android:name=".map.tour.TourService"
