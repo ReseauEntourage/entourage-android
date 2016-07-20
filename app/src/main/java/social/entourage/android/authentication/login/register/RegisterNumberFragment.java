@@ -92,4 +92,17 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
         }
     }
 
+    @OnClick(R.id.register_number_lost_code)
+    protected void onLostCodeClicked() {
+        // Check the phone
+        String phoneNumber = LoginPresenter.checkPhoneNumberFormat(phoneNumberEditText.getText().toString());
+        if (phoneNumber == null) {
+            Toast.makeText(getActivity(), R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            // Resend the code
+            mListener.registerResendCode(phoneNumber);
+        }
+    }
+
 }

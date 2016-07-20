@@ -132,7 +132,11 @@ public class LoginPresenter {
         }
     }
 
-    public void sendNewCode(final String phone) {
+    public void sendNewCode(String phone) {
+        sendNewCode(phone, false);
+    }
+
+    public void sendNewCode(final String phone, final boolean isOnboarding) {
         if (activity != null) {
             if (phone != null) {
                 Map<String, String> user = new ArrayMap<>();
@@ -150,15 +154,15 @@ public class LoginPresenter {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                         if (response.isSuccess()) {
-                            activity.newCodeAsked(response.body().getUser());
+                            activity.newCodeAsked(response.body().getUser(), isOnboarding);
                         } else {
-                            activity.newCodeAsked(null);
+                            activity.newCodeAsked(null, isOnboarding);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable t) {
-                        activity.newCodeAsked(null);
+                        activity.newCodeAsked(null, isOnboarding);
                     }
                 });
             }

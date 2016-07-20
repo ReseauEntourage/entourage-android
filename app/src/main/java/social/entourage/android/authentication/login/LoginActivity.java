@@ -569,23 +569,30 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         showKeyboard(phoneEditText);
     }
 
-    void newCodeAsked(User user) {
+    void newCodeAsked(User user, boolean isOnboarding) {
         stopLoader();
         if (user != null) {
-            if (loginLostCode.getVisibility() == View.VISIBLE) {
-                loginLostCode.setVisibility(View.GONE);
-                loginVerifyCode.setVisibility(View.VISIBLE);
-            }
-            else {
-                displayToast(getString(R.string.login_text_lost_code_ok));
+            if (isOnboarding) {
+                registerPhoneNumberSent(onboardingUser.getPhone());
+            } else {
+                if (loginLostCode.getVisibility() == View.VISIBLE) {
+                    loginLostCode.setVisibility(View.GONE);
+                    loginVerifyCode.setVisibility(View.VISIBLE);
+                } else {
+                    displayToast(getString(R.string.login_text_lost_code_ok));
+                }
             }
         } else {
-            if (loginLostCode.getVisibility() == View.VISIBLE) {
-                //codeConfirmation.setText(R.string.login_text_lost_code_ko);
-                codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
-                enterCodeBlock.setVisibility(View.GONE);
-                lostCodeButtonBlock.setVisibility(View.GONE);
-                confirmationBlock.setVisibility(View.VISIBLE);
+            if (isOnboarding) {
+                displayToast(getString(R.string.login_text_lost_code_ko));
+            } else {
+                if (loginLostCode.getVisibility() == View.VISIBLE) {
+                    //codeConfirmation.setText(R.string.login_text_lost_code_ko);
+                    codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
+                    enterCodeBlock.setVisibility(View.GONE);
+                    lostCodeButtonBlock.setVisibility(View.GONE);
+                    confirmationBlock.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -805,6 +812,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     public void registerCheckCode(final String smsCode) {
         loginPresenter.login(onboardingUser.getPhone(), smsCode);
+    }
+
+    @Override
+    public void registerResendCode(final String phoneNumber) {
+        if (loginPresenter != null) {
+            onboardingUser.setPhone(phoneNumber);
+            loginPresenter.sendNewCode(phoneNumber, true);
+        } else {
+            Toast.makeText(this, R.string.registration_number_error_server, Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected void registerPhoneNumberSent(String phoneNumber) {
