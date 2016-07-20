@@ -292,7 +292,9 @@ public class EntourageLocationFragment extends DialogFragment {
     private void onAddressFound(Address address, AsyncTask asyncTask) {
         if (geocoderAddressTask != asyncTask) return;
         if (address == null) {
-            Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
+            if (getActivity() != null) {
+                Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
+            }
             return;
         }
         if (address.hasLatitude() && address.hasLongitude()) {
@@ -316,6 +318,9 @@ public class EntourageLocationFragment extends DialogFragment {
         @Override
         protected String doInBackground(final LatLng... params) {
             try {
+                if (getActivity() == null) {
+                    return null;
+                }
                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                 LatLng location = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
@@ -336,6 +341,7 @@ public class EntourageLocationFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(final String address) {
+            if (address == null) return;
             EntourageLocationFragment.this.addressTextView.setText(address);
         }
     }
@@ -345,6 +351,9 @@ public class EntourageLocationFragment extends DialogFragment {
         @Override
         protected Address doInBackground(final String... params) {
             try {
+                if (getActivity() == null) {
+                    return null;
+                }
                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                 String address = params[0];
                 List<Address> addresses = geoCoder.getFromLocationName(address, 1);
