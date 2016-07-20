@@ -298,6 +298,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             loginTutorial.setVisibility(View.GONE);
             loginWelcome.setVisibility(View.VISIBLE);
         }
+        else if (loginWelcome.getVisibility() == View.VISIBLE) {
+            loginWelcome.setVisibility(View.GONE);
+            loginSignin.setVisibility(View.VISIBLE);
+        }
         else if (loginNameView.getVisibility() == View.VISIBLE) {
             loginNameView.setVisibility(View.GONE);
             loginTutorial.setVisibility(View.VISIBLE);
