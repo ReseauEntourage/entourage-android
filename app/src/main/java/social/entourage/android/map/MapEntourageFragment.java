@@ -461,7 +461,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void displayEntourageDisclaimer(String entourageType) {
+    public void displayEntourageDisclaimer(final String entourageType) {
+        if (mapLongClickView == null) {
+            // Binder haven't kicked in yet
+            return;
+        }
         // Hide the create entourage menu ui
         mapLongClickView.setVisibility(View.GONE);
         if (mapOptionsMenu.isOpened()) {
