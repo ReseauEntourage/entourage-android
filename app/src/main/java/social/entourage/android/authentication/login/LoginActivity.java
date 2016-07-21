@@ -18,6 +18,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -304,7 +305,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
         else if (loginNameView.getVisibility() == View.VISIBLE) {
             loginNameView.setVisibility(View.GONE);
-            loginTutorial.setVisibility(View.VISIBLE);
+            loginWelcome.setVisibility(View.VISIBLE);
         }
         else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
             newsletterEmail.setText("");
@@ -471,6 +472,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 if (state == TransferState.COMPLETED) {
                     if (loginPresenter != null) {
                         loginPresenter.updateUserPhoto(objectKey);
+                        // Delete the temporary file
+                        File tmpImageFile = new File(photoUri.getPath());
+                        if (!tmpImageFile.delete()) {
+                            // Failed to delete the file
+                            Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
+                        }
                     } else {
                         Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
                         dismissProgressDialog();
