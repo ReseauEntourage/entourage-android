@@ -724,10 +724,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             myId = me.getId();
         }
         shareButton.setVisibility(isTourPrivate ? View.GONE : ( (!feedItem.getJoinStatus().equals(Tour.JOIN_STATUS_NOT_REQUESTED) || feedItem.isFreezed()) ? View.GONE : View.VISIBLE ) );
-
-        // TODO: Revert to the proper conditional
-        //addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && feedItem.getAuthor().getUserID() == myId ? View.VISIBLE : View.GONE) : View.GONE);
-        addUserButton.setVisibility(View.GONE);
+        
+        addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && feedItem.getAuthor().getUserID() == myId ? View.VISIBLE : View.GONE) : View.GONE);
 
         moreButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
     }
