@@ -33,7 +33,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textAllCaps="false"/>
 
         </RelativeLayout>
