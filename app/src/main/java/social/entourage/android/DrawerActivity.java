@@ -810,7 +810,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         // Show the create entourage fragment
         if (mainFragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
             ((MapEntourageFragment) mainFragment).createEntourage(entourageType);
         }
     }
@@ -827,7 +826,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         // Show the create encounter fragment
         if (mainFragment instanceof MapEntourageFragment) {
-            MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
             ((MapEntourageFragment) mainFragment).addEncounter();
         }
     }

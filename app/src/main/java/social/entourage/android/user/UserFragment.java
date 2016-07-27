@@ -196,7 +196,7 @@ public class UserFragment extends DialogFragment {
         if (getActivity() != null) {
             Resources res = getResources();
             int tourCount = user.getStats().getTourCount();
-            int encountersCount = user.getStats().getEncounterCount();
+            //int encountersCount = user.getStats().getEncounterCount();
 
             userEditProfile.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
@@ -276,7 +276,7 @@ public class UserFragment extends DialogFragment {
         if (success) {
             //remove the tutorial flag
             SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-            HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
             loggedNumbers.remove(this.user.getPhone());
             sharedPreferences.edit().putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers).commit();
             //go back to login screen

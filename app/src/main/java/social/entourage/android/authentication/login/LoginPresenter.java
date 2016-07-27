@@ -98,7 +98,7 @@ public class LoginPresenter {
                 user.put("phone", phoneNumber);
                 user.put("sms_code", smsCode);
                 SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-                HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+                HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
                 final boolean isTutorialDone = loggedNumbers.contains(phoneNumber);
                 activity.startLoader();
                 Call<LoginResponse> call = loginRequest.login(user);
@@ -189,6 +189,7 @@ public class LoginPresenter {
             userMap.put("email", user.getEmail());
             userMap.put("firstname", user.getFirstName());
             userMap.put("lastname", user.getLastName());
+            //TODO: check what userMap does
 
             final ArrayMap<String, Object> request = new ArrayMap<>();
             request.put("user", user);

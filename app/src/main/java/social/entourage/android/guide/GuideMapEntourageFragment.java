@@ -97,7 +97,7 @@ public class GuideMapEntourageFragment extends Fragment {
                 @Override
                 public void onMapReady(final GoogleMap googleMap) {
                     isMapLoaded = true;
-                    clusterManager = new ClusterManager(getActivity(), googleMap);
+                    clusterManager = new ClusterManager<Poi>(getActivity(), googleMap);
                     poiRenderer = new PoiRenderer(getActivity(), googleMap, clusterManager);
                     clusterManager.setRenderer(poiRenderer);
                     clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());

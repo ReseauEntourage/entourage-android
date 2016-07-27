@@ -5,6 +5,6 @@ package social.entourage.android.invite;
  */
 public interface InviteFriendsListener {
 
-    public void onInviteSent();
+    void onInviteSent();
 
 }
