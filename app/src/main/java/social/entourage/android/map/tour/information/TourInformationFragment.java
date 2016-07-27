@@ -100,6 +100,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
+import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
@@ -596,6 +597,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         // open the contacts fragment
         InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
+        // set the listener
+        fragment.setInviteFriendsListener(this);
+    }
+
+    @OnClick(R.id.invite_source_number_button)
+    protected void onInvitePhoneNumberClicked() {
+        // close the invite source view
+        onCloseInviteSourceClicked();
+        // open the contacts fragment
+        InviteByPhoneNumberFragment fragment = InviteByPhoneNumberFragment.newInstance(feedItem.getId(), feedItem.getType());
+        fragment.show(getFragmentManager(), InviteByPhoneNumberFragment.TAG);
         // set the listener
         fragment.setInviteFriendsListener(this);
     }

@@ -1,4 +1,4 @@
-package social.entourage.android.invite.contacts;
+package social.entourage.android.invite;
 
 import dagger.Component;
 import social.entourage.android.ActivityScope;
@@ -11,11 +11,11 @@ import social.entourage.android.EntourageComponent;
 @ActivityScope
 @Component (
         dependencies = EntourageComponent.class,
-        modules = InviteContactsModule.class
+        modules = InviteModule.class
 )
 
-public interface InviteContactsComponent {
-    void inject(InviteContactsFragment fragment);
+public interface InviteComponent {
+    void inject(InviteBaseFragment fragment);
 
-    InviteContactsPresenter getPresenter();
+    InvitePresenter getPresenter();
 }

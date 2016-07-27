@@ -2,7 +2,6 @@ package social.entourage.android.invite.contacts;
 
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -11,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,13 +34,16 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
-import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.invite.DaggerInviteComponent;
+import social.entourage.android.invite.InviteBaseFragment;
+import social.entourage.android.invite.InviteModule;
+import social.entourage.android.invite.InvitePresenter;
 import social.entourage.android.invite.InviteFriendsListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InviteContactsFragment extends EntourageDialogFragment implements
+public class InviteContactsFragment extends InviteBaseFragment implements
         LoaderManager.LoaderCallbacks<Cursor>,
         AdapterView.OnItemClickListener {
 
@@ -51,9 +52,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     // ----------------------------------
 
     public static final String TAG = "social.entourage.android.invite_contacts";
-
-    private static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
-    private static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
 
     private static final String[] PROJECTION =
             {
@@ -92,12 +90,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-
-    @Inject
-    InviteContactsPresenter presenter;
-
-    long feedItemId;
-    int feedItemType;
 
     /*
      * Defines an array that contains column names to move from
@@ -144,8 +136,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     @Bind(R.id.invite_contacts_send_button)
     Button sendButton;
 
-    private InviteFriendsListener mInviteFriendsListener;
-
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -156,10 +146,7 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
 
     public static InviteContactsFragment newInstance(long feedId, int feedItemType) {
         InviteContactsFragment fragment = new InviteContactsFragment();
-        Bundle args = new Bundle();
-        args.putLong(KEY_FEEDITEM_ID, feedId);
-        args.putInt(KEY_FEEDITEM_TYPE, feedItemType);
-        fragment.setArguments(args);
+        fragment.setFeedData(feedId, feedItemType);
 
         return fragment;
     }
@@ -174,25 +161,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
         ButterKnife.bind(this, view);
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-
-        if (getArguments() != null) {
-            feedItemId = getArguments().getLong(KEY_FEEDITEM_ID);
-            feedItemType = getArguments().getInt(KEY_FEEDITEM_TYPE);
-        }
-    }
-
-    protected void setupComponent(EntourageComponent entourageComponent) {
-        DaggerInviteContactsComponent.builder()
-                .entourageComponent(entourageComponent)
-                .inviteContactsModule(new InviteContactsModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override
@@ -235,15 +203,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
             }
         });
     }
-
-    // ----------------------------------
-    // LISTENER
-    // ----------------------------------
-
-    public void setInviteFriendsListener(final InviteFriendsListener inviteFriendsListener) {
-        this.mInviteFriendsListener = inviteFriendsListener;
-    }
-
 
     // ----------------------------------
     // ONCLICK CALLBACKS
@@ -414,8 +373,8 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
             // If success, close the fragment
             if (successfulyServerRequestCount >= 0) {
                 // Notify the listener
-                if (mInviteFriendsListener != null) {
-                    mInviteFriendsListener.onInviteSent();
+                if (inviteFriendsListener != null) {
+                    inviteFriendsListener.onInviteSent();
                 }
                 // Close the fragment
                 dismiss();

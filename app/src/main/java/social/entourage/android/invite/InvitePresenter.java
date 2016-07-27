@@ -1,4 +1,4 @@
-package social.entourage.android.invite.contacts;
+package social.entourage.android.invite;
 
 import javax.inject.Inject;
 
@@ -7,17 +7,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.model.Invitation;
+import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.invite.contacts.InviteContactsFragment;
 
 /**
  * Created by mihaiionescu on 12/07/16.
  */
-public class InviteContactsPresenter {
+public class InvitePresenter {
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
-    private final InviteContactsFragment fragment;
+    private final InviteBaseFragment fragment;
     private final EntourageRequest entourageRequest;
 
     // ----------------------------------
@@ -25,7 +27,7 @@ public class InviteContactsPresenter {
     // ----------------------------------
 
     @Inject
-    public InviteContactsPresenter(InviteContactsFragment fragment, EntourageRequest entourageRequest) {
+    public InvitePresenter(InviteBaseFragment fragment, EntourageRequest entourageRequest) {
         this.fragment = fragment;
         this.entourageRequest = entourageRequest;
     }
@@ -35,10 +37,19 @@ public class InviteContactsPresenter {
     // ----------------------------------
 
     public void inviteBySMS(long feedItemId, int feedItemType, String phoneNumber) {
-        // TODO Tour InviteBySMS
+        if (feedItemType == FeedItem.ENTOURAGE_CARD) {
+            inviteBySMSEntourage(feedItemId, phoneNumber);
+        }
+        else  if (feedItemType == FeedItem.TOUR_CARD) {
+            // TODO Tour InviteBySMS
+            fragment.onInviteSent(false);
+        }
+    }
+
+    private void inviteBySMSEntourage(long entourageId, String phoneNumber) {
         Invitation invitation = new Invitation(Invitation.INVITE_BY_SMS, phoneNumber);
         Invitation.InvitationWrapper wrapper = new Invitation.InvitationWrapper(invitation);
-        Call<Invitation.InvitationWrapper> call = entourageRequest.inviteBySMS(feedItemId, wrapper);
+        Call<Invitation.InvitationWrapper> call = entourageRequest.inviteBySMS(entourageId, wrapper);
         call.enqueue(new Callback<Invitation.InvitationWrapper>() {
             @Override
             public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
