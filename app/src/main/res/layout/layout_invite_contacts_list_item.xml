@@ -25,7 +25,8 @@
         android:id="@+id/contact_checkBox"
         android:layout_alignParentRight="true"
         android:layout_alignBaseline="@+id/contact_name"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:clickable="false"/>
 
     <View
         android:layout_width="match_parent"
