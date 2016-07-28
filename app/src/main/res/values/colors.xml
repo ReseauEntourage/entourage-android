@@ -12,6 +12,7 @@
     <color name="pale_grey">#efeff4</color>
     <color name="dodger_blue">#3A97FF</color>
     <color name="bright_blue">#007aff</color>
+    <color name="silver">#c9c9ce</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>

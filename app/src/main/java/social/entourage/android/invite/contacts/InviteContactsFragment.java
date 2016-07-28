@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -25,20 +24,12 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import javax.inject.Inject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
-import social.entourage.android.EntourageApplication;
-import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
-import social.entourage.android.invite.DaggerInviteComponent;
 import social.entourage.android.invite.InviteBaseFragment;
-import social.entourage.android.invite.InviteModule;
-import social.entourage.android.invite.InvitePresenter;
-import social.entourage.android.invite.InviteFriendsListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -112,7 +103,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     ListView contactsList;
 
     // An adapter that binds the result Cursor to the ListView
-    private SimpleCursorAdapter mCursorAdapter;
+    private InviteContactsAdapter mContactsAdapter;
 
     // Defines a variable for the search string
     private String mSearchString = "";
@@ -168,14 +159,18 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         super.onActivityCreated(savedInstanceState);
 
         // Gets a CursorAdapter
-        mCursorAdapter = new SimpleCursorAdapter(
+//        mContactsAdapter = new SimpleCursorAdapter(
+//                getActivity(),
+//                R.layout.layout_invite_contacts_list_item,
+//                null,
+//                FROM_COLUMNS, TO_IDS,
+//                0);
+        mContactsAdapter = new InviteContactsAdapter(
                 getActivity(),
-                R.layout.layout_invite_contacts_list_item,
-                null,
-                FROM_COLUMNS, TO_IDS,
-                0);
+                FROM_COLUMNS[0]
+        );
         // Sets the adapter for the ListView
-        contactsList.setAdapter(mCursorAdapter);
+        contactsList.setAdapter(mContactsAdapter);
         // Set the item click listener to be the current fragment.
         contactsList.setOnItemClickListener(this);
 
@@ -220,7 +215,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         // Show the progress dialog
         ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_retrieving_phone_numbers);
         // Get the Cursor
-        Cursor cursor = ((SimpleCursorAdapter)contactsList.getAdapter()).getCursor();
+        Cursor cursor = ((InviteContactsAdapter)contactsList.getAdapter()).getCursor();
         // Get the selected contacts
         int selectedContactsCount = 0;
         StringBuffer contactIds = new StringBuffer();
@@ -240,7 +235,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
             if (checkedItems.valueAt(i)) {
                 int position = checkedItems.keyAt(i);
                 // Move to the selected contact
-                cursor.moveToPosition(position);
+                cursor.moveToPosition(mContactsAdapter.getCursorPositionForItemAt(position));
                 // Get the _ID value
                 String contactId = cursor.getString(CONTACT_ID_INDEX);
                 mContactIdsSelectionArgs[index] = contactId;
@@ -322,7 +317,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         switch (loader.getId()) {
             case CONTACTS_LOADER_ID:
                 // Put the result Cursor in the adapter for the ListView
-                mCursorAdapter.swapCursor(cursor);
+                mContactsAdapter.swapCursor(cursor);
 
                 break;
 
@@ -348,7 +343,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         switch (loader.getId()) {
             case CONTACTS_LOADER_ID:
                 // Delete the reference to the existing Cursor
-                mCursorAdapter.swapCursor(null);
+                mContactsAdapter.swapCursor(null);
 
                 break;
 
