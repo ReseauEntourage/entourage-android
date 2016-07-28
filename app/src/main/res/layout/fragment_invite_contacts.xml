@@ -74,5 +74,14 @@
         android:id="@+id/invite_contacts_listView"
         android:choiceMode="multipleChoice"
         android:layout_marginLeft="0dp"
-        android:layout_below="@+id/invite_contacts_search_layout"/>
+        android:layout_below="@+id/invite_contacts_search_layout"
+        android:layout_toLeftOf="@+id/invite_contacts_quick_jump_listview"/>
+
+    <ListView
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:id="@+id/invite_contacts_quick_jump_listview"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/invite_contacts_search_layout"
+        android:choiceMode="singleChoice"/>
 </RelativeLayout>

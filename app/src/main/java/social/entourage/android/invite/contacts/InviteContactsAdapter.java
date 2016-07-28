@@ -99,7 +99,7 @@ public class InviteContactsAdapter extends BaseAdapter {
         }
         while (mCursor.moveToNext()) {
             String cursorData = cursor.getString(columnIndex);
-            String startChar = cursorData.substring(0, 1);
+            String startChar = cursorData.substring(0, 1).toUpperCase();
             if (!mSectionHeader.containsKey(startChar)) {
                 mData.add(new InviteItemSection(startChar));
                 mSectionHeader.put(startChar, mData.size()-1);
@@ -119,6 +119,13 @@ public class InviteContactsAdapter extends BaseAdapter {
             return -1;
         }
         return ((InviteItemContact)item).getCursorPosition();
+    }
+
+    public int getPositionForSection(String jumpToString) {
+        if (mSectionHeader.containsKey(jumpToString)) {
+            return mSectionHeader.get(jumpToString);
+        }
+        return -1;
     }
 
     public static class ViewHolder {

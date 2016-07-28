@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.ArraySet;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,13 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -104,6 +108,12 @@ public class InviteContactsFragment extends InviteBaseFragment implements
 
     // An adapter that binds the result Cursor to the ListView
     private InviteContactsAdapter mContactsAdapter;
+
+    // Quick-jump list-view
+    @Bind(R.id.invite_contacts_quick_jump_listview)
+    ListView quickJumpList;
+
+    private ArrayAdapter<String> quickJumpAdapter;
 
     // Defines a variable for the search string
     private String mSearchString = "";
@@ -197,6 +207,20 @@ public class InviteContactsFragment extends InviteBaseFragment implements
                 return false;
             }
         });
+
+        // Initialize the quick-jump list
+        ArrayList<String> quickJumpArray = new ArrayList<>();
+        for(char c = 'A'; c <= 'Z'; c++) {
+            quickJumpArray.add(String.format("%c", c));
+        }
+        quickJumpArray.add("#");
+        quickJumpAdapter = new ArrayAdapter<String>(
+                getContext(),
+                R.layout.layout_invite_contacts_quick_jump_item,
+                R.id.invite_contacts_quick_jump_textview,
+                quickJumpArray);
+        quickJumpList.setAdapter(quickJumpAdapter);
+        quickJumpList.setOnItemClickListener(this);
     }
 
     // ----------------------------------
@@ -259,19 +283,29 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     @Override
     public void onItemClick(
             AdapterView<?> parent, View item, int position, long rowID) {
-        // Toggle the checkbox
-        CheckBox contactCheckbox = (CheckBox)item.findViewById(R.id.contact_checkBox);
-        if (contactCheckbox == null) return;
+        if (parent == contactsList) {
+            // Toggle the checkbox
+            CheckBox contactCheckbox = (CheckBox) item.findViewById(R.id.contact_checkBox);
+            if (contactCheckbox == null) return;
 
-        if (!contactCheckbox.isChecked()) {
-            sendButton.setEnabled(true);
+            if (!contactCheckbox.isChecked()) {
+                sendButton.setEnabled(true);
+            }
+            contactCheckbox.setChecked(!contactCheckbox.isChecked());
+
+            contactsList.setItemChecked(position, contactCheckbox.isChecked());
+
+            // Enable or disable the send button
+            sendButton.setEnabled(contactsList.getCheckedItemCount() > 0);
         }
-        contactCheckbox.setChecked(!contactCheckbox.isChecked());
-
-        contactsList.setItemChecked(position, contactCheckbox.isChecked());
-
-        // Enable or disable the send button
-        sendButton.setEnabled( contactsList.getCheckedItemCount() > 0 );
+        else if (parent == quickJumpList) {
+            // Jump to the selected section
+            String jumpToString = quickJumpAdapter.getItem(position);
+            int sectionPosition = mContactsAdapter.getPositionForSection(jumpToString);
+            if (sectionPosition != -1) {
+                contactsList.smoothScrollToPositionFromTop(sectionPosition, 0);
+            }
+        }
     }
 
     // ----------------------------------
