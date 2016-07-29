@@ -26,7 +26,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignBaseline="@+id/contact_name"
         android:visibility="visible"
-        android:clickable="false"/>
+        android:clickable="false"
+        android:button="@drawable/cb_contact"
+        android:checked="false"/>
 
     <View
         android:layout_width="match_parent"
