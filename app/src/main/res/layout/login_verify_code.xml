@@ -1,88 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/background_light"
-              android:weightSum="8">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/accent"
+                android:weightSum="8"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_login_light">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/login_verify_code_navigation">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/login_code_sent_close"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_close_white"
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
             android:padding="5dp"/>
 
         <TextView
-            style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_title_lost_code"
-            android:id="@+id/login_code_sent_title"
-            android:layout_centerInParent="true"/>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/login_text_verify_code_back"
+            android:id="@+id/login_verify_code_back"
+            android:layout_weight="0.5"
+            android:textColor="@color/custom_clickable_text_white"
+            android:gravity="end"
+            android:layout_alignParentRight="true"
+            android:textSize="16sp"
+            android:layout_centerInParent="true"
+            />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="3"
-        android:id="@+id/relativeLayout">
+        android:id="@+id/login_verify_code_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/login_verify_code_navigation"
+        android:layout_above="@+id/login_verify_code_form">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/login_verify_code_image"
-            android:layout_centerInParent="true"
-            android:src="@drawable/sms"/>
+            android:src="@drawable/code"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/registration_smscode_title"
+            android:id="@+id/login_verify_code_title"
+            android:textColor="@color/white"
+            android:layout_below="@+id/login_verify_code_image"
+            android:textSize="28sp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/registration_smscode_description"
+            android:id="@+id/login_verify_code_details"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_below="@+id/login_verify_code_title"
+            android:layout_marginTop="10dp"/>
     </RelativeLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background">
+        android:layout_alignParentLeft="true"
+        android:id="@+id/login_verify_code_form"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp">
 
         <EditText
-            style="@style/CustomEditTextTheme"
+            style="@style/CustomEditTextThemeAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:id="@+id/login_verify_code_code"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:hint="@string/login_hint_code_resent"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:hint="@string/registration_smscode_hint"
             android:inputType="numberPassword"
             android:maxLength="6"
-            android:textColorHint="@color/login_edittext_hint"/>
-    </LinearLayout>
+            android:textSize="22sp"/>
 
-    <Button
-        style="@style/AccentButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/login_button_verify_code"
-        android:id="@+id/login_button_verify_code"
-        android:layout_marginTop="10dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/login_edittext_hint_alpha"/>
+
+        <Button
+            style="@style/WhiteButton.RoundedCorners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_button_verify_code"
+            android:id="@+id/login_button_verify_code"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1"
-        android:layout_marginTop="10dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -95,15 +138,5 @@
             android:gravity="start"
             android:layout_marginLeft="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/login_text_verify_code_back"
-            android:id="@+id/login_verify_code_back"
-            android:layout_weight="0.5"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/custom_clickable_text_yellow"
-            android:gravity="end"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
