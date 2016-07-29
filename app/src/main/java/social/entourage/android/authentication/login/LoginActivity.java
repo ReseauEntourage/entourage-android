@@ -119,11 +119,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_button_ask_code)
     Button receiveCodeButton;
 
-    @Bind(R.id.login_block_code_form)
+    @Bind(R.id.login_block_lost_code_start)
     View enterCodeBlock;
-
-    @Bind(R.id.login_block_lost_code_button)
-    View lostCodeButtonBlock;
 
     @Bind(R.id.login_block_lost_code_confirmation)
     View confirmationBlock;
@@ -541,7 +538,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginSignin.setVisibility(View.GONE);
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.VISIBLE);
-        lostCodeButtonBlock.setVisibility(View.VISIBLE);
         confirmationBlock.setVisibility(View.GONE);
 
         showKeyboard(lostCodePhone);
@@ -604,7 +600,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                     //codeConfirmation.setText(R.string.login_text_lost_code_ko);
                     codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
                     enterCodeBlock.setVisibility(View.GONE);
-                    lostCodeButtonBlock.setVisibility(View.GONE);
                     confirmationBlock.setVisibility(View.VISIBLE);
                 }
             }
