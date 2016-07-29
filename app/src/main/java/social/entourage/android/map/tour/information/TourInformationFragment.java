@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
@@ -992,13 +993,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private int getTrackColor(String type, Date date) {
         int color = Color.GRAY;
         if (TourType.MEDICAL.getName().equals(type)) {
-            color = Color.RED;
+            //color = Color.RED;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_medical);
         }
         else if (TourType.ALIMENTARY.getName().equals(type)) {
-            color = Color.BLUE;
+            //color = Color.BLUE;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_distributive);
         }
         else if (TourType.BARE_HANDS.getName().equals(type)) {
-            color = Color.GREEN;
+            //color = Color.GREEN;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_social);
         }
         if (!MapEntourageFragment.isToday(date)) {
             return MapEntourageFragment.getTransparentColor(color);
