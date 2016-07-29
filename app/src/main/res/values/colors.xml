@@ -41,7 +41,7 @@
     <color name="custom_button_white_enabled">#FFFFFF</color>
     <color name="custom_button_white_focused">#D4D4D4</color>
     <color name="custom_button_white_pressed">#F4F4F4</color>
-    <color name="custom_button_white_disabled">#FFFFFF</color>
+    <color name="custom_button_white_disabled">#B2FFFFFF</color>
     <color name="custom_button_grey_enabled">#CBCBCB</color>
     <color name="custom_button_grey_focused">#D4D4D4</color>
     <color name="custom_button_grey_pressed">#9C9C9C</color>
@@ -51,7 +51,7 @@
     <color name="custom_edittext_short_pressed">#EEEEEE</color>
     <color name="login_form">#FFFFFF</color>
     <color name="login_edittext">#000000</color>
-    <color name="login_edittext_hint">#8D8D8D</color>
+    <color name="login_edittext_hint">#B2FFFFFF</color>
 
     <!-- Side Menu -->
     <color name="sidemenu_divider">@color/greyish</color>

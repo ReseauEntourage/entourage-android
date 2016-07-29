@@ -523,6 +523,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
     */
 
+    @OnClick(R.id.login_back_button)
+    void onLoginBackClick() {
+        onBackPressed();
+    }
+
     @OnClick(R.id.login_button_signup)
     void onLoginClick() {
         loginPresenter.login(
@@ -542,6 +547,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         showKeyboard(lostCodePhone);
     }
 
+    /*
     @OnClick(R.id.login_welcome_more)
     void onMoreClick() {
         loginSignin.setVisibility(View.GONE);
@@ -549,6 +555,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         previousView = loginSignin;
         showKeyboard(newsletterEmail);
     }
+    */
 
     /************************
      * Lost Code View
@@ -646,6 +653,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_name_go_button)
     void onNameGoClicked() {
+        hideKeyboard();
         loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
     }
 

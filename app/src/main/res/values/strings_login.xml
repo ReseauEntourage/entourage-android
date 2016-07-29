@@ -3,7 +3,7 @@
 
     <string name="title_activity_login">Se connecter</string>
     <string name="login_title_welcome_html"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE]]></string>
-    <string name="login_title_welcome">Bienvenue</string>
+    <string name="login_title_welcome">Connexion</string>
     <string name="login_title_welcome_pro"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE <font color=\"#FF6907\">P</font>RO]]></string>
     <string name="login_title_discover"><![CDATA[<font color=\"#FF6907\">D</font>ÉCOUVREZ <font color=\"#FF6907\">E</font>NTOURAGE]]></string>
     <string name="login_title_lost_code">REDEMANDER UN CODE</string>
@@ -35,8 +35,8 @@
     <string name="login_text_default_country_code">+33</string>
     <string name="login_text_verify_code_back">Modifier le numéro</string>
     <string name="login_hint_name">Saisissez votre prénom et votre nom</string>
-    <string name="login_hint_phone">Saisir numéro</string>
-    <string name="login_hint_code">Saisir le code</string>
+    <string name="login_hint_phone">Numéro de téléphone</string>
+    <string name="login_hint_code">Code</string>
     <string name="login_hint_phone_long">Saisir votre numéro de téléphone</string>
     <string name="login_hint_email">Saisir votre adresse email</string>
     <string name="login_hint_code_resent">Saisir le code de vérification reçu par SMS</string>
