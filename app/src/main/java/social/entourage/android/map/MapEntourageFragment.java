@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -1465,13 +1466,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private int getTrackColor(boolean isHistory, String type, Date date) {
         int color = Color.GRAY;
         if (TourType.MEDICAL.getName().equals(type)) {
-            color = Color.RED;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_medical);
         }
         else if (TourType.ALIMENTARY.getName().equals(type)) {
-            color = Color.BLUE;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_distributive);
         }
         else if (TourType.BARE_HANDS.getName().equals(type)) {
-            color = Color.GREEN;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_social);
         }
         if (!isToday(date)) {
             color = getTransparentColor(color);
