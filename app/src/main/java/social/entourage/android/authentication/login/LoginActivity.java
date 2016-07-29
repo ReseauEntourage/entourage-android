@@ -456,7 +456,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void onPhotoChosen(final Uri photoUri) {
 
         //Upload the photo to Amazon S3
-        showProgressDialog(R.string.user_photo_uploading);;
+        showProgressDialog(R.string.user_photo_uploading);
 
         final String objectKey = "user_"+loginPresenter.authenticationController.getUser().getId()+".jpg";
         TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
