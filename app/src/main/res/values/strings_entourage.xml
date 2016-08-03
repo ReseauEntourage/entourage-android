@@ -47,5 +47,7 @@
     <string name="encounter_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
     <string name="encounter_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
 
+    <!-- My Entourages -->
+    <string name="myentourages_title">MES ENTOURAGES</string>
 
 </resources>

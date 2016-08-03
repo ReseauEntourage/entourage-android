@@ -374,7 +374,8 @@ public class DrawerActivity extends EntourageSecuredActivity
             discussionBadgeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    presenter.displayMyTours();
+                    //presenter.displayMyTours();
+                    presenter.displayMyEntourages();
                 }
             });
         }

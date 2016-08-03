@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="280dp"
+                android:layout_height="114dp"
+                android:paddingLeft="20dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_dialog"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/invitation_card_icon"
+            android:src="@drawable/ic_invitation"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/invitation_card_description"
+            android:id="@+id/invitation_card_description"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/invitation_card_icon"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/invitation_card_author"
+            android:textColor="@color/white"
+            android:layout_below="@+id/invitation_card_description"
+            android:layout_alignLeft="@+id/invitation_card_description"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+</FrameLayout>
