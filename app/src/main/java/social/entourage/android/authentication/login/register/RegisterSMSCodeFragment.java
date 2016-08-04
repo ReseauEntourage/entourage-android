@@ -88,6 +88,12 @@ public class RegisterSMSCodeFragment extends EntourageDialogFragment {
         }
     }
 
+    @OnClick(R.id.register_smscode_lost_code)
+    protected void onLostCodeClicked() {
+        // Resend the code
+        mListener.registerResendCode();
+    }
+
     // ----------------------------------
     // Private methods
     // ----------------------------------

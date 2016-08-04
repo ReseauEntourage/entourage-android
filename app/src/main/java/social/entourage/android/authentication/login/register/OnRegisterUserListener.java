@@ -8,6 +8,6 @@ public interface OnRegisterUserListener {
     public void registerShowSignIn();
     public void registerSavePhoneNumber(String phoneNumber);
     public void registerCheckCode(String smsCode);
-    public void registerResendCode(String phoneNumber);
+    public void registerResendCode();
 
 }

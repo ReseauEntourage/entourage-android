@@ -22,6 +22,18 @@
             android:src="@drawable/ic_action_back"
             android:padding="5dp"
             android:background="?android:attr/selectableItemBackground"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_text_lost_code"
+            android:id="@+id/register_smscode_lost_code"
+            android:layout_alignParentRight="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textAllCaps="false"/>
     </RelativeLayout>
 
     <ScrollView

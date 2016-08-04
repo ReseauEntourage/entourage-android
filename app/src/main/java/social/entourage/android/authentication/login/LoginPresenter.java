@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -268,8 +269,17 @@ public class LoginPresenter {
             @Override
             public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
                 if (response.isSuccess()) {
-                    activity.registerPhoneNumberSent(phoneNumber);
+                    activity.registerPhoneNumberSent(phoneNumber, true);
                 } else {
+                    try {
+                        String errorString = response.errorBody().string();
+                        if (errorString.contains("Phone n'est pas disponible")) {
+                            // Phone number already registered
+                            activity.registerPhoneNumberSent(phoneNumber, false);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     activity.displayToast(R.string.registration_number_error_already_registered);
                 }
             }

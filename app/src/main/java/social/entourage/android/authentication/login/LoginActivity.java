@@ -583,7 +583,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         stopLoader();
         if (user != null) {
             if (isOnboarding) {
-                registerPhoneNumberSent(onboardingUser.getPhone());
+                //registerPhoneNumberSent(onboardingUser.getPhone(), true);
+                displayToast(R.string.registration_smscode_sent);
             } else {
                 if (loginLostCode.getVisibility() == View.VISIBLE) {
                     loginLostCode.setVisibility(View.GONE);
@@ -825,17 +826,18 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     @Override
-    public void registerResendCode(final String phoneNumber) {
+    public void registerResendCode() {
         if (loginPresenter != null) {
-            onboardingUser.setPhone(phoneNumber);
-            loginPresenter.sendNewCode(phoneNumber, true);
+            loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
         } else {
             Toast.makeText(this, R.string.registration_number_error_server, Toast.LENGTH_SHORT).show();
         }
     }
 
-    protected void registerPhoneNumberSent(String phoneNumber) {
-        displayToast(R.string.registration_smscode_sent);
+    protected void registerPhoneNumberSent(String phoneNumber, boolean smsSent) {
+        if (smsSent) {
+            displayToast(R.string.registration_smscode_sent);
+        }
         onboardingUser.setPhone(phoneNumber);
         RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
         fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
