@@ -59,7 +59,8 @@
                     android:textSize="28sp"
                     android:textColor="@color/white"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@+id/register_number_phone_image"/>
+                    android:layout_below="@+id/register_number_phone_image"
+                    android:lineSpacingMultiplier="0.8"/>
 
                 <TextView
                     android:layout_width="wrap_content"
