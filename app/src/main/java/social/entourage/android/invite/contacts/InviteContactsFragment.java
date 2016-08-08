@@ -33,6 +33,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Invitation;
+import social.entourage.android.api.model.MultipleInvitations;
 import social.entourage.android.invite.InviteBaseFragment;
 
 /**
@@ -359,15 +361,15 @@ public class InviteContactsFragment extends InviteBaseFragment implements
                 // Update the progress dialog
                 ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_inviting);
                 // Get the phone numbers
+                MultipleInvitations invitations = new MultipleInvitations(Invitation.INVITE_BY_SMS);
+
                 while (cursor.moveToNext()) {
                     String phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    // Send the phone number to server
-                    serverRequestsCount++;
-                    presenter.inviteBySMS(feedItemId, feedItemType, phone);
+                    invitations.addPhoneNumber(phone);
                 }
-                if (serverRequestsCount == 0) {
-                    onInviteSent(false);
-                }
+                // Send the phone number to server
+                serverRequestsCount++;
+                presenter.inviteBySMS(feedItemId, feedItemType, invitations);
                 break;
         }
     }

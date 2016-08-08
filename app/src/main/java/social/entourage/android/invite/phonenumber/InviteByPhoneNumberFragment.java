@@ -18,6 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Invitation;
+import social.entourage.android.api.model.MultipleInvitations;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.invite.InviteBaseFragment;
 import social.entourage.android.tools.Utils;
@@ -100,7 +102,9 @@ public class InviteByPhoneNumberFragment extends InviteBaseFragment {
             // Disable the send button
             sendButton.setEnabled(false);
             // Send the request to server
-            presenter.inviteBySMS(feedItemId, feedItemType, phoneNumber);
+            MultipleInvitations invitations = new MultipleInvitations(Invitation.INVITE_BY_SMS);
+            invitations.addPhoneNumber(phoneNumber);
+            presenter.inviteBySMS(feedItemId, feedItemType, invitations);
         }
     }
 
