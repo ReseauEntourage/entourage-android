@@ -26,5 +26,6 @@
 
     <!-- Invitation Card -->
     <string name="invitation_card_description">1 nouvelle invitation à rejoindre un entourage</string>
+    <string name="invitation_card_inviter">De %s</string>
 
 </resources>

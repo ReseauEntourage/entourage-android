@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="280dp"
+                android:layout_width="320dp"
                 android:layout_height="114dp"
                 android:paddingLeft="20dp"
     >
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/invitation_card_author"
+            android:id="@+id/invitation_card_inviter"
             android:textColor="@color/white"
             android:layout_below="@+id/invitation_card_description"
             android:layout_alignLeft="@+id/invitation_card_description"

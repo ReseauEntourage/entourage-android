@@ -3,12 +3,13 @@ package social.entourage.android.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by mihaiionescu on 12/07/16.
  */
-public class Invitation {
+public class Invitation extends TimestampedObject {
 
     // ----------------------------------
     // CONSTANTS
@@ -16,13 +17,15 @@ public class Invitation {
 
     public static final String INVITE_BY_SMS = "SMS";
 
+    private final static String HASH_STRING_HEAD = "Invitation-";
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
     @SerializedName("id")
     @Expose(serialize = false, deserialize = true)
-    private int id;
+    private long invitationId;
 
     @SerializedName("invitation_mode")
     private String invitationMode;
@@ -33,6 +36,10 @@ public class Invitation {
     @SerializedName("inviter_id")
     @Expose(serialize = false, deserialize = true)
     private int inviterId;
+
+    @SerializedName("inviter_name")
+    @Expose(serialize = false, deserialize = true)
+    private String inviterName;
 
     @SerializedName("entourage_id")
     @Expose(serialize = false, deserialize = true)
@@ -72,12 +79,13 @@ public class Invitation {
         this.entourageId = entourageId;
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public long getId() {
+        return invitationId;
     }
 
-    public void setId(final int id) {
-        this.id = id;
+    public void setId(final long invitationId) {
+        this.invitationId = invitationId;
     }
 
     public String getInvitationMode() {
@@ -96,12 +104,41 @@ public class Invitation {
         this.inviterId = inviterId;
     }
 
+    public String getInviterName() {
+        return inviterName;
+    }
+
+    public void setInviterName(final String inviterName) {
+        this.inviterName = inviterName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public Date getTimestamp() {
+        return null;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + invitationId;
+    }
+
+    @Override
+    public int getType() {
+        return INVITATION_CARD;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || o.getClass() != this.getClass()) return false;
+        return this.invitationId == ((Invitation)o).invitationId;
     }
 
     // ----------------------------------

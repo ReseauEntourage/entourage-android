@@ -6,7 +6,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
+import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.NewsfeedRequest;
+import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Newsfeed;
 
 /**
@@ -22,6 +24,9 @@ public class MyEntouragesPresenter {
 
     @Inject
     NewsfeedRequest newsfeedRequest;
+
+    @Inject
+    InvitationRequest invitationRequest;
 
     // ----------------------------------
     // Constructor
@@ -52,6 +57,26 @@ public class MyEntouragesPresenter {
             @Override
             public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
                 fragment.onNewsfeedReceived(null);
+            }
+        });
+    }
+
+    protected void getMyInvitations() {
+        Call<Invitation.InvitationsWrapper> call = invitationRequest.retrieveUserInvitations();
+        call.enqueue(new Callback<Invitation.InvitationsWrapper>() {
+            @Override
+            public void onResponse(final Call<Invitation.InvitationsWrapper> call, final Response<Invitation.InvitationsWrapper> response) {
+                if (response.isSuccess()) {
+                    fragment.onInvitationsReceived(response.body().getInvitations());
+                }
+                else {
+                    fragment.onInvitationsReceived(null);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Invitation.InvitationsWrapper> call, final Throwable t) {
+                fragment.onInvitationsReceived(null);
             }
         });
     }

@@ -39,7 +39,9 @@
         android:id="@+id/myentourages_invitations_view"
         android:layout_below="@+id/myentourages_navigation_layout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
