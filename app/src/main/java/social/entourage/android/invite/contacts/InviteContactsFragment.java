@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.telephony.PhoneNumberUtils;
 import android.util.ArraySet;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
@@ -365,6 +366,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
 
                 while (cursor.moveToNext()) {
                     String phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    phone = PhoneNumberUtils.stripSeparators(phone);
                     invitations.addPhoneNumber(phone);
                 }
                 // Send the phone number to server
