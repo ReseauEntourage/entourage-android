@@ -24,18 +24,6 @@
                 android:padding="5dp"
                 android:background="?android:attr/selectableItemBackground"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_text_lost_code"
-                android:id="@+id/register_number_lost_code"
-                android:layout_alignParentRight="true"
-                android:background="?android:attr/selectableItemBackground"
-                android:layout_centerInParent="true"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textAllCaps="false"/>
-
         </RelativeLayout>
 
     <ScrollView
@@ -71,7 +59,8 @@
                     android:textSize="28sp"
                     android:textColor="@color/white"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@+id/register_number_phone_image"/>
+                    android:layout_below="@+id/register_number_phone_image"
+                    android:lineSpacingMultiplier="0.8"/>
 
                 <TextView
                     android:layout_width="wrap_content"
