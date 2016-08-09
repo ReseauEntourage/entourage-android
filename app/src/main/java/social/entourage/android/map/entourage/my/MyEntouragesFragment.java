@@ -66,7 +66,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     @Bind(R.id.myentourages_list_view)
     RecyclerView entouragesView;
 
-    NewsfeedAdapter entouragesAdapter;
+    MyEntouragesAdapter entouragesAdapter;
 
     @Bind(R.id.myentourages_progressBar)
     ProgressBar progressBar;
@@ -149,7 +149,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
 
     private void initializeEntouragesView() {
         entouragesView.setLayoutManager(new LinearLayoutManager(getContext()));
-        entouragesAdapter = new NewsfeedAdapter();
+        entouragesAdapter = new MyEntouragesAdapter();
         entouragesView.setAdapter(entouragesAdapter);
     }
 

@@ -74,7 +74,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         itemView.setOnClickListener(onClickListener);
         entourageAuthor.setOnClickListener(onClickListener);
         photoView.setOnClickListener(onClickListener);
-        actButton.setOnClickListener(onClickListener);
+        if (actButton != null) actButton.setOnClickListener(onClickListener);
 
         context = itemView.getContext();
     }
@@ -130,23 +130,6 @@ public class EntourageViewHolder extends BaseCardViewHolder {
 
         //date and distance
         String distanceAsString = "";
-        /*
-        Address tourAddress = entourage.getStartAddress();
-        if (tourAddress != null) {
-            location = tourAddress.getAddressLine(0);
-            if (location == null) {
-                location = "";
-            }
-        }
-        else {
-            if (geocoderTask != null) {
-                geocoderTask.cancel(true);
-            }
-            geocoderTask = new GeocoderTask();
-            geocoderTask.execute(entourage);
-        }
-        */
-
         TourPoint location = entourage.getLocation();
         if (location != null) {
             Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
@@ -172,24 +155,25 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         }
 
         //act button
-        if (entourage.isFreezed()) {
-            actButton.setVisibility(View.GONE);
-        }
-        else {
-            actButton.setVisibility(View.VISIBLE);
-            String joinStatus = entourage.getJoinStatus();
-            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_pending);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
-            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_accepted);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
-            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_rejected);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
+        if (actButton != null) {
+            if (entourage.isFreezed()) {
+                actButton.setVisibility(View.GONE);
             } else {
-                actButton.setText(R.string.tour_cell_button_join);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+                actButton.setVisibility(View.VISIBLE);
+                String joinStatus = entourage.getJoinStatus();
+                if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                    actButton.setText(R.string.tour_cell_button_pending);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
+                } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                    actButton.setText(R.string.tour_cell_button_accepted);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
+                } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+                    actButton.setText(R.string.tour_cell_button_rejected);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
+                } else {
+                    actButton.setText(R.string.tour_cell_button_join);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+                }
             }
         }
 

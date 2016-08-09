@@ -73,7 +73,7 @@ public class TourViewHolder extends BaseCardViewHolder {
         itemView.setOnClickListener(onClickListener);
         tourAuthor.setOnClickListener(onClickListener);
         photoView.setOnClickListener(onClickListener);
-        actButton.setOnClickListener(onClickListener);
+        if (actButton != null) actButton.setOnClickListener(onClickListener);
 
         context = itemView.getContext();
     }
@@ -160,24 +160,25 @@ public class TourViewHolder extends BaseCardViewHolder {
         }
 
         //act button
-        if (tour.isFreezed()) {
-            actButton.setVisibility(View.GONE);
-        }
-        else {
-            actButton.setVisibility(View.VISIBLE);
-            String joinStatus = tour.getJoinStatus();
-            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_pending);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
-            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_accepted);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
-            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_rejected);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
+        if (actButton != null) {
+            if (tour.isFreezed()) {
+                actButton.setVisibility(View.GONE);
             } else {
-                actButton.setText(R.string.tour_cell_button_join);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+                actButton.setVisibility(View.VISIBLE);
+                String joinStatus = tour.getJoinStatus();
+                if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                    actButton.setText(R.string.tour_cell_button_pending);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
+                } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                    actButton.setText(R.string.tour_cell_button_accepted);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
+                } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+                    actButton.setText(R.string.tour_cell_button_rejected);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
+                } else {
+                    actButton.setText(R.string.tour_cell_button_join);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+                }
             }
         }
 
