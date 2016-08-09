@@ -19,6 +19,10 @@ public class Invitation extends TimestampedObject {
 
     private final static String HASH_STRING_HEAD = "Invitation-";
 
+    public static final String STATUS_ACCEPTED = "accepted";
+    public static final String STATUS_PENDING = "pending";
+    public static final String STATUS_REJECTED = "rejected";
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -33,21 +37,17 @@ public class Invitation extends TimestampedObject {
     @SerializedName("phone_number")
     private String phoneNumber;
 
-    @SerializedName("inviter_id")
+    @SerializedName("inviter")
     @Expose(serialize = false, deserialize = true)
-    private int inviterId;
-
-    @SerializedName("inviter_name")
-    @Expose(serialize = false, deserialize = true)
-    private String inviterName;
+    private User inviter;
 
     @SerializedName("entourage_id")
     @Expose(serialize = false, deserialize = true)
     private int entourageId;
 
-    @SerializedName("accepted")
+    @SerializedName("status")
     @Expose(serialize = false, deserialize = true)
-    private boolean accepted;
+    private String status;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -61,15 +61,6 @@ public class Invitation extends TimestampedObject {
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
-
-
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(final boolean accepted) {
-        this.accepted = accepted;
-    }
 
     public int getEntourageId() {
         return entourageId;
@@ -96,20 +87,17 @@ public class Invitation extends TimestampedObject {
         this.invitationMode = invitationMode;
     }
 
-    public int getInviterId() {
-        return inviterId;
+    public User getInviter() {
+        return inviter;
     }
 
-    public void setInviterId(final int inviterId) {
-        this.inviterId = inviterId;
+    public void setInviter(final User inviter) {
+        this.inviter = inviter;
     }
 
     public String getInviterName() {
-        return inviterName;
-    }
-
-    public void setInviterName(final String inviterName) {
-        this.inviterName = inviterName;
+        if (inviter == null) return "";
+        return inviter.getDisplayName();
     }
 
     public String getPhoneNumber() {
@@ -118,6 +106,14 @@ public class Invitation extends TimestampedObject {
 
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(final String status) {
+        this.status = status;
     }
 
     @Override
