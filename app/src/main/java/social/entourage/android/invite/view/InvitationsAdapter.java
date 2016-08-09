@@ -11,7 +11,7 @@ public class InvitationsAdapter extends EntourageBaseAdapter {
 
     public InvitationsAdapter() {
 
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.INVITATION_CARD,
                 new ViewHolderFactory.ViewHolderType(InvitationCardViewHolder.class, InvitationCardViewHolder.getLayoutResource())
         );

@@ -16,10 +16,12 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     protected List<TimestampedObject> items = new ArrayList<>();
 
+    protected ViewHolderFactory viewHolderFactory = new ViewHolderFactory();
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
 
-        return ViewHolderFactory.getViewHolder(parent, viewType);
+        return viewHolderFactory.getViewHolder(parent, viewType);
     }
 
     @Override

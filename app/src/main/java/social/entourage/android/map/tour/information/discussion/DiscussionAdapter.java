@@ -10,27 +10,27 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
 
     public DiscussionAdapter() {
 
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.SEPARATOR,
                 new ViewHolderFactory.ViewHolderType(SeparatorCardViewHolder.class, SeparatorCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.CHAT_MESSAGE_OTHER,
                 new ViewHolderFactory.ViewHolderType(ChatMessageCardViewHolder.class, ChatMessageCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.CHAT_MESSAGE_ME,
                 new ViewHolderFactory.ViewHolderType(ChatMessageMeCardViewHolder.class, ChatMessageMeCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOUR_STATUS,
                 new ViewHolderFactory.ViewHolderType(LocationCardViewHolder.class, LocationCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOUR_USER_JOIN,
                 new ViewHolderFactory.ViewHolderType(UserJoinCardViewHolder.class, UserJoinCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENCOUNTER,
                 new ViewHolderFactory.ViewHolderType(EncounterCardViewHolder.class, EncounterCardViewHolder.getLayoutResource())
         );
