@@ -165,7 +165,7 @@ public class GuideMapEntourageFragment extends Fragment {
     public void putPoiOnMap(List<Category> categories, Collection<Poi> pois) {
         if (getActivity() != null) {
             poiRenderer.setCategories(categories);
-            if (mapFragment.getMap() != null) {
+            if (map != null) {
                 clusterManager.addItems(removeRedundantPois(pois));
                 clusterManager.cluster();
             }
@@ -177,15 +177,15 @@ public class GuideMapEntourageFragment extends Fragment {
     }
 
     private void centerMap(CameraPosition cameraPosition) {
-        if(mapFragment!= null && mapFragment.getMap() != null) {
-            mapFragment.getMap().moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        if(mapFragment!= null && map != null) {
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             saveCameraPosition();
         }
     }
 
     public void saveCameraPosition() {
-        if(mapFragment!= null && mapFragment.getMap() != null) {
-            EntourageLocation.getInstance().saveLastCameraPosition(mapFragment.getMap().getCameraPosition());
+        if(mapFragment!= null && map != null) {
+            EntourageLocation.getInstance().saveLastCameraPosition(map.getCameraPosition());
         }
     }
 

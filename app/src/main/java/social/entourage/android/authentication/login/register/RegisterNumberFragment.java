@@ -14,6 +14,7 @@ import butterknife.OnClick;
 import social.entourage.android.authentication.login.LoginPresenter;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
+import social.entourage.android.tools.Utils;
 
 
 public class RegisterNumberFragment extends EntourageDialogFragment {
@@ -82,26 +83,13 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
     @OnClick(R.id.register_number_next_button)
     protected void onNextClicked() {
         // Check the phone
-        String phoneNumber = LoginPresenter.checkPhoneNumberFormat(phoneNumberEditText.getText().toString());
+        String phoneNumber = Utils.checkPhoneNumberFormat(phoneNumberEditText.getText().toString());
         if (phoneNumber == null) {
             Toast.makeText(getActivity(), R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show();
         }
         else {
             // Save the phone
             mListener.registerSavePhoneNumber(phoneNumber);
-        }
-    }
-
-    @OnClick(R.id.register_number_lost_code)
-    protected void onLostCodeClicked() {
-        // Check the phone
-        String phoneNumber = LoginPresenter.checkPhoneNumberFormat(phoneNumberEditText.getText().toString());
-        if (phoneNumber == null) {
-            Toast.makeText(getActivity(), R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show();
-        }
-        else {
-            // Resend the code
-            mListener.registerResendCode(phoneNumber);
         }
     }
 

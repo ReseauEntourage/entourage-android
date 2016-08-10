@@ -13,6 +13,12 @@
     <string name="invite_contacts_retrieving_phone_numbers">Récupération des numéros</string>
     <string name="invite_contacts_inviting">Envoi des invitations</string>
     <string name="invite_contacts_send_error">Echec de l’envoi des invitations</string>
+    <string name="invite_contacts_permission_error">Annulation: l’app n’a pas les permissions requises</string>
+
+    <!-- Invite By Phone Number -->
+    <string name="invite_phone_title">NUMERO PORTABLE</string>
+    <string name="invite_phone_description">Entrer un numéro de portable afin d’inviter la personne à rejoindre votre entourage.</string>
+    <string name="invite_phone_number_hint">Numéro de portable</string>
 
     <!-- Invite Success -->
     <string name="invite_success_title">C’est envoyé !</string>

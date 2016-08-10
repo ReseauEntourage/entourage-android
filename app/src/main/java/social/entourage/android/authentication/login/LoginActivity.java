@@ -119,11 +119,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_button_ask_code)
     Button receiveCodeButton;
 
-    @Bind(R.id.login_block_code_form)
+    @Bind(R.id.login_block_lost_code_start)
     View enterCodeBlock;
-
-    @Bind(R.id.login_block_lost_code_button)
-    View lostCodeButtonBlock;
 
     @Bind(R.id.login_block_lost_code_confirmation)
     View confirmationBlock;
@@ -523,6 +520,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
     */
 
+    @OnClick(R.id.login_back_button)
+    void onLoginBackClick() {
+        onBackPressed();
+    }
+
     @OnClick(R.id.login_button_signup)
     void onLoginClick() {
         loginPresenter.login(
@@ -536,12 +538,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginSignin.setVisibility(View.GONE);
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.VISIBLE);
-        lostCodeButtonBlock.setVisibility(View.VISIBLE);
         confirmationBlock.setVisibility(View.GONE);
 
         showKeyboard(lostCodePhone);
     }
 
+    /*
     @OnClick(R.id.login_welcome_more)
     void onMoreClick() {
         loginSignin.setVisibility(View.GONE);
@@ -549,6 +551,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         previousView = loginSignin;
         showKeyboard(newsletterEmail);
     }
+    */
 
     /************************
      * Lost Code View
@@ -580,7 +583,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         stopLoader();
         if (user != null) {
             if (isOnboarding) {
-                registerPhoneNumberSent(onboardingUser.getPhone());
+                //registerPhoneNumberSent(onboardingUser.getPhone(), true);
+                displayToast(R.string.registration_smscode_sent);
             } else {
                 if (loginLostCode.getVisibility() == View.VISIBLE) {
                     loginLostCode.setVisibility(View.GONE);
@@ -597,7 +601,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                     //codeConfirmation.setText(R.string.login_text_lost_code_ko);
                     codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
                     enterCodeBlock.setVisibility(View.GONE);
-                    lostCodeButtonBlock.setVisibility(View.GONE);
                     confirmationBlock.setVisibility(View.VISIBLE);
                 }
             }
@@ -646,6 +649,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_name_go_button)
     void onNameGoClicked() {
+        hideKeyboard();
         loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
     }
 
@@ -822,17 +826,18 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     @Override
-    public void registerResendCode(final String phoneNumber) {
+    public void registerResendCode() {
         if (loginPresenter != null) {
-            onboardingUser.setPhone(phoneNumber);
-            loginPresenter.sendNewCode(phoneNumber, true);
+            loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
         } else {
             Toast.makeText(this, R.string.registration_number_error_server, Toast.LENGTH_SHORT).show();
         }
     }
 
-    protected void registerPhoneNumberSent(String phoneNumber) {
-        displayToast(R.string.registration_smscode_sent);
+    protected void registerPhoneNumberSent(String phoneNumber, boolean smsSent) {
+        if (smsSent) {
+            displayToast(R.string.registration_smscode_sent);
+        }
         onboardingUser.setPhone(phoneNumber);
         RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
         fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);

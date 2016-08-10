@@ -2,16 +2,15 @@ package social.entourage.android.invite.contacts;
 
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
+import android.telephony.PhoneNumberUtils;
+import android.util.ArraySet;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,30 +18,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import javax.inject.Inject;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
-import social.entourage.android.EntourageApplication;
-import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
-import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.invite.InviteFriendsListener;
+import social.entourage.android.api.model.Invitation;
+import social.entourage.android.api.model.MultipleInvitations;
+import social.entourage.android.invite.InviteBaseFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InviteContactsFragment extends EntourageDialogFragment implements
+public class InviteContactsFragment extends InviteBaseFragment implements
         LoaderManager.LoaderCallbacks<Cursor>,
         AdapterView.OnItemClickListener {
 
@@ -51,9 +50,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     // ----------------------------------
 
     public static final String TAG = "social.entourage.android.invite_contacts";
-
-    private static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
-    private static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
 
     private static final String[] PROJECTION =
             {
@@ -93,12 +89,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     // ATTRIBUTES
     // ----------------------------------
 
-    @Inject
-    InviteContactsPresenter presenter;
-
-    long feedItemId;
-    int feedItemType;
-
     /*
      * Defines an array that contains column names to move from
      * the Cursor to the ListView.
@@ -120,7 +110,13 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     ListView contactsList;
 
     // An adapter that binds the result Cursor to the ListView
-    private SimpleCursorAdapter mCursorAdapter;
+    private InviteContactsAdapter mContactsAdapter;
+
+    // Quick-jump list-view
+    @Bind(R.id.invite_contacts_quick_jump_listview)
+    ListView quickJumpList;
+
+    private ArrayAdapter<String> quickJumpAdapter;
 
     // Defines a variable for the search string
     private String mSearchString = "";
@@ -144,8 +140,6 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     @Bind(R.id.invite_contacts_send_button)
     Button sendButton;
 
-    private InviteFriendsListener mInviteFriendsListener;
-
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -156,10 +150,7 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
 
     public static InviteContactsFragment newInstance(long feedId, int feedItemType) {
         InviteContactsFragment fragment = new InviteContactsFragment();
-        Bundle args = new Bundle();
-        args.putLong(KEY_FEEDITEM_ID, feedId);
-        args.putInt(KEY_FEEDITEM_TYPE, feedItemType);
-        fragment.setArguments(args);
+        fragment.setFeedData(feedId, feedItemType);
 
         return fragment;
     }
@@ -177,37 +168,22 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-
-        if (getArguments() != null) {
-            feedItemId = getArguments().getLong(KEY_FEEDITEM_ID);
-            feedItemType = getArguments().getInt(KEY_FEEDITEM_TYPE);
-        }
-    }
-
-    protected void setupComponent(EntourageComponent entourageComponent) {
-        DaggerInviteContactsComponent.builder()
-                .entourageComponent(entourageComponent)
-                .inviteContactsModule(new InviteContactsModule(this))
-                .build()
-                .inject(this);
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Gets a CursorAdapter
-        mCursorAdapter = new SimpleCursorAdapter(
+//        mContactsAdapter = new SimpleCursorAdapter(
+//                getActivity(),
+//                R.layout.layout_invite_contacts_list_item,
+//                null,
+//                FROM_COLUMNS, TO_IDS,
+//                0);
+        mContactsAdapter = new InviteContactsAdapter(
                 getActivity(),
-                R.layout.layout_invite_contacts_list_item,
-                null,
-                FROM_COLUMNS, TO_IDS,
-                0);
+                FROM_COLUMNS[0]
+        );
         // Sets the adapter for the ListView
-        contactsList.setAdapter(mCursorAdapter);
+        contactsList.setAdapter(mContactsAdapter);
         // Set the item click listener to be the current fragment.
         contactsList.setOnItemClickListener(this);
 
@@ -234,16 +210,21 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
                 return false;
             }
         });
+
+        // Initialize the quick-jump list
+        ArrayList<String> quickJumpArray = new ArrayList<>();
+        for(char c = 'A'; c <= 'Z'; c++) {
+            quickJumpArray.add(String.format("%c", c));
+        }
+        quickJumpArray.add("#");
+        quickJumpAdapter = new ArrayAdapter<String>(
+                getContext(),
+                R.layout.layout_invite_contacts_quick_jump_item,
+                R.id.invite_contacts_quick_jump_textview,
+                quickJumpArray);
+        quickJumpList.setAdapter(quickJumpAdapter);
+        quickJumpList.setOnItemClickListener(this);
     }
-
-    // ----------------------------------
-    // LISTENER
-    // ----------------------------------
-
-    public void setInviteFriendsListener(final InviteFriendsListener inviteFriendsListener) {
-        this.mInviteFriendsListener = inviteFriendsListener;
-    }
-
 
     // ----------------------------------
     // ONCLICK CALLBACKS
@@ -261,7 +242,7 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
         // Show the progress dialog
         ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_retrieving_phone_numbers);
         // Get the Cursor
-        Cursor cursor = ((SimpleCursorAdapter)contactsList.getAdapter()).getCursor();
+        Cursor cursor = ((InviteContactsAdapter)contactsList.getAdapter()).getCursor();
         // Get the selected contacts
         int selectedContactsCount = 0;
         StringBuffer contactIds = new StringBuffer();
@@ -281,7 +262,7 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
             if (checkedItems.valueAt(i)) {
                 int position = checkedItems.keyAt(i);
                 // Move to the selected contact
-                cursor.moveToPosition(position);
+                cursor.moveToPosition(mContactsAdapter.getCursorPositionForItemAt(position));
                 // Get the _ID value
                 String contactId = cursor.getString(CONTACT_ID_INDEX);
                 mContactIdsSelectionArgs[index] = contactId;
@@ -305,19 +286,29 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
     @Override
     public void onItemClick(
             AdapterView<?> parent, View item, int position, long rowID) {
-        // Toggle the checkbox
-        CheckBox contactCheckbox = (CheckBox)item.findViewById(R.id.contact_checkBox);
-        if (contactCheckbox == null) return;
+        if (parent == contactsList) {
+            // Toggle the checkbox
+            CheckBox contactCheckbox = (CheckBox) item.findViewById(R.id.contact_checkBox);
+            if (contactCheckbox == null) return;
 
-        if (!contactCheckbox.isChecked()) {
-            sendButton.setEnabled(true);
+            if (!contactCheckbox.isChecked()) {
+                sendButton.setEnabled(true);
+            }
+            contactCheckbox.setChecked(!contactCheckbox.isChecked());
+
+            contactsList.setItemChecked(position, contactCheckbox.isChecked());
+
+            // Enable or disable the send button
+            sendButton.setEnabled(contactsList.getCheckedItemCount() > 0);
         }
-        contactCheckbox.setChecked(!contactCheckbox.isChecked());
-
-        contactsList.setItemChecked(position, contactCheckbox.isChecked());
-
-        // Enable or disable the send button
-        sendButton.setEnabled( contactsList.getCheckedItemCount() > 0 );
+        else if (parent == quickJumpList) {
+            // Jump to the selected section
+            String jumpToString = quickJumpAdapter.getItem(position);
+            int sectionPosition = mContactsAdapter.getPositionForSection(jumpToString);
+            if (sectionPosition != -1) {
+                contactsList.smoothScrollToPositionFromTop(sectionPosition, 0);
+            }
+        }
     }
 
     // ----------------------------------
@@ -363,7 +354,7 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
         switch (loader.getId()) {
             case CONTACTS_LOADER_ID:
                 // Put the result Cursor in the adapter for the ListView
-                mCursorAdapter.swapCursor(cursor);
+                mContactsAdapter.swapCursor(cursor);
 
                 break;
 
@@ -371,15 +362,16 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
                 // Update the progress dialog
                 ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_inviting);
                 // Get the phone numbers
+                MultipleInvitations invitations = new MultipleInvitations(Invitation.INVITE_BY_SMS);
+
                 while (cursor.moveToNext()) {
                     String phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    // Send the phone number to server
-                    serverRequestsCount++;
-                    presenter.inviteBySMS(feedItemId, feedItemType, phone);
+                    phone = PhoneNumberUtils.stripSeparators(phone);
+                    invitations.addPhoneNumber(phone);
                 }
-                if (serverRequestsCount == 0) {
-                    onInviteSent(false);
-                }
+                // Send the phone number to server
+                serverRequestsCount++;
+                presenter.inviteBySMS(feedItemId, feedItemType, invitations);
                 break;
         }
     }
@@ -389,7 +381,7 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
         switch (loader.getId()) {
             case CONTACTS_LOADER_ID:
                 // Delete the reference to the existing Cursor
-                mCursorAdapter.swapCursor(null);
+                mContactsAdapter.swapCursor(null);
 
                 break;
 
@@ -414,8 +406,8 @@ public class InviteContactsFragment extends EntourageDialogFragment implements
             // If success, close the fragment
             if (successfulyServerRequestCount >= 0) {
                 // Notify the listener
-                if (mInviteFriendsListener != null) {
-                    mInviteFriendsListener.onInviteSent();
+                if (inviteFriendsListener != null) {
+                    inviteFriendsListener.onInviteSent();
                 }
                 // Close the fragment
                 dismiss();

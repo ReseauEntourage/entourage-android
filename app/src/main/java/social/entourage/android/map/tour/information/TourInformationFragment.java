@@ -1,24 +1,31 @@
 package social.entourage.android.map.tour.information;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.speech.RecognizerIntent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -100,6 +107,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
+import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
@@ -115,6 +123,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     public static final String TAG = "fragment_tour_information";
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
+    private static final int READ_CONTACTS_PERMISSION_CODE = 3;
+
     private static final int SCROLL_DELTA_Y_THRESHOLD = 20;
 
     private static final int REQUEST_NONE = 0;
@@ -126,6 +136,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
     private static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
     private static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
+
+
 
     // ----------------------------------
     // ATTRIBUTES
@@ -361,6 +373,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
@@ -375,7 +388,24 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 }
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        if (requestCode == READ_CONTACTS_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onInviteContactsClicked();
+                    }
+                });
+            } else {
+                Toast.makeText(getActivity(), R.string.invite_contacts_permission_error, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -591,11 +621,27 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick(R.id.invite_source_contacts_button)
     protected void onInviteContactsClicked() {
+        // check the permissions
+        if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_CODE);
+            return;
+        }
         // close the invite source view
         onCloseInviteSourceClicked();
         // open the contacts fragment
         InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
+        // set the listener
+        fragment.setInviteFriendsListener(this);
+    }
+
+    @OnClick(R.id.invite_source_number_button)
+    protected void onInvitePhoneNumberClicked() {
+        // close the invite source view
+        onCloseInviteSourceClicked();
+        // open the contacts fragment
+        InviteByPhoneNumberFragment fragment = InviteByPhoneNumberFragment.newInstance(feedItem.getId(), feedItem.getType());
+        fragment.show(getFragmentManager(), InviteByPhoneNumberFragment.TAG);
         // set the listener
         fragment.setInviteFriendsListener(this);
     }
@@ -947,13 +993,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private int getTrackColor(String type, Date date) {
         int color = Color.GRAY;
         if (TourType.MEDICAL.getName().equals(type)) {
-            color = Color.RED;
+            //color = Color.RED;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_medical);
         }
         else if (TourType.ALIMENTARY.getName().equals(type)) {
-            color = Color.BLUE;
+            //color = Color.BLUE;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_distributive);
         }
         else if (TourType.BARE_HANDS.getName().equals(type)) {
-            color = Color.GREEN;
+            //color = Color.GREEN;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_social);
         }
         if (!MapEntourageFragment.isToday(date)) {
             return MapEntourageFragment.getTransparentColor(color);

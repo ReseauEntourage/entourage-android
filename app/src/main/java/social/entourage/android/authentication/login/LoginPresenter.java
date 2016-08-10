@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -25,6 +26,7 @@ import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.tools.Utils;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 /**
@@ -69,30 +71,9 @@ public class LoginPresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public static String checkPhoneNumberFormat(String phoneNumber) {
-
-        if (phoneNumber.startsWith("0")) {
-            phoneNumber = "+33" + phoneNumber.substring(1);
-        } else if (!phoneNumber.startsWith("+")) {
-            phoneNumber = "+" + phoneNumber;
-        }
-
-        if(Patterns.PHONE.matcher(phoneNumber).matches())
-            return phoneNumber;
-
-        return null;
-    }
-
-    public String checkEmailFormat(String email) {
-        if (email != null && !email.equals("")) {
-            return email;
-        }
-        return null;
-    }
-
     public void login(final String phone, final String smsCode) {
         if (activity != null) {
-            final String phoneNumber = checkPhoneNumberFormat(phone);
+            final String phoneNumber = Utils.checkPhoneNumberFormat(phone);
             if (phoneNumber != null) {
                 HashMap<String, String> user = new HashMap<>();
                 user.put("phone", phoneNumber);
@@ -250,7 +231,7 @@ public class LoginPresenter {
 
     public void subscribeToNewsletter(final String email) {
         if (activity != null) {
-            String checkedEmail = checkEmailFormat(email);
+            String checkedEmail = Utils.checkEmailFormat(email);
             if (checkedEmail != null) {
                 Newsletter newsletter = new Newsletter(email, true);
                 Newsletter.NewsletterWrapper newsletterWrapper = new Newsletter.NewsletterWrapper(newsletter);
@@ -289,8 +270,17 @@ public class LoginPresenter {
             @Override
             public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
                 if (response.isSuccess()) {
-                    activity.registerPhoneNumberSent(phoneNumber);
+                    activity.registerPhoneNumberSent(phoneNumber, true);
                 } else {
+                    try {
+                        String errorString = response.errorBody().string();
+                        if (errorString.contains("Phone n'est pas disponible")) {
+                            // Phone number already registered
+                            activity.registerPhoneNumberSent(phoneNumber, false);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     activity.displayToast(R.string.registration_number_error_already_registered);
                 }
             }
