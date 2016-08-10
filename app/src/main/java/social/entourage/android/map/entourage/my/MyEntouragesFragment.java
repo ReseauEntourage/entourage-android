@@ -35,6 +35,7 @@ import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.invite.view.InvitationsAdapter;
+import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 
 /**
@@ -181,6 +182,12 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     @OnClick(R.id.myentourages_back_button)
     void onBackClicked() {
         dismiss();
+    }
+
+    @OnClick(R.id.myentourages_filter_button)
+    void onFilterClicked() {
+        MyEntouragesFilterFragment fragment = new MyEntouragesFilterFragment();
+        fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
     }
 
     // ----------------------------------

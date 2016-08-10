@@ -50,4 +50,15 @@
     <!-- My Entourages -->
     <string name="myentourages_title">MES ENTOURAGES</string>
 
+    <!-- My Entourages Filter -->
+    <string name="myentourages_filter_entourages_title">Mes entourages</string>
+    <string name="myentourages_filter_active">Actif</string>
+    <string name="myentourages_filter_invited">Invitations</string>
+    <string name="myentourages_filter_own">Organisateur</string>
+    <string name="myentourages_filter_closed">Passé</string>
+    <string name="myentourages_filter_types_title">Types d’entourage</string>
+    <string name="myentourages_filter_demand">@string/entourage_type_demand</string>
+    <string name="myentourages_filter_contribution">@string/entourage_type_contribution</string>
+    <string name="myentourages_filter_tours">Maraudes</string>
+
 </resources>
