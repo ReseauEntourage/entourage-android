@@ -922,7 +922,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     @OnClick(R.id.button_start_tour_launcher)
-    protected void onStartTourClicked() {
+    public void onStartTourClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onStartTourLauncher();
         }
@@ -942,7 +942,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @OnClick(R.id.button_add_tour_encounter)
-    protected void onAddTourEncounterClicked() {
+    public void onAddTourEncounterClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onAddEncounter();
         }
@@ -962,7 +962,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @OnClick(R.id.button_create_entourage_contribution)
-    protected void onCreateEntourageContributionClicked() {
+    public void onCreateEntourageContributionClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
@@ -982,7 +982,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @OnClick(R.id.button_create_entourage_demand)
-    protected void onCreateEntouragDemandClicked() {
+    public void onCreateEntouragDemandClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -63,6 +64,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
 
     @Inject
     MyEntouragesPresenter presenter;
+
+    @Bind(R.id.myentourages_fab_menu)
+    FloatingActionMenu fabMenu;
 
     @Bind(R.id.myentourages_invitations_view)
     RecyclerView invitationsView;
@@ -137,6 +141,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         super.onResume();
 
         timerStart();
+        entouragesView.addOnScrollListener(scrollListener);
     }
 
     @Override
@@ -144,6 +149,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         super.onPause();
 
         timerStop();
+        entouragesView.removeOnScrollListener(scrollListener);
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -211,12 +217,50 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
     }
 
+    @OnClick(R.id.button_create_entourage_demand)
+    void onCreateEntourageDemandClicked() {
+        if (getActivity() instanceof DrawerActivity) {
+            fabMenu.close(false);
+            DrawerActivity activity = (DrawerActivity)getActivity();
+            activity.onCreateEntouragDemandClicked();
+        }
+    }
+
+    @OnClick(R.id.button_create_entourage_contribution)
+    void onCreateEntourageContributionClicked() {
+        if (getActivity() instanceof DrawerActivity) {
+            fabMenu.close(false);
+            DrawerActivity activity = (DrawerActivity)getActivity();
+            activity.onCreateEntourageContributionClicked();
+        }
+    }
+
+    @OnClick(R.id.button_start_tour_launcher)
+    void onStartTourClicked() {
+        if (getActivity() instanceof DrawerActivity) {
+            fabMenu.close(false);
+            DrawerActivity activity = (DrawerActivity)getActivity();
+            activity.onStartTourClicked();
+
+            dismiss();
+        }
+    }
+
     // ----------------------------------
     // BUS LISTENERS
     // ----------------------------------
 
     @Subscribe
     void onMyEntouragesFilterChanged(Events.OnMyEntouragesFilterChanged event) {
+        // remove the current feed
+        entouragesAdapter.removeAll();
+        entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+        // request a new feed
+        retrieveMyFeeds();
+    }
+
+    @Subscribe
+    void onEntourageCreated(Events.OnEntourageCreated event) {
         // remove the current feed
         entouragesAdapter.removeAll();
         entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
