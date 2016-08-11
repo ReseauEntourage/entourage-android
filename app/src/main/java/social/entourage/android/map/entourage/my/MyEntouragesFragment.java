@@ -81,6 +81,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
 
     private EntouragePagination entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
+    private int scrollDeltaY;
+    private OnScrollListener scrollListener = new OnScrollListener();
+
     // Refresh invitations attributes
     Timer refreshInvitationsTimer;
     TimerTask refreshInvitationsTimerTask;
@@ -319,6 +322,30 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
             else {
                 invitationsAdapter.updateCard(invitation);
             }
+        }
+    }
+
+    // ----------------------------------
+    // PRIVATE CLASSES
+    // ----------------------------------
+
+    private class OnScrollListener extends RecyclerView.OnScrollListener {
+        @Override
+        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+
+            scrollDeltaY += dy;
+            if (dy > 0 && scrollDeltaY > MAX_SCROLL_DELTA_Y) {
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int position = linearLayoutManager.findLastVisibleItemPosition();
+                if (position == recyclerView.getAdapter().getItemCount()-1) {
+                    retrieveMyFeeds();
+                }
+
+                scrollDeltaY = 0;
+            }
+        }
+        @Override
+        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
         }
     }
 
