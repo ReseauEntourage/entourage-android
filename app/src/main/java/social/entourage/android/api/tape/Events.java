@@ -258,6 +258,16 @@ public class Events {
     }
 
     /**
+     * Event signaling that the map filter was changed
+     */
+    public static class OnMyEntouragesFilterChanged {
+
+        public OnMyEntouragesFilterChanged() {
+        }
+
+    }
+
+    /**
      * Event signaling that a photo was taken/chosen
      */
     public static class OnPhotoChosen {

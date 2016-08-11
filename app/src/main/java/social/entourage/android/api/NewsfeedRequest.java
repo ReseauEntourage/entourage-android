@@ -43,6 +43,7 @@ public interface NewsfeedRequest {
     Call<Newsfeed.NewsfeedWrapper> retrieveMyFeeds(
             @Query("page") int page,
             @Query("per") int per,
+            @Query("entourage_types") String entourageTypes,
             @Query("status") String status
     );
 }

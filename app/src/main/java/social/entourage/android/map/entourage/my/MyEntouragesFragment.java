@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
@@ -30,6 +33,7 @@ import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
@@ -37,6 +41,7 @@ import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.invite.view.InvitationsAdapter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,6 +95,19 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        BusProvider.getInstance().unregister(this);
+
+        super.onDestroy();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -188,6 +206,19 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     void onFilterClicked() {
         MyEntouragesFilterFragment fragment = new MyEntouragesFilterFragment();
         fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
+    }
+
+    // ----------------------------------
+    // BUS LISTENERS
+    // ----------------------------------
+
+    @Subscribe
+    void onMyEntouragesFilterChanged(Events.OnMyEntouragesFilterChanged event) {
+        // remove the current feed
+        entouragesAdapter.removeAll();
+        entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+        // request a new feed
+        retrieveMyFeeds();
     }
 
     // ----------------------------------

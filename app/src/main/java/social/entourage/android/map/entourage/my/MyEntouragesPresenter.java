@@ -10,6 +10,7 @@ import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 
 /**
  * Created by mihaiionescu on 03/08/16.
@@ -42,7 +43,8 @@ public class MyEntouragesPresenter {
     // ----------------------------------
 
     protected void getMyFeeds(int page, int per) {
-        Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(page, per, "all");
+        MyEntouragesFilter filter = MyEntouragesFilter.getInstance();
+        Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(page, per, filter.getEntourageTypes(), filter.getStatus());
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
             public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
