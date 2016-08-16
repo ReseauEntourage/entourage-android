@@ -174,15 +174,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_card_act_layout)
     RelativeLayout headerActLayout;
 
-    @Bind(R.id.tour_info_details_selector)
-    RadioGroup detailsSelectorRadioGroup;
-
-    @Bind(R.id.tour_info_chat_rb)
-    RadioButton chatRB;
-
-    @Bind(R.id.tour_info_information_rb)
-    RadioButton informationRB;
-
     @Bind(R.id.tour_info_description)
     TextView tourDescription;
 
@@ -456,6 +447,20 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         this.dismiss();
     }
 
+    @OnClick(R.id.tour_info_title)
+    protected void onSwitchSections() {
+        // Ignore if the entourage is not loaded or is public
+        if (feedItem == null || !feedItem.isPrivate())
+        {
+            return;
+        }
+
+        // Switch sections
+        boolean isPublicSectionVisible = publicSection.getVisibility() == View.GONE;
+        publicSection.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
+        privateSection.setVisibility(isPublicSectionVisible ?  View.VISIBLE : View.GONE);
+    }
+
     @OnClick(R.id.tour_info_comment_send_button)
     protected void onAddCommentButton() {
         if (presenter != null) {
@@ -593,19 +598,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         else {
             Toast.makeText(getActivity(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @OnCheckedChanged({R.id.tour_info_chat_rb, R.id.tour_info_information_rb})
-    protected void onChatSelected(CompoundButton button, boolean checked) {
-        if (button == chatRB && checked) {
-            publicSection.setVisibility(View.GONE);
-            privateSection.setVisibility(View.VISIBLE);
-            return;
-        }
-        if (button == informationRB && checked) {
-            publicSection.setVisibility(View.VISIBLE);
-            privateSection.setVisibility(View.GONE);
         }
     }
 
@@ -1051,7 +1043,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void switchToPublicSection() {
-        detailsSelectorRadioGroup.setVisibility(View.GONE);
         actLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.VISIBLE);
         privateSection.setVisibility(View.GONE);
@@ -1064,7 +1055,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void switchToPrivateSection() {
-        detailsSelectorRadioGroup.setVisibility(View.VISIBLE);
         actLayout.setVisibility(View.GONE);
         membersLayout.setVisibility(View.VISIBLE);
 //        publicSection.setVisibility(View.GONE);
@@ -1258,9 +1248,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (tourUsers != null) {
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
             Iterator<TourUser> iterator = tourUsers.iterator();
+            // check if this is my entourage
+            User me = EntourageApplication.me(getActivity());
+            boolean isMyEntourage = false;
+            if (me != null) {
+                isMyEntourage = me.getId() == feedItem.getAuthor().getUserID();
+            }
+            // iterate over the received users
             while (iterator.hasNext()) {
                 TourUser tourUser =  iterator.next();
-                //skip the author
+                // add the author to members list and skip it
                 if (tourUser.getUserId() == feedItem.getAuthor().getUserID()) {
                     TourUser clone = tourUser.clone();
                     clone.setDisplayedAsMember(true);
@@ -1269,6 +1266,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 }
                 //show only the accepted users
                 if (!tourUser.getStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED)) {
+                    // if it's my entourage, show the pending requests too
+                    if (!isMyEntourage || !tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING))
                     continue;
                 }
                 timestampedObjectList.add(tourUser);

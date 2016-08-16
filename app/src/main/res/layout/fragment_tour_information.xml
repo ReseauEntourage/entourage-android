@@ -78,57 +78,20 @@
         android:id="@+id/tour_info_header_layout"
         android:layout_marginTop="10dp"/>
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tour_info_header_layout"
-        android:background="@color/background_light"
-        android:orientation="horizontal"
-        android:id="@+id/tour_info_details_selector"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tour_info_chat_rb"
-            android:button="@drawable/rb_tour_info_chat"
-            android:layout_marginRight="10dp"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tour_info_information_rb"
-            android:button="@drawable/rb_tour_info_information"
-            android:layout_marginLeft="10dp"
-            android:checked="true"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-    </RadioGroup>
-
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/layout_private_tour_information"
         android:id="@+id/tour_info_private_section"
         android:visibility = "gone"
-        android:layout_below="@+id/tour_info_details_selector"/>
+        android:layout_below="@+id/tour_info_header_layout"/>
 
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/layout_public_tour_information"
         android:id="@+id/tour_info_public_section"
-        android:layout_below="@+id/tour_info_details_selector"/>
+        android:layout_below="@+id/tour_info_header_layout"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleSmall"
