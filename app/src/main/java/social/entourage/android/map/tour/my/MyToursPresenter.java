@@ -36,7 +36,7 @@ public class MyToursPresenter {
     // ----------------------------------
 
     protected void getMyFeeds(int page, int per, final String status) {
-        Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(page, per, "", status);
+        Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(page, per, "", status, true, true);
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
             public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {

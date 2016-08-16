@@ -44,6 +44,8 @@ public interface NewsfeedRequest {
             @Query("page") int page,
             @Query("per") int per,
             @Query("entourage_types") String entourageTypes,
-            @Query("status") String status
+            @Query("status") String status,
+            @Query("created_by_me") boolean createdByMe,
+            @Query("accepted_invitation") boolean acceptedInvitation
     );
 }

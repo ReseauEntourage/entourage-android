@@ -53,7 +53,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mPublicSection = (View) itemView.findViewById(R.id.tic_public_info_section);
         mPrivateSection = (View) itemView.findViewById(R.id.tic_private_info_section);
 
-        mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_username);
+        mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_public_username);
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);

@@ -44,7 +44,14 @@ public class MyEntouragesPresenter {
 
     protected void getMyFeeds(int page, int per) {
         MyEntouragesFilter filter = MyEntouragesFilter.getInstance();
-        Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(page, per, filter.getEntourageTypes(), filter.getStatus());
+        Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(
+                page,
+                per,
+                filter.getEntourageTypes(),
+                filter.getStatus(),
+                filter.showOwnEntourages,
+                filter.showJoinedEntourages
+        );
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
             public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
