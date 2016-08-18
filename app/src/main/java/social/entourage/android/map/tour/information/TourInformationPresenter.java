@@ -1,6 +1,9 @@
 package social.entourage.android.map.tour.information;
 
+import com.squareup.okhttp.ResponseBody;
+
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -13,6 +16,7 @@ import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 
@@ -274,6 +278,141 @@ public class TourInformationPresenter {
         else {
             fragment.onFeedItemEncountersReceived(null);
         }
+    }
+
+    public void updateUserJoinRequest(int userId, String status, FeedItem feedItem) {
+        fragment.showProgressBar();
+        int feedItemType = feedItem.getType();
+        if (feedItemType == TimestampedObject.TOUR_CARD) {
+            // Tour user update status
+            if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
+                acceptTourJoinRequest(feedItem.getId(), userId);
+            }
+            else if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
+                rejectJoinTourRequest(feedItem.getId(), userId);
+            }
+            else {
+                fragment.onUserJoinRequestUpdated(userId, status, false);
+            }
+        }
+        else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
+            // Entourage user update status
+            if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
+                acceptEntourageJoinRequest(feedItem.getId(), userId);
+            }
+            else if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
+                rejectJoinEntourageRequest(feedItem.getId(), userId);
+            }
+            else {
+                fragment.onUserJoinRequestUpdated(userId, status, false);
+            }
+        }
+        else {
+            // Unknown type
+            fragment.onUserJoinRequestUpdated(userId, status, false);
+        }
+    }
+
+    protected void acceptTourJoinRequest(long tourId, final int userId) {
+        HashMap<String, String> status = new HashMap<>();
+        status.put("status", FeedItem.JOIN_STATUS_ACCEPTED);
+        HashMap<String, Object> user = new HashMap<>();
+        user.put("user", status);
+        Call<ResponseBody> call = tourRequest.updateUserTourStatus(tourId, userId, user);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+                if (fragment != null) {
+                    if (response.isSuccess()) {
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, true);
+                    }
+                    else {
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+                if (fragment != null) {
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, false);
+                }
+            }
+        });
+    }
+
+    protected void rejectJoinTourRequest(long tourId, final int userId) {
+        Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourId, userId);
+        call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+            @Override
+            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+                if (fragment != null) {
+                    if (response.isSuccess()) {
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, true);
+                    } else {
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+                if (fragment != null) {
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
+                }
+            }
+        });
+    }
+
+    protected void acceptEntourageJoinRequest(long entourageId, final int userId) {
+        HashMap<String, String> status = new HashMap<>();
+        status.put("status", FeedItem.JOIN_STATUS_ACCEPTED);
+        HashMap<String, Object> user = new HashMap<>();
+        user.put("user", status);
+        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourageId, userId, user);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+                if (fragment != null) {
+                    if (response.isSuccess()) {
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, true);
+                    }
+                    else {
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+                if (fragment != null) {
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, false);
+                }
+            }
+        });
+    }
+
+    protected void rejectJoinEntourageRequest(long entourageId, final int userId) {
+        Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageId, userId);
+        call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+            @Override
+            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+                if (fragment != null) {
+                    if (response.isSuccess()) {
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, true);
+                    } else {
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+                if (fragment != null) {
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
+                }
+            }
+        });
     }
 
 }

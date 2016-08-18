@@ -188,6 +188,11 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
     }
 
+    public void removeCardInfo(TimestampedObject cardInfo) {
+        if (cardInfo == null) return;
+        cachedCardInfoList.remove(cardInfo);
+    }
+
     public int addCardInfoList(List<TimestampedObject> cardInfoList) {
         if (cardInfoList == null) return 0;
         Iterator<TimestampedObject> iterator = cardInfoList.iterator();

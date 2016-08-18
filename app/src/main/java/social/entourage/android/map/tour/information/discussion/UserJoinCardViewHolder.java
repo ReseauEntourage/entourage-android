@@ -42,6 +42,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private Button mRefuseButton;
 
     private int userId;
+    private FeedItem feedItem;
 
     public UserJoinCardViewHolder(final View view) {
         super(view);
@@ -50,8 +51,8 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
 
-        mPublicSection = (View) itemView.findViewById(R.id.tic_public_info_section);
-        mPrivateSection = (View) itemView.findViewById(R.id.tic_private_info_section);
+        mPublicSection = itemView.findViewById(R.id.tic_public_info_section);
+        mPrivateSection = itemView.findViewById(R.id.tic_private_info_section);
 
         mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_public_username);
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
@@ -62,17 +63,37 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mAcceptButton = (Button) itemView.findViewById(R.id.tic_accept_button);
         mRefuseButton = (Button) itemView.findViewById(R.id.tic_refuse_button);
 
-        mAcceptButton.setOnClickListener(new View.OnClickListener() {
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 if (userId == 0) return;
+                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
+            }
+        });
+
+        mAcceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (userId == 0 || feedItem == null) return;
+                BusProvider.getInstance().post(
+                        new Events.OnUserJoinRequestUpdateEvent(
+                                userId,
+                                FeedItem.JOIN_STATUS_ACCEPTED,
+                                feedItem)
+                );
             }
         });
 
         mRefuseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                if (userId == 0) return;
+                if (userId == 0 || feedItem == null) return;
+                BusProvider.getInstance().post(
+                        new Events.OnUserJoinRequestUpdateEvent(
+                                userId,
+                                FeedItem.JOIN_STATUS_REJECTED,
+                                feedItem)
+                );
             }
         });
     }
@@ -130,6 +151,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         }
 
         userId = user.getUserId();
+        feedItem = user.getFeedItem();
     }
 
     private String getJoinStatus(String joinStatus) {

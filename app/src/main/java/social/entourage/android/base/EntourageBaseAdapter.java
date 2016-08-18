@@ -139,8 +139,24 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
                 items.remove(i);
                 items.add(i, card);
                 notifyItemChanged(i);
+                return;
             }
         }
+    }
+
+    public void removeCard(TimestampedObject card) {
+        if (card == null) {
+            return;
+        }
+        for (int i = 0; i < items.size(); i++) {
+            TimestampedObject timestampedObject = items.get(i);
+            if (timestampedObject.equals(card)) {
+                items.remove(i);
+                notifyItemRangeRemoved(i, 1);
+                return;
+            }
+        }
+
     }
 
     public void removeAll() {

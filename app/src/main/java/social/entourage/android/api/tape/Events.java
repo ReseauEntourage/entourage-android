@@ -118,6 +118,34 @@ public class Events {
     }
 
     /**
+     * Event signaling that the user wants to update a tour join request
+     */
+    public static class OnUserJoinRequestUpdateEvent {
+
+        private int userId;
+        private String update;
+        private FeedItem feedItem;
+
+        public OnUserJoinRequestUpdateEvent(int userId, String update, FeedItem feedItem) {
+            this.userId = userId;
+            this.update = update;
+            this.feedItem = feedItem;
+        }
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public String getUpdate() {
+            return update;
+        }
+
+        public FeedItem getFeedItem() {
+            return feedItem;
+        }
+    }
+
+    /**
      * Event signaling that user view is requested
      */
     public static class OnUserViewRequestedEvent {

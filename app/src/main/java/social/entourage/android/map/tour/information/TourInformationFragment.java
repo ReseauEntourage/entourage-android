@@ -66,6 +66,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -344,6 +345,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         mListener = (OnTourInformationFragmentFinish)activity;
         doBindService();
+
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -354,6 +357,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourService.unregister(this);
         }
         doUnbindService();
+
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -456,7 +461,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
 
         // Switch sections
-        boolean isPublicSectionVisible = publicSection.getVisibility() == View.GONE;
+        boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
         publicSection.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
         privateSection.setVisibility(isPublicSectionVisible ?  View.VISIBLE : View.GONE);
     }
@@ -1057,8 +1062,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private void switchToPrivateSection() {
         actLayout.setVisibility(View.GONE);
         membersLayout.setVisibility(View.VISIBLE);
-//        publicSection.setVisibility(View.GONE);
-//        privateSection.setVisibility(View.VISIBLE);
+        publicSection.setVisibility(View.GONE);
+        privateSection.setVisibility(View.VISIBLE);
         if (mapFragment == null) {
             initializeMap();
         }
@@ -1230,6 +1235,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     // ----------------------------------
+    // Bus handling
+    // ----------------------------------
+
+    @Subscribe
+    protected void onUserJoinRequestUpdateEvent(Events.OnUserJoinRequestUpdateEvent event) {
+        if (presenter != null) {
+            presenter.updateUserJoinRequest(event.getUserId(), event.getUpdate(), event.getFeedItem());
+        }
+    }
+
+    // ----------------------------------
     // API callbacks
     // ----------------------------------
 
@@ -1270,11 +1286,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     if (!isMyEntourage || !tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING))
                     continue;
                 }
+                tourUser.setFeedItem(feedItem);
                 timestampedObjectList.add(tourUser);
 
-                TourUser clone = tourUser.clone();
-                clone.setDisplayedAsMember(true);
-                membersList.add(clone);
+                if (FeedItem.JOIN_STATUS_ACCEPTED.equals(tourUser.getStatus())) {
+                    TourUser clone = tourUser.clone();
+                    clone.setDisplayedAsMember(true);
+                    membersList.add(clone);
+                }
             }
             feedItem.addCardInfoList(timestampedObjectList);
 
@@ -1371,6 +1390,36 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         hideProgressBar();
         if (status == null) {
             Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void onUserJoinRequestUpdated(int userId, String status, boolean success) {
+        hideProgressBar();
+        if (success) {
+            // Updated ok
+            Toast.makeText(getActivity(), R.string.tour_join_request_success, Toast.LENGTH_SHORT).show();
+            // Update the card
+            TourUser card = (TourUser) discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId);
+            if (card != null) {
+                if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
+                    card.setStatus(FeedItem.JOIN_STATUS_ACCEPTED);
+                    discussionAdapter.updateCard(card);
+                    // Add the user to members list too
+                    TourUser clone = card.clone();
+                    clone.setDisplayedAsMember(true);
+                    membersAdapter.addCardInfo(clone);
+                }
+                else {
+                    // remove from the adapter
+                    discussionAdapter.removeCard(card);
+                    // remove from cached cards
+                    feedItem.removeCardInfo(card);
+                }
+            }
+        }
+        else {
+            // Error
+            Toast.makeText(getActivity(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
         }
     }
 
