@@ -167,13 +167,39 @@ public class Events {
     public static class OnFeedItemInfoViewRequestedEvent {
 
         private FeedItem feedItem;
+        private int feedItemType = 0;
+        private long feedItemId = 0;
+        private long invitationId = 0;
 
         public OnFeedItemInfoViewRequestedEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
         }
 
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId) {
+            this.feedItemType = feedItemType;
+            this.feedItemId = feedItemId;
+        }
+
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId, long invitationId) {
+            this.feedItemType = feedItemType;
+            this.feedItemId = feedItemId;
+            this.invitationId = invitationId;
+        }
+
         public FeedItem getFeedItem() {
             return feedItem;
+        }
+
+        public long getFeedItemId() {
+            return feedItemId;
+        }
+
+        public int getFeedItemType() {
+            return feedItemType;
+        }
+
+        public long getInvitationId() {
+            return invitationId;
         }
     }
 

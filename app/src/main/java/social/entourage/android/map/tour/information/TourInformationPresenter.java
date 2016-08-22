@@ -11,8 +11,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
+import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
@@ -37,6 +39,9 @@ public class TourInformationPresenter {
 
     @Inject
     EntourageRequest entourageRequest;
+
+    @Inject
+    InvitationRequest invitationRequest;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -280,6 +285,10 @@ public class TourInformationPresenter {
         }
     }
 
+    // ----------------------------------
+    // Update user join requests
+    // ----------------------------------
+
     public void updateUserJoinRequest(int userId, String status, FeedItem feedItem) {
         fragment.showProgressBar();
         int feedItemType = feedItem.getType();
@@ -411,6 +420,52 @@ public class TourInformationPresenter {
                 if (fragment != null) {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
                 }
+            }
+        });
+    }
+
+    // ----------------------------------
+    // Update received invitation
+    // ----------------------------------
+
+    public void acceptInvitation(long invitationId) {
+        Call<Invitation.InvitationWrapper> call = invitationRequest.acceptInvitation(invitationId);
+        call.enqueue(new Callback<Invitation.InvitationWrapper>() {
+            @Override
+            public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
+                if (fragment != null) {
+                    if (response.isSuccess()) {
+                        fragment.onInvitationStatusUpdated(true);
+                    } else {
+                        fragment.onInvitationStatusUpdated(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Invitation.InvitationWrapper> call, final Throwable t) {
+                fragment.onInvitationStatusUpdated(false);
+            }
+        });
+    }
+
+    public void rejectInvitation(long invitationId) {
+        Call<Invitation.InvitationWrapper> call = invitationRequest.refuseInvitation(invitationId);
+        call.enqueue(new Callback<Invitation.InvitationWrapper>() {
+            @Override
+            public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
+                if (fragment != null) {
+                    if (response.isSuccess()) {
+                        fragment.onInvitationStatusUpdated(true);
+                    } else {
+                        fragment.onInvitationStatusUpdated(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Invitation.InvitationWrapper> call, final Throwable t) {
+                fragment.onInvitationStatusUpdated(false);
             }
         });
     }

@@ -251,7 +251,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     @Subscribe
-    void onMyEntouragesFilterChanged(Events.OnMyEntouragesFilterChanged event) {
+    public void onMyEntouragesFilterChanged(Events.OnMyEntouragesFilterChanged event) {
         // remove the current feed
         entouragesAdapter.removeAll();
         entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
@@ -260,7 +260,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     }
 
     @Subscribe
-    void onEntourageCreated(Events.OnEntourageCreated event) {
+    public void onEntourageCreated(Events.OnEntourageCreated event) {
         // remove the current feed
         entouragesAdapter.removeAll();
         entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);

@@ -419,6 +419,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void displayChosenFeedItem(long feedItemId, int feedItemType) {
+        displayChosenFeedItem(feedItemId, feedItemType, 0);
+    }
+
+    public void displayChosenFeedItem(long feedItemId, int feedItemType, long invitationId) {
         //check if we are not already displaying the tour
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
@@ -429,18 +433,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //display the feed item
         FeedItem feedItem = (FeedItem) newsfeedAdapter.findCard(feedItemType, feedItemId);
         if (feedItem != null) {
-            displayChosenFeedItem(feedItem);
+            displayChosenFeedItem(feedItem, invitationId);
         }
         else {
             if (presenter != null) {
-                presenter.openFeedItem(feedItemId, feedItemType);
+                presenter.openFeedItem(feedItemId, feedItemType, invitationId);
             }
         }
     }
 
     public void displayChosenFeedItem(FeedItem feedItem) {
+        displayChosenFeedItem(feedItem, 0);
+    }
+
+    public void displayChosenFeedItem(FeedItem feedItem, long invitationId) {
         if (presenter != null) {
-            presenter.openFeedItem(feedItem);
+            presenter.openFeedItem(feedItem, invitationId);
         }
     }
 
@@ -746,7 +754,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     choiceFragment.show(fragmentManager, "fragment_choice");
                 } else {
                     TreeMap<Long, Tour> toursTree = new TreeMap<>(tours);
-                    presenter.openFeedItem(toursTree.firstEntry().getValue());
+                    presenter.openFeedItem(toursTree.firstEntry().getValue(), 0);
                 }
             }
         }

@@ -12,14 +12,14 @@ import social.entourage.android.api.model.Invitation;
  */
 public interface InvitationRequest {
 
-    @PUT("invitation/{invitation_id}")
+    @PUT("invitations/{invitation_id}")
     Call<Invitation.InvitationWrapper> acceptInvitation(
-            @Path("invitation_id") int invitationId
+            @Path("invitation_id") long invitationId
     );
 
-    @DELETE("invitation/{invitation_id}")
+    @DELETE("invitations/{invitation_id}")
     Call<Invitation.InvitationWrapper> refuseInvitation(
-            @Path("invitation_id") int invitationId
+            @Path("invitation_id") long invitationId
     );
 
     @GET("invitations")

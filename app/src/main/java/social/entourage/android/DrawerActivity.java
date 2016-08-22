@@ -593,16 +593,24 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void tourInfoViewRequested(OnFeedItemInfoViewRequestedEvent event) {
         if (mapEntourageFragment != null) {
             FeedItem feedItem = event.getFeedItem();
-            if (feedItem == null) return;
-            mapEntourageFragment.displayChosenFeedItem(feedItem);
-            //decrease the badge count
-            int tourBadgeCount = feedItem.getBadgeCount();
-            decreaseBadgeCount(tourBadgeCount);
-            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                Tour tour = (Tour) feedItem;
-                removePushNotificationsForTour(tour.getId());
-                //update the tour card
-                mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+            if (feedItem != null) {
+                mapEntourageFragment.displayChosenFeedItem(feedItem);
+                //decrease the badge count
+                int tourBadgeCount = feedItem.getBadgeCount();
+                decreaseBadgeCount(tourBadgeCount);
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                    Tour tour = (Tour) feedItem;
+                    removePushNotificationsForTour(tour.getId());
+                    //update the tour card
+                    mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+                }
+                return;
+            }
+            //check if we are receiving feed type and id
+            int feedItemType = event.getFeedItemType();
+            long feedItemId = event.getFeedItemId();
+            if (feedItemType != 0 && feedItemId != 0) {
+                mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
             }
         }
     }

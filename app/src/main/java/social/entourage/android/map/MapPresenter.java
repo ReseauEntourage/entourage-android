@@ -82,18 +82,18 @@ public class MapPresenter {
         fragment.putEncounterOnMap(encounter, onClickListener);
     }
 
-    public void openFeedItem(FeedItem feedItem) {
+    public void openFeedItem(FeedItem feedItem, long invitationId) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItem);
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItem, invitationId);
             tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }
 
-    public void openFeedItem(long feedItemId, int feedItemType) {
+    public void openFeedItem(long feedItemId, int feedItemType, long invitationId) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemId, feedItemType);
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemId, feedItemType, invitationId);
             tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }
@@ -157,7 +157,7 @@ public class MapPresenter {
                 openEncounter(encounterMarkerHashMap.get(markerPosition));
             }
             else if (tourMarkerHashMap.get(markerPosition) != null){
-                openFeedItem(tourMarkerHashMap.get(markerPosition));
+                openFeedItem(tourMarkerHashMap.get(markerPosition), 0);
             }
             return false;
         }
