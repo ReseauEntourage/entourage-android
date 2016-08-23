@@ -70,8 +70,8 @@ public class MyEntouragesPresenter {
         });
     }
 
-    protected void getMyInvitations() {
-        Call<Invitation.InvitationsWrapper> call = invitationRequest.retrieveUserInvitations();
+    protected void getMyPendingInvitations() {
+        Call<Invitation.InvitationsWrapper> call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING);
         call.enqueue(new Callback<Invitation.InvitationsWrapper>() {
             @Override
             public void onResponse(final Call<Invitation.InvitationsWrapper> call, final Response<Invitation.InvitationsWrapper> response) {

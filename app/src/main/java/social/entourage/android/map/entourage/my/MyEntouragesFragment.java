@@ -284,7 +284,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
                     public void run() {
                         if (presenter != null) {
                             if (!isRefreshingInvitations) {
-                                presenter.getMyInvitations();
+                                presenter.getMyPendingInvitations();
                                 isRefreshingInvitations = true;
                             }
                         }

@@ -5,6 +5,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import social.entourage.android.api.model.Invitation;
 
 /**
@@ -24,5 +25,10 @@ public interface InvitationRequest {
 
     @GET("invitations")
     Call<Invitation.InvitationsWrapper> retrieveUserInvitations();
+
+    @GET("invitations")
+    Call<Invitation.InvitationsWrapper> retrieveUserInvitationsWithStatus(
+            @Query("status") String status
+    );
 
 }
