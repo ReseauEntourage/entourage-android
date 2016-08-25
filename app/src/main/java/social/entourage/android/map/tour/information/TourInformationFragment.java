@@ -804,18 +804,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private void initializeDiscussionList() {
 
-        Date now = new Date();
-
-        //add the start time
-        if (feedItem.getType() != TimestampedObject.ENTOURAGE_CARD || FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
-            addDiscussionTourStartCard(now);
-        }
-
-        //check if we need to add the Tour closed card
-        if (feedItem.isClosed()) {
-            addDiscussionTourEndCard();
-        }
-
         //init the recycler view
         discussionView.setLayoutManager(new LinearLayoutManager(getContext()));
         discussionAdapter = new DiscussionAdapter();
@@ -829,6 +817,19 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         //clear the added cards info
         feedItem.clearAddedCardInfoList();
+
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            Date now = new Date();
+            //add the start time
+            if (FeedItem.STATUS_ON_GOING.equals(feedItem.getStatus())) {
+                addDiscussionTourStartCard(now);
+            }
+
+            //check if we need to add the Tour closed card
+            if (feedItem.isClosed()) {
+                addDiscussionTourEndCard(now);
+            }
+        }
 
         //scroll to last card
         scrollToLastCard();
@@ -1191,21 +1192,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         TourPoint startPoint = feedItem.getStartPoint();
         TourTimestamp tourTimestamp = new TourTimestamp(
                 feedItem.getStartTime(),
-                timestamp,
+                now,
                 feedItem.getType(),
                 FeedItem.STATUS_ON_GOING,
                 startPoint,
                 duration,
                 distance
         );
-        feedItem.addCardInfo(tourTimestamp);
-
-        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            tourTimestampList.add(tourTimestamp);
-        }
+        discussionAdapter.addCardInfo(tourTimestamp);
     }
 
-    private void addDiscussionTourEndCard() {
+    private void addDiscussionTourEndCard(Date now) {
         long duration = 0;
         float distance = 0;
         if (feedItem.getStartTime() != null && feedItem.getEndTime() != null) {
@@ -1227,18 +1224,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         TourTimestamp tourTimestamp = new TourTimestamp(
                 feedItem.getEndTime(),
-                feedItem.getEndTime(),
+                now,
                 feedItem.getType(),
                 FeedItem.STATUS_CLOSED,
                 endPoint,
                 duration,
                 distance
         );
-        feedItem.addCardInfo(tourTimestamp);
-
-        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            tourTimestampList.add(tourTimestamp);
-        }
+        discussionAdapter.addCardInfo(tourTimestamp);
     }
 
     private void scrollToLastCard() {
@@ -1545,7 +1538,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             this.feedItem.setStatus(feedItem.getStatus());
             this.feedItem.setEndTime(feedItem.getEndTime());
             if (feedItem.getStatus().equals(FeedItem.STATUS_CLOSED) && feedItem.isPrivate()) {
-                addDiscussionTourEndCard();
+                addDiscussionTourEndCard(new Date());
                 updateDiscussionList();
             }
             if (feedItem.isFreezed()){
