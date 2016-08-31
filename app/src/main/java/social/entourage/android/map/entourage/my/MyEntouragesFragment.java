@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -33,6 +34,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageBaseAdapter;
@@ -67,6 +69,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
 
     @Bind(R.id.myentourages_fab_menu)
     FloatingActionMenu fabMenu;
+
+    @Bind(R.id.button_start_tour_launcher)
+    FloatingActionButton startTourButton;
 
     @Bind(R.id.myentourages_invitations_view)
     RecyclerView invitationsView;
@@ -167,6 +172,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     private void initializeView() {
         initializeInvitationsView();
         initializeEntouragesView();
+        initializeFabMenu();
     }
 
     private void initializeInvitationsView() {
@@ -179,6 +185,15 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         entouragesView.setLayoutManager(new LinearLayoutManager(getContext()));
         entouragesAdapter = new MyEntouragesAdapter();
         entouragesView.setAdapter(entouragesAdapter);
+    }
+
+    private void initializeFabMenu() {
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = false;
+        if (me != null) {
+            isPro = me.isPro();
+        }
+        startTourButton.setVisibility( isPro ? View.VISIBLE : View.GONE );
     }
 
     protected void showProgressBar() {
