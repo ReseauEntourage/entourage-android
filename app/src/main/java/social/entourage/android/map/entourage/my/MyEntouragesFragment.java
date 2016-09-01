@@ -371,16 +371,12 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         if (invitationList == null) {
             return;
         }
+        invitationsAdapter.removeAll();
         // add the invitations
         Iterator<Invitation> iterator = invitationList.iterator();
         while (iterator.hasNext()) {
             Invitation invitation = iterator.next();
-            if (invitationsAdapter.findCard(invitation) == null) {
-                invitationsAdapter.addCardInfoBeforeTimestamp(invitation);
-            }
-            else {
-                invitationsAdapter.updateCard(invitation);
-            }
+            invitationsAdapter.addCardInfoBeforeTimestamp(invitation);
         }
     }
 
