@@ -435,16 +435,16 @@ public class TourInformationPresenter {
             public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
                 if (fragment != null) {
                     if (response.isSuccess()) {
-                        fragment.onInvitationStatusUpdated(true);
+                        fragment.onInvitationStatusUpdated(true, Invitation.STATUS_ACCEPTED);
                     } else {
-                        fragment.onInvitationStatusUpdated(false);
+                        fragment.onInvitationStatusUpdated(false, Invitation.STATUS_ACCEPTED);
                     }
                 }
             }
 
             @Override
             public void onFailure(final Call<Invitation.InvitationWrapper> call, final Throwable t) {
-                fragment.onInvitationStatusUpdated(false);
+                fragment.onInvitationStatusUpdated(false, Invitation.STATUS_ACCEPTED);
             }
         });
     }
@@ -456,16 +456,16 @@ public class TourInformationPresenter {
             public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
                 if (fragment != null) {
                     if (response.isSuccess()) {
-                        fragment.onInvitationStatusUpdated(true);
+                        fragment.onInvitationStatusUpdated(true, Invitation.STATUS_REJECTED);
                     } else {
-                        fragment.onInvitationStatusUpdated(false);
+                        fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED);
                     }
                 }
             }
 
             @Override
             public void onFailure(final Call<Invitation.InvitationWrapper> call, final Throwable t) {
-                fragment.onInvitationStatusUpdated(false);
+                fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED);
             }
         });
     }

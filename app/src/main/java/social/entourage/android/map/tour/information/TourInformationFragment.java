@@ -91,6 +91,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
@@ -1445,7 +1446,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    protected void onInvitationStatusUpdated(boolean success) {
+    protected void onInvitationStatusUpdated(boolean success, String status) {
         Button acceptInvitationButton = (Button) this.getView().findViewById(R.id.tour_info_invited_accept_button);
         Button rejectInvitationButton = (Button) this.getView().findViewById(R.id.tour_info_invited_reject_button);
         acceptInvitationButton.setEnabled(true);
@@ -1453,6 +1454,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (success) {
             invitedLayout.setVisibility(View.GONE);
             Toast.makeText(getActivity(), R.string.invited_updated_ok, Toast.LENGTH_SHORT).show();
+            if (Invitation.STATUS_ACCEPTED.equals(status)) {
+                // Invitation accepted, refresh the lists and status
+                if (feedItem != null) {
+                    feedItem.setJoinStatus(FeedItem.JOIN_STATUS_ACCEPTED);
+                    switchToPrivateSection();
+                    loadPrivateCards();
+                    updateHeaderButtons();
+                    actLayout.setVisibility(View.GONE);
+                }
+            }
         } else {
             Toast.makeText(getActivity(), R.string.invited_updated_error, Toast.LENGTH_SHORT).show();
         }
