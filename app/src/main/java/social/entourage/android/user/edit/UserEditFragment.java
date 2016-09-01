@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,9 @@ public class UserEditFragment extends DialogFragment {
 
     @Bind(R.id.user_address)
     TextView userAddress;
+
+    @Bind(R.id.user_associations_title)
+    TextView userAssociationsTitle;
 
     @Bind(R.id.user_associations_view)
     RecyclerView userAssociationsView;
@@ -149,6 +154,10 @@ public class UserEditFragment extends DialogFragment {
                 organizationsAdapter = new UserOrganizationsAdapter(organizationList);
                 userAssociationsView.setAdapter(organizationsAdapter);
             }
+
+            boolean isPro = editedUser.isPro();
+            userAssociationsTitle.setVisibility( isPro ? View.VISIBLE : View.GONE );
+            userAssociationsView.setVisibility( isPro ? View.VISIBLE : View.GONE );
 
         }
     }

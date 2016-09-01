@@ -97,6 +97,9 @@ public class UserFragment extends DialogFragment {
     @Bind(R.id.user_tours_count)
     TextView userTourCount;
 
+    @Bind(R.id.user_associations_title)
+    TextView userAssociationsTitle;
+
     @Bind(R.id.user_associations_view)
     RecyclerView userAssociationsView;
 
@@ -227,6 +230,9 @@ public class UserFragment extends DialogFragment {
                 userAssociationsView.setAdapter(organizationsAdapter);
             }
 
+            boolean isPro = user.isPro();
+            userAssociationsTitle.setVisibility( isPro ? View.VISIBLE : View.GONE );
+            userAssociationsView.setVisibility( isPro ? View.VISIBLE : View.GONE );
         }
     }
 
