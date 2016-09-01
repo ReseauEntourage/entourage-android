@@ -99,7 +99,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:id="@+id/tour_info_invited_layout"
-        android:background="@color/accent">
+        android:background="@color/accent"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"

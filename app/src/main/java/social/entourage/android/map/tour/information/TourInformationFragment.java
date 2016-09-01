@@ -111,6 +111,7 @@ import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.entourage.CreateEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.map.tour.information.members.MembersAdapter;
@@ -613,6 +614,15 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
+    @OnClick(R.id.tour_info_button_edit)
+    protected void onEditEntourageButton() {
+        CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage)feedItem);
+        fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
+
+        //hide the options
+        optionsLayout.setVisibility(View.GONE);
+    }
+
     @OnClick(R.id.tour_info_user_add_button)
     protected void onUserAddClicked() {
         inviteSourceLayout.setVisibility(View.VISIBLE);
@@ -771,8 +781,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         User me = EntourageApplication.me(getActivity());
         Button stopTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_stop_tour);
         Button quitTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_quit_tour);
+        Button editEntourageButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_edit);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
+        editEntourageButton.setVisibility(View.GONE);
         if (me != null) {
             int myId = me.getId();
             if (feedItem.getAuthor().getUserID() != myId) {
@@ -784,6 +796,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     stopTourButton.setText(R.string.tour_info_options_freeze_tour);
                 } else {
                     stopTourButton.setText(R.string.tour_info_options_stop_tour);
+                }
+                if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
+                    editEntourageButton.setVisibility(View.VISIBLE);
                 }
             }
         }

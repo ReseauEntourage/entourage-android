@@ -18,6 +18,10 @@
     <string name="entourage_create_menu_demand">Créer une demande</string>
     <string name="entourage_create_menu_contribution">Créer une contribution</string>
 
+    <!-- Edit Entourage -->
+    <string name="entourage_save_error">!!Entourage was not saved!</string>
+    <string name="entourage_save_ok">!!Entourage saved.</string>
+
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
     <string name="entourage_type_contribution">Contribution</string>

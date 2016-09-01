@@ -24,5 +24,6 @@
     <string name="ignore">Ignorer</string>
     <string name="next">Continuer</string>
     <string name="close">Fermer</string>
+    <string name="edit">Editer</string>
 
 </resources>

@@ -43,7 +43,7 @@ public class CreateEntouragePresenter {
         Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
         entourageWrapper.setEntourage(entourage);
 
-        Call<Entourage.EntourageWrapper> call = entourageRequest.entourage(entourageWrapper);
+        Call<Entourage.EntourageWrapper> call = entourageRequest.createEntourage(entourageWrapper);
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
             public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
@@ -66,6 +66,29 @@ public class CreateEntouragePresenter {
                 if (fragment != null) {
                     fragment.onEntourageCreated(null);
                 }
+            }
+        });
+    }
+
+    protected void editEntourage(Entourage entourage) {
+        Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
+        entourageWrapper.setEntourage(entourage);
+
+        Call<Entourage.EntourageWrapper> call = entourageRequest.editEntourage(entourage.getId(), entourageWrapper);
+        call.enqueue(new Callback<Entourage.EntourageWrapper>() {
+            @Override
+            public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
+                if (response.isSuccess()) {
+                    Entourage receivedEntourage = response.body().getEntourage();
+                    fragment.onEntourageEdited(receivedEntourage);
+                } else {
+                    fragment.onEntourageEdited(null);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
+                fragment.onEntourageEdited(null);
             }
         });
     }
