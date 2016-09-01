@@ -319,6 +319,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
             }
+            else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
+            }
         }
         else if (action != null) {
             getIntent().setAction(null);
@@ -336,6 +339,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
             else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
+            }
+            else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
             }
         }
     }
@@ -560,6 +566,18 @@ public class DrawerActivity extends EntourageSecuredActivity
                         mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.TOUR_CARD);
                     } else if (content.isEntourageRelated()) {
                         mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD);
+                    }
+                }
+            }
+        }
+        else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
+            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            if (message != null) {
+                PushNotificationContent content = message.getContent();
+                if (content != null) {
+                    PushNotificationContent.Extra extra = content.extra;
+                    if (extra != null) {
+                        mapEntourageFragment.displayChosenFeedItem(extra.entourageId, TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
                     }
                 }
             }
