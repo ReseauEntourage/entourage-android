@@ -103,15 +103,19 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         //title
         entourageTitle.setText(String.format(res.getString(R.string.tour_cell_title), entourage.getTitle()));
 
-        //author photo
-        String avatarURLAsString = entourage.getAuthor().getAvatarURLAsString();
-        if (avatarURLAsString != null) {
-            Picasso.with(itemView.getContext())
-                    .load(Uri.parse(avatarURLAsString))
-                    .transform(new CropCircleTransformation())
-                    .into(photoView);
+        //author + photo
+        if(entourage.getAuthor() == null) {
+            entourageAuthor.setText("--");//@todo this should not happen!
+        } else {
+            entourageAuthor.setText(String.format(res.getString(R.string.tour_cell_author), entourage.getAuthor().getUserName()));
+            String avatarURLAsString = entourage.getAuthor().getAvatarURLAsString();
+            if (avatarURLAsString != null) {
+                Picasso.with(itemView.getContext())
+                        .load(Uri.parse(avatarURLAsString))
+                        .transform(new CropCircleTransformation())
+                        .into(photoView);
+            }
         }
-
         //Tour type
         String entourageType = entourage.getEntourageType();
         String entourageTypeDescription = "";
@@ -124,9 +128,6 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             }
         }
         entourageTypeTextView.setText(String.format(res.getString(R.string.entourage_type_format), entourageTypeDescription));
-
-        //author
-        entourageAuthor.setText(String.format(res.getString(R.string.tour_cell_author), entourage.getAuthor().getUserName()));
 
         //date and distance
         String distanceAsString = "";
