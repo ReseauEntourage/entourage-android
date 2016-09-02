@@ -29,8 +29,8 @@
     <string name="invitation_card_inviter">De %s</string>
 
     <!-- Invited -->
-    <string name="invited_description">!!Vous etes invite a rejoindre cet entourage</string>
-    <string name="invited_updated_ok">!!Invitation status updated</string>
-    <string name="invited_updated_error">!!Error updating invitation status</string>
+    <string name="invited_description">Vous êtes invités à rejoindre cet entourage</string>
+    <string name="invited_updated_ok">Invitation mise à jour</string>
+    <string name="invited_updated_error">Erreur lors de la mise à jour de l’entourage</string>
 
 </resources>

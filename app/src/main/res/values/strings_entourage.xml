@@ -19,8 +19,8 @@
     <string name="entourage_create_menu_contribution">Créer une contribution</string>
 
     <!-- Edit Entourage -->
-    <string name="entourage_save_error">!!Entourage was not saved!</string>
-    <string name="entourage_save_ok">!!Entourage saved.</string>
+    <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
+    <string name="entourage_save_ok">Entourage enregistré.</string>
 
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
