@@ -23,7 +23,6 @@
     <string name="map_filter_user_only_text">Ne visualiser que mes entourages</string>
     <string name="map_filter_time_title">Affichage des entourages</string>
     <string name="map_filter_time_option1">24H</string>
-    <string name="map_filter_time_option2">2J</string>
-    <string name="map_filter_time_option3">3J</string>
-
+    <string name="map_filter_time_option2">8J</string>
+    <string name="map_filter_time_option3">1M</string>
 </resources>

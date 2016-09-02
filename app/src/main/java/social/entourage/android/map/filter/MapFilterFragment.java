@@ -208,11 +208,12 @@ public class MapFilterFragment extends DialogFragment {
             case MapFilter.DAYS_1:
                 days1RB.setChecked(true);
                 break;
-            case MapFilter.DAYS_2:
-                days2RB.setChecked(true);
-                break;
             case MapFilter.DAYS_3:
                 days3RB.setChecked(true);
+                break;
+            case MapFilter.DAYS_2:
+            default:
+                days2RB.setChecked(true);
                 break;
         }
     }
