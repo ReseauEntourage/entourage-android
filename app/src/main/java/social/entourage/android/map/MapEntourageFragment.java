@@ -582,6 +582,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Subscribe
+    public void onEntourageUpdated(Events.OnEntourageUpdated event) {
+        Entourage entourage = event.getEntourage();
+        if (entourage == null) return;
+        newsfeedAdapter.updateCard(entourage);
+    }
+
+    @Subscribe
     public void onMapFilterChanged(Events.OnMapFilterChanged event) {
         if (tourService != null) {
             clearAll();

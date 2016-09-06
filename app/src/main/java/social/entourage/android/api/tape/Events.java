@@ -302,6 +302,23 @@ public class Events {
     }
 
     /**
+     * Event signaling that an entourage was updated
+     */
+    public static class OnEntourageUpdated {
+
+        private Entourage entourage;
+
+        public OnEntourageUpdated(Entourage entourage) {
+            this.entourage = entourage;
+        }
+
+        public Entourage getEntourage() {
+            return entourage;
+        }
+
+    }
+
+    /**
      * Event signaling that the map filter was changed
      */
     public static class OnMapFilterChanged {

@@ -1283,6 +1283,30 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
+    @Subscribe
+    public void onEntourageUpdated(Events.OnEntourageUpdated event) {
+        Entourage updatedEntourage = event.getEntourage();
+        if (updatedEntourage == null) return;
+        // Check if it is our displayed entourage
+        if (feedItem.getType() != updatedEntourage.getType() || feedItem.getId() != updatedEntourage.getId()) return;
+        // Update the UI
+        feedItem = updatedEntourage;
+
+        tourOrganization.setText(feedItem.getTitle());
+        tourDescription.setText(feedItem.getDescription());
+
+        String location = "";
+        TourPoint entourageLocation = ((Entourage)feedItem).getLocation();
+        if (entourageLocation != null) {
+            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+            if (currentLocation != null) {
+                float distance = entourageLocation.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                location = String.format("%.2f km", distance/1000.0f);
+            }
+        }
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(feedItem.getStartTime()), "h", location));
+    }
+
     // ----------------------------------
     // API callbacks
     // ----------------------------------

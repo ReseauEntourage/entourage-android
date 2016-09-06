@@ -81,6 +81,7 @@ public class CreateEntouragePresenter {
                 if (response.isSuccess()) {
                     Entourage receivedEntourage = response.body().getEntourage();
                     fragment.onEntourageEdited(receivedEntourage);
+                    BusProvider.getInstance().post(new Events.OnEntourageUpdated(receivedEntourage));
                 } else {
                     fragment.onEntourageEdited(null);
                 }
