@@ -61,6 +61,9 @@ public class User implements Serializable {
     private boolean entourageDisclaimerShown = false;
     private boolean encounterDisclaimerShown = false;
 
+    @Expose(serialize = false, deserialize = false)
+    private boolean isOnboardingUser = false;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -185,6 +188,14 @@ public class User implements Serializable {
 
     public void setEncounterDisclaimerShown(final boolean encounterDisclaimerShown) {
         this.encounterDisclaimerShown = encounterDisclaimerShown;
+    }
+
+    public boolean isOnboardingUser() {
+        return isOnboardingUser;
+    }
+
+    public void setOnboardingUser(final boolean onboardingUser) {
+        isOnboardingUser = onboardingUser;
     }
 
     public void incrementTours() {

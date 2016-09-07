@@ -422,6 +422,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (fragment != null) fragment.dismiss();
 
         loggedPhoneNumber = phoneNumber;
+
+        if (this.onboardingUser != null) {
+            user.setOnboardingUser(true);
+        }
+
         loginStartup.setVisibility(View.GONE);
         loginSignin.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
@@ -732,6 +737,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginStartup.setVisibility(View.GONE);
         loginSignin.setVisibility(View.VISIBLE);
         showKeyboard(phoneEditText);
+        this.onboardingUser = null;
     }
 
     @OnClick(R.id.login_button_register)

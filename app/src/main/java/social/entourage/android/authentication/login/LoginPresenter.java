@@ -273,7 +273,7 @@ public class LoginPresenter {
                 } else {
                     try {
                         String errorString = response.errorBody().string();
-                        if (errorString.contains("Phone n'est pas disponible")) {
+                        if (errorString.contains("PHONE_ALREADY_EXIST")) {
                             // Phone number already registered
                             activity.registerPhoneNumberSent(phoneNumber, false);
                         }

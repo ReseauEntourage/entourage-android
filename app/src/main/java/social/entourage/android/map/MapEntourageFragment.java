@@ -80,6 +80,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
@@ -279,6 +280,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         initializeMap();
         initializeFloatingMenu();
         initializeToursListView();
+        initializeInvitations();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -602,6 +604,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     void doBindService() {
         if (getActivity() != null) {
+            User me = EntourageApplication.me(getActivity());
+            if (me == null) {
+                // Don't start the service
+                return;
+            }
             Intent intent = new Intent(getActivity(), TourService.class);
             getActivity().startService(intent);
             getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -1895,6 +1902,45 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (refreshToursTimer != null) {
             refreshToursTimer.cancel();
             refreshToursTimer = null;
+        }
+    }
+
+    // ----------------------------------
+    // INVITATIONS
+    // ----------------------------------
+
+    private void initializeInvitations() {
+        // Check if it's a valid user and onboarding
+        User me = EntourageApplication.me(getActivity());
+        if (me == null || me.isOnboardingUser() == false) {
+            return;
+        }
+        // Retrieve the list of invitations
+        if (presenter != null) {
+            presenter.getMyPendingInvitations();
+        }
+        // Reset the onboarding flag
+        me.setOnboardingUser(false);
+    }
+
+    protected void onInvitationsReceived(List<Invitation> invitationList) {
+        // Ignore errors and empty list
+        if (invitationList == null || invitationList.size() == 0) {
+            return;
+        }
+        // Check for null presenter
+        if (presenter == null) {
+            return;
+        }
+        Iterator<Invitation> iterator = invitationList.iterator();
+        while (iterator.hasNext()) {
+            Invitation invitation = iterator.next();
+            presenter.acceptInvitation(invitation.getId());
+        }
+        // Show the first invitation
+        Invitation firstInvitation = invitationList.get(0);
+        if (firstInvitation != null) {
+            presenter.openFeedItem(firstInvitation.getEntourageId(), FeedItem.ENTOURAGE_CARD, firstInvitation.getId());
         }
     }
 
