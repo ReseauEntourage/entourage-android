@@ -322,6 +322,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
             }
+            else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
+            }
         }
         else if (action != null) {
             getIntent().setAction(null);
@@ -342,6 +345,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
             else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
+            }
+            else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
             }
         }
     }
@@ -578,6 +584,18 @@ public class DrawerActivity extends EntourageSecuredActivity
                     PushNotificationContent.Extra extra = content.extra;
                     if (extra != null) {
                         mapEntourageFragment.displayChosenFeedItem(extra.entourageId, TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
+                    }
+                }
+            }
+        }
+        else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
+            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            if (message != null) {
+                PushNotificationContent content = message.getContent();
+                if (content != null) {
+                    PushNotificationContent.Extra extra = content.extra;
+                    if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
+                        mapEntourageFragment.displayChosenFeedItem(extra.joinableId, content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
                     }
                 }
             }

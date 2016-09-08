@@ -13,6 +13,7 @@ public class PushNotificationContent implements Serializable {
     public static final String TYPE_JOIN_REQUEST_ACCEPTED = "JOIN_REQUEST_ACCEPTED";
     public static final String TYPE_NEW_JOIN_REQUEST = "NEW_JOIN_REQUEST";
     public static final String TYPE_ENTOURAGE_INVITATION = "ENTOURAGE_INVITATION";
+    public static final String TYPE_INVITATION_STATUS = "INVITATION_STATUS";
 
     public Extra extra;
 
@@ -58,10 +59,10 @@ public class PushNotificationContent implements Serializable {
         public static final String JOINABLE_TYPE_TOUR = "Tour";
         public static final String JOINABLE_TYPE_ENTOURAGE = "Entourage";
 
-        @SerializedName("joinable_id")
+        @SerializedName(value = "joinable_id", alternate = {"feed_id"})
         public long joinableId;
 
-        @SerializedName("joinable_type")
+        @SerializedName(value = "joinable_type", alternate = {"feed_type"})
         public String joinableType;
 
         @SerializedName("user_id")
