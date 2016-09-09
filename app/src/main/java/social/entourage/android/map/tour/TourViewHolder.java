@@ -24,6 +24,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
@@ -43,6 +44,7 @@ public class TourViewHolder extends BaseCardViewHolder {
     private TextView badgeCountView;
     private TextView numberOfPeopleTextView;
     private Button actButton;
+    private TextView lastMessageTextView;
 
     private Tour tour;
 
@@ -67,6 +69,7 @@ public class TourViewHolder extends BaseCardViewHolder {
         badgeCountView = (TextView)itemView.findViewById(R.id.tour_card_badge_count);
         numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
         actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
+        lastMessageTextView = (TextView)itemView.findViewById(R.id.tour_card_last_message);
 
         onClickListener = new OnClickListener();
 
@@ -102,13 +105,20 @@ public class TourViewHolder extends BaseCardViewHolder {
         //title
         tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), tour.getOrganizationName()));
 
-        //author photo
-        String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
-        if (avatarURLAsString != null) {
-            Picasso.with(itemView.getContext())
-                    .load(Uri.parse(avatarURLAsString))
-                    .transform(new CropCircleTransformation())
-                    .into(photoView);
+        if (tour.getAuthor() == null) {
+            //author
+            tourAuthor.setText("--");
+        } else {
+            //author photo
+            String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
+            if (avatarURLAsString != null) {
+                Picasso.with(itemView.getContext())
+                        .load(Uri.parse(avatarURLAsString))
+                        .transform(new CropCircleTransformation())
+                        .into(photoView);
+            }
+            //author
+            tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));
         }
 
         //Tour type
@@ -124,9 +134,6 @@ public class TourViewHolder extends BaseCardViewHolder {
             }
         }
         tourTypeTextView.setText(String.format(res.getString(R.string.tour_cell_type), tourTypeDescription));
-
-        //author
-        tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));
 
         //date and location i.e 1h - Arc de Triomphe
         String location = "";
@@ -179,6 +186,14 @@ public class TourViewHolder extends BaseCardViewHolder {
                     actButton.setText(R.string.tour_cell_button_join);
                     actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
                 }
+            }
+        }
+
+        //last message
+        if (lastMessageTextView != null) {
+            FeedItem.LastMessage lastMessage = tour.getLastMessage();
+            if (lastMessage != null) {
+                lastMessageTextView.setText(lastMessage.getText());
             }
         }
 

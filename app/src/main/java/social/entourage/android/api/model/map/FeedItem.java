@@ -59,6 +59,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     @SerializedName("join_status")
     protected String joinStatus;
 
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("last_message")
+    protected LastMessage lastMessage;
+
     @Expose(serialize = false, deserialize = false)
     protected int badgeCount = 0;
 
@@ -151,6 +155,14 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public void setUpdatedTime(final Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public LastMessage getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(final LastMessage lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
     public List<TimestampedObject> getCachedCardInfoList() {
@@ -247,5 +259,23 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     public abstract TourPoint getStartPoint();
 
     public abstract TourPoint getEndPoint();
+
+    // ----------------------------------
+    // INNER CLASSES
+    // ----------------------------------
+
+    public static class LastMessage {
+
+        @SerializedName("text")
+        private String text;
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(final String text) {
+            this.text = text;
+        }
+    }
 
 }

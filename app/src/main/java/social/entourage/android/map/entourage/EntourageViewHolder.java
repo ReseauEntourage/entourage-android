@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -25,6 +27,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
@@ -44,6 +47,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
     private TextView badgeCountView;
     private TextView numberOfPeopleTextView;
     private Button actButton;
+    private TextView lastMessageTextView;
 
     private Entourage entourage;
 
@@ -68,6 +72,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         badgeCountView = (TextView)itemView.findViewById(R.id.tour_card_badge_count);
         numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
         actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
+        lastMessageTextView = (TextView)itemView.findViewById(R.id.tour_card_last_message);
 
         onClickListener = new OnClickListener();
 
@@ -175,6 +180,14 @@ public class EntourageViewHolder extends BaseCardViewHolder {
                     actButton.setText(R.string.tour_cell_button_join);
                     actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
                 }
+            }
+        }
+
+        //last message
+        if (lastMessageTextView != null) {
+            FeedItem.LastMessage lastMessage = entourage.getLastMessage();
+            if (lastMessage != null) {
+                lastMessageTextView.setText(lastMessage.getText());
             }
         }
 
