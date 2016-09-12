@@ -27,13 +27,13 @@
         android:background="@color/white"
         android:visibility="gone"/>
 
-    <social.entourage.android.sidemenu.SideMenuItemView
+    <!--social.entourage.android.sidemenu.SideMenuItemView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings"
-        android:background="@color/white"/>
+        android:background="@color/white"/-->
 
     <social.entourage.android.sidemenu.SideMenuItemView
         android:layout_width="match_parent"
