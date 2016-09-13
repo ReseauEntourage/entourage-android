@@ -217,6 +217,9 @@ public class MapPresenter {
             LatLng markerPosition = groundOverlay.getPosition();
             if (entourageMarkerHashMap.get(markerPosition) != null) {
                 Log.d("Entourage GroundOverlay", "click");
+                if (fragment != null) {
+                    fragment.toggleToursList();
+                }
             }
         }
     }
