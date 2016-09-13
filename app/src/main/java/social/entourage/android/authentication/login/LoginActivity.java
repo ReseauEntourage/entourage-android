@@ -283,6 +283,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (loginSignin.getVisibility() == View.VISIBLE) {
             phoneEditText.setText("");
             passwordEditText.setText("");
+            hideKeyboard();
             loginSignin.setVisibility(View.GONE);
             loginStartup.setVisibility(View.VISIBLE);
         }
