@@ -927,11 +927,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         else {
             // Show the newEntourages button, if necessary
+            // MI: Hidden for 2.0
+            /*
             if (previousItemCount > 0 && newsfeedAdapter.getItemCount() > previousItemCount && pagination.isRefreshing) {
                 if (toursListView.getVisibility() != View.GONE) {
                     newEntouragesButton.setVisibility(View.VISIBLE);
                 }
             }
+            */
         }
         /*
         if (newsfeedAdapter.getItemCount() > 0) {
