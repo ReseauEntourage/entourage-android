@@ -875,11 +875,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     private void showGeolocationView() {
+        loginNotificationsView.setVisibility(View.GONE);
         loginGeolocationView.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.login_geolocation_ignore_button, R.id.login_geolocation_accept_button})
     protected void onGeolocationAccepted() {
+        loginGeolocationView.setVisibility(View.GONE);
         finishTutorial();
     }
 
