@@ -286,6 +286,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         TourInformationFragment fragment = new TourInformationFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_FEEDITEM, feedItem);
+        args.putLong(KEY_INVITATION_ID, invitationId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -682,9 +683,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     public boolean onPushNotificationChatMessageReceived(Message message) {
         //we received a chat notification
-        //check if it is referring to this tour
+        //check if it is referring to this feed item
         PushNotificationContent content = message.getContent();
-        if (!content.isTourRelated() && content.getJoinableId() != feedItem.getId()) {
+        if (content == null) {
+            return false;
+        }
+        if (content.isTourRelated() && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+            return false;
+        }
+        if (content.isEntourageRelated() && feedItem.getType() == FeedItem.TOUR_CARD) {
+            return false;
+        }
+        if (content.getJoinableId() != feedItem.getId()) {
             return false;
         }
         //retrieve the last messages from server
@@ -726,13 +736,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_info_unknown)));
         }
 
-        tourAuthorName.setText(feedItem.getAuthor().getUserName());
+        if (feedItem.getAuthor() != null) {
+            tourAuthorName.setText(feedItem.getAuthor().getUserName());
 
-        String avatarURLAsString = feedItem.getAuthor().getAvatarURLAsString();
-        if (avatarURLAsString != null) {
-            Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
-                    .transform(new CropCircleTransformation())
-                    .into(tourAuthorPhoto);
+            String avatarURLAsString = feedItem.getAuthor().getAvatarURLAsString();
+            if (avatarURLAsString != null) {
+                Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
+                        .transform(new CropCircleTransformation())
+                        .into(tourAuthorPhoto);
+            }
+        } else {
+            tourAuthorName.setText("--");
         }
 
         String location = "";
