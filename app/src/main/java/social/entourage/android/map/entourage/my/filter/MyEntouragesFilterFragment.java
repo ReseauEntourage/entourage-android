@@ -12,6 +12,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.EntourageApplication;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
@@ -52,6 +54,9 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
 
     @Bind(R.id.myentourages_filter_tours_switch)
     Switch toursSwitch;
+
+    @Bind(R.id.myentourages_filter_tours_layout)
+    View toursView;
 
     // ----------------------------------
     // Lifecycle
@@ -125,6 +130,14 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         entourageDemandSwitch.setChecked(filter.entourageTypeDemand);
         entourageContributionSwitch.setChecked(filter.entourageTypeContribution);
         toursSwitch.setChecked(filter.showTours);
+
+        // Tours switch is displayed only for pro users
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = false;
+        if (me != null) {
+            isPro = me.isPro();
+        }
+        toursView.setVisibility( isPro ? View.VISIBLE : View.GONE );
     }
 
 }
