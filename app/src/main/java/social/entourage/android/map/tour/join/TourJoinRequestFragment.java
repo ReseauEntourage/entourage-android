@@ -84,7 +84,7 @@ public class TourJoinRequestFragment extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_tour_join_request, container, false);
+        View view = inflater.inflate(R.layout.fragment_tour_join_request_message, container, false);
         ButterKnife.bind(this, view);
 
         return view;

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/accent"
+              android:paddingLeft="20dp"
+              android:paddingRight="20dp"
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tour_join_request_ok_x_button"
+        android:src="@drawable/ic_close_white"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_centerVertical="true"
+        android:padding="5dp"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="74dp"
+        android:id="@+id/tour_join_request_ok_logo"
+        android:src="@drawable/entourage_logo"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/tour_join_request_ok_title"
+        android:id="@+id/tour_join_request_ok_title"
+        android:textColor="@color/white"
+        android:textSize="28sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/tour_join_request_ok_description"
+        android:id="@+id/tour_join_request_ok_description"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tour_join_request_ok_message_button"
+        android:id="@+id/tour_join_request_ok_message_button"
+        style="@style/WhiteButton.RoundedCorners"
+        android:layout_marginTop="10dp"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/close"
+        android:id="@+id/tour_join_request_ok_close_button"
+        style="@style/AccentButton"
+        />
+</LinearLayout>
