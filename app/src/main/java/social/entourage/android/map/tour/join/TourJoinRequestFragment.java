@@ -20,6 +20,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 
 public class TourJoinRequestFragment extends DialogFragment {
@@ -41,7 +42,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     // PRIVATE MEMBERS
     // ----------------------------------
 
-    private TimestampedObject timestampedObject;
+    private FeedItem feedItem;
 
     @Inject
     TourJoinRequestPresenter presenter;
@@ -55,18 +56,10 @@ public class TourJoinRequestFragment extends DialogFragment {
     }
 
 
-    public static TourJoinRequestFragment newInstance(Tour tour) {
+    public static TourJoinRequestFragment newInstance(FeedItem feedItem) {
         TourJoinRequestFragment fragment = new TourJoinRequestFragment();
         Bundle args = new Bundle();
-        args.putSerializable(Tour.KEY_TOUR, tour);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static TourJoinRequestFragment newInstance(Entourage entourage) {
-        TourJoinRequestFragment fragment = new TourJoinRequestFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(Tour.KEY_TOUR, entourage);
+        args.putSerializable(Tour.KEY_TOUR, feedItem);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,7 +73,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        timestampedObject = (TimestampedObject) getArguments().getSerializable(Tour.KEY_TOUR);
+        feedItem = (FeedItem) getArguments().getSerializable(Tour.KEY_TOUR);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         // Inflate the layout for this fragment
@@ -109,8 +102,8 @@ public class TourJoinRequestFragment extends DialogFragment {
     @OnClick(R.id.tour_join_request_message_send)
     protected void onMessageSend() {
         if (presenter != null && messageView != null) {
-            if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
-                presenter.sendMessage(messageView.getText().toString(), (Tour)timestampedObject);
+            if (feedItem != null && feedItem.getType() == FeedItem.TOUR_CARD || feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+                presenter.sendMessage(messageView.getText().toString(), feedItem);
             }
             else {
                 dismiss();

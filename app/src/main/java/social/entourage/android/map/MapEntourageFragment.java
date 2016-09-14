@@ -108,6 +108,7 @@ import social.entourage.android.map.filter.MapFilterFragment;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
+import social.entourage.android.map.tour.join.JoinRequestOkFragment;
 import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
@@ -844,17 +845,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
         }
         else {
-            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                Tour tour = (Tour) feedItem;
-                tour.setJoinStatus(user.getStatus());
+            if (feedItem.getType() == TimestampedObject.TOUR_CARD || feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                feedItem.setJoinStatus(user.getStatus());
                 if (user.getStatus().equals(Tour.JOIN_STATUS_PENDING)) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(tour);
-                    tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
+                    JoinRequestOkFragment joinRequestOkFragment = JoinRequestOkFragment.newInstance(feedItem);
+                    joinRequestOkFragment.show(fragmentManager, JoinRequestOkFragment.TAG);
+//                    TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(tour);
+//                    tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
                 }
-            }
-            else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                feedItem.setJoinStatus(user.getStatus());
             }
             updateNewsfeedJoinStatus(feedItem);
         }
