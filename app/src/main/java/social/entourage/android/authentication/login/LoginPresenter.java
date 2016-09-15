@@ -3,9 +3,6 @@ package social.entourage.android.authentication.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
-import android.util.Patterns;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,7 +24,6 @@ import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.tools.Utils;
-import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 /**
  * Presenter controlling the LoginActivity
@@ -161,7 +157,7 @@ public class LoginPresenter {
         updateUserToServer();
     }
 
-    private void updateUserToServer() {
+    protected void updateUserToServer() {
         User user = authenticationController.getUser();
 
         if (activity != null) {
@@ -180,7 +176,7 @@ public class LoginPresenter {
                 public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
                     activity.stopLoader();
                     if (response.isSuccess()) {
-                        activity.onUserUpdated();
+                        activity.showPhotoChooseSource();
                         activity.displayToast(activity.getString(R.string.login_text_email_update_success));
                     }
                     else {

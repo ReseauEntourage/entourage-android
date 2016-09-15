@@ -427,15 +427,24 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (this.onboardingUser != null) {
             user.setOnboardingUser(true);
         }
+        hideKeyboard();
 
         loginStartup.setVisibility(View.GONE);
         loginSignin.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
-        loginWelcome.setVisibility(View.VISIBLE);
-        if (user.getEmail() != null) {
-            profileEmail.setText(user.getEmail());
+        if (user.getEmail() == null || user.getEmail().length() == 0) {
+            loginWelcome.setVisibility(View.VISIBLE);
+            profileEmail.requestFocus();
         }
-        profileEmail.requestFocus();
+        else if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
+            showNameView();
+        }
+        else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
+            showPhotoChooseSource();
+        }
+        else {
+            showNotificationPermissionView();
+        }
     }
 
     // ----------------------------------
@@ -626,8 +635,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void saveEmail() {
         loginPresenter.updateUserEmail(profileEmail.getText().toString());
 
-        loginWelcome.setVisibility(View.GONE);
-        showNameView();
+        User user = loginPresenter.authenticationController.getUser();
+        if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
+            loginWelcome.setVisibility(View.GONE);
+            showNameView();
+        }
+        else {
+            loginPresenter.updateUserToServer();
+        }
     }
 
     /************************
@@ -659,9 +674,19 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
     }
 
-    protected void onUserUpdated() {
-        PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-        fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
+    protected void showPhotoChooseSource() {
+        hideKeyboard();
+        loginWelcome.setVisibility(View.GONE);
+        loginNameView.setVisibility(View.GONE);
+
+        User user = loginPresenter.authenticationController.getUser();
+        if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
+            PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+            fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
+        }
+        else {
+            showNotificationPermissionView();
+        }
     }
 
     protected void onUserPhotoUpdated(boolean updated) {
@@ -861,12 +886,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_notifications_ignore_button)
     protected void onNotificationsIgnore() {
         saveNotifications(false);
+        loginNotificationsView.setVisibility(View.GONE);
         showGeolocationView();
     }
 
     @OnClick(R.id.login_notifications_accept)
     protected void onNotificationsAccept() {
         saveNotifications(true);
+        loginNotificationsView.setVisibility(View.GONE);
         showGeolocationView();
     }
 
@@ -875,7 +902,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     private void showGeolocationView() {
-        loginNotificationsView.setVisibility(View.GONE);
         loginGeolocationView.setVisibility(View.VISIBLE);
     }
 
