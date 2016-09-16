@@ -172,6 +172,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                         .load(Uri.parse(avatarURL))
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
+            } else {
+                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
             //refresh the user info from the server
             Location location = EntourageLocation.getInstance().getCurrentLocation();
@@ -615,6 +617,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                         .load(Uri.parse(avatarURL))
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
+            } else {
+                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
         }
     }

@@ -354,4 +354,27 @@ public class Events {
         }
     }
 
+    /**
+     * Event signaling that an invitation status was changed
+     */
+
+    public static class OnInvitationStatusChanged {
+
+        private FeedItem feedItem;
+        private String status;
+
+        public OnInvitationStatusChanged(FeedItem feedItem, String status) {
+            this.feedItem = feedItem;
+            this.status = status;
+        }
+
+        public FeedItem getFeedItem() {
+            return feedItem;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+    }
+
 }

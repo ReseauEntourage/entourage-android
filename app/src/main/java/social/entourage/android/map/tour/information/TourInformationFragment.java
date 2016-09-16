@@ -1505,6 +1505,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         acceptInvitationButton.setEnabled(true);
         rejectInvitationButton.setEnabled(true);
         if (success) {
+            // Update UI
             invitedLayout.setVisibility(View.GONE);
             Toast.makeText(getActivity(), R.string.invited_updated_ok, Toast.LENGTH_SHORT).show();
             if (Invitation.STATUS_ACCEPTED.equals(status)) {
@@ -1517,6 +1518,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     actLayout.setVisibility(View.GONE);
                 }
             }
+
+            // Post an event
+            BusProvider.getInstance().post(new Events.OnInvitationStatusChanged(this.feedItem, status));
+
         } else {
             Toast.makeText(getActivity(), R.string.invited_updated_error, Toast.LENGTH_SHORT).show();
         }

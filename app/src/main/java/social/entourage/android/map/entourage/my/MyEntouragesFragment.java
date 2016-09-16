@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.Iterator;
@@ -37,13 +36,11 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.invite.view.InvitationsAdapter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
-import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
 
 /**
@@ -217,6 +214,14 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         }
     }
 
+    private void refreshMyFeeds() {
+        // remove the current feed
+        entouragesAdapter.removeAll();
+        entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+        // request a new feed
+        retrieveMyFeeds();
+    }
+
     // ----------------------------------
     // BUTTONS HANDLING
     // ----------------------------------
@@ -267,20 +272,22 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
 
     @Subscribe
     public void onMyEntouragesFilterChanged(Events.OnMyEntouragesFilterChanged event) {
-        // remove the current feed
-        entouragesAdapter.removeAll();
-        entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
-        // request a new feed
-        retrieveMyFeeds();
+        refreshMyFeeds();
     }
 
     @Subscribe
     public void onEntourageCreated(Events.OnEntourageCreated event) {
-        // remove the current feed
-        entouragesAdapter.removeAll();
-        entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
-        // request a new feed
-        retrieveMyFeeds();
+        refreshMyFeeds();
+    }
+
+    @Subscribe
+    public void onInvitationStatusChanged(Events.OnInvitationStatusChanged event) {
+        // Refresh the invitations list
+        refreshInvitations();
+        // Refresh the entourages list if invitation was accepted
+        if (Invitation.STATUS_ACCEPTED.equals(event.getStatus())) {
+            refreshMyFeeds();
+        }
     }
 
     // ----------------------------------
@@ -297,12 +304,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
                 refreshInvitationsHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (presenter != null) {
-                            if (!isRefreshingInvitations) {
-                                presenter.getMyPendingInvitations();
-                                isRefreshingInvitations = true;
-                            }
-                        }
+                        refreshInvitations();
                     }
                 });
             }
@@ -315,6 +317,15 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         if (refreshInvitationsTimer != null) {
             refreshInvitationsTimer.cancel();
             refreshInvitationsTimer = null;
+        }
+    }
+
+    private void refreshInvitations() {
+        if (presenter != null) {
+            if (!isRefreshingInvitations) {
+                presenter.getMyPendingInvitations();
+                isRefreshingInvitations = true;
+            }
         }
     }
 

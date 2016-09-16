@@ -111,6 +111,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         //author + photo
         if(entourage.getAuthor() == null) {
             entourageAuthor.setText("--");//@todo this should not happen!
+            photoView.setImageResource(R.drawable.ic_user_photo_small);
         } else {
             entourageAuthor.setText(String.format(res.getString(R.string.tour_cell_author), entourage.getAuthor().getUserName()));
             String avatarURLAsString = entourage.getAuthor().getAvatarURLAsString();
@@ -119,6 +120,8 @@ public class EntourageViewHolder extends BaseCardViewHolder {
                         .load(Uri.parse(avatarURLAsString))
                         .transform(new CropCircleTransformation())
                         .into(photoView);
+            } else {
+                photoView.setImageResource(R.drawable.ic_user_photo_small);
             }
         }
         //Tour type

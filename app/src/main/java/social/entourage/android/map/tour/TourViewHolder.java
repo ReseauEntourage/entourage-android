@@ -108,6 +108,7 @@ public class TourViewHolder extends BaseCardViewHolder {
         if (tour.getAuthor() == null) {
             //author
             tourAuthor.setText("--");
+            photoView.setImageResource(R.drawable.ic_user_photo_small);
         } else {
             //author photo
             String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
@@ -116,6 +117,8 @@ public class TourViewHolder extends BaseCardViewHolder {
                         .load(Uri.parse(avatarURLAsString))
                         .transform(new CropCircleTransformation())
                         .into(photoView);
+            } else {
+                photoView.setImageResource(R.drawable.ic_user_photo_small);
             }
             //author
             tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));
