@@ -216,6 +216,14 @@ public class Tour extends FeedItem implements Serializable {
         return (currentHours - startHours);
     }
 
+    public static String getStringDiffToNow(Date fromDate) {
+        long hours = Tour.getHoursDiffToNow(fromDate);
+        if (hours > 24) {
+            return "" + (hours / 24) + "j";
+        }
+        return "" + hours + "h";
+    }
+
     public boolean isSame(Tour tour) {
         if (tour == null) return false;
         if (id != tour.id) return false;
