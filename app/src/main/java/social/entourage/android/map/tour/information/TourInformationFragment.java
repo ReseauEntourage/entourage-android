@@ -770,7 +770,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             }
         }
 
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(feedItem.getStartTime()), "h", location));
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), location));
 
         tourPeopleCount.setText("" + feedItem.getNumberOfPeople());
 
@@ -1318,7 +1318,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 location = String.format("%.2f km", distance/1000.0f);
             }
         }
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(feedItem.getStartTime()), "h", location));
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), location));
     }
 
     // ----------------------------------

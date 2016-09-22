@@ -154,7 +154,7 @@ public class TourViewHolder extends BaseCardViewHolder {
             geocoderTask = new GeocoderTask();
             geocoderTask.execute(tour);
         }
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", location));
+        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(tour.getStartTime()), location));
 
         //tour members
         numberOfPeopleTextView.setText(""+tour.getNumberOfPeople());
@@ -212,7 +212,7 @@ public class TourViewHolder extends BaseCardViewHolder {
                 location = "";
             }
         }
-        tourLocation.setText(String.format(itemView.getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", location));
+        tourLocation.setText(String.format(itemView.getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(tour.getStartTime()), location));
 
         geocoderTask = null;
     }

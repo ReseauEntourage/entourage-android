@@ -148,7 +148,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             }
         }
 
-        entourageLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(entourage.getStartTime()), "h", distanceAsString));
+        entourageLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(entourage.getStartTime()), distanceAsString));
 
         //tour members
         numberOfPeopleTextView.setText(""+entourage.getNumberOfPeople());
@@ -206,7 +206,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
                 location = "";
             }
         }
-        entourageLocation.setText(String.format(itemView.getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(entourage.getStartTime()), "h", location));
+        entourageLocation.setText(String.format(itemView.getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(entourage.getStartTime()), location));
 
         geocoderTask = null;
     }
