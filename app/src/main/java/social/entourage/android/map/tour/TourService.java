@@ -280,7 +280,7 @@ public class TourService extends Service {
     public void updateNewsfeed(EntouragePagination pagination) {
         if (pagination.isLoading) return;
         pagination.isLoading = true;
-        tourServiceManager.retrieveNewsfeed(pagination.page, pagination.itemsPerPage);
+        tourServiceManager.retrieveNewsfeed(pagination.getBeforeDate());
     }
 
     public void updateUserHistory(int userId, int page, int per) {

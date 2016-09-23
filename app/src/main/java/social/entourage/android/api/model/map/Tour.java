@@ -7,15 +7,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import social.entourage.android.Constants;
 import social.entourage.android.R;
-import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 
 @SuppressWarnings("unused")
@@ -224,9 +221,8 @@ public class Tour extends FeedItem implements Serializable {
         if (id != tour.id) return false;
         if (tourPoints.size() != tour.tourPoints.size()) return false;
         if (!status.equals(tour.status)) return false;
-        if (!joinStatus.equals(tour.joinStatus)) return false;
+        return joinStatus.equals(tour.joinStatus);
 
-        return true;
     }
 
     // ----------------------------------

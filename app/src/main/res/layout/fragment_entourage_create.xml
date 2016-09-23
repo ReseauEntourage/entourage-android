@@ -84,7 +84,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_centerVertical="true"
                     android:textColor="@color/greyish"
-                    android:textSize="18dp"/>
+                    android:textSize="18sp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -105,7 +105,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="right|end"
                     android:textColor="@color/accent"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:paddingLeft="5dp"/>
             </RelativeLayout>
 
@@ -141,7 +141,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:textColor="@color/accent"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:visibility="invisible"/>
 
                 <ImageView
@@ -169,7 +169,7 @@
                     android:id="@+id/create_entourage_title_char_count"
                     android:layout_below="@+id/create_entourage_title_separator"
                     android:textColor="@color/greyish"
-                    android:textSize="14dp"/>
+                    android:textSize="14sp"/>
 
             </RelativeLayout>
 
@@ -221,7 +221,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/entourage_create_description_hint"
                     android:id="@+id/create_entourage_description_hint"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:textColor="@color/accent"
                     android:visibility="invisible"/>
             </RelativeLayout>

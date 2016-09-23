@@ -56,8 +56,9 @@ public class EntourageApplication extends Application {
     }
 
     public static User me(Context context) {
+        if (context == null) return null;
         EntourageApplication application = EntourageApplication.get(context);
-        if (application == null) return null;
+        if (application == null || application.component == null) return null;
         AuthenticationController authenticationController = application.component.getAuthenticationController();
         if (authenticationController == null) return null;
         return authenticationController.getUser();

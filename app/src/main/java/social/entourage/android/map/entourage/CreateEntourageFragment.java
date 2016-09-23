@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -47,7 +46,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     public static final String TAG = "social.entourage.android.createentourage";
 
-    private static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
+    protected static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
     private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
 
     private static final int TITLE_MAX_CHAR_COUNT = 150;
@@ -84,6 +83,8 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     private String entourageType;
     private LatLng location;
+
+    private boolean isSaving = false;
 
     // ----------------------------------
     // Lifecycle
@@ -172,8 +173,10 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     @OnClick(R.id.create_entourage_validate_button)
     protected void onValidateClicked() {
+        if (isSaving) return;
         if (isValid()) {
             if (presenter != null) {
+                isSaving = true;
                 TourPoint entourageLocation = new TourPoint(0, 0);
                 if (location != null) {
                     entourageLocation.setLatitude(location.latitude);
@@ -201,6 +204,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     // ----------------------------------
 
     protected void onEntourageCreated(Entourage entourage) {
+        isSaving = false;
         if (entourage == null) {
             Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
         } else {
@@ -321,7 +325,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
                 LatLng location = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
                 String addressLine = "";
-                if (addresses.size() > 0) {
+                if (addresses != null && addresses.size() > 0) {
                     Address address = addresses.get(0);
                     if (address.getMaxAddressLineIndex() >= 0) {
                         addressLine = addresses.get(0).getAddressLine(0);

@@ -31,9 +31,6 @@ public class Entourage extends FeedItem implements Serializable {
     // Attributes
     // ----------------------------------
 
-    @SerializedName("updated_at")
-    private Date updatedTime;
-
     @SerializedName("created_at")
     private Date createdTime;
 
@@ -107,31 +104,21 @@ public class Entourage extends FeedItem implements Serializable {
         this.entourageType = entourageType;
     }
 
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(final Date updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
 
     public boolean isFreezed() {
-        return false;
+        return STATUS_CLOSED.equals(status);
     }
 
     public boolean isSame(Entourage entourage) {
-        boolean isSame = true;
-
         if (entourage == null) return false;
         if (id != entourage.id) return false;
         if (!status.equals(entourage.status)) return false;
         if (!joinStatus.equals(entourage.joinStatus)) return false;
 
-        return isSame;
+        return true;
     }
 
     // ----------------------------------
@@ -163,7 +150,7 @@ public class Entourage extends FeedItem implements Serializable {
 
     @Override
     public Date getEndTime() {
-        return createdTime;
+        return updatedTime;
     }
 
     public void setEndTime(Date endTime) {}

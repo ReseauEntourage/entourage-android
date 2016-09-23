@@ -3,10 +3,12 @@
 
     <!-- Guide -->
     <string name="activity_display_guide_title">GUIDE</string>
+    <string name="map_poi_bottom_title">Guide de la solidarité</string>
     <string name="map_poi_launcher_button">Afficher le guide de solidarité</string>
     <string name="map_poi_close_button">Masquer le guide de solidarité</string>
     <string name="map_poi_create_tour_error">Si vous désirez créer une maraude, vouz devez quitter le guide de solidarité</string>
     <string name="map_poi_create_encounter_error">Si vous désirez créer une rencontre, vouz devez quitter le guide de solidarité</string>
+    <string name="map_poi_create_entourage_error">Si vous désirez créer une entourage, vouz devez quitter le guide de solidarité</string>
 
     <!-- POI -->
     <string name="activity_read_poi_title">GUIDE DE SOLIDARITE</string>

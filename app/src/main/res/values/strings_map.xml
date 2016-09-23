@@ -6,6 +6,7 @@
     <string name="activity_map_title_small">Entourages</string>
     <string name="activity_map_tab_map">Carte</string>
     <string name="activity_map_tab_liste">Liste</string>
+    <string name="activity_map_new_entourages">\u0020Nouveaux entourages</string>
 
     <string name="map_gps_unavailable">Aucun signal GPS</string>
     <string name="map_permission_title">Entourage doit accéder à la géolocalisation</string>

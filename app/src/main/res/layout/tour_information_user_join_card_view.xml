@@ -14,13 +14,12 @@
         android:id="@+id/tic_username"
         android:textColor="@color/accent"
         android:textSize="18sp"
-        />
+        android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
         android:id="@+id/tic_join_status"
         android:textSize="18sp"
         android:textColor="@color/greyish"

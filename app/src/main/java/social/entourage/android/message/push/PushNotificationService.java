@@ -12,9 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.Random;
 
@@ -86,7 +83,7 @@ public class PushNotificationService extends IntentService {
     private PendingIntent createMessagePendingIntent(Message message) {
         Bundle args = new Bundle();
         args.putSerializable(PUSH_MESSAGE, message);
-        Intent messageIntent = null;
+        Intent messageIntent;
         String messageType = "";
         if (message.getContent() != null) {
             messageType = message.getContent().getType();

@@ -120,11 +120,11 @@ public class UserEditPasswordFragment extends DialogFragment {
             User user = userEditFragment.getEditedUser();
             userPassword = user.getSmsCode();
         }
-        if (oldPassword == null || !oldPassword.equals(userPassword)) {
+        if (!oldPassword.equals(userPassword)) {
             displayToast(R.string.user_edit_password_invalid_current_password);
             return false;
         }
-        if (newPassword == null || newPassword.length() < MIN_PASSWORD_LENGTH) {
+        if (newPassword.length() < MIN_PASSWORD_LENGTH) {
             displayToast(R.string.user_edit_password_new_password_too_short);
             return false;
         }

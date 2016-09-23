@@ -1,22 +1,12 @@
 package social.entourage.android.map.encounter;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
@@ -34,8 +24,6 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.Constants;
-import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.model.map.TourPoint;
 
 @SuppressWarnings("WeakerAccess")
 public class ReadEncounterActivity extends EntourageActivity {
@@ -141,7 +129,7 @@ public class ReadEncounterActivity extends EntourageActivity {
                 Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 Encounter encounter = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(encounter.getLatitude(), encounter.getLongitude(), 1);
-                if (addresses.size() > 0) {
+                if (addresses != null && addresses.size() > 0) {
                     encounter.setAddress(addresses.get(0));
                 }
                 return encounter;

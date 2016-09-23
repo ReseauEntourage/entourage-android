@@ -20,5 +20,5 @@ public class CreateEntourageModule {
     @Provides
     public CreateEntourageFragment providesCreateEntourageFragment() {
         return this.fragment;
-    };
+    }
 }

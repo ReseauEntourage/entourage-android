@@ -168,7 +168,7 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveTourMessages(fragment.feedItem.getId(), lastMessageDate);
+            Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveEntourageMessages(fragment.feedItem.getId(), lastMessageDate);
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {

@@ -111,7 +111,7 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
                 Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
                 Encounter encounter = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(encounter.getLatitude(), encounter.getLongitude(), 1);
-                if (addresses.size() > 0) {
+                if (addresses != null && addresses.size() > 0) {
                     encounter.setAddress(addresses.get(0));
                 }
                 return encounter;

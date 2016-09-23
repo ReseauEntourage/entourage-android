@@ -10,8 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:id="@+id/map_filter_title_layout">
 
         <ImageButton
@@ -173,7 +171,7 @@
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/map_filter_tour_distributive_image"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18dp"
+                        android:textSize="18sp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_toLeftOf="@+id/map_filter_tour_distributive_switch"/>

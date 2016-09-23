@@ -1,12 +1,9 @@
 package social.entourage.android.api;
 
-import android.util.ArrayMap;
-
 import com.squareup.okhttp.ResponseBody;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,7 +14,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.ChatMessage;
-import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourJoinMessage;

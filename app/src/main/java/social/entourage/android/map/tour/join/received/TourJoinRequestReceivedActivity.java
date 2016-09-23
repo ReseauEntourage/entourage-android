@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.zip.Inflater;
-
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageComponent;
@@ -17,7 +15,6 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
-import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.view.HtmlTextView;
@@ -121,7 +118,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
     }
 
     protected void onUserTourStatusChanged(boolean statusChanged) {
-        if (statusChanged == false) {
+        if (!statusChanged) {
             Toast.makeText(this, R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
             displayMessage();
         }

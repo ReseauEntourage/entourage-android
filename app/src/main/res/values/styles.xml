@@ -91,7 +91,7 @@
 
     <style name="ImageOnlyButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">?android:attr/selectableItemBackground</item>
-        <item name="android:textSize">0dp</item>
+        <item name="android:textSize">0sp</item>
     </style>
 
     <style name="TransparentAccentButton" parent="Base.Widget.AppCompat.Button">

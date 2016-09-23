@@ -1,7 +1,5 @@
 package social.entourage.android.authentication.login;
 
-import com.squareup.okhttp.ResponseBody;
-
 import javax.inject.Inject;
 
 import retrofit2.Call;

@@ -12,7 +12,7 @@
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/rounded_borders_grey_light">
 
         <ImageButton
@@ -124,7 +124,6 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_below="@id/login_block_information"
                 android:inputType="textWebEmailAddress"
                 android:gravity="center"
                 android:hint="@string/login_hint_email"
@@ -139,8 +138,6 @@
                 android:minHeight="40dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_below="@id/login_edit_email_ask_more"
-                android:layout_centerHorizontal="true"
                 android:text="@string/login_button_newsletter"
                 android:textSize="13sp"
                 android:textColor="@color/text_dark"

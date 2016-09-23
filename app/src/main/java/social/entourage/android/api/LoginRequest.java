@@ -1,7 +1,5 @@
 package social.entourage.android.api;
 
-import com.squareup.okhttp.ResponseBody;
-
 import java.util.HashMap;
 
 import retrofit2.Call;
