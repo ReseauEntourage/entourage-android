@@ -512,7 +512,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         optionsLayout.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.tour_info_button_close, R.id.tour_info_options})
+    @OnClick({R.id.feeditem_option_cancel, R.id.tour_info_options})
     public void onCloseOptionsButton() {
         Animation bottomDown = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.bottom_down);
@@ -521,7 +521,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         optionsLayout.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.tour_info_button_stop_tour)
+    @OnClick(R.id.feeditem_option_stop)
     public void onStopTourButton() {
         if (feedItem.getStatus().equals(FeedItem.STATUS_ON_GOING) || feedItem.getStatus().equals(FeedItem.STATUS_OPEN)) {
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
@@ -563,7 +563,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    @OnClick(R.id.tour_info_button_quit_tour)
+    @OnClick(R.id.feeditem_option_quit)
     public void onQuitTourButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         int titleId = R.string.tour_info_quit_tour_title;
@@ -615,7 +615,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    @OnClick(R.id.tour_info_button_edit)
+    @OnClick(R.id.feeditem_option_edit)
     protected void onEditEntourageButton() {
         CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage)feedItem);
         fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
@@ -793,13 +793,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private void initializeOptionsView() {
         User me = EntourageApplication.me(getActivity());
-        Button stopTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_stop_tour);
-        Button quitTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_quit_tour);
-        Button editEntourageButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_edit);
+        Button stopTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_stop);
+        Button quitTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_quit);
+        Button editEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_edit);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
         editEntourageButton.setVisibility(View.GONE);
-        if (me != null) {
+        if (me != null && feedItem.getAuthor() != null) {
             int myId = me.getId();
             if (feedItem.getAuthor().getUserID() != myId) {
                 quitTourButton.setVisibility(View.VISIBLE);

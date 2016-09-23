@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="bottom"
+              android:background="@color/background_transparent"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+              android:id="@+id/feeditem_options">
+
+    <Button
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tour_info_options_freeze_tour"
+        android:id="@+id/feeditem_option_stop"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"/>
+
+    <Button
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit"
+        android:id="@+id/feeditem_option_edit"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"/>
+
+    <Button
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tour_info_options_quit_tour"
+        android:id="@+id/feeditem_option_quit"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"/>
+
+    <Button
+        style="@style/AccentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tour_info_options_close"
+        android:id="@+id/feeditem_option_cancel"
+        android:alpha="1"
+        android:layout_marginBottom="10dp"/>
+</LinearLayout>
