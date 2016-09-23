@@ -72,6 +72,7 @@
     <string name="login_login_error_retry">Réessayer</string>
 
     <string name="login_name_title">Quel est votre nom ?</string>
+    <string name="login_name_description">Seuls le prénom et la première lettre du nom apparaitront aux autres utilisateurs.</string>
     <string name="login_name_firstname_hint">Prénom</string>
     <string name="login_name_lastname_hint">Nom</string>
 
