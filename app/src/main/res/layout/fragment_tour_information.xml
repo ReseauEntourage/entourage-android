@@ -118,49 +118,11 @@
         android:id="@+id/tour_info_invite_success_layout"
         android:visibility = "gone"/>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:background="@color/background_transparent"
+        layout="@layout/layout_feeditem_options"
         android:id="@+id/tour_info_options"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:visibility="gone">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tour_info_options_freeze_tour"
-            android:id="@+id/tour_info_button_stop_tour"
-            style="@style/WhiteButton"
-            android:layout_marginBottom="5dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/edit"
-            android:id="@+id/tour_info_button_edit"
-            style="@style/WhiteButton"
-            android:layout_marginBottom="5dp"/>
-
-        <Button
-            style="@style/WhiteButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tour_info_options_quit_tour"
-            android:id="@+id/tour_info_button_quit_tour"
-            android:layout_marginBottom="5dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tour_info_options_close"
-            android:id="@+id/tour_info_button_close"
-            style="@style/AccentButton"
-            android:alpha="1"
-            android:layout_marginBottom="10dp"/>
-    </LinearLayout>
+        android:visibility = "gone"/>
 
 </RelativeLayout>
