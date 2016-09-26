@@ -81,6 +81,7 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
@@ -663,9 +664,16 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         }
         else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
+            FeedItem feedItem = event.getFeedItem();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.tour_info_quit_tour_title)
-                    .setMessage(R.string.tour_info_quit_tour_description)
+            int titleId = R.string.tour_info_quit_tour_title;
+            int messageId = R.string.tour_info_quit_tour_description;
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                titleId = R.string.entourage_info_quit_entourage_title;
+                messageId = R.string.entourage_info_quit_entourage_description;
+            }
+            builder.setTitle(titleId)
+                    .setMessage(messageId)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
@@ -702,6 +710,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         FeedItem feedItem = event.getFeedItem();
         if (feedItem == null) return;
         if (mapEntourageFragment != null) {
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && event.isShowUI()) {
+                FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
+                feedItemOptionsFragment.show(getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
+                return;
+            }
             if (!feedItem.isClosed()) {
                 mapEntourageFragment.stopFeedItem(feedItem);
             } else {

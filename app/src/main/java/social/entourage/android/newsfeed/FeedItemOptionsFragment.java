@@ -1,24 +1,40 @@
 package social.entourage.android.newsfeed;
 
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.map.entourage.CreateEntourageFragment;
+import social.entourage.android.tools.BusProvider;
 
 
 public class FeedItemOptionsFragment extends EntourageDialogFragment {
@@ -124,20 +140,61 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.feeditem_option_stop)
     protected void onStopClicked() {
+        if (feedItem.getStatus().equals(FeedItem.STATUS_ON_GOING) || feedItem.getStatus().equals(FeedItem.STATUS_OPEN)) {
+            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                Tour tour = (Tour)feedItem;
+                //compute distance
+                float distance = 0.0f;
+                List<TourPoint> tourPointsList = tour.getTourPoints();
+                TourPoint startPoint = tourPointsList.get(0);
+                for (int i = 1; i < tourPointsList.size(); i++) {
+                    TourPoint p = tourPointsList.get(i);
+                    distance += p.distanceTo(startPoint);
+                    startPoint = p;
+                }
+                tour.setDistance(distance);
 
+                //duration
+                Date now = new Date();
+                Date duration = new Date(now.getTime() - tour.getStartTime().getTime());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                tour.setDuration(dateFormat.format(duration));
+
+                //show stop tour activity
+                Activity activity = getActivity();
+                if (activity instanceof DrawerActivity) {
+                    ((DrawerActivity)activity).showStopTourActivity(tour);
+                }
+
+                //hide the options
+                dismiss();
+            }
+            else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+                dismiss();
+            }
+        }
+        else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
+            BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+            dismiss();
+        }
     }
 
     @OnClick(R.id.feeditem_option_quit)
     protected void onQuitClicked() {
-
+        BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, feedItem));
+        dismiss();
     }
 
     @OnClick(R.id.feeditem_option_edit)
     protected void onEditClicked() {
-        CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage)feedItem);
-        fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
+        if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+            CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage) feedItem);
+            fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
 
-        dismiss();
+            dismiss();
+        }
     }
 
 }
