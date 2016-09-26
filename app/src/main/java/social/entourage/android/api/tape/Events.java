@@ -225,13 +225,23 @@ public class Events {
     public static class OnFeedItemCloseRequestEvent {
 
         private FeedItem feedItem;
+        private boolean showUI = true;
 
         public OnFeedItemCloseRequestEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
         }
 
+        public OnFeedItemCloseRequestEvent(FeedItem feedItem, boolean showUI) {
+            this.feedItem = feedItem;
+            this.showUI = showUI;
+        }
+
         public FeedItem getFeedItem() {
             return feedItem;
+        }
+
+        public boolean isShowUI() {
+            return showUI;
         }
     }
 

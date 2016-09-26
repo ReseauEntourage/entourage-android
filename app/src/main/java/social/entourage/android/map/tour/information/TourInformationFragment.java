@@ -581,12 +581,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                             Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            showProgressBar();
                             User me = EntourageApplication.me(getActivity());
                             if (me == null) {
                                 Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                             }
                             else {
+                                showProgressBar();
                                 tourService.removeUserFromFeedItem(feedItem, me.getId());
                             }
                         }
