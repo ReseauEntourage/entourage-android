@@ -31,6 +31,20 @@ public class Constants {
     public static final String EVENT_LOGIN_SEND_NEW_CODE = "Login_Send_New_Code";
     public static final String EVENT_NEWSLETTER_INSCRIPTION_OK = "Newsletter_Inscription_OK";
     public static final String EVENT_NEWSLETTER_INSCRIPTION_FAILED = "Newsletter_Inscription_Failed";
+    public static final String EVENT_SPLASH_SIGNUP = "SplashSignUp";
+    public static final String EVENT_SPLASH_LOGIN = "SplashLogIn";
+    public static final String EVENT_PHONE_SUBMIT = "TelephoneSubmit";
+    public static final String EVENT_PHONE_SUBMIT_FAIL = "TelephoneSubmitFail";
+    public static final String EVENT_SMS_CODE_REQUEST = "SMSCodeRequest";
+    public static final String EVENT_EMAIL_SUBMIT = "EmailSubmit";
+    public static final String EVENT_NAME_SUBMIT = "NameSubmit";
+    public static final String EVENT_NAME_SUBMIT_ERROR = "NameSubmitError";
+    public static final String EVENT_NAME_TYPE = "NameType";
+    public static final String EVENT_PHOTO_UPLOAD_SUBMIT = "PhotoUploadSubmit";
+    public static final String EVENT_PHOTO_TAKE_SUBMIT = "PhotoTakeSubmit";
+    public static final String EVENT_PHOTO_IGNORE = "IgnorePhoto";
+    public static final String EVENT_PHOTO_BACK = "BackFromPhoto1";
+    public static final String EVENT_PHOTO_SUBMIT = "SubmitInstantPhoto";
 
     //MENU Events
     public static final String EVENT_PROFILE_FROM_MENU = "Open_Profile_From_Menu";

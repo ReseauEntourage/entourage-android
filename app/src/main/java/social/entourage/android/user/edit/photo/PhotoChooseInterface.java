@@ -9,6 +9,7 @@ import android.net.Uri;
 
 public interface PhotoChooseInterface {
 
+    void onPhotoBack();
     void onPhotoIgnore();
     void onPhotoChosen(Uri photoURI);
 }

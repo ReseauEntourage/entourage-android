@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.squareup.otto.Subscribe;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -32,6 +33,7 @@ import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -208,6 +210,8 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.photo_choose_back_button)
     protected void onBackClicked() {
+
+        mListener.onPhotoBack();
         dismiss();
     }
 
@@ -263,6 +267,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     }
 
     private void showChoosePhotoActivity() {
+        FlurryAgent.logEvent(Constants.EVENT_PHOTO_UPLOAD_SUBMIT);
         if (Build.VERSION.SDK_INT <= 19) {
             // Start a separate activity, to handle the issue with onActivityResult
             Intent intent = new Intent(getContext(), ChoosePhotoActivity.class);
@@ -279,6 +284,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     }
 
     private void showTakePhotoActivity() {
+        FlurryAgent.logEvent(Constants.EVENT_PHOTO_TAKE_SUBMIT);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) == null) {

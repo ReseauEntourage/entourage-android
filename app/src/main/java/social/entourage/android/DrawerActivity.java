@@ -895,6 +895,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
+    public void onPhotoBack() {
+        // Do nothing
+    }
+
+    @Override
     public void onPhotoIgnore() {
         // Do nothing
     }
