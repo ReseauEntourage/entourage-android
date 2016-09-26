@@ -43,6 +43,7 @@ import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
@@ -479,6 +480,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
                 break;
             case R.id.action_user:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
                 userFragment = (UserFragment) getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
                 if (userFragment == null) {
                     userFragment = UserFragment.newInstance(getAuthenticationController().getUser().getId());
@@ -487,6 +489,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 userFragment.show(getSupportFragmentManager(), UserFragment.TAG);
                 break;
             case R.id.action_logout:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_LOGOUT);
                 if (mapEntourageFragment != null) {
                     mapEntourageFragment.saveOngoingTour();
                 }
@@ -497,6 +500,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_ABOUT);
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;

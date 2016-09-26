@@ -45,11 +45,18 @@ public class Constants {
     public static final String EVENT_PHOTO_IGNORE = "IgnorePhoto";
     public static final String EVENT_PHOTO_BACK = "BackFromPhoto1";
     public static final String EVENT_PHOTO_SUBMIT = "SubmitInstantPhoto";
+    public static final String EVENT_NOTIFICATIONS_ACCEPT = "AcceptNotificationsFromPopup";
+    public static final String EVENT_NOTIFICATIONS_REFUSE = "RefuseNotificationsFromPopup";
+    public static final String EVENT_GEOLOCATION_ACCEPT = "AcceptGeolocFromPopup";
+    public static final String EVENT_GEOLOCATION_REFUSE = "RefuseGeolocFromPopup";
 
     //MENU Events
     public static final String EVENT_PROFILE_FROM_MENU = "Open_Profile_From_Menu";
     public static final String EVENT_OPEN_GUIDE_FROM_MENU = "Open_Guide_From_Menu";
     public static final String EVENT_OPEN_TOURS_FROM_MENU = "Open_Tours_From_Menu";
+    public static final String EVENT_MENU_TAP_MY_PROFILE = "TapMyProfilePhoto";
+    public static final String EVENT_MENU_LOGOUT = "LogOut";
+    public static final String EVENT_MENU_ABOUT = "AboutClick";
 
     //TOUR Events
     public static final String EVENT_START_TOUR = "Start_Tour";
