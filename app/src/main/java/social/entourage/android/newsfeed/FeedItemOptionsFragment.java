@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.TimeZone;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
@@ -183,6 +186,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.feeditem_option_quit)
     protected void onQuitClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_QUIT_ENTOURAGE);
         BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, feedItem));
         dismiss();
     }

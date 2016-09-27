@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -22,7 +21,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,16 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.RegionUtils;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
@@ -49,7 +41,6 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -198,6 +189,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                FlurryAgent.logEvent(Constants.EVENT_FEED_MENU);
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -390,6 +382,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             discussionBadgeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
+                    FlurryAgent.logEvent(Constants.EVENT_FEED_MESSAGES);
                     //presenter.displayMyTours();
                     presenter.displayMyEntourages();
                 }
@@ -630,12 +623,13 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void userViewRequested(OnUserViewRequestedEvent event) {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_USERPROFILE);
         UserFragment fragment = UserFragment.newInstance(event.getUserId());
         fragment.show(getSupportFragmentManager(), UserFragment.TAG);
     }
 
     @Subscribe
-    public void tourInfoViewRequested(OnFeedItemInfoViewRequestedEvent event) {
+    public void feedItemViewRequested(OnFeedItemInfoViewRequestedEvent event) {
         if (mapEntourageFragment != null) {
             FeedItem feedItem = event.getFeedItem();
             if (feedItem != null) {
@@ -710,11 +704,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Subscribe
-    public void entourageCloseRequested(OnFeedItemCloseRequestEvent event) {
+    public void feedItemCloseRequested(OnFeedItemCloseRequestEvent event) {
         FeedItem feedItem = event.getFeedItem();
         if (feedItem == null) return;
         if (mapEntourageFragment != null) {
             if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && event.isShowUI()) {
+                FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
                 FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
                 feedItemOptionsFragment.show(getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
                 return;
@@ -993,6 +988,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_start_tour_launcher)
     public void onStartTourClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onStartTourLauncher();
         }
@@ -1033,6 +1029,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_create_entourage_contribution)
     public void onCreateEntourageContributionClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_OFFER_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
@@ -1053,6 +1050,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_create_entourage_demand)
     public void onCreateEntouragDemandClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_ASK_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }
@@ -1074,6 +1072,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     @OnClick(R.id.button_poi_launcher)
     protected void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
+            FlurryAgent.logEvent(Constants.EVENT_FEED_GUIDE_SHOW_CLICK);
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_close_button));
             mapOptionsMenu.toggle(false);

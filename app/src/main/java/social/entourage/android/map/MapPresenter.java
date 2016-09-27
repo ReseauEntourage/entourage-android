@@ -3,6 +3,7 @@ package social.entourage.android.map;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.LatLng;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.Constants;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.model.Invitation;
@@ -216,7 +218,7 @@ public class MapPresenter {
         public void onGroundOverlayClick(final GroundOverlay groundOverlay) {
             LatLng markerPosition = groundOverlay.getPosition();
             if (entourageMarkerHashMap.get(markerPosition) != null) {
-                Log.d("Entourage GroundOverlay", "click");
+                FlurryAgent.logEvent(Constants.EVENT_FEED_HEATZONECLICK);
                 if (fragment != null) {
                     fragment.toggleToursList();
                 }

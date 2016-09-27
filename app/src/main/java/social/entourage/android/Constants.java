@@ -58,6 +58,30 @@ public class Constants {
     public static final String EVENT_MENU_LOGOUT = "LogOut";
     public static final String EVENT_MENU_ABOUT = "AboutClick";
 
+    //FEED Events
+    public static final String EVENT_FEED_MESSAGES = "GoToMessages";
+    public static final String EVENT_FEED_MENU = "OpenMenu";
+    public static final String EVENT_FEED_USERPROFILE = "UserProfileClick";
+    public static final String EVENT_FEED_ACTIVE_CLOSE_OVERLAY = "OpenActiveCloseOverlay";
+    public static final String EVENT_FEED_MAPCLICK = "MapClick";
+    public static final String EVENT_FEED_HEATZONECLICK = "HeatzoneMapClick";
+    public static final String EVENT_FEED_TOURLINECLICK = "TourMapClick"; //Not possible
+    public static final String EVENT_FEED_OPEN_ENTOURAGE = "OpenEntouragePublicPage";
+    public static final String EVENT_FEED_OPEN_CONTACT = "OpenEnterInContact";
+    public static final String EVENT_FEED_RECENTERCLICK = "RecenterMapClick";
+    public static final String EVENT_FEED_FILTERSCLICK = "FeedFiltersPress";
+    public static final String EVENT_FEED_REFRESH_LIST = "RefreshListPage";
+    public static final String EVENT_FEED_SCROLL_LIST = "ScrollListPage";
+    public static final String EVENT_FEED_PLUS_CLICK = "PlusFromFeedClick";
+    public static final String EVENT_FEED_TOUR_CREATE_CLICK = "TourCreateClick";
+    public static final String EVENT_FEED_ASK_CREATE_CLICK = "AskCreateClick";
+    public static final String EVENT_FEED_OFFER_CREATE_CLICK = "OfferCreateClick";
+    public static final String EVENT_FEED_GUIDE_SHOW_CLICK = "GDSViewClick";
+    public static final String EVENT_FEED_PENDING_OVERLAY = "PendingRequestOverlay";
+    public static final String EVENT_FEED_CANCEL_JOIN_REQUEST = "CancelJoinRequest";
+    public static final String EVENT_FEED_OPEN_ACTIVE_OVERLAY = "OpenActiveOverlay";
+    public static final String EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed";
+
     //TOUR Events
     public static final String EVENT_START_TOUR = "Start_Tour";
     public static final String EVENT_STOP_TOUR = "Stop_Tour";
