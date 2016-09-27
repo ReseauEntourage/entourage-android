@@ -213,6 +213,7 @@ public class GuideMapEntourageFragment extends Fragment {
     public class OnEntourageMarkerClickListener implements ClusterManager.OnClusterItemClickListener<Poi> {
         @Override
         public boolean onClusterItemClick(Poi poi) {
+            FlurryAgent.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
             saveCameraPosition();
             Intent intent = new Intent(getActivity(), ReadPoiActivity.class);
             Bundle extras = new Bundle();

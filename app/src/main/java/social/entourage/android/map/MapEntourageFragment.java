@@ -1045,6 +1045,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.map_display_type_list)
     public void onDisplayTypeList() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
         showToursList();
     }
 
@@ -1084,7 +1085,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             @Override
             public void onMenuToggle(final boolean opened) {
                 if (opened) {
-                    FlurryAgent.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
+                    if (getActivity() != null) {
+                        if (getActivity() instanceof DrawerActivity) {
+                            DrawerActivity activity = (DrawerActivity)getActivity();
+                            if (activity.isGuideShown()) {
+                                FlurryAgent.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
+                            } else {
+                                FlurryAgent.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -1234,6 +1244,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         float newZoom = cameraPosition.zoom;
 
                         if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+                            if (previousCameraZoom != newZoom) {
+                                if (previousCameraZoom > newZoom) {
+                                    FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_IN);
+                                } else {
+                                    FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
+                                }
+                            }
                             previousCameraZoom = newZoom;
                             previousCameraLocation = newLocation;
                             newsfeedAdapter.removeAll();
@@ -1276,6 +1293,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void onMapLongClick(final LatLng latLng) {
                         if (getActivity() != null) {
+                            FlurryAgent.logEvent(Constants.EVENT_MAP_LONGPRESS);
                             showLongClickOnMapOptions(latLng);
                         }
                     }

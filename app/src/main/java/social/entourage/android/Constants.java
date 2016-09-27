@@ -82,6 +82,19 @@ public class Constants {
     public static final String EVENT_FEED_OPEN_ACTIVE_OVERLAY = "OpenActiveOverlay";
     public static final String EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed";
 
+    //MAP Events
+    public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick"; //Not used
+    public static final String EVENT_MAP_LISTVIEW_CLICK = "ListViewClick";
+    public static final String EVENT_MAP_LONGPRESS = "HiddenButtonsOverlayPress";
+    public static final String EVENT_MAP_ZOOM_IN = "ZoomIn";
+    public static final String EVENT_MAP_ZOOM_OUT = "ZoomOut";
+    public static final String EVENT_MAP_SHIFT_CENTER = "MapShiftCenter"; //Not able to detect if it's an automatic or manual shift
+
+    //GUIDE Events
+    public static final String EVENT_GUIDE_POI_VIEW = "POIView";
+    public static final String EVENT_GUIDE_PLUS_CLICK = "PlusFromGDSClick";
+    public static final String EVENT_GUIDE_MASK_CLICK = "MaskGDSClick";
+
     //TOUR Events
     public static final String EVENT_START_TOUR = "Start_Tour";
     public static final String EVENT_STOP_TOUR = "Stop_Tour";

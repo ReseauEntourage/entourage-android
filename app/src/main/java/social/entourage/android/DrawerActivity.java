@@ -1079,11 +1079,20 @@ public class DrawerActivity extends EntourageSecuredActivity
             selectItem(R.id.action_guide);
         }
         else {
+            FlurryAgent.logEvent(Constants.EVENT_GUIDE_MASK_CLICK);
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_launcher_button));
             mapOptionsMenu.toggle(false);
             selectItem(R.id.action_tours);
         }
+    }
+
+    // ----------------------------------
+    // Helper functions
+    // ----------------------------------
+
+    public boolean isGuideShown() {
+        return !(mainFragment instanceof MapEntourageFragment);
     }
 
 }
