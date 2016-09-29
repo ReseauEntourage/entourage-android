@@ -990,6 +990,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.tour_stop_button)
     public void onStartStopConfirmation() {
+        FlurryAgent.logEvent(Constants.EVENT_TOUR_SUSPEND);
         pauseTour();
         if (getActivity() != null) {
             launchConfirmationActivity();
@@ -1097,7 +1098,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     if (getActivity() != null) {
                         if (getActivity() instanceof DrawerActivity) {
                             DrawerActivity activity = (DrawerActivity)getActivity();
-                            if (activity.isGuideShown()) {
+                            if (tourService.isRunning()) {
+                                FlurryAgent.logEvent(Constants.EVENT_TOUR_PLUS_CLICK);
+                            }
+                            else if (activity.isGuideShown()) {
                                 FlurryAgent.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
                             } else {
                                 FlurryAgent.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
@@ -1373,6 +1377,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void resumeTour(Tour tour) {
         if (tourService != null) {
             if (tour != null && tourService.getCurrentTourId() == tour.getId() && tourService.isRunning()) {
+                FlurryAgent.logEvent(Constants.EVENT_RESTART_TOUR);
                 tourService.resumeTreatment();
             }
         }

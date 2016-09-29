@@ -117,12 +117,15 @@ public class Constants {
     public static final String EVENT_ENTOURAGE_VIEW_ASK_JOIN = "AskJoinFromPublicPage";
 
     //TOUR Events
-    public static final String EVENT_START_TOUR = "Start_Tour";
-    public static final String EVENT_STOP_TOUR = "Stop_Tour";
+    public static final String EVENT_START_TOUR = "StartTourClick";
+    public static final String EVENT_STOP_TOUR = "TourStop";
+    public static final String EVENT_RESTART_TOUR = "TourRestart";
     public static final String EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP = "Open_Tour_Launcher_From_Map";
     public static final String EVENT_TOUR_MEDICAL = "MedicalTourChoose";
     public static final String EVENT_TOUR_SOCIAL = "SocialTourChoose";
     public static final String EVENT_TOUR_DISTRIBUTION = "DistributionTourChoose";
+    public static final String EVENT_TOUR_SUSPEND = "SuspendTourClick";
+    public static final String EVENT_TOUR_PLUS_CLICK = "PlusOnTourClick";
 
     //TOUR ENCOUNTER Events
     public static final String EVENT_CREATE_ENCOUNTER_START = "Open_Create_Encounter_From_Tour";
