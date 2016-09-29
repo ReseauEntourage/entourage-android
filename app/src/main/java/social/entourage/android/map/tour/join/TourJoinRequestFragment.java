@@ -3,6 +3,8 @@ package social.entourage.android.map.tour.join;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +12,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.flurry.android.FlurryAgent;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -46,6 +51,8 @@ public class TourJoinRequestFragment extends DialogFragment {
 
     @Inject
     TourJoinRequestPresenter presenter;
+
+    private boolean startedTyping = false;
 
     // ----------------------------------
     // LIFECYCLE
@@ -87,6 +94,26 @@ public class TourJoinRequestFragment extends DialogFragment {
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+
+        messageView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (s.length() > 0 && !startedTyping) {
+                    FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_START);
+                    startedTyping = true;
+                }
+            }
+        });
     }
 
     @Override
@@ -103,6 +130,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     protected void onMessageSend() {
         if (presenter != null && messageView != null) {
             if (feedItem != null && feedItem.getType() == FeedItem.TOUR_CARD || feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_SUBMIT);
                 presenter.sendMessage(messageView.getText().toString(), feedItem);
             }
             else {

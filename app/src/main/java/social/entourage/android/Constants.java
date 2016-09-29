@@ -1,5 +1,7 @@
 package social.entourage.android;
 
+import java.lang.ref.SoftReference;
+
 public class Constants {
 
     //TODO: should be changed after each release
@@ -94,6 +96,10 @@ public class Constants {
     public static final String EVENT_GUIDE_POI_VIEW = "POIView";
     public static final String EVENT_GUIDE_PLUS_CLICK = "PlusFromGDSClick";
     public static final String EVENT_GUIDE_MASK_CLICK = "MaskGDSClick";
+
+    //SEND JOIN REQUEST Events
+    public static final String EVENT_JOIN_REQUEST_START = "StartJoinMessage";
+    public static final String EVENT_JOIN_REQUEST_SUBMIT = "SubmitJoinMessage";
 
     //TOUR Events
     public static final String EVENT_START_TOUR = "Start_Tour";
