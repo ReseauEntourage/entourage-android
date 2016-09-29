@@ -100,6 +100,8 @@ public class Constants {
     //SEND JOIN REQUEST Events
     public static final String EVENT_JOIN_REQUEST_START = "StartJoinMessage";
     public static final String EVENT_JOIN_REQUEST_SUBMIT = "SubmitJoinMessage";
+    public static final String EVENT_JOIN_REQUEST_ACCEPT = "AcceptJoinRequest";
+    public static final String EVENT_JOIN_REQUEST_REJECT = "RejectJoinRequest";
 
     //ENTOURAGE VIEW Events
     public static final String EVENT_ENTOURAGE_VIEW_WRITE_MESSAGE = "WriteMessage";

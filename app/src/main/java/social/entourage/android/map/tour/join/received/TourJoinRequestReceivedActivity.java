@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
+
 import javax.inject.Inject;
 
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
@@ -77,9 +80,11 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         if (content != null) {
                             requestsCount++;
                             if (content.isTourRelated()) {
+                                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
                                 presenter.acceptTourJoinRequest(content.getJoinableId(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
+                                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
                                 presenter.acceptEntourageJoinRequest(content.getJoinableId(), content.getUserId());
                             }
                             else {
@@ -95,9 +100,11 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         if (content != null) {
                             requestsCount++;
                             if (content.isTourRelated()) {
+                                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
                                 presenter.rejectJoinTourRequest(content.getJoinableId(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
+                                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
                                 presenter.rejectJoinEntourageRequest(content.getJoinableId(), content.getUserId());
                             }
                             else {
