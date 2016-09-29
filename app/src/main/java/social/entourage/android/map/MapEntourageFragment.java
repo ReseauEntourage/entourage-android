@@ -976,6 +976,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         TourTransportMode tourTransportMode = TourTransportMode.findByRessourceId(radioGroupTransportMode.getCheckedRadioButtonId());
         TourType tourType = TourType.findByRessourceId(radioGroupType.getCheckedRadioButtonId());
         startTour(tourTransportMode.getName(), tourType.getName());
+        if (tourType == TourType.MEDICAL) {
+            FlurryAgent.logEvent(Constants.EVENT_TOUR_MEDICAL);
+        }
+        else if (tourType == TourType.BARE_HANDS) {
+            FlurryAgent.logEvent(Constants.EVENT_TOUR_SOCIAL);
+        }
+        else if (tourType == TourType.ALIMENTARY) {
+            FlurryAgent.logEvent(Constants.EVENT_TOUR_DISTRIBUTION);
+        }
         FlurryAgent.logEvent(Constants.EVENT_START_TOUR);
     }
 

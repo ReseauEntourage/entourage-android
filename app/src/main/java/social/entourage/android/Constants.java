@@ -120,6 +120,9 @@ public class Constants {
     public static final String EVENT_START_TOUR = "Start_Tour";
     public static final String EVENT_STOP_TOUR = "Stop_Tour";
     public static final String EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP = "Open_Tour_Launcher_From_Map";
+    public static final String EVENT_TOUR_MEDICAL = "MedicalTourChoose";
+    public static final String EVENT_TOUR_SOCIAL = "SocialTourChoose";
+    public static final String EVENT_TOUR_DISTRIBUTION = "DistributionTourChoose";
 
     //TOUR ENCOUNTER Events
     public static final String EVENT_CREATE_ENCOUNTER_START = "Open_Create_Encounter_From_Tour";
