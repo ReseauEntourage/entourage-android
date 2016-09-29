@@ -278,6 +278,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     };
 
+    private boolean startedTypingMessage = false;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -473,6 +475,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
         publicSection.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
         privateSection.setVisibility(isPublicSectionVisible ?  View.VISIBLE : View.GONE);
+
+        if (!isPublicSectionVisible) {
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC);
+        }
     }
 
     @OnClick(R.id.tour_info_comment_send_button)
@@ -495,7 +501,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message));
         try {
-            FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED);
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SPEECH);
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getContext(), getString(R.string.encounter_voice_message_not_supported), Toast.LENGTH_SHORT).show();
@@ -510,6 +516,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         optionsLayout.startAnimation(bottomUp);
         optionsLayout.setVisibility(View.VISIBLE);
+
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_OVERLAY);
     }
 
     @OnClick({R.id.feeditem_option_cancel, R.id.tour_info_options})
@@ -549,15 +557,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
                 //show stop tour activity
                 if (mListener != null) {
+                    FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
                     mListener.showStopTourActivity(tour);
                 }
             }
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
                 tourService.stopFeedItem(feedItem);
             }
         }
         else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
             if (tourService != null) {
+                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
                 tourService.freezeTour((Tour)feedItem);
             }
         }
@@ -586,6 +597,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                                 Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                             }
                             else {
+                                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
                                 showProgressBar();
                                 tourService.removeUserFromFeedItem(feedItem, me.getId());
                             }
@@ -601,9 +613,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (tourService != null) {
             showProgressBar();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
                 tourService.requestToJoinTour((Tour)feedItem);
             }
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
                 tourService.requestToJoinEntourage((Entourage) feedItem);
             }
             else {
@@ -622,27 +636,32 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         //hide the options
         optionsLayout.setVisibility(View.GONE);
+
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT);
     }
 
     @OnClick(R.id.tour_info_user_add_button)
     protected void onUserAddClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
         inviteSourceLayout.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.invite_source_close_button, R.id.invite_source_close_bottom_button})
     protected void onCloseInviteSourceClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_CLOSE);
         inviteSourceLayout.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.invite_source_contacts_button)
     protected void onInviteContactsClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_CONTACTS);
         // check the permissions
         if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_CODE);
             return;
         }
         // close the invite source view
-        onCloseInviteSourceClicked();
+        inviteSourceLayout.setVisibility(View.GONE);
         // open the contacts fragment
         InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
@@ -652,8 +671,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick(R.id.invite_source_number_button)
     protected void onInvitePhoneNumberClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_PHONE);
         // close the invite source view
-        onCloseInviteSourceClicked();
+        inviteSourceLayout.setVisibility(View.GONE);
         // open the contacts fragment
         InviteByPhoneNumberFragment fragment = InviteByPhoneNumberFragment.newInstance(feedItem.getId(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteByPhoneNumberFragment.TAG);
@@ -1083,9 +1103,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 if (s.length() > 0) {
                     commentRecordButton.setVisibility(View.GONE);
                     commentSendButton.setVisibility(View.VISIBLE);
+                    if (!startedTypingMessage) {
+                        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_WRITE_MESSAGE);
+                        startedTypingMessage = true;
+                    }
                 } else {
                     commentRecordButton.setVisibility(View.VISIBLE);
                     commentSendButton.setVisibility(View.GONE);
+                    startedTypingMessage = false;
                 }
             }
         });

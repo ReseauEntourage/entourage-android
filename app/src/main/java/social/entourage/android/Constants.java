@@ -101,6 +101,21 @@ public class Constants {
     public static final String EVENT_JOIN_REQUEST_START = "StartJoinMessage";
     public static final String EVENT_JOIN_REQUEST_SUBMIT = "SubmitJoinMessage";
 
+    //ENTOURAGE VIEW Events
+    public static final String EVENT_ENTOURAGE_VIEW_WRITE_MESSAGE = "WriteMessage";
+    public static final String EVENT_ENTOURAGE_VIEW_SPEECH = "SpeechRecognitionMessage";
+    public static final String EVENT_ENTOURAGE_VIEW_ADD_MESSAGE = "AddContentToMessage";
+    public static final String EVENT_ENTOURAGE_VIEW_OPTIONS_OVERLAY = "OpenEntourageOptionsOverlay";
+    public static final String EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE = "CloseEntourageConfirm";
+    public static final String EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT = "ExitEntourageConfirm";
+    public static final String EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT = "EditEntourageConfirm";
+    public static final String EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS = "InviteFriendsClick";
+    public static final String EVENT_ENTOURAGE_VIEW_INVITE_CONTACTS = "InviteContacts";
+    public static final String EVENT_ENTOURAGE_VIEW_INVITE_PHONE = "InviteByPhoneNumber";
+    public static final String EVENT_ENTOURAGE_VIEW_INVITE_CLOSE = "InviteFriendsClose";
+    public static final String EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC = "EntouragePublicPageFromMessages";
+    public static final String EVENT_ENTOURAGE_VIEW_ASK_JOIN = "AskJoinFromPublicPage";
+
     //TOUR Events
     public static final String EVENT_START_TOUR = "Start_Tour";
     public static final String EVENT_STOP_TOUR = "Stop_Tour";
