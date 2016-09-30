@@ -197,6 +197,8 @@ public class TourViewHolder extends BaseCardViewHolder {
             FeedItem.LastMessage lastMessage = tour.getLastMessage();
             if (lastMessage != null) {
                 lastMessageTextView.setText(lastMessage.getText());
+            } else {
+                lastMessageTextView.setText("");
             }
         }
 

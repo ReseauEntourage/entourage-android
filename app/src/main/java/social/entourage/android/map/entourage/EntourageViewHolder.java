@@ -191,6 +191,8 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             FeedItem.LastMessage lastMessage = entourage.getLastMessage();
             if (lastMessage != null) {
                 lastMessageTextView.setText(lastMessage.getText());
+            } else {
+                lastMessageTextView.setText("");
             }
         }
 
