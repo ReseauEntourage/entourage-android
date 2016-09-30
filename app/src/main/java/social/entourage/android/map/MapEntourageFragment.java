@@ -1030,8 +1030,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 longTapCoordinates = null;
             }
             else {
-                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
-                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getCurrentLocation().getLatitude());
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getCurrentLocation().getLongitude());
             }
             intent.putExtras(args);
             //startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
