@@ -127,6 +127,17 @@ public class Constants {
     public static final String EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick"; //A lot of code needs to be written to detect this
     public static final String EVENT_MYENTOURAGES_BACK_CLICK = "BackToFeedClick";
 
+    //MY ENTOURAGES FILTER Events
+    public static final String EVENT_MYENTOURAGES_FILTER_EXIT = "ExitMessagesFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_SAVE = "SaveMessagesFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_ACTIVE = "ActiveMessagesFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_INVITATIONS = "InvitationsFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_ORGANIZER = "OrganizerFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_PAST = "PastFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_ASK = "AskMessagesFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_OFFER = "OfferMessagesFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_TOUR = "TourMessagesFilter";
+
     //TOUR Events
     public static final String EVENT_START_TOUR = "StartTourClick";
     public static final String EVENT_STOP_TOUR = "TourStop";
