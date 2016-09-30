@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -214,6 +216,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     @OnClick(R.id.create_entourage_position_layout)
     protected void onPositionClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
         EntourageLocationFragment fragment = EntourageLocationFragment.newInstance(location, positionTextView.getText().toString(), this);
         fragment.show(getFragmentManager(), EntourageLocationFragment.TAG);
     }

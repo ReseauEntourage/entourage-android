@@ -117,13 +117,14 @@ public class Constants {
     public static final String EVENT_ENTOURAGE_VIEW_INVITE_CLOSE = "InviteFriendsClose";
     public static final String EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC = "EntouragePublicPageFromMessages";
     public static final String EVENT_ENTOURAGE_VIEW_ASK_JOIN = "AskJoinFromPublicPage";
+    public static final String EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION = "ChangeLocationClick";
 
     //MY ENTOURAGES Events
     public static final String EVENT_MYENTOURAGES_BANNER_CLICK = "BannerMessageClick";
     public static final String EVENT_MYENTOURAGES_MESSAGE_OPEN = "MessageOpen"; //The entourage card is reused in multiple screens
     public static final String EVENT_MYENTOURAGES_PLUS_CLICK = "PlusOnMessagesPageClick";
     public static final String EVENT_MYENTOURAGES_FILTER_CLICK = "MessagesFilterClick";
-    public static final String EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick";
+    public static final String EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick"; //A lot of code needs to be written to detect this
     public static final String EVENT_MYENTOURAGES_BACK_CLICK = "BackToFeedClick";
 
     //TOUR Events
