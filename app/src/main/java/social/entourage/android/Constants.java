@@ -146,6 +146,20 @@ public class Constants {
     public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED = "Encounter_Voice_Message_Recording_Not_Supported";
     public static final String EVENT_CREATE_ENCOUNTER_FAILED = "Encounter_Create_Failed";
 
+    //MAP Filter Events
+    public static final String EVENT_MAP_FILTER_FILTER1 = "ClickFilter1Value";
+    public static final String EVENT_MAP_FILTER_FILTER2 = "ClickFilter2Value";
+    public static final String EVENT_MAP_FILTER_FILTER3 = "ClickFilter3Value";
+    public static final String EVENT_MAP_FILTER_ONLY_MINE = "ShowOnlyMineClick";
+    public static final String EVENT_MAP_FILTER_ONLY_TOURS = "ShowOnlyToursFilterClick";
+    public static final String EVENT_MAP_FILTER_ONLY_OFFERS = "ShowOnlyOffersClick";
+    public static final String EVENT_MAP_FILTER_ONLY_ASK = "ShowOnlyAsksClick";
+    public static final String EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS = "ShowOnlyMedicalToursClick";
+    public static final String EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS = "ShowOnlySocialToursClick";
+    public static final String EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS = "ShowOnlyDistributionToursClick";
+    public static final String EVENT_MAP_FILTER_SUBMIT = "SubmitFilterPrefferences";
+    public static final String EVENT_MAP_FILTER_CLOSE = "CloseFilter";
+
     // Geolocation
     public static final long UPDATE_TIMER_MILLIS_OFF_TOUR = 20000;
     public static final long UPDATE_TIMER_MILLIS_ON_TOUR_FEET = 5000;
