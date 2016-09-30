@@ -3,9 +3,13 @@ package social.entourage.android.invite.view;
 import android.view.View;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
@@ -34,6 +38,7 @@ public class InvitationCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (entourageId == 0 || invitationId == 0) return;
+                FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_BANNER_CLICK);
                 BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, entourageId, invitationId));
             }
         });
