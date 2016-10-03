@@ -265,13 +265,13 @@ public class TourViewHolder extends BaseCardViewHolder {
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(tour));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                    if (tour.getAuthor() != null) {
-                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+//                    if (tour.getAuthor() != null) {
+//                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
                             BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
                             return;
-                        }
-                    }
-                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
+//                        }
+//                    }
+//                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //What to do on rejected status ?
                 } else {
