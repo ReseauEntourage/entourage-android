@@ -84,6 +84,7 @@
     <string name="tour_cell_location">%1$s - %2$s</string>
     <string name="tour_cell_button_join">Je rejoins</string>
     <string name="tour_cell_button_accepted">Actif</string>
+    <string name="tour_cell_button_ongoing">En cours</string>
     <string name="tour_cell_button_pending">Demande en attente</string>
     <string name="tour_cell_button_rejected">Demande refusée</string>
 
