@@ -296,9 +296,9 @@ public class TourService extends Service {
         tourServiceManager.updateTourCoordinates();
     }
 
-    public void beginTreatment(String transportMode, String type) {
+    public void beginTreatment(String type) {
         if (!isRunning()) {
-            tourServiceManager.startTour(transportMode, type);
+            tourServiceManager.startTour(type);
         }
     }
 
