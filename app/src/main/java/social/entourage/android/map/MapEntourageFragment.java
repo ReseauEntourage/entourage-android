@@ -85,7 +85,6 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
@@ -109,7 +108,6 @@ import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.join.JoinRequestOkFragment;
-import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
 
@@ -189,9 +187,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.launcher_tour_go)
     ImageView buttonLaunchTour;
-
-    @Bind(R.id.launcher_tour_transport_mode)
-    RadioGroup radioGroupTransportMode;
 
     @Bind(R.id.launcher_tour_type)
     RadioGroup radioGroupType;
@@ -969,9 +964,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     void onStartNewTour() {
         buttonLaunchTour.setEnabled(false);
         launcherProgressBar.setVisibility(View.VISIBLE);
-        TourTransportMode tourTransportMode = TourTransportMode.findByRessourceId(radioGroupTransportMode.getCheckedRadioButtonId());
         TourType tourType = TourType.findByRessourceId(radioGroupType.getCheckedRadioButtonId());
-        startTour(tourTransportMode.getName(), tourType.getName());
+        startTour(tourType.getName());
         FlurryAgent.logEvent(Constants.EVENT_START_TOUR);
     }
 
@@ -1293,10 +1287,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         return tourService != null ? tourService.getCurrentTour() : null;
     }
 
-    private void startTour(String transportMode, String type) {
+    private void startTour(String type) {
         if (tourService != null && !tourService.isRunning()) {
             color = getTrackColor(false, type, new Date());
-            tourService.beginTreatment(transportMode, type);
+            tourService.beginTreatment(type);
         }
     }
 
@@ -1704,18 +1698,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         double longitude = lastPoint.getLongitude();
         LatLng position = new LatLng(latitude, longitude);
 
-        BitmapDescriptor icon;
-        /*
-        if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
-            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_feet_active);
-        }
-        else if (tour.getTourVehicleType().equals(TourTransportMode.CAR.getName())) {
-            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_car_active);
-        }
-        */
         IconGenerator iconGenerator = new IconGenerator(getContext());
         iconGenerator.setTextAppearance(R.style.OngoingTourMarker);
-        icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(tour.getOrganizationName()));
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(tour.getOrganizationName()));
 
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(position)
