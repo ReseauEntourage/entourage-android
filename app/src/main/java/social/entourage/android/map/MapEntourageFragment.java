@@ -24,8 +24,10 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -231,7 +233,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     //pagination
     private EntouragePagination pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
-    private int scrollDeltaY;
+    private int scrollDeltaY = 0;
     private OnScrollListener scrollListener = new OnScrollListener();
 
     // ----------------------------------
@@ -1276,6 +1278,48 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             toursListView.setLayoutManager(new LinearLayoutManager(getContext()));
             newsfeedAdapter = new NewsfeedAdapter();
             toursListView.setAdapter(newsfeedAdapter);
+
+            toursListView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                @Override
+                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                    if (e.getAction() == MotionEvent.ACTION_MOVE) {
+                        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv.getLayoutManager();
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            // beginning of the recycler
+                            if (e.getHistorySize() > 0) {
+                                float originalY = e.getHistoricalY(0, 0);
+                                float finalY = e.getY(0);
+                                float dY = finalY - originalY;
+                                if (dY > 0) {
+                                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                                    if (lp.topMargin < 0) {
+                                        lp.topMargin += dY;
+                                        if (lp.topMargin > 0) {
+                                            lp.topMargin = 0;
+                                        }
+                                        layoutMapMain.setLayoutParams(lp);
+
+                                        layoutMain.forceLayout();
+
+                                    }
+                                }
+                                //Log.d(null, "recyclerview: trying to scroll " + dY);
+                            }
+                        }
+                    }
+                    return false;
+                }
+
+                @Override
+                public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
+
+                }
+
+                @Override
+                public void onTouchEvent(final RecyclerView rv, final MotionEvent e) {
+
+                }
+            });
         }
     }
 
@@ -1742,6 +1786,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
         originalMapLayoutHeight = lp.height;
 
+        if (lp.topMargin < 0) {
+            lp.topMargin = 0;
+            layoutMapMain.setLayoutParams(lp);
+
+            layoutMain.forceLayout();
+        }
+
         final int targetHeight = layoutMain.getMeasuredHeight();
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -1981,16 +2032,33 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
 
             scrollDeltaY += dy;
-            if (dy > 0 && scrollDeltaY > MAX_SCROLL_DELTA_Y) {
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int position = linearLayoutManager.findLastVisibleItemPosition();
-                if (position == recyclerView.getAdapter().getItemCount()-1) {
-                    if (tourService != null) {
-                        tourService.updateNewsfeed(pagination);
+            if (dy > 0) {
+                // Scrolling down
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                if (lp.topMargin > -lp.height) {
+                    lp.topMargin -= dy;
+                    if (lp.topMargin < -lp.height) {
+                        lp.topMargin = -lp.height;
                     }
+                    layoutMapMain.setLayoutParams(lp);
+                    recyclerView.scrollToPosition(0);
+
+                    layoutMain.forceLayout();
+
+                    return;
                 }
 
-                scrollDeltaY = 0;
+                if (scrollDeltaY > MAX_SCROLL_DELTA_Y) {
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int position = linearLayoutManager.findLastVisibleItemPosition();
+                    if (position == recyclerView.getAdapter().getItemCount() - 1) {
+                        if (tourService != null) {
+                            tourService.updateNewsfeed(pagination);
+                        }
+                    }
+
+                    scrollDeltaY = 0;
+                }
             }
         }
         @Override
