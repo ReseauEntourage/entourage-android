@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -221,6 +222,16 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
         fragment.show(getFragmentManager(), EntourageLocationFragment.TAG);
     }
 
+    @OnClick(R.id.create_entourage_title_mic)
+    protected void onTitleMicClick() {
+        showKeyboard(titleEditText);
+    }
+
+    @OnClick(R.id.create_entourage_description_mic)
+    protected void onDescriptionMicClick() {
+        showKeyboard(descriptionEditText);
+    }
+
     // ----------------------------------
     // Presenter callbacks
     // ----------------------------------
@@ -374,6 +385,12 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
         }
         */
         return true;
+    }
+
+    protected void showKeyboard(View view) {
+        view.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private class GeocoderTask extends AsyncTask<LatLng, Void, String> {

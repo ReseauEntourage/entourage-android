@@ -60,7 +60,7 @@ public interface EntourageRequest {
     Call<ResponseBody> updateUserEntourageStatus(
             @Path("entourage_id") long entourageId,
             @Path("user_id") int userId,
-            @Body HashMap<String, Object> user
+            @Body HashMap<String, Object> info
     );
 
     @DELETE("entourages/{entourage_id}/users/{user_id}")

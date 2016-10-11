@@ -101,11 +101,12 @@ public class TourJoinRequestPresenter {
     protected void sendMessage(String message, Entourage entourage) {
         User me = EntourageApplication.me(fragment.getContext());
 
-        HashMap<String, Object> user = new HashMap<>();
-        user.put("status", entourage.getJoinStatus());
-        user.put("message", message);
+        HashMap<String, Object> info = new HashMap<>();
+        HashMap<String, String> messageHashMap = new HashMap<>();
+        messageHashMap.put("message", message);
+        info.put("request", messageHashMap);
 
-        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourage.getId(), me.getId(), user);
+        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourage.getId(), me.getId(), info);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {

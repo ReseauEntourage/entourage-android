@@ -25,6 +25,9 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
         if(!authenticationController.isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
+        } else {
+            EntourageApplication application = (EntourageApplication)getApplication();
+            application.finishLoginActivity();
         }
     }
 

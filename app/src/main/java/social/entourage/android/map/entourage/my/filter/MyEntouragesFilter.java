@@ -9,8 +9,8 @@ public class MyEntouragesFilter {
 
     public boolean activeEntourages = true;
     public boolean closedEntourages = true;
-    public boolean showOwnEntourages = true;
-    public boolean showJoinedEntourages= true;
+    public boolean showOwnEntourages = false;
+    public boolean showJoinedEntourages= false;
 
     public boolean entourageTypeDemand = true;
     public boolean entourageTypeContribution = true;

@@ -180,7 +180,15 @@ public class TourViewHolder extends BaseCardViewHolder {
                     actButton.setText(R.string.tour_cell_button_pending);
                     actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                    actButton.setText(R.string.tour_cell_button_accepted);
+                    if (tour.getAuthor() != null) {
+                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+                            actButton.setText(R.string.tour_cell_button_ongoing);
+                        } else {
+                            actButton.setText(R.string.tour_cell_button_accepted);
+                        }
+                    } else {
+                        actButton.setText(R.string.tour_cell_button_accepted);
+                    }
                     actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_rejected);
@@ -197,6 +205,8 @@ public class TourViewHolder extends BaseCardViewHolder {
             FeedItem.LastMessage lastMessage = tour.getLastMessage();
             if (lastMessage != null) {
                 lastMessageTextView.setText(lastMessage.getText());
+            } else {
+                lastMessageTextView.setText("");
             }
         }
 
@@ -263,13 +273,13 @@ public class TourViewHolder extends BaseCardViewHolder {
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(tour));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                    if (tour.getAuthor() != null) {
-                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+//                    if (tour.getAuthor() != null) {
+//                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
                             BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
                             return;
-                        }
-                    }
-                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
+//                        }
+//                    }
+//                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //What to do on rejected status ?
                 } else {

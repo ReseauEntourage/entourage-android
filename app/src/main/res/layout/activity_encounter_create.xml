@@ -87,8 +87,7 @@
         <EditText
             android:id="@+id/edittext_message"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lines="10"
+            android:layout_height="match_parent"
             android:gravity="left|top"
             android:inputType="textMultiLine"
             android:textCursorDrawable="@drawable/bg_cursor_yellow"
@@ -96,7 +95,8 @@
             android:hint="@string/encounter_hint_notes"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:layout_above="@+id/button_create_encounter"/>
 
         <ImageButton
             android:id="@+id/button_record"
@@ -124,7 +124,7 @@
             android:id="@+id/button_create_encounter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="@string/encouter_add"
             android:minWidth="50dp"
             android:layout_centerHorizontal="true"

@@ -1,6 +1,7 @@
 package social.entourage.android.map.tour.join.received;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,7 @@ import com.flurry.android.FlurryAgent;
 import javax.inject.Inject;
 
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
@@ -137,6 +139,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    startActivity(new Intent(TourJoinRequestReceivedActivity.this, DrawerActivity.class));
                     finish();
                 }
             }, duration+100);

@@ -14,8 +14,6 @@
     <string name="tour_freeze_fail">Echec de la clôture de maraude</string>
     <string name="tour_started">Départ de la maraude</string>
     <string name="tour_stopped">Fin de la maraude</string>
-    <string name="tour_check_feet">A pieds</string>
-    <string name="tour_check_car">En voiture</string>
     <string name="tour_info_unknown">Inconnu</string>
     <string name="tour_go">C\'est parti !</string>
     <string name="tour_type">Type de maraude</string>
@@ -84,6 +82,7 @@
     <string name="tour_cell_location">%1$s - %2$s</string>
     <string name="tour_cell_button_join">Je rejoins</string>
     <string name="tour_cell_button_accepted">Actif</string>
+    <string name="tour_cell_button_ongoing">En cours</string>
     <string name="tour_cell_button_pending">Demande en attente</string>
     <string name="tour_cell_button_rejected">Demande refusée</string>
 

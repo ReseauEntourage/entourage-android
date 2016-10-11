@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/create_entourage_position_pin"
-                    android:src="@drawable/ic_map_pin"
+                    android:src="@drawable/ic_map_pin_grey"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp"/>

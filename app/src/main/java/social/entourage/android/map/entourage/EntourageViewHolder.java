@@ -191,6 +191,8 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             FeedItem.LastMessage lastMessage = entourage.getLastMessage();
             if (lastMessage != null) {
                 lastMessageTextView.setText(lastMessage.getText());
+            } else {
+                lastMessageTextView.setText("");
             }
         }
 
@@ -255,13 +257,13 @@ public class EntourageViewHolder extends BaseCardViewHolder {
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                         BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                        if (entourage.getAuthor() != null) {
-                            if (entourage.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+//                        if (entourage.getAuthor() != null) {
+//                            if (entourage.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
                                 BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(entourage));
                                 return;
-                            }
-                        }
-                        BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, entourage));
+//                            }
+//                        }
+//                        BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, entourage));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //What to do on rejected status ?
                 } else {

@@ -105,7 +105,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/background"
                     android:paddingLeft="10dp"
-                    android:id="@+id/myentourages_filter_invited_layout">
+                    android:id="@+id/myentourages_filter_invited_layout"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -151,9 +152,8 @@
                         android:textColor="@color/greyish_brown"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_toLeftOf="@+id/myentourages_filter_own_switch"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/myentourages_filter_own_switch"/>
 
                     <Switch
                         android:layout_width="wrap_content"

@@ -24,8 +24,10 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -85,7 +87,6 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
@@ -109,7 +110,6 @@ import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.join.JoinRequestOkFragment;
-import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
 
@@ -190,9 +190,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.launcher_tour_go)
     ImageView buttonLaunchTour;
 
-    @Bind(R.id.launcher_tour_transport_mode)
-    RadioGroup radioGroupTransportMode;
-
     @Bind(R.id.launcher_tour_type)
     RadioGroup radioGroupType;
 
@@ -236,7 +233,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     //pagination
     private EntouragePagination pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
-    private int scrollDeltaY;
+    private int scrollDeltaY = 0;
     private OnScrollListener scrollListener = new OnScrollListener();
 
     // ----------------------------------
@@ -973,9 +970,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     void onStartNewTour() {
         buttonLaunchTour.setEnabled(false);
         launcherProgressBar.setVisibility(View.VISIBLE);
-        TourTransportMode tourTransportMode = TourTransportMode.findByRessourceId(radioGroupTransportMode.getCheckedRadioButtonId());
         TourType tourType = TourType.findByRessourceId(radioGroupType.getCheckedRadioButtonId());
-        startTour(tourTransportMode.getName(), tourType.getName());
+        startTour(tourType.getName());
         if (tourType == TourType.MEDICAL) {
             FlurryAgent.logEvent(Constants.EVENT_TOUR_MEDICAL);
         }
@@ -1044,8 +1040,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 longTapCoordinates = null;
             }
             else {
-                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
-                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getCurrentLocation().getLatitude());
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getCurrentLocation().getLongitude());
             }
             intent.putExtras(args);
             //startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
@@ -1328,6 +1324,48 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             toursListView.setLayoutManager(new LinearLayoutManager(getContext()));
             newsfeedAdapter = new NewsfeedAdapter();
             toursListView.setAdapter(newsfeedAdapter);
+
+            toursListView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                @Override
+                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                    if (e.getAction() == MotionEvent.ACTION_MOVE) {
+                        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv.getLayoutManager();
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            // beginning of the recycler
+                            if (e.getHistorySize() > 0) {
+                                float originalY = e.getHistoricalY(0, 0);
+                                float finalY = e.getY(0);
+                                float dY = finalY - originalY;
+                                if (dY > 0) {
+                                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                                    if (lp.topMargin < 0) {
+                                        lp.topMargin += dY;
+                                        if (lp.topMargin > 0) {
+                                            lp.topMargin = 0;
+                                        }
+                                        layoutMapMain.setLayoutParams(lp);
+
+                                        layoutMain.forceLayout();
+
+                                    }
+                                }
+                                //Log.d(null, "recyclerview: trying to scroll " + dY);
+                            }
+                        }
+                    }
+                    return false;
+                }
+
+                @Override
+                public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
+
+                }
+
+                @Override
+                public void onTouchEvent(final RecyclerView rv, final MotionEvent e) {
+
+                }
+            });
         }
     }
 
@@ -1339,10 +1377,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         return tourService != null ? tourService.getCurrentTour() : null;
     }
 
-    private void startTour(String transportMode, String type) {
+    private void startTour(String type) {
         if (tourService != null && !tourService.isRunning()) {
             color = getTrackColor(false, type, new Date());
-            tourService.beginTreatment(transportMode, type);
+            tourService.beginTreatment(type);
         }
     }
 
@@ -1751,18 +1789,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         double longitude = lastPoint.getLongitude();
         LatLng position = new LatLng(latitude, longitude);
 
-        BitmapDescriptor icon;
-        /*
-        if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
-            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_feet_active);
-        }
-        else if (tour.getTourVehicleType().equals(TourTransportMode.CAR.getName())) {
-            icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_car_active);
-        }
-        */
         IconGenerator iconGenerator = new IconGenerator(getContext());
         iconGenerator.setTextAppearance(R.style.OngoingTourMarker);
-        icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(tour.getOrganizationName()));
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(tour.getOrganizationName()));
 
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(position)
@@ -1803,6 +1832,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
         originalMapLayoutHeight = lp.height;
+
+        if (lp.topMargin < 0) {
+            lp.topMargin = 0;
+            layoutMapMain.setLayoutParams(lp);
+
+            layoutMain.forceLayout();
+        }
 
         final int targetHeight = layoutMain.getMeasuredHeight();
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
@@ -2043,17 +2079,34 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
 
             scrollDeltaY += dy;
-            if (dy > 0 && scrollDeltaY > MAX_SCROLL_DELTA_Y) {
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int position = linearLayoutManager.findLastVisibleItemPosition();
-                if (position == recyclerView.getAdapter().getItemCount()-1) {
-                    FlurryAgent.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
-                    if (tourService != null) {
-                        tourService.updateNewsfeed(pagination);
+            if (dy > 0) {
+                // Scrolling down
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                if (lp.topMargin > -lp.height) {
+                    lp.topMargin -= dy;
+                    if (lp.topMargin < -lp.height) {
+                        lp.topMargin = -lp.height;
                     }
+                    layoutMapMain.setLayoutParams(lp);
+                    recyclerView.scrollToPosition(0);
+
+                    layoutMain.forceLayout();
+
+                    return;
                 }
 
-                scrollDeltaY = 0;
+                if (scrollDeltaY > MAX_SCROLL_DELTA_Y) {
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int position = linearLayoutManager.findLastVisibleItemPosition();
+                    if (position == recyclerView.getAdapter().getItemCount() - 1) {
+                        FlurryAgent.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
+                        if (tourService != null) {
+                            tourService.updateNewsfeed(pagination);
+                        }
+                    }
+
+                    scrollDeltaY = 0;
+                }
             }
         }
         @Override
