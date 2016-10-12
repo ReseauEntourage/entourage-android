@@ -196,7 +196,7 @@
                     android:textColorHint="@color/greyish"
                     android:hint="@string/entourage_create_description_hint"
                     android:gravity="left|top"
-                    android:paddingTop="14dp"
+                    android:paddingTop="18dp"
                     android:layout_toLeftOf="@+id/create_entourage_description_mic"
                     android:autoLink="all"/>
 
@@ -222,7 +222,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/entourage_create_description_hint"
                     android:id="@+id/create_entourage_description_hint"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     android:textColor="@color/accent"
                     android:visibility="invisible"/>
             </RelativeLayout>
