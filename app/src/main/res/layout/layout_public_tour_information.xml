@@ -30,7 +30,8 @@
                 android:id="@+id/tour_info_description"
                 android:padding="10dp"
                 android:textColor="@color/greyish_brown"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:autoLink="all"/>
 
             <LinearLayout
                 android:orientation="vertical"
