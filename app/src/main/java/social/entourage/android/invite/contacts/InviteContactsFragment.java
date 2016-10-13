@@ -10,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.telephony.PhoneNumberUtils;
-import android.util.ArraySet;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -103,7 +101,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
      * the Android framework, so it is prefaced with "android.R.id"
      */
     private final static int[] TO_IDS = {
-            R.id.contact_name
+            R.id.contact_phone
     };
 
     @Bind(R.id.invite_contacts_listView)
@@ -170,14 +168,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        // Gets a CursorAdapter
-//        mContactsAdapter = new SimpleCursorAdapter(
-//                getActivity(),
-//                R.layout.layout_invite_contacts_list_item,
-//                null,
-//                FROM_COLUMNS, TO_IDS,
-//                0);
+        
         mContactsAdapter = new InviteContactsAdapter(
                 getActivity(),
                 FROM_COLUMNS[0]

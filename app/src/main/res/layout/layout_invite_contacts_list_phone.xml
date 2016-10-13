@@ -11,20 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/contact_name"
+        android:id="@+id/contact_phone"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:textColor="@color/greyish_brown"
         android:textSize="18sp"
-        android:layout_toLeftOf="@+id/contact_checkBox"/>
+        android:layout_toLeftOf="@+id/contact_checkBox"
+        android:gravity="right"
+        android:layout_marginRight="10dp"
+        />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/contact_checkBox"
         android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/contact_name"
+        android:layout_alignBaseline="@+id/contact_phone"
         android:visibility="visible"
         android:clickable="false"
         android:button="@drawable/cb_contact"
@@ -34,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/greyish"
-        android:layout_below="@+id/contact_name"/>
+        android:layout_below="@+id/contact_phone"
+        android:id="@+id/contact_separator"/>
 
 </RelativeLayout>
