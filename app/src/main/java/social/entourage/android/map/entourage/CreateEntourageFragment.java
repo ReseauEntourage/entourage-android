@@ -305,7 +305,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
             titleEditText.setHint(R.string.entourage_create_title_contribution_hint);
         } else {
             titleHintTextView.setText(R.string.entourage_create_title_demand_hint);
-            titleEditText.setHint(R.string.entourage_create_title_demand_hint);
+            titleEditText.setHint(R.string.entourage_create_title_demand_hint_long);
         }
 
         if (editedEntourage != null) {
@@ -340,6 +340,12 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     }
 
     private void initializeDescriptionEditText() {
+
+        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
+            descriptionEditText.setHint(R.string.entourage_create_description_contribution_hint);
+        } else {
+            descriptionEditText.setHint(R.string.entourage_create_description_demand_hint);
+        }
 
         if (editedEntourage != null) {
             descriptionEditText.setText(editedEntourage.getDescription());
