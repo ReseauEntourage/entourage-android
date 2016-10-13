@@ -28,6 +28,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
@@ -188,7 +189,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
 
         //last message
         if (lastMessageTextView != null) {
-            FeedItem.LastMessage lastMessage = entourage.getLastMessage();
+            LastMessage lastMessage = entourage.getLastMessage();
             if (lastMessage != null) {
                 lastMessageTextView.setText(lastMessage.getText());
             } else {
