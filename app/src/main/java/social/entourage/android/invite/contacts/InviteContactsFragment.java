@@ -168,7 +168,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
+
         mContactsAdapter = new InviteContactsAdapter(
                 getActivity(),
                 FROM_COLUMNS[0]
@@ -232,11 +232,8 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         sendButton.setEnabled(false);
         // Show the progress dialog
         ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_retrieving_phone_numbers);
-        // Get the Cursor
-        Cursor cursor = ((InviteContactsAdapter)contactsList.getAdapter()).getCursor();
         // Get the selected contacts
         int selectedContactsCount = 0;
-        StringBuffer contactIds = new StringBuffer();
         SparseBooleanArray checkedItems = contactsList.getCheckedItemPositions();
         for (int i = 0; i < contactsList.getCount(); i++) {
             if (checkedItems.valueAt(i)) {
@@ -247,27 +244,22 @@ public class InviteContactsFragment extends InviteBaseFragment implements
             sendButton.setEnabled(true);
             return;
         }
-        mContactIdsSelectionArgs = new String[selectedContactsCount];
-        int index = 0;
+        MultipleInvitations invitations = new MultipleInvitations(Invitation.INVITE_BY_SMS);
         for (int i = 0; i < contactsList.getCount(); i++) {
             if (checkedItems.valueAt(i)) {
                 int position = checkedItems.keyAt(i);
-                // Move to the selected contact
-                cursor.moveToPosition(mContactsAdapter.getCursorPositionForItemAt(position));
-                // Get the _ID value
-                String contactId = cursor.getString(CONTACT_ID_INDEX);
-                mContactIdsSelectionArgs[index] = contactId;
-                index++;
-                if (contactIds.length() > 0) {
-                    contactIds.append(",");
+                String phone = mContactsAdapter.getPhoneAt(position);
+                if (phone != null) {
+                    phone = PhoneNumberUtils.stripSeparators(phone);
+                    invitations.addPhoneNumber(phone);
                 }
-                contactIds.append("?");
             }
         }
-        mContactIds = contactIds.toString();
-
-        getLoaderManager().destroyLoader(PHONE_LOADER_ID);
-        getLoaderManager().initLoader(PHONE_LOADER_ID, null, this);
+        // Update the progress dialog
+        ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_inviting);
+        // Send the phone number to server
+        serverRequestsCount++;
+        presenter.inviteBySMS(feedItemId, feedItemType, invitations);
     }
 
     // ----------------------------------

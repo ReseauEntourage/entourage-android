@@ -160,6 +160,14 @@ public class InviteContactsAdapter extends BaseAdapter {
         return -1;
     }
 
+    public String getPhoneAt(int position) {
+        InviteItem item = mData.get(position);
+        if (item.getItemType() == InviteItem.TYPE_CONTACT_PHONE) {
+            return item.getItemText();
+        }
+        return null;
+    }
+
     public static class ViewHolder {
         public TextView textView;
         public View separator;

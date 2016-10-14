@@ -9,7 +9,7 @@ public class InviteItem {
     protected static final int TYPE_CONTACT_PHONE = 1;
     protected static final int TYPE_SECTION = 2;
 
-    public static final int TYPE_COUNT = 2;
+    public static final int TYPE_COUNT = 3;
 
     private int itemType = TYPE_CONTACT_NAME;
     private String itemText;
