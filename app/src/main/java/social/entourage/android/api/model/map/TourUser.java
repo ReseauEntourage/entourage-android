@@ -37,6 +37,9 @@ public class TourUser extends TimestampedObject implements Serializable {
 
     private boolean isDisplayedAsMember = false;
 
+    @Expose(serialize = false, deserialize = false)
+    private FeedItem feedItem;
+
     public String getEmail() {
         return email;
     }
@@ -101,6 +104,14 @@ public class TourUser extends TimestampedObject implements Serializable {
         isDisplayedAsMember = displayedAsMember;
     }
 
+    public FeedItem getFeedItem() {
+        return feedItem;
+    }
+
+    public void setFeedItem(final FeedItem feedItem) {
+        this.feedItem = feedItem;
+    }
+
     @Override
     public Date getTimestamp() {
         return requestDate;
@@ -124,7 +135,8 @@ public class TourUser extends TimestampedObject implements Serializable {
     @Override
     public boolean equals(final Object o) {
         if (o == null || o.getClass() != this.getClass()) return false;
-        return (this.userId == ((TourUser)o).userId) && (this.status.equals(((TourUser)o).status));
+        //return (this.userId == ((TourUser)o).userId) && (this.status.equals(((TourUser)o).status));
+        return this.userId == ((TourUser)o).userId;
     }
 
     public TourUser clone() {

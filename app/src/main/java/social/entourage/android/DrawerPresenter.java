@@ -24,8 +24,11 @@ import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
+import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
+import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 /**
  * Presenter controlling the DrawerActivity
@@ -101,6 +104,14 @@ public class DrawerPresenter {
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             MyToursFragment fragment = new MyToursFragment();
             fragment.show(fragmentManager, MyToursFragment.TAG);
+        }
+    }
+
+    protected void displayMyEntourages() {
+        if (activity != null) {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            MyEntouragesFragment fragment = new MyEntouragesFragment();
+            fragment.show(fragmentManager, MyEntouragesFragment.TAG);
         }
     }
 
@@ -191,18 +202,58 @@ public class DrawerPresenter {
                         Log.d(LOG_TAG, t.getLocalizedMessage());
                     }
                 });
-                /*userRequest.updateUser(user, new Callback<UserResponse>() {
-                    @Override
-                    public void success(UserResponse userResponse, Response response) {
+            }
+        }
+    }
+
+    public void updateUserPhoto(String amazonFile) {
+        if (activity != null) {
+
+            ArrayMap<String, Object> user = new ArrayMap<>();
+            user.put("avatar_key", amazonFile);
+            ArrayMap<String, Object> request = new ArrayMap<>();
+            request.put("user", user);
+
+            Call<UserResponse> call = userRequest.updateUser(request);
+            call.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    activity.dismissProgressDialog();
+                    if (response.isSuccess()) {
+                        if (activity.authenticationController.isAuthenticated()) {
+                            activity.authenticationController.saveUser(response.body().getUser());
+                        }
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            if (photoEditFragment.onPhotoSent(true)) {
+                                PhotoChooseSourceFragment photoChooseSourceFragment = (PhotoChooseSourceFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
+                                if (photoChooseSourceFragment != null) {
+                                    photoChooseSourceFragment.dismiss();
+                                }
+                            }
+                        }
                         Log.d(LOG_TAG, "success");
                     }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d(LOG_TAG, error.getLocalizedMessage());
+                    else {
+                        Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            photoEditFragment.onPhotoSent(false);
+                        }
                     }
-                });*/
-            }
+                }
+
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    activity.dismissProgressDialog();
+                    Log.d(LOG_TAG, t.getLocalizedMessage());
+                    Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                    PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                    if (photoEditFragment != null) {
+                        photoEditFragment.onPhotoSent(false);
+                    }
+                }
+            });
         }
     }
 

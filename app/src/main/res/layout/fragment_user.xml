@@ -229,7 +229,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/user_number_tours_label"
+                    android:text="@string/user_number_entourages_label"
                     android:id="@+id/textView3"
                     android:textColor="@color/greyish_brown"
                     android:textSize="17sp"/>

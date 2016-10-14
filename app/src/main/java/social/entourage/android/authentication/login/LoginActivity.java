@@ -2,6 +2,8 @@ package social.entourage.android.authentication.login;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.net.Uri;
+import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,11 +12,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,8 +26,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.flurry.android.FlurryAgent;
+import com.github.clans.fab.FloatingActionButton;
 
+import java.io.File;
 import java.util.HashSet;
 
 import javax.inject.Inject;
@@ -31,19 +42,28 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.login.register.OnRegisterUserListener;
+import social.entourage.android.authentication.login.register.RegisterNumberFragment;
+import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
+import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
+import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.user.edit.photo.PhotoChooseInterface;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
+import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.HtmlTextView;
 
 /**
  * Activity providing the login steps
  */
-public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish {
+public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface {
 
     // ----------------------------------
     // CONSTANTS
@@ -65,12 +85,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Inject
     LoginPresenter loginPresenter;
 
+    private User onboardingUser;
+
     /************************
-     * Signup View
+     * Signin View
      ************************/
 
-    @Bind(R.id.login_include_signup)
-    View loginSignup;
+    @Bind(R.id.login_include_signin)
+    View loginSignin;
 
     @Bind(R.id.login_edit_phone)
     EditText phoneEditText;
@@ -97,11 +119,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_button_ask_code)
     Button receiveCodeButton;
 
-    @Bind(R.id.login_block_code_form)
+    @Bind(R.id.login_block_lost_code_start)
     View enterCodeBlock;
-
-    @Bind(R.id.login_block_lost_code_button)
-    View lostCodeButtonBlock;
 
     @Bind(R.id.login_block_lost_code_confirmation)
     View confirmationBlock;
@@ -122,14 +141,30 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_edit_email_profile)
     EditText profileEmail;
 
-    @Bind(R.id.login_edit_name_profile)
-    EditText profileName;
+    //@Bind(R.id.login_edit_name_profile)
+    //EditText profileName;
 
     @Bind(R.id.login_user_photo)
     ImageView profilePhoto;
 
     @Bind(R.id.login_button_go)
-    Button goButton;
+    FloatingActionButton goButton;
+
+    /************************
+     * Enter Name View
+     ************************/
+
+    @Bind(R.id.login_include_name)
+    View loginNameView;
+
+    @Bind(R.id.login_name_firstname)
+    EditText firstnameEditText;
+
+    @Bind(R.id.login_name_lastname)
+    EditText lastnameEditText;
+
+    @Bind(R.id.login_name_go_button)
+    FloatingActionButton nameGoButton;
 
     /************************
      * Tutorial View
@@ -174,6 +209,20 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Bind(R.id.login_verify_code_code)
     TextView receivedCode;
 
+    /************************
+     * Notifications Permissions View
+     ************************/
+
+    @Bind(R.id.login_include_notifications)
+    View loginNotificationsView;
+
+    /************************
+     * Geolocation view
+     ************************/
+
+    @Bind(R.id.login_include_geolocation)
+    View loginGeolocationView;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -188,12 +237,15 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_START);
 
-        loginSignup.setVisibility(View.GONE);
+        loginSignin.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
         loginWelcome.setVisibility(View.GONE);
+        loginNameView.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.GONE);
+        loginNotificationsView.setVisibility(View.GONE);
+        loginGeolocationView.setVisibility(View.GONE);
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
         passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
@@ -228,27 +280,36 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void onBackPressed() {
-        if (loginSignup.getVisibility() == View.VISIBLE) {
+        if (loginSignin.getVisibility() == View.VISIBLE) {
             phoneEditText.setText("");
             passwordEditText.setText("");
-            loginSignup.setVisibility(View.GONE);
+            hideKeyboard();
+            loginSignin.setVisibility(View.GONE);
             loginStartup.setVisibility(View.VISIBLE);
         }
         else if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);
-            loginSignup.setVisibility(View.VISIBLE);
+            loginSignin.setVisibility(View.VISIBLE);
             showKeyboard(phoneEditText);
         }
         else if (loginTutorial.getVisibility() == View.VISIBLE) {
             loginTutorial.setVisibility(View.GONE);
             loginWelcome.setVisibility(View.VISIBLE);
         }
+        else if (loginWelcome.getVisibility() == View.VISIBLE) {
+            loginWelcome.setVisibility(View.GONE);
+            loginSignin.setVisibility(View.VISIBLE);
+        }
+        else if (loginNameView.getVisibility() == View.VISIBLE) {
+            loginNameView.setVisibility(View.GONE);
+            loginWelcome.setVisibility(View.VISIBLE);
+        }
         else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
             newsletterEmail.setText("");
             loginNewsletter.setVisibility(View.GONE);
             previousView.setVisibility(View.VISIBLE);
-            if (previousView == loginSignup) {
+            if (previousView == loginSignin) {
                 showKeyboard(phoneEditText);
             }
         }
@@ -298,6 +359,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         hideKeyboard();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_OK);
         startActivity(new Intent(this, DrawerActivity.class));
+        finish();
     }
 
     public void loginFail(boolean networkError) {
@@ -316,6 +378,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         builder.create().show();
     }
 
+    public void displayToast(@StringRes int messageId) {
+        Toast.makeText(this, messageId, Toast.LENGTH_SHORT).show();
+    }
+
     public void displayToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -330,6 +396,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         newsletterButton.setEnabled(false);
         verifyCodeButton.setText(R.string.button_loading);
         verifyCodeButton.setEnabled(false);
+        nameGoButton.setEnabled(false);
     }
 
     public void stopLoader() {
@@ -342,17 +409,42 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         newsletterButton.setEnabled(true);
         verifyCodeButton.setText(R.string.login_button_verify_code);
         verifyCodeButton.setEnabled(true);
+        nameGoButton.setEnabled(true);
     }
 
     public void launchFillInProfileView(String phoneNumber, User user) {
+
+        //TODO Need a better approach
+        DialogFragment fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
+        if (fragment != null) fragment.dismiss();
+        fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
+        if (fragment != null) fragment.dismiss();
+        fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterWelcomeFragment.TAG);
+        if (fragment != null) fragment.dismiss();
+
         loggedPhoneNumber = phoneNumber;
-        loginSignup.setVisibility(View.GONE);
-        loginVerifyCode.setVisibility(View.GONE);
-        loginWelcome.setVisibility(View.VISIBLE);
-        if (user.getEmail() != null) {
-            profileEmail.setText(user.getEmail());
+
+        if (this.onboardingUser != null) {
+            user.setOnboardingUser(true);
         }
-        profileEmail.requestFocus();
+        hideKeyboard();
+
+        loginStartup.setVisibility(View.GONE);
+        loginSignin.setVisibility(View.GONE);
+        loginVerifyCode.setVisibility(View.GONE);
+        if (user.getEmail() == null || user.getEmail().length() == 0) {
+            loginWelcome.setVisibility(View.VISIBLE);
+            profileEmail.requestFocus();
+        }
+        else if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
+            showNameView();
+        }
+        else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
+            showPhotoChooseSource();
+        }
+        else {
+            showNotificationPermissionView();
+        }
     }
 
     // ----------------------------------
@@ -367,12 +459,71 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
     }
 
+    @Override
+    public void onPhotoIgnore() {
+        showNotificationPermissionView();
+    }
+
+    @Override
+    public void onPhotoChosen(final Uri photoUri) {
+
+        //Upload the photo to Amazon S3
+        showProgressDialog(R.string.user_photo_uploading);;
+
+        final String objectKey = "user_"+loginPresenter.authenticationController.getUser().getId()+".jpg";
+        TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
+        TransferObserver transferObserver = transferUtility.upload(
+                BuildConfig.AWS_BUCKET,
+                "300x300/"+objectKey,
+                new File(photoUri.getPath()),
+                CannedAccessControlList.PublicRead
+        );
+        transferObserver.setTransferListener(new TransferListener() {
+            @Override
+            public void onStateChanged(final int id, final TransferState state) {
+                if (state == TransferState.COMPLETED) {
+                    if (loginPresenter != null) {
+                        loginPresenter.updateUserPhoto(objectKey);
+                        // Delete the temporary file
+                        File tmpImageFile = new File(photoUri.getPath());
+                        if (!tmpImageFile.delete()) {
+                            // Failed to delete the file
+                            Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
+                        }
+                    } else {
+                        Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            photoEditFragment.onPhotoSent(false);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onProgressChanged(final int id, final long bytesCurrent, final long bytesTotal) {
+
+            }
+
+            @Override
+            public void onError(final int id, final Exception ex) {
+                Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                dismissProgressDialog();
+                PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                if (photoEditFragment != null) {
+                    photoEditFragment.onPhotoSent(false);
+                }
+            }
+        });
+    }
+
     // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
 
     /************************
-     * Signup View
+     * Signin View
      ************************/
 
     /*
@@ -384,6 +535,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
     */
 
+    @OnClick(R.id.login_back_button)
+    void onLoginBackClick() {
+        onBackPressed();
+    }
+
     @OnClick(R.id.login_button_signup)
     void onLoginClick() {
         loginPresenter.login(
@@ -394,22 +550,23 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_text_lost_code)
     void onLostCodeClick() {
         hideKeyboard();
-        loginSignup.setVisibility(View.GONE);
+        loginSignin.setVisibility(View.GONE);
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.VISIBLE);
-        lostCodeButtonBlock.setVisibility(View.VISIBLE);
         confirmationBlock.setVisibility(View.GONE);
 
         showKeyboard(lostCodePhone);
     }
 
+    /*
     @OnClick(R.id.login_welcome_more)
     void onMoreClick() {
-        loginSignup.setVisibility(View.GONE);
+        loginSignin.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.VISIBLE);
-        previousView = loginSignup;
+        previousView = loginSignin;
         showKeyboard(newsletterEmail);
     }
+    */
 
     /************************
      * Lost Code View
@@ -433,27 +590,34 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         confirmationBlock.setVisibility(View.GONE);
         enterCodeBlock.setVisibility(View.VISIBLE);
         loginLostCode.setVisibility(View.GONE);
-        loginSignup.setVisibility(View.VISIBLE);
+        loginSignin.setVisibility(View.VISIBLE);
         showKeyboard(phoneEditText);
     }
 
-    void newCodeAsked(User user) {
+    void newCodeAsked(User user, boolean isOnboarding) {
         stopLoader();
         if (user != null) {
-            if (loginLostCode.getVisibility() == View.VISIBLE) {
-                loginLostCode.setVisibility(View.GONE);
-                loginVerifyCode.setVisibility(View.VISIBLE);
-            }
-            else {
-                displayToast(getString(R.string.login_text_lost_code_ok));
+            if (isOnboarding) {
+                //registerPhoneNumberSent(onboardingUser.getPhone(), true);
+                displayToast(R.string.registration_smscode_sent);
+            } else {
+                if (loginLostCode.getVisibility() == View.VISIBLE) {
+                    loginLostCode.setVisibility(View.GONE);
+                    loginVerifyCode.setVisibility(View.VISIBLE);
+                } else {
+                    displayToast(getString(R.string.login_text_lost_code_ok));
+                }
             }
         } else {
-            if (loginLostCode.getVisibility() == View.VISIBLE) {
-                //codeConfirmation.setText(R.string.login_text_lost_code_ko);
-                codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
-                enterCodeBlock.setVisibility(View.GONE);
-                lostCodeButtonBlock.setVisibility(View.GONE);
-                confirmationBlock.setVisibility(View.VISIBLE);
+            if (isOnboarding) {
+                displayToast(getString(R.string.login_text_lost_code_ko));
+            } else {
+                if (loginLostCode.getVisibility() == View.VISIBLE) {
+                    //codeConfirmation.setText(R.string.login_text_lost_code_ko);
+                    codeConfirmation.setHtmlString(R.string.login_text_lost_code_ko_html);
+                    enterCodeBlock.setVisibility(View.GONE);
+                    confirmationBlock.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -462,47 +626,106 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Welcome View
      ************************/
 
-    @OnClick(R.id.login_user_photo)
-    void addPhoto() {
-
+    @OnClick(R.id.login_email_back_button)
+    void onEmailBackClicked() {
+        onBackPressed();
     }
 
     @OnClick(R.id.login_button_go)
-    void finishTutorial() {
+    void saveEmail() {
         loginPresenter.updateUserEmail(profileEmail.getText().toString());
-        //show the notifications dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.login_permission_notification_description)
-            .setPositiveButton(R.string.login_permission_notification_accept,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            showNewsfeedScreenWithNotifications(true);
-                        }
-                    })
-            .setNegativeButton(R.string.login_permission_notification_refuse,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            showNewsfeedScreenWithNotifications(false);
-                        }
-                    })
-            .create().show();
+
+        User user = loginPresenter.authenticationController.getUser();
+        if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
+            loginWelcome.setVisibility(View.GONE);
+            showNameView();
+        }
+        else {
+            loginPresenter.updateUserToServer();
+        }
     }
 
-    private void showNewsfeedScreenWithNotifications(boolean enabled) {
+    /************************
+     * Enter Name View
+     ************************/
+
+    void showNameView() {
+        loginNameView.setVisibility(View.VISIBLE);
+
+        User user = loginPresenter.authenticationController.getUser();
+        if (user.getFirstName() != null) {
+            firstnameEditText.setText(user.getFirstName());
+        }
+        if (user.getLastName() != null) {
+            lastnameEditText.setText(user.getLastName());
+        }
+
+        firstnameEditText.requestFocus();
+    }
+
+    @OnClick(R.id.login_name_back_button)
+    void onNameBackClicked() {
+        onBackPressed();
+    }
+
+    @OnClick(R.id.login_name_go_button)
+    void onNameGoClicked() {
+        hideKeyboard();
+        loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
+    }
+
+    protected void showPhotoChooseSource() {
+        hideKeyboard();
+        loginWelcome.setVisibility(View.GONE);
+        loginNameView.setVisibility(View.GONE);
+
+        User user = loginPresenter.authenticationController.getUser();
+        if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
+            PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+            fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
+        }
+        else {
+            showNotificationPermissionView();
+        }
+    }
+
+    protected void onUserPhotoUpdated(boolean updated) {
+        dismissProgressDialog();
+        PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+        if (photoEditFragment != null) {
+            photoEditFragment.onPhotoSent(updated);
+        }
+        if (updated) {
+            PhotoChooseSourceFragment fragment = (PhotoChooseSourceFragment)getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
+            if (fragment != null) {
+                fragment.dismiss();
+            }
+            showNotificationPermissionView();
+        } else {
+            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /************************
+     * Private Methods
+     ************************/
+
+    private void saveNotifications(boolean enabled) {
         //remember the choice
         final SharedPreferences notificationsPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = notificationsPreferences.edit();
         editor.putBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, enabled);
         editor.commit();
+    }
+
+    private void finishTutorial() {
         //set the tutorial as done
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         HashSet<String>loggedNumbers = (HashSet) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.add(loggedPhoneNumber);
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
-        //start the activity
-        startActivity(new Intent(this, DrawerActivity.class));
+
+        startMapActivity();
     }
 
     /*
@@ -538,16 +761,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_button_login)
     void showLoginScreen() {
         loginStartup.setVisibility(View.GONE);
-        loginSignup.setVisibility(View.VISIBLE);
+        loginSignin.setVisibility(View.VISIBLE);
         showKeyboard(phoneEditText);
+        this.onboardingUser = null;
     }
 
     @OnClick(R.id.login_button_register)
-    void showNewsletterScreen() {
-        loginStartup.setVisibility(View.GONE);
-        loginNewsletter.setVisibility(View.VISIBLE);
-        previousView = loginStartup;
-        showKeyboard(newsletterEmail);
+    void showRegisterScreen() {
+        this.onboardingUser = new User();
+        RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
+        registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
     }
 
     /************************
@@ -607,6 +830,85 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginVerifyCode.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.VISIBLE);
         showKeyboard(lostCodePhone);
+    }
+
+    /************************
+     * Register
+     ************************/
+
+    // OnRegisterUserListener
+
+    @Override
+    public void registerShowSignIn() {
+        showLoginScreen();
+    }
+
+    @Override
+    public void registerSavePhoneNumber(String phoneNumber) {
+        if (loginPresenter != null) {
+            loginPresenter.registerUserPhone(phoneNumber);
+        } else {
+            Toast.makeText(this, R.string.registration_number_error_server, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void registerCheckCode(final String smsCode) {
+        loginPresenter.login(onboardingUser.getPhone(), smsCode);
+    }
+
+    @Override
+    public void registerResendCode() {
+        if (loginPresenter != null) {
+            loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
+        } else {
+            Toast.makeText(this, R.string.registration_number_error_server, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void registerPhoneNumberSent(String phoneNumber, boolean smsSent) {
+        if (smsSent) {
+            displayToast(R.string.registration_smscode_sent);
+        }
+        onboardingUser.setPhone(phoneNumber);
+        RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
+        fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
+    }
+
+    /************************
+     * Notifications View
+     ************************/
+
+    private void showNotificationPermissionView() {
+        loginNotificationsView.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.login_notifications_ignore_button)
+    protected void onNotificationsIgnore() {
+        saveNotifications(false);
+        loginNotificationsView.setVisibility(View.GONE);
+        showGeolocationView();
+    }
+
+    @OnClick(R.id.login_notifications_accept)
+    protected void onNotificationsAccept() {
+        saveNotifications(true);
+        loginNotificationsView.setVisibility(View.GONE);
+        showGeolocationView();
+    }
+
+    /************************
+     * Geolocation View
+     ************************/
+
+    private void showGeolocationView() {
+        loginGeolocationView.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.login_geolocation_ignore_button, R.id.login_geolocation_accept_button})
+    protected void onGeolocationAccepted() {
+        loginGeolocationView.setVisibility(View.GONE);
+        finishTutorial();
     }
 
 }

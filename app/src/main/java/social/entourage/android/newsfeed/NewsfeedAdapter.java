@@ -13,12 +13,12 @@ public class NewsfeedAdapter extends EntourageBaseAdapter {
 
     public NewsfeedAdapter() {
 
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOUR_CARD,
                 new ViewHolderFactory.ViewHolderType(TourViewHolder.class, TourViewHolder.getLayoutResource())
         );
 
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENTOURAGE_CARD,
                 new ViewHolderFactory.ViewHolderType(EntourageViewHolder.class, EntourageViewHolder.getLayoutResource())
         );

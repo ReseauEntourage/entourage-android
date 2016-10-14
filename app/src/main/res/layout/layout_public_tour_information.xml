@@ -91,4 +91,64 @@
             android:text="@string/tour_cell_button_join"
             android:drawableTop="@drawable/button_act_join"/>
     </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/tour_info_invited_layout"
+        android:background="@color/accent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/invited_description"
+            android:id="@+id/tour_info_invited"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"/>
+
+            <Button
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:text="@string/ignore"
+                android:id="@+id/tour_info_invited_reject_button"
+                style="@style/WhiteButtonTransparent"
+                android:layout_marginRight="5dp"/>
+
+            <Button
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:text="@string/accept"
+                android:id="@+id/tour_info_invited_accept_button"
+                style="@style/WhiteButton.RoundedCorners"
+                android:layout_marginLeft="5dp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"/>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

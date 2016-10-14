@@ -19,6 +19,7 @@ public abstract class TimestampedObject {
     public static final int TOUR_CARD = 6;
     public static final int ENTOURAGE_CARD = 7;
     public static final int FEED_MEMBER_CARD = 8;
+    public static final int INVITATION_CARD = 9;
 
     @Expose(serialize = false)
     private int hashCode;

@@ -6,10 +6,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
 
     <permission
         android:name="${applicationId}.permission.MAPS_RECEIVE"
@@ -25,14 +29,14 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:name=".EntourageApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        tools:replace="label">
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/map_api_key"/>
@@ -50,10 +54,9 @@
         </activity>
         <activity
             android:name=".authentication.login.LoginActivity"
-            android:configChanges="keyboardHidden"
             android:label="@string/title_activity_login"
-            android:noHistory="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".guide.poi.ReadPoiActivity"
@@ -77,8 +80,8 @@
             android:name=".map.encounter.CreateEncounterActivity"
             android:label="@string/activity_create_encounter_title"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".message.MessageActivity"
@@ -95,6 +98,12 @@
             android:name=".about.AboutActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".user.edit.photo.ChoosePhotoActivity">
+        </activity>
+        <activity
+            android:name=".user.edit.photo.TakePhotoActivity">
+        </activity>
 
         <service
             android:name=".map.tour.TourService"
@@ -108,6 +117,9 @@
         <service
             android:name=".message.push.PushNotificationService"
             android:exported="false"/>
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true"/>
 
         <!-- Receivers -->
         <receiver android:name=".message.push.GcmBroadcastReceiver">

@@ -3,10 +3,11 @@
 
     <string name="title_activity_login">Se connecter</string>
     <string name="login_title_welcome_html"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE]]></string>
-    <string name="login_title_welcome">Bienvenue</string>
+    <string name="login_title_welcome">Connexion</string>
     <string name="login_title_welcome_pro"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">E</font>NTOURAGE <font color=\"#FF6907\">P</font>RO]]></string>
     <string name="login_title_discover"><![CDATA[<font color=\"#FF6907\">D</font>ÉCOUVREZ <font color=\"#FF6907\">E</font>NTOURAGE]]></string>
     <string name="login_title_lost_code">REDEMANDER UN CODE</string>
+    <string name="login_title_lost_code_long">Nouveau code de vérification</string>
     <string name="login_title_lost_code_html"><![CDATA[<font color=\"#FF6907\">C</font>ODE <font color=\"#FF6907\">É</font>GARÉ]]></string>
     <string name="login_title_tutorial"><![CDATA[<font color=\"#FF6907\">T</font>UTORIEL DE <font color=\"#FF6907\">B</font>IENVENUE]]></string>
     <string name="login_title_newsletter">DÉCOUVREZ ENTOURAGE</string>
@@ -14,17 +15,19 @@
     <string name="login_text_more">En savoir plus</string>
     <string name="login_text_description">Entourage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
     <string name="login_text_enter_code">Entrez votre numéro de téléphone</string>
+    <string name="login_text_lost_code_description">Afin de recevoir votre nouveau code, saisissez votre numéro de portable.</string>
     <string name="login_text_lost_code_ok">Votre code vient de vous être envoyé</string>
     <string name="login_text_lost_code_ok_html"><![CDATA[<font color=\"#000000\">Votre code vient de vous être envoyé</font>]]></string>
     <string name="login_text_lost_code_ko">Nous ne trouvons pas votre numéro dans notre base de données.\n\nContactez votre association.</string>
-    <string name="login_text_lost_code_ko_html"><![CDATA[<font color=\"#000000\">Nous ne trouvons pas votre numéro dans notre base de données.<br/><br/><strong>Contactez votre association.<strong></font>]]></string>
+    <string name="login_text_lost_code_ko_html"><![CDATA[<font color=\"#FFFFFF\">Nous ne trouvons pas votre numéro dans notre base de données.<br/><br/><strong>Contactez votre association.<strong></font>]]></string>
     <string name="login_text_invalid_format">Format du numéro invalide</string>
-    <string name="login_text_invalid_email">Invalid Email</string>
+    <string name="login_text_invalid_email">Email invalide</string>
     <string name="login_text_newsletter_fail">Echec de l\'abonnement</string>
     <string name="login_text_newsletter_success">Abonnement effectué</string>
     <string name="login_text_newsletter_info">Entourage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
     <string name="login_text_email_update_success">Mise à jour de l\'email effectué</string>
     <string name="login_text_email_update_fail">Mise à jour de l\'email impossible</string>
+    <string name="login_text_email_title">Quel est votre email ?</string>
     <string name="login_text_fill_in_profile">Merci de compléter votre profil\n\nVotre adresse nous servira à vous envoyer vos comptes-rendus de maraudes</string>
     <string name="login_text_tutorial">En cours de construction…</string>
     <string name="login_text_lost_code">Redemander un code</string>
@@ -34,9 +37,9 @@
     <string name="login_text_default_country_code">+33</string>
     <string name="login_text_verify_code_back">Modifier le numéro</string>
     <string name="login_hint_name">Saisissez votre prénom et votre nom</string>
-    <string name="login_hint_phone">Saisir numéro</string>
-    <string name="login_hint_code">Saisir le code</string>
-    <string name="login_hint_phone_long">Saisir votre numéro de téléphone</string>
+    <string name="login_hint_phone">Numéro de téléphone</string>
+    <string name="login_hint_code">Code</string>
+    <string name="login_hint_phone_long">Numéro de téléphone</string>
     <string name="login_hint_email">Saisir votre adresse email</string>
     <string name="login_hint_code_resent">Saisir le code de vérification reçu par SMS</string>
     <string name="login_button_signup">Se connecter</string>
@@ -51,16 +54,45 @@
     <string name="login_permission_title">Entourage doit accéder l\'état de votre téléphone</string>
     <string name="login_permission_description">Permet d\'afficher votre numéro de téléphone.</string>
 
-    <string name="login_button_register">Inscription</string>
+    <string name="login_button_register">S’inscrire sur Entourage</string>
     <string name="login_button_login">Connexion</string>
 
-    <string name="login_permission_notification_description">Autorisez-vous Entourage à vous envoyer des notifications</string>
+    <string name="login_permission_notification_title">Activer les notifications ?</string>
+    <string name="login_permission_notification_description">Nous pouvons vous avertir lors de la réception d’un message.</string>
     <string name="login_permission_notification_refuse">Refuser</string>
     <string name="login_permission_notification_accept">OK</string>
+
+    <string name="login_permission_geolocation_title">Activer la géolocalisation ?</string>
+    <string name="login_permission_geolocation_description">Entourage est un réseau local.\n\nLa géolocalisation nous permettra d’afficher les actions les plus proches de vous.</string>
+    <string name="login_permission_geolocation_accept">Oui, je l’active</string>
 
     <string name="login_login_error_title">Veuillez réessayer</string>
     <string name="login_login_error_invalid_credentials">Le numéro de téléphone et ce code d’accès ne correspondent pas.</string>
     <string name="login_login_error_network">Erreur de connexion</string>
     <string name="login_login_error_retry">Réessayer</string>
+
+    <string name="login_name_title">Quel est votre nom ?</string>
+    <string name="login_name_description">Seuls le prénom et la première lettre du nom apparaitront aux autres utilisateurs.</string>
+    <string name="login_name_firstname_hint">Prénom</string>
+    <string name="login_name_lastname_hint">Nom</string>
+
+    <!-- Registration -->
+    <string name="registration_welcome_signin">Se connecter</string>
+    <string name="registration_welcome_title">Bienvenue\nsur Entourage.</string>
+    <string name="registration_welcome_description">Vous venez de rejoindre la plus grande communauté de citoyens qui collaborent pour lutter contre l’exclusion sociale!\n\nEn vous inscrivant, vous acceptez nos <a href='http://www.entourage.social/cgu'>conditions d’utilisation</a> et vous reconnaissez avoir lu notre politique de confidentialité.</string>
+    <string name="registration_welcome_start">Commencer</string>
+
+    <string name="registration_number_title">Quel est votre numéro de portable ? </string>
+    <string name="registration_number_description">Entourage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
+    <string name="registration_number_hint">Numéro de portable</string>
+    <string name="registration_number_error_server">Echec de l’envoi du numéro</string>
+    <string name="registration_number_error_already_registered">Le numéro est déjà enregistré.</string>
+
+    <string name="registration_smscode_title">Code de vérification</string>
+    <string name="registration_smscode_description">Veuillez saisir le code reçu par SMS.</string>
+    <string name="registration_smscode_hint">Code</string>
+    <string name="registration_smscode_validate">Valider</string>
+    <string name="registration_smscode_error_code">Veuillez saisir le code !</string>
+    <string name="registration_smscode_sent">SMS envoyé</string>
 
 </resources>

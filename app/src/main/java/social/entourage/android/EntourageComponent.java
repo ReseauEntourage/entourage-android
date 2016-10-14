@@ -9,6 +9,7 @@ import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EntourageRequest;
+import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.NewsfeedRequest;
@@ -49,4 +50,5 @@ public interface EntourageComponent {
     UserRequest getUserRequest();
     EntourageRequest getEntourageRequest();
     NewsfeedRequest getNewsfeedRequest();
+    InvitationRequest getInvitationRequest();
 }

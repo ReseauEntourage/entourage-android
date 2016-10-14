@@ -61,9 +61,22 @@ public class User implements Serializable {
     private boolean entourageDisclaimerShown = false;
     private boolean encounterDisclaimerShown = false;
 
+    @Expose(serialize = false, deserialize = false)
+    private boolean isOnboardingUser = false;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
+
+    public User() {
+        this.id = 0;
+        this.email = "";
+        this.displayName = "";
+        this.stats = null;
+        this.organization = null;
+        this.token = null;
+        this.avatarURL = null;
+    }
 
     private User(final int id, final String email, final String displayName, final Stats stats, final Organization organization, final String token, final String avatarURL) {
         this.id = id;
@@ -175,6 +188,14 @@ public class User implements Serializable {
 
     public void setEncounterDisclaimerShown(final boolean encounterDisclaimerShown) {
         this.encounterDisclaimerShown = encounterDisclaimerShown;
+    }
+
+    public boolean isOnboardingUser() {
+        return isOnboardingUser;
+    }
+
+    public void setOnboardingUser(final boolean onboardingUser) {
+        isOnboardingUser = onboardingUser;
     }
 
     public void incrementTours() {

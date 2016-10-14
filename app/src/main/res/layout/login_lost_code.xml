@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,24 +8,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="social.entourage.android.authentication.login.LoginActivity"
-    android:background="@color/background_login_grey"
-    android:weightSum="8">
+    android:background="@color/accent"
+    android:weightSum="8"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_login_light">
+        android:id="@+id/login_block_lost_code_navigation"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        >
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/login_lost_code_close"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_close_white"
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:padding="5dp"/>
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,38 +41,70 @@
             android:gravity="center"
             android:layout_gravity="center"
             style="@style/EntourageTitle"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="3"
-        android:id="@+id/login_block_lost_code_title">
+        android:layout_height="match_parent"
+        android:id="@+id/login_block_lost_code_start"
+        android:layout_below="@+id/login_block_lost_code_navigation"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true">
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/login_image_lost_code_phone"
-            android:layout_centerInParent="true"
-            android:src="@drawable/phone"/>
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/login_block_lost_code_title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/login_block_code_form">
 
-    <TableLayout
-        android:id="@+id/login_block_code_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background_login_light"
-        >
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/login_image_lost_code_phone"
+                android:src="@drawable/phone"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
-        <TableRow
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/login_title_lost_code_long"
+                android:id="@+id/login_lost_code_title"
+                android:layout_below="@+id/login_image_lost_code_phone"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:layout_marginTop="10dp"
+                android:lineSpacingMultiplier="0.8"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/login_text_lost_code_description"
+                android:id="@+id/login_lost_code_description"
+                android:layout_below="@+id/login_lost_code_title"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="7dp"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/login_block_code_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            >
+            android:orientation="vertical"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp">
 
             <EditText
                 android:id="@+id/login_edit_phone_lost_code"
@@ -74,47 +112,53 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:hint="@string/login_hint_phone_long"
-                android:textColorHint="@color/login_edittext_hint"
-                style="@style/CustomEditTextTheme"
+                style="@style/CustomEditTextThemeAccent"
                 android:maxLength="12"
-                android:gravity="right"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
                 android:focusable="true"
-                android:textSize="15sp"
-                android:layout_weight="1"/>
+                android:textSize="22sp"/>
 
-        </TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/login_edittext_hint_alpha"/>
 
-    </TableLayout>
+            <Button
+                android:id="@+id/login_button_ask_code"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/login_button_ask_code"
+                android:textAllCaps="false"
+                style="@style/WhiteButton.RoundedCorners"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/login_block_lost_code_button"
-        >
-
-        <Button
-            android:id="@+id/login_button_ask_code"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/login_button_ask_code"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            style="@style/AccentButton"/>
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/login_block_lost_code_confirmation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:visibility="gone"
-        android:layout_weight="3">
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/login_block_lost_code_navigation"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/phone"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+        </RelativeLayout>
 
         <social.entourage.android.view.HtmlTextView
             android:id="@+id/login_text_confirmation"
@@ -123,7 +167,8 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/black"
             android:gravity="center"
-            app:htmlText=" "/>
+            app:htmlText=" "
+            android:textSize="16sp"/>
 
         <Button
             android:id="@+id/login_button_home"
@@ -137,5 +182,4 @@
 
     </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

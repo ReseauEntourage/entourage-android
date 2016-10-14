@@ -28,8 +28,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,6 +87,8 @@ public class EntourageLocationFragment extends DialogFragment {
     GoogleMap map;
 
     private GeocoderLocationTask geocoderAddressTask = null;
+
+    private Marker pin;
 
     // ----------------------------------
     // Lifecycle
@@ -222,6 +227,16 @@ public class EntourageLocationFragment extends DialogFragment {
                 if (originalLocation != null) {
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(originalLocation, 15);
                     googleMap.moveCamera(cameraUpdate);
+
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(originalLocation)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_orange));
+                    pin = googleMap.addMarker(markerOptions);
+                } else {
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(googleMap.getCameraPosition().target)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_orange));
+                    pin = googleMap.addMarker(markerOptions);
                 }
 
                 googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -233,6 +248,8 @@ public class EntourageLocationFragment extends DialogFragment {
                             location = cameraPosition.target;
                             GeocoderAddressTask geocoderAddressTask = new GeocoderAddressTask();
                             geocoderAddressTask.execute(location);
+
+                            pin.setPosition(location);
                         }
                     }
                 });
@@ -247,6 +264,8 @@ public class EntourageLocationFragment extends DialogFragment {
 
                         GeocoderAddressTask geocoderAddressTask = new GeocoderAddressTask();
                         geocoderAddressTask.execute(location);
+
+                        pin.setPosition(location);
                     }
                 });
 
@@ -292,7 +311,9 @@ public class EntourageLocationFragment extends DialogFragment {
     private void onAddressFound(Address address, AsyncTask asyncTask) {
         if (geocoderAddressTask != asyncTask) return;
         if (address == null) {
-            Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
+            if (getActivity() != null) {
+                Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
+            }
             return;
         }
         if (address.hasLatitude() && address.hasLongitude()) {
@@ -316,6 +337,9 @@ public class EntourageLocationFragment extends DialogFragment {
         @Override
         protected String doInBackground(final LatLng... params) {
             try {
+                if (getActivity() == null) {
+                    return null;
+                }
                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                 LatLng location = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
@@ -336,6 +360,7 @@ public class EntourageLocationFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(final String address) {
+            if (address == null) return;
             EntourageLocationFragment.this.addressTextView.setText(address);
         }
     }
@@ -345,6 +370,9 @@ public class EntourageLocationFragment extends DialogFragment {
         @Override
         protected Address doInBackground(final String... params) {
             try {
+                if (getActivity() == null) {
+                    return null;
+                }
                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                 String address = params[0];
                 List<Address> addresses = geoCoder.getFromLocationName(address, 1);

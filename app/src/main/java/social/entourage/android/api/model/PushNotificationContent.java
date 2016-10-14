@@ -12,6 +12,8 @@ public class PushNotificationContent implements Serializable {
     public static final String TYPE_NEW_CHAT_MESSAGE = "NEW_CHAT_MESSAGE";
     public static final String TYPE_JOIN_REQUEST_ACCEPTED = "JOIN_REQUEST_ACCEPTED";
     public static final String TYPE_NEW_JOIN_REQUEST = "NEW_JOIN_REQUEST";
+    public static final String TYPE_ENTOURAGE_INVITATION = "ENTOURAGE_INVITATION";
+    public static final String TYPE_INVITATION_STATUS = "INVITATION_STATUS";
 
     public Extra extra;
 
@@ -52,19 +54,31 @@ public class PushNotificationContent implements Serializable {
         return false;
     }
 
-    private class Extra implements Serializable {
+    public class Extra implements Serializable {
 
         public static final String JOINABLE_TYPE_TOUR = "Tour";
         public static final String JOINABLE_TYPE_ENTOURAGE = "Entourage";
 
-        @SerializedName("joinable_id")
+        @SerializedName(value = "joinable_id", alternate = {"feed_id"})
         public long joinableId;
 
-        @SerializedName("joinable_type")
+        @SerializedName(value = "joinable_type", alternate = {"feed_type"})
         public String joinableType;
 
         @SerializedName("user_id")
         public int userId;
+
+        @SerializedName("entourage_id")
+        public long entourageId;
+
+        @SerializedName("inviter_id")
+        public int inviterId;
+
+        @SerializedName("invitee_id")
+        public int inviteeId;
+
+        @SerializedName("invitation_id")
+        public int invitationId;
 
         public String type;
     }

@@ -4,8 +4,6 @@
              android:layout_height="match_parent"
              tools:context="social.entourage.android.map.permissions.NoLocationPermissionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

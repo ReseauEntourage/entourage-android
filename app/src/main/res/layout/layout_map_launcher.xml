@@ -4,58 +4,9 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:layout_alignParentBottom="true"
-              android:gravity="center"
+              android:gravity="center|bottom"
               android:background="@color/background"
               android:clickable="true">
-
-    <RadioGroup
-        android:id="@+id/launcher_tour_transport_mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:checkedButton="@+id/launcher_tour_type_feet"
-        android:layout_marginTop="10dp"
-        android:background="@color/background"
-        android:visibility="gone">
-
-        <RadioButton
-            android:id="@+id/launcher_tour_type_feet"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:text="@string/tour_check_feet"
-            android:button="@null"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="@drawable/textcolor_radio_tab"
-            android:textAllCaps="false"
-            android:drawableTop="@drawable/rb_tour_feet"
-            android:padding="10dp"/>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/separator" />
-
-        <RadioButton
-            android:id="@+id/launcher_tour_type_car"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:text="@string/tour_check_car"
-            android:button="@null"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="@drawable/textcolor_radio_tab"
-            android:textAllCaps="false"
-            android:drawableTop="@drawable/rb_tour_car"
-            android:checked="true"
-            android:padding="10dp"/>
-
-    </RadioGroup>
-
 
     <View
         android:layout_width="match_parent"

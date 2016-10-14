@@ -1,23 +1,31 @@
 package social.entourage.android.map.tour.information;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.speech.RecognizerIntent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,6 +66,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -82,6 +91,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
@@ -97,13 +107,17 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.invite.InviteFriendsListener;
+import social.entourage.android.invite.contacts.InviteContactsFragment;
+import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.entourage.CreateEntourageFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
 
-public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener {
+public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -112,6 +126,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     public static final String TAG = "fragment_tour_information";
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 2;
+    private static final int READ_CONTACTS_PERMISSION_CODE = 3;
+
     private static final int SCROLL_DELTA_Y_THRESHOLD = 20;
 
     private static final int REQUEST_NONE = 0;
@@ -123,6 +139,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
     private static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
     private static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
+    private static final String KEY_INVITATION_ID = "social.entourage.android_KEY_INVITATION_ID";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -159,15 +176,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_card_act_layout)
     RelativeLayout headerActLayout;
 
-    @Bind(R.id.tour_info_details_selector)
-    RadioGroup detailsSelectorRadioGroup;
-
-    @Bind(R.id.tour_info_chat_rb)
-    RadioButton chatRB;
-
-    @Bind(R.id.tour_info_information_rb)
-    RadioButton informationRB;
-
     @Bind(R.id.tour_info_description)
     TextView tourDescription;
 
@@ -203,6 +211,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_info_share_button)
     AppCompatImageButton shareButton;
 
+    @Bind(R.id.tour_info_user_add_button)
+    AppCompatImageButton addUserButton;
+
     @Bind(R.id.tour_info_more_button)
     AppCompatImageButton moreButton;
 
@@ -211,6 +222,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Bind(R.id.tour_info_join_button)
     Button joinButton;
+
+    @Bind(R.id.tour_info_invite_source_layout)
+    RelativeLayout inviteSourceLayout;
+
+    @Bind(R.id.tour_info_invite_success_layout)
+    RelativeLayout inviteSuccessLayout;
 
     @Bind(R.id.tour_info_members_layout)
     LinearLayout membersLayout;
@@ -224,11 +241,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     MembersAdapter membersAdapter;
     List<TimestampedObject> membersList = new ArrayList<>();
 
+    // Invitation Layout
+    @Bind(R.id.tour_info_invited_layout)
+    View invitedLayout;
+
     int apiRequestsCount;
 
     FeedItem feedItem;
     long requestedFeedItemId;
     int requestedFeedItemType;
+    long invitationId;
 
     Date oldestChatMessageDate = null;
     boolean needsMoreChatMessaged = true;
@@ -247,23 +269,34 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     OnTourInformationFragmentFinish mListener;
 
+    // Handler to hide invite success layout
+    private Handler inviteSuccessHandler = new Handler();
+    private Runnable inviteSuccessRunnable = new Runnable() {
+        @Override
+        public void run() {
+            inviteSuccessLayout.setVisibility(View.GONE);
+        }
+    };
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
 
-    public static TourInformationFragment newInstance(FeedItem feedItem) {
+    public static TourInformationFragment newInstance(FeedItem feedItem, long invitationId) {
         TourInformationFragment fragment = new TourInformationFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_FEEDITEM, feedItem);
+        args.putLong(KEY_INVITATION_ID, invitationId);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static TourInformationFragment newInstance(long feedId, int feedItemType) {
+    public static TourInformationFragment newInstance(long feedId, int feedItemType, long invitationId) {
         TourInformationFragment fragment = new TourInformationFragment();
         Bundle args = new Bundle();
         args.putLong(KEY_FEEDITEM_ID, feedId);
         args.putInt(KEY_FEEDITEM_TYPE, feedItemType);
+        args.putLong(KEY_INVITATION_ID, invitationId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -287,6 +320,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
         feedItem = (FeedItem) getArguments().getSerializable(KEY_FEEDITEM);
+        invitationId = getArguments().getLong(KEY_INVITATION_ID);
         if (feedItem != null) {
             initializeView();
         }
@@ -320,6 +354,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         mListener = (OnTourInformationFragmentFinish)activity;
         doBindService();
+
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -330,6 +366,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourService.unregister(this);
         }
         doUnbindService();
+
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -340,6 +378,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
@@ -354,7 +393,24 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 }
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        if (requestCode == READ_CONTACTS_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onInviteContactsClicked();
+                    }
+                });
+            } else {
+                Toast.makeText(getActivity(), R.string.invite_contacts_permission_error, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -372,6 +428,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onStop();
 
         discussionView.removeOnScrollListener(discussionScrollListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        inviteSuccessRunnable.run();
+        inviteSuccessHandler.removeCallbacks(inviteSuccessRunnable);
     }
 
     public long getFeedItemId() {
@@ -395,6 +459,20 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @OnClick(R.id.tour_info_close)
     protected void onCloseButton() {
         this.dismiss();
+    }
+
+    @OnClick(R.id.tour_info_title)
+    protected void onSwitchSections() {
+        // Ignore if the entourage is not loaded or is public
+        if (feedItem == null || !feedItem.isPrivate())
+        {
+            return;
+        }
+
+        // Switch sections
+        boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
+        publicSection.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
+        privateSection.setVisibility(isPublicSectionVisible ?  View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.tour_info_comment_send_button)
@@ -434,7 +512,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         optionsLayout.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.tour_info_button_close, R.id.tour_info_options})
+    @OnClick({R.id.feeditem_option_cancel, R.id.tour_info_options})
     public void onCloseOptionsButton() {
         Animation bottomDown = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.bottom_down);
@@ -443,7 +521,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         optionsLayout.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.tour_info_button_stop_tour)
+    @OnClick(R.id.feeditem_option_stop)
     public void onStopTourButton() {
         if (feedItem.getStatus().equals(FeedItem.STATUS_ON_GOING) || feedItem.getStatus().equals(FeedItem.STATUS_OPEN)) {
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
@@ -485,7 +563,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    @OnClick(R.id.tour_info_button_quit_tour)
+    @OnClick(R.id.feeditem_option_quit)
     public void onQuitTourButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         int titleId = R.string.tour_info_quit_tour_title;
@@ -503,12 +581,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                             Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            showProgressBar();
                             User me = EntourageApplication.me(getActivity());
                             if (me == null) {
                                 Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                             }
                             else {
+                                showProgressBar();
                                 tourService.removeUserFromFeedItem(feedItem, me.getId());
                             }
                         }
@@ -537,24 +615,86 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    @OnCheckedChanged({R.id.tour_info_chat_rb, R.id.tour_info_information_rb})
-    protected void onChatSelected(CompoundButton button, boolean checked) {
-        if (button == chatRB && checked) {
-            publicSection.setVisibility(View.GONE);
-            privateSection.setVisibility(View.VISIBLE);
+    @OnClick(R.id.feeditem_option_edit)
+    protected void onEditEntourageButton() {
+        CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage)feedItem);
+        fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
+
+        //hide the options
+        optionsLayout.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.tour_info_user_add_button)
+    protected void onUserAddClicked() {
+        inviteSourceLayout.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.invite_source_close_button, R.id.invite_source_close_bottom_button})
+    protected void onCloseInviteSourceClicked() {
+        inviteSourceLayout.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.invite_source_contacts_button)
+    protected void onInviteContactsClicked() {
+        // check the permissions
+        if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_CODE);
             return;
         }
-        if (button == informationRB && checked) {
-            publicSection.setVisibility(View.VISIBLE);
-            privateSection.setVisibility(View.GONE);
+        // close the invite source view
+        onCloseInviteSourceClicked();
+        // open the contacts fragment
+        InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
+        fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
+        // set the listener
+        fragment.setInviteFriendsListener(this);
+    }
+
+    @OnClick(R.id.invite_source_number_button)
+    protected void onInvitePhoneNumberClicked() {
+        // close the invite source view
+        onCloseInviteSourceClicked();
+        // open the contacts fragment
+        InviteByPhoneNumberFragment fragment = InviteByPhoneNumberFragment.newInstance(feedItem.getId(), feedItem.getType());
+        fragment.show(getFragmentManager(), InviteByPhoneNumberFragment.TAG);
+        // set the listener
+        fragment.setInviteFriendsListener(this);
+    }
+
+    @OnClick(R.id.tour_info_invited_accept_button)
+    protected void onAcceptInvitationClicked(View view) {
+        if (presenter != null) {
+            view.setEnabled(false);
+            presenter.acceptInvitation(invitationId);
         }
     }
 
+    @OnClick(R.id.tour_info_invited_reject_button)
+    protected void onRejectInvitationClicked(View view) {
+        if (presenter != null) {
+            view.setEnabled(false);
+            presenter.rejectInvitation(invitationId);
+        }
+    }
+
+    // ----------------------------------
+    // Chat push notification
+    // ----------------------------------
+
     public boolean onPushNotificationChatMessageReceived(Message message) {
         //we received a chat notification
-        //check if it is referring to this tour
+        //check if it is referring to this feed item
         PushNotificationContent content = message.getContent();
-        if (!content.isTourRelated() && content.getJoinableId() != feedItem.getId()) {
+        if (content == null) {
+            return false;
+        }
+        if (content.isTourRelated() && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+            return false;
+        }
+        if (content.isEntourageRelated() && feedItem.getType() == FeedItem.TOUR_CARD) {
+            return false;
+        }
+        if (content.getJoinableId() != feedItem.getId()) {
             return false;
         }
         //retrieve the last messages from server
@@ -596,13 +736,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_info_unknown)));
         }
 
-        tourAuthorName.setText(feedItem.getAuthor().getUserName());
+        if (feedItem.getAuthor() != null) {
+            tourAuthorName.setText(feedItem.getAuthor().getUserName());
 
-        String avatarURLAsString = feedItem.getAuthor().getAvatarURLAsString();
-        if (avatarURLAsString != null) {
-            Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
-                    .transform(new CropCircleTransformation())
-                    .into(tourAuthorPhoto);
+            String avatarURLAsString = feedItem.getAuthor().getAvatarURLAsString();
+            if (avatarURLAsString != null) {
+                Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
+                        .transform(new CropCircleTransformation())
+                        .into(tourAuthorPhoto);
+            }
+        } else {
+            tourAuthorName.setText("--");
         }
 
         String location = "";
@@ -626,7 +770,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             }
         }
 
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(feedItem.getStartTime()), "h", location));
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), location));
 
         tourPeopleCount.setText("" + feedItem.getNumberOfPeople());
 
@@ -642,15 +786,20 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         else {
             switchToPublicSection();
         }
+
+        // check if we are opening an invitation
+        invitedLayout.setVisibility(invitationId == 0 ? View.GONE : View.VISIBLE);
     }
 
     private void initializeOptionsView() {
         User me = EntourageApplication.me(getActivity());
-        Button stopTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_stop_tour);
-        Button quitTourButton = (Button)optionsLayout.findViewById(R.id.tour_info_button_quit_tour);
+        Button stopTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_stop);
+        Button quitTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_quit);
+        Button editEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_edit);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
-        if (me != null) {
+        editEntourageButton.setVisibility(View.GONE);
+        if (me != null && feedItem.getAuthor() != null) {
             int myId = me.getId();
             if (feedItem.getAuthor().getUserID() != myId) {
                 quitTourButton.setVisibility(View.VISIBLE);
@@ -662,29 +811,28 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 } else {
                     stopTourButton.setText(R.string.tour_info_options_stop_tour);
                 }
+                if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
+                    editEntourageButton.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
 
     private void updateHeaderButtons() {
         boolean isTourPrivate = feedItem.isPrivate();
+        User me = EntourageApplication.me(getActivity());
+        int myId = 0;
+        if (me != null) {
+            myId = me.getId();
+        }
         shareButton.setVisibility(isTourPrivate ? View.GONE : ( (!feedItem.getJoinStatus().equals(Tour.JOIN_STATUS_NOT_REQUESTED) || feedItem.isFreezed()) ? View.GONE : View.VISIBLE ) );
+
+        addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && !feedItem.isClosed() ? View.VISIBLE : View.GONE) : View.GONE);
+
         moreButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
     }
 
     private void initializeDiscussionList() {
-
-        Date now = new Date();
-
-        //add the start time
-        if (feedItem.getType() != TimestampedObject.ENTOURAGE_CARD || FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
-            addDiscussionTourStartCard(now);
-        }
-
-        //check if we need to add the Tour closed card
-        if (feedItem.isClosed()) {
-            addDiscussionTourEndCard();
-        }
 
         //init the recycler view
         discussionView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -699,6 +847,19 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         //clear the added cards info
         feedItem.clearAddedCardInfoList();
+
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            Date now = new Date();
+            //add the start time
+            if (FeedItem.STATUS_ON_GOING.equals(feedItem.getStatus())) {
+                addDiscussionTourStartCard(now);
+            }
+
+            //check if we need to add the Tour closed card
+            if (feedItem.isClosed()) {
+                addDiscussionTourEndCard(now);
+            }
+        }
 
         //scroll to last card
         scrollToLastCard();
@@ -889,13 +1050,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private int getTrackColor(String type, Date date) {
         int color = Color.GRAY;
         if (TourType.MEDICAL.getName().equals(type)) {
-            color = Color.RED;
+            //color = Color.RED;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_medical);
         }
         else if (TourType.ALIMENTARY.getName().equals(type)) {
-            color = Color.GREEN;
+            //color = Color.BLUE;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_distributive);
         }
         else if (TourType.BARE_HANDS.getName().equals(type)) {
-            color = Color.BLUE;
+            //color = Color.GREEN;
+            color = ContextCompat.getColor(getContext(), R.color.tour_type_social);
         }
         if (!MapEntourageFragment.isToday(date)) {
             return MapEntourageFragment.getTransparentColor(color);
@@ -944,7 +1108,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void switchToPublicSection() {
-        detailsSelectorRadioGroup.setVisibility(View.GONE);
         actLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.VISIBLE);
         privateSection.setVisibility(View.GONE);
@@ -957,11 +1120,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void switchToPrivateSection() {
-        detailsSelectorRadioGroup.setVisibility(View.VISIBLE);
         actLayout.setVisibility(View.GONE);
         membersLayout.setVisibility(View.VISIBLE);
-//        publicSection.setVisibility(View.GONE);
-//        privateSection.setVisibility(View.VISIBLE);
+        publicSection.setVisibility(View.GONE);
+        privateSection.setVisibility(View.VISIBLE);
         if (mapFragment == null) {
             initializeMap();
         }
@@ -1060,21 +1222,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         TourPoint startPoint = feedItem.getStartPoint();
         TourTimestamp tourTimestamp = new TourTimestamp(
                 feedItem.getStartTime(),
-                timestamp,
+                now,
                 feedItem.getType(),
                 FeedItem.STATUS_ON_GOING,
                 startPoint,
                 duration,
                 distance
         );
-        feedItem.addCardInfo(tourTimestamp);
-
-        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            tourTimestampList.add(tourTimestamp);
-        }
+        discussionAdapter.addCardInfo(tourTimestamp);
     }
 
-    private void addDiscussionTourEndCard() {
+    private void addDiscussionTourEndCard(Date now) {
         long duration = 0;
         float distance = 0;
         if (feedItem.getStartTime() != null && feedItem.getEndTime() != null) {
@@ -1096,18 +1254,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         TourTimestamp tourTimestamp = new TourTimestamp(
                 feedItem.getEndTime(),
-                feedItem.getEndTime(),
+                now,
                 feedItem.getType(),
                 FeedItem.STATUS_CLOSED,
                 endPoint,
                 duration,
                 distance
         );
-        feedItem.addCardInfo(tourTimestamp);
-
-        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            tourTimestampList.add(tourTimestamp);
-        }
+        discussionAdapter.addCardInfo(tourTimestamp);
     }
 
     private void scrollToLastCard() {
@@ -1133,6 +1287,41 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     // ----------------------------------
+    // Bus handling
+    // ----------------------------------
+
+    @Subscribe
+    public void onUserJoinRequestUpdateEvent(Events.OnUserJoinRequestUpdateEvent event) {
+        if (presenter != null) {
+            presenter.updateUserJoinRequest(event.getUserId(), event.getUpdate(), event.getFeedItem());
+        }
+    }
+
+    @Subscribe
+    public void onEntourageUpdated(Events.OnEntourageUpdated event) {
+        Entourage updatedEntourage = event.getEntourage();
+        if (updatedEntourage == null) return;
+        // Check if it is our displayed entourage
+        if (feedItem.getType() != updatedEntourage.getType() || feedItem.getId() != updatedEntourage.getId()) return;
+        // Update the UI
+        feedItem = updatedEntourage;
+
+        tourOrganization.setText(feedItem.getTitle());
+        tourDescription.setText(feedItem.getDescription());
+
+        String location = "";
+        TourPoint entourageLocation = ((Entourage)feedItem).getLocation();
+        if (entourageLocation != null) {
+            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+            if (currentLocation != null) {
+                float distance = entourageLocation.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                location = String.format("%.2f km", distance/1000.0f);
+            }
+        }
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), location));
+    }
+
+    // ----------------------------------
     // API callbacks
     // ----------------------------------
 
@@ -1151,9 +1340,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (tourUsers != null) {
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
             Iterator<TourUser> iterator = tourUsers.iterator();
+            // check if this is my entourage
+            User me = EntourageApplication.me(getActivity());
+            boolean isMyEntourage = false;
+            if (me != null) {
+                isMyEntourage = me.getId() == feedItem.getAuthor().getUserID();
+            }
+            // iterate over the received users
             while (iterator.hasNext()) {
                 TourUser tourUser =  iterator.next();
-                //skip the author
+                // add the author to members list and skip it
                 if (tourUser.getUserId() == feedItem.getAuthor().getUserID()) {
                     TourUser clone = tourUser.clone();
                     clone.setDisplayedAsMember(true);
@@ -1162,13 +1358,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 }
                 //show only the accepted users
                 if (!tourUser.getStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED)) {
+                    // if it's my entourage, show the pending requests too
+                    if (!isMyEntourage || !tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING))
                     continue;
                 }
+                tourUser.setFeedItem(feedItem);
                 timestampedObjectList.add(tourUser);
 
-                TourUser clone = tourUser.clone();
-                clone.setDisplayedAsMember(true);
-                membersList.add(clone);
+                if (FeedItem.JOIN_STATUS_ACCEPTED.equals(tourUser.getStatus())) {
+                    TourUser clone = tourUser.clone();
+                    clone.setDisplayedAsMember(true);
+                    membersList.add(clone);
+                }
             }
             feedItem.addCardInfoList(timestampedObjectList);
 
@@ -1268,6 +1469,64 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
+    protected void onUserJoinRequestUpdated(int userId, String status, boolean success) {
+        hideProgressBar();
+        if (success) {
+            // Updated ok
+            Toast.makeText(getActivity(), R.string.tour_join_request_success, Toast.LENGTH_SHORT).show();
+            // Update the card
+            TourUser card = (TourUser) discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId);
+            if (card != null) {
+                if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
+                    card.setStatus(FeedItem.JOIN_STATUS_ACCEPTED);
+                    discussionAdapter.updateCard(card);
+                    // Add the user to members list too
+                    TourUser clone = card.clone();
+                    clone.setDisplayedAsMember(true);
+                    membersAdapter.addCardInfo(clone);
+                }
+                else {
+                    // remove from the adapter
+                    discussionAdapter.removeCard(card);
+                    // remove from cached cards
+                    feedItem.removeCardInfo(card);
+                }
+            }
+        }
+        else {
+            // Error
+            Toast.makeText(getActivity(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void onInvitationStatusUpdated(boolean success, String status) {
+        Button acceptInvitationButton = (Button) this.getView().findViewById(R.id.tour_info_invited_accept_button);
+        Button rejectInvitationButton = (Button) this.getView().findViewById(R.id.tour_info_invited_reject_button);
+        acceptInvitationButton.setEnabled(true);
+        rejectInvitationButton.setEnabled(true);
+        if (success) {
+            // Update UI
+            invitedLayout.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), R.string.invited_updated_ok, Toast.LENGTH_SHORT).show();
+            if (Invitation.STATUS_ACCEPTED.equals(status)) {
+                // Invitation accepted, refresh the lists and status
+                if (feedItem != null) {
+                    feedItem.setJoinStatus(FeedItem.JOIN_STATUS_ACCEPTED);
+                    switchToPrivateSection();
+                    loadPrivateCards();
+                    updateHeaderButtons();
+                    actLayout.setVisibility(View.GONE);
+                }
+            }
+
+            // Post an event
+            BusProvider.getInstance().post(new Events.OnInvitationStatusChanged(this.feedItem, status));
+
+        } else {
+            Toast.makeText(getActivity(), R.string.invited_updated_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // ----------------------------------
     // SERVICE BINDING METHODS
     // ----------------------------------
@@ -1348,7 +1607,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             this.feedItem.setStatus(feedItem.getStatus());
             this.feedItem.setEndTime(feedItem.getEndTime());
             if (feedItem.getStatus().equals(FeedItem.STATUS_CLOSED) && feedItem.isPrivate()) {
-                addDiscussionTourEndCard();
+                addDiscussionTourEndCard(new Date());
                 updateDiscussionList();
             }
             if (feedItem.isFreezed()){
@@ -1436,6 +1695,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         @Override
         public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
         }
+    }
+
+    // ----------------------------------
+    // InviteFriendsListener
+    // ----------------------------------
+
+    @Override
+    public void onInviteSent() {
+        // Show the success layout
+        inviteSuccessLayout.setVisibility(View.VISIBLE);
+        // Start the timer to hide the success layout
+        inviteSuccessHandler.postDelayed(inviteSuccessRunnable, Constants.INVITE_SUCCESS_HIDE_DELAY);
     }
 
 

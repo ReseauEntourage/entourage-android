@@ -35,7 +35,7 @@ public class MapFilterFragment extends DialogFragment {
 
     public static final String TAG = "social.entourage_android.MapFilterFragment";
 
-    private static final String KEY_TOUR_RUNNING = "social,entourage.android.KEY_TOUR_RUNNING";
+    private static final String KEY_PRO_USER = "social,entourage.android.KEY_PRO_USER";
 
     // ----------------------------------
     // Attributes
@@ -43,10 +43,13 @@ public class MapFilterFragment extends DialogFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private boolean isTourRunning = false;
+    private boolean isProUser = false;
 
     @Bind(R.id.map_filter_tour_type_layout)
     LinearLayout tourTypeLayout;
+
+    @Bind(R.id.map_filter_entourage_tours)
+    View showToursLayout;
 
     @Bind(R.id.map_filter_tour_medical_switch)
     Switch tourMedicalSwitch;
@@ -86,10 +89,10 @@ public class MapFilterFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static MapFilterFragment newInstance(boolean isTourRunning) {
+    public static MapFilterFragment newInstance(boolean isProUser) {
         MapFilterFragment fragment = new MapFilterFragment();
         Bundle args = new Bundle();
-        args.putBoolean(KEY_TOUR_RUNNING, isTourRunning);
+        args.putBoolean(KEY_PRO_USER, isProUser);
         fragment.setArguments(args);
 
         return fragment;
@@ -113,7 +116,7 @@ public class MapFilterFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            isTourRunning = args.getBoolean(KEY_TOUR_RUNNING, false);
+            isProUser = args.getBoolean(KEY_PRO_USER, false);
         }
         initializeView();
     }
@@ -187,7 +190,8 @@ public class MapFilterFragment extends DialogFragment {
     // ----------------------------------
 
     private void initializeView() {
-        tourTypeLayout.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
+        tourTypeLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
+        showToursLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
 
         MapFilter mapFilter = MapFilter.getInstance();
 
@@ -204,11 +208,12 @@ public class MapFilterFragment extends DialogFragment {
             case MapFilter.DAYS_1:
                 days1RB.setChecked(true);
                 break;
-            case MapFilter.DAYS_2:
-                days2RB.setChecked(true);
-                break;
             case MapFilter.DAYS_3:
                 days3RB.setChecked(true);
+                break;
+            case MapFilter.DAYS_2:
+            default:
+                days2RB.setChecked(true);
                 break;
         }
     }

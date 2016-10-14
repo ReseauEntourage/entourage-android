@@ -44,7 +44,6 @@ import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.EntourageDate;
 import social.entourage.android.api.model.Newsfeed;
-import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -152,8 +151,8 @@ public class TourServiceManager {
         }
     }
 
-    public void startTour(String transportMode, String type) {
-        tour = new Tour(transportMode, type);
+    public void startTour(String type) {
+        tour = new Tour(type);
         sendTour();
     }
 
@@ -210,15 +209,15 @@ public class TourServiceManager {
             long minTime = Constants.UPDATE_TIMER_MILLIS_OFF_TOUR;
             float minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR;
             if (tour != null) {
-                if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
-                    minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_FEET;
-                    minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET;
-                } else if (tour.getTourVehicleType().equals(TourTransportMode.CAR.getName())) {
-                    minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_CAR;
-                    minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR;
-                }
+                minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR;
+                minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR;
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
+            try {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
+            }
+            catch (Exception ex) {
+                Log.d("Entourage", "No GPS Provider");
+            }
         }
     }
 

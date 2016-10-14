@@ -4,7 +4,8 @@
     <string name="entourage_create_demand_title">DEMANDE</string>
     <string name="entourage_create_contribution_title">CONTRIBUTION</string>
     <string name="entourage_create_position_description">Ma position</string>
-    <string name="entourage_create_title_hint">Titre de votre demande</string>
+    <string name="entourage_create_title_demand_hint">Titre de votre demande*</string>
+    <string name="entourage_create_title_contribution_hint">Titre de votre contribution*</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_hint">Description détaillée</string>
 
@@ -16,6 +17,10 @@
 
     <string name="entourage_create_menu_demand">Créer une demande</string>
     <string name="entourage_create_menu_contribution">Créer une contribution</string>
+
+    <!-- Edit Entourage -->
+    <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
+    <string name="entourage_save_ok">Entourage enregistré.</string>
 
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
@@ -46,5 +51,18 @@
     <string name="encounter_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
     <string name="encounter_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
 
+    <!-- My Entourages -->
+    <string name="myentourages_title">MES ENTOURAGES</string>
+
+    <!-- My Entourages Filter -->
+    <string name="myentourages_filter_entourages_title">Mes entourages</string>
+    <string name="myentourages_filter_active">Actifs</string>
+    <string name="myentourages_filter_invited">Invitations</string>
+    <string name="myentourages_filter_own">Créés par moi uniquement</string>
+    <string name="myentourages_filter_closed">Passés</string>
+    <string name="myentourages_filter_types_title">Types d’entourage</string>
+    <string name="myentourages_filter_demand">Demandes</string>
+    <string name="myentourages_filter_contribution">Contributions</string>
+    <string name="myentourages_filter_tours">Maraudes</string>
 
 </resources>

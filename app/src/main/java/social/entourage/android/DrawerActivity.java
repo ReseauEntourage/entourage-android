@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -21,7 +22,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,11 +32,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.RegionUtils;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -52,6 +68,7 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.badge.BadgeView;
+import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -64,16 +81,20 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
+import social.entourage.android.user.edit.photo.PhotoChooseInterface;
+import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 public class DrawerActivity extends EntourageSecuredActivity
         implements TourInformationFragment.OnTourInformationFragmentFinish,
         ChoiceFragment.OnChoiceFragmentFinish,
         MyToursFragment.OnFragmentInteractionListener,
         EntourageDisclaimerFragment.OnFragmentInteractionListener,
-        EncounterDisclaimerFragment.OnFragmentInteractionListener {
+        EncounterDisclaimerFragment.OnFragmentInteractionListener,
+        PhotoChooseInterface {
 
     // ----------------------------------
     // CONSTANTS
@@ -152,6 +173,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                         .load(Uri.parse(avatarURL))
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
+            } else {
+                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
             //refresh the user info from the server
             Location location = EntourageLocation.getInstance().getCurrentLocation();
@@ -299,6 +322,12 @@ public class DrawerActivity extends EntourageSecuredActivity
             else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
             }
+            else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
+            }
+            else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
+            }
         }
         else if (action != null) {
             getIntent().setAction(null);
@@ -316,6 +345,12 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
             else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
+            }
+            else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
+            }
+            else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
             }
         }
     }
@@ -354,7 +389,8 @@ public class DrawerActivity extends EntourageSecuredActivity
             discussionBadgeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    presenter.displayMyTours();
+                    //presenter.displayMyTours();
+                    presenter.displayMyEntourages();
                 }
             });
         }
@@ -543,6 +579,30 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             }
         }
+        else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
+            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            if (message != null) {
+                PushNotificationContent content = message.getContent();
+                if (content != null) {
+                    PushNotificationContent.Extra extra = content.extra;
+                    if (extra != null) {
+                        mapEntourageFragment.displayChosenFeedItem(extra.entourageId, TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
+                    }
+                }
+            }
+        }
+        else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
+            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            if (message != null) {
+                PushNotificationContent content = message.getContent();
+                if (content != null) {
+                    PushNotificationContent.Extra extra = content.extra;
+                    if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
+                        mapEntourageFragment.displayChosenFeedItem(extra.joinableId, content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
+                    }
+                }
+            }
+        }
         intentAction = null;
         intentTour = null;
     }
@@ -558,6 +618,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                         .load(Uri.parse(avatarURL))
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
+            } else {
+                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
         }
     }
@@ -572,16 +634,24 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void tourInfoViewRequested(OnFeedItemInfoViewRequestedEvent event) {
         if (mapEntourageFragment != null) {
             FeedItem feedItem = event.getFeedItem();
-            if (feedItem == null) return;
-            mapEntourageFragment.displayChosenFeedItem(feedItem);
-            //decrease the badge count
-            int tourBadgeCount = feedItem.getBadgeCount();
-            decreaseBadgeCount(tourBadgeCount);
-            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                Tour tour = (Tour) feedItem;
-                removePushNotificationsForTour(tour.getId());
-                //update the tour card
-                mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+            if (feedItem != null) {
+                mapEntourageFragment.displayChosenFeedItem(feedItem);
+                //decrease the badge count
+                int tourBadgeCount = feedItem.getBadgeCount();
+                decreaseBadgeCount(tourBadgeCount);
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                    Tour tour = (Tour) feedItem;
+                    removePushNotificationsForTour(tour.getId());
+                    //update the tour card
+                    mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+                }
+                return;
+            }
+            //check if we are receiving feed type and id
+            int feedItemType = event.getFeedItemType();
+            long feedItemId = event.getFeedItemId();
+            if (feedItemType != 0 && feedItemId != 0) {
+                mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
             }
         }
     }
@@ -594,9 +664,16 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         }
         else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
+            FeedItem feedItem = event.getFeedItem();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.tour_info_quit_tour_title)
-                    .setMessage(R.string.tour_info_quit_tour_description)
+            int titleId = R.string.tour_info_quit_tour_title;
+            int messageId = R.string.tour_info_quit_tour_description;
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                titleId = R.string.entourage_info_quit_entourage_title;
+                messageId = R.string.entourage_info_quit_entourage_description;
+            }
+            builder.setTitle(titleId)
+                    .setMessage(messageId)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
@@ -633,6 +710,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         FeedItem feedItem = event.getFeedItem();
         if (feedItem == null) return;
         if (mapEntourageFragment != null) {
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && event.isShowUI()) {
+                FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
+                feedItemOptionsFragment.show(getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
+                return;
+            }
             if (!feedItem.isClosed()) {
                 mapEntourageFragment.stopFeedItem(feedItem);
             } else {
@@ -812,12 +894,96 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
+    @Override
+    public void onPhotoIgnore() {
+        // Do nothing
+    }
+
+    @Override
+    public void onPhotoChosen(final Uri photoUri) {
+
+        //Upload the photo to Amazon S3
+        showProgressDialog(R.string.user_photo_uploading);;
+
+        final String objectKey = "user_"+authenticationController.getUser().getId()+".jpg";
+        TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
+        TransferObserver transferObserver = transferUtility.upload(
+                BuildConfig.AWS_BUCKET,
+                "300x300/"+objectKey,
+                new File(photoUri.getPath()),
+                CannedAccessControlList.PublicRead
+        );
+        transferObserver.setTransferListener(new TransferListener() {
+            @Override
+            public void onStateChanged(final int id, final TransferState state) {
+                if (state == TransferState.COMPLETED) {
+                    if (presenter != null) {
+                        presenter.updateUserPhoto(objectKey);
+                    } else {
+                        Toast.makeText(DrawerActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        if (photoEditFragment != null) {
+                            photoEditFragment.onPhotoSent(false);
+                        }
+                    }
+                    // Delete the temporary file
+                    File tmpImageFile = new File(photoUri.getPath());
+                    if (!tmpImageFile.delete()) {
+                        // Failed to delete the file
+                        Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
+                    }
+                }
+            }
+
+            @Override
+            public void onProgressChanged(final int id, final long bytesCurrent, final long bytesTotal) {
+
+            }
+
+            @Override
+            public void onError(final int id, final Exception ex) {
+                Toast.makeText(DrawerActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                dismissProgressDialog();
+                PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                if (photoEditFragment != null) {
+                    photoEditFragment.onPhotoSent(false);
+                }
+            }
+        });
+
+        /*
+        // Get the image as byte array
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if (!photo.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+            Log.d("UserPhoto", "Cannot compress to stream");
+            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        byte[] byteArray = stream.toByteArray();
+        // Get the base 64 representation
+        String base64Photo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        if (base64Photo == null || base64Photo.length() == 0) {
+            Log.d("UserPhoto", "Invalid or empty base64 string");
+            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Update the user
+        if (presenter != null) {
+            presenter.updateUserPhoto(base64Photo);
+        }
+        else {
+            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+        }
+        */
+    }
+
     // ----------------------------------
     // Floating Action Buttons handling
     // ----------------------------------
 
     @OnClick(R.id.button_start_tour_launcher)
-    protected void onStartTourClicked() {
+    public void onStartTourClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onStartTourLauncher();
         }
@@ -837,7 +1003,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @OnClick(R.id.button_add_tour_encounter)
-    protected void onAddTourEncounterClicked() {
+    public void onAddTourEncounterClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onAddEncounter();
         }
@@ -857,7 +1023,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @OnClick(R.id.button_create_entourage_contribution)
-    protected void onCreateEntourageContributionClicked() {
+    public void onCreateEntourageContributionClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
@@ -877,7 +1043,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @OnClick(R.id.button_create_entourage_demand)
-    protected void onCreateEntouragDemandClicked() {
+    public void onCreateEntouragDemandClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }

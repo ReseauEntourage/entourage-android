@@ -17,7 +17,10 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +33,11 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.UserOrganizationsAdapter;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 
 public class UserEditFragment extends DialogFragment {
 
@@ -59,6 +65,9 @@ public class UserEditFragment extends DialogFragment {
 
     @Bind(R.id.user_address)
     TextView userAddress;
+
+    @Bind(R.id.user_associations_title)
+    TextView userAssociationsTitle;
 
     @Bind(R.id.user_associations_view)
     RecyclerView userAssociationsView;
@@ -102,6 +111,15 @@ public class UserEditFragment extends DialogFragment {
         super.onStart();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        BusProvider.getInstance().unregister(this);
     }
 
     public void configureView() {
@@ -136,6 +154,10 @@ public class UserEditFragment extends DialogFragment {
                 organizationsAdapter = new UserOrganizationsAdapter(organizationList);
                 userAssociationsView.setAdapter(organizationsAdapter);
             }
+
+            boolean isPro = editedUser.isPro();
+            userAssociationsTitle.setVisibility( isPro ? View.VISIBLE : View.GONE );
+            userAssociationsView.setVisibility( isPro ? View.VISIBLE : View.GONE );
 
         }
     }
@@ -194,9 +216,36 @@ public class UserEditFragment extends DialogFragment {
         }
     }
 
+    @OnClick(R.id.user_photo_button)
+    protected void onPhotoClicked() {
+        PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+        fragment.show(getFragmentManager(), PhotoChooseSourceFragment.TAG);
+    }
+
     private void showEditProfile(int editType) {
         UserEditProfileFragment fragment = UserEditProfileFragment.newInstance(editType);
         fragment.show(getFragmentManager(), UserEditProfileFragment.TAG);
+    }
+
+    // ----------------------------------
+    // Events Handling
+    // ----------------------------------
+
+    @Subscribe
+    public void userInfoUpdated(Events.OnUserInfoUpdatedEvent event) {
+        User user = EntourageApplication.me(getActivity());
+        editedUser.setAvatarURL(user.getAvatarURL());
+
+        if (editedUser.getAvatarURL() != null) {
+            Picasso.with(getActivity()).load(Uri.parse(editedUser.getAvatarURL()))
+                    .transform(new CropCircleTransformation())
+                    .into(userPhoto);
+        }
+        else {
+            Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
+                    .transform(new CropCircleTransformation())
+                    .into(userPhoto);
+        }
     }
 
 }

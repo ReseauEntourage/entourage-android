@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Invite Source -->
+    <string name="invite_source_title">Inviter vos amis</string>
+    <string name="invite_source_description">à rejoindre votre entourage !</string>
+    <string name="invite_source_contacts">Contacts</string>
+    <string name="invite_source_number">Numéro de portable</string>
+
+    <!-- Invite Contacts -->
+    <string name="invite_contacts_title">CONTACTS</string>
+    <string name="invite_contacts_search_hint">Rechercher</string>
+    <string name="invite_contacts_retrieving_phone_numbers">Récupération des numéros</string>
+    <string name="invite_contacts_inviting">Envoi des invitations</string>
+    <string name="invite_contacts_send_error">Echec de l’envoi des invitations</string>
+    <string name="invite_contacts_permission_error">Annulation: l’app n’a pas les permissions requises</string>
+
+    <!-- Invite By Phone Number -->
+    <string name="invite_phone_title">NUMERO PORTABLE</string>
+    <string name="invite_phone_description">Entrer un numéro de portable afin d’inviter la personne à rejoindre votre entourage.</string>
+    <string name="invite_phone_number_hint">Numéro de portable</string>
+
+    <!-- Invite Success -->
+    <string name="invite_success_title">C’est envoyé !</string>
+    <string name="invite_success_description">Votre ami rejoindra l’entourage automatiquement, dès qu’il acceptera votre invitation.</string>
+
+    <!-- Invitation Card -->
+    <string name="invitation_card_description">1 nouvelle invitation à rejoindre un entourage</string>
+    <string name="invitation_card_inviter">De %s</string>
+
+    <!-- Invited -->
+    <string name="invited_description">Vous êtes invités à rejoindre cet entourage</string>
+    <string name="invited_updated_ok">Invitation mise à jour</string>
+    <string name="invited_updated_error">Erreur lors de la mise à jour de l’entourage</string>
+
+</resources>

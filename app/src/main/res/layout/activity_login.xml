@@ -8,8 +8,8 @@
     android:background="@color/login_view">
 
     <include
-        android:id="@+id/login_include_signup"
-        layout="@layout/login_signup"/>
+        android:id="@+id/login_include_signin"
+        layout="@layout/login_signin"/>
 
     <include
         android:id="@+id/login_include_lost_code"
@@ -24,6 +24,26 @@
     <include
         android:id="@+id/login_include_welcome"
         layout="@layout/login_welcome"/>
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/login_name"
+        android:id="@+id/login_include_name"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/login_notifications_permission"
+        android:id="@+id/login_include_notifications"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/login_geolocation"
+        android:id="@+id/login_include_geolocation"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
 
     <include
         android:id="@+id/login_include_tutorial"

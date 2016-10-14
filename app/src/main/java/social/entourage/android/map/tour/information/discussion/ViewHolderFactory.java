@@ -18,22 +18,16 @@ public class ViewHolderFactory {
 
     private HashMap<Integer, ViewHolderType> viewHolderTypeHashMap;
 
-    private static ViewHolderFactory instance = new ViewHolderFactory();
-
-    private ViewHolderFactory() {
+    public ViewHolderFactory() {
         viewHolderTypeHashMap = new HashMap<>();
     }
 
-    private static ViewHolderFactory getInstance() {
-        return instance;
+    public void registerViewHolder(int viewType, ViewHolderType viewHolderType) {
+        viewHolderTypeHashMap.put(viewType, viewHolderType);
     }
 
-    public static void registerViewHolder(int viewType, ViewHolderType viewHolderType) {
-        instance.viewHolderTypeHashMap.put(viewType, viewHolderType);
-    }
-
-    public static RecyclerView.ViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        ViewHolderType viewHolderType = instance.viewHolderTypeHashMap.get(viewType);
+    public RecyclerView.ViewHolder getViewHolder(ViewGroup parent, int viewType) {
+        ViewHolderType viewHolderType = viewHolderTypeHashMap.get(viewType);
         View view = LayoutInflater.from(parent.getContext()).inflate(viewHolderType.layoutResource, parent, false);
         BaseCardViewHolder cardViewHolder = null;
         try {
