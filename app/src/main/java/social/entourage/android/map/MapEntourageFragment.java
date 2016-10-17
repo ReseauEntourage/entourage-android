@@ -1113,7 +1113,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void updateFloatingMenuOptions() {
         if (tourService != null && tourService.isRunning()) {
-            mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.VISIBLE);
+            mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.INVISIBLE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(View.GONE);
         }
         else {
@@ -1121,7 +1121,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             boolean isPro = (me != null && me.isPro());
 
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
-            mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.VISIBLE : View.GONE);
+            mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.INVISIBLE : View.GONE);
         }
     }
 
@@ -1833,12 +1833,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
         originalMapLayoutHeight = lp.height;
 
-        if (lp.topMargin < 0) {
-            lp.topMargin = 0;
-            layoutMapMain.setLayoutParams(lp);
-
-            layoutMain.forceLayout();
-        }
+        ensureMapVisible();
 
         final int targetHeight = layoutMain.getMeasuredHeight();
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
@@ -1889,6 +1884,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             hideToursList();
         } else {
             showToursList();
+        }
+    }
+
+    public boolean isToursListVisible() {
+        return toursListView.getVisibility() == View.VISIBLE;
+    }
+
+    public void ensureMapVisible() {
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+        originalMapLayoutHeight = lp.height;
+
+        if (lp.topMargin < 0) {
+            lp.topMargin = 0;
+            layoutMapMain.setLayoutParams(lp);
+
+            layoutMain.forceLayout();
         }
     }
 

@@ -1075,17 +1075,39 @@ public class DrawerActivity extends EntourageSecuredActivity
             FlurryAgent.logEvent(Constants.EVENT_FEED_GUIDE_SHOW_CLICK);
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_close_button));
-            mapOptionsMenu.toggle(false);
+            if (mapOptionsMenu.isOpened()) {
+                mapOptionsMenu.toggle(false);
+            }
             selectItem(R.id.action_guide);
         }
         else {
             FlurryAgent.logEvent(Constants.EVENT_GUIDE_MASK_CLICK);
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_launcher_button));
-            mapOptionsMenu.toggle(false);
+            if (mapOptionsMenu.isOpened()) {
+                mapOptionsMenu.toggle(false);
+            }
             selectItem(R.id.action_tours);
         }
     }
+
+    // ----------------------------------
+    // Logo icon click handling
+    // ----------------------------------
+
+    @OnClick(R.id.toolbar_entourage_logo)
+    protected void onToolbarLogoClicked() {
+        if (isGuideShown()) {
+            // switch to map mode
+            onPOILauncherClicked();
+        } else {
+            if (mapEntourageFragment.isToursListVisible()) {
+                // make the map visible
+                mapEntourageFragment.ensureMapVisible();
+            }
+        }
+    }
+
 
     // ----------------------------------
     // Helper functions
