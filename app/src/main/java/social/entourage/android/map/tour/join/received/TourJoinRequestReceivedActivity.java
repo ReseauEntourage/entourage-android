@@ -27,6 +27,7 @@ import social.entourage.android.view.HtmlTextView;
 public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
 
     private Message message;
+    private boolean shouldDisplayMessage = true;
     private int requestsCount = 0;
 
     @Inject
@@ -42,6 +43,8 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
             displayMessage();
         }
     }
+
+
 
     @Override
     protected void setupComponent(final EntourageComponent entourageComponent) {
@@ -114,7 +117,13 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                             }
                         }
                     }
-                });
+                })
+                .setNeutralButton(R.string.user_view_profile, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                    }
+                })
+        ;
         if (requestsCount > 0) {
             builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
@@ -123,7 +132,19 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                 }
             });
         }
-        builder.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        if (requestsCount == 0) {
+            //Overriding the view profile handler immediately after show so that it doesn't close the alert
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    showUserProfile();
+                }
+            });
+        }
     }
 
     protected void onUserTourStatusChanged(boolean statusChanged) {

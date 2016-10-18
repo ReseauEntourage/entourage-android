@@ -42,6 +42,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private TextView mJoinMessage;
     private Button mAcceptButton;
     private Button mRefuseButton;
+    private Button mViewProfileButton;
 
     private int userId;
     private FeedItem feedItem;
@@ -64,6 +65,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mJoinMessage = (TextView) itemView.findViewById(R.id.tic_join_message);
         mAcceptButton = (Button) itemView.findViewById(R.id.tic_accept_button);
         mRefuseButton = (Button) itemView.findViewById(R.id.tic_refuse_button);
+        mViewProfileButton = (Button) itemView.findViewById(R.id.tic_view_profile_button);
 
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +102,16 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
                 );
             }
         });
+
+        if (mViewProfileButton != null) {
+            mViewProfileButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    if (userId == 0) return;
+                    BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
+                }
+            });
+        }
     }
 
     @Override
