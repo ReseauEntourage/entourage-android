@@ -1879,7 +1879,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         anim.start();
     }
 
-    protected void toggleToursList() {
+    public void toggleToursList() {
         if (toursListView.getVisibility() == View.VISIBLE) {
             hideToursList();
         } else {
@@ -1901,6 +1901,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
             layoutMain.forceLayout();
         }
+
+        toursListView.scrollToPosition(0);
     }
 
     private void updatePagination(List<Newsfeed> newsfeedList) {

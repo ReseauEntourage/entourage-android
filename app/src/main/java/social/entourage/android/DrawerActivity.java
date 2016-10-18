@@ -1104,6 +1104,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (mapEntourageFragment.isToursListVisible()) {
                 // make the map visible
                 mapEntourageFragment.ensureMapVisible();
+            } else {
+                // switch to list view
+                mapEntourageFragment.toggleToursList();
             }
         }
     }
