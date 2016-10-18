@@ -929,7 +929,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     if (tourPoints != null && tourPoints.size() > 0) {
                         //setup the camera position to starting point
                         TourPoint startPoint = tourPoints.get(0);
-                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR, 0, 0);
+                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0, 0);
                         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()));
@@ -953,7 +953,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                         LatLng position = startPoint.getLocation();
 
                         // move camera
-                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR, 0, 0);
+                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0, 0);
                         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         // add heatmap
