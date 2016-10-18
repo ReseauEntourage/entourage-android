@@ -142,11 +142,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         String distanceAsString = "";
         TourPoint location = entourage.getLocation();
         if (location != null) {
-            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-            if (currentLocation != null) {
-                float distance = location.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
-                distanceAsString = String.format("%.2f km", distance/1000.0f);
-            }
+            distanceAsString = location.distanceToCurrentLocation();
         }
 
         entourageLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(entourage.getStartTime()), distanceAsString));

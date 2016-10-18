@@ -769,6 +769,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourAuthorName.setText("--");
         }
 
+        // MI: for v2.1 we display the distance to starting point
+        /*
         String location = "";
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
             Address tourAddress = feedItem.getStartAddress();
@@ -789,8 +791,21 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 }
             }
         }
+        */
 
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), location));
+        String distanceAsString = "";
+        TourPoint startPoint = null;
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            startPoint = ((Tour)feedItem).getStartPoint();
+        }
+        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            startPoint = ((Entourage)feedItem).getLocation();
+        }
+        if (startPoint != null) {
+            distanceAsString = startPoint.distanceToCurrentLocation();
+        }
+
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
 
         tourPeopleCount.setText("" + feedItem.getNumberOfPeople());
 
@@ -1334,16 +1349,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         tourOrganization.setText(feedItem.getTitle());
         tourDescription.setText(feedItem.getDescription());
 
-        String location = "";
+        String distanceAsString = "";
         TourPoint entourageLocation = ((Entourage)feedItem).getLocation();
         if (entourageLocation != null) {
-            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-            if (currentLocation != null) {
-                float distance = entourageLocation.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
-                location = String.format("%.2f km", distance/1000.0f);
-            }
+            distanceAsString = entourageLocation.distanceToCurrentLocation();
         }
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), location));
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
     }
 
     // ----------------------------------

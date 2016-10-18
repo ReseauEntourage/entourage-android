@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
@@ -140,6 +142,8 @@ public class TourViewHolder extends BaseCardViewHolder {
         tourTypeTextView.setText(String.format(res.getString(R.string.tour_cell_type), tourTypeDescription));
 
         //date and location i.e 1h - Arc de Triomphe
+        // MI: for v2.1 we display the distance to starting point
+        /*
         String location = "";
         Address tourAddress = tour.getStartAddress();
         if (tourAddress != null) {
@@ -155,7 +159,15 @@ public class TourViewHolder extends BaseCardViewHolder {
             geocoderTask = new GeocoderTask();
             geocoderTask.execute(tour);
         }
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(tour.getStartTime()), location));
+        */
+
+        String distanceAsString = "";
+        TourPoint startPoint = tour.getStartPoint();
+        if (startPoint != null) {
+            distanceAsString = startPoint.distanceToCurrentLocation();
+        }
+
+        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(tour.getStartTime()), distanceAsString));
 
         //tour members
         numberOfPeopleTextView.setText(""+tour.getNumberOfPeople());
