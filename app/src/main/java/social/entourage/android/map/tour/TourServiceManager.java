@@ -538,6 +538,11 @@ public class TourServiceManager {
     }
 
     protected void retrieveNewsfeed(Date beforeDate) {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo == null || !netInfo.isConnected()) {
+            tourService.notifyListenersNewsfeed(null, true);
+            return;
+        }
         CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
@@ -557,18 +562,20 @@ public class TourServiceManager {
                 public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
                     if (response.isSuccess()) {
                         List<Newsfeed> newsfeedList = response.body().getNewsfeed();
-                        tourService.notifyListenersNewsfeed(newsfeedList);
+                        tourService.notifyListenersNewsfeed(newsfeedList, false);
+                    } else {
+                        tourService.notifyListenersNewsfeed(null, false);
                     }
                 }
 
                 @Override
                 public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
-                    tourService.notifyListenersNewsfeed(null);
+                    tourService.notifyListenersNewsfeed(null, true);
                 }
             });
         }
         else {
-            tourService.notifyListenersNewsfeed(null);
+            tourService.notifyListenersNewsfeed(null, false);
         }
     }
 

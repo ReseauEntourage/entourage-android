@@ -1702,7 +1702,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     @Override
-    public void onRetrieveNewsfeed(final List<Newsfeed> newsfeedList) {}
+    public void onRetrieveNewsfeed(final List<Newsfeed> newsfeedList, boolean networkError) {}
 
     // ----------------------------------
     // RecyclerView.OnScrollListener

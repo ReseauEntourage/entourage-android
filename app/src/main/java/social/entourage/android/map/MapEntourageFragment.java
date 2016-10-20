@@ -227,6 +227,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Bind(R.id.fragment_map_new_entourages_button)
     Button newEntouragesButton;
 
+    @Bind(R.id.fragment_map_empty_list)
+    TextView emptyListTextView;
+
     Timer refreshToursTimer;
     TimerTask refreshToursTimerTask;
     final Handler refreshToursHandler = new Handler();
@@ -861,8 +864,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onRetrieveNewsfeed(List<Newsfeed> newsfeedList) {
+    public void onRetrieveNewsfeed(List<Newsfeed> newsfeedList, boolean networkError) {
         if (newsfeedAdapter == null) return;
+        if (networkError) {
+            Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
         int previousItemCount = newsfeedAdapter.getItemCount();
         if (newsfeedList != null) {
             newsfeedList = removeRedundantNewsfeed(newsfeedList, false);
@@ -1835,6 +1842,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         ensureMapVisible();
 
+        emptyListTextView.setVisibility(View.GONE);
+
         final int targetHeight = layoutMain.getMeasuredHeight();
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -1871,6 +1880,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
                 layoutParams.height = val;
                 layoutMapMain.setLayoutParams(layoutParams);
+                if (val == originalMapLayoutHeight) {
+                    // See if we need to show the empty newsfeed textview
+                    if (newsfeedAdapter != null) {
+                        emptyListTextView.setVisibility(newsfeedAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                    }
+                }
                 layoutMain.forceLayout();
             }
 

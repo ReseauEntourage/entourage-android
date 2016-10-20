@@ -472,9 +472,9 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersNewsfeed(List<Newsfeed> newsfeedList) {
+    public void notifyListenersNewsfeed(List<Newsfeed> newsfeedList, boolean networkError) {
         for (TourServiceListener listener : listeners) {
-            listener.onRetrieveNewsfeed(newsfeedList);
+            listener.onRetrieveNewsfeed(newsfeedList, networkError);
         }
     }
 
@@ -494,6 +494,6 @@ public class TourService extends Service {
         void onFeedItemClosed(boolean closed, FeedItem feedItem);
         void onGpsStatusChanged(boolean active);
         void onUserStatusChanged(TourUser user, FeedItem feedItem);
-        void onRetrieveNewsfeed(List<Newsfeed> newsfeedList);
+        void onRetrieveNewsfeed(List<Newsfeed> newsfeedList, boolean networkError);
     }
 }
