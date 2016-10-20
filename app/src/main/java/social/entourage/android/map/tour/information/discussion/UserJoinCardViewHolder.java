@@ -143,7 +143,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             mPublicSection.setVisibility(View.VISIBLE);
 
             String displayName = user.getDisplayName();
-            SpannableString spannableString = new SpannableString(user.getDisplayName() + getJoinStatus(user.getStatus()));
+            SpannableString spannableString = new SpannableString(user.getDisplayName() + getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
             ClickableSpan clickableSpan = new ClickableSpan() {
                 @Override
                 public void onClick(final View widget) {
