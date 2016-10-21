@@ -173,6 +173,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_card_people_count)
     TextView tourPeopleCount;
 
+    @Bind(R.id.tour_card_people_image)
+    ImageView tourPeopleImage;
+
+    @Bind(R.id.tour_card_arrow)
+    ImageView tourCardArrow;
+
     @Bind(R.id.tour_card_act_layout)
     RelativeLayout headerActLayout;
 
@@ -463,7 +469,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         this.dismiss();
     }
 
-    @OnClick(R.id.tour_info_title)
+    @OnClick({R.id.tour_info_title, R.id.tour_card_arrow})
     protected void onSwitchSections() {
         // Ignore if the entourage is not loaded or is public
         if (feedItem == null || !feedItem.isPrivate())
@@ -816,9 +822,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         // switch to appropiate section
         if (feedItem.isPrivate()) {
+            tourPeopleCount.setVisibility(View.INVISIBLE);
+            tourPeopleImage.setVisibility(View.INVISIBLE);
+            tourAuthorPhoto.setVisibility(View.INVISIBLE);
+            tourCardArrow.setVisibility(View.VISIBLE);
             switchToPrivateSection();
         }
         else {
+            tourPeopleCount.setVisibility(View.VISIBLE);
+            tourPeopleImage.setVisibility(View.VISIBLE);
+            tourAuthorPhoto.setVisibility(View.VISIBLE);
+            tourCardArrow.setVisibility(View.GONE);
             switchToPublicSection();
         }
 

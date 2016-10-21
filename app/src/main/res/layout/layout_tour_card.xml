@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background"
@@ -34,6 +35,17 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/arrow_grey_light"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/tour_card_arrow"
+        android:padding="5dp"
+        android:layout_marginTop="3dp"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,6 +74,7 @@
             android:text="Small Text"
             android:id="@+id/tour_card_author"
             android:textSize="15sp"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -146,5 +159,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/tour_card_button_act"
             android:layout_centerInParent="true"/>
+
     </RelativeLayout>
 </RelativeLayout>
