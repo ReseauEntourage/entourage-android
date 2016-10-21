@@ -143,7 +143,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             mPublicSection.setVisibility(View.VISIBLE);
 
             String displayName = user.getDisplayName();
-            SpannableString spannableString = new SpannableString(user.getDisplayName() + getJoinStatus(user.getStatus()));
+            SpannableString spannableString = new SpannableString(user.getDisplayName() + getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
             ClickableSpan clickableSpan = new ClickableSpan() {
                 @Override
                 public void onClick(final View widget) {
@@ -170,9 +170,9 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         feedItem = user.getFeedItem();
     }
 
-    private String getJoinStatus(String joinStatus) {
+    private String getJoinStatus(String joinStatus, boolean isTour) {
         if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
-            return itemView.getContext().getString(R.string.tour_info_text_join_accepted);
+            return itemView.getContext().getString(isTour?R.string.tour_info_text_join_accepted:R.string.entourage_info_text_join_accepted);
         }
         else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
             return itemView.getContext().getString(R.string.tour_info_text_join_rejected);
