@@ -95,13 +95,32 @@ public class LoginPresenter {
                                 activity.launchFillInProfileView(phoneNumber, response.body().getUser());
                             }
                         } else {
-                            activity.loginFail(false);
+                            if (response.errorBody() != null) {
+                                try {
+                                    String errorBody = response.errorBody().string();
+                                    if (errorBody != null) {
+                                        if (errorBody.contains("INVALID_PHONE_FORMAT")) {
+                                            activity.loginFail(LoginActivity.LOGIN_ERROR_INVALID_PHONE_FORMAT);
+                                        } else if (errorBody.contains("UNAUTHORIZED")) {
+                                            activity.loginFail(LoginActivity.LOGIN_ERROR_UNAUTHORIZED);
+                                        } else {
+                                            activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
+                                        }
+                                    } else {
+                                        activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
+                                    }
+                                } catch (IOException e) {
+                                    activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
+                                }
+                            } else {
+                                activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
+                            }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        activity.loginFail(true);
+                        activity.loginFail(LoginActivity.LOGIN_ERROR_NETWORK);
                     }
                 });
             } else {
@@ -271,16 +290,24 @@ public class LoginPresenter {
                 if (response.isSuccess()) {
                     activity.registerPhoneNumberSent(phoneNumber, true);
                 } else {
-                    try {
-                        String errorString = response.errorBody().string();
-                        if (errorString.contains("PHONE_ALREADY_EXIST")) {
-                            // Phone number already registered
-                            activity.registerPhoneNumberSent(phoneNumber, false);
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorString = response.errorBody().string();
+                            if (errorString.contains("PHONE_ALREADY_EXIST")) {
+                                // Phone number already registered
+                                activity.registerPhoneNumberSent(phoneNumber, false);
+                                activity.displayToast(R.string.registration_number_error_already_registered);
+                            } else if (errorString.contains("INVALID_PHONE_FORMAT")) {
+                                activity.displayToast(R.string.login_login_error_invalid_phone_format);
+                            } else {
+                                activity.displayToast(R.string.registration_number_error_already_registered);
+                            }
+                        } catch (IOException e) {
+                            activity.displayToast(R.string.registration_number_error_already_registered);
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } else {
+                        activity.displayToast(R.string.registration_number_error_already_registered);
                     }
-                    activity.displayToast(R.string.registration_number_error_already_registered);
                     FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
                 }
             }

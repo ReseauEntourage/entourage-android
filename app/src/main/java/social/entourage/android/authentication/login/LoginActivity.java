@@ -74,6 +74,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     private static final int PERMISSIONS_REQUEST_PHONE_STATE = 1;
     public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
 
+    public final static int LOGIN_ERROR_UNAUTHORIZED = -1;
+    public final static int LOGIN_ERROR_INVALID_PHONE_FORMAT = -2;
+    public final static int LOGIN_ERROR_UNKNOWN = -9998;
+    public final static int LOGIN_ERROR_NETWORK = -9999;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -397,13 +402,28 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         finish();
     }
 
-    public void loginFail(boolean networkError) {
+    public void loginFail(int errorCode) {
         stopLoader();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
         //displayToast(getString(R.string.login_fail));
+        @StringRes int errorMessage;
+        switch (errorCode) {
+            case LOGIN_ERROR_NETWORK:
+                errorMessage = R.string.login_login_error_network;
+                break;
+            case LOGIN_ERROR_INVALID_PHONE_FORMAT:
+                errorMessage = R.string.login_login_error_invalid_phone_format;
+                break;
+            case LOGIN_ERROR_UNAUTHORIZED:
+                errorMessage = R.string.login_login_error_invalid_credentials;
+                break;
+            default:
+                errorMessage = R.string.login_login_error_invalid_credentials;
+                break;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.login_login_error_title)
-            .setMessage(networkError ? R.string.login_login_error_network : R.string.login_login_error_invalid_credentials)
+            .setMessage(errorMessage)
             .setPositiveButton(R.string.login_login_error_retry, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(final DialogInterface dialog, final int which) {
