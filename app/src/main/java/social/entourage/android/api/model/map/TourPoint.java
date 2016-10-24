@@ -79,7 +79,7 @@ public class TourPoint implements Serializable {
             if (distance < 1000.0f) {
                 distanceAsString = String.format("%.0f m", distance);
             } else {
-                distanceAsString = String.format("%.2f km", distance / 1000.0f);
+                distanceAsString = String.format("%.0f km", distance / 1000.0f);
             }
         }
 
