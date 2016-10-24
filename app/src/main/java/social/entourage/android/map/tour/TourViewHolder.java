@@ -184,10 +184,13 @@ public class TourViewHolder extends BaseCardViewHolder {
 
         //act button
         if (actButton != null) {
+            actButton.setVisibility(View.VISIBLE);
             if (tour.isFreezed()) {
-                actButton.setVisibility(View.GONE);
+                //actButton.setVisibility(View.GONE);
+                actButton.setText(R.string.tour_cell_button_freezed);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_freezed), null, null);
             } else {
-                actButton.setVisibility(View.VISIBLE);
+                //actButton.setVisibility(View.VISIBLE);
                 String joinStatus = tour.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_pending);

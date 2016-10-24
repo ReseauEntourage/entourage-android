@@ -163,7 +163,9 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         //act button
         if (actButton != null) {
             if (entourage.isFreezed()) {
-                actButton.setVisibility(View.GONE);
+                actButton.setVisibility(View.VISIBLE);
+                actButton.setText(R.string.tour_cell_button_freezed);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_freezed), null, null);
             } else {
                 actButton.setVisibility(View.VISIBLE);
                 String joinStatus = entourage.getJoinStatus();
