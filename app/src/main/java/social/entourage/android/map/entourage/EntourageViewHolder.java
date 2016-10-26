@@ -119,6 +119,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             if (avatarURLAsString != null) {
                 Picasso.with(itemView.getContext())
                         .load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(photoView);
             } else {

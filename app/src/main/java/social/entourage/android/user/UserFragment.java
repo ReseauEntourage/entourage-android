@@ -205,6 +205,7 @@ public class UserFragment extends DialogFragment {
 
             if (user.getAvatarURL() != null) {
                 Picasso.with(getActivity()).load(Uri.parse(user.getAvatarURL()))
+                        .placeholder(R.drawable.ic_user_photo)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }

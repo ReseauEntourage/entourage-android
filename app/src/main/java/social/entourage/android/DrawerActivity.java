@@ -163,6 +163,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (avatarURL != null) {
                 Picasso.with(this)
                         .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             } else {
@@ -613,6 +614,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (avatarURL != null) {
                 Picasso.with(this)
                         .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             } else {

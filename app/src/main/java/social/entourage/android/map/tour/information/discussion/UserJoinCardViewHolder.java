@@ -132,8 +132,11 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             String avatarURL = user.getAvatarURLAsString();
             if (avatarURL != null) {
                 Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(mPhotoView);
+            } else {
+                mPhotoView.setImageResource(R.drawable.ic_user_photo_small);
             }
 
             mJoinMessage.setText(user.getMessage());

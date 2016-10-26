@@ -56,8 +56,11 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
         String avatarURL = tourUser.getAvatarURLAsString();
         if (avatarURL != null) {
             Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
                     .transform(new CropCircleTransformation())
                     .into(mMemberPhoto);
+        } else {
+            mMemberPhoto.setImageResource(R.drawable.ic_user_photo_small);
         }
         mMemberName.setText(tourUser.getDisplayName());
     }

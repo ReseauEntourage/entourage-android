@@ -768,6 +768,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             String avatarURLAsString = feedItem.getAuthor().getAvatarURLAsString();
             if (avatarURLAsString != null) {
                 Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(tourAuthorPhoto);
             }
