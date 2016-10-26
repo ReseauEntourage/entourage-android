@@ -97,6 +97,8 @@ public class GuideMapEntourageFragment extends Fragment {
                 @Override
                 public void onMapReady(final GoogleMap googleMap) {
                     isMapLoaded = true;
+                    map = googleMap;
+
                     clusterManager = new ClusterManager(getActivity(), googleMap);
                     poiRenderer = new PoiRenderer(getActivity(), googleMap, clusterManager);
                     clusterManager.setRenderer(poiRenderer);
@@ -121,7 +123,8 @@ public class GuideMapEntourageFragment extends Fragment {
                             }
                         }
                     });
-                    map = googleMap;
+
+                    initializeMapZoom();
                 }
             });
         }
