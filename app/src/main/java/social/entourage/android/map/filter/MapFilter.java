@@ -39,7 +39,7 @@ public class MapFilter {
         return ourInstance;
     }
 
-    private MapFilter() {
+    protected MapFilter() {
     }
 
     // ----------------------------------

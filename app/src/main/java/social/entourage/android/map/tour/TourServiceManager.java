@@ -55,6 +55,7 @@ import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.map.filter.MapFilter;
+import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.tools.BusProvider;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
@@ -537,7 +538,7 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveNewsfeed(Date beforeDate) {
+    protected void retrieveNewsfeed(Date beforeDate, Context context) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
             tourService.notifyListenersNewsfeed(null, true);
@@ -546,7 +547,7 @@ public class TourServiceManager {
         CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
-            MapFilter mapFilter = MapFilter.getInstance();
+            MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
             Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveFeed(
                     ( beforeDate == null ? null : new EntourageDate(beforeDate) ),
                     location.longitude,
