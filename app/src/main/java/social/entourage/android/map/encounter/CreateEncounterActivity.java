@@ -173,13 +173,18 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
 
     @OnClick(R.id.button_create_encounter)
     public void createEncounter() {
-        if (!messageEditText.getText().toString().equals("") && !streetPersonNameEditText.getText().toString().equals("")) {
+        String personName = streetPersonNameEditText.getText().toString().trim();
+        String message = messageEditText.getText().toString().trim();
+        if (!message.equals("") && !personName.equals("")) {
             showProgressDialog(R.string.creating_encounter);
             presenter.createEncounter(messageEditText.getText().toString(), streetPersonNameEditText.getText().toString());
         } else {
-            Toast.makeText(getApplicationContext(), R.string.encounter_empty_fields, Toast.LENGTH_SHORT).show();
+            if (personName.equals("")) {
+                Toast.makeText(getApplicationContext(), R.string.encounter_empty_name, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.encounter_empty_fields, Toast.LENGTH_SHORT).show();
+            }
         }
-        FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
     }
 
     @OnClick(R.id.button_record)
