@@ -995,6 +995,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.onStartTourLauncher();
         }
         else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.map_poi_create_tour_error)
                     .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -1006,6 +1007,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+            */
+
+            onPOILauncherClicked();
+            mapEntourageFragment.onStartTourLauncher();
         }
     }
 
@@ -1015,6 +1020,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.onAddEncounter();
         }
         else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.map_poi_create_encounter_error)
                     .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -1026,6 +1032,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+            */
+
+            onPOILauncherClicked();
+            mapEntourageFragment.onAddEncounter();
         }
     }
 
@@ -1036,6 +1046,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
         else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.map_poi_create_entourage_error)
                     .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -1047,6 +1058,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+            */
+
+            onPOILauncherClicked();
+            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
     }
 
@@ -1057,6 +1072,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }
         else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.map_poi_create_entourage_error)
                     .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -1068,6 +1084,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+            */
+
+            onPOILauncherClicked();
+            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }
     }
 
