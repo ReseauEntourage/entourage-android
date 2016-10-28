@@ -6,7 +6,20 @@ package social.entourage.android.map.filter;
 
 public class MapFilterPublic extends MapFilter {
 
-    protected MapFilterPublic() {
+    private static MapFilter ourInstance = new MapFilterPublic();
 
+    public static MapFilter getInstance() {
+        return ourInstance;
+    }
+
+    protected MapFilterPublic() {
+        tourTypeMedical = false;
+        tourTypeSocial = false;
+        tourTypeDistributive = false;
+
+        entourageTypeDemand = true;
+        entourageTypeContribution = true;
+
+        showTours = false;
     }
 }
