@@ -12,7 +12,7 @@
     <string name="map_permission_title">Entourage doit accéder à la géolocalisation</string>
     <string name="map_permission_description">Sans géolocalisation Entourage ne peut pas fonctionner.</string>
     <string name="map_permission_refuse">Refuser</string>
-    <string name="map_permission_explanation">Afin de vous suggérer des maraudes, des demandes et des contributions. Entourage doit connaître votre position.\n\nAllez dans :\n\nRéglages > Confidentialité Services de localisation  et activez Entourage</string>
+    <string name="map_permission_explanation">Afin de vous suggérer des maraudes, des demandes et des contributions. Entourage doit connaître votre position.\n\nAllez dans :\n\nRéglages > Confidentialité Services de localisation et activez Entourage</string>
     <string name="error_dialog_disabled">La géolocalisation doit être activée pour utiliser Entourage. Voulez-vous l\'activer ?</string>
     <string name="map_empty_newsfeed">Aucun entourage près de cette position</string>
 

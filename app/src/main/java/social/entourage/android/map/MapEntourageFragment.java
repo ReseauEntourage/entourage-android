@@ -258,7 +258,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         markersMap = new TreeMap<>();
         retrievedHistory = new TreeMap<>();
 
-        checkPermission();
         FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
     }
 
@@ -308,7 +307,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
                 if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-                    checkPermission();
+                    //checkPermission();
+                    BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
                 } else {
                     BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
                 }
@@ -321,6 +321,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onStart() {
         super.onStart();
 
+        checkPermission();
         toursListView.addOnScrollListener(scrollListener);
     }
 
@@ -599,6 +600,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService != null) {
             clearAll();
             tourService.updateNewsfeed(pagination);
+        }
+    }
+
+    @Subscribe
+    public void onLocationPermissionGranted(OnLocationPermissionGranted event) {
+        if (event == null) return;
+        if (event.isPermissionGranted()) {
+            onGpsStatusChanged(true);
+            if (map != null) {
+                try {
+                    map.setMyLocationEnabled(true);
+                } catch (SecurityException e) {}
+            }
+        } else {
+            onGpsStatusChanged(false);
         }
     }
 
@@ -1225,75 +1241,79 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                 public void onClick(final DialogInterface dialog, final int i) {
                                     NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
                                     noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), "fragment_no_location_permission");
+                                    BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
                                 }
                             })
                             .show();
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
+            } else {
+                BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
             }
         }
     }
 
     private void initializeMap() {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(final GoogleMap googleMap) {
-                map = googleMap;
-                if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                    googleMap.setMyLocationEnabled(true);
-                }
-                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                googleMap.getUiSettings().setMapToolbarEnabled(false);
+        if (map == null) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final GoogleMap googleMap) {
+                    map = googleMap;
+                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                        googleMap.setMyLocationEnabled(true);
+                    }
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                    googleMap.getUiSettings().setMapToolbarEnabled(false);
 
-                initializeMapZoom();
-                setOnMarkerClickListener(presenter.getOnClickListener());
-                map.setOnGroundOverlayClickListener(presenter.getOnGroundOverlayClickListener());
+                    initializeMapZoom();
+                    setOnMarkerClickListener(presenter.getOnClickListener());
+                    map.setOnGroundOverlayClickListener(presenter.getOnGroundOverlayClickListener());
 
-                googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-                    @Override
-                    public void onCameraChange(CameraPosition cameraPosition) {
-                        EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
-                        Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-                        Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
-                        float newZoom = cameraPosition.zoom;
+                    googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                        @Override
+                        public void onCameraChange(CameraPosition cameraPosition) {
+                            EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
+                            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                            Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
+                            float newZoom = cameraPosition.zoom;
 
-                        if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
-                            if (previousCameraZoom != newZoom) {
-                                if (previousCameraZoom > newZoom) {
-                                    FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_IN);
-                                } else {
-                                    FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
+                            if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+                                if (previousCameraZoom != newZoom) {
+                                    if (previousCameraZoom > newZoom) {
+                                        FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_IN);
+                                    } else {
+                                        FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
+                                    }
+                                }
+                                previousCameraZoom = newZoom;
+                                previousCameraLocation = newLocation;
+                                newsfeedAdapter.removeAll();
+                                pagination = new EntouragePagination();
+                                tourService.updateNewsfeed(pagination);
+                                if (userHistory) {
+                                    tourService.updateUserHistory(userId, 1, 500);
                                 }
                             }
-                            previousCameraZoom = newZoom;
-                            previousCameraLocation = newLocation;
-                            newsfeedAdapter.removeAll();
-                            pagination = new EntouragePagination();
-                            tourService.updateNewsfeed(pagination);
-                            if (userHistory) {
-                                tourService.updateUserHistory(userId, 1, 500);
+
+                            if (isFollowing && currentLocation != null) {
+                                if (currentLocation.distanceTo(newLocation) > 1) {
+                                    isFollowing = false;
+                                }
                             }
                         }
+                    });
 
-                        if (isFollowing && currentLocation != null) {
-                            if (currentLocation.distanceTo(newLocation) > 1) {
-                                isFollowing = false;
-                            }
-                        }
-                    }
-                });
-
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        if (getActivity() != null) {
-                            FlurryAgent.logEvent(Constants.EVENT_FEED_MAPCLICK);
-                            if (toursListView.getVisibility() == View.VISIBLE) {
-                                hideToursList();
-                            }
-                            // EMA-341 Disabling the search tour feature
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            if (getActivity() != null) {
+                                FlurryAgent.logEvent(Constants.EVENT_FEED_MAPCLICK);
+                                if (toursListView.getVisibility() == View.VISIBLE) {
+                                    hideToursList();
+                                }
+                                // EMA-341 Disabling the search tour feature
                             /*
                             else {
                                 loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
@@ -1301,29 +1321,30 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                 tourService.searchToursFromPoint(latLng, userHistory, userId, 1, 500);
                             }
                             */
+                            }
                         }
-                    }
-                });
+                    });
 
-                googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                    @Override
-                    public void onMapLongClick(final LatLng latLng) {
-                        if (getActivity() != null) {
-                            FlurryAgent.logEvent(Constants.EVENT_MAP_LONGPRESS);
-                            showLongClickOnMapOptions(latLng);
+                    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                        @Override
+                        public void onMapLongClick(final LatLng latLng) {
+                            if (getActivity() != null) {
+                                FlurryAgent.logEvent(Constants.EVENT_MAP_LONGPRESS);
+                                showLongClickOnMapOptions(latLng);
+                            }
                         }
-                    }
-                });
+                    });
 
-                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                    @Override
-                    public void onMapLoaded() {
-                        isMapLoaded = true;
-                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
-                    }
-                });
-            }
-        });
+                    googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                        @Override
+                        public void onMapLoaded() {
+                            isMapLoaded = true;
+                            BusProvider.getInstance().post(new OnCheckIntentActionEvent());
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private void initializeToursListView() {
