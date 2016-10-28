@@ -15,6 +15,7 @@
     <string name="map_permission_explanation">Afin de vous suggérer des maraudes, des demandes et des contributions. Entourage doit connaître votre position.\n\nAllez dans :\n\nRéglages > Confidentialité Services de localisation et activez Entourage</string>
     <string name="error_dialog_disabled">La géolocalisation doit être activée pour utiliser Entourage. Voulez-vous l\'activer ?</string>
     <string name="map_empty_newsfeed">Aucun entourage près de cette position</string>
+    <string name="map_empty_newsfeed_popup">On dirait que c\'est calme ici!\n\nDéplacez la carte pour trouver des entourages crées par le réseau\n\nVous aussi, vous pouvez créer un entourage: appuyez sur +</string>
 
     <!-- Map Filter -->
     <string name="map_filter_title">FILTRES</string>

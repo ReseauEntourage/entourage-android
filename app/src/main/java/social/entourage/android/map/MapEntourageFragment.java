@@ -130,6 +130,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private static final int MAX_SCROLL_DELTA_Y = 20;
 
+    private static final int EMPTY_POPUP_DISPLAY_LIMIT = 300;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -149,6 +151,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private Location previousCameraLocation;
     private LatLng longTapCoordinates;
     private float previousCameraZoom = 1.0f;
+
+    private Location previousEmptyListPopupLocation = null;
 
     private TourService tourService;
     private ServiceConnection connection = new ServiceConnection();
@@ -229,6 +233,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Bind(R.id.fragment_map_empty_list)
     TextView emptyListTextView;
+
+    @Bind(R.id.fragment_map_empty_list_popup)
+    View emptyListPopup;
 
     Timer refreshToursTimer;
     TimerTask refreshToursTimerTask;
@@ -1302,6 +1309,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                     isFollowing = false;
                                 }
                             }
+
+                            hideEmptyListPopup();
                         }
                     });
 
@@ -1848,6 +1857,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void hideToursList() {
+
+        // show the empty list popup if necessary
+        if (newsfeedAdapter.getItemCount() == 0) {
+            showEmptyListPopup();
+        }
+
         if (toursListView.getVisibility() == View.GONE) {
             return;
         }
@@ -1890,6 +1905,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         toursListView.setVisibility(View.VISIBLE);
 
         mapDisplayTypeRadioGroup.setVisibility(View.GONE);
+
+        hideEmptyListPopup();
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
 
@@ -2084,6 +2101,33 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (firstInvitation != null) {
             presenter.openFeedItem(firstInvitation.getEntourageId(), FeedItem.ENTOURAGE_CARD, firstInvitation.getId());
         }
+    }
+
+    // ----------------------------------
+    // EMPTY LIST POPUP
+    // ----------------------------------
+
+    @OnClick(R.id.fragment_map_empty_list_popup_close)
+    protected void onEmptyListPopupClose() {
+        hideEmptyListPopup();
+    }
+
+    private void showEmptyListPopup() {
+        if (previousEmptyListPopupLocation == null) {
+            previousEmptyListPopupLocation = EntourageLocation.getInstance().getCurrentLocation();
+        } else {
+            // Show the popup only we moved from the last position we show it
+            Location currentLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getCurrentCameraPosition());
+            if (previousEmptyListPopupLocation.distanceTo(currentLocation) < EMPTY_POPUP_DISPLAY_LIMIT) {
+                return;
+            }
+            previousEmptyListPopupLocation = currentLocation;
+        }
+        emptyListPopup.setVisibility(View.VISIBLE);
+    }
+
+    private void hideEmptyListPopup() {
+        emptyListPopup.setVisibility(View.GONE);
     }
 
     // ----------------------------------
