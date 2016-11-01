@@ -6,7 +6,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import okhttp3.HttpUrl;
+import okhttp3.Response;
 import social.entourage.android.Constants;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Retrofit interceptor that automatically add a params to the url when authenticated
@@ -35,6 +38,14 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
                 .header("Accept", "application/json")
                 .header("X-API-KEY", Constants.API_KEY)
                 .url(url).build();
-        return chain.proceed(request);
+        Response response = chain.proceed(request);
+
+        if (response.code() == 401) {
+            if (response.message() != null && response.message().equalsIgnoreCase("Unauthorized")) {
+                BusProvider.getInstance().post(new Events.OnUnauthorizedEvent());
+            }
+        }
+
+        return response;
     }
 }

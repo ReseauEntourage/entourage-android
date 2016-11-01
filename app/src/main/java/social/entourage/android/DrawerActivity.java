@@ -727,6 +727,12 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
+    @Subscribe
+    public void onUnauthorized(OnUnauthorizedEvent event) {
+        gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
+        logout();
+    }
+
     // ----------------------------------
     // PUSH NOTIFICATION HANDLING
     // ----------------------------------

@@ -85,6 +85,15 @@ public class Events {
     }
 
     /**
+     * Event signaling that current user is unauthorized
+     */
+    public static class OnUnauthorizedEvent {
+
+        public OnUnauthorizedEvent() {}
+
+    }
+
+    /**
      * Event signaling that user info is updated
      */
     public static class OnUserInfoUpdatedEvent {
