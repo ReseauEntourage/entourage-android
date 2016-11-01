@@ -6,4 +6,5 @@
     <string name="action_tours">MARAUDES</string>
     <string name="action_profile">PROFIL</string>
     <string name="action_about">À propos</string>
+    <string name="action_edit_profile"><u>Modifier mon profil</u></string>
 </resources>

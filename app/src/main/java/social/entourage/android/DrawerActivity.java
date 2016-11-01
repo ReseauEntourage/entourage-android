@@ -77,6 +77,7 @@ import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
+import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
@@ -116,6 +117,9 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Bind(R.id.drawer_header_user_photo)
     ImageView userPhoto;
+
+    @Bind(R.id.drawer_header_edit_profile)
+    TextView userEditProfileTextView;
 
     @Bind(R.id.toolbar_discussion)
     BadgeView discussionBadgeView;
@@ -433,6 +437,14 @@ public class DrawerActivity extends EntourageSecuredActivity
                 drawerLayout.closeDrawers();
             }
         });
+        //add listener to modify profile text view
+        userEditProfileTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                selectedSidemenuAction = R.id.action_edit_user;
+                drawerLayout.closeDrawers();
+            }
+        });
 
         int childCount = navigationView.getChildCount();
         View v;
@@ -481,6 +493,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
                 //loadFragment(userFragment, TAG_FRAGMENT_USER);
                 userFragment.show(getSupportFragmentManager(), UserFragment.TAG);
+                break;
+            case R.id.action_edit_user:
+                UserEditFragment fragment = new UserEditFragment();
+                fragment.show(getSupportFragmentManager(), UserEditFragment.TAG);
                 break;
             case R.id.action_logout:
                 FlurryAgent.logEvent(Constants.EVENT_MENU_LOGOUT);
