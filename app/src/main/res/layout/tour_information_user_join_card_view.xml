@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,24 +13,44 @@
         android:gravity="center"
         android:id="@+id/tic_public_info_section">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/tic_public_username"
-            android:textColor="@color/accent"
-            android:textSize="18sp"
-            android:visibility="gone"/>
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:srcCompat="@drawable/ic_user_photo_small"
+            android:id="@+id/tic_public_info_photo"
+            android:scaleType="centerInside"
+            android:layout_gravity="bottom"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/tic_join_status"
-            android:textSize="18sp"
-            android:textColor="@color/greyish"
-            />
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tic_public_info_username"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/greyish"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/tic_join_status"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal"
+                android:background="@drawable/bubble_left"
+                android:autoLink="all"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -75,7 +96,9 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="5dp"/>
 
         <Button
             android:layout_width="match_parent"

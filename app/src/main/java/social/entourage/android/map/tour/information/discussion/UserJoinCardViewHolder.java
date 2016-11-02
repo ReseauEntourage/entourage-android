@@ -34,6 +34,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private View mPublicSection;
     private View mPrivateSection;
 
+    private ImageView mPublicPhotoView;
     private TextView mPublicUsernameView;
     private TextView mJoinStatusView;
 
@@ -57,7 +58,8 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mPublicSection = itemView.findViewById(R.id.tic_public_info_section);
         mPrivateSection = itemView.findViewById(R.id.tic_private_info_section);
 
-        mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_public_username);
+        mPublicPhotoView = (ImageView) itemView.findViewById(R.id.tic_public_info_photo);
+        mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_public_info_username);
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
@@ -68,6 +70,14 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mViewProfileButton = (Button) itemView.findViewById(R.id.tic_view_profile_button);
 
         mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (userId == 0) return;
+                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
+            }
+        });
+
+        mPublicPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 if (userId == 0) return;
@@ -145,37 +155,32 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             mPrivateSection.setVisibility(View.GONE);
             mPublicSection.setVisibility(View.VISIBLE);
 
-            String displayName = user.getDisplayName();
-            SpannableString spannableString = new SpannableString(user.getDisplayName() + getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
-            ClickableSpan clickableSpan = new ClickableSpan() {
-                @Override
-                public void onClick(final View widget) {
-                    if (userId == 0) return;
-                    BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
-                }
+            mPublicUsernameView.setText(user.getDisplayName());
 
-                @Override
-                public void updateDrawState(TextPaint ds) {
-                    super.updateDrawState(ds);
-                    ds.setUnderlineText(false);
-                }
-            };
-            spannableString.setSpan(clickableSpan, 0, displayName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            String avatarURL = user.getAvatarURLAsString();
+            if (avatarURL != null) {
+                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(mPublicPhotoView);
+            } else {
+                mPublicPhotoView.setImageResource(R.drawable.ic_user_photo_small);
+            }
 
-            ForegroundColorSpan fcs = new ForegroundColorSpan(itemView.getResources().getColor(R.color.accent));
-            spannableString.setSpan(fcs, 0, displayName.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-
-            mJoinStatusView.setMovementMethod(LinkMovementMethod.getInstance());
-            mJoinStatusView.setText(spannableString);
+            mJoinStatusView.setText(getJoinStatus(user.getStatus(), user.getMessage(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
         }
 
         userId = user.getUserId();
         feedItem = user.getFeedItem();
     }
 
-    private String getJoinStatus(String joinStatus, boolean isTour) {
+    private String getJoinStatus(String joinStatus, String joinMessage, boolean isTour) {
         if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
-            return itemView.getContext().getString(isTour?R.string.tour_info_text_join_accepted:R.string.entourage_info_text_join_accepted);
+            if (joinMessage != null && joinMessage.length() > 0) {
+                return joinMessage;
+            } else {
+                return itemView.getContext().getString(isTour?R.string.tour_info_text_join_accepted:R.string.entourage_info_text_join_accepted);
+            }
         }
         else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
             return itemView.getContext().getString(R.string.tour_info_text_join_rejected);
