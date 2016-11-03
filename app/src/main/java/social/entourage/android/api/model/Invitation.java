@@ -3,12 +3,13 @@ package social.entourage.android.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by mihaiionescu on 12/07/16.
  */
-public class Invitation {
+public class Invitation extends TimestampedObject {
 
     // ----------------------------------
     // CONSTANTS
@@ -16,13 +17,19 @@ public class Invitation {
 
     public static final String INVITE_BY_SMS = "SMS";
 
+    private final static String HASH_STRING_HEAD = "Invitation-";
+
+    public static final String STATUS_ACCEPTED = "accepted";
+    public static final String STATUS_PENDING = "pending";
+    public static final String STATUS_REJECTED = "rejected";
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
     @SerializedName("id")
     @Expose(serialize = false, deserialize = true)
-    private int id;
+    private long invitationId;
 
     @SerializedName("invitation_mode")
     private String invitationMode;
@@ -30,17 +37,17 @@ public class Invitation {
     @SerializedName("phone_number")
     private String phoneNumber;
 
-    @SerializedName("inviter_id")
+    @SerializedName("inviter")
     @Expose(serialize = false, deserialize = true)
-    private int inviterId;
+    private User inviter;
 
     @SerializedName("entourage_id")
     @Expose(serialize = false, deserialize = true)
     private int entourageId;
 
-    @SerializedName("accepted")
+    @SerializedName("status")
     @Expose(serialize = false, deserialize = true)
-    private boolean accepted;
+    private String status;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -55,15 +62,6 @@ public class Invitation {
     // GETTERS & SETTERS
     // ----------------------------------
 
-
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(final boolean accepted) {
-        this.accepted = accepted;
-    }
-
     public int getEntourageId() {
         return entourageId;
     }
@@ -72,12 +70,13 @@ public class Invitation {
         this.entourageId = entourageId;
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public long getId() {
+        return invitationId;
     }
 
-    public void setId(final int id) {
-        this.id = id;
+    public void setId(final long invitationId) {
+        this.invitationId = invitationId;
     }
 
     public String getInvitationMode() {
@@ -88,12 +87,17 @@ public class Invitation {
         this.invitationMode = invitationMode;
     }
 
-    public int getInviterId() {
-        return inviterId;
+    public User getInviter() {
+        return inviter;
     }
 
-    public void setInviterId(final int inviterId) {
-        this.inviterId = inviterId;
+    public void setInviter(final User inviter) {
+        this.inviter = inviter;
+    }
+
+    public String getInviterName() {
+        if (inviter == null) return "";
+        return inviter.getDisplayName();
     }
 
     public String getPhoneNumber() {
@@ -102,6 +106,35 @@ public class Invitation {
 
     public void setPhoneNumber(final String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(final String status) {
+        this.status = status;
+    }
+
+    @Override
+    public Date getTimestamp() {
+        return null;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + invitationId;
+    }
+
+    @Override
+    public int getType() {
+        return INVITATION_CARD;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null || o.getClass() != this.getClass()) return false;
+        return this.invitationId == ((Invitation)o).invitationId;
     }
 
     // ----------------------------------

@@ -78,57 +78,20 @@
         android:id="@+id/tour_info_header_layout"
         android:layout_marginTop="10dp"/>
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tour_info_header_layout"
-        android:background="@color/background_light"
-        android:orientation="horizontal"
-        android:id="@+id/tour_info_details_selector"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tour_info_chat_rb"
-            android:button="@drawable/rb_tour_info_chat"
-            android:layout_marginRight="10dp"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tour_info_information_rb"
-            android:button="@drawable/rb_tour_info_information"
-            android:layout_marginLeft="10dp"
-            android:checked="true"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-    </RadioGroup>
-
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/layout_private_tour_information"
         android:id="@+id/tour_info_private_section"
         android:visibility = "gone"
-        android:layout_below="@+id/tour_info_details_selector"/>
+        android:layout_below="@+id/tour_info_header_layout"/>
 
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/layout_public_tour_information"
         android:id="@+id/tour_info_public_section"
-        android:layout_below="@+id/tour_info_details_selector"/>
+        android:layout_below="@+id/tour_info_header_layout"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleSmall"
@@ -155,41 +118,11 @@
         android:id="@+id/tour_info_invite_success_layout"
         android:visibility = "gone"/>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:background="@color/background_transparent"
+        layout="@layout/layout_feeditem_options"
         android:id="@+id/tour_info_options"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:visibility="gone">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tour_info_options_freeze_tour"
-            android:id="@+id/tour_info_button_stop_tour"
-            style="@style/WhiteButton"
-            android:layout_marginBottom="5dp"/>
-
-        <Button
-            style="@style/WhiteButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tour_info_options_quit_tour"
-            android:id="@+id/tour_info_button_quit_tour"
-            android:layout_marginBottom="5dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tour_info_options_close"
-            android:id="@+id/tour_info_button_close"
-            style="@style/AccentButton"
-            android:alpha="1"
-            android:layout_marginBottom="10dp"/>
-    </LinearLayout>
+        android:visibility = "gone"/>
 
 </RelativeLayout>

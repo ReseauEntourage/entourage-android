@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="social.entourage.android.map.permissions.NoLocationPermissionFragment">
@@ -14,6 +15,14 @@
         android:src="@drawable/login_startup_background"
         android:scaleType="centerCrop"
         android:layout_alignParentEnd="false"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_action_back"
+        android:id="@+id/no_location_back_button"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="5dp"/>
 
     <ImageView
         android:layout_width="75dp"

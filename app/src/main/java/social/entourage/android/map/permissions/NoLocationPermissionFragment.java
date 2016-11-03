@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import social.entourage.android.R;
 
 public class NoLocationPermissionFragment extends DialogFragment {
@@ -25,7 +27,11 @@ public class NoLocationPermissionFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_no_location_permission, container, false);
+        View view = inflater.inflate(R.layout.fragment_no_location_permission, container, false);
+
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
     @Override
@@ -34,5 +40,10 @@ public class NoLocationPermissionFragment extends DialogFragment {
 
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    @OnClick(R.id.no_location_back_button)
+    protected void onBackButton() {
+        dismiss();
     }
 }

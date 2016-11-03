@@ -43,6 +43,9 @@ public interface NewsfeedRequest {
     Call<Newsfeed.NewsfeedWrapper> retrieveMyFeeds(
             @Query("page") int page,
             @Query("per") int per,
-            @Query("status") String status
+            @Query("entourage_types") String entourageTypes,
+            @Query("status") String status,
+            @Query("created_by_me") boolean createdByMe,
+            @Query("accepted_invitation") boolean acceptedInvitation
     );
 }

@@ -168,7 +168,9 @@
             android:textColor="@color/black"
             android:gravity="center"
             app:htmlText=" "
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:autoLink="email"
+            android:textColorLink="@color/white"/>
 
         <Button
             android:id="@+id/login_button_home"

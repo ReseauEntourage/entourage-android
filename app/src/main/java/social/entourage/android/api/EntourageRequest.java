@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -24,7 +25,13 @@ import social.entourage.android.api.model.map.TourUser;
 public interface EntourageRequest {
 
     @POST("entourages.json")
-    Call<Entourage.EntourageWrapper> entourage(
+    Call<Entourage.EntourageWrapper> createEntourage(
+            @Body Entourage.EntourageWrapper entourageWrapper
+    );
+
+    @PATCH("entourages/{entourage_id}")
+    Call<Entourage.EntourageWrapper> editEntourage(
+            @Path("entourage_id") long entourageId,
             @Body Entourage.EntourageWrapper entourageWrapper
     );
 
@@ -34,7 +41,10 @@ public interface EntourageRequest {
     );
 
     @PUT("entourages/{id}.json")
-    Call<Entourage.EntourageWrapper> closeEntourage(@Path("id") long entourageId, @Body Entourage.EntourageWrapper entourageWrapper);
+    Call<Entourage.EntourageWrapper> closeEntourage(
+            @Path("id") long entourageId,
+            @Body Entourage.EntourageWrapper entourageWrapper
+    );
 
     @GET("entourages/{entourage_id}/users.json")
     Call<TourUser.TourUsersWrapper> retrieveEntourageUsers(
@@ -50,7 +60,7 @@ public interface EntourageRequest {
     Call<ResponseBody> updateUserEntourageStatus(
             @Path("entourage_id") long entourageId,
             @Path("user_id") int userId,
-            @Body HashMap<String, Object> user
+            @Body HashMap<String, Object> info
     );
 
     @DELETE("entourages/{entourage_id}/users/{user_id}")

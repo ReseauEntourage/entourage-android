@@ -14,10 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -46,6 +49,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     public static final String TAG = "social.entourage.android.createentourage";
 
+    private static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
     protected static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
     private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
 
@@ -86,6 +90,8 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     private boolean isSaving = false;
 
+    private Entourage editedEntourage;
+
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -99,6 +105,15 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
         Bundle args = new Bundle();
         args.putString(KEY_ENTOURAGE_TYPE, entourageType);
         args.putParcelable(KEY_ENTOURAGE_LOCATION, location);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static CreateEntourageFragment newInstance(Entourage entourage) {
+        CreateEntourageFragment fragment = new CreateEntourageFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(KEY_FEEDITEM, entourage);
         fragment.setArguments(args);
 
         return fragment;
@@ -182,11 +197,18 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
                     entourageLocation.setLatitude(location.latitude);
                     entourageLocation.setLongitude(location.longitude);
                 }
-                presenter.createEntourage(
-                        entourageType,
-                        titleEditText.getText().toString(),
-                        descriptionEditText.getText().toString(),
-                        entourageLocation);
+                if (editedEntourage != null) {
+                    editedEntourage.setTitle(titleEditText.getText().toString());
+                    editedEntourage.setDescription(descriptionEditText.getText().toString());
+                    editedEntourage.setLocation(entourageLocation);
+                    presenter.editEntourage(editedEntourage);
+                } else {
+                    presenter.createEntourage(
+                            entourageType,
+                            titleEditText.getText().toString(),
+                            descriptionEditText.getText().toString(),
+                            entourageLocation);
+                }
             } else {
                 Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
             }
@@ -195,8 +217,19 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     @OnClick(R.id.create_entourage_position_layout)
     protected void onPositionClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
         EntourageLocationFragment fragment = EntourageLocationFragment.newInstance(location, positionTextView.getText().toString(), this);
         fragment.show(getFragmentManager(), EntourageLocationFragment.TAG);
+    }
+
+    @OnClick(R.id.create_entourage_title_mic)
+    protected void onTitleMicClick() {
+        showKeyboard(titleEditText);
+    }
+
+    @OnClick(R.id.create_entourage_description_mic)
+    protected void onDescriptionMicClick() {
+        showKeyboard(descriptionEditText);
     }
 
     // ----------------------------------
@@ -213,6 +246,16 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
         }
     }
 
+    protected void onEntourageEdited(Entourage entourage) {
+        isSaving = false;
+        if (entourage == null) {
+            Toast.makeText(getActivity(), R.string.entourage_save_error, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), R.string.entourage_save_ok, Toast.LENGTH_SHORT).show();
+            dismiss();
+        }
+    }
+
     // ----------------------------------
     // Private methods
     // ----------------------------------
@@ -220,7 +263,12 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     private void initializeView() {
         Bundle args = getArguments();
         if (args != null) {
-            entourageType = args.getString(KEY_ENTOURAGE_TYPE, Entourage.TYPE_CONTRIBUTION);
+            editedEntourage = (Entourage)args.getSerializable(KEY_FEEDITEM);
+            if (editedEntourage != null) {
+                entourageType = editedEntourage.getEntourageType();
+            } else {
+                entourageType = args.getString(KEY_ENTOURAGE_TYPE, Entourage.TYPE_CONTRIBUTION);
+            }
         }
         initializeTypeTextView();
         initializeLocation();
@@ -239,7 +287,11 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     private void initializeLocation() {
         Bundle args = getArguments();
         if (args != null) {
-            location = args.getParcelable(KEY_ENTOURAGE_LOCATION);
+            if (editedEntourage != null) {
+                location = editedEntourage.getLocation().getLocation();
+            } else {
+                location = args.getParcelable(KEY_ENTOURAGE_LOCATION);
+            }
             if (location != null) {
                 GeocoderTask geocoderTask = new GeocoderTask();
                 geocoderTask.execute(location);
@@ -253,8 +305,13 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
             titleEditText.setHint(R.string.entourage_create_title_contribution_hint);
         } else {
             titleHintTextView.setText(R.string.entourage_create_title_demand_hint);
-            titleEditText.setHint(R.string.entourage_create_title_demand_hint);
+            titleEditText.setHint(R.string.entourage_create_title_demand_hint_long);
         }
+
+        if (editedEntourage != null) {
+            titleEditText.setText(editedEntourage.getTitle());
+        }
+
         titleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
@@ -283,6 +340,17 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     }
 
     private void initializeDescriptionEditText() {
+
+        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
+            descriptionEditText.setHint(R.string.entourage_create_description_contribution_hint);
+        } else {
+            descriptionEditText.setHint(R.string.entourage_create_description_demand_hint);
+        }
+
+        if (editedEntourage != null) {
+            descriptionEditText.setText(editedEntourage.getDescription());
+        }
+
         descriptionEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
@@ -323,6 +391,12 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
         }
         */
         return true;
+    }
+
+    protected void showKeyboard(View view) {
+        view.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private class GeocoderTask extends AsyncTask<LatLng, Void, String> {

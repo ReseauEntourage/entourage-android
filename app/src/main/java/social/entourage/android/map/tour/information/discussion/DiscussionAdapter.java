@@ -10,27 +10,27 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
 
     public DiscussionAdapter() {
 
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.SEPARATOR,
                 new ViewHolderFactory.ViewHolderType(SeparatorCardViewHolder.class, SeparatorCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.CHAT_MESSAGE_OTHER,
                 new ViewHolderFactory.ViewHolderType(ChatMessageCardViewHolder.class, ChatMessageCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.CHAT_MESSAGE_ME,
                 new ViewHolderFactory.ViewHolderType(ChatMessageMeCardViewHolder.class, ChatMessageMeCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOUR_STATUS,
                 new ViewHolderFactory.ViewHolderType(LocationCardViewHolder.class, LocationCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOUR_USER_JOIN,
                 new ViewHolderFactory.ViewHolderType(UserJoinCardViewHolder.class, UserJoinCardViewHolder.getLayoutResource())
         );
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENCOUNTER,
                 new ViewHolderFactory.ViewHolderType(EncounterCardViewHolder.class, EncounterCardViewHolder.getLayoutResource())
         );
@@ -41,11 +41,13 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
     private void addSeparator() {
         Separator separator = new Separator();
         items.add(separator);
+        notifyItemInserted(items.size()-1);
     }
 
     private void insertSeparator(int position) {
         Separator separator = new Separator();
         items.add(position, separator);
+        notifyItemInserted(position);
     }
 
     @Override
@@ -54,6 +56,7 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
             addSeparator();
         }
         items.add(cardInfo);
+        notifyItemInserted(items.size()-1);
     }
 
     @Override
@@ -62,7 +65,6 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
         //add separator if not adding at the top of the list
         if (position != 0) {
             insertSeparator(position);
-            notifyItemInserted(position);
             position++;
         }
         //add the card
@@ -72,7 +74,6 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
         if (position == 0 && items.size() > 1) {
             position++;
             insertSeparator(position);
-            notifyItemInserted(position);
         }
     }
 

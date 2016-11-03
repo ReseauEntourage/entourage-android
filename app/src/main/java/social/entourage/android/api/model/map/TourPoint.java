@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import social.entourage.android.EntourageLocation;
+
 @SuppressWarnings("unused")
 public class TourPoint implements Serializable {
 
@@ -57,11 +59,31 @@ public class TourPoint implements Serializable {
         return new LatLng(latitude, longitude);
     }
 
+    // ----------------------------------
+    // HELPERS
+    // ----------------------------------
+
     public float distanceTo(TourPoint otherPoint) {
         if (otherPoint == null) return 0;
         float[] result = {0};
         Location.distanceBetween(this.latitude, this.longitude, otherPoint.latitude, otherPoint.longitude, result);
         return result[0];
+    }
+
+    public String distanceToCurrentLocation() {
+        String distanceAsString = "";
+
+        Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+        if (currentLocation != null) {
+            float distance = distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            if (distance < 1000.0f) {
+                distanceAsString = String.format("%.0f m", distance);
+            } else {
+                distanceAsString = String.format("%.0f km", distance / 1000.0f);
+            }
+        }
+
+        return distanceAsString;
     }
 
     // ----------------------------------

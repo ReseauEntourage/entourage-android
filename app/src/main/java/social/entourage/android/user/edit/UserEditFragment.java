@@ -16,25 +16,34 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.user.DaggerUserComponent;
 import social.entourage.android.user.UserFragment;
+import social.entourage.android.user.UserModule;
 import social.entourage.android.user.UserOrganizationsAdapter;
+import social.entourage.android.user.UserPresenter;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 
 public class UserEditFragment extends DialogFragment {
@@ -48,6 +57,9 @@ public class UserEditFragment extends DialogFragment {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    @Inject
+    UserEditPresenter presenter;
 
     @Bind(R.id.user_photo)
     ImageView userPhoto;
@@ -63,6 +75,9 @@ public class UserEditFragment extends DialogFragment {
 
     @Bind(R.id.user_address)
     TextView userAddress;
+
+    @Bind(R.id.user_associations_title)
+    TextView userAssociationsTitle;
 
     @Bind(R.id.user_associations_view)
     RecyclerView userAssociationsView;
@@ -92,7 +107,16 @@ public class UserEditFragment extends DialogFragment {
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         configureView();
+    }
+
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerUserEditComponent.builder()
+                .entourageComponent(entourageComponent)
+                .userEditModule(new UserEditModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -126,6 +150,7 @@ public class UserEditFragment extends DialogFragment {
 
             if (editedUser.getAvatarURL() != null) {
                 Picasso.with(getActivity()).load(Uri.parse(editedUser.getAvatarURL()))
+                        .placeholder(R.drawable.ic_user_photo)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }
@@ -150,11 +175,21 @@ public class UserEditFragment extends DialogFragment {
                 userAssociationsView.setAdapter(organizationsAdapter);
             }
 
+            boolean isPro = editedUser.isPro();
+            userAssociationsTitle.setVisibility( isPro ? View.VISIBLE : View.GONE );
+            userAssociationsView.setVisibility( isPro ? View.VISIBLE : View.GONE );
+
         }
     }
 
     public User getEditedUser() {
         return editedUser;
+    }
+
+    public void displayToast(String message) {
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     // ----------------------------------
@@ -201,9 +236,13 @@ public class UserEditFragment extends DialogFragment {
 
     @OnClick(R.id.user_save_button)
     protected void onSaveButtonClicked() {
+        // If we have an user fragment in the stack, let it handle the update
         UserFragment fragment = (UserFragment)getFragmentManager().findFragmentByTag(UserFragment.TAG);
         if (fragment != null) {
             fragment.saveAccount(editedUser);
+        } else if (presenter != null) {
+            //else we handle it
+            presenter.updateUser(editedUser);
         }
     }
 
@@ -236,6 +275,20 @@ public class UserEditFragment extends DialogFragment {
             Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
                     .transform(new CropCircleTransformation())
                     .into(userPhoto);
+        }
+    }
+
+    // ----------------------------------
+    // Presenter callbacks
+    // ----------------------------------
+
+    protected void onUserUpdated(User user) {
+        if (user == null) {
+            displayToast(getString(R.string.user_text_update_ko));
+        }
+        else {
+            displayToast(getString(R.string.user_text_update_ok));
+            dismiss();
         }
     }
 

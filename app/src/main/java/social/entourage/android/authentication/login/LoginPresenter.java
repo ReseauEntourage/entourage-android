@@ -3,9 +3,8 @@ package social.entourage.android.authentication.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
-import android.util.Patterns;
-import android.widget.Toast;
+
+import com.flurry.android.FlurryAgent;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,7 +26,6 @@ import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.tools.Utils;
-import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
 /**
  * Presenter controlling the LoginActivity
@@ -97,13 +95,32 @@ public class LoginPresenter {
                                 activity.launchFillInProfileView(phoneNumber, response.body().getUser());
                             }
                         } else {
-                            activity.loginFail(false);
+                            if (response.errorBody() != null) {
+                                try {
+                                    String errorBody = response.errorBody().string();
+                                    if (errorBody != null) {
+                                        if (errorBody.contains("INVALID_PHONE_FORMAT")) {
+                                            activity.loginFail(LoginActivity.LOGIN_ERROR_INVALID_PHONE_FORMAT);
+                                        } else if (errorBody.contains("UNAUTHORIZED")) {
+                                            activity.loginFail(LoginActivity.LOGIN_ERROR_UNAUTHORIZED);
+                                        } else {
+                                            activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
+                                        }
+                                    } else {
+                                        activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
+                                    }
+                                } catch (IOException e) {
+                                    activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
+                                }
+                            } else {
+                                activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
+                            }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        activity.loginFail(true);
+                        activity.loginFail(LoginActivity.LOGIN_ERROR_NETWORK);
                     }
                 });
             } else {
@@ -161,7 +178,7 @@ public class LoginPresenter {
         updateUserToServer();
     }
 
-    private void updateUserToServer() {
+    protected void updateUserToServer() {
         User user = authenticationController.getUser();
 
         if (activity != null) {
@@ -181,11 +198,12 @@ public class LoginPresenter {
                 public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
                     activity.stopLoader();
                     if (response.isSuccess()) {
-                        activity.onUserUpdated();
+                        activity.showPhotoChooseSource();
                         activity.displayToast(activity.getString(R.string.login_text_email_update_success));
                     }
                     else {
                         activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
+                        FlurryAgent.logEvent(Constants.EVENT_NAME_SUBMIT_ERROR);
                     }
                 }
 
@@ -193,6 +211,7 @@ public class LoginPresenter {
                 public void onFailure(final Call<UserResponse> call, final Throwable t) {
                     activity.stopLoader();
                     activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
+                    FlurryAgent.logEvent(Constants.EVENT_NAME_SUBMIT_ERROR);
                 }
             });
         }
@@ -272,22 +291,32 @@ public class LoginPresenter {
                 if (response.isSuccess()) {
                     activity.registerPhoneNumberSent(phoneNumber, true);
                 } else {
-                    try {
-                        String errorString = response.errorBody().string();
-                        if (errorString.contains("Phone n'est pas disponible")) {
-                            // Phone number already registered
-                            activity.registerPhoneNumberSent(phoneNumber, false);
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorString = response.errorBody().string();
+                            if (errorString.contains("PHONE_ALREADY_EXIST")) {
+                                // Phone number already registered
+                                activity.registerPhoneNumberSent(phoneNumber, false);
+                                activity.displayToast(R.string.registration_number_error_already_registered);
+                            } else if (errorString.contains("INVALID_PHONE_FORMAT")) {
+                                activity.displayToast(R.string.login_login_error_invalid_phone_format);
+                            } else {
+                                activity.displayToast(R.string.registration_number_error_already_registered);
+                            }
+                        } catch (IOException e) {
+                            activity.displayToast(R.string.registration_number_error_already_registered);
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } else {
+                        activity.displayToast(R.string.registration_number_error_already_registered);
                     }
-                    activity.displayToast(R.string.registration_number_error_already_registered);
+                    FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
                 }
             }
 
             @Override
             public void onFailure(final Call<UserResponse> call, final Throwable t) {
                 activity.displayToast(R.string.login_login_error_network);
+                FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
             }
         });
     }

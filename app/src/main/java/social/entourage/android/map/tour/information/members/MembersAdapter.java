@@ -10,7 +10,7 @@ import social.entourage.android.map.tour.information.discussion.ViewHolderFactor
 public class MembersAdapter extends EntourageBaseAdapter {
 
     public MembersAdapter() {
-        ViewHolderFactory.registerViewHolder(
+        viewHolderFactory.registerViewHolder(
                 TimestampedObject.FEED_MEMBER_CARD,
                 new ViewHolderFactory.ViewHolderType(MemberCardViewHolder.class, MemberCardViewHolder.getLayoutResource())
         );

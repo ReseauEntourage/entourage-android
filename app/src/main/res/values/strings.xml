@@ -12,6 +12,7 @@
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
     <string name="button_update_version">Mettre à jour</string>
     <string name="title_update_version">MISE A JOUR DISPONIBLE</string>
+    <string name="network_error">Erreur de connexion</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="accept">Accepter</string>
@@ -24,5 +25,6 @@
     <string name="ignore">Ignorer</string>
     <string name="next">Continuer</string>
     <string name="close">Fermer</string>
+    <string name="edit">Editer</string>
 
 </resources>

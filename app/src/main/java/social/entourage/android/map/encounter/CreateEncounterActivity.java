@@ -2,6 +2,9 @@ package social.entourage.android.map.encounter;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.format.DateFormat;
@@ -12,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,9 +33,11 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.map.entourage.CreateEntourageFragment;
+import social.entourage.android.map.entourage.EntourageLocationFragment;
 import social.entourage.android.tools.BusProvider;
 
-public class CreateEncounterActivity extends EntourageSecuredActivity {
+public class CreateEncounterActivity extends EntourageSecuredActivity implements EntourageLocationFragment.OnFragmentInteractionListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -62,6 +69,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
     @Bind(R.id.encounter_date)
     TextView encounterDate;
 
+    @Bind(R.id.create_encounter_position)
+    TextView positionTextView;
+
+    private LatLng location;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -81,6 +93,8 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             presenter.setTourId(arguments.getLong(BUNDLE_KEY_TOUR_ID));
             presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE));
             presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
+
+            location = new LatLng(arguments.getDouble(BUNDLE_KEY_LATITUDE), arguments.getDouble(BUNDLE_KEY_LONGITUDE));
         }
         initialiseFields();
         FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_START);
@@ -140,6 +154,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
         Date today = new Date();
         String todayDateString = DateFormat.getDateFormat(getApplicationContext()).format(today);
         encounterDate.setText(getResources().getString(R.string.encounter_encountered, todayDateString));
+
+        if (location != null) {
+            CreateEncounterActivity.GeocoderTask geocoderTask = new CreateEncounterActivity.GeocoderTask();
+            geocoderTask.execute(location);
+        }
     }
 
     // ----------------------------------
@@ -154,13 +173,18 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
     @OnClick(R.id.button_create_encounter)
     public void createEncounter() {
-        if (!messageEditText.getText().toString().equals("") && !streetPersonNameEditText.getText().toString().equals("")) {
+        String personName = streetPersonNameEditText.getText().toString().trim();
+        String message = messageEditText.getText().toString().trim();
+        if (!message.equals("") && !personName.equals("")) {
             showProgressDialog(R.string.creating_encounter);
             presenter.createEncounter(messageEditText.getText().toString(), streetPersonNameEditText.getText().toString());
         } else {
-            Toast.makeText(getApplicationContext(), R.string.encounter_empty_fields, Toast.LENGTH_SHORT).show();
+            if (personName.equals("")) {
+                Toast.makeText(getApplicationContext(), R.string.encounter_empty_name, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.encounter_empty_fields, Toast.LENGTH_SHORT).show();
+            }
         }
-        FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
     }
 
     @OnClick(R.id.button_record)
@@ -177,6 +201,12 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.encounter_voice_message_not_supported), Toast.LENGTH_SHORT).show();
             FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED);
         }
+    }
+
+    @OnClick(R.id.create_encounter_position_layout)
+    protected void onPositionClicked() {
+        EntourageLocationFragment fragment = EntourageLocationFragment.newInstance(location, positionTextView.getText().toString(), this);
+        fragment.show(getSupportFragmentManager(), EntourageLocationFragment.TAG);
     }
 
     public void onCreateEncounterFinished(String errorMessage, Encounter encounterResponse) {
@@ -201,5 +231,60 @@ public class CreateEncounterActivity extends EntourageSecuredActivity {
 
         }
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    // ----------------------------------
+    // EntourageLocationFragment.OnFragmentInteractionListener
+    // ----------------------------------
+
+    public void onEntourageLocationChoosen(LatLng location, String address) {
+        if (location != null) {
+            this.location = location;
+            if (presenter != null) {
+                presenter.setLatitude(location.latitude);
+                presenter.setLongitude(location.longitude);
+            }
+            if (address != null) {
+                positionTextView.setText(address);
+            } else {
+                CreateEncounterActivity.GeocoderTask geocoderTask = new CreateEncounterActivity.GeocoderTask();
+                geocoderTask.execute(location);
+            }
+        }
+    }
+
+    // ----------------------------------
+    // PRIVATE CLASSES
+    // ----------------------------------
+
+    private class GeocoderTask extends AsyncTask<LatLng, Void, String> {
+
+        @Override
+        protected String doInBackground(final LatLng... params) {
+            try {
+                Geocoder geoCoder = new Geocoder(CreateEncounterActivity.this, Locale.getDefault());
+                LatLng location = params[0];
+                List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
+                String addressLine = "";
+                if (addresses != null && addresses.size() > 0) {
+                    Address address = addresses.get(0);
+                    if (address.getMaxAddressLineIndex() >= 0) {
+                        addressLine = addresses.get(0).getAddressLine(0);
+                    }
+                }
+                return addressLine;
+            }
+            catch (IOException e) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final String address) {
+            if (address != null) {
+                CreateEncounterActivity.this.positionTextView.setText(address);
+            }
+        }
     }
 }

@@ -56,8 +56,11 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         String avatarURL = chatMessage.getUserAvatarURL();
         if (avatarURL != null) {
             Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
                     .transform(new CropCircleTransformation())
                     .into(mUserPhotoView);
+        } else {
+            mUserPhotoView.setImageResource(R.drawable.ic_user_photo_small);
         }
 
         if (chatMessage.getUserName() != null) {

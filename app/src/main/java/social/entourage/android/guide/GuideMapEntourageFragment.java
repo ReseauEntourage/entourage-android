@@ -97,7 +97,9 @@ public class GuideMapEntourageFragment extends Fragment {
                 @Override
                 public void onMapReady(final GoogleMap googleMap) {
                     isMapLoaded = true;
-                    clusterManager = new ClusterManager<>(getActivity(), googleMap);
+                    map = googleMap;
+
+                    clusterManager = new ClusterManager(getActivity(), googleMap);
                     poiRenderer = new PoiRenderer(getActivity(), googleMap, clusterManager);
                     clusterManager.setRenderer(poiRenderer);
                     clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
@@ -121,7 +123,8 @@ public class GuideMapEntourageFragment extends Fragment {
                             }
                         }
                     });
-                    map = googleMap;
+
+                    initializeMapZoom();
                 }
             });
         }
@@ -213,6 +216,7 @@ public class GuideMapEntourageFragment extends Fragment {
     public class OnEntourageMarkerClickListener implements ClusterManager.OnClusterItemClickListener<Poi> {
         @Override
         public boolean onClusterItemClick(Poi poi) {
+            FlurryAgent.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
             saveCameraPosition();
             Intent intent = new Intent(getActivity(), ReadPoiActivity.class);
             Bundle extras = new Bundle();

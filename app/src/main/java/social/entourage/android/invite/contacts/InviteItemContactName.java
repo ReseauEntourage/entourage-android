@@ -3,12 +3,12 @@ package social.entourage.android.invite.contacts;
 /**
  * Created by mihaiionescu on 28/07/16.
  */
-public class InviteItemContact extends InviteItem {
+public class InviteItemContactName extends InviteItem {
 
     private int cursorPosition;
 
-    public InviteItemContact(String itemText, int cursorPosition) {
-        super(InviteItem.TYPE_ITEM, itemText);
+    public InviteItemContactName(String itemText, int cursorPosition) {
+        super(InviteItem.TYPE_CONTACT_NAME, itemText);
         this.cursorPosition = cursorPosition;
     }
 

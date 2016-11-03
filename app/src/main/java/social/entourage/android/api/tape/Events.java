@@ -85,6 +85,15 @@ public class Events {
     }
 
     /**
+     * Event signaling that current user is unauthorized
+     */
+    public static class OnUnauthorizedEvent {
+
+        public OnUnauthorizedEvent() {}
+
+    }
+
+    /**
      * Event signaling that user info is updated
      */
     public static class OnUserInfoUpdatedEvent {
@@ -118,6 +127,34 @@ public class Events {
     }
 
     /**
+     * Event signaling that the user wants to update a tour join request
+     */
+    public static class OnUserJoinRequestUpdateEvent {
+
+        private int userId;
+        private String update;
+        private FeedItem feedItem;
+
+        public OnUserJoinRequestUpdateEvent(int userId, String update, FeedItem feedItem) {
+            this.userId = userId;
+            this.update = update;
+            this.feedItem = feedItem;
+        }
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public String getUpdate() {
+            return update;
+        }
+
+        public FeedItem getFeedItem() {
+            return feedItem;
+        }
+    }
+
+    /**
      * Event signaling that user view is requested
      */
     public static class OnUserViewRequestedEvent {
@@ -139,13 +176,39 @@ public class Events {
     public static class OnFeedItemInfoViewRequestedEvent {
 
         private FeedItem feedItem;
+        private int feedItemType = 0;
+        private long feedItemId = 0;
+        private long invitationId = 0;
 
         public OnFeedItemInfoViewRequestedEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
         }
 
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId) {
+            this.feedItemType = feedItemType;
+            this.feedItemId = feedItemId;
+        }
+
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId, long invitationId) {
+            this.feedItemType = feedItemType;
+            this.feedItemId = feedItemId;
+            this.invitationId = invitationId;
+        }
+
         public FeedItem getFeedItem() {
             return feedItem;
+        }
+
+        public long getFeedItemId() {
+            return feedItemId;
+        }
+
+        public int getFeedItemType() {
+            return feedItemType;
+        }
+
+        public long getInvitationId() {
+            return invitationId;
         }
     }
 
@@ -171,13 +234,23 @@ public class Events {
     public static class OnFeedItemCloseRequestEvent {
 
         private FeedItem feedItem;
+        private boolean showUI = true;
 
         public OnFeedItemCloseRequestEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
         }
 
+        public OnFeedItemCloseRequestEvent(FeedItem feedItem, boolean showUI) {
+            this.feedItem = feedItem;
+            this.showUI = showUI;
+        }
+
         public FeedItem getFeedItem() {
             return feedItem;
+        }
+
+        public boolean isShowUI() {
+            return showUI;
         }
     }
 
@@ -248,11 +321,38 @@ public class Events {
     }
 
     /**
+     * Event signaling that an entourage was updated
+     */
+    public static class OnEntourageUpdated {
+
+        private Entourage entourage;
+
+        public OnEntourageUpdated(Entourage entourage) {
+            this.entourage = entourage;
+        }
+
+        public Entourage getEntourage() {
+            return entourage;
+        }
+
+    }
+
+    /**
      * Event signaling that the map filter was changed
      */
     public static class OnMapFilterChanged {
 
         public OnMapFilterChanged() {
+        }
+
+    }
+
+    /**
+     * Event signaling that the map filter was changed
+     */
+    public static class OnMyEntouragesFilterChanged {
+
+        public OnMyEntouragesFilterChanged() {
         }
 
     }
@@ -270,6 +370,29 @@ public class Events {
 
         public Uri getPhotoUri() {
             return photoUri;
+        }
+    }
+
+    /**
+     * Event signaling that an invitation status was changed
+     */
+
+    public static class OnInvitationStatusChanged {
+
+        private FeedItem feedItem;
+        private String status;
+
+        public OnInvitationStatusChanged(FeedItem feedItem, String status) {
+            this.feedItem = feedItem;
+            this.status = status;
+        }
+
+        public FeedItem getFeedItem() {
+            return feedItem;
+        }
+
+        public String getStatus() {
+            return status;
         }
     }
 

@@ -25,6 +25,9 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
         if(!authenticationController.isAuthenticated()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
+        } else {
+            EntourageApplication application = (EntourageApplication)getApplication();
+            application.finishLoginActivity();
         }
     }
 
@@ -34,7 +37,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
 
     protected void logout() {
         authenticationController.logOutUser();
-        FlurryAgent.logEvent(Constants.EVENT_LOGOUT);
+        //FlurryAgent.logEvent(Constants.EVENT_LOGOUT);
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

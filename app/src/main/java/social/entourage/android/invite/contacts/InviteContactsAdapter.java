@@ -1,7 +1,9 @@
 package social.entourage.android.invite.contacts;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +29,13 @@ public class InviteContactsAdapter extends BaseAdapter {
     private HashMap<String, Integer> mSectionHeader = new HashMap<>();
 
     private LayoutInflater mInflater;
+    private Context context;
 
     public InviteContactsAdapter(Context context, String fromColumn) {
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mFromColumn = fromColumn;
+        this.context = context;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class InviteContactsAdapter extends BaseAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return 2;
+        return InviteItem.TYPE_COUNT;
     }
 
     @Override
@@ -67,13 +71,20 @@ public class InviteContactsAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             switch (rowType) {
-                case InviteItem.TYPE_ITEM:
-                    convertView = mInflater.inflate(R.layout.layout_invite_contacts_list_item, null);
+                case InviteItem.TYPE_CONTACT_NAME:
+                    convertView = mInflater.inflate(R.layout.layout_invite_contacts_list_name, null);
                     holder.textView = (TextView) convertView.findViewById(R.id.contact_name);
+                    holder.separator = (View) convertView.findViewById(R.id.contact_separator);
                     break;
-                case InviteItem.TYPE_SEPARATOR:
+                case InviteItem.TYPE_CONTACT_PHONE:
+                    convertView = mInflater.inflate(R.layout.layout_invite_contacts_list_phone, null);
+                    holder.textView = (TextView) convertView.findViewById(R.id.contact_phone);
+                    holder.separator = (View) convertView.findViewById(R.id.contact_separator);
+                    break;
+                case InviteItem.TYPE_SECTION:
                     convertView = mInflater.inflate(R.layout.layout_invite_contacts_section_header, null);
                     holder.textView = (TextView) convertView.findViewById(R.id.contact_section_name);
+                    holder.separator = null;
                     break;
             }
             convertView.setTag(holder);
@@ -81,6 +92,14 @@ public class InviteContactsAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.textView.setText(mData.get(position).getItemText());
+        if (holder.separator != null && position < mData.size()-1) {
+            //Hide the line separator if the next item is section type
+            if (mData.get(position+1).getItemType() == InviteItem.TYPE_SECTION) {
+                holder.separator.setVisibility(View.GONE);
+            } else {
+                holder.separator.setVisibility(View.VISIBLE);
+            }
+        }
 
         return convertView;
     }
@@ -97,14 +116,27 @@ public class InviteContactsAdapter extends BaseAdapter {
         if (columnIndex == -1) {
             return;
         }
+
+        ContentResolver cr = context.getContentResolver();
+
         while (mCursor.moveToNext()) {
             String cursorData = cursor.getString(columnIndex);
+            String contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
             String startChar = cursorData.substring(0, 1).toUpperCase();
             if (!mSectionHeader.containsKey(startChar)) {
                 mData.add(new InviteItemSection(startChar));
                 mSectionHeader.put(startChar, mData.size()-1);
             }
-            mData.add(new InviteItemContact(cursorData, mCursor.getPosition()));
+            mData.add(new InviteItemContactName(cursorData, mCursor.getPosition()));
+
+            Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",new String[]{ contactID }, null);
+            while (pCur.moveToNext())
+            {
+                String contactNumber = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                mData.add(new InviteItemContactPhone(contactNumber, mCursor.getPosition()));
+            }
+            pCur.close();
+
         }
         notifyDataSetChanged();
     }
@@ -115,10 +147,10 @@ public class InviteContactsAdapter extends BaseAdapter {
 
     public int getCursorPositionForItemAt(int position) {
         InviteItem item = mData.get(position);
-        if (item.getItemType() == InviteItem.TYPE_SEPARATOR) {
+        if (item.getItemType() == InviteItem.TYPE_SECTION) {
             return -1;
         }
-        return ((InviteItemContact)item).getCursorPosition();
+        return ((InviteItemContactName)item).getCursorPosition();
     }
 
     public int getPositionForSection(String jumpToString) {
@@ -128,7 +160,16 @@ public class InviteContactsAdapter extends BaseAdapter {
         return -1;
     }
 
+    public String getPhoneAt(int position) {
+        InviteItem item = mData.get(position);
+        if (item.getItemType() == InviteItem.TYPE_CONTACT_PHONE) {
+            return item.getItemText();
+        }
+        return null;
+    }
+
     public static class ViewHolder {
         public TextView textView;
+        public View separator;
     }
 }

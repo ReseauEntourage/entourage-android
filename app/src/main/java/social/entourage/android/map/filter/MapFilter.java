@@ -13,8 +13,8 @@ public class MapFilter {
     // ----------------------------------
 
     public static final int DAYS_1 = 24; //hours
-    public static final int DAYS_2 = 48; //hours
-    public static final int DAYS_3 = 72; //hours
+    public static final int DAYS_2 = 8*24; //hours
+    public static final int DAYS_3 = 30*24; //hours
 
     public boolean tourTypeMedical = true;
     public boolean tourTypeSocial = true;
@@ -27,7 +27,7 @@ public class MapFilter {
 
     public boolean onlyMyEntourages = false;
 
-    public int timeframe = 24; //hours
+    public int timeframe = DAYS_2;
 
     // ----------------------------------
     // Lifecycle
@@ -39,7 +39,7 @@ public class MapFilter {
         return ourInstance;
     }
 
-    private MapFilter() {
+    protected MapFilter() {
     }
 
     // ----------------------------------

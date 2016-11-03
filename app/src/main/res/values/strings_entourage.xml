@@ -4,10 +4,14 @@
     <string name="entourage_create_demand_title">DEMANDE</string>
     <string name="entourage_create_contribution_title">CONTRIBUTION</string>
     <string name="entourage_create_position_description">Ma position</string>
+    <string name="entourage_create_title_demand_hint_long">Paire de gants pour Gilles</string>
     <string name="entourage_create_title_demand_hint">Titre de votre demande*</string>
     <string name="entourage_create_title_contribution_hint">Titre de votre contribution*</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_hint">Description détaillée</string>
+    <string name="entourage_create_description_demand_hint">Gilles passe la journée dehors la main tendue. Avec ce froid, il a les doigts tout engourdis. Qui aurait une paire de gants à donner ?\n(Attention: n\'incluez pas de données permettant d\'identifier ou localiser des personnes)</string>
+    <string name="entourage_create_description_contribution_hint">Je suis ancien employé de mairie et je peux aider dans des démarches administratives.\n(Attention: n\'incluez pas de données permettant d\'identifier ou localiser des personnes.)</string>
+
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
@@ -17,6 +21,10 @@
 
     <string name="entourage_create_menu_demand">Créer une demande</string>
     <string name="entourage_create_menu_contribution">Créer une contribution</string>
+
+    <!-- Edit Entourage -->
+    <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
+    <string name="entourage_save_ok">Entourage enregistré.</string>
 
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
@@ -29,6 +37,7 @@
     <string name="entourage_location_address_not_found">L\'adresse n\'a pas été trouvée</string>
 
     <!-- Entourage Notifications -->
+    <string name="entourage_info_text_join_accepted">\u0020a rejoint l\'entourage.</string>
     <string name="entourage_join_request_received">%1$s souhaite rejoindre votre entourage</string>
     <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre entourage]]></string>
 
@@ -47,5 +56,18 @@
     <string name="encounter_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
     <string name="encounter_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
 
+    <!-- My Entourages -->
+    <string name="myentourages_title">MES ENTOURAGES</string>
+
+    <!-- My Entourages Filter -->
+    <string name="myentourages_filter_entourages_title">Mes entourages</string>
+    <string name="myentourages_filter_active">Actifs</string>
+    <string name="myentourages_filter_invited">Invitations</string>
+    <string name="myentourages_filter_own">Créés par moi uniquement</string>
+    <string name="myentourages_filter_closed">Passés</string>
+    <string name="myentourages_filter_types_title">Types d’entourage</string>
+    <string name="myentourages_filter_demand">Demandes</string>
+    <string name="myentourages_filter_contribution">Contributions</string>
+    <string name="myentourages_filter_tours">Maraudes</string>
 
 </resources>

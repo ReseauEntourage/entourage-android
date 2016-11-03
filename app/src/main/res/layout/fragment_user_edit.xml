@@ -283,7 +283,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/user_associations_title"
-                android:id="@+id/textView13"
+                android:id="@+id/user_associations_title"
                 android:background="@color/background_light"
                 android:paddingTop="20dp"
                 android:gravity="center_horizontal"

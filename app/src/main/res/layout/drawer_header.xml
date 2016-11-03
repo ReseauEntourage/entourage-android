@@ -55,14 +55,27 @@
             android:id="@+id/drawer_header_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textColor="@android:color/black"
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:layout_marginRight="5dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColorHint="@color/greyish_brown"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/drawer_header_edit_profile"
+            android:text="@string/action_edit_profile"
+            android:gravity="center_horizontal"
+            android:textColor="@color/greyish_brown"
+            android:textSize="15sp"
+            android:textStyle="italic"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"/>
     </LinearLayout>
 
 

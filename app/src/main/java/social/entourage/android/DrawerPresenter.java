@@ -24,6 +24,7 @@ import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
+import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -103,6 +104,14 @@ public class DrawerPresenter {
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             MyToursFragment fragment = new MyToursFragment();
             fragment.show(fragmentManager, MyToursFragment.TAG);
+        }
+    }
+
+    protected void displayMyEntourages() {
+        if (activity != null) {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            MyEntouragesFragment fragment = new MyEntouragesFragment();
+            fragment.show(fragmentManager, MyEntouragesFragment.TAG);
         }
     }
 

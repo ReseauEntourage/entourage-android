@@ -1,6 +1,7 @@
 package social.entourage.android.map.tour.join.received;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -8,8 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
+
 import javax.inject.Inject;
 
+import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
@@ -22,6 +27,7 @@ import social.entourage.android.view.HtmlTextView;
 public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
 
     private Message message;
+    private boolean shouldDisplayMessage = true;
     private int requestsCount = 0;
 
     @Inject
@@ -37,6 +43,8 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
             displayMessage();
         }
     }
+
+
 
     @Override
     protected void setupComponent(final EntourageComponent entourageComponent) {
@@ -77,9 +85,11 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         if (content != null) {
                             requestsCount++;
                             if (content.isTourRelated()) {
+                                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
                                 presenter.acceptTourJoinRequest(content.getJoinableId(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
+                                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
                                 presenter.acceptEntourageJoinRequest(content.getJoinableId(), content.getUserId());
                             }
                             else {
@@ -95,9 +105,11 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         if (content != null) {
                             requestsCount++;
                             if (content.isTourRelated()) {
+                                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
                                 presenter.rejectJoinTourRequest(content.getJoinableId(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
+                                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
                                 presenter.rejectJoinEntourageRequest(content.getJoinableId(), content.getUserId());
                             }
                             else {
@@ -105,7 +117,13 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                             }
                         }
                     }
-                });
+                })
+                .setNeutralButton(R.string.user_view_profile, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                    }
+                })
+        ;
         if (requestsCount > 0) {
             builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
@@ -114,7 +132,19 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                 }
             });
         }
-        builder.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        if (requestsCount == 0) {
+            //Overriding the view profile handler immediately after show so that it doesn't close the alert
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    showUserProfile();
+                }
+            });
+        }
     }
 
     protected void onUserTourStatusChanged(boolean statusChanged) {
@@ -130,6 +160,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    startActivity(new Intent(TourJoinRequestReceivedActivity.this, DrawerActivity.class));
                     finish();
                 }
             }, duration+100);

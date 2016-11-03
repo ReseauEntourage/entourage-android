@@ -44,7 +44,6 @@ import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.EntourageDate;
 import social.entourage.android.api.model.Newsfeed;
-import social.entourage.android.api.model.TourTransportMode;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -56,6 +55,7 @@ import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.map.filter.MapFilter;
+import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.tools.BusProvider;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
@@ -152,8 +152,8 @@ public class TourServiceManager {
         }
     }
 
-    public void startTour(String transportMode, String type) {
-        tour = new Tour(transportMode, type);
+    public void startTour(String type) {
+        tour = new Tour(type);
         sendTour();
     }
 
@@ -210,13 +210,8 @@ public class TourServiceManager {
             long minTime = Constants.UPDATE_TIMER_MILLIS_OFF_TOUR;
             float minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR;
             if (tour != null) {
-                if (tour.getTourVehicleType().equals(TourTransportMode.FEET.getName())) {
-                    minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_FEET;
-                    minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_FEET;
-                } else if (tour.getTourVehicleType().equals(TourTransportMode.CAR.getName())) {
-                    minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR_CAR;
-                    minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR_CAR;
-                }
+                minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR;
+                minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR;
             }
             try {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
@@ -543,11 +538,16 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveNewsfeed(Date beforeDate) {
+    protected void retrieveNewsfeed(Date beforeDate, Context context) {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo == null || !netInfo.isConnected()) {
+            tourService.notifyListenersNewsfeed(null, true);
+            return;
+        }
         CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
-            MapFilter mapFilter = MapFilter.getInstance();
+            MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
             Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveFeed(
                     ( beforeDate == null ? null : new EntourageDate(beforeDate) ),
                     location.longitude,
@@ -563,18 +563,20 @@ public class TourServiceManager {
                 public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
                     if (response.isSuccess()) {
                         List<Newsfeed> newsfeedList = response.body().getNewsfeed();
-                        tourService.notifyListenersNewsfeed(newsfeedList);
+                        tourService.notifyListenersNewsfeed(newsfeedList, false);
+                    } else {
+                        tourService.notifyListenersNewsfeed(null, false);
                     }
                 }
 
                 @Override
                 public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
-                    tourService.notifyListenersNewsfeed(null);
+                    tourService.notifyListenersNewsfeed(null, true);
                 }
             });
         }
         else {
-            tourService.notifyListenersNewsfeed(null);
+            tourService.notifyListenersNewsfeed(null, false);
         }
     }
 

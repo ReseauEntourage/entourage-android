@@ -18,8 +18,19 @@ public abstract class EntourageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+
+        EntourageApplication application = (EntourageApplication)getApplication();
+        application.onActivityCreated(this);
+
         super.onCreate(savedInstanceState);
         setupComponent(EntourageApplication.get(this).getEntourageComponent());
+    }
+
+    @Override
+    protected void onDestroy() {
+        EntourageApplication application = (EntourageApplication)getApplication();
+        application.onActivityDestroyed(this);
+        super.onDestroy();
     }
 
     public void showProgressDialog(int resId) {

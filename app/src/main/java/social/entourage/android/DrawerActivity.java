@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -22,7 +21,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,23 +30,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.RegionUtils;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -81,9 +73,11 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
+import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
@@ -123,6 +117,9 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Bind(R.id.drawer_header_user_photo)
     ImageView userPhoto;
+
+    @Bind(R.id.drawer_header_edit_profile)
+    TextView userEditProfileTextView;
 
     @Bind(R.id.toolbar_discussion)
     BadgeView discussionBadgeView;
@@ -170,8 +167,11 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (avatarURL != null) {
                 Picasso.with(this)
                         .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
+            } else {
+                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
             //refresh the user info from the server
             Location location = EntourageLocation.getInstance().getCurrentLocation();
@@ -194,6 +194,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                FlurryAgent.logEvent(Constants.EVENT_FEED_MENU);
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -319,6 +320,12 @@ public class DrawerActivity extends EntourageSecuredActivity
             else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
             }
+            else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
+            }
+            else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
+            }
         }
         else if (action != null) {
             getIntent().setAction(null);
@@ -336,6 +343,12 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
             else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
+            }
+            else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
+            }
+            else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
             }
         }
     }
@@ -374,7 +387,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             discussionBadgeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    presenter.displayMyTours();
+                    FlurryAgent.logEvent(Constants.EVENT_FEED_MESSAGES);
+                    //presenter.displayMyTours();
+                    presenter.displayMyEntourages();
                 }
             });
         }
@@ -422,6 +437,14 @@ public class DrawerActivity extends EntourageSecuredActivity
                 drawerLayout.closeDrawers();
             }
         });
+        //add listener to modify profile text view
+        userEditProfileTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                selectedSidemenuAction = R.id.action_edit_user;
+                drawerLayout.closeDrawers();
+            }
+        });
 
         int childCount = navigationView.getChildCount();
         View v;
@@ -463,6 +486,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
                 break;
             case R.id.action_user:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
                 userFragment = (UserFragment) getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
                 if (userFragment == null) {
                     userFragment = UserFragment.newInstance(getAuthenticationController().getUser().getId());
@@ -470,7 +494,12 @@ public class DrawerActivity extends EntourageSecuredActivity
                 //loadFragment(userFragment, TAG_FRAGMENT_USER);
                 userFragment.show(getSupportFragmentManager(), UserFragment.TAG);
                 break;
+            case R.id.action_edit_user:
+                UserEditFragment fragment = new UserEditFragment();
+                fragment.show(getSupportFragmentManager(), UserEditFragment.TAG);
+                break;
             case R.id.action_logout:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_LOGOUT);
                 if (mapEntourageFragment != null) {
                     mapEntourageFragment.saveOngoingTour();
                 }
@@ -481,6 +510,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_ABOUT);
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;
@@ -563,6 +593,30 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             }
         }
+        else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
+            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            if (message != null) {
+                PushNotificationContent content = message.getContent();
+                if (content != null) {
+                    PushNotificationContent.Extra extra = content.extra;
+                    if (extra != null) {
+                        mapEntourageFragment.displayChosenFeedItem(extra.entourageId, TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
+                    }
+                }
+            }
+        }
+        else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
+            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            if (message != null) {
+                PushNotificationContent content = message.getContent();
+                if (content != null) {
+                    PushNotificationContent.Extra extra = content.extra;
+                    if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
+                        mapEntourageFragment.displayChosenFeedItem(extra.joinableId, content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
+                    }
+                }
+            }
+        }
         intentAction = null;
         intentTour = null;
     }
@@ -576,32 +630,44 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (avatarURL != null) {
                 Picasso.with(this)
                         .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
+            } else {
+                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
         }
     }
 
     @Subscribe
     public void userViewRequested(OnUserViewRequestedEvent event) {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_USERPROFILE);
         UserFragment fragment = UserFragment.newInstance(event.getUserId());
         fragment.show(getSupportFragmentManager(), UserFragment.TAG);
     }
 
     @Subscribe
-    public void tourInfoViewRequested(OnFeedItemInfoViewRequestedEvent event) {
+    public void feedItemViewRequested(OnFeedItemInfoViewRequestedEvent event) {
         if (mapEntourageFragment != null) {
             FeedItem feedItem = event.getFeedItem();
-            if (feedItem == null) return;
-            mapEntourageFragment.displayChosenFeedItem(feedItem);
-            //decrease the badge count
-            int tourBadgeCount = feedItem.getBadgeCount();
-            decreaseBadgeCount(tourBadgeCount);
-            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                Tour tour = (Tour) feedItem;
-                removePushNotificationsForTour(tour.getId());
-                //update the tour card
-                mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+            if (feedItem != null) {
+                mapEntourageFragment.displayChosenFeedItem(feedItem);
+                //decrease the badge count
+                int tourBadgeCount = feedItem.getBadgeCount();
+                decreaseBadgeCount(tourBadgeCount);
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                    Tour tour = (Tour) feedItem;
+                    removePushNotificationsForTour(tour.getId());
+                    //update the tour card
+                    mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+                }
+                return;
+            }
+            //check if we are receiving feed type and id
+            int feedItemType = event.getFeedItemType();
+            long feedItemId = event.getFeedItemId();
+            if (feedItemType != 0 && feedItemId != 0) {
+                mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
             }
         }
     }
@@ -614,9 +680,16 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         }
         else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
+            FeedItem feedItem = event.getFeedItem();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.tour_info_quit_tour_title)
-                    .setMessage(R.string.tour_info_quit_tour_description)
+            int titleId = R.string.tour_info_quit_tour_title;
+            int messageId = R.string.tour_info_quit_tour_description;
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                titleId = R.string.entourage_info_quit_entourage_title;
+                messageId = R.string.entourage_info_quit_entourage_description;
+            }
+            builder.setTitle(titleId)
+                    .setMessage(messageId)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
@@ -649,10 +722,16 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Subscribe
-    public void entourageCloseRequested(OnFeedItemCloseRequestEvent event) {
+    public void feedItemCloseRequested(OnFeedItemCloseRequestEvent event) {
         FeedItem feedItem = event.getFeedItem();
         if (feedItem == null) return;
         if (mapEntourageFragment != null) {
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && event.isShowUI()) {
+                FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
+                FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
+                feedItemOptionsFragment.show(getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
+                return;
+            }
             if (!feedItem.isClosed()) {
                 mapEntourageFragment.stopFeedItem(feedItem);
             } else {
@@ -662,6 +741,12 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             }
         }
+    }
+
+    @Subscribe
+    public void onUnauthorized(OnUnauthorizedEvent event) {
+        gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
+        logout();
     }
 
     // ----------------------------------
@@ -831,6 +916,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
+    public void onPhotoBack() {
+        // Do nothing
+    }
+
+    @Override
     public void onPhotoIgnore() {
         // Do nothing
     }
@@ -845,7 +935,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
         TransferObserver transferObserver = transferUtility.upload(
                 BuildConfig.AWS_BUCKET,
-                "300x300/"+objectKey,
+                BuildConfig.AWS_FOLDER + objectKey,
                 new File(photoUri.getPath()),
                 CannedAccessControlList.PublicRead
         );
@@ -919,11 +1009,13 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     @OnClick(R.id.button_start_tour_launcher)
-    protected void onStartTourClicked() {
+    public void onStartTourClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onStartTourLauncher();
         }
         else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.map_poi_create_tour_error)
                     .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -935,15 +1027,20 @@ public class DrawerActivity extends EntourageSecuredActivity
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+            */
+
+            onPOILauncherClicked();
+            mapEntourageFragment.onStartTourLauncher();
         }
     }
 
     @OnClick(R.id.button_add_tour_encounter)
-    protected void onAddTourEncounterClicked() {
+    public void onAddTourEncounterClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onAddEncounter();
         }
         else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.map_poi_create_encounter_error)
                     .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -955,15 +1052,21 @@ public class DrawerActivity extends EntourageSecuredActivity
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+            */
+
+            onPOILauncherClicked();
+            mapEntourageFragment.onAddEncounter();
         }
     }
 
     @OnClick(R.id.button_create_entourage_contribution)
-    protected void onCreateEntourageContributionClicked() {
+    public void onCreateEntourageContributionClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_OFFER_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
         else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.map_poi_create_entourage_error)
                     .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -975,15 +1078,21 @@ public class DrawerActivity extends EntourageSecuredActivity
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+            */
+
+            onPOILauncherClicked();
+            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
     }
 
     @OnClick(R.id.button_create_entourage_demand)
-    protected void onCreateEntouragDemandClicked() {
+    public void onCreateEntouragDemandClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_FEED_ASK_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }
         else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.map_poi_create_entourage_error)
                     .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
@@ -995,23 +1104,62 @@ public class DrawerActivity extends EntourageSecuredActivity
                     })
                     .setNegativeButton(R.string.cancel, null);
             builder.show();
+            */
+
+            onPOILauncherClicked();
+            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }
     }
 
     @OnClick(R.id.button_poi_launcher)
     protected void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
+            FlurryAgent.logEvent(Constants.EVENT_FEED_GUIDE_SHOW_CLICK);
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_close_button));
-            mapOptionsMenu.toggle(false);
+            if (mapOptionsMenu.isOpened()) {
+                mapOptionsMenu.toggle(false);
+            }
             selectItem(R.id.action_guide);
         }
         else {
+            FlurryAgent.logEvent(Constants.EVENT_GUIDE_MASK_CLICK);
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_launcher_button));
-            mapOptionsMenu.toggle(false);
+            if (mapOptionsMenu.isOpened()) {
+                mapOptionsMenu.toggle(false);
+            }
             selectItem(R.id.action_tours);
         }
+    }
+
+    // ----------------------------------
+    // Logo icon click handling
+    // ----------------------------------
+
+    @OnClick(R.id.toolbar_entourage_logo)
+    protected void onToolbarLogoClicked() {
+        if (isGuideShown()) {
+            // switch to map mode
+            onPOILauncherClicked();
+        } else {
+            if (mapEntourageFragment.isToursListVisible()) {
+                // make the map visible
+                mapEntourageFragment.ensureMapVisible();
+            } else {
+                // switch to list view
+                mapEntourageFragment.toggleToursList();
+            }
+        }
+    }
+
+
+    // ----------------------------------
+    // Helper functions
+    // ----------------------------------
+
+    public boolean isGuideShown() {
+        return !(mainFragment instanceof MapEntourageFragment);
     }
 
 }

@@ -280,7 +280,7 @@ public class TourService extends Service {
     public void updateNewsfeed(EntouragePagination pagination) {
         if (pagination.isLoading) return;
         pagination.isLoading = true;
-        tourServiceManager.retrieveNewsfeed(pagination.getBeforeDate());
+        tourServiceManager.retrieveNewsfeed(pagination.getBeforeDate(), getApplicationContext());
     }
 
     public void updateUserHistory(int userId, int page, int per) {
@@ -296,9 +296,9 @@ public class TourService extends Service {
         tourServiceManager.updateTourCoordinates();
     }
 
-    public void beginTreatment(String transportMode, String type) {
+    public void beginTreatment(String type) {
         if (!isRunning()) {
-            tourServiceManager.startTour(transportMode, type);
+            tourServiceManager.startTour(type);
         }
     }
 
@@ -472,9 +472,9 @@ public class TourService extends Service {
         }
     }
 
-    public void notifyListenersNewsfeed(List<Newsfeed> newsfeedList) {
+    public void notifyListenersNewsfeed(List<Newsfeed> newsfeedList, boolean networkError) {
         for (TourServiceListener listener : listeners) {
-            listener.onRetrieveNewsfeed(newsfeedList);
+            listener.onRetrieveNewsfeed(newsfeedList, networkError);
         }
     }
 
@@ -494,6 +494,6 @@ public class TourService extends Service {
         void onFeedItemClosed(boolean closed, FeedItem feedItem);
         void onGpsStatusChanged(boolean active);
         void onUserStatusChanged(TourUser user, FeedItem feedItem);
-        void onRetrieveNewsfeed(List<Newsfeed> newsfeedList);
+        void onRetrieveNewsfeed(List<Newsfeed> newsfeedList, boolean networkError);
     }
 }

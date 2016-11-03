@@ -2,8 +2,8 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
-def versionMajor = 1
-def versionMinor = 9
+def versionMajor = 2
+def versionMinor = 2
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 dependencies {
@@ -15,7 +15,7 @@ dependencies {
 
 
 
-    compile files('libs/FlurryAnalytics-6.3.1.jar')
+    compile files('libs/FlurryAnalytics-6.5.0.jar')
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
@@ -42,9 +42,9 @@ dependencies {
     compile 'com.github.clans:fab:1.6.2'
     compile 'net.danlew:android.joda:2.7.1'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.2.2'
-    compile 'com.amazonaws:aws-android-sdk-core:2.2.+'
-    compile 'com.amazonaws:aws-android-sdk-s3:2.2.+'
-    compile 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
+    compile 'com.amazonaws:aws-android-sdk-core:2.3.1'
+    compile 'com.amazonaws:aws-android-sdk-s3:2.3.1'
+    compile 'com.amazonaws:aws-android-sdk-ddb:2.3.1'
 }
 
 android {
@@ -61,6 +61,7 @@ android {
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
         buildConfigField 'String', 'FLURRY_API_KEY', "\"${flurryApiKey}\""
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
+        buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
         buildConfigField 'String', 'AWS_KEY', entourageAWSKey
         buildConfigField 'String', 'AWS_SECRET', entourageAWSSecret
     }
@@ -87,6 +88,7 @@ android {
             debuggable false
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
             buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
+            buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
         }
         preprod {
             signingConfig signingConfigs.debug

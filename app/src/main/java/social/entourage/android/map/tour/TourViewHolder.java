@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -21,9 +22,12 @@ import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
@@ -43,6 +47,7 @@ public class TourViewHolder extends BaseCardViewHolder {
     private TextView badgeCountView;
     private TextView numberOfPeopleTextView;
     private Button actButton;
+    private TextView lastMessageTextView;
 
     private Tour tour;
 
@@ -67,13 +72,14 @@ public class TourViewHolder extends BaseCardViewHolder {
         badgeCountView = (TextView)itemView.findViewById(R.id.tour_card_badge_count);
         numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
         actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
+        lastMessageTextView = (TextView)itemView.findViewById(R.id.tour_card_last_message);
 
         onClickListener = new OnClickListener();
 
         itemView.setOnClickListener(onClickListener);
         tourAuthor.setOnClickListener(onClickListener);
         photoView.setOnClickListener(onClickListener);
-        actButton.setOnClickListener(onClickListener);
+        if (actButton != null) actButton.setOnClickListener(onClickListener);
 
         context = itemView.getContext();
     }
@@ -102,13 +108,24 @@ public class TourViewHolder extends BaseCardViewHolder {
         //title
         tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), tour.getOrganizationName()));
 
-        //author photo
-        String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
-        if (avatarURLAsString != null) {
-            Picasso.with(itemView.getContext())
-                    .load(Uri.parse(avatarURLAsString))
-                    .transform(new CropCircleTransformation())
-                    .into(photoView);
+        if (tour.getAuthor() == null) {
+            //author
+            tourAuthor.setText("--");
+            photoView.setImageResource(R.drawable.ic_user_photo_small);
+        } else {
+            //author photo
+            String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
+            if (avatarURLAsString != null) {
+                Picasso.with(itemView.getContext())
+                        .load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(photoView);
+            } else {
+                photoView.setImageResource(R.drawable.ic_user_photo_small);
+            }
+            //author
+            tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));
         }
 
         //Tour type
@@ -125,10 +142,9 @@ public class TourViewHolder extends BaseCardViewHolder {
         }
         tourTypeTextView.setText(String.format(res.getString(R.string.tour_cell_type), tourTypeDescription));
 
-        //author
-        tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));
-
         //date and location i.e 1h - Arc de Triomphe
+        // MI: for v2.1 we display the distance to starting point
+        /*
         String location = "";
         Address tourAddress = tour.getStartAddress();
         if (tourAddress != null) {
@@ -144,7 +160,15 @@ public class TourViewHolder extends BaseCardViewHolder {
             geocoderTask = new GeocoderTask();
             geocoderTask.execute(tour);
         }
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", location));
+        */
+
+        String distanceAsString = "";
+        TourPoint startPoint = tour.getStartPoint();
+        if (startPoint != null) {
+            distanceAsString = startPoint.distanceToCurrentLocation();
+        }
+
+        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(tour.getStartTime()), distanceAsString));
 
         //tour members
         numberOfPeopleTextView.setText(""+tour.getNumberOfPeople());
@@ -160,24 +184,46 @@ public class TourViewHolder extends BaseCardViewHolder {
         }
 
         //act button
-        if (tour.isFreezed()) {
-            actButton.setVisibility(View.GONE);
-        }
-        else {
+        if (actButton != null) {
             actButton.setVisibility(View.VISIBLE);
-            String joinStatus = tour.getJoinStatus();
-            if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_pending);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
-            } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_accepted);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
-            } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-                actButton.setText(R.string.tour_cell_button_rejected);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
+            if (tour.isFreezed()) {
+                //actButton.setVisibility(View.GONE);
+                actButton.setText(R.string.tour_cell_button_freezed);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_freezed), null, null);
             } else {
-                actButton.setText(R.string.tour_cell_button_join);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+                //actButton.setVisibility(View.VISIBLE);
+                String joinStatus = tour.getJoinStatus();
+                if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                    actButton.setText(R.string.tour_cell_button_pending);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
+                } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                    if (tour.getAuthor() != null) {
+                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+                            actButton.setText(R.string.tour_cell_button_ongoing);
+                        } else {
+                            actButton.setText(R.string.tour_cell_button_accepted);
+                        }
+                    } else {
+                        actButton.setText(R.string.tour_cell_button_accepted);
+                    }
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
+                } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
+                    actButton.setText(R.string.tour_cell_button_rejected);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
+                } else {
+                    actButton.setText(R.string.tour_cell_button_join);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+                }
+            }
+        }
+
+        //last message
+        if (lastMessageTextView != null) {
+            LastMessage lastMessage = tour.getLastMessage();
+            if (lastMessage != null) {
+                lastMessageTextView.setText(lastMessage.getText());
+            } else {
+                lastMessageTextView.setText("");
             }
         }
 
@@ -193,7 +239,7 @@ public class TourViewHolder extends BaseCardViewHolder {
                 location = "";
             }
         }
-        tourLocation.setText(String.format(itemView.getResources().getString(R.string.tour_cell_location), Tour.getHoursDiffToNow(tour.getStartTime()), "h", location));
+        tourLocation.setText(String.format(itemView.getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(tour.getStartTime()), location));
 
         geocoderTask = null;
     }
@@ -244,13 +290,13 @@ public class TourViewHolder extends BaseCardViewHolder {
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(tour));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                    if (tour.getAuthor() != null) {
-                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+//                    if (tour.getAuthor() != null) {
+//                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
                             BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
                             return;
-                        }
-                    }
-                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
+//                        }
+//                    }
+//                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //What to do on rejected status ?
                 } else {

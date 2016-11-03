@@ -28,9 +28,6 @@ public class Tour extends FeedItem implements Serializable {
     public static final String KEY_TOUR_ID = "social.entourage.android.KEY_TOUR_ID";
     public static final String KEY_TOURS = "social.entourage.android.KEY_TOURS";
 
-    private static final String TOUR_FEET = "feet";
-    private static final String TOUR_CAR = "car";
-
     public static final String NEWSFEED_TYPE = "Tour";
 
     // ----------------------------------
@@ -40,9 +37,6 @@ public class Tour extends FeedItem implements Serializable {
     @SerializedName("user_id")
     @Expose(serialize = false, deserialize = true)
     private int userId;
-
-    @SerializedName("vehicle_type")
-    private String tourVehicleType = TOUR_FEET;
 
     @SerializedName("tour_type")
     private String tourType = TourType.BARE_HANDS.getName();
@@ -85,9 +79,8 @@ public class Tour extends FeedItem implements Serializable {
         init();
     }
 
-    public Tour(String tourVehicleType, String tourType) {
+    public Tour(String tourType) {
         super();
-        this.tourVehicleType = tourVehicleType;
         this.tourType = tourType;
         this.startTime = new Date();
         init();
@@ -104,10 +97,6 @@ public class Tour extends FeedItem implements Serializable {
 
     public int getUserId() {
         return userId;
-    }
-
-    public String getTourVehicleType() {
-        return tourVehicleType;
     }
 
     public String getTourType() {
@@ -154,10 +143,6 @@ public class Tour extends FeedItem implements Serializable {
         this.userId = userId;
     }
 
-    public void setTourVehicleType(String tourVehicleType) {
-        this.tourVehicleType = tourVehicleType;
-    }
-
     public void setTourType(String tourType) {
         this.tourType = tourType;
     }
@@ -188,7 +173,7 @@ public class Tour extends FeedItem implements Serializable {
 
     @Override
     public String toString() {
-        return "tour : " + id + ", vehicule : " + tourVehicleType + ", type : " + tourType + ", status : " + status + ", points : " + tourPoints.size();
+        return "tour : " + id + ", type : " + tourType + ", status : " + status + ", points : " + tourPoints.size();
     }
 
     // ----------------------------------
@@ -214,6 +199,14 @@ public class Tour extends FeedItem implements Serializable {
             startHours = fromDate.getTime() / Constants.MILLIS_HOUR;
         }
         return (currentHours - startHours);
+    }
+
+    public static String getStringDiffToNow(Date fromDate) {
+        long hours = Tour.getHoursDiffToNow(fromDate);
+        if (hours > 24) {
+            return "" + (hours / 24) + "j";
+        }
+        return "" + hours + "h";
     }
 
     public boolean isSame(Tour tour) {

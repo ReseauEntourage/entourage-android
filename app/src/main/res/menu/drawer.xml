@@ -5,6 +5,9 @@
         <item android:id="@+id/action_user"
               android:title=""
               android:visible="false"/>
+        <item android:id="@+id/action_edit_user"
+              android:title=""
+              android:visible="false"/>
         <item android:id="@+id/action_tours"
             android:title="@string/action_tours"
             android:icon="@drawable/ic_map"

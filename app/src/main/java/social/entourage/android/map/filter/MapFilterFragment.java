@@ -14,19 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Switch;
 
+import com.flurry.android.FlurryAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MapFilterFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
 public class MapFilterFragment extends DialogFragment {
 
     // ----------------------------------
@@ -40,8 +37,6 @@ public class MapFilterFragment extends DialogFragment {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-
-    private OnFragmentInteractionListener mListener;
 
     private boolean isProUser = false;
 
@@ -122,23 +117,6 @@ public class MapFilterFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
@@ -157,13 +135,14 @@ public class MapFilterFragment extends DialogFragment {
 
     @OnClick(R.id.map_filter_close_button)
     protected void onCloseClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_CLOSE);
         dismiss();
     }
 
     @OnClick(R.id.map_filter_validate_button)
     protected void onValidateClicked() {
         // save the values to the filter
-        MapFilter mapFilter = MapFilter.getInstance();
+        MapFilter mapFilter = MapFilterFactory.getMapFilter(isProUser);
 
         mapFilter.tourTypeMedical = tourMedicalSwitch.isChecked();
         mapFilter.tourTypeSocial = tourSocialSwitch.isChecked();
@@ -181,8 +160,61 @@ public class MapFilterFragment extends DialogFragment {
         // inform the map screen to refresh the newsfeed
         BusProvider.getInstance().post(new Events.OnMapFilterChanged());
 
+        // flurry event
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_SUBMIT);
+
         // dismiss the dialog
         dismiss();
+    }
+
+    @OnClick(R.id.map_filter_tour_medical_switch)
+    protected void onMedicalSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS);
+    }
+
+    @OnClick(R.id.map_filter_tour_social_switch)
+    protected void onSocialSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS);
+    }
+
+    @OnClick(R.id.map_filter_tour_distributive_switch)
+    protected void onDistributiveSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS);
+    }
+
+    @OnClick(R.id.map_filter_entourage_demand_switch)
+    protected void onDemandSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_ASK);
+    }
+
+    @OnClick(R.id.map_filter_entourage_contribution_switch)
+    protected void onContributionSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_OFFERS);
+    }
+
+    @OnClick(R.id.map_filter_entourage_tours_switch)
+    protected void onOnlyToursSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_TOURS);
+    }
+
+    @OnClick(R.id.map_filter_entourage_user_only_switch)
+    protected void onOnlyMineSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MINE);
+    }
+
+    @OnClick(R.id.map_filter_time_days_1)
+    protected void onDays1Click() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_FILTER1);
+    }
+
+    @OnClick(R.id.map_filter_time_days_2)
+    protected void onDays2Click() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_FILTER2);
+    }
+
+    @OnClick(R.id.map_filter_time_days_3)
+    protected void onDays3Click() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_FILTER3);
     }
 
     // ----------------------------------
@@ -193,7 +225,7 @@ public class MapFilterFragment extends DialogFragment {
         tourTypeLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
         showToursLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
 
-        MapFilter mapFilter = MapFilter.getInstance();
+        MapFilter mapFilter = MapFilterFactory.getMapFilter(isProUser);
 
         tourMedicalSwitch.setChecked(mapFilter.tourTypeMedical);
         tourSocialSwitch.setChecked(mapFilter.tourTypeSocial);
@@ -208,17 +240,14 @@ public class MapFilterFragment extends DialogFragment {
             case MapFilter.DAYS_1:
                 days1RB.setChecked(true);
                 break;
-            case MapFilter.DAYS_2:
-                days2RB.setChecked(true);
-                break;
             case MapFilter.DAYS_3:
                 days3RB.setChecked(true);
+                break;
+            case MapFilter.DAYS_2:
+            default:
+                days2RB.setChecked(true);
                 break;
         }
     }
 
-    /**
-     */
-    public interface OnFragmentInteractionListener {
-    }
 }
