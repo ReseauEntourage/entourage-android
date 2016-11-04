@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:minHeight="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
+    android:background="@color/toolbar"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <LinearLayout
