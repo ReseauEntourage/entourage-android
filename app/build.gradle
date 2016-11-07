@@ -81,8 +81,6 @@ android {
         release {
             signingConfig signingConfigs.googleplay
             debuggable false
-            buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
-            buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
         }
 
         debug {
@@ -93,13 +91,14 @@ android {
 
     productFlavors {
         preprod {
-            applicationId 'social.entourage.android.preprod'
+            applicationId 'social.entourage.android'
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
         }
 
         prod {
             applicationId 'social.entourage.android'
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
+            buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
         }
     }
 
