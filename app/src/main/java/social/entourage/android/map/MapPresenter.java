@@ -116,10 +116,10 @@ public class MapPresenter {
         }
     }
 
-    public void displayEntourageDisclaimer(String entourageType) {
+    public void displayEntourageDisclaimer(String entourageType, boolean isPro) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(entourageType);
+            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(entourageType, isPro);
             fragment.show(fragmentManager, EntourageDisclaimerFragment.TAG);
         }
     }
