@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
@@ -40,6 +42,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private TextView mJoinMessage;
     private Button mAcceptButton;
     private Button mRefuseButton;
+    private Button mViewProfileButton;
 
     private int userId;
     private FeedItem feedItem;
@@ -62,6 +65,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mJoinMessage = (TextView) itemView.findViewById(R.id.tic_join_message);
         mAcceptButton = (Button) itemView.findViewById(R.id.tic_accept_button);
         mRefuseButton = (Button) itemView.findViewById(R.id.tic_refuse_button);
+        mViewProfileButton = (Button) itemView.findViewById(R.id.tic_view_profile_button);
 
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +79,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (userId == 0 || feedItem == null) return;
+                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
                 BusProvider.getInstance().post(
                         new Events.OnUserJoinRequestUpdateEvent(
                                 userId,
@@ -88,6 +93,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (userId == 0 || feedItem == null) return;
+                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
                 BusProvider.getInstance().post(
                         new Events.OnUserJoinRequestUpdateEvent(
                                 userId,
@@ -96,6 +102,16 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
                 );
             }
         });
+
+        if (mViewProfileButton != null) {
+            mViewProfileButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    if (userId == 0) return;
+                    BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
+                }
+            });
+        }
     }
 
     @Override
@@ -116,8 +132,11 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             String avatarURL = user.getAvatarURLAsString();
             if (avatarURL != null) {
                 Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(mPhotoView);
+            } else {
+                mPhotoView.setImageResource(R.drawable.ic_user_photo_small);
             }
 
             mJoinMessage.setText(user.getMessage());
@@ -127,7 +146,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             mPublicSection.setVisibility(View.VISIBLE);
 
             String displayName = user.getDisplayName();
-            SpannableString spannableString = new SpannableString(user.getDisplayName() + getJoinStatus(user.getStatus()));
+            SpannableString spannableString = new SpannableString(user.getDisplayName() + getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
             ClickableSpan clickableSpan = new ClickableSpan() {
                 @Override
                 public void onClick(final View widget) {
@@ -154,9 +173,9 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         feedItem = user.getFeedItem();
     }
 
-    private String getJoinStatus(String joinStatus) {
+    private String getJoinStatus(String joinStatus, boolean isTour) {
         if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
-            return itemView.getContext().getString(R.string.tour_info_text_join_accepted);
+            return itemView.getContext().getString(isTour?R.string.tour_info_text_join_accepted:R.string.entourage_info_text_join_accepted);
         }
         else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
             return itemView.getContext().getString(R.string.tour_info_text_join_rejected);

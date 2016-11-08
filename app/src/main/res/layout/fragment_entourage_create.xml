@@ -196,8 +196,9 @@
                     android:textColorHint="@color/greyish"
                     android:hint="@string/entourage_create_description_hint"
                     android:gravity="left|top"
-                    android:paddingTop="14dp"
-                    android:layout_toLeftOf="@+id/create_entourage_description_mic"/>
+                    android:paddingTop="16dp"
+                    android:layout_toLeftOf="@+id/create_entourage_description_mic"
+                    android:autoLink="all"/>
 
                 <ImageView
                     android:layout_width="wrap_content"

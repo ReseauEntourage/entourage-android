@@ -53,6 +53,23 @@
                 android:textColor="@color/white"
                 android:drawableLeft="@drawable/arrow_new_entourages"
                 android:textAllCaps="false"
+                android:visibility="gone"
+                android:layout_marginTop="20dp"
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"/>
+
+            <TextView
+                android:text="@string/map_empty_newsfeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_map_empty_list"
+                android:layout_centerHorizontal="true"
+                android:layout_alignTop="@+id/fragment_map_tours_view"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
                 android:visibility="gone"/>
 
         </RelativeLayout>

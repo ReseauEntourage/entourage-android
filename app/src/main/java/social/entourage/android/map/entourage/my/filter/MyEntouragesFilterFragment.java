@@ -9,9 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
@@ -91,6 +94,7 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.myentourages_filter_back_button)
     void onBackClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_EXIT);
         dismiss();
     }
 
@@ -111,8 +115,46 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         // inform the app to refrehs the my entourages feed
         BusProvider.getInstance().post(new Events.OnMyEntouragesFilterChanged());
 
+        // flurry event
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_SAVE);
+
         // dismiss the dialog
         dismiss();
+    }
+
+    @OnClick(R.id.myentourages_filter_active_switch)
+    protected void onActiveSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_ACTIVE);
+    }
+
+    @OnClick(R.id.myentourages_filter_invited_switch)
+    protected void onInvitedSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_INVITATIONS);
+    }
+
+    @OnClick(R.id.myentourages_filter_own_switch)
+    protected void onOrganizerSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_ORGANIZER);
+    }
+
+    @OnClick(R.id.myentourages_filter_closed_switch)
+    protected void onClosedSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_PAST);
+    }
+
+    @OnClick(R.id.myentourages_filter_demand_switch)
+    protected void onDemandSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_ASK);
+    }
+
+    @OnClick(R.id.myentourages_filter_contribution_switch)
+    protected void onContributionSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_OFFER);
+    }
+
+    @OnClick(R.id.myentourages_filter_tours_switch)
+    protected void onToursSwitch() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_TOUR);
     }
 
     // ----------------------------------

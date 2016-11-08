@@ -173,6 +173,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Bind(R.id.tour_card_people_count)
     TextView tourPeopleCount;
 
+    @Bind(R.id.tour_card_people_image)
+    ImageView tourPeopleImage;
+
+    @Bind(R.id.tour_card_arrow)
+    ImageView tourCardArrow;
+
     @Bind(R.id.tour_card_act_layout)
     RelativeLayout headerActLayout;
 
@@ -277,6 +283,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             inviteSuccessLayout.setVisibility(View.GONE);
         }
     };
+
+    private boolean startedTypingMessage = false;
 
     // ----------------------------------
     // LIFECYCLE
@@ -461,7 +469,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         this.dismiss();
     }
 
-    @OnClick(R.id.tour_info_title)
+    @OnClick({R.id.tour_info_title, R.id.tour_card_arrow})
     protected void onSwitchSections() {
         // Ignore if the entourage is not loaded or is public
         if (feedItem == null || !feedItem.isPrivate())
@@ -473,6 +481,10 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
         publicSection.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
         privateSection.setVisibility(isPublicSectionVisible ?  View.VISIBLE : View.GONE);
+
+        if (!isPublicSectionVisible) {
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC);
+        }
     }
 
     @OnClick(R.id.tour_info_comment_send_button)
@@ -495,7 +507,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message));
         try {
-            FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED);
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SPEECH);
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getContext(), getString(R.string.encounter_voice_message_not_supported), Toast.LENGTH_SHORT).show();
@@ -510,6 +522,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         optionsLayout.startAnimation(bottomUp);
         optionsLayout.setVisibility(View.VISIBLE);
+
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_OVERLAY);
     }
 
     @OnClick({R.id.feeditem_option_cancel, R.id.tour_info_options})
@@ -549,15 +563,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
                 //show stop tour activity
                 if (mListener != null) {
+                    FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
                     mListener.showStopTourActivity(tour);
                 }
             }
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
                 tourService.stopFeedItem(feedItem);
             }
         }
         else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
             if (tourService != null) {
+                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
                 tourService.freezeTour((Tour)feedItem);
             }
         }
@@ -586,6 +603,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                                 Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                             }
                             else {
+                                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
                                 showProgressBar();
                                 tourService.removeUserFromFeedItem(feedItem, me.getId());
                             }
@@ -601,9 +619,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (tourService != null) {
             showProgressBar();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
                 tourService.requestToJoinTour((Tour)feedItem);
             }
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
                 tourService.requestToJoinEntourage((Entourage) feedItem);
             }
             else {
@@ -622,27 +642,32 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         //hide the options
         optionsLayout.setVisibility(View.GONE);
+
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT);
     }
 
     @OnClick(R.id.tour_info_user_add_button)
     protected void onUserAddClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
         inviteSourceLayout.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.invite_source_close_button, R.id.invite_source_close_bottom_button})
     protected void onCloseInviteSourceClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_CLOSE);
         inviteSourceLayout.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.invite_source_contacts_button)
     protected void onInviteContactsClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_CONTACTS);
         // check the permissions
         if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_CODE);
             return;
         }
         // close the invite source view
-        onCloseInviteSourceClicked();
+        inviteSourceLayout.setVisibility(View.GONE);
         // open the contacts fragment
         InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
@@ -652,8 +677,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     @OnClick(R.id.invite_source_number_button)
     protected void onInvitePhoneNumberClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_PHONE);
         // close the invite source view
-        onCloseInviteSourceClicked();
+        inviteSourceLayout.setVisibility(View.GONE);
         // open the contacts fragment
         InviteByPhoneNumberFragment fragment = InviteByPhoneNumberFragment.newInstance(feedItem.getId(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteByPhoneNumberFragment.TAG);
@@ -742,6 +768,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             String avatarURLAsString = feedItem.getAuthor().getAvatarURLAsString();
             if (avatarURLAsString != null) {
                 Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(tourAuthorPhoto);
             }
@@ -749,6 +776,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourAuthorName.setText("--");
         }
 
+        // MI: for v2.1 we display the distance to starting point
+        /*
         String location = "";
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
             Address tourAddress = feedItem.getStartAddress();
@@ -769,8 +798,21 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 }
             }
         }
+        */
 
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), location));
+        String distanceAsString = "";
+        TourPoint startPoint = null;
+        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+            startPoint = ((Tour)feedItem).getStartPoint();
+        }
+        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            startPoint = ((Entourage)feedItem).getLocation();
+        }
+        if (startPoint != null) {
+            distanceAsString = startPoint.distanceToCurrentLocation();
+        }
+
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
 
         tourPeopleCount.setText("" + feedItem.getNumberOfPeople());
 
@@ -781,9 +823,17 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         // switch to appropiate section
         if (feedItem.isPrivate()) {
+            tourPeopleCount.setVisibility(View.INVISIBLE);
+            tourPeopleImage.setVisibility(View.INVISIBLE);
+            tourAuthorPhoto.setVisibility(View.INVISIBLE);
+            tourCardArrow.setVisibility(View.VISIBLE);
             switchToPrivateSection();
         }
         else {
+            tourPeopleCount.setVisibility(View.VISIBLE);
+            tourPeopleImage.setVisibility(View.VISIBLE);
+            tourAuthorPhoto.setVisibility(View.VISIBLE);
+            tourCardArrow.setVisibility(View.GONE);
             switchToPublicSection();
         }
 
@@ -909,7 +959,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     if (tourPoints != null && tourPoints.size() > 0) {
                         //setup the camera position to starting point
                         TourPoint startPoint = tourPoints.get(0);
-                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR, 0, 0);
+                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0, 0);
                         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()));
@@ -933,7 +983,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                         LatLng position = startPoint.getLocation();
 
                         // move camera
-                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR, 0, 0);
+                        CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0, 0);
                         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         // add heatmap
@@ -1083,9 +1133,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 if (s.length() > 0) {
                     commentRecordButton.setVisibility(View.GONE);
                     commentSendButton.setVisibility(View.VISIBLE);
+                    if (!startedTypingMessage) {
+                        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_WRITE_MESSAGE);
+                        startedTypingMessage = true;
+                    }
                 } else {
                     commentRecordButton.setVisibility(View.VISIBLE);
                     commentSendButton.setVisibility(View.GONE);
+                    startedTypingMessage = false;
                 }
             }
         });
@@ -1309,16 +1364,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         tourOrganization.setText(feedItem.getTitle());
         tourDescription.setText(feedItem.getDescription());
 
-        String location = "";
+        String distanceAsString = "";
         TourPoint entourageLocation = ((Entourage)feedItem).getLocation();
         if (entourageLocation != null) {
-            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-            if (currentLocation != null) {
-                float distance = entourageLocation.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
-                location = String.format("%.2f km", distance/1000.0f);
-            }
+            distanceAsString = entourageLocation.distanceToCurrentLocation();
         }
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), location));
+        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
     }
 
     // ----------------------------------
@@ -1666,7 +1717,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     @Override
-    public void onRetrieveNewsfeed(final List<Newsfeed> newsfeedList) {}
+    public void onRetrieveNewsfeed(final List<Newsfeed> newsfeedList, boolean networkError) {}
 
     // ----------------------------------
     // RecyclerView.OnScrollListener

@@ -6,7 +6,7 @@ package social.entourage.android.invite.contacts;
 public class InviteItemSection extends InviteItem {
 
     public InviteItemSection(String itemText) {
-        super(InviteItem.TYPE_SEPARATOR, itemText);
+        super(InviteItem.TYPE_SECTION, itemText);
     }
 
 }

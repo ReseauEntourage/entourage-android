@@ -10,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.telephony.PhoneNumberUtils;
-import android.util.ArraySet;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -103,7 +101,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
      * the Android framework, so it is prefaced with "android.R.id"
      */
     private final static int[] TO_IDS = {
-            R.id.contact_name
+            R.id.contact_phone
     };
 
     @Bind(R.id.invite_contacts_listView)
@@ -171,13 +169,6 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Gets a CursorAdapter
-//        mContactsAdapter = new SimpleCursorAdapter(
-//                getActivity(),
-//                R.layout.layout_invite_contacts_list_item,
-//                null,
-//                FROM_COLUMNS, TO_IDS,
-//                0);
         mContactsAdapter = new InviteContactsAdapter(
                 getActivity(),
                 FROM_COLUMNS[0]
@@ -241,11 +232,8 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         sendButton.setEnabled(false);
         // Show the progress dialog
         ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_retrieving_phone_numbers);
-        // Get the Cursor
-        Cursor cursor = ((InviteContactsAdapter)contactsList.getAdapter()).getCursor();
         // Get the selected contacts
         int selectedContactsCount = 0;
-        StringBuffer contactIds = new StringBuffer();
         SparseBooleanArray checkedItems = contactsList.getCheckedItemPositions();
         for (int i = 0; i < contactsList.getCount(); i++) {
             if (checkedItems.valueAt(i)) {
@@ -256,27 +244,22 @@ public class InviteContactsFragment extends InviteBaseFragment implements
             sendButton.setEnabled(true);
             return;
         }
-        mContactIdsSelectionArgs = new String[selectedContactsCount];
-        int index = 0;
+        MultipleInvitations invitations = new MultipleInvitations(Invitation.INVITE_BY_SMS);
         for (int i = 0; i < contactsList.getCount(); i++) {
             if (checkedItems.valueAt(i)) {
                 int position = checkedItems.keyAt(i);
-                // Move to the selected contact
-                cursor.moveToPosition(mContactsAdapter.getCursorPositionForItemAt(position));
-                // Get the _ID value
-                String contactId = cursor.getString(CONTACT_ID_INDEX);
-                mContactIdsSelectionArgs[index] = contactId;
-                index++;
-                if (contactIds.length() > 0) {
-                    contactIds.append(",");
+                String phone = mContactsAdapter.getPhoneAt(position);
+                if (phone != null) {
+                    phone = PhoneNumberUtils.stripSeparators(phone);
+                    invitations.addPhoneNumber(phone);
                 }
-                contactIds.append("?");
             }
         }
-        mContactIds = contactIds.toString();
-
-        getLoaderManager().destroyLoader(PHONE_LOADER_ID);
-        getLoaderManager().initLoader(PHONE_LOADER_ID, null, this);
+        // Update the progress dialog
+        ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_inviting);
+        // Send the phone number to server
+        serverRequestsCount++;
+        presenter.inviteBySMS(feedItemId, feedItemType, invitations);
     }
 
     // ----------------------------------

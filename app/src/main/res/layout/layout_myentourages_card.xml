@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
         android:textColor="@color/greyish_brown"
         android:id="@+id/tour_card_title"
         android:textSize="17sp"
@@ -37,7 +36,6 @@
         android:layout_height="46dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/greyish"
-        android:text="+1"
         android:id="@+id/tour_card_people_count"
         android:textSize="13sp"
         android:background="@drawable/bg_tour_card_members"
@@ -61,7 +59,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
-            android:text="Small Text"
             android:id="@+id/tour_card_type"
             android:textSize="15sp"/>
 
@@ -71,7 +68,6 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
             android:textStyle="bold"
-            android:text="Small Text"
             android:id="@+id/tour_card_author"
             android:textSize="15sp"/>
     </LinearLayout>
@@ -107,7 +103,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/greyish"
-        android:text="Small Text"
         android:id="@+id/tour_card_location"
         android:lines="1"
         android:textSize="13sp"

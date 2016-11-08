@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -21,10 +22,12 @@ import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
@@ -115,6 +118,7 @@ public class TourViewHolder extends BaseCardViewHolder {
             if (avatarURLAsString != null) {
                 Picasso.with(itemView.getContext())
                         .load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(photoView);
             } else {
@@ -139,6 +143,8 @@ public class TourViewHolder extends BaseCardViewHolder {
         tourTypeTextView.setText(String.format(res.getString(R.string.tour_cell_type), tourTypeDescription));
 
         //date and location i.e 1h - Arc de Triomphe
+        // MI: for v2.1 we display the distance to starting point
+        /*
         String location = "";
         Address tourAddress = tour.getStartAddress();
         if (tourAddress != null) {
@@ -154,7 +160,15 @@ public class TourViewHolder extends BaseCardViewHolder {
             geocoderTask = new GeocoderTask();
             geocoderTask.execute(tour);
         }
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(tour.getStartTime()), location));
+        */
+
+        String distanceAsString = "";
+        TourPoint startPoint = tour.getStartPoint();
+        if (startPoint != null) {
+            distanceAsString = startPoint.distanceToCurrentLocation();
+        }
+
+        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(tour.getStartTime()), distanceAsString));
 
         //tour members
         numberOfPeopleTextView.setText(""+tour.getNumberOfPeople());
@@ -171,10 +185,13 @@ public class TourViewHolder extends BaseCardViewHolder {
 
         //act button
         if (actButton != null) {
+            actButton.setVisibility(View.VISIBLE);
             if (tour.isFreezed()) {
-                actButton.setVisibility(View.GONE);
+                //actButton.setVisibility(View.GONE);
+                actButton.setText(R.string.tour_cell_button_freezed);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_freezed), null, null);
             } else {
-                actButton.setVisibility(View.VISIBLE);
+                //actButton.setVisibility(View.VISIBLE);
                 String joinStatus = tour.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_pending);
@@ -202,7 +219,7 @@ public class TourViewHolder extends BaseCardViewHolder {
 
         //last message
         if (lastMessageTextView != null) {
-            FeedItem.LastMessage lastMessage = tour.getLastMessage();
+            LastMessage lastMessage = tour.getLastMessage();
             if (lastMessage != null) {
                 lastMessageTextView.setText(lastMessage.getText());
             } else {

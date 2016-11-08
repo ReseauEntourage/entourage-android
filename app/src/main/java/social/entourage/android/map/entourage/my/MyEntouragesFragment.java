@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
@@ -191,6 +192,15 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
             isPro = me.isPro();
         }
         startTourButton.setVisibility( isPro ? View.VISIBLE : View.GONE );
+
+        fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(final boolean opened) {
+                if (opened) {
+                    FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_PLUS_CLICK);
+                }
+            }
+        });
     }
 
     protected void showProgressBar() {
@@ -228,11 +238,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.myentourages_back_button)
     void onBackClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_BACK_CLICK);
         dismiss();
     }
 
     @OnClick(R.id.myentourages_filter_button)
     void onFilterClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_CLICK);
         MyEntouragesFilterFragment fragment = new MyEntouragesFilterFragment();
         fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
     }

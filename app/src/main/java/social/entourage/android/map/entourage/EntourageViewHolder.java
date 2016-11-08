@@ -28,6 +28,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
@@ -118,6 +119,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             if (avatarURLAsString != null) {
                 Picasso.with(itemView.getContext())
                         .load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(photoView);
             } else {
@@ -141,11 +143,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         String distanceAsString = "";
         TourPoint location = entourage.getLocation();
         if (location != null) {
-            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-            if (currentLocation != null) {
-                float distance = location.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
-                distanceAsString = String.format("%.2f km", distance/1000.0f);
-            }
+            distanceAsString = location.distanceToCurrentLocation();
         }
 
         entourageLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(entourage.getStartTime()), distanceAsString));
@@ -166,7 +164,9 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         //act button
         if (actButton != null) {
             if (entourage.isFreezed()) {
-                actButton.setVisibility(View.GONE);
+                actButton.setVisibility(View.VISIBLE);
+                actButton.setText(R.string.tour_cell_button_freezed);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_freezed), null, null);
             } else {
                 actButton.setVisibility(View.VISIBLE);
                 String joinStatus = entourage.getJoinStatus();
@@ -188,7 +188,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
 
         //last message
         if (lastMessageTextView != null) {
-            FeedItem.LastMessage lastMessage = entourage.getLastMessage();
+            LastMessage lastMessage = entourage.getLastMessage();
             if (lastMessage != null) {
                 lastMessageTextView.setText(lastMessage.getText());
             } else {
