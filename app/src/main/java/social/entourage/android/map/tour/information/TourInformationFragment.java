@@ -827,6 +827,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourPeopleImage.setVisibility(View.INVISIBLE);
             tourAuthorPhoto.setVisibility(View.INVISIBLE);
             tourCardArrow.setVisibility(View.VISIBLE);
+            updateJoinStatus();
             switchToPrivateSection();
         }
         else {
@@ -1175,7 +1176,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void switchToPrivateSection() {
-        actLayout.setVisibility(View.GONE);
+        actLayout.setVisibility(feedItem.isFreezed() ? View.VISIBLE : View.GONE);
         membersLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.GONE);
         privateSection.setVisibility(View.VISIBLE);
@@ -1210,7 +1211,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private void updateJoinStatus() {
         if (feedItem == null) return;
         if (feedItem.isFreezed()) {
-            actLayout.setVisibility(View.GONE);
+            //actLayout.setVisibility(View.GONE);
+
+            // MI: Instead of hiding it, display the freezed text
+            actLayout.setVisibility(View.VISIBLE);
+            joinButton.setText(R.string.tour_cell_button_freezed);
+            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_freezed), null, null);
         }
         else {
             actLayout.setVisibility(View.VISIBLE);
@@ -1566,7 +1572,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     switchToPrivateSection();
                     loadPrivateCards();
                     updateHeaderButtons();
-                    actLayout.setVisibility(View.GONE);
+                    //actLayout.setVisibility(View.GONE);
                 }
             }
 

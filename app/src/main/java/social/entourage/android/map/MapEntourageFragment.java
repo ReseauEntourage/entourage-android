@@ -501,6 +501,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         // Check if we need to show the entourage disclaimer
         User me = EntourageApplication.me(getActivity());
         if (me == null) return;
+
         if (me.isEntourageDisclaimerShown()) {
             // Already shown, display the create entourage fragment
             createEntourage(entourageType);
@@ -508,7 +509,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         else {
             // Show the disclaimer fragment
             if (presenter != null) {
-                presenter.displayEntourageDisclaimer(entourageType);
+                presenter.displayEntourageDisclaimer(entourageType, me.isPro());
             }
         }
     }
@@ -590,9 +591,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onEntourageCreated(Events.OnEntourageCreated event) {
         Entourage entourage = event.getEntourage();
         if (entourage == null) return;
+        /*
         drawNearbyEntourage(entourage, false);
         addNewsfeedCard(entourage);
         toursListView.scrollToPosition(0);
+        */
+        clearAll();
+        tourService.updateNewsfeed(pagination);
+
     }
 
     @Subscribe
