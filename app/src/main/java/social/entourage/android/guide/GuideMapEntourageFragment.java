@@ -1,12 +1,17 @@
 package social.entourage.android.guide;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +43,9 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.guide.poi.ReadPoiActivity;
+import social.entourage.android.tools.BusProvider;
 
 public class GuideMapEntourageFragment extends Fragment {
 
@@ -50,6 +57,8 @@ public class GuideMapEntourageFragment extends Fragment {
 
     public static final float ZOOM_REDRAW_LIMIT = 1.1f;
     public static final int REDRAW_LIMIT = 300;
+
+    private static final int PERMISSIONS_REQUEST_LOCATION = 1;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -152,8 +161,28 @@ public class GuideMapEntourageFragment extends Fragment {
         presenter.start();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
+            for (int index = 0; index < permissions.length; index++) {
+                if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                    //checkPermission();
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
+                } else {
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     @OnClick(R.id.fragment_guide_follow_button)
     void onFollowGeolocation() {
+        // Check if geolocation is permitted
+        if (!isGeolocationPermitted()) {
+            showAllowGeolocationDialog();
+            return;
+        }
         Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
         if (currentLocation != null && map != null) {
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
@@ -207,6 +236,46 @@ public class GuideMapEntourageFragment extends Fragment {
             }
         }
         return pois;
+    }
+
+    // ----------------------------------
+    // GEOLOCATION PERMISSIONS HANDLING
+    // ----------------------------------
+
+    private boolean isGeolocationPermitted() {
+        return (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void showAllowGeolocationDialog() {
+        @StringRes int messagedId = R.string.map_error_geolocation_disabled_recenter;
+        new AlertDialog.Builder(getActivity())
+                .setMessage(messagedId)
+                .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
+
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                        } else {
+                            // User selected "Never ask again", so show the settings page
+                            displayGeolocationPreferences();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int i) {
+                    }
+                })
+                .show();
+    }
+
+    private void displayGeolocationPreferences() {
+        if (getActivity() != null) {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
     }
 
     // ----------------------------------

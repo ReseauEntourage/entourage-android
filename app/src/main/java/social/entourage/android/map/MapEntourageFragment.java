@@ -1001,6 +1001,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @OnClick(R.id.fragment_map_follow_button)
     void onFollowGeolocation() {
         FlurryAgent.logEvent(Constants.EVENT_FEED_RECENTERCLICK);
+        // Check if geolocation is enabled
+        if (!isGeolocationPermitted()) {
+            showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER);
+            return;
+        }
         isFollowing = true;
         Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
         if (currentLocation != null) {
@@ -1282,10 +1287,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
-    private void showAllowGeolocationDialog(int source) {
+    private void showAllowGeolocationDialog(final int source) {
         @StringRes int messagedId = R.string.map_error_geolocation_disabled_create_entourage;
         switch (source) {
             case GEOLOCATION_POPUP_RECENTER:
+                messagedId = R.string.map_error_geolocation_disabled_recenter;
                 break;
             case GEOLOCATION_POPUP_TOUR:
             default:
@@ -1296,9 +1302,23 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
-                        //displayGeolocationPreferences();
-                        requestPermissions(new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_LOCATION);
+                        switch (source) {
+                            case GEOLOCATION_POPUP_RECENTER:
+                                FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
+                                break;
+                            case GEOLOCATION_POPUP_TOUR:
+                                FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                        } else {
+                            // User selected "Never ask again", so show the settings page
+                            displayGeolocationPreferences();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
