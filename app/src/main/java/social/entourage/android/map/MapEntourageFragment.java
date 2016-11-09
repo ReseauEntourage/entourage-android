@@ -113,6 +113,8 @@ import social.entourage.android.map.tour.join.JoinRequestOkFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
 
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
+
 public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener {
 
     // ----------------------------------
@@ -131,6 +133,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private static final int MAX_SCROLL_DELTA_Y = 20;
 
     private static final int EMPTY_POPUP_DISPLAY_LIMIT = 300;
+
+    // Constants used to track the source call of the geolocation popup
+    private static final int GEOLOCATION_POPUP_TOUR = 0;
+    private static final int GEOLOCATION_POPUP_RECENTER = 1;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -1165,7 +1171,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onStartTourLauncher() {
         if (tourService != null) {
             if (!tourService.isRunning()) {
-                FlurryAgent.logEvent(Constants.EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP);
+                // Check if the geolocation is permitted
+                if (!isGeolocationPermitted()) {
+                    showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR);
+                    return;
+                }
                 if (mapOptionsMenu.isOpened()) {
                     mapOptionsMenu.toggle(false);
                 }
@@ -1265,6 +1275,41 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
             }
         }
+    }
+
+    private boolean isGeolocationPermitted() {
+        return (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void showAllowGeolocationDialog(int source) {
+        @StringRes int messagedId = R.string.map_error_geolocation_disabled_create_entourage;
+        switch (source) {
+            case GEOLOCATION_POPUP_RECENTER:
+                break;
+            case GEOLOCATION_POPUP_TOUR:
+            default:
+                break;
+        }
+        new AlertDialog.Builder(getActivity())
+                .setMessage(messagedId)
+                .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
+                        //displayGeolocationPreferences();
+                        requestPermissions(new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_LOCATION);
+                    }
+                })
+                .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int i) {
+                        if (mapOptionsMenu.isOpened()) {
+                            mapOptionsMenu.toggle(false);
+                        }
+                    }
+                })
+                .show();
     }
 
     private void initializeMap() {

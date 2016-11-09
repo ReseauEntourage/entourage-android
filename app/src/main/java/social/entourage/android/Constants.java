@@ -83,6 +83,7 @@ public class Constants {
     public static final String EVENT_FEED_CANCEL_JOIN_REQUEST = "CancelJoinRequest";
     public static final String EVENT_FEED_OPEN_ACTIVE_OVERLAY = "OpenActiveOverlay";
     public static final String EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed";
+    public static final String EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR = "ActivateGeolocFromCreateTourPopup";
 
     //MAP Events
     public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick"; //Not used
