@@ -322,8 +322,11 @@ public class UserFragment extends DialogFragment {
         dismiss();
     }
 
-    @OnClick(R.id.user_profile_edit_button)
+    @OnClick({R.id.user_profile_edit_button, R.id.user_photo, R.id.user_name, R.id.user_identification_email_layout, R.id.user_identification_phone_layout, R.id.user_number_of_entourages_layout})
     protected void onEditProfileClicked() {
+        // Allow editing only of the logged user
+        if (!isMyProfile) return;
+        // Show the edit profile screen
         UserEditFragment fragment = new UserEditFragment();
         fragment.show(getFragmentManager(), UserEditFragment.TAG);
     }
