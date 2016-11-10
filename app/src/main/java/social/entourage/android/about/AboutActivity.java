@@ -21,7 +21,7 @@ public class AboutActivity extends AppCompatActivity {
 
     private static final String RATE_URL = "market://details?id=";
     private static final String FACEBOOK_URL = "https://www.facebook.com/EntourageReseauCivique";
-    private static final String TERMS_URL = "https://www.entourage.social/cgu";
+    private static final String TERMS_URL = "http://www.entourage.social/cgu/index.html";
     private static final String WEBSITE_URL = "http://www.entourage.social";
     private static final String EMAIL_TO = "contact@entourage.social";
 
