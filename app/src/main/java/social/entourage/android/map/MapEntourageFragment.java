@@ -508,6 +508,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         User me = EntourageApplication.me(getActivity());
         if (me == null) return;
 
+        /*
         if (me.isEntourageDisclaimerShown()) {
             // Already shown, display the create entourage fragment
             createEntourage(entourageType);
@@ -518,6 +519,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 presenter.displayEntourageDisclaimer(entourageType, me.isPro());
             }
         }
+        */
+
+        // MI: EMA-920 Show the disclaimer ever time
+        // Show the disclaimer fragment
+        if (presenter != null) {
+            presenter.displayEntourageDisclaimer(entourageType, me.isPro());
+        }
+
     }
 
     public void createEntourage(String entourageType) {
@@ -1050,6 +1059,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (mapOptionsMenu.isOpened()) {
             mapOptionsMenu.toggle(false);
         }
+        /*
         // Check if we need to show the encounter disclaimer
         User me = EntourageApplication.me(getActivity());
         if (me == null) return;
@@ -1062,6 +1072,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (presenter != null) {
                 presenter.displayEncounterDisclaimer();
             }
+        }
+        */
+
+        // MI: EMA-920 Show the disclaimer every time
+        // Show the disclaimer fragment
+        if (presenter != null) {
+            presenter.displayEncounterDisclaimer();
         }
     }
 
