@@ -38,6 +38,15 @@
     <social.entourage.android.sidemenu.SideMenuItemView
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:id="@+id/action_blog"
+        android:title="@string/action_blog"
+        android:icon="@drawable/ic_about"
+        app:showDivider="true"
+        android:background="@color/white"/>
+
+    <social.entourage.android.sidemenu.SideMenuItemView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:id="@+id/action_about"
         android:title="@string/action_about"
         android:icon="@drawable/ic_about"

@@ -514,6 +514,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.action_blog:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.BLOG_URL));
+                startActivity(browserIntent);
+                break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();

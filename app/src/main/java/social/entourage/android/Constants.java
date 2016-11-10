@@ -19,6 +19,9 @@ public class Constants {
     public static final int REQUEST_CREATE_ENCOUNTER = 1;
     public static final int RESULT_CREATE_ENCOUNTER_OK = 2;
 
+    // Links
+    public static final String BLOG_URL = "https://blog.entourage.social/category/franchir-le-pas/";
+
     // Flurry events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
     public static final String EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map";
