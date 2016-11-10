@@ -45,6 +45,7 @@ import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditFragment;
 
@@ -229,6 +230,14 @@ public class UserFragment extends DialogFragment {
                 }
                 organizationsAdapter = new UserOrganizationsAdapter(organizationList);
                 userAssociationsView.setAdapter(organizationsAdapter);
+
+                ItemClickSupport.addTo(userAssociationsView)
+                        .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                            @Override
+                            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                                onEditProfileClicked();
+                            }
+                        });
             }
 
             boolean isPro = user.isPro();
