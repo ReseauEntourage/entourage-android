@@ -515,8 +515,22 @@ public class DrawerActivity extends EntourageSecuredActivity
                 startActivity(intent);
                 break;
             case R.id.action_blog:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.BLOG_URL));
-                startActivity(browserIntent);
+                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.BLOG_URL));
+                startActivity(blogIntent);
+                break;
+            case R.id.action_charte:
+                boolean isPro = false;
+                User me = getAuthenticationController().getUser();
+                if (me != null) {
+                    isPro = me.isPro();
+                }
+                Intent charteIntent;
+                if (isPro) {
+                    charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_pro)));
+                } else {
+                    charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_public)));
+                }
+                startActivity(charteIntent);
                 break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();

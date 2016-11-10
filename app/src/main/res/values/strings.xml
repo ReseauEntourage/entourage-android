@@ -28,4 +28,7 @@
     <string name="edit">Editer</string>
     <string name="activate">Activer</string>
 
+    <string name="disclaimer_link_public">http://www.entourage.social/chartes/grand-public.html</string>
+    <string name="disclaimer_link_pro">http://www.entourage.social/chartes/pro.html</string>
+
 </resources>

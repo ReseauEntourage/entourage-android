@@ -8,4 +8,5 @@
     <string name="action_about">À propos</string>
     <string name="action_edit_profile"><u>Modifier mon profil</u></string>
     <string name="action_blog">Je franchis le pas</string>
+    <string name="action_charte">Charte éthique</string>
 </resources>
