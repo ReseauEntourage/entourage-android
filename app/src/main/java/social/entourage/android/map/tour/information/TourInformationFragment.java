@@ -646,6 +646,36 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT);
     }
 
+    @OnClick(R.id.feeditem_option_report)
+    protected void onReportEntourageButton() {
+        if (feedItem == null) return;
+        // Build the email intent
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        // Set the email to
+        String[] addresses = {Constants.EMAIL_CONTACT};
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        // Set the subject
+        String title = feedItem.getTitle();
+        if (title == null) title = "";
+        String name = "Unknown";
+        if (feedItem.getAuthor() != null) {
+            name = feedItem.getAuthor().getUserName();
+            if (name == null) name = "Unknown";
+        }
+        String emailSubject = getString(R.string.report_entourage_email_title, title, name);
+        intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            //hide the options
+            optionsLayout.setVisibility(View.GONE);
+            // Start the intent
+            startActivity(intent);
+        } else {
+            // No Email clients
+            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @OnClick(R.id.tour_info_user_add_button)
     protected void onUserAddClicked() {
         FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
@@ -844,16 +874,21 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private void initializeOptionsView() {
         User me = EntourageApplication.me(getActivity());
+
         Button stopTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_stop);
         Button quitTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_quit);
         Button editEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_edit);
+        Button reportEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_report);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
         editEntourageButton.setVisibility(View.GONE);
+        reportEntourageButton.setVisibility(View.VISIBLE);
+
         if (me != null && feedItem.getAuthor() != null) {
             int myId = me.getId();
             if (feedItem.getAuthor().getUserID() != myId) {
                 quitTourButton.setVisibility(View.VISIBLE);
+                reportEntourageButton.setVisibility(View.VISIBLE);
             }
             else {
                 stopTourButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);

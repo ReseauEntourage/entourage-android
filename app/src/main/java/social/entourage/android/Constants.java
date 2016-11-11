@@ -22,6 +22,9 @@ public class Constants {
     // Links
     public static final String BLOG_URL = "https://blog.entourage.social/category/franchir-le-pas/";
 
+    // Email Addresses
+    public static final String EMAIL_CONTACT = "contact@entourage.social";
+
     // Flurry events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
     public static final String EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map";

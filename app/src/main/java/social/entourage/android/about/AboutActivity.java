@@ -11,6 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BuildConfig;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 
 public class AboutActivity extends AppCompatActivity {
@@ -23,7 +24,6 @@ public class AboutActivity extends AppCompatActivity {
     private static final String FACEBOOK_URL = "https://www.facebook.com/EntourageReseauCivique";
     private static final String TERMS_URL = "http://www.entourage.social/cgu/index.html";
     private static final String WEBSITE_URL = "http://www.entourage.social";
-    private static final String EMAIL_TO = "contact@entourage.social";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -97,7 +97,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onEmailClicked() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
-        String[] addresses = {EMAIL_TO};
+        String[] addresses = {Constants.EMAIL_CONTACT};
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
