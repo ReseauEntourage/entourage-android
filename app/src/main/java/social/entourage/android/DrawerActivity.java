@@ -1131,24 +1131,48 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
+    @OnClick(R.id.button_poi_propose)
+    protected void onPOIProposeClicked() {
+        if (isGuideShown()) {
+            GuideMapEntourageFragment guideMapEntourageFragment = (GuideMapEntourageFragment) mainFragment;
+            guideMapEntourageFragment.proposePOI();
+        }
+    }
+
     @OnClick(R.id.button_poi_launcher)
     protected void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             FlurryAgent.logEvent(Constants.EVENT_FEED_GUIDE_SHOW_CLICK);
+            // Change the Guide Option text
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_close_button));
+            // Make the 'Propose POI' button visible
+            FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
+            if (proposePOIButton != null) {
+                proposePOIButton.setVisibility(View.VISIBLE);
+            }
+            // Hide the overlay
             if (mapOptionsMenu.isOpened()) {
                 mapOptionsMenu.toggle(false);
             }
+            // Show the guide screen
             selectItem(R.id.action_guide);
         }
         else {
             FlurryAgent.logEvent(Constants.EVENT_GUIDE_MASK_CLICK);
+            // Change the Guide Option text
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_launcher_button));
+            // Make the 'Propose POI' button gone
+            FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
+            if (proposePOIButton != null) {
+                proposePOIButton.setVisibility(View.GONE);
+            }
+            // Hide the overlay
             if (mapOptionsMenu.isOpened()) {
                 mapOptionsMenu.toggle(false);
             }
+            // Show the map screen
             selectItem(R.id.action_tours);
         }
     }

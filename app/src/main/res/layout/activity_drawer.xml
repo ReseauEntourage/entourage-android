@@ -51,6 +51,16 @@
                 style="@style/MapActionButtonStyle"/>
 
             <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_poi_propose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_solidarity"
+                app:fab_size="mini"
+                app:fab_label="@string/map_poi_propose_button"
+                style="@style/MapActionButtonStyle"
+                android:visibility="gone"/>
+
+            <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_create_entourage_contribution"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
