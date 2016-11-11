@@ -882,6 +882,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
         editEntourageButton.setVisibility(View.GONE);
+        //TODO Set this to GONE after testing is complete
         reportEntourageButton.setVisibility(View.VISIBLE);
 
         if (me != null && feedItem.getAuthor() != null) {
