@@ -190,4 +190,7 @@ public class Constants {
 
     //Invite success automatic hide delay
     public static final long INVITE_SUCCESS_HIDE_DELAY = 5000; //1000 * 5
+
+    // Don't show the popup again within this radius
+    public static final int EMPTY_POPUP_DISPLAY_LIMIT = 300; //meters
 }

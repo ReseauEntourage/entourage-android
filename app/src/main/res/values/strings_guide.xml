@@ -17,4 +17,10 @@
     <string name="tweet_with_audio">Ecoutez le message que j\'ai enregistré avec %1$s via l\'application Entourage : %2$s %3$s %4$s</string>
     <string name="tweet_without_audio">J\'ai rencontré %1$s %2$s %3$s</string>
 
+    <!-- Empty Guide Popup -->
+    <string name="map_poi_empty_popup"><![CDATA[On dirait que c\'est calme ici!<br/><br/>
+    Déplacez la carte pour trouver des structures d’assistance: restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…<br/><br/>
+    Une structure manque sur la carte?<<br/>
+    <a href=\"https://goo.gl/jD5uIQ\">Proposez une structure</a>]]></string>
+
 </resources>

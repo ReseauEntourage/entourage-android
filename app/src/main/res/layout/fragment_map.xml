@@ -152,11 +152,11 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_close_white"
                 android:id="@+id/fragment_map_empty_list_popup_close"
                 android:padding="3dp"
                 android:layout_marginLeft="3dp"
-                android:layout_marginTop="3dp"/>
+                android:layout_marginTop="3dp"
+                android:src="@drawable/ic_close_white"/>
 
             <TextView
                 android:text="@string/map_empty_newsfeed_popup"

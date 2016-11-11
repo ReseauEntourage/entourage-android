@@ -132,8 +132,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private static final int MAX_SCROLL_DELTA_Y = 20;
 
-    private static final int EMPTY_POPUP_DISPLAY_LIMIT = 300;
-
     // Constants used to track the source call of the geolocation popup
     private static final int GEOLOCATION_POPUP_TOUR = 0;
     private static final int GEOLOCATION_POPUP_RECENTER = 1;
@@ -2207,7 +2205,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         } else {
             // Show the popup only we moved from the last position we show it
             Location currentLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getCurrentCameraPosition());
-            if (previousEmptyListPopupLocation.distanceTo(currentLocation) < EMPTY_POPUP_DISPLAY_LIMIT) {
+            if (previousEmptyListPopupLocation.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
                 return;
             }
             previousEmptyListPopupLocation = currentLocation;

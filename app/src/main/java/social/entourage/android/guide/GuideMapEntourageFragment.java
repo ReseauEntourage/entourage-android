@@ -12,9 +12,12 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdate;
@@ -34,6 +37,7 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
@@ -78,6 +82,14 @@ public class GuideMapEntourageFragment extends Fragment {
     private PoiRenderer poiRenderer;
     private boolean isMapLoaded = false;
 
+    private Location previousEmptyListPopupLocation = null;
+
+    @Bind(R.id.fragment_guide_empty_list_popup)
+    View emptyListPopup;
+
+    @Bind(R.id.fragment_guide_empty_list_popup_text)
+    TextView emptyListTextView;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -100,6 +112,7 @@ public class GuideMapEntourageFragment extends Fragment {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
         poisMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
+        initializeEmptyListPopup();
 
         if (!isMapLoaded) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -130,6 +143,7 @@ public class GuideMapEntourageFragment extends Fragment {
                                 previousCameraLocation = newLocation;
                                 presenter.updatePoisNearby();
                             }
+                            hideEmptyListPopup();
                         }
                     });
 
@@ -196,10 +210,16 @@ public class GuideMapEntourageFragment extends Fragment {
 
     public void putPoiOnMap(List<Category> categories, Collection<Poi> pois) {
         if (getActivity() != null) {
-            poiRenderer.setCategories(categories);
-            if (map != null) {
-                clusterManager.addItems(removeRedundantPois(pois));
-                clusterManager.cluster();
+            if (categories != null) {
+                poiRenderer.setCategories(categories);
+            }
+            if (pois != null && pois.size() > 0) {
+                if (map != null) {
+                    clusterManager.addItems(removeRedundantPois(pois));
+                    clusterManager.cluster();
+                }
+            } else {
+                showEmptyListPopup();
             }
         }
     }
@@ -276,6 +296,38 @@ public class GuideMapEntourageFragment extends Fragment {
         if (getActivity() != null) {
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
+    }
+
+    // ----------------------------------
+    // EMPTY LIST POPUP
+    // ----------------------------------
+
+    private void initializeEmptyListPopup() {
+        emptyListTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        emptyListTextView.setText(Html.fromHtml(getString(R.string.map_poi_empty_popup)));
+    }
+
+    @OnClick(R.id.fragment_guide_empty_list_popup)
+    protected void onEmptyListPopupClose() {
+        hideEmptyListPopup();
+    }
+
+    private void showEmptyListPopup() {
+        if (previousEmptyListPopupLocation == null) {
+            previousEmptyListPopupLocation = EntourageLocation.getInstance().getCurrentLocation();
+        } else {
+            // Show the popup only we moved from the last position we show it
+            Location currentLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getCurrentCameraPosition());
+            if (previousEmptyListPopupLocation.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
+                return;
+            }
+            previousEmptyListPopupLocation = currentLocation;
+        }
+        emptyListPopup.setVisibility(View.VISIBLE);
+    }
+
+    private void hideEmptyListPopup() {
+        emptyListPopup.setVisibility(View.GONE);
     }
 
     // ----------------------------------
