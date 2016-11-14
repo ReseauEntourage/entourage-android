@@ -515,7 +515,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    @OnClick(R.id.tour_info_more_button)
+    @OnClick({R.id.tour_info_more_button, R.id.tour_info_share_button})
     public void onMoreButton() {
         Animation bottomUp = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.bottom_up);
@@ -614,7 +614,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         builder.create().show();
     }
 
-    @OnClick({R.id.tour_info_join_button, R.id.tour_info_share_button})
+    @OnClick({R.id.tour_info_join_button, R.id.feeditem_option_join})
     public void onJoinTourButton() {
         if (tourService != null) {
             showProgressBar();
@@ -879,27 +879,30 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         Button quitTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_quit);
         Button editEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_edit);
         Button reportEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_report);
+        Button joinEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_join);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
         editEntourageButton.setVisibility(View.GONE);
-        //TODO Set this to GONE after testing is complete
-        reportEntourageButton.setVisibility(View.VISIBLE);
+        reportEntourageButton.setVisibility(View.GONE);
+        joinEntourageButton.setVisibility(View.GONE);
 
-        if (me != null && feedItem.getAuthor() != null) {
-            int myId = me.getId();
-            if (feedItem.getAuthor().getUserID() != myId) {
-                quitTourButton.setVisibility(View.VISIBLE);
-                reportEntourageButton.setVisibility(View.VISIBLE);
-            }
-            else {
-                stopTourButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);
-                if (feedItem.isClosed()) {
-                    stopTourButton.setText(R.string.tour_info_options_freeze_tour);
+        if (feedItem != null) {
+            joinEntourageButton.setVisibility(feedItem.isPrivate() ? View.GONE : (FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? View.GONE : View.VISIBLE) );
+            if (me != null && feedItem.getAuthor() != null) {
+                int myId = me.getId();
+                if (feedItem.getAuthor().getUserID() != myId) {
+                    quitTourButton.setVisibility((FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || !feedItem.isPrivate() ? View.GONE : View.VISIBLE));
+                    reportEntourageButton.setVisibility(View.VISIBLE);
                 } else {
-                    stopTourButton.setText(R.string.tour_info_options_stop_tour);
-                }
-                if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
-                    editEntourageButton.setVisibility(View.VISIBLE);
+                    stopTourButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);
+                    if (feedItem.isClosed()) {
+                        stopTourButton.setText(R.string.tour_info_options_freeze_tour);
+                    } else {
+                        stopTourButton.setText(R.string.tour_info_options_stop_tour);
+                    }
+                    if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
+                        editEntourageButton.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }
@@ -912,7 +915,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (me != null) {
             myId = me.getId();
         }
-        shareButton.setVisibility(isTourPrivate ? View.GONE : ( (!feedItem.getJoinStatus().equals(Tour.JOIN_STATUS_NOT_REQUESTED) || feedItem.isFreezed()) ? View.GONE : View.VISIBLE ) );
+        shareButton.setVisibility(isTourPrivate ? View.GONE : View.VISIBLE );
 
         addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && !feedItem.isClosed() ? View.VISIBLE : View.GONE) : View.GONE);
 
@@ -1206,6 +1209,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         membersLayout.setVisibility(View.GONE);
 
         updateHeaderButtons();
+        initializeOptionsView();
         updateJoinStatus();
 
         initializeMap();
@@ -1754,6 +1758,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         else {
             updateHeaderButtons();
+            initializeOptionsView();
             updateJoinStatus();
         }
     }

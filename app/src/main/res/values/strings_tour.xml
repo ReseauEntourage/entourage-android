@@ -49,6 +49,7 @@
     <string name="tour_info_options_stop_tour">@string/tour_stop</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
     <string name="tour_info_options_report">Signaler un entourage</string>
+    <string name="tour_info_options_join">Rejoindre</string>
     <string name="tour_info_options_close">Annuler</string>
     <string name="tour_info_encounter_location">et %1$s se sont rencontrés ici le %2$s.</string>
     <string name="tour_info_quit_tour_title">Quitter la maraude</string>
