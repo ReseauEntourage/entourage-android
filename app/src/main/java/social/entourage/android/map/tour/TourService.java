@@ -134,10 +134,10 @@ public class TourService extends Service {
         super.onCreate();
         EntourageApplication.get(this).getEntourageComponent().inject(this);
 
-        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest, newsfeedRequest, entourageRequest);
-
         listeners =  new ArrayList<>();
         isPaused = false;
+
+        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest, newsfeedRequest, entourageRequest);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(KEY_NOTIFICATION_PAUSE_TOUR);
