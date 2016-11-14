@@ -589,9 +589,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (event.getRegistrationId() != null) {
             presenter.updateApplicationInfo(event.getRegistrationId());
         }
+        /*
         else {
             presenter.updateApplicationInfo("");
         }
+        */
     }
 
     @Subscribe
