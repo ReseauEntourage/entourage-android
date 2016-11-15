@@ -79,6 +79,9 @@ public class UserEditFragment extends DialogFragment {
     @Bind(R.id.user_associations_title)
     TextView userAssociationsTitle;
 
+    @Bind(R.id.user_associations_public)
+    TextView userAssociationsPublicInfo;
+
     @Bind(R.id.user_associations_view)
     RecyclerView userAssociationsView;
 
@@ -176,7 +179,8 @@ public class UserEditFragment extends DialogFragment {
             }
 
             boolean isPro = editedUser.isPro();
-            userAssociationsTitle.setVisibility( isPro ? View.VISIBLE : View.GONE );
+            //userAssociationsTitle.setVisibility( isPro ? View.VISIBLE : View.GONE );
+            userAssociationsPublicInfo.setVisibility( isPro ? View.GONE : View.VISIBLE );
             userAssociationsView.setVisibility( isPro ? View.VISIBLE : View.GONE );
 
         }
