@@ -16,6 +16,7 @@
                   class="com.google.android.gms.maps.SupportMapFragment"
                   android:layout_marginLeft="0dp"
                   android:layout_marginTop="0dp"/>
+
     </FrameLayout>
 
     <LinearLayout
@@ -60,6 +61,13 @@
             android:textColorLink="@color/white"
             android:textColorHint="@color/white"/>
     </LinearLayout>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/layout_guide_longclick"
+        android:id="@+id/fragment_guide_longclick"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

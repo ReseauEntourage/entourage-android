@@ -22,6 +22,6 @@
     <string name="map_poi_empty_popup"><![CDATA[On dirait que c\'est calme ici!<br/><br/>
     Déplacez la carte pour trouver des structures d’assistance: restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…<br/><br/>
     Une structure manque sur la carte?<<br/>
-    <a href=\"https://goo.gl/jD5uIQ\">Proposez une structure</a>]]></string>
+    <a href=\"%1$s\">Proposez une structure</a>]]></string>
 
 </resources>

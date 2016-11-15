@@ -1,10 +1,13 @@
 package social.entourage.android.guide;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -14,13 +17,18 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,18 +49,21 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.guide.poi.ReadPoiActivity;
 import social.entourage.android.tools.BusProvider;
 
-public class GuideMapEntourageFragment extends Fragment {
+public class GuideMapEntourageFragment extends Fragment implements BackPressable {
 
     // ----------------------------------
     // CONSTANTS
@@ -85,11 +96,21 @@ public class GuideMapEntourageFragment extends Fragment {
 
     private Location previousEmptyListPopupLocation = null;
 
+    FloatingActionMenu mapOptionsMenu;
+
     @Bind(R.id.fragment_guide_empty_list_popup)
     View emptyListPopup;
 
     @Bind(R.id.fragment_guide_empty_list_popup_text)
     TextView emptyListTextView;
+
+    @Bind(R.id.fragment_guide_longclick)
+    RelativeLayout guideLongClickView;
+
+    @Bind(R.id.guide_longclicks_buttons)
+    RelativeLayout guideLongClickButtonsView;
+
+    private LatLng longTapCoordinates;
 
     // ----------------------------------
     // LIFECYCLE
@@ -111,6 +132,7 @@ public class GuideMapEntourageFragment extends Fragment {
 
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+        mapOptionsMenu = ((DrawerActivity)getActivity()).mapOptionsMenu;
         poisMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         initializeEmptyListPopup();
@@ -148,6 +170,15 @@ public class GuideMapEntourageFragment extends Fragment {
                         }
                     });
 
+                    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                        @Override
+                        public void onMapLongClick(final LatLng latLng) {
+                            if (getActivity() != null) {
+                                showLongClickOnMapOptions(latLng);
+                            }
+                        }
+                    });
+
                     initializeMapZoom();
                 }
             });
@@ -174,6 +205,19 @@ public class GuideMapEntourageFragment extends Fragment {
     public void onStart() {
         super.onStart();
         presenter.start();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (mapOptionsMenu != null && mapOptionsMenu.isOpened()) {
+            mapOptionsMenu.toggle(true);
+            return true;
+        }
+        if (guideLongClickView.getVisibility() == View.VISIBLE) {
+            guideLongClickView.setVisibility(View.GONE);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -242,8 +286,13 @@ public class GuideMapEntourageFragment extends Fragment {
         }
     }
 
+    @OnClick(R.id.guide_longclick_button_poi_propose)
     public void proposePOI() {
-        Toast.makeText(getActivity(), "!!Needs to be defined", Toast.LENGTH_SHORT).show();
+        // Close the overlays
+        onBackPressed();
+        // Open the link to propose a POI
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.POI_PROPOSE_URL));
+        startActivity(browserIntent);
     }
 
     // ----------------------------------
@@ -309,7 +358,7 @@ public class GuideMapEntourageFragment extends Fragment {
 
     private void initializeEmptyListPopup() {
         emptyListTextView.setMovementMethod(LinkMovementMethod.getInstance());
-        emptyListTextView.setText(Html.fromHtml(getString(R.string.map_poi_empty_popup)));
+        emptyListTextView.setText(Html.fromHtml(getString(R.string.map_poi_empty_popup, Constants.POI_PROPOSE_URL)));
     }
 
     @OnClick(R.id.fragment_guide_empty_list_popup)
@@ -333,6 +382,42 @@ public class GuideMapEntourageFragment extends Fragment {
 
     private void hideEmptyListPopup() {
         emptyListPopup.setVisibility(View.GONE);
+    }
+
+    // ----------------------------------
+    // LONG PRESS OVERLAY
+    // ----------------------------------
+
+    private void showLongClickOnMapOptions(LatLng latLng) {
+        //save the tap coordinates
+        longTapCoordinates = latLng;
+        //get the click point
+        Point clickPoint = map.getProjection().toScreenLocation(latLng);
+        //adjust the buttons holder layout
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point screenSize = new Point();
+        display.getSize(screenSize);
+        guideLongClickButtonsView.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        int bW = guideLongClickButtonsView.getMeasuredWidth();
+        int bH = guideLongClickButtonsView.getMeasuredHeight();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) guideLongClickButtonsView.getLayoutParams();
+        int marginLeft = clickPoint.x - bW/2;
+        if (marginLeft + bW > screenSize.x) {
+            marginLeft -= bW/2;
+        }
+        if (marginLeft < 0) marginLeft = 0;
+        int marginTop = clickPoint.y - bH;
+        if (marginTop < 0) marginTop = clickPoint.y;
+        lp.setMargins(marginLeft, marginTop, 0, 0);
+        guideLongClickButtonsView.setLayoutParams(lp);
+        //show the view
+        guideLongClickView.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.fragment_guide_longclick)
+    protected void hideLongClickView() {
+        onBackPressed();
     }
 
     // ----------------------------------

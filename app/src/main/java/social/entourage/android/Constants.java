@@ -21,6 +21,7 @@ public class Constants {
 
     // Links
     public static final String BLOG_URL = "https://blog.entourage.social/category/franchir-le-pas/";
+    public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";
