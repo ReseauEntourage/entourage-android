@@ -1423,6 +1423,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     // ----------------------------------
 
     protected void onFeedItemReceived(FeedItem feedItem) {
+        if (getActivity() == null || !isAdded()) return;
+
         hideProgressBar();
         if (feedItem != null) {
             this.feedItem = feedItem;
@@ -1434,6 +1436,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     protected void onFeedItemUsersReceived(List<TourUser> tourUsers) {
+        if (getActivity() == null || !isAdded()) return;
+
         if (tourUsers != null) {
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
             Iterator<TourUser> iterator = tourUsers.iterator();
@@ -1481,6 +1485,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     protected void onFeedItemMessagesReceived(List<ChatMessage> chatMessageList) {
+        if (getActivity() == null || !isAdded()) return;
+
         if (chatMessageList != null) {
             if (chatMessageList.size() > 0) {
                 //check who sent the message
