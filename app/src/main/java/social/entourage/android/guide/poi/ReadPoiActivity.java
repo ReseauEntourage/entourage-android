@@ -127,6 +127,7 @@ public class ReadPoiActivity extends EntourageActivity {
     }
 
     public void setActionButton(Button btn, String value) {
+        if (btn == null || value == null) return;
         if(value.length() > 0) {
             btn.setVisibility(View.VISIBLE);
             btn.setText(value);
