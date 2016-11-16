@@ -651,7 +651,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
             } else {
-                Toast.makeText(getActivity(), R.string.tour_creation_fail, Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), R.string.tour_creation_fail, Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -798,27 +800,33 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
 
-                tourService.updateNewsfeed(pagination);
-                if (userHistory) {
-                    tourService.updateUserHistory(userId, 1, 1);
-                }
-
-                @StringRes int tourStatusStringId = R.string.local_service_stopped;
-                if (feedItem.isFreezed()) {
-                    tourStatusStringId = R.string.tour_freezed;
-                    if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                        tourStatusStringId = R.string.entourage_info_text_close;
+                if (tourService != null) {
+                    tourService.updateNewsfeed(pagination);
+                    if (userHistory) {
+                        tourService.updateUserHistory(userId, 1, 1);
                     }
                 }
 
-                Toast.makeText(getActivity(), tourStatusStringId, Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) {
+                    @StringRes int tourStatusStringId = R.string.local_service_stopped;
+                    if (feedItem.isFreezed()) {
+                        tourStatusStringId = R.string.tour_freezed;
+                        if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                            tourStatusStringId = R.string.entourage_info_text_close;
+                        }
+                    }
+
+                    Toast.makeText(getActivity(), tourStatusStringId, Toast.LENGTH_SHORT).show();
+                }
 
             } else {
-                @StringRes int tourClosedFailedId = R.string.tour_close_fail;
-                if (feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)) {
-                    tourClosedFailedId = R.string.tour_freezed;
+                if (getActivity() != null) {
+                    @StringRes int tourClosedFailedId = R.string.tour_close_fail;
+                    if (feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)) {
+                        tourClosedFailedId = R.string.tour_freezed;
+                    }
+                    Toast.makeText(getActivity(), tourClosedFailedId, Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getActivity(), tourClosedFailedId, Toast.LENGTH_SHORT).show();
             }
             if (loaderStop != null) {
                 loaderStop.dismiss();
@@ -842,7 +850,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onUserStatusChanged(TourUser user, FeedItem feedItem) {
         if (user == null) {
             //error changing the status
-            if (isRequestingToJoin > 0) {
+            if (isRequestingToJoin > 0 && getContext() != null) {
                 Toast.makeText(getContext(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
             }
         } else {
@@ -882,6 +890,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onNewsFeedReceived(List<Newsfeed> newsfeeds) {
+        if (newsfeedAdapter == null) return;
         newsfeeds = removeRedundantNewsfeed(newsfeeds, false);
         if (map != null) {
             //add or update the received newsfeed
