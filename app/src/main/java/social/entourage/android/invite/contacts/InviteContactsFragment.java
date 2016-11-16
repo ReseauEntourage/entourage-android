@@ -230,25 +230,11 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     protected void onSendClicked() {
         // Disable the send button
         sendButton.setEnabled(false);
-        // Show the progress dialog
-        ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_retrieving_phone_numbers);
         // Get the selected contacts
-        int selectedContactsCount = 0;
-        SparseBooleanArray checkedItems = contactsList.getCheckedItemPositions();
-        for (int i = 0; i < contactsList.getCount(); i++) {
-            if (checkedItems.valueAt(i)) {
-                selectedContactsCount++;
-            }
-        }
-        if (selectedContactsCount == 0) {
-            sendButton.setEnabled(true);
-            return;
-        }
         MultipleInvitations invitations = new MultipleInvitations(Invitation.INVITE_BY_SMS);
         for (int i = 0; i < contactsList.getCount(); i++) {
-            if (checkedItems.valueAt(i)) {
-                int position = checkedItems.keyAt(i);
-                String phone = mContactsAdapter.getPhoneAt(position);
+            if (contactsList.isItemChecked(i)) {
+                String phone = mContactsAdapter.getPhoneAt(i);
                 if (phone != null) {
                     phone = PhoneNumberUtils.stripSeparators(phone);
                     invitations.addPhoneNumber(phone);
