@@ -1863,6 +1863,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     protected void showToursList() {
+        if (layoutMapMain == null || toursListView == null || mapDisplayTypeRadioGroup == null) return;
+
         if (toursListView.getVisibility() == View.VISIBLE) {
             return;
         }
@@ -1895,6 +1897,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void toggleToursList() {
+        if (toursListView == null) return;
         if (toursListView.getVisibility() == View.VISIBLE) {
             hideToursList();
         } else {
@@ -1903,10 +1906,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public boolean isToursListVisible() {
+        if (toursListView == null) return false;
         return toursListView.getVisibility() == View.VISIBLE;
     }
 
     public void ensureMapVisible() {
+        if (layoutMapMain == null || toursListView == null) return;
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
         originalMapLayoutHeight = lp.height;
 
