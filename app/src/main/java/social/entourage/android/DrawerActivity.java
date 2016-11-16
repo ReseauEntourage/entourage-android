@@ -242,9 +242,10 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStart() {
-        super.onStart();
         BusProvider.getInstance().register(this);
         presenter.checkForUpdate();
+
+        super.onStart();
     }
 
     @Override
@@ -266,8 +267,8 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStop() {
-        super.onStop();
         BusProvider.getInstance().unregister(this);
+        super.onStop();
     }
 
     // ----------------------------------
