@@ -40,7 +40,7 @@
         android:layout_height="50dp"
         android:id="@+id/action_blog"
         android:title="@string/action_blog"
-        android:icon="@drawable/ic_about"
+        android:icon="@drawable/ic_blog"
         app:showDivider="true"
         android:background="@color/white"/>
 
@@ -49,7 +49,7 @@
         android:layout_height="50dp"
         android:id="@+id/action_charte"
         android:title="@string/action_charte"
-        android:icon="@drawable/ic_about"
+        android:icon="@drawable/ic_charte"
         app:showDivider="true"
         android:background="@color/white"/>
 
