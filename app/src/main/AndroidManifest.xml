@@ -145,6 +145,9 @@
         </service>
         <!-- [END instanceId_listener] -->
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="2eca3faf46139913c216b9ee9cf8bee49e70fe20" />
     </application>
 
 </manifest>

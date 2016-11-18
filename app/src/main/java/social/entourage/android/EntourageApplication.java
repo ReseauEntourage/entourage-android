@@ -4,8 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 
+import io.fabric.sdk.android.Fabric;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.ArrayList;
@@ -27,15 +29,13 @@ public class EntourageApplication extends Application {
 
     @Override
     public void onCreate() {
-
         activities = new ArrayList<>();
-
         super.onCreate();
 
+        Fabric.with(this, new Crashlytics());
         setupFlurry();
         JodaTimeAndroid.init(this);
         setupDagger();
-
     }
 
     private void setupDagger() {

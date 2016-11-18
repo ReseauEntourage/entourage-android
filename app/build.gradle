@@ -1,6 +1,7 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'io.fabric'
 
 def versionMajor = 2
 def versionMinor = 2
@@ -9,11 +10,8 @@ def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-
     apt 'com.google.dagger:dagger-compiler:2.0.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-
-
 
     compile files('libs/FlurryAnalytics-6.5.0.jar')
 
@@ -45,6 +43,9 @@ dependencies {
     compile 'com.amazonaws:aws-android-sdk-core:2.3.1'
     compile 'com.amazonaws:aws-android-sdk-s3:2.3.1'
     compile 'com.amazonaws:aws-android-sdk-ddb:2.3.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true;
+    }
 }
 
 android {
