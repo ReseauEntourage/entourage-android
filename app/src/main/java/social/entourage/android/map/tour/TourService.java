@@ -292,7 +292,7 @@ public class TourService extends Service {
             return;
         }
         pagination.isLoading = true;
-        tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate());
+        tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate(), getApplicationContext());
     }
 
     public void updateUserHistory(int userId, int page, int per) {

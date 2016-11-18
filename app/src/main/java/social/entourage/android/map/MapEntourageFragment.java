@@ -113,8 +113,6 @@ import social.entourage.android.map.tour.join.JoinRequestOkFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
 
-import static android.support.v4.content.PermissionChecker.checkSelfPermission;
-
 public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener, TourService.NewsFeedListener {
 
     // ----------------------------------
@@ -505,7 +503,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         // Check if we need to show the entourage disclaimer
         User me = EntourageApplication.me(getActivity());
-        if (me == null) return;
+        if (me == null) {
+            return;
+        }
 
         /*
         if (me.isEntourageDisclaimerShown()) {
@@ -603,7 +603,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Subscribe
     public void onEntourageCreated(Events.OnEntourageCreated event) {
         Entourage entourage = event.getEntourage();
-        if (entourage == null) return;
+        if (entourage == null) {
+            return;
+        }
         /*
         drawNearbyEntourage(entourage, false);
         addNewsfeedCard(entourage);
@@ -633,13 +635,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Subscribe
     public void onLocationPermissionGranted(OnLocationPermissionGranted event) {
-        if (event == null) return;
+        if (event == null) {
+            return;
+        }
         if (event.isPermissionGranted()) {
             onGpsStatusChanged(true);
             if (map != null) {
                 try {
                     map.setMyLocationEnabled(true);
-                } catch (SecurityException e) {}
+                } catch (SecurityException e) {
+                }
             }
         } else {
             onGpsStatusChanged(false);
@@ -1271,23 +1276,23 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.map_permission_title)
-                            .setMessage(R.string.map_permission_description)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    requestPermissions(new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_LOCATION);
-                                }
-                            })
-                            .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(final DialogInterface dialog, final int i) {
-                                    NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
-                                    noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), "fragment_no_location_permission");
-                                    BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
-                                }
-                            })
-                            .show();
+                        .setTitle(R.string.map_permission_title)
+                        .setMessage(R.string.map_permission_description)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int i) {
+                                NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
+                                noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), "fragment_no_location_permission");
+                                BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
+                            }
+                        })
+                        .show();
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
@@ -1299,7 +1304,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private boolean isGeolocationPermitted() {
         return (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+            PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
     private void showAllowGeolocationDialog(final int source) {
@@ -1313,38 +1318,38 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 break;
         }
         new AlertDialog.Builder(getActivity())
-                .setMessage(messagedId)
-                .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        switch (source) {
-                            case GEOLOCATION_POPUP_RECENTER:
-                                FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
-                                break;
-                            case GEOLOCATION_POPUP_TOUR:
-                                FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
-                                break;
-                            default:
-                                break;
-                        }
+            .setMessage(messagedId)
+            .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    switch (source) {
+                        case GEOLOCATION_POPUP_RECENTER:
+                            FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
+                            break;
+                        case GEOLOCATION_POPUP_TOUR:
+                            FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
+                            break;
+                        default:
+                            break;
+                    }
 
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
-                        } else {
-                            // User selected "Never ask again", so show the settings page
-                            displayGeolocationPreferences();
-                        }
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                    } else {
+                        // User selected "Never ask again", so show the settings page
+                        displayGeolocationPreferences();
                     }
-                })
-                .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int i) {
-                        if (mapOptionsMenu.isOpened()) {
-                            mapOptionsMenu.toggle(false);
-                        }
+                }
+            })
+            .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(final DialogInterface dialog, final int i) {
+                    if (mapOptionsMenu.isOpened()) {
+                        mapOptionsMenu.toggle(false);
                     }
-                })
-                .show();
+                }
+            })
+            .show();
     }
 
     private void initializeMap() {
@@ -1978,7 +1983,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     protected void showToursList() {
-        if (layoutMapMain == null || toursListView == null || mapDisplayTypeRadioGroup == null) return;
+        if (layoutMapMain == null || toursListView == null || mapDisplayTypeRadioGroup == null) {
+            return;
+        }
 
         if (toursListView.getVisibility() == View.VISIBLE) {
             // See if we need to show the empty newsfeed textview
@@ -2017,7 +2024,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void toggleToursList() {
-        if (toursListView == null) return;
+        if (toursListView == null) {
+            return;
+        }
         if (toursListView.getVisibility() == View.VISIBLE) {
             hideToursList();
         } else {
@@ -2026,12 +2035,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public boolean isToursListVisible() {
-        if (toursListView == null) return false;
+        if (toursListView == null) {
+            return false;
+        }
         return toursListView.getVisibility() == View.VISIBLE;
     }
 
     public void ensureMapVisible() {
-        if (layoutMapMain == null || toursListView == null) return;
+        if (layoutMapMain == null || toursListView == null) {
+            return;
+        }
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
         originalMapLayoutHeight = lp.height;
 
@@ -2142,7 +2155,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void run() {
                         if (tourService != null) {
-                            if (!isMapLoaded) return; //Don't refresh till the map is loaded
+                            if (!isMapLoaded) {
+                                return; //Don't refresh till the map is loaded
+                            }
                             pagination.isRefreshing = true;
                             tourService.updateNewsfeed(pagination);
                         }

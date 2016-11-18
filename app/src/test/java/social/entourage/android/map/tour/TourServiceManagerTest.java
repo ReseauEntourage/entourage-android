@@ -1,5 +1,6 @@
 package social.entourage.android.map.tour;
 
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -36,6 +37,7 @@ public class TourServiceManagerTest {
     @Mock private TourService tourService;
     @Mock private ConnectivityManager connectivityManager;
     @Mock private EntourageLocation location;
+    @Mock private Context context;
     @InjectMocks private TourServiceManager tourServiceManager;
 
     @Before
@@ -47,7 +49,7 @@ public class TourServiceManagerTest {
     public void retrieveNewsFeed_WithoutNetworkInfo() {
         given(connectivityManager.getActiveNetworkInfo()).willReturn(null);
 
-        tourServiceManager.retrieveNewsFeed(new Date());
+        tourServiceManager.retrieveNewsFeed(new Date(),context);
 
         verify(tourService).notifyListenersNetworkException();
     }
@@ -58,7 +60,7 @@ public class TourServiceManagerTest {
         given(connectivityManager.getActiveNetworkInfo()).willReturn(networkInfo);
         given(networkInfo.isConnected()).willReturn(false);
 
-        tourServiceManager.retrieveNewsFeed(new Date());
+        tourServiceManager.retrieveNewsFeed(new Date(),context);
 
         verify(tourService).notifyListenersNetworkException();
     }
@@ -70,7 +72,7 @@ public class TourServiceManagerTest {
         given(networkInfo.isConnected()).willReturn(true);
         given(location.getCurrentCameraPosition()).willReturn(null);
 
-        tourServiceManager.retrieveNewsFeed(new Date());
+        tourServiceManager.retrieveNewsFeed(new Date(),context);
 
         verify(tourService).notifyListenersCurrentPositionNotRetrieved();
     }

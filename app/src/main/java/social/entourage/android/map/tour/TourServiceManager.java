@@ -225,55 +225,7 @@ public class TourServiceManager {
                 checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
-    private void initializeLocationService() {
-        if (checkPermission()) {
-            locationManager = (LocationManager) tourService.getSystemService(Context.LOCATION_SERVICE);
-            locationListener = new CustomLocationListener();
-            updateLocationServiceFrequency();
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (lastKnownLocation == null) {
-                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            }
-            if (lastKnownLocation != null) {
-                EntourageLocation.getInstance().setInitialLocation(lastKnownLocation);
-                locationListener.onLocationChanged(lastKnownLocation);
-            }
-        }
-    }
 
-    private void updateLocationServiceFrequency() {
-        if (checkPermission()) {
-            long minTime = Constants.UPDATE_TIMER_MILLIS_OFF_TOUR;
-            float minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR;
-            if (tour != null) {
-                minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR;
-                minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR;
-            }
-            try {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
-            }
-            catch (Exception ex) {
-                Log.d("Entourage", "No GPS Provider");
-            }
-        }
-    }
-
-    private void initializeTimerFinishTask() {
-        long duration = 1000 * 60 * 60 * 5;
-        timerFinish = new Timer();
-        timerFinish.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                timeOut();
-            }
-        }, duration, duration);
-    }
-
-    private void timeOut() {
-        Vibrator vibrator = (Vibrator) tourService.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(VIBRATION_DURATION);
-        tourService.sendBroadcast(new Intent(TourService.KEY_NOTIFICATION_PAUSE_TOUR));
-    }
 
     private void addLastTourPoint() {
         Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
@@ -284,10 +236,6 @@ public class TourServiceManager {
         updateTourCoordinates();
     }
 
-    private void sendTour() {
-        Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
-        tourWrapper.setTour(tour);
-        Call<Tour.TourWrapper> call = tourRequest.tour(tourWrapper);
     public void updateTourCoordinates() {
         if (pointsToSend.isEmpty()) {
             if (isTourClosing) {
@@ -519,7 +467,7 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveNewsfeed(Date beforeDate, Context context) {
+    protected void retrieveNewsFeed(Date beforeDate, Context context) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
             tourService.notifyListenersNetworkException();
@@ -702,11 +650,6 @@ public class TourServiceManager {
         );
     }
 
-    private boolean checkPermission() {
-        return (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-    }
-
     private void initializeLocationService() {
         if (checkPermission()) {
             locationManager = (LocationManager) tourService.getSystemService(LOCATION_SERVICE);
@@ -718,6 +661,7 @@ public class TourServiceManager {
             }
             if (lastKnownLocation != null) {
                 entourageLocation.setInitialLocation(lastKnownLocation);
+                locationListener.onLocationChanged(lastKnownLocation);
             }
         }
     }

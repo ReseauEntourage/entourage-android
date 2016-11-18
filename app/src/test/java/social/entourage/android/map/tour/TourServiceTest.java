@@ -60,7 +60,7 @@ public class TourServiceTest {
         }
 
         @Test
-        public void notifyListenersNewsFeedReceivedr() {
+        public void notifyListenersNewsFeedReceived() {
             List<Newsfeed> newsFeeds = Collections.emptyList();
 
             service.notifyListenersNewsFeedReceived(newsFeeds);
