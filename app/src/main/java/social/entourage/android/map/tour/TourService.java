@@ -37,13 +37,14 @@ import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.base.EntouragePagination;
+import social.entourage.android.tools.CrashlyticsNewsFeedListener;
 
 /**
  * Background service handling location updates
@@ -78,7 +79,9 @@ public class TourService extends Service {
 
     private TourServiceManager tourServiceManager;
 
-    private List<TourServiceListener> listeners;
+    private final List<TourServiceListener> tourServiceListeners = new ArrayList<>();
+    private final List<NewsFeedListener> newsFeedListeners= new ArrayList<>();
+    private CrashlyticsNewsFeedListener crashlyticsListener = new CrashlyticsNewsFeedListener();
 
     private NotificationManager notificationManager;
     private Notification notification;
@@ -97,27 +100,32 @@ public class TourService extends Service {
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
-            }
-            else if (KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+            } else if (KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                 Intent newIntent = new Intent(context, DrawerActivity.class);
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
-            }
-            else if (KEY_GPS_DISABLED.equals(action)) {
+            } else if (KEY_GPS_DISABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(false);
-                if(isRunning()) {
-                Intent newIntent = new Intent(context, DrawerActivity.class);
-                newIntent.setAction(action);
-                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(newIntent);
-            }
-            }
-            else if (KEY_GPS_ENABLED.equals(action)) {
+                if (isRunning()) {
+                    Intent newIntent = new Intent(context, DrawerActivity.class);
+                    newIntent.setAction(action);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(newIntent);
+                }
+            } else if (KEY_GPS_ENABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(true);
             }
         }
     };
+
+    public void registerNewsFeedListener(NewsFeedListener listener) {
+        newsFeedListeners.add(listener);
+    }
+
+    public void unregisterNewsFeedListener(NewsFeedListener listener) {
+        newsFeedListeners.remove(listener);
+    }
 
     // ----------------------------------
     // LIFECYCLE
@@ -134,10 +142,9 @@ public class TourService extends Service {
         super.onCreate();
         EntourageApplication.get(this).getEntourageComponent().inject(this);
 
-        listeners =  new ArrayList<>();
-        isPaused = false;
+        tourServiceManager = TourServiceManager.newInstance(this, tourRequest, encounterRequest, newsfeedRequest, entourageRequest);
 
-        tourServiceManager = new TourServiceManager(this, tourRequest, encounterRequest, newsfeedRequest, entourageRequest);
+        isPaused = false;
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(KEY_NOTIFICATION_PAUSE_TOUR);
@@ -147,10 +154,13 @@ public class TourService extends Service {
         registerReceiver(receiver, filter);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        registerNewsFeedListener(crashlyticsListener);
     }
 
     @Override
     public void onDestroy() {
+        unregisterNewsFeedListener(crashlyticsListener);
         endTreatment();
         unregisterReceiver(receiver);
         super.onDestroy();
@@ -203,11 +213,11 @@ public class TourService extends Service {
         final Intent notificationIntent = new Intent(this, DrawerActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.tour_record)
-                .setContentTitle(getString(R.string.local_service_running))
-                .setContentIntent(contentIntent)
-                .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_MAX);
+            .setSmallIcon(R.drawable.tour_record)
+            .setContentTitle(getString(R.string.local_service_running))
+            .setContentIntent(contentIntent)
+            .setOngoing(true)
+            .setPriority(NotificationCompat.PRIORITY_MAX);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContentTitle(getString(R.string.local_service_running)).setSmallIcon(R.drawable.tour_record);
         } else {
@@ -224,20 +234,20 @@ public class TourService extends Service {
 
     private void configureRemoteView(int action) {
         switch (action) {
-            case 0 :
+            case 0:
                 timeBase = 0;
                 notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true);
                 chronometer.start();
                 break;
-            case 1 :
+            case 1:
                 timeBase = chronometer.getBase() - SystemClock.elapsedRealtime();
                 notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false);
                 break;
-            case 2 :
+            case 2:
                 notificationRemoteView.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true);
                 chronometer.setBase(SystemClock.elapsedRealtime() + timeBase);
                 break;
-            default :
+            default:
                 break;
         }
     }
@@ -278,9 +288,11 @@ public class TourService extends Service {
     }
 
     public void updateNewsfeed(EntouragePagination pagination) {
-        if (pagination.isLoading) return;
+        if (pagination.isLoading) {
+            return;
+        }
         pagination.isLoading = true;
-        tourServiceManager.retrieveNewsfeed(pagination.getBeforeDate(), getApplicationContext());
+        tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate());
     }
 
     public void updateUserHistory(int userId, int page, int per) {
@@ -292,7 +304,9 @@ public class TourService extends Service {
     }
 
     public void updateOngoingTour() {
-        if (!isRunning()) return;
+        if (!isRunning()) {
+            return;
+        }
         tourServiceManager.updateTourCoordinates();
     }
 
@@ -332,10 +346,9 @@ public class TourService extends Service {
 
     public void stopFeedItem(FeedItem feedItem) {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            tourServiceManager.finishTour((Tour)feedItem);
-        }
-        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            tourServiceManager.closeEntourage((Entourage)feedItem);
+            tourServiceManager.finishTour((Tour) feedItem);
+        } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            tourServiceManager.closeEntourage((Entourage) feedItem);
         }
     }
 
@@ -349,10 +362,9 @@ public class TourService extends Service {
 
     public void removeUserFromFeedItem(FeedItem feedItem, int userId) {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            tourServiceManager.removeUserFromTour((Tour)feedItem, userId);
-        }
-        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            tourServiceManager.removeUserFromEntourage((Entourage)feedItem, userId);
+            tourServiceManager.removeUserFromTour((Tour) feedItem, userId);
+        } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            tourServiceManager.removeUserFromEntourage((Entourage) feedItem, userId);
         }
     }
 
@@ -360,16 +372,16 @@ public class TourService extends Service {
         tourServiceManager.requestToJoinEntourage(entourage);
     }
 
-    public void register(TourServiceListener listener) {
-        listeners.add(listener);
+    public void registerTourServiceListener(TourServiceListener listener) {
+        tourServiceListeners.add(listener);
         if (tourServiceManager.isRunning()) {
             listener.onTourResumed(tourServiceManager.getPointsToDraw(), tourServiceManager.getTour().getTourType(), tourServiceManager.getTour().getStartTime());
         }
     }
 
-    public void unregister(TourServiceListener listener) {
-        listeners.remove(listener);
-        if (!isRunning() && listeners.size() == 0) {
+    public void unregisterTourServiceListener(TourServiceListener listener) {
+        tourServiceListeners.remove(listener);
+        if (!isRunning() && tourServiceListeners.size() == 0) {
             stopService();
         }
     }
@@ -394,14 +406,16 @@ public class TourService extends Service {
         if (created) {
             startNotification();
         }
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onTourCreated(created, id);
         }
     }
 
     public void notifyListenersTourResumed() {
-        if (!tourServiceManager.isRunning()) return;
-        for (TourServiceListener listener : listeners) {
+        if (!tourServiceManager.isRunning()) {
+            return;
+        }
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onTourResumed(tourServiceManager.getPointsToDraw(), tourServiceManager.getTour().getTourType(), tourServiceManager.getTour().getStartTime());
         }
     }
@@ -419,62 +433,87 @@ public class TourService extends Service {
                 isPaused = false;
             }
         }
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onFeedItemClosed(closed, feedItem);
         }
     }
 
     public void notifyListenersTourUpdated(LatLng newPoint) {
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onTourUpdated(newPoint);
         }
     }
 
     public void notifyListenersPosition(LatLng location) {
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onLocationUpdated(location);
         }
     }
 
     public void notifyListenersToursNearby(List<Tour> tours) {
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onRetrieveToursNearby(tours);
         }
     }
 
     public void notifyListenersUserToursFound(List<Tour> tours) {
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onRetrieveToursByUserId(tours);
         }
     }
 
     public void notifyListenersUserToursFoundFromPoint(Map<Long, Tour> tours) {
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onUserToursFound(tours);
         }
     }
 
     public void notifyListenersToursFound(Map<Long, Tour> tours) {
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onToursFound(tours);
         }
     }
 
     public void notifyListenersGpsStatusChanged(boolean active) {
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onGpsStatusChanged(active);
         }
     }
 
     public void notifyListenersUserStatusChanged(TourUser user, FeedItem feedItem) {
-        for (TourServiceListener listener : listeners) {
+        for (TourServiceListener listener : tourServiceListeners) {
             listener.onUserStatusChanged(user, feedItem);
         }
     }
 
-    public void notifyListenersNewsfeed(List<Newsfeed> newsfeedList, boolean networkError) {
-        for (TourServiceListener listener : listeners) {
-            listener.onRetrieveNewsfeed(newsfeedList, networkError);
+    public void notifyListenersNetworkException() {
+        for (NewsFeedListener listener : newsFeedListeners) {
+            listener.onNetworkException();
+        }
+    }
+
+    public void notifyListenersCurrentPositionNotRetrieved() {
+        for (NewsFeedListener listener : newsFeedListeners) {
+            listener.onCurrentPositionNotRetrieved();
+        }
+
+    }
+
+    public void notifyListenersServerException(Throwable throwable) {
+        for (NewsFeedListener listener : newsFeedListeners) {
+            listener.onServerException(throwable);
+        }
+    }
+
+    public void notifyListenersTechnicalException(Throwable throwable) {
+        for (NewsFeedListener listener : newsFeedListeners) {
+            listener.onTechnicalException(throwable);
+        }
+    }
+
+    public void notifyListenersNewsFeedReceived(List<Newsfeed> newsFeeds) {
+        for (NewsFeedListener listener : newsFeedListeners) {
+            listener.onNewsFeedReceived(newsFeeds);
         }
     }
 
@@ -484,16 +523,37 @@ public class TourService extends Service {
 
     public interface TourServiceListener {
         void onTourCreated(boolean created, long tourId);
+
         void onTourUpdated(LatLng newPoint);
+
         void onTourResumed(List<TourPoint> pointsToDraw, String tourType, Date startDate);
+
         void onLocationUpdated(LatLng location);
+
         void onRetrieveToursNearby(List<Tour> tours);
+
         void onRetrieveToursByUserId(List<Tour> tours);
+
         void onUserToursFound(Map<Long, Tour> tours);
+
         void onToursFound(Map<Long, Tour> tours);
+
         void onFeedItemClosed(boolean closed, FeedItem feedItem);
+
         void onGpsStatusChanged(boolean active);
+
         void onUserStatusChanged(TourUser user, FeedItem feedItem);
-        void onRetrieveNewsfeed(List<Newsfeed> newsfeedList, boolean networkError);
+    }
+
+    public interface NewsFeedListener {
+        void onNetworkException();
+
+        void onCurrentPositionNotRetrieved();
+
+        void onServerException(Throwable throwable);
+
+        void onTechnicalException(Throwable throwable);
+
+        void onNewsFeedReceived(List<Newsfeed> newsFeeds);
     }
 }

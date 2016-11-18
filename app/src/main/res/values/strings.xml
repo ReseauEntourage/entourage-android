@@ -2,8 +2,6 @@
 
     <string name="app_name">Entourage</string>
     <string name="button_loading">Chargement…</string>
-    <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
-    <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
     <string name="entourage_title">Entourage</string>
     <string name="entourage_slogan">Un peu de chaleur humaine\navec Entourage.</string>
     <string name="error_end_tour_before_logout">Terminez la maraude avant de vous déconnecter</string>
@@ -12,7 +10,6 @@
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
     <string name="button_update_version">Mettre à jour</string>
     <string name="title_update_version">MISE A JOUR DISPONIBLE</string>
-    <string name="network_error">Erreur de connexion</string>
     <string name="error_no_email">!!No Email client installed</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
@@ -31,5 +28,11 @@
 
     <string name="disclaimer_link_public">http://www.entourage.social/chartes/grand-public.html</string>
     <string name="disclaimer_link_pro">http://www.entourage.social/chartes/pro.html</string>
+
+    <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
+    <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
+    <string name="network_error">Vérifiez votre connexion et réessayer plus tard</string>
+    <string name="technical_error">Nous avons un petit problème… Il sera bientôt corrigé ;)</string>
+    <string name="server_error">Nous avons un petit problème… Il sera très vite corrigé ;)</string>
 
 </resources>

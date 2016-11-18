@@ -11,10 +11,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -40,13 +38,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,7 +77,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
@@ -371,7 +365,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onDetach();
         mListener = null;
         if (isBound) {
-            tourService.unregister(this);
+            tourService.unregisterTourServiceListener(this);
         }
         doUnbindService();
 
@@ -1769,9 +1763,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    @Override
-    public void onRetrieveNewsfeed(final List<Newsfeed> newsfeedList, boolean networkError) {}
-
     // ----------------------------------
     // RecyclerView.OnScrollListener
     // ----------------------------------
@@ -1828,14 +1819,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         public void onServiceConnected(ComponentName name, IBinder service) {
             if (getActivity() != null) {
                 tourService = ((TourService.LocalBinder) service).getService();
-                tourService.register(TourInformationFragment.this);
+                tourService.registerTourServiceListener(TourInformationFragment.this);
                 isBound = true;
             }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            tourService.unregister(TourInformationFragment.this);
+            tourService.unregisterTourServiceListener(TourInformationFragment.this);
             tourService = null;
             isBound = false;
         }

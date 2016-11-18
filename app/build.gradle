@@ -15,8 +15,6 @@ dependencies {
 
     compile files('libs/FlurryAnalytics-6.5.0.jar')
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:support-annotations:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
@@ -46,6 +44,11 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.assertj:assertj-core:1.7.1'
+    testCompile 'de.bechte.junit:junit-hierarchicalcontextrunner:4.12.1'
 }
 
 android {
