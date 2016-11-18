@@ -45,6 +45,7 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.tools.CrashlyticsNewsFeedListener;
+import social.entourage.android.tools.LoggerNewsFeedListener;
 
 /**
  * Background service handling location updates
@@ -82,6 +83,7 @@ public class TourService extends Service {
     private final List<TourServiceListener> tourServiceListeners = new ArrayList<>();
     private final List<NewsFeedListener> newsFeedListeners= new ArrayList<>();
     private CrashlyticsNewsFeedListener crashlyticsListener = new CrashlyticsNewsFeedListener();
+    private LoggerNewsFeedListener loggerListener = new LoggerNewsFeedListener();
 
     private NotificationManager notificationManager;
     private Notification notification;
@@ -156,10 +158,12 @@ public class TourService extends Service {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         registerNewsFeedListener(crashlyticsListener);
+        registerNewsFeedListener(loggerListener);
     }
 
     @Override
     public void onDestroy() {
+        unregisterNewsFeedListener(loggerListener);
         unregisterNewsFeedListener(crashlyticsListener);
         endTreatment();
         unregisterReceiver(receiver);
