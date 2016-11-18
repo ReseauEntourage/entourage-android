@@ -68,7 +68,7 @@
                 android:id="@+id/fragment_map_empty_list"
                 android:layout_centerHorizontal="true"
                 android:layout_alignTop="@+id/fragment_map_tours_view"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:visibility="gone"/>
 

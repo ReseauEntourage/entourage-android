@@ -2007,6 +2007,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (layoutMapMain == null || toursListView == null || mapDisplayTypeRadioGroup == null) return;
 
         if (toursListView.getVisibility() == View.VISIBLE) {
+            // See if we need to show the empty newsfeed textview
+            if (newsfeedAdapter != null) {
+                emptyListTextView.setVisibility(newsfeedAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
             return;
         }
         toursListView.setVisibility(View.VISIBLE);
