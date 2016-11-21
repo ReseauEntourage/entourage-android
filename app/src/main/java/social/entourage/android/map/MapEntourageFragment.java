@@ -871,7 +871,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onNetworkException() {
-        Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -880,17 +882,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onServerException(Throwable throwable) {
-        Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onTechnicalException(Throwable throwable) {
-        Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onNewsFeedReceived(List<Newsfeed> newsfeeds) {
-        if (newsfeedAdapter == null) return;
+        if (newsfeedAdapter == null || newsfeeds == null) return;
         newsfeeds = removeRedundantNewsfeed(newsfeeds, false);
         if (map != null) {
             //add or update the received newsfeed
