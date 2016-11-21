@@ -531,6 +531,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
         FlurryAgent.logEvent(Constants.EVENT_PHOTO_SUBMIT);
 
+        if (loginPresenter == null || loginPresenter.authenticationController == null || loginPresenter.authenticationController.getUser() == null) {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+            if (photoEditFragment != null) {
+                photoEditFragment.onPhotoSent(false);
+            }
+        }
+
         //Upload the photo to Amazon S3
         showProgressDialog(R.string.user_photo_uploading);;
 
@@ -606,9 +614,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_signup)
     void onLoginClick() {
-        loginPresenter.login(
-                phoneEditText.getText().toString(),
-                passwordEditText.getText().toString());
+        if (loginPresenter != null) {
+            loginPresenter.login(
+                    phoneEditText.getText().toString(),
+                    passwordEditText.getText().toString());
+        } else {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.login_text_lost_code)
@@ -644,9 +656,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_ask_code)
     void sendNewCode() {
-        startLoader();
-        loginPresenter.sendNewCode(lostCodePhone.getText().toString());
-        FlurryAgent.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
+        if (loginPresenter != null) {
+            startLoader();
+            loginPresenter.sendNewCode(lostCodePhone.getText().toString());
+            FlurryAgent.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
+        } else {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.login_button_home)
@@ -698,16 +714,19 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_go)
     void saveEmail() {
-        FlurryAgent.logEvent(Constants.EVENT_EMAIL_SUBMIT);
-        loginPresenter.updateUserEmail(profileEmail.getText().toString());
+        if (loginPresenter != null) {
+            FlurryAgent.logEvent(Constants.EVENT_EMAIL_SUBMIT);
+            loginPresenter.updateUserEmail(profileEmail.getText().toString());
 
-        User user = loginPresenter.authenticationController.getUser();
-        if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
-            loginWelcome.setVisibility(View.GONE);
-            showNameView();
-        }
-        else {
-            loginPresenter.updateUserToServer();
+            User user = loginPresenter.authenticationController.getUser();
+            if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
+                loginWelcome.setVisibility(View.GONE);
+                showNameView();
+            } else {
+                loginPresenter.updateUserToServer();
+            }
+        } else {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -718,12 +737,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void showNameView() {
         loginNameView.setVisibility(View.VISIBLE);
 
-        User user = loginPresenter.authenticationController.getUser();
-        if (user.getFirstName() != null) {
-            firstnameEditText.setText(user.getFirstName());
-        }
-        if (user.getLastName() != null) {
-            lastnameEditText.setText(user.getLastName());
+        if (loginPresenter != null && loginPresenter.authenticationController  != null) {
+            User user = loginPresenter.authenticationController.getUser();
+            if (user != null) {
+                if (user.getFirstName() != null) {
+                    firstnameEditText.setText(user.getFirstName());
+                }
+                if (user.getLastName() != null) {
+                    lastnameEditText.setText(user.getLastName());
+                }
+            }
         }
 
         firstnameEditText.requestFocus();
@@ -736,23 +759,30 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_name_go_button)
     void onNameGoClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_NAME_SUBMIT);
-        hideKeyboard();
-        loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
+        if (loginPresenter != null) {
+            FlurryAgent.logEvent(Constants.EVENT_NAME_SUBMIT);
+            hideKeyboard();
+            loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
+        } else {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected void showPhotoChooseSource() {
-        hideKeyboard();
-        loginWelcome.setVisibility(View.GONE);
-        loginNameView.setVisibility(View.GONE);
+        if (loginPresenter != null && loginPresenter.authenticationController != null) {
+            hideKeyboard();
+            loginWelcome.setVisibility(View.GONE);
+            loginNameView.setVisibility(View.GONE);
 
-        User user = loginPresenter.authenticationController.getUser();
-        if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
-            PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-            fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
-        }
-        else {
-            showNotificationPermissionView();
+            User user = loginPresenter.authenticationController.getUser();
+            if (user == null || user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
+                PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+                fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
+            } else {
+                showNotificationPermissionView();
+            }
+        } else {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -854,9 +884,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_newsletter_button)
     void newsletterSubscribe() {
-        hideKeyboard();
-        startLoader();
-        loginPresenter.subscribeToNewsletter(newsletterEmail.getText().toString());
+        if (loginPresenter != null) {
+            hideKeyboard();
+            startLoader();
+            loginPresenter.subscribeToNewsletter(newsletterEmail.getText().toString());
+        } else {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     void newsletterResult(boolean success) {
@@ -881,10 +915,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_verify_code)
     void verifyCode() {
-        loginPresenter.login(
-                lostCodePhone.getText().toString(),
-                receivedCode.getText().toString()
-        );
+        if (loginPresenter != null) {
+            loginPresenter.login(
+                    lostCodePhone.getText().toString(),
+                    receivedCode.getText().toString()
+            );
+        } else {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.login_verify_code_resend)
@@ -918,13 +956,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT);
             loginPresenter.registerUserPhone(phoneNumber);
         } else {
-            Toast.makeText(this, R.string.registration_number_error_server, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void registerCheckCode(final String smsCode) {
-        loginPresenter.login(onboardingUser.getPhone(), smsCode);
+        if (loginPresenter != null) {
+            loginPresenter.login(onboardingUser.getPhone(), smsCode);
+        } else {
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -933,7 +975,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             FlurryAgent.logEvent(Constants.EVENT_SMS_CODE_REQUEST);
             loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
         } else {
-            Toast.makeText(this, R.string.registration_number_error_server, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
         }
     }
 
