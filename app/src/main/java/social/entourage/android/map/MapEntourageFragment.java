@@ -25,6 +25,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -127,8 +128,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private static final int MAX_TOUR_HEADS_DISPLAYED = 10;
 
     private static final long REFRESH_TOURS_INTERVAL = 60000; //1 minute in ms
-
-    private static final int MAX_SCROLL_DELTA_Y = 20;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -2153,27 +2152,39 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private class OnScrollListener extends RecyclerView.OnScrollListener {
+
+        private static final int MIN_SCROLL_DELTA_Y = 20;
+        private static final int MIN_MAP_SCROLL_DELTA_Y = 20;
+
+        private int mapScrollDeltaY = 0;
+
         @Override
         public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
 
             scrollDeltaY += dy;
+            mapScrollDeltaY += dy;
             if (dy > 0) {
                 // Scrolling down
                 RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
                 if (lp.topMargin > -lp.height) {
-                    lp.topMargin -= dy;
+                    Log.d("Map layout", "scrolling up by "+ dy);
+                    if (mapScrollDeltaY < MIN_MAP_SCROLL_DELTA_Y) {
+                        return;
+                    }
+                    lp.topMargin -= mapScrollDeltaY;
                     if (lp.topMargin < -lp.height) {
                         lp.topMargin = -lp.height;
                     }
                     layoutMapMain.setLayoutParams(lp);
                     recyclerView.scrollToPosition(0);
 
-                    layoutMain.forceLayout();
+                    //layoutMain.forceLayout();
+                    mapScrollDeltaY = 0;
 
                     return;
                 }
 
-                if (scrollDeltaY > MAX_SCROLL_DELTA_Y) {
+                if (scrollDeltaY > MIN_SCROLL_DELTA_Y) {
                     LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     int position = linearLayoutManager.findLastVisibleItemPosition();
                     if (position == recyclerView.getAdapter().getItemCount() - 1) {
