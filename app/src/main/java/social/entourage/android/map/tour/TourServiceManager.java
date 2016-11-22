@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -656,6 +657,7 @@ public class TourServiceManager {
             }
             if (lastKnownLocation != null) {
                 entourageLocation.setInitialLocation(lastKnownLocation);
+                locationListener.onLocationChanged(lastKnownLocation);
             }
         }
     }
@@ -916,7 +918,17 @@ public class TourServiceManager {
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-
+            switch( status ) {
+                case LocationProvider.AVAILABLE:
+                    // ...
+                    break;
+                case LocationProvider.OUT_OF_SERVICE:
+                    // ...
+                    break;
+                case LocationProvider.TEMPORARILY_UNAVAILABLE:
+                    // ...
+                    break;
+            }
         }
 
         @Override
@@ -924,6 +936,16 @@ public class TourServiceManager {
             Intent intent = new Intent();
             intent.setAction(TourService.KEY_GPS_ENABLED);
             TourServiceManager.this.tourService.sendBroadcast(intent);
+
+            try {
+                Location lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (lastKnownLocation == null) {
+                    lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+                if (lastKnownLocation != null) {
+                    onLocationChanged(lastKnownLocation);
+                }
+            } catch (SecurityException e) {}
         }
 
         @Override
