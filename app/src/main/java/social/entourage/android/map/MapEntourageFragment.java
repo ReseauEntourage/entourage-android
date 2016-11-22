@@ -2167,7 +2167,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 // Scrolling down
                 RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
                 if (lp.topMargin > -lp.height) {
-                    Log.d("Map layout", "scrolling up by "+ dy);
                     if (mapScrollDeltaY < MIN_MAP_SCROLL_DELTA_Y) {
                         return;
                     }
