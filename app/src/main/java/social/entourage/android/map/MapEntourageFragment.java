@@ -880,16 +880,28 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_LONG).show();
         }
+        if (pagination.isLoading) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+        }
     }
 
     @Override
     public void onCurrentPositionNotRetrieved() {
+        if (pagination.isLoading) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+        }
     }
 
     @Override
     public void onServerException(Throwable throwable) {
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
+        }
+        if (pagination.isLoading) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
         }
     }
 
@@ -898,11 +910,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
         }
+        if (pagination.isLoading) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+        }
     }
 
     @Override
     public void onNewsFeedReceived(List<Newsfeed> newsfeeds) {
-        if (newsfeedAdapter == null || newsfeeds == null) return;
+        if (newsfeedAdapter == null || newsfeeds == null) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+            return;
+        }
         newsfeeds = removeRedundantNewsfeed(newsfeeds, false);
         if (map != null) {
             //add or update the received newsfeed
@@ -1280,6 +1300,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             }
                             previousCameraZoom = newZoom;
                             previousCameraLocation = newLocation;
+
+                            // check if we need to cancel the current request
+                            if (pagination.isLoading) {
+                                tourService.cancelNewsFeedUpdate();
+                            }
+
                             newsfeedAdapter.removeAll();
                             pagination = new EntouragePagination();
                             tourService.updateNewsfeed(pagination);
@@ -1826,6 +1852,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         displayedTourHeads = 0;
 
         newsfeedAdapter.removeAll();
+
+        // check if we need to cancel the current request
+        if (pagination.isLoading && tourService != null) {
+            tourService.cancelNewsFeedUpdate();
+        }
+
         pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
         previousCoordinates = null;
