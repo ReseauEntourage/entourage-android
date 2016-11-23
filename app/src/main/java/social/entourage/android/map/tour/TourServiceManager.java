@@ -937,6 +937,23 @@ public class TourServiceManager {
             intent.setAction(TourService.KEY_GPS_ENABLED);
             TourServiceManager.this.tourService.sendBroadcast(intent);
 
+            // MI: We need to wait a bit before attempting to get the last known location
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Location lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if (lastKnownLocation == null) {
+                            lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        }
+                        if (lastKnownLocation != null) {
+                            onLocationChanged(lastKnownLocation);
+                        }
+                    } catch (SecurityException e) {}
+                }
+            }, 3000);
+
             try {
                 Location lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (lastKnownLocation == null) {
