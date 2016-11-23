@@ -98,7 +98,7 @@ public class Encounter extends TimestampedObject implements Serializable {
     }
 
     public String getUserName() {
-        return userName;
+        return userName == null ? "" : userName;
     }
 
     public void setUserName(String userName) {

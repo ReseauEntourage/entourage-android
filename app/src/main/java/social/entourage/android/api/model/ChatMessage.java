@@ -79,7 +79,7 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     }
 
     public String getUserName() {
-        if (user == null) return null;
+        if (user == null) return "";
         return user.getDisplayName();
     }
 
