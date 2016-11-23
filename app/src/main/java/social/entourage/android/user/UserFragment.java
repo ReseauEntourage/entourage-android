@@ -43,6 +43,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Organization;
+import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.login.LoginActivity;
@@ -199,8 +200,11 @@ public class UserFragment extends DialogFragment {
     private void configureView() {
         if (getActivity() != null) {
             Resources res = getResources();
-            int tourCount = user.getStats().getTourCount();
-            int encountersCount = user.getStats().getEncounterCount();
+            Stats stats = user.getStats();
+            int entourageCount = 0;
+            if (stats != null) {
+                entourageCount = stats.getEntourageCount();
+            }
 
             userEditProfile.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
@@ -217,7 +221,7 @@ public class UserFragment extends DialogFragment {
             }
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
-            userTourCount.setText(""+tourCount);
+            userTourCount.setText(""+entourageCount);
 
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);
             userEmailVerifiedImage.setImageResource(R.drawable.verified);
