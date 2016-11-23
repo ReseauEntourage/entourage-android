@@ -55,4 +55,11 @@ public class MyEntouragesFilter {
         return "";
     }
 
+    public String getTourTypes() {
+        if (showTours) {
+            return "medical,social,distributive";
+        }
+        return "";
+    }
+
 }

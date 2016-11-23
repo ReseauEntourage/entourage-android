@@ -48,6 +48,7 @@ public class MyEntouragesPresenter {
                 page,
                 per,
                 filter.getEntourageTypes(),
+                filter.getTourTypes(),
                 filter.getStatus(),
                 filter.showOwnEntourages,
                 filter.showJoinedEntourages
