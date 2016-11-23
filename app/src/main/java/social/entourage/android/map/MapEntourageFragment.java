@@ -917,7 +917,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onNewsFeedReceived(List<Newsfeed> newsfeeds) {
-        if (newsfeedAdapter == null || newsfeeds == null) {
+        if (newsfeedAdapter == null || newsfeeds == null || !isAdded()) {
             pagination.isLoading = false;
             pagination.isRefreshing = false;
             return;
@@ -1551,6 +1551,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private List<Tour> removeRedundantTours(List<Tour> tours, boolean isHistory) {
+        if (tours == null) {
+            return null;
+        }
         Iterator iteratorTours = tours.iterator();
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
@@ -1569,6 +1572,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private List<Newsfeed> removeRedundantNewsfeed(List<Newsfeed> newsfeedList, boolean isHistory) {
+        if (newsfeedList == null) {
+            return null;
+        }
         Iterator iteratorNewsfeed = newsfeedList.iterator();
         while (iteratorNewsfeed.hasNext()) {
             Newsfeed newsfeed = (Newsfeed) iteratorNewsfeed.next();
@@ -1600,6 +1606,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private List<Tour> removeRecentTours(List<Tour> tours) {
+        if (tours == null) {
+            return null;
+        }
         Iterator iteratorTours = tours.iterator();
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
@@ -1612,6 +1621,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private int getTrackColor(boolean isHistory, String type, Date date) {
         int color = Color.GRAY;
+        if (getContext() == null) {
+            return color;
+        }
         if (TourType.MEDICAL.getName().equals(type)) {
             color = ContextCompat.getColor(getContext(), R.color.tour_type_medical);
         } else if (TourType.ALIMENTARY.getName().equals(type)) {
