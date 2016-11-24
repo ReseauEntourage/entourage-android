@@ -51,7 +51,7 @@ public class TourAuthor implements Serializable {
     }
 
     public String getUserName() {
-        return userName;
+        return userName == null ? "" : userName;
     }
 
     public void setUserName(final String userName) {

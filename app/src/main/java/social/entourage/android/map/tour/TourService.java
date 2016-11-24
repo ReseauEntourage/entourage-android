@@ -299,6 +299,10 @@ public class TourService extends Service {
         tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate(), getApplicationContext());
     }
 
+    public void cancelNewsFeedUpdate() {
+        tourServiceManager.cancelNewsFeedRetrieval();
+    }
+
     public void updateUserHistory(int userId, int page, int per) {
         tourServiceManager.retrieveToursByUserId(userId, page, per);
     }

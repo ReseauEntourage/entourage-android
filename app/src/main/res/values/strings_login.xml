@@ -66,11 +66,11 @@
     <string name="login_permission_geolocation_description">Entourage est un réseau local.\n\nLa géolocalisation nous permettra d’afficher les actions les plus proches de vous.</string>
     <string name="login_permission_geolocation_accept">Oui, je l’active</string>
 
-    <string name="login_login_error_title">Veuillez réessayer</string>
-    <string name="login_login_error_invalid_credentials">Le numéro de téléphone et ce code d’accès ne correspondent pas.</string>
-    <string name="login_login_error_invalid_phone_format">Votre téléphone doit être au format +33, 06, ou 07</string>
-    <string name="login_login_error_network">Erreur de connexion</string>
-    <string name="login_login_error_retry">Réessayer</string>
+    <string name="login_error">Problème d\'authentification\nVeuillez réessayer</string>
+    <string name="login_error_title">Veuillez réessayer</string>
+    <string name="login_error_invalid_credentials">Le numéro de téléphone et ce code d’accès ne correspondent pas.</string>
+    <string name="login_error_invalid_phone_format">Votre téléphone doit être au format +33, 06, ou 07</string>
+    <string name="login_retry_label">Réessayer</string>
 
     <string name="login_name_title">Quel est votre nom ?</string>
     <string name="login_name_description">Seuls le prénom et la première lettre du nom apparaitront aux autres utilisateurs.</string>

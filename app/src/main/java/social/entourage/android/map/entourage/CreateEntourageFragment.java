@@ -238,21 +238,25 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     protected void onEntourageCreated(Entourage entourage) {
         isSaving = false;
-        if (entourage == null) {
-            Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(), R.string.entourage_create_ok, Toast.LENGTH_SHORT).show();
-            dismiss();
+        if (getActivity() != null) {
+            if (entourage == null) {
+                Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), R.string.entourage_create_ok, Toast.LENGTH_SHORT).show();
+                dismiss();
+            }
         }
     }
 
     protected void onEntourageEdited(Entourage entourage) {
         isSaving = false;
-        if (entourage == null) {
-            Toast.makeText(getActivity(), R.string.entourage_save_error, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(), R.string.entourage_save_ok, Toast.LENGTH_SHORT).show();
-            dismiss();
+        if (getActivity() != null) {
+            if (entourage == null) {
+                Toast.makeText(getActivity(), R.string.entourage_save_error, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), R.string.entourage_save_ok, Toast.LENGTH_SHORT).show();
+                dismiss();
+            }
         }
     }
 

@@ -48,11 +48,11 @@ public class CreateEntouragePresenter {
             @Override
             public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccess()) {
+                    Entourage receivedEntourage = response.body().getEntourage();
                     if (fragment != null) {
-                        Entourage receivedEntourage = response.body().getEntourage();
                         fragment.onEntourageCreated(receivedEntourage);
-                        BusProvider.getInstance().post(new Events.OnEntourageCreated(receivedEntourage));
                     }
+                    BusProvider.getInstance().post(new Events.OnEntourageCreated(receivedEntourage));
                 }
                 else {
                     if (fragment != null) {
@@ -80,16 +80,22 @@ public class CreateEntouragePresenter {
             public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccess()) {
                     Entourage receivedEntourage = response.body().getEntourage();
-                    fragment.onEntourageEdited(receivedEntourage);
+                    if (fragment != null) {
+                        fragment.onEntourageEdited(receivedEntourage);
+                    }
                     BusProvider.getInstance().post(new Events.OnEntourageUpdated(receivedEntourage));
                 } else {
-                    fragment.onEntourageEdited(null);
+                    if (fragment != null) {
+                        fragment.onEntourageEdited(null);
+                    }
                 }
             }
 
             @Override
             public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
-                fragment.onEntourageEdited(null);
+                if (fragment != null) {
+                    fragment.onEntourageEdited(null);
+                }
             }
         });
     }

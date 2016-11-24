@@ -346,6 +346,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     protected void onNewsfeedReceived(List<Newsfeed> newsfeedList) {
+        if (!isAdded()) {
+            return;
+        }
         hideProgressBar();
         //reset the loading indicator
         if (entouragesPagination != null) {
@@ -390,6 +393,10 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     protected void onInvitationsReceived(List<Invitation> invitationList) {
         // reset the semaphore
         isRefreshingInvitations = false;
+        // check if the fragment is still attached
+        if (!isAdded()) {
+            return;
+        }
         // ignore errors
         if (invitationList == null) {
             return;

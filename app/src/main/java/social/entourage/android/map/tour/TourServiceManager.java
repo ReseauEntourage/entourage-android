@@ -106,6 +106,8 @@ public class TourServiceManager {
     private Timer timerFinish;
     private boolean isTourClosing;
 
+    Call<Newsfeed.NewsfeedWrapper> retrieveNewsfeedCall; // current call to retrieve newsfeed
+
     private LocationManager locationManager;
     private CustomLocationListener locationListener;
     private boolean isBetterLocationUpdated;
@@ -478,11 +480,18 @@ public class TourServiceManager {
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
             MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
-            Call<Newsfeed.NewsfeedWrapper> call = createNewsfeedWrapperCall(beforeDate, location, mapFilter);
-            call.enqueue(new NewsFeedCallback(tourService));
+            retrieveNewsfeedCall = createNewsfeedWrapperCall(beforeDate, location, mapFilter);
+            retrieveNewsfeedCall.enqueue(new NewsFeedCallback(this));
         } else {
             tourService.notifyListenersCurrentPositionNotRetrieved();
         }
+    }
+
+    protected void cancelNewsFeedRetrieval() {
+        if (retrieveNewsfeedCall == null || retrieveNewsfeedCall.isCanceled()) {
+            return;
+        }
+        retrieveNewsfeedCall.cancel();
     }
 
     protected void sendEncounter(final Encounter encounter) {
@@ -858,29 +867,35 @@ public class TourServiceManager {
 
     static class NewsFeedCallback implements Callback<Newsfeed.NewsfeedWrapper> {
         private static final String EMPTY_STRING = "";
-        private final TourService service;
+        private final TourServiceManager manager;
 
-        NewsFeedCallback(TourService service) {
-            this.service = service;
+        NewsFeedCallback(TourServiceManager manager) {
+            this.manager = manager;
         }
 
         @Override
         public void onResponse(Call<Newsfeed.NewsfeedWrapper> call, Response<Newsfeed.NewsfeedWrapper> response) {
-            if (response.isSuccess()) {
-                List<Newsfeed> newsFeedList = response.body().getNewsfeed();
-                if(newsFeedList == null){
-                    service.notifyListenersTechnicalException(new Throwable("Null newsfeed list"));
+            if (!call.isCanceled()) {
+                if (response.isSuccess()) {
+                    List<Newsfeed> newsFeedList = response.body().getNewsfeed();
+                    if (newsFeedList == null) {
+                        manager.tourService.notifyListenersTechnicalException(new Throwable("Null newsfeed list"));
+                    } else {
+                        manager.tourService.notifyListenersNewsFeedReceived(newsFeedList);
+                    }
                 } else {
-                    service.notifyListenersNewsFeedReceived(newsFeedList);
+                    manager.tourService.notifyListenersServerException(new Throwable(getErrorMessage(response)));
                 }
-            } else {
-                service.notifyListenersServerException(new Throwable(getErrorMessage(response)));
             }
+            manager.retrieveNewsfeedCall = null;
         }
 
         @Override
         public void onFailure(Call<Newsfeed.NewsfeedWrapper> call, Throwable t) {
-            service.notifyListenersTechnicalException(t);
+            if (!call.isCanceled()) {
+                manager.tourService.notifyListenersTechnicalException(t);
+            }
+            manager.retrieveNewsfeedCall = null;
         }
 
         private String getErrorMessage(Response<Newsfeed.NewsfeedWrapper> response) {
@@ -934,6 +949,23 @@ public class TourServiceManager {
             Intent intent = new Intent();
             intent.setAction(TourService.KEY_GPS_ENABLED);
             TourServiceManager.this.tourService.sendBroadcast(intent);
+
+            // MI: We need to wait a bit before attempting to get the last known location
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Location lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if (lastKnownLocation == null) {
+                            lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        }
+                        if (lastKnownLocation != null) {
+                            onLocationChanged(lastKnownLocation);
+                        }
+                    } catch (SecurityException e) {}
+                }
+            }, 3000);
 
             try {
                 Location lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);

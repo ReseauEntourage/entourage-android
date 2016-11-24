@@ -25,6 +25,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -920,25 +921,52 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onNetworkException() {
-        Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_LONG).show();
+        }
+        if (pagination.isLoading) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+        }
     }
 
     @Override
     public void onCurrentPositionNotRetrieved() {
+        if (pagination.isLoading) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+        }
     }
 
     @Override
     public void onServerException(Throwable throwable) {
-        Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
+        }
+        if (pagination.isLoading) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+        }
     }
 
     @Override
     public void onTechnicalException(Throwable throwable) {
-        Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
+        }
+        if (pagination.isLoading) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+        }
     }
 
     @Override
     public void onNewsFeedReceived(List<Newsfeed> newsfeeds) {
+        if (newsfeedAdapter == null || newsfeeds == null || !isAdded()) {
+            pagination.isLoading = false;
+            pagination.isRefreshing = false;
+            return;
+        }
         newsfeeds = removeRedundantNewsfeed(newsfeeds, false);
         if (map != null) {
             //add or update the received newsfeed
@@ -1377,23 +1405,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
                             float newZoom = cameraPosition.zoom;
 
-                            if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
-                                if (previousCameraZoom != newZoom) {
-                                    if (previousCameraZoom > newZoom) {
-                                        FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_IN);
-                                    } else {
-                                        FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
-                                    }
-                                }
-                                previousCameraZoom = newZoom;
-                                previousCameraLocation = newLocation;
-                                newsfeedAdapter.removeAll();
-                                pagination = new EntouragePagination();
-                                tourService.updateNewsfeed(pagination);
-                                if (userHistory) {
-                                    tourService.updateUserHistory(userId, 1, 500);
+                        if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+                            if (previousCameraZoom != newZoom) {
+                                if (previousCameraZoom > newZoom) {
+                                    FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_IN);
+                                } else {
+                                    FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
                                 }
                             }
+                            previousCameraZoom = newZoom;
+                            previousCameraLocation = newLocation;
+
+                            // check if we need to cancel the current request
+                            if (pagination.isLoading) {
+                                tourService.cancelNewsFeedUpdate();
+                            }
+
+                            newsfeedAdapter.removeAll();
+                            pagination = new EntouragePagination();
+                            tourService.updateNewsfeed(pagination);
+                            if (userHistory) {
+                                tourService.updateUserHistory(userId, 1, 500);
+                            }
+                        }
 
                             if (isFollowing && currentLocation != null) {
                                 if (currentLocation.distanceTo(newLocation) > 1) {
@@ -1636,6 +1670,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private List<Tour> removeRedundantTours(List<Tour> tours, boolean isHistory) {
+        if (tours == null) {
+            return null;
+        }
         Iterator iteratorTours = tours.iterator();
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
@@ -1654,6 +1691,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private List<Newsfeed> removeRedundantNewsfeed(List<Newsfeed> newsfeedList, boolean isHistory) {
+        if (newsfeedList == null) {
+            return null;
+        }
         Iterator iteratorNewsfeed = newsfeedList.iterator();
         while (iteratorNewsfeed.hasNext()) {
             Newsfeed newsfeed = (Newsfeed) iteratorNewsfeed.next();
@@ -1685,6 +1725,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private List<Tour> removeRecentTours(List<Tour> tours) {
+        if (tours == null) {
+            return null;
+        }
         Iterator iteratorTours = tours.iterator();
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
@@ -1697,6 +1740,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private int getTrackColor(boolean isHistory, String type, Date date) {
         int color = Color.GRAY;
+        if (getContext() == null) {
+            return color;
+        }
         if (TourType.MEDICAL.getName().equals(type)) {
             color = ContextCompat.getColor(getContext(), R.color.tour_type_medical);
         } else if (TourType.ALIMENTARY.getName().equals(type)) {
@@ -1936,6 +1982,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         displayedTourHeads = 0;
 
         newsfeedAdapter.removeAll();
+
+        // check if we need to cancel the current request
+        if (pagination.isLoading && tourService != null) {
+            tourService.cancelNewsFeedUpdate();
+        }
+
         pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
         previousCoordinates = null;
@@ -2281,27 +2333,38 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private class OnScrollListener extends RecyclerView.OnScrollListener {
+
+        private static final int MIN_SCROLL_DELTA_Y = 20;
+        private static final int MIN_MAP_SCROLL_DELTA_Y = 20;
+
+        private int mapScrollDeltaY = 0;
+
         @Override
         public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
 
             scrollDeltaY += dy;
+            mapScrollDeltaY += dy;
             if (dy > 0) {
                 // Scrolling down
                 RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
                 if (lp.topMargin > -lp.height) {
-                    lp.topMargin -= dy;
+                    if (mapScrollDeltaY < MIN_MAP_SCROLL_DELTA_Y) {
+                        return;
+                    }
+                    lp.topMargin -= mapScrollDeltaY;
                     if (lp.topMargin < -lp.height) {
                         lp.topMargin = -lp.height;
                     }
                     layoutMapMain.setLayoutParams(lp);
                     recyclerView.scrollToPosition(0);
 
-                    layoutMain.forceLayout();
+                    //layoutMain.forceLayout();
+                    mapScrollDeltaY = 0;
 
                     return;
                 }
 
-                if (scrollDeltaY > MAX_SCROLL_DELTA_Y) {
+                if (scrollDeltaY > MIN_SCROLL_DELTA_Y) {
                     LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     int position = linearLayoutManager.findLastVisibleItemPosition();
                     if (position == recyclerView.getAdapter().getItemCount() - 1) {
