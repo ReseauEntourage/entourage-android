@@ -564,9 +564,15 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
+        Intent intent = getIntent();
+        if (intent == null || intent.getExtras() == null) {
+            intentAction = null;
+            intentTour = null;
+            return;
+        }
         mapEntourageFragment.checkAction(intentAction, intentTour);
         if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
-            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             if (message != null) {
                 PushNotificationContent content = message.getContent();
                 if (content != null) {
@@ -579,7 +585,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         }
         else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
-            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             if (message != null) {
                 PushNotificationContent content = message.getContent();
                 if (content != null) {
@@ -591,7 +597,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         }
         else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
-            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             if (message != null) {
                 PushNotificationContent content = message.getContent();
                 if (content != null) {
