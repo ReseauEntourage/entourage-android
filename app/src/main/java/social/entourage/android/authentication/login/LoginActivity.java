@@ -408,23 +408,21 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         //displayToast(getString(R.string.login_fail));
         @StringRes int errorMessage;
         switch (errorCode) {
-            case LOGIN_ERROR_NETWORK:
-                errorMessage = R.string.login_login_error_network;
-                break;
             case LOGIN_ERROR_INVALID_PHONE_FORMAT:
-                errorMessage = R.string.login_login_error_invalid_phone_format;
+                errorMessage = R.string.login_error_invalid_phone_format;
                 break;
             case LOGIN_ERROR_UNAUTHORIZED:
-                errorMessage = R.string.login_login_error_invalid_credentials;
+                errorMessage = R.string.login_error_invalid_credentials;
                 break;
+            case LOGIN_ERROR_NETWORK:
             default:
-                errorMessage = R.string.login_login_error_invalid_credentials;
+                errorMessage = R.string.login_error;
                 break;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.login_login_error_title)
+        builder.setTitle(R.string.login_error_title)
             .setMessage(errorMessage)
-            .setPositiveButton(R.string.login_login_error_retry, new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.login_retry_label, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(final DialogInterface dialog, final int which) {
 
@@ -434,11 +432,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     public void displayToast(@StringRes int messageId) {
-        Toast.makeText(this, messageId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, messageId, Toast.LENGTH_LONG).show();
     }
 
     public void displayToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     public void startLoader() {
@@ -532,7 +530,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         FlurryAgent.logEvent(Constants.EVENT_PHOTO_SUBMIT);
 
         if (loginPresenter == null || loginPresenter.authenticationController == null || loginPresenter.authenticationController.getUser() == null) {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
             PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
             if (photoEditFragment != null) {
                 photoEditFragment.onPhotoSent(false);
@@ -619,7 +617,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                     phoneEditText.getText().toString(),
                     passwordEditText.getText().toString());
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -661,7 +659,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             loginPresenter.sendNewCode(lostCodePhone.getText().toString());
             FlurryAgent.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -726,7 +724,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 loginPresenter.updateUserToServer();
             }
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -764,7 +762,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             hideKeyboard();
             loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -782,7 +780,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 showNotificationPermissionView();
             }
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -889,7 +887,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             startLoader();
             loginPresenter.subscribeToNewsletter(newsletterEmail.getText().toString());
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -921,7 +919,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                     receivedCode.getText().toString()
             );
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -956,7 +954,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT);
             loginPresenter.registerUserPhone(phoneNumber);
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -965,7 +963,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (loginPresenter != null) {
             loginPresenter.login(onboardingUser.getPhone(), smsCode);
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -975,7 +973,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             FlurryAgent.logEvent(Constants.EVENT_SMS_CODE_REQUEST);
             loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
         } else {
-            Toast.makeText(this, R.string.general_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
     }
 
