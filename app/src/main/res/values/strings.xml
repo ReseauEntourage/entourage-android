@@ -29,6 +29,5 @@
     <string name="network_error">Vérifiez votre connexion\net réessayez plus tard</string>
     <string name="technical_error">Nous avons un petit problème…\nIl sera bientôt corrigé ;)</string>
     <string name="server_error">Nous avons un petit problème…\nIl sera très vite corrigé ;)</string>
-    <string name="general_error">@string/network_error</string>
 
 </resources>
