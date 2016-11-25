@@ -127,16 +127,19 @@ android {
 appaloosaDeploy {
     def buildVariant = 'release'
     def groupName = 'CoreTeam'
+    def description = "${System.env.BITRISE_GIT_MESSAGE}"
     storeToken 'ypt4d26acetzxivf5ynjeeqfisr9p7dr'
     apks {
         preprodRelease {
             flavorName 'preprod'
             buildName buildVariant
+            descriptionVersion description
             groupsName groupName
         }
         prodRelease {
             flavorName 'prod'
             buildName buildVariant
+            descriptionVersion description
             groupsName groupName
         }
     }
