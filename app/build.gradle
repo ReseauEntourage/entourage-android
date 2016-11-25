@@ -62,10 +62,8 @@ android {
         versionCode versionMajor * 100000 + versionMinor * 10000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-        buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
-        buildConfigField 'String', 'FLURRY_API_KEY', "\"${System.env.FLURRY_API_KEY}\""
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
-        buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
+        buildConfigField 'String', 'FLURRY_API_KEY', "\"${System.env.FLURRY_API_KEY}\""
         buildConfigField 'String', 'AWS_KEY', "\"${System.env.AWS_KEY}\""
         buildConfigField 'String', 'AWS_SECRET', "\"${System.env.AWS_SECRET}\""
     }
@@ -84,26 +82,28 @@ android {
     }
 
     buildTypes {
-
         release {
             signingConfig signingConfigs.googleplay
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable false
-            buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
-            buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
-            buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
-        }
-        preprod {
-            signingConfig signingConfigs.debug
-            applicationIdSuffix '.preprod'
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
         }
+
         debug {
             signingConfig signingConfigs.debug
             applicationIdSuffix '.debug'
+        }
+    }
+
+    productFlavors {
+        preprod {
+            applicationId 'social.entourage.android'
+            buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
+            buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
+        }
+
+        prod {
+            applicationId 'social.entourage.android'
+            buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
+            buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
         }
     }
 
