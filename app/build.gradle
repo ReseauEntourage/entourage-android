@@ -2,6 +2,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'io.fabric'
+apply plugin: 'appaloosa-deploy'
 
 def versionMajor = 2
 def versionMinor = 2
@@ -120,5 +121,23 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+    }
+}
+
+appaloosaDeploy {
+    def buildVariant = 'release'
+    def groupName = 'CoreTeam'
+    storeToken 'ypt4d26acetzxivf5ynjeeqfisr9p7dr'
+    apks {
+        preprodRelease {
+            flavorName 'preprod'
+            buildName buildVariant
+            groupsName groupName
+        }
+        prodRelease {
+            flavorName 'prod'
+            buildName buildVariant
+            groupsName groupName
+        }
     }
 }
