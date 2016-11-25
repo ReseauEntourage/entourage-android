@@ -968,49 +968,48 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         newsfeeds = removeRedundantNewsfeed(newsfeeds, false);
-        if (map != null) {
-            //add or update the received newsfeed
-            for (Newsfeed newsfeed : newsfeeds) {
-                Object newsfeedData = newsfeed.getData();
-                if (newsfeedData != null && (newsfeedData instanceof TimestampedObject)) {
-                    addNewsfeedCard((TimestampedObject) newsfeedData);
+        //add or update the received newsfeed
+        for (Newsfeed newsfeed : newsfeeds) {
+            Object newsfeedData = newsfeed.getData();
+            if (newsfeedData != null && (newsfeedData instanceof TimestampedObject)) {
+                addNewsfeedCard((TimestampedObject) newsfeedData);
+            }
+        }
+        updatePagination(newsfeeds);
+
+        if (map != null && newsfeeds.size() > 0) {
+            // redraw the map
+            map.clear();
+            markersMap.clear();
+            drawnToursMap.clear();
+            //redraw the whole newsfeed
+            for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
+                if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
+                    Tour tour = (Tour) timestampedObject;
+                    if (currentTourId == tour.getId()) {
+                        continue;
+                    }
+                    drawNearbyTour(tour, false);
+                } else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                    drawNearbyEntourage((Entourage) timestampedObject, false);
                 }
             }
-            updatePagination(newsfeeds);
-            if (newsfeeds.size() > 0) {
-                // redraw the map
-                map.clear();
-                markersMap.clear();
-                drawnToursMap.clear();
-                //redraw the whole newsfeed
-                for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
-                    if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
-                        Tour tour = (Tour) timestampedObject;
-                        if (currentTourId == tour.getId()) {
-                            continue;
-                        }
-                        drawNearbyTour(tour, false);
-                    } else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                        drawNearbyEntourage((Entourage) timestampedObject, false);
-                    }
+            //redraw the current ongoing tour, if any
+            if (tourService != null && currentTourId != -1) {
+                PolylineOptions line = new PolylineOptions();
+                for (Polyline polyline : currentTourLines) {
+                    line.addAll(polyline.getPoints());
                 }
-                //redraw the current ongoing tour, if any
-                if (tourService != null && currentTourId != -1) {
-                    PolylineOptions line = new PolylineOptions();
-                    for (Polyline polyline : currentTourLines) {
-                        line.addAll(polyline.getPoints());
-                    }
-                    line.zIndex(2f);
-                    line.width(15);
-                    line.color(color);
-                    map.addPolyline(line);
+                line.zIndex(2f);
+                line.width(15);
+                line.color(color);
+                map.addPolyline(line);
 
-                    Tour currentTour = tourService.getCurrentTour();
-                    if (currentTour != null) {
-                        if (currentTour.getEncounters() != null) {
-                            for (Encounter encounter : currentTour.getEncounters()) {
-                                presenter.loadEncounterOnMap(encounter);
-                            }
+                Tour currentTour = tourService.getCurrentTour();
+                if (currentTour != null) {
+                    if (currentTour.getEncounters() != null) {
+                        for (Encounter encounter : currentTour.getEncounters()) {
+                            presenter.loadEncounterOnMap(encounter);
                         }
                     }
                 }
@@ -1829,7 +1828,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void drawCurrentLocation(LatLng location) {
-        if (previousCoordinates != null) {
+        if (previousCoordinates != null && map != null) {
             PolylineOptions line = new PolylineOptions();
             line.add(previousCoordinates, location);
             line.zIndex(2f);
@@ -1973,7 +1972,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void clearAll() {
-        map.clear();
+        if (map != null) {
+            map.clear();
+        }
 
         currentTourLines.clear();
         drawnToursMap.clear();

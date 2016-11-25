@@ -358,7 +358,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment = (MapEntourageFragment) mainFragment;
         } else {
-            mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
             loadFragmentWithExtras();
         }
     }
@@ -473,10 +472,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (menuId == 0) return;
         switch (menuId) {
             case R.id.action_tours:
-                mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-                if (mapEntourageFragment == null) {
-                    mapEntourageFragment = new MapEntourageFragment();
-                }
                 loadFragmentWithExtras();
                 break;
             case R.id.action_guide:
@@ -549,11 +544,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void loadFragmentWithExtras() {
-        MapEntourageFragment fragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if (fragment == null) {
-            fragment = new MapEntourageFragment();
+        mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
+        if (mapEntourageFragment == null) {
+            mapEntourageFragment = new MapEntourageFragment();
         }
-        loadFragment(fragment, MapEntourageFragment.TAG);
+        loadFragment(mapEntourageFragment, MapEntourageFragment.TAG);
         if (getAuthenticationController().getUser() != null) {
             final int userId = getAuthenticationController().getUser().getId();
             final boolean choice = getAuthenticationController().isUserToursOnly();
