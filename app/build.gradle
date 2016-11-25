@@ -96,7 +96,7 @@ android {
 
     productFlavors {
         preprod {
-            applicationId 'social.entourage.android'
+            applicationId 'social.entourage.android.preprod'
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
         }
