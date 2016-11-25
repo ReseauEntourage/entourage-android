@@ -31,10 +31,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.mock;
 import static org.mockito.BDDMockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(HierarchicalContextRunner.class)
 public class TourServiceManagerTest {
-    @Mock private TourService tourService;
+    @Mock private TourService service;
     @Mock private ConnectivityManager connectivityManager;
     @Mock private EntourageLocation location;
     @Mock private Context context;
@@ -49,9 +50,9 @@ public class TourServiceManagerTest {
     public void retrieveNewsFeed_WithoutNetworkInfo() {
         given(connectivityManager.getActiveNetworkInfo()).willReturn(null);
 
-        tourServiceManager.retrieveNewsFeed(new Date(),context);
+        tourServiceManager.retrieveNewsFeed(new Date(), context);
 
-        verify(tourService).notifyListenersNetworkException();
+        verify(service).notifyListenersNetworkException();
     }
 
     @Test
@@ -60,9 +61,9 @@ public class TourServiceManagerTest {
         given(connectivityManager.getActiveNetworkInfo()).willReturn(networkInfo);
         given(networkInfo.isConnected()).willReturn(false);
 
-        tourServiceManager.retrieveNewsFeed(new Date(),context);
+        tourServiceManager.retrieveNewsFeed(new Date(), context);
 
-        verify(tourService).notifyListenersNetworkException();
+        verify(service).notifyListenersNetworkException();
     }
 
     @Test
@@ -72,15 +73,16 @@ public class TourServiceManagerTest {
         given(networkInfo.isConnected()).willReturn(true);
         given(location.getCurrentCameraPosition()).willReturn(null);
 
-        tourServiceManager.retrieveNewsFeed(new Date(),context);
+        tourServiceManager.retrieveNewsFeed(new Date(), context);
 
-        verify(tourService).notifyListenersCurrentPositionNotRetrieved();
+        verify(service).notifyListenersCurrentPositionNotRetrieved();
     }
 
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     public class NewsFeedCallbackTest {
         @Mock private Call<NewsfeedWrapper> call;
-        @Mock private TourService tourService;
+        @Mock private TourServiceManager manager;
+        @Mock private TourService service;
         @Captor private ArgumentCaptor<Throwable> captor;
         @InjectMocks private NewsFeedCallback callback;
 
@@ -89,48 +91,82 @@ public class TourServiceManagerTest {
             MockitoAnnotations.initMocks(this);
         }
 
-        @Test
-        public void newsFeedCallback_OnFailure() {
-            Throwable throwable = new Throwable();
+        public class OnFailure {
+            @Test
+            public void newsFeedCallback_IfCallIsCancelled() {
+                Throwable throwable = new Throwable();
+                given(call.isCanceled()).willReturn(true);
 
-            callback.onFailure(call, throwable);
+                callback.onFailure(call, throwable);
 
-            verify(tourService).notifyListenersTechnicalException(throwable);
+                verify(manager).resetCurrentNewsfeedCall();
+                verifyNoMoreInteractions(service);
+            }
+
+            @Test
+            public void newsFeedCallback() {
+                Throwable throwable = new Throwable();
+
+                callback.onFailure(call, throwable);
+
+                verify(manager).resetCurrentNewsfeedCall();
+                verify(service).notifyListenersTechnicalException(throwable);
+            }
         }
 
-        @Test
-        public void newsFeedCallback_OnResponse_WithoutServerException() {
-            ResponseBody body = ResponseBody.create(MediaType.parse("text/plain"), "Internal Server Error");
-            Response<NewsfeedWrapper> response = Response.error(500, body);
+        public class OnResponse {
+            @Test
+            public void newsFeedCallback_WhenRequestIsCancelled() {
+                Response<NewsfeedWrapper> response = createServerErrorResponse();
+                given(call.isCanceled()).willReturn(true);
 
-            callback.onResponse(call, response);
+                callback.onResponse(call, response);
 
-            verify(tourService).notifyListenersServerException(captor.capture());
-            assertThat(captor.getValue().getMessage()).isEqualTo("Response code = 500 : Internal Server Error");
-        }
+                verify(manager).resetCurrentNewsfeedCall();
+                verifyNoMoreInteractions(TourServiceManagerTest.this.service);
+            }
 
-        @Test
-        public void newsFeedCallback_OnResponse_WithNullList() {
-            NewsfeedWrapper wrapper = new NewsfeedWrapper();
-            wrapper.setNewsfeed(null);
-            Response<NewsfeedWrapper> response = Response.success(wrapper);
+            @Test
+            public void newsFeedCallback_WithoutServerException() {
+                Response<NewsfeedWrapper> response = createServerErrorResponse();
 
-            callback.onResponse(call, response);
+                callback.onResponse(call, response);
 
-            verify(tourService).notifyListenersTechnicalException(captor.capture());
-            assertThat(captor.getValue().getMessage()).isEqualTo("Null newsfeed list");
-        }
+                verify(manager).resetCurrentNewsfeedCall();
+                verify(service).notifyListenersServerException(captor.capture());
+                assertThat(captor.getValue().getMessage()).isEqualTo("Response code = 500 : Internal Server Error");
+            }
 
-        @Test
-        public void newsFeedCallback_OnResponse() {
-            List<Newsfeed> newsFeeds = Collections.singletonList(mock(Newsfeed.class));
-            NewsfeedWrapper wrapper = new NewsfeedWrapper();
-            wrapper.setNewsfeed(newsFeeds);
-            Response<NewsfeedWrapper> response = Response.success(wrapper);
+            @Test
+            public void newsFeedCallback_WithNullList() {
+                NewsfeedWrapper wrapper = new NewsfeedWrapper();
+                wrapper.setNewsfeed(null);
+                Response<NewsfeedWrapper> response = Response.success(wrapper);
 
-            callback.onResponse(call, response);
+                callback.onResponse(call, response);
 
-            verify(tourService).notifyListenersNewsFeedReceived(newsFeeds);
+                verify(manager).resetCurrentNewsfeedCall();
+                verify(service).notifyListenersTechnicalException(captor.capture());
+                assertThat(captor.getValue().getMessage()).isEqualTo("Null newsfeed list");
+            }
+
+            @Test
+            public void newsFeedCallback() {
+                List<Newsfeed> newsFeeds = Collections.singletonList(mock(Newsfeed.class));
+                NewsfeedWrapper wrapper = new NewsfeedWrapper();
+                wrapper.setNewsfeed(newsFeeds);
+                Response<NewsfeedWrapper> response = Response.success(wrapper);
+
+                callback.onResponse(call, response);
+
+                verify(manager).resetCurrentNewsfeedCall();
+                verify(service).notifyListenersNewsFeedReceived(newsFeeds);
+            }
+
+            private Response<NewsfeedWrapper> createServerErrorResponse() {
+                ResponseBody body = ResponseBody.create(MediaType.parse("text/plain"), "Internal Server Error");
+                return Response.error(500, body);
+            }
         }
     }
 }

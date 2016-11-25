@@ -287,10 +287,6 @@ public class TourService extends Service {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void updateNearbyTours() {
-        tourServiceManager.retrieveToursNearbyLarge();
-    }
-
     public void updateNewsfeed(EntouragePagination pagination) {
         if (pagination.isLoading) {
             return;
@@ -305,10 +301,6 @@ public class TourService extends Service {
 
     public void updateUserHistory(int userId, int page, int per) {
         tourServiceManager.retrieveToursByUserId(userId, page, per);
-    }
-
-    public void searchToursFromPoint(LatLng point, boolean isUserHistory, int userId, int page, int per) {
-        tourServiceManager.retrieveToursNearbySmall(point, isUserHistory, userId, page, per);
     }
 
     public void updateOngoingTour() {

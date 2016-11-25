@@ -105,8 +105,7 @@ public class TourServiceManager {
     private List<TourPoint> pointsToDraw;
     private Timer timerFinish;
     private boolean isTourClosing;
-
-    Call<Newsfeed.NewsfeedWrapper> retrieveNewsfeedCall; // current call to retrieve newsfeed
+    private Call<Newsfeed.NewsfeedWrapper> currentNewsFeedCall;
 
     private LocationManager locationManager;
     private CustomLocationListener locationListener;
@@ -218,6 +217,10 @@ public class TourServiceManager {
         BusProvider.getInstance().unregister(this);
     }
 
+    void resetCurrentNewsfeedCall() {
+        currentNewsFeedCall = null;
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -226,8 +229,6 @@ public class TourServiceManager {
         return (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
-
-
 
     private void addLastTourPoint() {
         Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
@@ -480,18 +481,18 @@ public class TourServiceManager {
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
             MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
-            retrieveNewsfeedCall = createNewsfeedWrapperCall(beforeDate, location, mapFilter);
-            retrieveNewsfeedCall.enqueue(new NewsFeedCallback(this));
+            currentNewsFeedCall = createNewsfeedWrapperCall(beforeDate, location, mapFilter);
+            currentNewsFeedCall.enqueue(new NewsFeedCallback(this, tourService));
         } else {
             tourService.notifyListenersCurrentPositionNotRetrieved();
         }
     }
 
     protected void cancelNewsFeedRetrieval() {
-        if (retrieveNewsfeedCall == null || retrieveNewsfeedCall.isCanceled()) {
+        if (currentNewsFeedCall == null || currentNewsFeedCall.isCanceled()) {
             return;
         }
-        retrieveNewsfeedCall.cancel();
+        currentNewsFeedCall.cancel();
     }
 
     protected void sendEncounter(final Encounter encounter) {
@@ -868,34 +869,37 @@ public class TourServiceManager {
     static class NewsFeedCallback implements Callback<Newsfeed.NewsfeedWrapper> {
         private static final String EMPTY_STRING = "";
         private final TourServiceManager manager;
+        private final TourService service;
 
-        NewsFeedCallback(TourServiceManager manager) {
+        NewsFeedCallback(TourServiceManager manager, TourService service) {
             this.manager = manager;
+            this.service = service;
         }
 
         @Override
         public void onResponse(Call<Newsfeed.NewsfeedWrapper> call, Response<Newsfeed.NewsfeedWrapper> response) {
-            if (!call.isCanceled()) {
-                if (response.isSuccess()) {
-                    List<Newsfeed> newsFeedList = response.body().getNewsfeed();
-                    if (newsFeedList == null) {
-                        manager.tourService.notifyListenersTechnicalException(new Throwable("Null newsfeed list"));
-                    } else {
-                        manager.tourService.notifyListenersNewsFeedReceived(newsFeedList);
-                    }
-                } else {
-                    manager.tourService.notifyListenersServerException(new Throwable(getErrorMessage(response)));
-                }
+            manager.resetCurrentNewsfeedCall();
+            if (call.isCanceled()) {
+                return;
             }
-            manager.retrieveNewsfeedCall = null;
+            if (response.isSuccess()) {
+                List<Newsfeed> newsFeedList = response.body().getNewsfeed();
+                if (newsFeedList == null) {
+                    service.notifyListenersTechnicalException(new Throwable("Null newsfeed list"));
+                } else {
+                    service.notifyListenersNewsFeedReceived(newsFeedList);
+                }
+            } else {
+                service.notifyListenersServerException(new Throwable(getErrorMessage(response)));
+            }
         }
 
         @Override
         public void onFailure(Call<Newsfeed.NewsfeedWrapper> call, Throwable t) {
+            manager.resetCurrentNewsfeedCall();
             if (!call.isCanceled()) {
-                manager.tourService.notifyListenersTechnicalException(t);
+                service.notifyListenersTechnicalException(t);
             }
-            manager.retrieveNewsfeedCall = null;
         }
 
         private String getErrorMessage(Response<Newsfeed.NewsfeedWrapper> response) {
