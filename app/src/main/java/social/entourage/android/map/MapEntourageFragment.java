@@ -1710,7 +1710,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void drawCurrentLocation(LatLng location) {
-        if (previousCoordinates != null) {
+        if (previousCoordinates != null && map != null) {
             PolylineOptions line = new PolylineOptions();
             line.add(previousCoordinates, location);
             line.zIndex(2f);
@@ -1854,7 +1854,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void clearAll() {
-        map.clear();
+        if (map != null) {
+            map.clear();
+        }
 
         currentTourLines.clear();
         drawnToursMap.clear();
