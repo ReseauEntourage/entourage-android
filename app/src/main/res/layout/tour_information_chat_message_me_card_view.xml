@@ -17,6 +17,7 @@
         android:id="@+id/tic_chat_message"
         android:textColor="@color/white"
         android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
         android:background="@drawable/bubble_discussion"
         android:textSize="18sp"
         android:autoLink="all"/>

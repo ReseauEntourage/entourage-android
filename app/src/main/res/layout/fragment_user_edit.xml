@@ -192,6 +192,7 @@
                         android:id="@+id/user_change_password_arrow"
                         android:src="@drawable/arrow_grey"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"/>
 
                     <TextView
@@ -200,6 +201,7 @@
                         android:text="@string/user_edit_password_button"
                         android:id="@+id/user_change_password_button"
                         android:layout_toLeftOf="@+id/user_change_password_arrow"
+                        android:layout_toStartOf="@+id/user_change_password_arrow"
                         style="@style/UserProfileTextViewStyle"
                         android:textColor="@color/accent"
                         android:layout_centerVertical="true"/>
