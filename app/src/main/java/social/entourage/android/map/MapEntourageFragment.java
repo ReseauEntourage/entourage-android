@@ -1073,9 +1073,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude);
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates.longitude);
                 longTapCoordinates = null;
-            } else {
+            } else if(EntourageLocation.getInstance().getCurrentLocation() !=null){
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getCurrentLocation().getLatitude());
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getCurrentLocation().getLongitude());
+            } else {
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.latitude);
+                args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getLastCameraPosition().target.longitude);
             }
             intent.putExtras(args);
             //startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
