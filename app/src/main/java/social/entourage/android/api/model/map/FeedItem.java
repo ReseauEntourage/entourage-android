@@ -6,6 +6,8 @@ import android.location.Address;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,8 +81,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // ----------------------------------
 
     public FeedItem() {
-        this.cachedCardInfoList = new ArrayList<>();
-        this.addedCardInfoList = new ArrayList<>();
+        initializeCardLists();
     }
 
     // ----------------------------------
@@ -189,6 +190,11 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // CARD INFO METHODS
     // ----------------------------------
 
+    private void initializeCardLists() {
+        this.cachedCardInfoList = new ArrayList<>();
+        this.addedCardInfoList = new ArrayList<>();
+    }
+
     public void addCardInfo(TimestampedObject cardInfo) {
         if (cardInfo == null) return;
         if (cachedCardInfoList.contains(cardInfo)) {
@@ -238,6 +244,17 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public void clearAddedCardInfoList() {
         addedCardInfoList.clear();
+    }
+
+    // ----------------------------------
+    // SERIALIZATION METHODS
+    // ----------------------------------
+
+    private void readObject(ObjectInputStream inputStream)
+            throws IOException, ClassNotFoundException
+    {
+        inputStream.defaultReadObject();
+        initializeCardLists();
     }
 
     // ----------------------------------
