@@ -170,6 +170,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                         }
                     });
 
+                    // MI: We need to wait for a better solution for long press options on guide map
+                    // So I'll just comment out the code
+                    /*
                     googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                         @Override
                         public void onMapLongClick(final LatLng latLng) {
@@ -178,6 +181,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                             }
                         }
                     });
+                    */
 
                     initializeMapZoom();
                 }
