@@ -537,11 +537,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 //compute distance
                 float distance = 0.0f;
                 List<TourPoint> tourPointsList = tour.getTourPoints();
-                TourPoint startPoint = tourPointsList.get(0);
-                for (int i = 1; i < tourPointsList.size(); i++) {
-                    TourPoint p = tourPointsList.get(i);
-                    distance += p.distanceTo(startPoint);
-                    startPoint = p;
+                if(tourPointsList.size()>1) {
+                    TourPoint startPoint = tourPointsList.get(0);
+                    for (int i = 1; i < tourPointsList.size(); i++) {
+                        TourPoint p = tourPointsList.get(i);
+                        distance += p.distanceTo(startPoint);
+                        startPoint = p;
+                    }
                 }
                 tour.setDistance(distance);
 
