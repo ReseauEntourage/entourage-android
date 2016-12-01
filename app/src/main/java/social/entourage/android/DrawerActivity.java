@@ -35,6 +35,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -178,6 +179,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             presenter.updateUser(null, null, null, (location != null ? location : null));
             //initialize the push notifications
             initializePushNotifications();
+
+            Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
+            Crashlytics.setUserName(user.getDisplayName());
         }
     }
 
