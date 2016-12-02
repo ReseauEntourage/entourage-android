@@ -4,17 +4,13 @@ import android.support.v4.util.ArrayMap;
 
 import javax.inject.Inject;
 
-import dagger.Component;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.ActivityScope;
-import social.entourage.android.EntourageComponent;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.user.UserFragment;
 
 /**
  * Created by mihaiionescu on 01/11/16.
@@ -63,7 +59,7 @@ public class UserEditPresenter {
             call.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         //update the logged user
                         authenticationController.saveUser(response.body().getUser());
                         authenticationController.saveUserPhoneAndCode(user.getPhone(), user.getSmsCode());

@@ -45,7 +45,7 @@ public class LoginInformationPresenter {
             call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
                 @Override
                 public void onResponse(Call<Newsletter.NewsletterWrapper> call, Response<Newsletter.NewsletterWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.newsletterResult(true);
                     } else {
                         fragment.newsletterResult(false);

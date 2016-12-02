@@ -52,7 +52,7 @@ public class UserPresenter {
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     fragment.onUserReceived(response.body().getUser());
                 }
                 else {
@@ -90,7 +90,7 @@ public class UserPresenter {
             call.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         //update the logged user
                         authenticationController.saveUser(response.body().getUser());
                         authenticationController.saveUserPhoneAndCode(user.getPhone(), user.getSmsCode());
@@ -116,7 +116,7 @@ public class UserPresenter {
             call.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onDeletedAccount(true);
                     }
                     else {

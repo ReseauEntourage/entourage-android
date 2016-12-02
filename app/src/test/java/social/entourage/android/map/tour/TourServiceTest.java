@@ -10,7 +10,6 @@ import java.util.List;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import social.entourage.android.api.model.Newsfeed;
 
-import static android.R.id.message;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;

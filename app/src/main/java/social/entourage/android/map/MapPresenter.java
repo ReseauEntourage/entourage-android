@@ -1,7 +1,6 @@
 package social.entourage.android.map;
 
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.GoogleMap;
@@ -137,7 +136,7 @@ public class MapPresenter {
         call.enqueue(new Callback<Invitation.InvitationsWrapper>() {
             @Override
             public void onResponse(final Call<Invitation.InvitationsWrapper> call, final Response<Invitation.InvitationsWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     fragment.onInvitationsReceived(response.body().getInvitations());
                 }
                 else {

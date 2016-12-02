@@ -2,17 +2,17 @@ package social.entourage.android.authentication.login;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.net.Uri;
-import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
@@ -405,7 +405,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void loginFail(int errorCode) {
         stopLoader();
         FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
-        //displayToast(getString(R.string.login_fail));
         @StringRes int errorMessage;
         switch (errorCode) {
             case LOGIN_ERROR_INVALID_PHONE_FORMAT:
@@ -419,16 +418,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 errorMessage = R.string.login_error;
                 break;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.login_error_title)
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.login_error_title)
             .setMessage(errorMessage)
             .setPositiveButton(R.string.login_retry_label, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(final DialogInterface dialog, final int which) {
 
                 }
-            });
-        builder.create().show();
+            })
+            .create()
+            .show();
     }
 
     public void displayToast(@StringRes int messageId) {

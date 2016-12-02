@@ -1,11 +1,10 @@
 package social.entourage.android.map.tour.join.received;
 
-import com.squareup.okhttp.ResponseBody;
-
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,9 +13,6 @@ import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 
-/**
- * Created by mihaiionescu on 18/03/16.
- */
 public class TourJoinRequestReceivedPresenter {
 
     // ----------------------------------
@@ -53,7 +49,7 @@ public class TourJoinRequestReceivedPresenter {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (activity != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(true);
                     }
                     else {
@@ -77,7 +73,7 @@ public class TourJoinRequestReceivedPresenter {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (activity != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(true);
                     } else {
                         activity.onUserTourStatusChanged(false);
@@ -104,7 +100,7 @@ public class TourJoinRequestReceivedPresenter {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (activity != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(true);
                     }
                     else {
@@ -128,7 +124,7 @@ public class TourJoinRequestReceivedPresenter {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (activity != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(true);
                     } else {
                         activity.onUserTourStatusChanged(false);

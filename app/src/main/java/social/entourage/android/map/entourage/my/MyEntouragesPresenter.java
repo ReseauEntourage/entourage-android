@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.model.Invitation;
@@ -56,7 +55,7 @@ public class MyEntouragesPresenter {
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
             public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     fragment.onNewsfeedReceived(response.body().getNewsfeed());
                 }
                 else {
@@ -76,7 +75,7 @@ public class MyEntouragesPresenter {
         call.enqueue(new Callback<Invitation.InvitationsWrapper>() {
             @Override
             public void onResponse(final Call<Invitation.InvitationsWrapper> call, final Response<Invitation.InvitationsWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     fragment.onInvitationsReceived(response.body().getInvitations());
                 }
                 else {

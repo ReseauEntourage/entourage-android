@@ -1,10 +1,9 @@
 package social.entourage.android.api;
 
-import com.squareup.okhttp.ResponseBody;
-
 import java.util.Date;
 import java.util.HashMap;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -19,9 +18,6 @@ import social.entourage.android.api.model.MultipleInvitations;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.TourUser;
 
-/**
- * Created by mihaiionescu on 29/04/16.
- */
 public interface EntourageRequest {
 
     @POST("entourages.json")

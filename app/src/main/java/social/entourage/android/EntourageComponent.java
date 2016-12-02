@@ -5,6 +5,7 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import okhttp3.OkHttpClient;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.EncounterRequest;
@@ -39,9 +40,7 @@ public interface EntourageComponent {
     void inject(EncounterTapeService service);
 
     AuthenticationController getAuthenticationController();
-
     EncounterTapeTaskQueue getEncounterTapeTaskQueue();
-
     AppRequest getAppRequest();
     EncounterRequest getEncounterRequest();
     LoginRequest getLoginRequest();
@@ -51,4 +50,6 @@ public interface EntourageComponent {
     EntourageRequest getEntourageRequest();
     NewsfeedRequest getNewsfeedRequest();
     InvitationRequest getInvitationRequest();
+
+    OkHttpClient getOkHttpClient();
 }

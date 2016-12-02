@@ -233,7 +233,7 @@ public class TourServiceManager {
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     pointsToSend.removeAll(tourPointWrapper.getTourPoints());
                     if (isTourClosing) {
                         closeTour();
@@ -318,7 +318,7 @@ public class TourServiceManager {
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     Log.d("Success", response.body().getTour().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                 } else {
@@ -339,7 +339,7 @@ public class TourServiceManager {
         call.enqueue(new Callback<Tour.ToursWrapper>() {
             @Override
             public void onResponse(Call<Tour.ToursWrapper> call, Response<Tour.ToursWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     tourService.notifyListenersUserToursFound(response.body().getTours());
                 }
             }
@@ -385,7 +385,7 @@ public class TourServiceManager {
             call.enqueue(new Callback<EncounterResponse>() {
                 @Override
                 public void onResponse(Call<EncounterResponse> call, Response<EncounterResponse> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         Log.d("tape:", "success");
                         BusProvider.getInstance().post(new EncounterTaskResult(true, encounter));
                     }
@@ -410,7 +410,7 @@ public class TourServiceManager {
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         tourService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
                     } else {
                         tourService.notifyListenersUserStatusChanged(null, tour);
@@ -434,7 +434,7 @@ public class TourServiceManager {
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         tourService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
                     } else {
                         tourService.notifyListenersUserStatusChanged(null, tour);
@@ -461,7 +461,7 @@ public class TourServiceManager {
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
             public void onResponse(Call<Entourage.EntourageWrapper> call, Response<Entourage.EntourageWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     Log.d("Success", response.body().getEntourage().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getEntourage());
                 } else {
@@ -486,7 +486,7 @@ public class TourServiceManager {
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         tourService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
                     } else {
                         tourService.notifyListenersUserStatusChanged(null, entourage);
@@ -510,7 +510,7 @@ public class TourServiceManager {
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         tourService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
                     } else {
                         tourService.notifyListenersUserStatusChanged(null, entourage);
@@ -600,7 +600,7 @@ public class TourServiceManager {
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     //initializeLocationService();
                     Location currentLocation = entourageLocation.getCurrentLocation();
                     if (currentLocation != null) {
@@ -655,7 +655,7 @@ public class TourServiceManager {
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     Log.d("Success", response.body().getTour().toString());
                     tour = null;
                     pointsToSend.clear();
@@ -685,7 +685,7 @@ public class TourServiceManager {
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     Log.d("Success", response.body().getTour().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                 } else {
@@ -762,7 +762,7 @@ public class TourServiceManager {
             if (call.isCanceled()) {
                 return;
             }
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 List<Newsfeed> newsFeedList = response.body().getNewsfeed();
                 if (newsFeedList == null) {
                     service.notifyListenersTechnicalException(new Throwable("Null newsfeed list"));

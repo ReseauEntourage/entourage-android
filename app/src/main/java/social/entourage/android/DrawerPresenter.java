@@ -13,10 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.squareup.okhttp.ResponseBody;
-
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -189,7 +188,7 @@ public class DrawerPresenter {
                 call.enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        if (response.isSuccess()) {
+                        if (response.isSuccessful()) {
                             if (activity.authenticationController.isAuthenticated()) {
                                 activity.authenticationController.saveUser(response.body().getUser());
                             }
@@ -219,7 +218,7 @@ public class DrawerPresenter {
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                     activity.dismissProgressDialog();
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         if (activity.authenticationController.isAuthenticated()) {
                             activity.authenticationController.saveUser(response.body().getUser());
                         }
@@ -268,7 +267,7 @@ public class DrawerPresenter {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     Log.d(LOG_TAG, "updating application info with success");
                 }
                 else {

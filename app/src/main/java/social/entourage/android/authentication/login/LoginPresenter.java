@@ -84,7 +84,7 @@ public class LoginPresenter {
                 call.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                        if (response.isSuccess()) {
+                        if (response.isSuccessful()) {
                             activity.stopLoader();
                             authenticationController.saveUser(response.body().getUser());
                             authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode);
@@ -151,7 +151,7 @@ public class LoginPresenter {
                 call.enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        if (response.isSuccess()) {
+                        if (response.isSuccessful()) {
                             activity.newCodeAsked(response.body().getUser(), isOnboarding);
                         } else {
                             activity.newCodeAsked(null, isOnboarding);
@@ -197,7 +197,7 @@ public class LoginPresenter {
                 @Override
                 public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
                     activity.stopLoader();
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         activity.showPhotoChooseSource();
                         activity.displayToast(activity.getString(R.string.login_text_email_update_success));
                     }
@@ -229,7 +229,7 @@ public class LoginPresenter {
             call.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         if (authenticationController.isAuthenticated()) {
                             authenticationController.saveUser(response.body().getUser());
                         }
@@ -258,7 +258,7 @@ public class LoginPresenter {
                 call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
                     @Override
                     public void onResponse(Call<Newsletter.NewsletterWrapper> call, Response<Newsletter.NewsletterWrapper> response) {
-                        if (response.isSuccess()) {
+                        if (response.isSuccessful()) {
                             activity.newsletterResult(true);
                         } else {
                             activity.newsletterResult(false);
@@ -288,7 +288,7 @@ public class LoginPresenter {
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     activity.registerPhoneNumberSent(phoneNumber, true);
                 } else {
                     if (response.errorBody() != null) {

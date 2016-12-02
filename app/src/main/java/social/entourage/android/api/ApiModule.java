@@ -34,41 +34,12 @@ import social.entourage.android.map.encounter.CreateEncounterPresenter;
  */
 @Module
 public class ApiModule {
-
-    @Inject
-    AuthenticationInterceptor interceptor;
+    @Inject AuthenticationInterceptor interceptor;
 
     @Provides
     @Singleton
-    public Retrofit providesRestAdapter(final AuthenticationInterceptor interceptor) {
-        Gson gson = new GsonBuilder()
-                .addSerializationExclusionStrategy(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-                        final Expose expose = fieldAttributes.getAnnotation(Expose.class);
-                        return expose != null && !expose.serialize();
-                    }
-                    @Override
-                    public boolean shouldSkipClass(Class<?> aClass) {
-                        return false;
-                    }
-                }).addDeserializationExclusionStrategy(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-                        final Expose expose = fieldAttributes.getAnnotation(Expose.class);
-                        return expose != null && !expose.deserialize();
-                    }
-                    @Override
-                    public boolean shouldSkipClass(Class<?> aClass) {
-                        return false;
-                    }
-                })
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-                .registerTypeAdapter(Newsfeed.class, new Newsfeed.NewsfeedJsonAdapter())
-                .create();
-
+    public OkHttpClient providesOkHttpClient(final AuthenticationInterceptor interceptor) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
         builder.addInterceptor(interceptor);
 
         if (BuildConfig.DEBUG) {
@@ -77,16 +48,45 @@ public class ApiModule {
             builder.addInterceptor(loggingInterceptor);
         }
 
-        OkHttpClient client = builder.build();
+        return builder.build();
+    }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.ENTOURAGE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
+    @Provides
+    @Singleton
+    public Retrofit providesRestAdapter(final OkHttpClient client) {
+        Gson gson = new GsonBuilder()
+            .addSerializationExclusionStrategy(new ExclusionStrategy() {
+                @Override
+                public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+                    final Expose expose = fieldAttributes.getAnnotation(Expose.class);
+                    return expose != null && !expose.serialize();
+                }
 
-        return retrofit;
+                @Override
+                public boolean shouldSkipClass(Class<?> aClass) {
+                    return false;
+                }
+            }).addDeserializationExclusionStrategy(new ExclusionStrategy() {
+                @Override
+                public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+                    final Expose expose = fieldAttributes.getAnnotation(Expose.class);
+                    return expose != null && !expose.deserialize();
+                }
 
+                @Override
+                public boolean shouldSkipClass(Class<?> aClass) {
+                    return false;
+                }
+            })
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            .registerTypeAdapter(Newsfeed.class, new Newsfeed.NewsfeedJsonAdapter())
+            .create();
+
+        return new Retrofit.Builder()
+            .baseUrl(BuildConfig.ENTOURAGE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build();
     }
 
     @Provides

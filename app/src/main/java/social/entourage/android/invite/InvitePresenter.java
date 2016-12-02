@@ -6,10 +6,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
-import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.MultipleInvitations;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.invite.contacts.InviteContactsFragment;
 
 /**
  * Created by mihaiionescu on 12/07/16.
@@ -54,7 +52,7 @@ public class InvitePresenter {
         call.enqueue(new Callback<MultipleInvitations.MultipleInvitationsResponse>() {
             @Override
             public void onResponse(final Call<MultipleInvitations.MultipleInvitationsResponse> call, final Response<MultipleInvitations.MultipleInvitationsResponse> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     if (fragment != null) {
                         fragment.onInviteSent(true);
                     }

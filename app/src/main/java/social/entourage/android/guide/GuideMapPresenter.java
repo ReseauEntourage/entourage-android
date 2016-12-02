@@ -65,7 +65,7 @@ public class GuideMapPresenter {
             call.enqueue(new Callback<MapResponse>() {
                 @Override
                 public void onResponse(Call<MapResponse> call, Response<MapResponse> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.putPoiOnMap(response.body().getCategories(), response.body().getPois());
                     }
                 }

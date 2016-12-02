@@ -1,13 +1,13 @@
 package social.entourage.android.map.tour.information;
 
 import com.flurry.android.FlurryAgent;
-import com.squareup.okhttp.ResponseBody;
 
 import java.util.Date;
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,7 +65,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<Tour.TourWrapper>() {
                 @Override
                 public void onResponse(final Call<Tour.TourWrapper> call, final Response<Tour.TourWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemReceived(response.body().getTour());
                     } else {
                         fragment.onFeedItemReceived(null);
@@ -83,7 +83,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<Entourage.EntourageWrapper>() {
                 @Override
                 public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemReceived(response.body().getEntourage());
                     } else {
                         fragment.onFeedItemReceived(null);
@@ -113,7 +113,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemUsersReceived(response.body().getUsers());
                     } else {
                         fragment.onFeedItemUsersReceived(null);
@@ -131,7 +131,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemUsersReceived(response.body().getUsers());
                     } else {
                         fragment.onFeedItemUsersReceived(null);
@@ -165,7 +165,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemMessagesReceived(response.body().getChatMessages());
                     } else {
                         fragment.onFeedItemMessagesReceived(null);
@@ -183,7 +183,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemMessagesReceived(response.body().getChatMessages());
                     } else {
                         fragment.onFeedItemMessagesReceived(null);
@@ -218,7 +218,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemMessageSent(response.body().getChatMessage());
                     } else {
                         fragment.onFeedItemMessageSent(null);
@@ -236,7 +236,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemMessageSent(response.body().getChatMessage());
                     } else {
                         fragment.onFeedItemMessageSent(null);
@@ -266,7 +266,7 @@ public class TourInformationPresenter {
             call.enqueue(new Callback<Encounter.EncountersWrapper>() {
                 @Override
                 public void onResponse(final Call<Encounter.EncountersWrapper> call, final Response<Encounter.EncountersWrapper> response) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onFeedItemEncountersReceived(response.body().getEncounters());
                     } else {
                         fragment.onFeedItemEncountersReceived(null);
@@ -335,7 +335,7 @@ public class TourInformationPresenter {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (fragment != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, true);
                     }
                     else {
@@ -359,7 +359,7 @@ public class TourInformationPresenter {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (fragment != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, true);
                     } else {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
@@ -386,7 +386,7 @@ public class TourInformationPresenter {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (fragment != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, true);
                     }
                     else {
@@ -410,7 +410,7 @@ public class TourInformationPresenter {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (fragment != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, true);
                     } else {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
@@ -437,7 +437,7 @@ public class TourInformationPresenter {
             @Override
             public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
                 if (fragment != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onInvitationStatusUpdated(true, Invitation.STATUS_ACCEPTED);
                     } else {
                         fragment.onInvitationStatusUpdated(false, Invitation.STATUS_ACCEPTED);
@@ -458,7 +458,7 @@ public class TourInformationPresenter {
             @Override
             public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
                 if (fragment != null) {
-                    if (response.isSuccess()) {
+                    if (response.isSuccessful()) {
                         fragment.onInvitationStatusUpdated(true, Invitation.STATUS_REJECTED);
                     } else {
                         fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED);

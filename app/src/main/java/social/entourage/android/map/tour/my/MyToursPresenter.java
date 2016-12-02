@@ -40,7 +40,7 @@ public class MyToursPresenter {
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
             public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     fragment.onNewsfeedReceived(response.body().getNewsfeed(), status);
                 }
                 else {

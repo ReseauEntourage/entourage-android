@@ -2,12 +2,11 @@ package social.entourage.android.map.tour.join;
 
 import android.widget.Toast;
 
-import com.squareup.okhttp.ResponseBody;
-
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -82,7 +81,7 @@ public class TourJoinRequestPresenter {
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     fragment.dismiss();
                     Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
                 }
@@ -110,7 +109,7 @@ public class TourJoinRequestPresenter {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     fragment.dismiss();
                     Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
                 }

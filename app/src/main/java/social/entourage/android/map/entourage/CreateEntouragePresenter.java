@@ -47,7 +47,7 @@ public class CreateEntouragePresenter {
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
             public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     Entourage receivedEntourage = response.body().getEntourage();
                     if (fragment != null) {
                         fragment.onEntourageCreated(receivedEntourage);
@@ -78,7 +78,7 @@ public class CreateEntouragePresenter {
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
             public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     Entourage receivedEntourage = response.body().getEntourage();
                     if (fragment != null) {
                         fragment.onEntourageEdited(receivedEntourage);
