@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,9 +43,11 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Organization;
+import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditFragment;
 
@@ -198,8 +201,11 @@ public class UserFragment extends DialogFragment {
     private void configureView() {
         if (getActivity() != null) {
             Resources res = getResources();
-            int tourCount = user.getStats().getTourCount();
-            //int encountersCount = user.getStats().getEncounterCount();
+            Stats stats = user.getStats();
+            int entourageCount = 0;
+            if (stats != null) {
+                entourageCount = stats.getEntourageCount();
+            }
 
             userEditProfile.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
@@ -216,7 +222,7 @@ public class UserFragment extends DialogFragment {
             }
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
-            userTourCount.setText(""+tourCount);
+            userTourCount.setText(""+entourageCount);
 
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);
             userEmailVerifiedImage.setImageResource(R.drawable.verified);
@@ -229,6 +235,14 @@ public class UserFragment extends DialogFragment {
                 }
                 organizationsAdapter = new UserOrganizationsAdapter(organizationList);
                 userAssociationsView.setAdapter(organizationsAdapter);
+
+                ItemClickSupport.addTo(userAssociationsView)
+                        .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                            @Override
+                            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                                onEditProfileClicked();
+                            }
+                        });
             }
 
             boolean isPro = user.isPro();
@@ -244,6 +258,12 @@ public class UserFragment extends DialogFragment {
     public void displayToast(String message) {
         if (getActivity() != null) {
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void displayToast(@StringRes int messageResIs) {
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), messageResIs, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -269,7 +289,7 @@ public class UserFragment extends DialogFragment {
     protected void onUserReceived(User user) {
         progressBar.setVisibility(View.GONE);
         if (user == null) {
-            displayToast(getString(R.string.user_retrieval_error));
+            displayToast(R.string.user_retrieval_error);
             return;
         }
         this.user = user;
@@ -277,13 +297,13 @@ public class UserFragment extends DialogFragment {
     }
 
     protected void onDeletedAccount(boolean success) {
-        if (getActivity() instanceof EntourageActivity) {
+        if (getActivity() != null && getActivity() instanceof EntourageActivity) {
             ((EntourageActivity) getActivity()).dismissProgressDialog();
         }
         if (success) {
             //remove the tutorial flag
             SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+            HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
             loggedNumbers.remove(this.user.getPhone());
             sharedPreferences.edit().putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers).commit();
             //go back to login screen
@@ -292,24 +312,26 @@ public class UserFragment extends DialogFragment {
             }
         }
         else {
-            displayToast(getString(R.string.user_delete_account_failure));
+            displayToast(R.string.user_delete_account_failure);
         }
     }
 
     protected void onUserUpdated(User user) {
         if (user == null) {
-            displayToast(getString(R.string.user_text_update_ko));
+            displayToast(R.string.user_text_update_ko);
         }
         else {
             //update the current view
             this.user = user;
             configureView();
             //update the edit view, if available
-            UserEditFragment userEditFragment = (UserEditFragment)getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
-            if (userEditFragment != null) {
-                userEditFragment.dismiss();
+            if (getFragmentManager() != null) {
+                UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+                if (userEditFragment != null) {
+                    userEditFragment.dismiss();
+                }
             }
-            displayToast(getString(R.string.user_text_update_ok));
+            displayToast(R.string.user_text_update_ok);
         }
     }
 
@@ -322,8 +344,11 @@ public class UserFragment extends DialogFragment {
         dismiss();
     }
 
-    @OnClick(R.id.user_profile_edit_button)
+    @OnClick({R.id.user_profile_edit_button, R.id.user_photo, R.id.user_name, R.id.user_identification_email_layout, R.id.user_identification_phone_layout, R.id.user_number_of_entourages_layout})
     protected void onEditProfileClicked() {
+        // Allow editing only of the logged user
+        if (!isMyProfile) return;
+        // Show the edit profile screen
         UserEditFragment fragment = new UserEditFragment();
         fragment.show(getFragmentManager(), UserEditFragment.TAG);
     }
@@ -363,6 +388,9 @@ public class UserFragment extends DialogFragment {
 
     @Subscribe
     public void userInfoUpdated(Events.OnUserInfoUpdatedEvent event) {
+        if (!isAdded()) {
+            return;
+        }
         User user = EntourageApplication.me(getActivity());
         //update the current view
         this.user = user;

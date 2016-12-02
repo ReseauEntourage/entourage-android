@@ -5,11 +5,15 @@ buildscript {
         mavenCentral()
         maven{ url 'https://jitpack.io' }
         maven { url "https://jcenter.bintray.com" }
+        maven { url 'https://maven.fabric.io/public' }
+        maven { url 'https://github.com/joel1di1/joel1di1-mvn-repo/raw/master/releases/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.JakeWharton:sdk-manager-plugin:220bf7a88a7072df3ed16dc8466fb144f2817070'
+        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'com.octo.nicolasmouchel:appaloosa-deploy:1.2'
     }
 }
 
@@ -18,5 +22,6 @@ allprojects {
         mavenCentral()
         jcenter()
         maven { url "https://jcenter.bintray.com" }
+        maven { url 'https://maven.fabric.io/public' }
     }
 }

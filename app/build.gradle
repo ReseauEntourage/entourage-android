@@ -1,6 +1,8 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'io.fabric'
+apply plugin: 'appaloosa-deploy'
 
 def versionMajor = 2
 def versionMinor = 2
@@ -9,16 +11,11 @@ def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-
     apt 'com.google.dagger:dagger-compiler:2.0.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
-
-
     compile files('libs/FlurryAnalytics-6.5.0.jar')
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:support-annotations:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
@@ -45,6 +42,14 @@ dependencies {
     compile 'com.amazonaws:aws-android-sdk-core:2.3.1'
     compile 'com.amazonaws:aws-android-sdk-s3:2.3.1'
     compile 'com.amazonaws:aws-android-sdk-ddb:2.3.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true;
+    }
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.assertj:assertj-core:1.7.1'
+    testCompile 'de.bechte.junit:junit-hierarchicalcontextrunner:4.12.1'
 }
 
 android {
@@ -52,24 +57,24 @@ android {
     buildToolsVersion '23.0.3'
 
     defaultConfig {
+        applicationId 'social.entourage.android'
         minSdkVersion 15
         targetSdkVersion 23
         versionCode versionMajor * 100000 + versionMinor * 10000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-        buildConfigField 'String', 'FLURRY_API_KEY', "\"${flurryApiKey}\""
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
-        buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
-        buildConfigField 'String', 'AWS_KEY', entourageAWSKey
-        buildConfigField 'String', 'AWS_SECRET', entourageAWSSecret
+        buildConfigField 'String', 'FLURRY_API_KEY', "\"${System.env.FLURRY_API_KEY}\""
+        buildConfigField 'String', 'AWS_KEY', "\"${System.env.AWS_KEY}\""
+        buildConfigField 'String', 'AWS_SECRET', "\"${System.env.AWS_SECRET}\""
     }
 
     signingConfigs {
         googleplay {
             keyAlias 'googleplay'
-            keyPassword entourageKeystorePassword
+            keyPassword "${System.env.KEYSTORE_PASS}"
             storeFile file('../keystore/googleplay-keystore.jks')
-            storePassword entourageKeystorePassword
+            storePassword "${System.env.KEYSTORE_PASS}"
         }
 
         debug {
@@ -91,8 +96,9 @@ android {
 
     productFlavors {
         preprod {
-            applicationId 'social.entourage.android'
+            applicationId 'social.entourage.android.preprod'
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
+            buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
         }
 
         prod {
@@ -115,5 +121,26 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+    }
+}
+
+appaloosaDeploy {
+    def buildVariant = 'release'
+    def groupName = 'CoreTeam'
+    def description = "${System.env.BITRISE_GIT_MESSAGE}"
+    storeToken 'ypt4d26acetzxivf5ynjeeqfisr9p7dr'
+    apks {
+        preprodRelease {
+            flavorName 'preprod'
+            buildName buildVariant
+            descriptionVersion description
+            groupsName groupName
+        }
+        prodRelease {
+            flavorName 'prod'
+            buildName buildVariant
+            descriptionVersion description
+            groupsName groupName
+        }
     }
 }

@@ -49,6 +49,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/notification_tour_infos"
         android:layout_toEndOf="@id/notification_tour_infos">
 
         <Button

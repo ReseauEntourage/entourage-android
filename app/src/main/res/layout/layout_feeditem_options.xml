@@ -13,6 +13,24 @@
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/tour_info_options_join"
+        android:id="@+id/feeditem_option_join"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"/>
+
+    <Button
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tour_info_options_report"
+        android:id="@+id/feeditem_option_report"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"/>
+
+    <Button
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/tour_info_options_freeze_tour"
         android:id="@+id/feeditem_option_stop"
         android:layout_marginBottom="5dp"

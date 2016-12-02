@@ -43,6 +43,7 @@
         layout="@layout/login_geolocation"
         android:id="@+id/login_include_geolocation"
         android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"/>
 
     <include
@@ -54,7 +55,8 @@
         android:layout_height="match_parent"
         layout="@layout/login_newsletter"
         android:id="@+id/login_include_newsletter"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"/>
 
     <include
         android:layout_width="wrap_content"

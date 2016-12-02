@@ -49,7 +49,7 @@ public class TourUser extends TimestampedObject implements Serializable {
     }
 
     public String getDisplayName() {
-        return displayName;
+        return displayName == null ? "" : displayName;
     }
 
     public void setDisplayName(final String displayName) {

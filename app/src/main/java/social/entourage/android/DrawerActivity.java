@@ -35,6 +35,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -178,6 +179,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             presenter.updateUser(null, null, null, (location != null ? location : null));
             //initialize the push notifications
             initializePushNotifications();
+
+            Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
+            Crashlytics.setUserName(user.getDisplayName());
         }
     }
 
@@ -242,9 +246,10 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStart() {
-        super.onStart();
         BusProvider.getInstance().register(this);
         presenter.checkForUpdate();
+
+        super.onStart();
     }
 
     @Override
@@ -266,8 +271,8 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStop() {
-        super.onStop();
         BusProvider.getInstance().unregister(this);
+        super.onStop();
     }
 
     // ----------------------------------
@@ -357,7 +362,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment = (MapEntourageFragment) mainFragment;
         } else {
-            mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
             loadFragmentWithExtras();
         }
     }
@@ -472,10 +476,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (menuId == 0) return;
         switch (menuId) {
             case R.id.action_tours:
-                mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-                if (mapEntourageFragment == null) {
-                    mapEntourageFragment = new MapEntourageFragment();
-                }
                 loadFragmentWithExtras();
                 break;
             case R.id.action_guide:
@@ -514,6 +514,24 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.action_blog:
+                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.BLOG_URL));
+                startActivity(blogIntent);
+                break;
+            case R.id.action_charte:
+                boolean isPro = false;
+                User me = getAuthenticationController().getUser();
+                if (me != null) {
+                    isPro = me.isPro();
+                }
+                Intent charteIntent;
+                if (isPro) {
+                    charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_pro)));
+                } else {
+                    charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_public)));
+                }
+                startActivity(charteIntent);
+                break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
@@ -530,11 +548,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void loadFragmentWithExtras() {
-        MapEntourageFragment fragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if (fragment == null) {
-            fragment = new MapEntourageFragment();
+        mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
+        if (mapEntourageFragment == null) {
+            mapEntourageFragment = new MapEntourageFragment();
         }
-        loadFragment(fragment, MapEntourageFragment.TAG);
+        loadFragment(mapEntourageFragment, MapEntourageFragment.TAG);
         if (getAuthenticationController().getUser() != null) {
             final int userId = getAuthenticationController().getUser().getId();
             final boolean choice = getAuthenticationController().isUserToursOnly();
@@ -571,17 +589,25 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (event.getRegistrationId() != null) {
             presenter.updateApplicationInfo(event.getRegistrationId());
         }
+        /*
         else {
             presenter.updateApplicationInfo("");
         }
+        */
     }
 
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
+        Intent intent = getIntent();
+        if (intent == null || intent.getExtras() == null) {
+            intentAction = null;
+            intentTour = null;
+            return;
+        }
         mapEntourageFragment.checkAction(intentAction, intentTour);
         if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
-            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             if (message != null) {
                 PushNotificationContent content = message.getContent();
                 if (content != null) {
@@ -594,7 +620,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         }
         else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
-            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             if (message != null) {
                 PushNotificationContent content = message.getContent();
                 if (content != null) {
@@ -606,7 +632,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         }
         else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
-            Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
             if (message != null) {
                 PushNotificationContent content = message.getContent();
                 if (content != null) {
@@ -1111,24 +1137,48 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
+    @OnClick(R.id.button_poi_propose)
+    protected void onPOIProposeClicked() {
+        if (isGuideShown()) {
+            GuideMapEntourageFragment guideMapEntourageFragment = (GuideMapEntourageFragment) mainFragment;
+            guideMapEntourageFragment.proposePOI();
+        }
+    }
+
     @OnClick(R.id.button_poi_launcher)
     protected void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             FlurryAgent.logEvent(Constants.EVENT_FEED_GUIDE_SHOW_CLICK);
+            // Change the Guide Option text
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_close_button));
+            // Make the 'Propose POI' button visible
+            FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
+            if (proposePOIButton != null) {
+                proposePOIButton.setVisibility(View.VISIBLE);
+            }
+            // Hide the overlay
             if (mapOptionsMenu.isOpened()) {
                 mapOptionsMenu.toggle(false);
             }
+            // Show the guide screen
             selectItem(R.id.action_guide);
         }
         else {
             FlurryAgent.logEvent(Constants.EVENT_GUIDE_MASK_CLICK);
+            // Change the Guide Option text
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_launcher_button));
+            // Make the 'Propose POI' button gone
+            FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
+            if (proposePOIButton != null) {
+                proposePOIButton.setVisibility(View.GONE);
+            }
+            // Hide the overlay
             if (mapOptionsMenu.isOpened()) {
                 mapOptionsMenu.toggle(false);
             }
+            // Show the map screen
             selectItem(R.id.action_tours);
         }
     }

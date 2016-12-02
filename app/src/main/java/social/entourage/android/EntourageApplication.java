@@ -4,12 +4,15 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.flurry.android.FlurryAgent;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.ArrayList;
 
+import io.fabric.sdk.android.Fabric;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
@@ -27,15 +30,18 @@ public class EntourageApplication extends Application {
 
     @Override
     public void onCreate() {
-
         activities = new ArrayList<>();
-
         super.onCreate();
 
+        setupFabric();
         setupFlurry();
         JodaTimeAndroid.init(this);
         setupDagger();
+    }
 
+    private void setupFabric() {
+        Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Answers());
     }
 
     private void setupDagger() {
@@ -50,7 +56,6 @@ public class EntourageApplication extends Application {
     private void setupFlurry() {
         FlurryAgent.setLogEnabled(true);
         FlurryAgent.setLogLevel(Log.VERBOSE);
-        //FlurryAgent.setReportLocation(true);
         FlurryAgent.setLogEvents(true);
         FlurryAgent.init(this, BuildConfig.FLURRY_API_KEY);
     }

@@ -6,7 +6,7 @@ public class Constants {
 
     //TODO: should be changed after each release
     // API Key
-    public static final String API_KEY = "f28b6ff3362be6dd408e4bae";
+    public static final String API_KEY = "416a76cfc2c79d050f17909b";
 
     // Filenames
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
@@ -18,6 +18,13 @@ public class Constants {
     // Request and result codes
     public static final int REQUEST_CREATE_ENCOUNTER = 1;
     public static final int RESULT_CREATE_ENCOUNTER_OK = 2;
+
+    // Links
+    public static final String BLOG_URL = "https://blog.entourage.social/category/franchir-le-pas/";
+    public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
+
+    // Email Addresses
+    public static final String EMAIL_CONTACT = "contact@entourage.social";
 
     // Flurry events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
@@ -83,6 +90,8 @@ public class Constants {
     public static final String EVENT_FEED_CANCEL_JOIN_REQUEST = "CancelJoinRequest";
     public static final String EVENT_FEED_OPEN_ACTIVE_OVERLAY = "OpenActiveOverlay";
     public static final String EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed";
+    public static final String EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR = "ActivateGeolocFromCreateTourPopup";
+    public static final String EVENT_FEED_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromRecenterPopup";
 
     //MAP Events
     public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick"; //Not used
@@ -185,4 +194,7 @@ public class Constants {
 
     //Invite success automatic hide delay
     public static final long INVITE_SUCCESS_HIDE_DELAY = 5000; //1000 * 5
+
+    // Don't show the popup again within this radius
+    public static final int EMPTY_POPUP_DISPLAY_LIMIT = 300; //meters
 }

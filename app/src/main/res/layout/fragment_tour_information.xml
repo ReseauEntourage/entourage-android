@@ -45,9 +45,9 @@
             android:id="@+id/tour_info_share_button"
             android:src="@drawable/ic_share"
             android:background="?android:attr/selectableItemBackground"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_alignParentRight="true"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -66,7 +66,8 @@
             android:src="@drawable/ic_more"
             android:background="?android:attr/selectableItemBackground"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
     </RelativeLayout>
 
     <include

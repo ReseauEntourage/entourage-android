@@ -91,10 +91,10 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
             disclaimerTextView.setMovementMethod(LinkMovementMethod.getInstance());
             String disclaimer = "";
             if (isPro) {
-                disclaimer = getString(R.string.entourage_disclaimer_text, getString(R.string.entourage_disclaimer_link_pro));
+                disclaimer = getString(R.string.entourage_disclaimer_text, getString(R.string.disclaimer_link_pro));
 
             } else {
-                disclaimer = getString(R.string.entourage_disclaimer_text, getString(R.string.entourage_disclaimer_link_public));
+                disclaimer = getString(R.string.entourage_disclaimer_text, getString(R.string.disclaimer_link_public));
             }
             disclaimerTextView.setText(Html.fromHtml(disclaimer));
         }

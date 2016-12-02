@@ -120,14 +120,16 @@ public class User implements Serializable {
         return phone;
     }
 
-    public String getDisplayName() { return displayName;}
+    public String getDisplayName() {
+        return displayName == null ? "" : displayName;
+    }
 
     public String getFirstName() {
-        return firstName;
+        return firstName == null ? "" : firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName == null ? "" : lastName;
     }
 
     public String getToken() {

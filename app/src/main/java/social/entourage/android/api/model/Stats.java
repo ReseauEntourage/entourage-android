@@ -16,13 +16,17 @@ public class Stats implements Serializable{
     @SerializedName("encounter_count")
     private int encounterCount;
 
+    @SerializedName("entourage_count")
+    private int entourageCount;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
-    public Stats(int tourCount, int encounterCount) {
+    public Stats(int tourCount, int encounterCount, int entourageCount) {
         this.tourCount = tourCount;
         this.encounterCount = encounterCount;
+        this.entourageCount = entourageCount;
     }
 
     // ----------------------------------
@@ -44,4 +48,13 @@ public class Stats implements Serializable{
     public void setEncounterCount(int encounterCount) {
         this.encounterCount = encounterCount;
     }
+
+    public int getEntourageCount() {
+        return entourageCount + tourCount;
+    }
+
+    public void setEntourageCount(final int entourageCount) {
+        this.entourageCount = entourageCount;
+    }
+
 }
