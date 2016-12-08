@@ -28,6 +28,7 @@ public class Constants {
     public static final String EVENT_LOGIN_START = "Login_Start";
     public static final String EVENT_LOGIN_OK = "Login_Success";
     public static final String EVENT_LOGIN_FAILED = "Login_Failed";
+    public static final String EVENT_LOGIN_ERROR = "Login_Error";
     public static final String EVENT_TUTORIAL_START = "Log_Tutorial_Start";
     public static final String EVENT_TUTORIAL_END = "Log_Tutorial_End";
     public static final String EVENT_LOGIN_SEND_NEW_CODE = "Login_Send_New_Code";
@@ -37,6 +38,7 @@ public class Constants {
     public static final String EVENT_SPLASH_LOGIN = "SplashLogIn";
     public static final String EVENT_PHONE_SUBMIT = "TelephoneSubmit";
     public static final String EVENT_PHONE_SUBMIT_FAIL = "TelephoneSubmitFail";
+    public static final String EVENT_PHONE_SUBMIT_ERROR = "TelephoneSubmitError";
     public static final String EVENT_SMS_CODE_REQUEST = "SMSCodeRequest";
     public static final String EVENT_EMAIL_SUBMIT = "EmailSubmit";
     public static final String EVENT_NAME_SUBMIT = "NameSubmit";

@@ -404,19 +404,21 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     public void loginFail(int errorCode) {
         stopLoader();
-        FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
         //displayToast(getString(R.string.login_fail));
         @StringRes int errorMessage;
         switch (errorCode) {
             case LOGIN_ERROR_INVALID_PHONE_FORMAT:
                 errorMessage = R.string.login_error_invalid_phone_format;
+                FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
                 break;
             case LOGIN_ERROR_UNAUTHORIZED:
                 errorMessage = R.string.login_error_invalid_credentials;
+                FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
                 break;
             case LOGIN_ERROR_NETWORK:
             default:
                 errorMessage = R.string.login_error;
+                FlurryAgent.logEvent(Constants.EVENT_LOGIN_ERROR);
                 break;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

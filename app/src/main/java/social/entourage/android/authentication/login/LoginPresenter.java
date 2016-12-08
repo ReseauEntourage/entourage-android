@@ -315,7 +315,7 @@ public class LoginPresenter {
             @Override
             public void onFailure(final Call<UserResponse> call, final Throwable t) {
                 activity.displayToast(R.string.login_error);
-                FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
+                FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_ERROR);
             }
         });
     }
