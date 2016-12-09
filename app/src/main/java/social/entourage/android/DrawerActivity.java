@@ -56,10 +56,19 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.tape.Events.*;
+import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
+import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent;
+import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent;
+import social.entourage.android.api.tape.Events.OnGCMTokenObtainedEvent;
+import social.entourage.android.api.tape.Events.OnPushNotificationReceived;
+import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent;
+import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
+import social.entourage.android.api.tape.Events.OnUserActEvent;
+import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent;
+import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.guide.GuideMapEntourageFragment;
@@ -69,8 +78,8 @@ import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
-import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.TourService;
+import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.message.push.RegisterGCMService;
@@ -1003,31 +1012,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             }
         });
-
-        /*
-        // Get the image as byte array
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        if (!photo.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
-            Log.d("UserPhoto", "Cannot compress to stream");
-            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        byte[] byteArray = stream.toByteArray();
-        // Get the base 64 representation
-        String base64Photo = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        if (base64Photo == null || base64Photo.length() == 0) {
-            Log.d("UserPhoto", "Invalid or empty base64 string");
-            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        // Update the user
-        if (presenter != null) {
-            presenter.updateUserPhoto(base64Photo);
-        }
-        else {
-            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
-        }
-        */
     }
 
     // ----------------------------------
@@ -1041,20 +1025,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.onStartTourLauncher();
         }
         else {
-            /*
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.map_poi_create_tour_error)
-                    .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            onPOILauncherClicked();
-                            mapEntourageFragment.onStartTourLauncher();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null);
-            builder.show();
-            */
-
             onPOILauncherClicked();
             mapEntourageFragment.onStartTourLauncher();
         }
@@ -1066,20 +1036,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.onAddEncounter();
         }
         else {
-            /*
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.map_poi_create_encounter_error)
-                    .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            onPOILauncherClicked();
-                            mapEntourageFragment.onAddEncounter();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null);
-            builder.show();
-            */
-
             onPOILauncherClicked();
             mapEntourageFragment.onAddEncounter();
         }
@@ -1092,20 +1048,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
         else {
-            /*
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.map_poi_create_entourage_error)
-                    .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            onPOILauncherClicked();
-                            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null);
-            builder.show();
-            */
-
             onPOILauncherClicked();
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
         }
@@ -1118,20 +1060,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }
         else {
-            /*
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.map_poi_create_entourage_error)
-                    .setPositiveButton(R.string.leave, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            onPOILauncherClicked();
-                            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null);
-            builder.show();
-            */
-
             onPOILauncherClicked();
             mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
         }
