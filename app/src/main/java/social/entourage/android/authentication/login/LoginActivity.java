@@ -70,10 +70,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
-
     private static final int PERMISSIONS_REQUEST_PHONE_STATE = 1;
-    public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
+    private static final String VERSION = "Version : ";
 
+    public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
     public final static int LOGIN_ERROR_UNAUTHORIZED = -1;
     public final static int LOGIN_ERROR_INVALID_PHONE_FORMAT = -2;
     public final static int LOGIN_ERROR_UNKNOWN = -9998;
@@ -300,10 +300,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     protected void setupComponent(EntourageComponent entourageComponent) {
         DaggerLoginComponent.builder()
-                .entourageComponent(entourageComponent)
-                .loginModule(new LoginModule(this))
-                .build()
-                .inject(this);
+            .entourageComponent(entourageComponent)
+            .loginModule(new LoginModule(this))
+            .build()
+            .inject(this);
     }
 
     @Override
@@ -326,37 +326,30 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             hideKeyboard();
             loginSignin.setVisibility(View.GONE);
             loginStartup.setVisibility(View.VISIBLE);
-        }
-        else if (loginLostCode.getVisibility() == View.VISIBLE) {
+        } else if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);
             loginSignin.setVisibility(View.VISIBLE);
             showKeyboard(phoneEditText);
-        }
-        else if (loginTutorial.getVisibility() == View.VISIBLE) {
+        } else if (loginTutorial.getVisibility() == View.VISIBLE) {
             loginTutorial.setVisibility(View.GONE);
             loginWelcome.setVisibility(View.VISIBLE);
-        }
-        else if (loginWelcome.getVisibility() == View.VISIBLE) {
+        } else if (loginWelcome.getVisibility() == View.VISIBLE) {
             loginWelcome.setVisibility(View.GONE);
             loginSignin.setVisibility(View.VISIBLE);
-        }
-        else if (loginNameView.getVisibility() == View.VISIBLE) {
+        } else if (loginNameView.getVisibility() == View.VISIBLE) {
             loginNameView.setVisibility(View.GONE);
             loginWelcome.setVisibility(View.VISIBLE);
-        }
-        else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
+        } else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
             newsletterEmail.setText("");
             loginNewsletter.setVisibility(View.GONE);
             previousView.setVisibility(View.VISIBLE);
             if (previousView == loginSignin) {
                 showKeyboard(phoneEditText);
             }
-        }
-        else if (loginVerifyCode.getVisibility() == View.VISIBLE) {
+        } else if (loginVerifyCode.getVisibility() == View.VISIBLE) {
             showLostCodeScreen();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -370,14 +363,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (PermissionChecker.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
                 new AlertDialog.Builder(this)
-                        .setTitle(R.string.login_permission_title)
-                        .setMessage(R.string.login_permission_description)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                requestPermissions(new String[]{ Manifest.permission.READ_PHONE_STATE }, PERMISSIONS_REQUEST_PHONE_STATE);
-                            }
-                        }).show();
+                    .setTitle(R.string.login_permission_title)
+                    .setMessage(R.string.login_permission_description)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_PHONE_STATE);
+                        }
+                    }).show();
             } else {
                 requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_PHONE_STATE);
             }
@@ -470,12 +463,18 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void launchFillInProfileView(String phoneNumber, User user) {
 
         //TODO Need a better approach
-        DialogFragment fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
-        if (fragment != null) fragment.dismiss();
-        fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
-        if (fragment != null) fragment.dismiss();
-        fragment = (DialogFragment)getSupportFragmentManager().findFragmentByTag(RegisterWelcomeFragment.TAG);
-        if (fragment != null) fragment.dismiss();
+        DialogFragment fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
+        if (fragment != null) {
+            fragment.dismiss();
+        }
+        fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
+        if (fragment != null) {
+            fragment.dismiss();
+        }
+        fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterWelcomeFragment.TAG);
+        if (fragment != null) {
+            fragment.dismiss();
+        }
 
         loggedPhoneNumber = phoneNumber;
 
@@ -490,14 +489,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (user.getEmail() == null || user.getEmail().length() == 0) {
             loginWelcome.setVisibility(View.VISIBLE);
             profileEmail.requestFocus();
-        }
-        else if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
+        } else if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
             showNameView();
-        }
-        else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
+        } else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
             showPhotoChooseSource();
-        }
-        else {
+        } else {
             showNotificationPermissionView();
         }
     }
@@ -533,7 +529,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
         if (loginPresenter == null || loginPresenter.authenticationController == null || loginPresenter.authenticationController.getUser() == null) {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
-            PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+            PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
             if (photoEditFragment != null) {
                 photoEditFragment.onPhotoSent(false);
             }
@@ -542,13 +538,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         //Upload the photo to Amazon S3
         showProgressDialog(R.string.user_photo_uploading);
 
-        final String objectKey = "user_"+loginPresenter.authenticationController.getUser().getId()+".jpg";
+        final String objectKey = "user_" + loginPresenter.authenticationController.getUser().getId() + ".jpg";
         TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
         TransferObserver transferObserver = transferUtility.upload(
-                BuildConfig.AWS_BUCKET,
-                "300x300/"+objectKey,
-                new File(photoUri.getPath()),
-                CannedAccessControlList.PublicRead
+            BuildConfig.AWS_BUCKET,
+            "300x300/" + objectKey,
+            new File(photoUri.getPath()),
+            CannedAccessControlList.PublicRead
         );
         transferObserver.setTransferListener(new TransferListener() {
             @Override
@@ -565,7 +561,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                     } else {
                         Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
                         dismissProgressDialog();
-                        PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                         if (photoEditFragment != null) {
                             photoEditFragment.onPhotoSent(false);
                         }
@@ -582,7 +578,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             public void onError(final int id, final Exception ex) {
                 Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
                 dismissProgressDialog();
-                PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+                PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                 if (photoEditFragment != null) {
                     photoEditFragment.onPhotoSent(false);
                 }
@@ -606,7 +602,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         informationFragment.show(fragmentManager, "fragment_login_information");
     }
     */
-
     @OnClick(R.id.login_back_button)
     void onLoginBackClick() {
         onBackPressed();
@@ -616,8 +611,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void onLoginClick() {
         if (loginPresenter != null) {
             loginPresenter.login(
-                    phoneEditText.getText().toString(),
-                    passwordEditText.getText().toString());
+                phoneEditText.getText().toString(),
+                passwordEditText.getText().toString());
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
@@ -737,7 +732,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void showNameView() {
         loginNameView.setVisibility(View.VISIBLE);
 
-        if (loginPresenter != null && loginPresenter.authenticationController  != null) {
+        if (loginPresenter != null && loginPresenter.authenticationController != null) {
             User user = loginPresenter.authenticationController.getUser();
             if (user != null) {
                 if (user.getFirstName() != null) {
@@ -788,12 +783,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     protected void onUserPhotoUpdated(boolean updated) {
         dismissProgressDialog();
-        PhotoEditFragment photoEditFragment = (PhotoEditFragment)getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
         if (photoEditFragment != null) {
             photoEditFragment.onPhotoSent(updated);
         }
         if (updated) {
-            PhotoChooseSourceFragment fragment = (PhotoChooseSourceFragment)getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
+            PhotoChooseSourceFragment fragment = (PhotoChooseSourceFragment) getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
             if (fragment != null) {
                 fragment.dismiss();
             }
@@ -818,7 +813,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     private void finishTutorial() {
         //set the tutorial as done
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-        HashSet<String>loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
+        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.add(loggedPhoneNumber);
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
 
@@ -898,8 +893,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (success) {
             displayToast(getString(R.string.login_text_newsletter_success));
             onBackPressed();
-        }
-        else {
+        } else {
             displayToast(getString(R.string.login_text_newsletter_fail));
         }
     }
@@ -917,8 +911,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void verifyCode() {
         if (loginPresenter != null) {
             loginPresenter.login(
-                    lostCodePhone.getText().toString(),
-                    receivedCode.getText().toString()
+                lostCodePhone.getText().toString(),
+                receivedCode.getText().toString()
             );
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
@@ -944,7 +938,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     // OnRegisterUserListener
-
     @Override
     public void registerShowSignIn() {
         showLoginScreen();
@@ -1034,4 +1027,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         finishTutorial();
     }
 
+    @OnClick(R.id.login_startup_logo)
+    void onEntourageLogoClick() {
+        Toast.makeText(this, VERSION + BuildConfig.VERSION_NAME, Toast.LENGTH_LONG).show();
+    }
 }
