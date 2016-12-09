@@ -1722,7 +1722,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     @Override
-    public void onGpsStatusChanged(final boolean active) {
+    public void onLocationProviderStatusChanged(final boolean active) {
 
     }
 

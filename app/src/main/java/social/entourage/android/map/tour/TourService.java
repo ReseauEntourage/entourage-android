@@ -43,6 +43,7 @@ import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.tools.CrashlyticsNewsFeedListener;
 import social.entourage.android.tools.LoggerNewsFeedListener;
@@ -60,8 +61,8 @@ public class TourService extends Service {
     private static final int NOTIFICATION_ID = 1;
     public static final String KEY_NOTIFICATION_PAUSE_TOUR = "social.entourage.android.KEY_NOTIFICATION_PAUSE_TOUR";
     public static final String KEY_NOTIFICATION_STOP_TOUR = "social.entourage.android.KEY_NOTIFICATION_STOP_TOUR";
-    public static final String KEY_GPS_DISABLED = "social.entourage.android.KEY_GPS_DISABLED";
-    public static final String KEY_GPS_ENABLED = "social.entourage.android.KEY_GPS_ENABLED";
+    public static final String KEY_LOCATION_PROVIDER_DISABLED = "social.entourage.android.KEY_LOCATION_PROVIDER_DISABLED";
+    public static final String KEY_LOCATION_PROVIDER_ENABLED = "social.entourage.android.KEY_LOCATION_PROVIDER_ENABLED";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -69,6 +70,8 @@ public class TourService extends Service {
 
     private final IBinder binder = new LocalBinder();
 
+    @Inject
+    AuthenticationController authenticationController;
     @Inject
     TourRequest tourRequest;
     @Inject
@@ -107,7 +110,7 @@ public class TourService extends Service {
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
-            } else if (KEY_GPS_DISABLED.equals(action)) {
+            } else if (KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(false);
                 if (isRunning()) {
                     Intent newIntent = new Intent(context, DrawerActivity.class);
@@ -115,7 +118,7 @@ public class TourService extends Service {
                     newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(newIntent);
                 }
-            } else if (KEY_GPS_ENABLED.equals(action)) {
+            } else if (KEY_LOCATION_PROVIDER_ENABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(true);
             }
         }
@@ -144,15 +147,21 @@ public class TourService extends Service {
         super.onCreate();
         EntourageApplication.get(this).getEntourageComponent().inject(this);
 
-        tourServiceManager = TourServiceManager.newInstance(this, tourRequest, encounterRequest, newsfeedRequest, entourageRequest);
+        tourServiceManager = TourServiceManager.newInstance(
+            this,
+            tourRequest,
+            authenticationController,
+            encounterRequest,
+            newsfeedRequest,
+            entourageRequest);
 
         isPaused = false;
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(KEY_NOTIFICATION_PAUSE_TOUR);
         filter.addAction(KEY_NOTIFICATION_STOP_TOUR);
-        filter.addAction(KEY_GPS_DISABLED);
-        filter.addAction(KEY_GPS_ENABLED);
+        filter.addAction(KEY_LOCATION_PROVIDER_DISABLED);
+        filter.addAction(KEY_LOCATION_PROVIDER_ENABLED);
         registerReceiver(receiver, filter);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -476,7 +485,7 @@ public class TourService extends Service {
 
     public void notifyListenersGpsStatusChanged(boolean active) {
         for (TourServiceListener listener : tourServiceListeners) {
-            listener.onGpsStatusChanged(active);
+            listener.onLocationProviderStatusChanged(active);
         }
     }
 
@@ -540,7 +549,7 @@ public class TourService extends Service {
 
         void onFeedItemClosed(boolean closed, FeedItem feedItem);
 
-        void onGpsStatusChanged(boolean active);
+        void onLocationProviderStatusChanged(boolean active);
 
         void onUserStatusChanged(TourUser user, FeedItem feedItem);
     }

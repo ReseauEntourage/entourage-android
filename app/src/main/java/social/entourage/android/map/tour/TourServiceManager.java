@@ -1,21 +1,15 @@
 package social.entourage.android.map.tour;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.otto.Subscribe;
@@ -30,7 +24,6 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
@@ -39,6 +32,7 @@ import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.EntourageDate;
 import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -48,15 +42,18 @@ import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.EncounterTaskResult;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
+import social.entourage.android.map.tour.FusedLocationProvider.ProviderStatusListener;
+import social.entourage.android.map.tour.FusedLocationProvider.UserType;
 import social.entourage.android.tools.BusProvider;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
-import static android.content.Context.LOCATION_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
-import static android.support.v4.content.PermissionChecker.checkSelfPermission;
+import static social.entourage.android.map.tour.FusedLocationProvider.UserType.PRO;
+import static social.entourage.android.map.tour.FusedLocationProvider.UserType.PUBLIC;
 
 /**
  * Manager is like a presenter but for a service
@@ -87,6 +84,7 @@ public class TourServiceManager {
     private final EntourageRequest entourageRequest;
     private final ConnectivityManager connectivityManager;
     private final EntourageLocation entourageLocation;
+    private final FusedLocationProvider provider;
 
     private Tour tour;
     private Location previousLocation;
@@ -98,8 +96,6 @@ public class TourServiceManager {
     private boolean isTourClosing;
     private Call<Newsfeed.NewsfeedWrapper> currentNewsFeedCall;
 
-    private LocationManager locationManager;
-    private CustomLocationListener locationListener;
     private boolean isBetterLocationUpdated;
 
     TourServiceManager(final TourService tourService,
@@ -108,12 +104,14 @@ public class TourServiceManager {
                        final NewsfeedRequest newsfeedRequest,
                        final EntourageRequest entourageRequest,
                        final ConnectivityManager connectivityManager,
-                       final EntourageLocation entourageLocation) {
+                       final EntourageLocation entourageLocation,
+                       final FusedLocationProvider provider) {
         this.tourService = tourService;
         this.tourRequest = tourRequest;
         this.encounterRequest = encounterRequest;
         this.newsfeedRequest = newsfeedRequest;
         this.entourageRequest = entourageRequest;
+        this.provider = provider;
         this.pointsNeededForNextRequest = 1;
         this.pointsToSend = new ArrayList<>();
         this.pointsToDraw = new ArrayList<>();
@@ -124,12 +122,16 @@ public class TourServiceManager {
 
     public static TourServiceManager newInstance(final TourService tourService,
                                                  final TourRequest tourRequest,
+                                                 final AuthenticationController controller,
                                                  final EncounterRequest encounterRequest,
                                                  final NewsfeedRequest newsfeedRequest,
                                                  final EntourageRequest entourageRequest) {
         Log.i("TourServiceManager", "newInstance");
         ConnectivityManager connectivityManager = (ConnectivityManager) tourService.getSystemService(CONNECTIVITY_SERVICE);
         EntourageLocation entourageLocation = EntourageLocation.getInstance();
+        User user = controller.getUser();
+        UserType type = user != null && user.isPro() ? PRO : PUBLIC;
+        FusedLocationProvider provider = new FusedLocationProvider(tourService, type);
         TourServiceManager tourServiceManager = new TourServiceManager(
             tourService,
             tourRequest,
@@ -137,9 +139,12 @@ public class TourServiceManager {
             newsfeedRequest,
             entourageRequest,
             connectivityManager,
-            entourageLocation);
+            entourageLocation,
+            provider);
+        provider.setLocationListener(new FusedLocationListener(tourServiceManager));
+        provider.setStatusListener(new FusedLocationStatusListener(tourService));
+        provider.start();
         BusProvider.getInstance().register(tourServiceManager);
-        tourServiceManager.initializeLocationService();
         return tourServiceManager;
     }
 
@@ -171,12 +176,7 @@ public class TourServiceManager {
     // ----------------------------------
 
     public void stopLocationService() {
-        if (checkPermission()) {
-            if (locationListener != null) {
-                locationManager.removeUpdates(locationListener);
-                locationManager = null;
-            }
-        }
+        provider.stop();
     }
 
     public void startTour(String type) {
@@ -212,11 +212,6 @@ public class TourServiceManager {
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
-
-    private boolean checkPermission() {
-        return (checkSelfPermission(tourService, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                checkSelfPermission(tourService, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-    }
 
     public void updateTourCoordinates() {
         if (pointsToSend.isEmpty()) {
@@ -296,8 +291,8 @@ public class TourServiceManager {
     @SuppressWarnings("unused")
     @Subscribe
     public void onLocationPermissionGranted(OnLocationPermissionGranted event) {
-        if (locationListener == null && event.isPermissionGranted()) {
-            initializeLocationService();
+        if (event.isPermissionGranted()) {
+            provider.start();
         }
     }
 
@@ -540,38 +535,6 @@ public class TourServiceManager {
         );
     }
 
-    private void initializeLocationService() {
-        if (checkPermission()) {
-            locationManager = (LocationManager) tourService.getSystemService(LOCATION_SERVICE);
-            locationListener = new CustomLocationListener();
-            updateLocationServiceFrequency();
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (lastKnownLocation == null) {
-                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            }
-            if (lastKnownLocation != null) {
-                entourageLocation.setInitialLocation(lastKnownLocation);
-                locationListener.onLocationChanged(lastKnownLocation);
-            }
-        }
-    }
-
-    private void updateLocationServiceFrequency() {
-        if (checkPermission()) {
-            long minTime = Constants.UPDATE_TIMER_MILLIS_OFF_TOUR;
-            float minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR;
-            if (tour != null) {
-                minTime = Constants.UPDATE_TIMER_MILLIS_ON_TOUR;
-                minDistance = Constants.DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR;
-            }
-            try {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
-            } catch (Exception ex) {
-                Log.d("Entourage", "No GPS Provider");
-            }
-        }
-    }
-
     private void initializeTimerFinishTask() {
         long duration = 1000 * 60 * 60 * 5;
         timerFinish = new Timer();
@@ -601,36 +564,29 @@ public class TourServiceManager {
             @Override
             public void onResponse(Call<Tour.TourWrapper> call, Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
-                    //initializeLocationService();
                     Location currentLocation = entourageLocation.getCurrentLocation();
                     if (currentLocation != null) {
                         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                         BusProvider.getInstance().post(new OnBetterLocationEvent(latLng));
                     }
-                    updateLocationServiceFrequency();
                     initializeTimerFinishTask();
                     tourId = response.body().getTour().getId();
-                    //tour.setId(tourId);
                     tour = response.body().getTour();
                     tourService.notifyListenersTourCreated(true, tourId);
 
-                    if (checkPermission()) {
-                        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (location == null) {
-                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        }
-                        if (location != null) {
-                            TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
-                            tour.addCoordinate(point);
-                            pointsToDraw.add(point);
-                            pointsToSend.add(point);
-                            previousLocation = location;
-                            updateTourCoordinates();
-                            tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
-                        } else {
-                            Log.e(this.getClass().getSimpleName(), "no location provided");
-                        }
+                    Location location = provider.getLastKnownLocation();
+                    if (location != null) {
+                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
+                        tour.addCoordinate(point);
+                        pointsToDraw.add(point);
+                        pointsToSend.add(point);
+                        previousLocation = location;
+                        updateTourCoordinates();
+                        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+                    } else {
+                        Log.e(this.getClass().getSimpleName(), "no location provided");
                     }
+
                 } else {
                     tour = null;
                     tourService.notifyListenersTourCreated(false, -1);
@@ -661,7 +617,6 @@ public class TourServiceManager {
                     pointsToSend.clear();
                     pointsToDraw.clear();
                     cancelFinishTimer();
-                    updateLocationServiceFrequency();
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);
@@ -801,90 +756,61 @@ public class TourServiceManager {
         }
     }
 
-    private class CustomLocationListener implements LocationListener {
+    private static class FusedLocationListener implements LocationListener {
+        private final TourServiceManager manager;
+
+        private FusedLocationListener(TourServiceManager manager) {
+            this.manager = manager;
+        }
 
         @Override
         public void onLocationChanged(Location location) {
-            updateLocation(location);
-            tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-            if (tour != null && !tourService.isPaused()) {
+            if (manager.entourageLocation.getCurrentLocation() == null) {
+                manager.entourageLocation.setInitialLocation(location);
+            }
+
+            manager.updateLocation(location);
+            manager.tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+
+            if (manager.tour != null && !manager.tourService.isPaused()) {
                 TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
-                TourServiceManager.this.onLocationChanged(location, point);
+                manager.onLocationChanged(location, point);
             }
+        }
+    }
+
+    private static class FusedLocationStatusListener implements ProviderStatusListener {
+        private final Context context;
+
+        private FusedLocationStatusListener(Context context) {
+            this.context = context;
         }
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            switch( status ) {
-                case LocationProvider.AVAILABLE:
-                    // ...
-                    break;
-                case LocationProvider.OUT_OF_SERVICE:
-                    // ...
-                    break;
-                case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                    // ...
-                    break;
-            }
+        public void onProviderEnabled() {
+            context.sendBroadcast(new Intent(TourService.KEY_LOCATION_PROVIDER_ENABLED));
         }
 
         @Override
-        public void onProviderEnabled(String provider) {
-            Intent intent = new Intent();
-            intent.setAction(TourService.KEY_GPS_ENABLED);
-            TourServiceManager.this.tourService.sendBroadcast(intent);
+        public void onProviderDisabled() {
+            context.sendBroadcast(new Intent(TourService.KEY_LOCATION_PROVIDER_DISABLED));
+        }
+    }
 
-            // MI: We need to wait a bit before attempting to get the last known location
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Location lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (lastKnownLocation == null) {
-                            lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        }
-                        if (lastKnownLocation != null) {
-                            onLocationChanged(lastKnownLocation);
-                        }
-                    } catch (SecurityException e) {}
-                }
-            }, 3000);
-
-            try {
-                Location lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (lastKnownLocation == null) {
-                    lastKnownLocation = TourServiceManager.this.locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                }
-                if (lastKnownLocation != null) {
-                    onLocationChanged(lastKnownLocation);
-                }
-            } catch (SecurityException e) {}
+    private void updateLocation(Location location) {
+        entourageLocation.saveCurrentLocation(location);
+        Location bestLocation = entourageLocation.getLocation();
+        boolean shouldCenterMap = false;
+        if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
+            entourageLocation.saveLocation(location);
+            isBetterLocationUpdated = true;
+            shouldCenterMap = true;
         }
 
-        @Override
-        public void onProviderDisabled(String provider) {
-            Intent intent = new Intent();
-            intent.setAction(TourService.KEY_GPS_DISABLED);
-            TourServiceManager.this.tourService.sendBroadcast(intent);
-        }
-
-        private void updateLocation(Location location) {
-            entourageLocation.saveCurrentLocation(location);
-            Location bestLocation = entourageLocation.getLocation();
-            boolean shouldCenterMap = false;
-            if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
-                entourageLocation.saveLocation(location);
-                isBetterLocationUpdated = true;
-                shouldCenterMap = true;
-            }
-
-            if (isBetterLocationUpdated) {
-                isBetterLocationUpdated = false;
-                LatLng latLng = entourageLocation.getLatLng();
-                if (shouldCenterMap) {
-                    BusProvider.getInstance().post(new OnBetterLocationEvent(latLng));
-                }
+        if (isBetterLocationUpdated) {
+            isBetterLocationUpdated = false;
+            if (shouldCenterMap) {
+                BusProvider.getInstance().post(new OnBetterLocationEvent(entourageLocation.getLatLng()));
             }
         }
     }

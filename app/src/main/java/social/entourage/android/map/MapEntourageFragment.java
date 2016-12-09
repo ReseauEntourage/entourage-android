@@ -636,7 +636,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         if (event.isPermissionGranted()) {
-            onGpsStatusChanged(true);
+            onLocationProviderStatusChanged(true);
             if (map != null) {
                 try {
                     map.setMyLocationEnabled(true);
@@ -644,7 +644,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
             }
         } else {
-            onGpsStatusChanged(false);
+            onLocationProviderStatusChanged(false);
         }
     }
 
@@ -882,7 +882,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onGpsStatusChanged(boolean active) {
+    public void onLocationProviderStatusChanged(boolean active) {
         if (gpsLayout != null) {
             if (active) {
                 gpsLayout.setVisibility(View.GONE);
