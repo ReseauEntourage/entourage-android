@@ -18,8 +18,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
 import social.entourage.android.api.InvitationRequest;
-import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.model.Invitation;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -32,8 +32,12 @@ import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.tools.BusProvider;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 /**
  * Presenter controlling the MapEntourageFragment
+ *
  * @see MapEntourageFragment
  */
 public class MapPresenter {
@@ -43,7 +47,6 @@ public class MapPresenter {
     // ----------------------------------
 
     private final MapEntourageFragment fragment;
-    private final MapRequest mapRequest;
     private final AuthenticationController authenticationController;
     private final InvitationRequest invitationRequest;
 
@@ -56,11 +59,9 @@ public class MapPresenter {
 
     @Inject
     public MapPresenter(final MapEntourageFragment fragment,
-                        final MapRequest mapRequest,
                         final AuthenticationController authenticationController,
                         final InvitationRequest invitationRequest) {
         this.fragment = fragment;
-        this.mapRequest = mapRequest;
         this.authenticationController = authenticationController;
         this.invitationRequest = invitationRequest;
     }
@@ -68,7 +69,6 @@ public class MapPresenter {
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-
 
     public OnEntourageMarkerClickListener getOnClickListener() {
         return onClickListener;
@@ -138,8 +138,7 @@ public class MapPresenter {
             public void onResponse(final Call<Invitation.InvitationsWrapper> call, final Response<Invitation.InvitationsWrapper> response) {
                 if (response.isSuccessful()) {
                     fragment.onInvitationsReceived(response.body().getInvitations());
-                }
-                else {
+                } else {
                     fragment.onInvitationsReceived(null);
                 }
             }
@@ -164,6 +163,15 @@ public class MapPresenter {
         });
     }
 
+    public void handleLocationPermission() {
+        fragment.checkPermission(userIsPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION);
+    }
+
+    private boolean userIsPro() {
+        User user = authenticationController.getUser();
+        return user != null && user.isPro();
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -183,7 +191,6 @@ public class MapPresenter {
         final Map<LatLng, Encounter> encounterMarkerHashMap = new HashMap<>();
         final Map<LatLng, Tour> tourMarkerHashMap = new HashMap<>();
 
-
         public void addEncounterMarker(LatLng markerPosition, Encounter encounter) {
             encounterMarkerHashMap.put(markerPosition, encounter);
         }
@@ -195,10 +202,9 @@ public class MapPresenter {
         @Override
         public boolean onMarkerClick(Marker marker) {
             LatLng markerPosition = marker.getPosition();
-            if (encounterMarkerHashMap.get(markerPosition) != null){
+            if (encounterMarkerHashMap.get(markerPosition) != null) {
                 openEncounter(encounterMarkerHashMap.get(markerPosition));
-            }
-            else if (tourMarkerHashMap.get(markerPosition) != null){
+            } else if (tourMarkerHashMap.get(markerPosition) != null) {
                 openFeedItem(tourMarkerHashMap.get(markerPosition), 0);
             }
             return false;
