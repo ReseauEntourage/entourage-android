@@ -44,7 +44,7 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
@@ -95,16 +95,16 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     FloatingActionMenu mapOptionsMenu;
 
-    @Bind(R.id.fragment_guide_empty_list_popup)
+    @BindView(R.id.fragment_guide_empty_list_popup)
     View emptyListPopup;
 
-    @Bind(R.id.fragment_guide_empty_list_popup_text)
+    @BindView(R.id.fragment_guide_empty_list_popup_text)
     TextView emptyListTextView;
 
-    @Bind(R.id.fragment_guide_longclick)
+    @BindView(R.id.fragment_guide_longclick)
     RelativeLayout guideLongClickView;
 
-    @Bind(R.id.guide_longclicks_buttons)
+    @BindView(R.id.guide_longclicks_buttons)
     RelativeLayout guideLongClickButtonsView;
 
     private LatLng longTapCoordinates;

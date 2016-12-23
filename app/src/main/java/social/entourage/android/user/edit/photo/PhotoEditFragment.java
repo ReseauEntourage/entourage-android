@@ -1,8 +1,6 @@
 package social.entourage.android.user.edit.photo;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -20,13 +18,12 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
@@ -44,16 +41,12 @@ public class PhotoEditFragment extends DialogFragment {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-
-    private PhotoChooseInterface mListener;
-
-    private Uri photoUri;
-
-    @Bind(R.id.photo_edit_cropImageView)
+    @BindView(R.id.photo_edit_cropImageView)
     CropImageView cropImageView;
-
-    @Bind(R.id.photo_edit_fab_button)
+    @BindView(R.id.photo_edit_fab_button)
     FloatingActionButton fabButton;
+    private PhotoChooseInterface mListener;
+    private Uri photoUri;
 
     // ----------------------------------
     // LIFECYCLE
@@ -75,6 +68,17 @@ public class PhotoEditFragment extends DialogFragment {
         args.putParcelable(PHOTO_PARAM, photoUri);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof PhotoChooseInterface) {
+            mListener = (PhotoChooseInterface) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -114,21 +118,16 @@ public class PhotoEditFragment extends DialogFragment {
     }
 
     @Override
+    public void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof PhotoChooseInterface) {
-            mListener = (PhotoChooseInterface) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
@@ -137,20 +136,29 @@ public class PhotoEditFragment extends DialogFragment {
         mListener = null;
     }
 
-    @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
     // ----------------------------------
     // Button handling
     // ----------------------------------
+
+    public boolean onPhotoSent(boolean success) {
+        if (success && !fabButton.isEnabled()) {
+            //getContext().getContentResolver().delete(photoUri, "", null);
+            dismiss();
+            return true;
+        } else {
+            fabButton.setEnabled(true);
+        }
+        return false;
+    }
 
     @OnClick(R.id.photo_edit_back_button)
     protected void onBackClicked() {
         dismiss();
     }
+
+    // ----------------------------------
+    // Upload handling
+    // ----------------------------------
 
     @OnClick(R.id.photo_edit_fab_button)
     protected void onOkClicked() {
@@ -176,21 +184,6 @@ public class PhotoEditFragment extends DialogFragment {
     }
 
     // ----------------------------------
-    // Upload handling
-    // ----------------------------------
-
-    public boolean onPhotoSent(boolean success) {
-        if (success && !fabButton.isEnabled()) {
-            //getContext().getContentResolver().delete(photoUri, "", null);
-            dismiss();
-            return true;
-        } else {
-            fabButton.setEnabled(true);
-        }
-        return false;
-    }
-
-    // ----------------------------------
     // Private methods
     // ----------------------------------
 
@@ -199,11 +192,11 @@ public class PhotoEditFragment extends DialogFragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
+            Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+            imageFileName,  /* prefix */
+            ".jpg",         /* suffix */
+            storageDir      /* directory */
         );
 
         return image;

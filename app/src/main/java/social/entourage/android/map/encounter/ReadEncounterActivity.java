@@ -16,14 +16,14 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.Constants;
 
 @SuppressWarnings("WeakerAccess")
 public class ReadEncounterActivity extends EntourageActivity {
@@ -43,10 +43,10 @@ public class ReadEncounterActivity extends EntourageActivity {
     @Inject
     ReadEncounterPresenter presenter;
 
-    @Bind(R.id.edittext_street_person_name)
+    @BindView(R.id.edittext_street_person_name)
     EditText streetPersonNameEditText;
 
-    @Bind(R.id.edittext_message)
+    @BindView(R.id.edittext_message)
     EditText messageEditText;
 
     // ----------------------------------

@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageLocation;
@@ -77,10 +77,10 @@ public class EntourageLocationFragment extends DialogFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    @Bind(R.id.entourage_location_search)
+    @BindView(R.id.entourage_location_search)
     EditText searchEditText;
 
-    @Bind(R.id.entourage_location_address)
+    @BindView(R.id.entourage_location_address)
     TextView addressTextView;
 
     SupportMapFragment mapFragment;

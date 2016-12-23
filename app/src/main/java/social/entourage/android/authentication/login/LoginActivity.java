@@ -41,7 +41,7 @@ import java.util.HashSet;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BuildConfig;
@@ -98,136 +98,136 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Signin View
      ************************/
 
-    @Bind(R.id.login_include_signin)
+    @BindView(R.id.login_include_signin)
     View loginSignin;
 
-    @Bind(R.id.login_edit_phone)
+    @BindView(R.id.login_edit_phone)
     EditText phoneEditText;
 
-    @Bind(R.id.login_edit_code)
+    @BindView(R.id.login_edit_code)
     EditText passwordEditText;
 
-    @Bind(R.id.login_button_signup)
+    @BindView(R.id.login_button_signup)
     Button loginButton;
 
-    @Bind(R.id.login_text_lost_code)
+    @BindView(R.id.login_text_lost_code)
     TextView lostCodeText;
 
     /************************
      * Lost Code View
      ************************/
 
-    @Bind(R.id.login_include_lost_code)
+    @BindView(R.id.login_include_lost_code)
     View loginLostCode;
 
-    @Bind(R.id.login_edit_phone_lost_code)
+    @BindView(R.id.login_edit_phone_lost_code)
     EditText lostCodePhone;
 
-    @Bind(R.id.login_button_ask_code)
+    @BindView(R.id.login_button_ask_code)
     Button receiveCodeButton;
 
-    @Bind(R.id.login_block_lost_code_start)
+    @BindView(R.id.login_block_lost_code_start)
     View enterCodeBlock;
 
-    @Bind(R.id.login_block_lost_code_confirmation)
+    @BindView(R.id.login_block_lost_code_confirmation)
     View confirmationBlock;
 
-    @Bind(R.id.login_text_confirmation)
+    @BindView(R.id.login_text_confirmation)
     HtmlTextView codeConfirmation;
 
-    @Bind(R.id.login_button_home)
+    @BindView(R.id.login_button_home)
     Button homeButton;
 
     /************************
      * Welcome View
      ************************/
 
-    @Bind(R.id.login_include_welcome)
+    @BindView(R.id.login_include_welcome)
     View loginWelcome;
 
-    @Bind(R.id.login_edit_email_profile)
+    @BindView(R.id.login_edit_email_profile)
     EditText profileEmail;
 
-    //@Bind(R.id.login_edit_name_profile)
+    //@BindView(R.id.login_edit_name_profile)
     //EditText profileName;
 
-    @Bind(R.id.login_user_photo)
+    @BindView(R.id.login_user_photo)
     ImageView profilePhoto;
 
-    @Bind(R.id.login_button_go)
+    @BindView(R.id.login_button_go)
     FloatingActionButton goButton;
 
     /************************
      * Enter Name View
      ************************/
 
-    @Bind(R.id.login_include_name)
+    @BindView(R.id.login_include_name)
     View loginNameView;
 
-    @Bind(R.id.login_name_firstname)
+    @BindView(R.id.login_name_firstname)
     EditText firstnameEditText;
 
-    @Bind(R.id.login_name_lastname)
+    @BindView(R.id.login_name_lastname)
     EditText lastnameEditText;
 
-    @Bind(R.id.login_name_go_button)
+    @BindView(R.id.login_name_go_button)
     FloatingActionButton nameGoButton;
 
     /************************
      * Tutorial View
      ************************/
 
-    @Bind(R.id.login_include_tutorial)
+    @BindView(R.id.login_include_tutorial)
     View loginTutorial;
 
-    @Bind(R.id.login_button_finish_tutorial)
+    @BindView(R.id.login_button_finish_tutorial)
     Button finishTutorial;
 
     /************************
      * Startup View
      ************************/
 
-    @Bind(R.id.login_include_startup)
+    @BindView(R.id.login_include_startup)
     View loginStartup;
 
     /************************
      * Newsletter subscription View
      ************************/
 
-    @Bind(R.id.login_include_newsletter)
+    @BindView(R.id.login_include_newsletter)
     View loginNewsletter;
 
-    @Bind(R.id.login_newsletter_button)
+    @BindView(R.id.login_newsletter_button)
     Button newsletterButton;
 
-    @Bind(R.id.login_newsletter_email)
+    @BindView(R.id.login_newsletter_email)
     TextView newsletterEmail;
 
     /************************
      * Verify Code view
      ************************/
 
-    @Bind(R.id.login_include_verify_code)
+    @BindView(R.id.login_include_verify_code)
     View loginVerifyCode;
 
-    @Bind(R.id.login_button_verify_code)
+    @BindView(R.id.login_button_verify_code)
     Button verifyCodeButton;
 
-    @Bind(R.id.login_verify_code_code)
+    @BindView(R.id.login_verify_code_code)
     TextView receivedCode;
 
     /************************
      * Notifications Permissions View
      ************************/
 
-    @Bind(R.id.login_include_notifications)
+    @BindView(R.id.login_include_notifications)
     View loginNotificationsView;
 
     /************************
      * Geolocation view
      ************************/
 
-    @Bind(R.id.login_include_geolocation)
+    @BindView(R.id.login_include_geolocation)
     View loginGeolocationView;
 
     // ----------------------------------

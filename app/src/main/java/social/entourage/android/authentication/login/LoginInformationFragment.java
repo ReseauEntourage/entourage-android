@@ -21,7 +21,7 @@ import com.flurry.android.FlurryAgent;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
@@ -45,19 +45,19 @@ public class LoginInformationFragment extends DialogFragment {
     @Inject
     LoginInformationPresenter presenter;
 
-    @Bind(R.id.login_button_close_info)
+    @BindView(R.id.login_button_close_info)
     ImageButton closeButton;
 
-    @Bind(R.id.login_button_facebook)
+    @BindView(R.id.login_button_facebook)
     ImageButton facebookButton;
 
-    @Bind(R.id.login_button_twitter)
+    @BindView(R.id.login_button_twitter)
     ImageButton twitterButton;
 
-    @Bind(R.id.login_edit_email_ask_more)
+    @BindView(R.id.login_edit_email_ask_more)
     EditText emailEditText;
 
-    @Bind(R.id.login_button_newsletter)
+    @BindView(R.id.login_button_newsletter)
     Button newsletterButton;
 
     // ----------------------------------

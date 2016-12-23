@@ -28,7 +28,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
@@ -64,25 +64,25 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     @Inject
     CreateEntouragePresenter presenter;
 
-    @Bind(R.id.create_entourage_type)
+    @BindView(R.id.create_entourage_type)
     TextView typeTextView;
 
-    @Bind(R.id.create_entourage_position)
+    @BindView(R.id.create_entourage_position)
     TextView positionTextView;
 
-    @Bind(R.id.create_entourage_title)
+    @BindView(R.id.create_entourage_title)
     EditText titleEditText;
 
-    @Bind(R.id.create_entourage_title_hint)
+    @BindView(R.id.create_entourage_title_hint)
     TextView titleHintTextView;
 
-    @Bind(R.id.create_entourage_title_char_count)
+    @BindView(R.id.create_entourage_title_char_count)
     TextView titleCharCountTextView;
 
-    @Bind(R.id.create_entourage_description)
+    @BindView(R.id.create_entourage_description)
     EditText descriptionEditText;
 
-    @Bind(R.id.create_entourage_description_hint)
+    @BindView(R.id.create_entourage_description_hint)
     TextView descriptionHintTextView;
 
     private String entourageType;

@@ -24,7 +24,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
@@ -33,7 +33,6 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.map.entourage.CreateEntourageFragment;
 import social.entourage.android.map.entourage.EntourageLocationFragment;
 import social.entourage.android.tools.BusProvider;
 
@@ -57,19 +56,19 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     @Inject
     CreateEncounterPresenter presenter;
 
-    @Bind(R.id.edittext_message)
+    @BindView(R.id.edittext_message)
     EditText messageEditText;
 
-    @Bind(R.id.edittext_street_person_name)
+    @BindView(R.id.edittext_street_person_name)
     EditText streetPersonNameEditText;
 
-    @Bind(R.id.encounter_author)
+    @BindView(R.id.encounter_author)
     TextView encounterAuthor;
 
-    @Bind(R.id.encounter_date)
+    @BindView(R.id.encounter_date)
     TextView encounterDate;
 
-    @Bind(R.id.create_encounter_position)
+    @BindView(R.id.create_encounter_position)
     TextView positionTextView;
 
     private LatLng location;

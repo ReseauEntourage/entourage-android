@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.DrawerActivity;
@@ -38,19 +38,19 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
     @Inject
     ConfirmationPresenter presenter;
 
-    @Bind(R.id.confirmation_encounters)
+    @BindView(R.id.confirmation_encounters)
     TextView encountersView;
 
-    @Bind(R.id.confirmation_distance)
+    @BindView(R.id.confirmation_distance)
     TextView distanceView;
 
-    @Bind(R.id.confirmation_duration)
+    @BindView(R.id.confirmation_duration)
     TextView durationView;
 
-    @Bind(R.id.confirmation_resume_button)
+    @BindView(R.id.confirmation_resume_button)
     Button resumeButton;
 
-    @Bind(R.id.confirmation_end_button)
+    @BindView(R.id.confirmation_end_button)
     Button endButton;
 
     private Tour tour;

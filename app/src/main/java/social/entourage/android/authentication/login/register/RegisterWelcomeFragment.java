@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
+import social.entourage.android.base.EntourageDialogFragment;
 
 
 public class RegisterWelcomeFragment extends EntourageDialogFragment {
@@ -30,7 +30,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
     private OnRegisterUserListener mListener;
 
-    @Bind(R.id.register_welcome_description)
+    @BindView(R.id.register_welcome_description)
     TextView descriptionTextView;
 
     // ----------------------------------

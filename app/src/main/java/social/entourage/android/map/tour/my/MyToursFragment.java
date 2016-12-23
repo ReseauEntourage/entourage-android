@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
@@ -59,25 +59,25 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     @Inject
     MyToursPresenter presenter;
 
-    @Bind(R.id.mytours_tabHost)
+    @BindView(R.id.mytours_tabHost)
     TabHost tabHost;
 
-//    @Bind(R.id.mytours_ongoing)
+//    @BindView(R.id.mytours_ongoing)
 //    RecyclerView ongoingToursRecyclerView;
 //
 //    ToursAdapter ongoingToursAdapter;
 
-    @Bind(R.id.mytours_active)
+    @BindView(R.id.mytours_active)
     RecyclerView activeFeedsRecyclerView;
 
     NewsfeedAdapter activeFeedsAdapter;
 
-    @Bind(R.id.mytours_frozen)
+    @BindView(R.id.mytours_frozen)
     RecyclerView frozenFeedsRecyclerView;
 
     NewsfeedAdapter frozenFeedsAdapter;
 
-    @Bind(R.id.mytours_progress_bar)
+    @BindView(R.id.mytours_progress_bar)
     ProgressBar progressBar;
 
     private int apiRequestsCount = 0;

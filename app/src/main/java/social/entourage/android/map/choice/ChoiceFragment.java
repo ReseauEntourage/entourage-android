@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -36,7 +36,7 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
     @Inject
     ChoicePresenter presenter;
 
-    @Bind(R.id.choice_recycler_view)
+    @BindView(R.id.choice_recycler_view)
     RecyclerView recyclerView;
 
     private List<Tour> tours;

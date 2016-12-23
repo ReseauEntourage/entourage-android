@@ -1,6 +1,5 @@
 package social.entourage.android.invite.phonenumber;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,14 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.MultipleInvitations;
-import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.invite.InviteBaseFragment;
 import social.entourage.android.tools.Utils;
 
@@ -41,10 +39,10 @@ public class InviteByPhoneNumberFragment extends InviteBaseFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    @Bind(R.id.invite_phone_send_button)
+    @BindView(R.id.invite_phone_send_button)
     Button sendButton;
 
-    @Bind(R.id.invite_phone_number)
+    @BindView(R.id.invite_phone_number)
     EditText phoneNumberEditText;
 
     // ----------------------------------

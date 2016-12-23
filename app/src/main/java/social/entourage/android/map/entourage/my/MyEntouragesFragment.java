@@ -1,6 +1,5 @@
 package social.entourage.android.map.entourage.my;
 
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -24,13 +23,14 @@ import java.util.TimerTask;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.TimestampedObject;
@@ -38,7 +38,6 @@ import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.R;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.invite.view.InvitationsAdapter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
@@ -65,23 +64,23 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     @Inject
     MyEntouragesPresenter presenter;
 
-    @Bind(R.id.myentourages_fab_menu)
+    @BindView(R.id.myentourages_fab_menu)
     FloatingActionMenu fabMenu;
 
-    @Bind(R.id.button_start_tour_launcher)
+    @BindView(R.id.button_start_tour_launcher)
     FloatingActionButton startTourButton;
 
-    @Bind(R.id.myentourages_invitations_view)
+    @BindView(R.id.myentourages_invitations_view)
     RecyclerView invitationsView;
 
     InvitationsAdapter invitationsAdapter;
 
-    @Bind(R.id.myentourages_list_view)
+    @BindView(R.id.myentourages_list_view)
     RecyclerView entouragesView;
 
     MyEntouragesAdapter entouragesAdapter;
 
-    @Bind(R.id.myentourages_progressBar)
+    @BindView(R.id.myentourages_progressBar)
     ProgressBar progressBar;
 
     private int apiRequestsCount = 0;

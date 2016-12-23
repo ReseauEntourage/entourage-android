@@ -13,14 +13,14 @@ import com.flurry.android.FlurryAgent;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
-import social.entourage.android.Constants;
 import social.entourage.android.guide.PoiRenderer;
 
 /**
@@ -43,23 +43,23 @@ public class ReadPoiActivity extends EntourageActivity {
     @Inject
     ReadPoiPresenter presenter;
 
-    @Bind(R.id.textview_poi_name)
+    @BindView(R.id.textview_poi_name)
     TextView txtPoiName;
-    @Bind(R.id.textview_poi_description)
+    @BindView(R.id.textview_poi_description)
     TextView txtPoiDesc;
-    @Bind(R.id.button_poi_phone)
+    @BindView(R.id.button_poi_phone)
     Button btnPoiPhone;
-    @Bind(R.id.button_poi_mail)
+    @BindView(R.id.button_poi_mail)
     Button btnPoiMail;
-    @Bind(R.id.button_poi_web)
+    @BindView(R.id.button_poi_web)
     Button btnPoiWeb;
-    @Bind(R.id.button_poi_address)
+    @BindView(R.id.button_poi_address)
     Button btnPoiAddress;
-    @Bind(R.id.poi_type_layout)
+    @BindView(R.id.poi_type_layout)
     LinearLayout poiTypeLayout;
-    @Bind(R.id.poi_type_image)
+    @BindView(R.id.poi_type_image)
     ImageView poiTypeImage;
-    @Bind(R.id.poi_type_label)
+    @BindView(R.id.poi_type_label)
     TextView poiTypeLabel;
 
     // ----------------------------------

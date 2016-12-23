@@ -1,17 +1,12 @@
 package social.entourage.android.newsfeed;
 
-
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
@@ -21,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
@@ -56,16 +51,16 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
 
     private FeedItem feedItem;
 
-    @Bind(R.id.feeditem_options)
+    @BindView(R.id.feeditem_options)
     View optionsView;
 
-    @Bind(R.id.feeditem_option_stop)
+    @BindView(R.id.feeditem_option_stop)
     Button stopButton;
 
-    @Bind(R.id.feeditem_option_quit)
+    @BindView(R.id.feeditem_option_quit)
     Button quitButton;
 
-    @Bind(R.id.feeditem_option_edit)
+    @BindView(R.id.feeditem_option_edit)
     Button editButton;
 
     // ----------------------------------

@@ -75,7 +75,7 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -87,14 +87,13 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
-import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
@@ -146,103 +145,103 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = false;
 
-    @Bind(R.id.tour_info_title)
+    @BindView(R.id.tour_info_title)
     TextView fragmentTitle;
 
-    @Bind(R.id.tour_card_title)
+    @BindView(R.id.tour_card_title)
     TextView tourOrganization;
 
-    @Bind(R.id.tour_card_photo)
+    @BindView(R.id.tour_card_photo)
     ImageView tourAuthorPhoto;
 
-    @Bind(R.id.tour_card_type)
+    @BindView(R.id.tour_card_type)
     TextView tourType;
 
-    @Bind(R.id.tour_card_author)
+    @BindView(R.id.tour_card_author)
     TextView tourAuthorName;
 
-    @Bind(R.id.tour_card_location)
+    @BindView(R.id.tour_card_location)
     TextView tourLocation;
 
-    @Bind(R.id.tour_card_people_count)
+    @BindView(R.id.tour_card_people_count)
     TextView tourPeopleCount;
 
-    @Bind(R.id.tour_card_people_image)
+    @BindView(R.id.tour_card_people_image)
     ImageView tourPeopleImage;
 
-    @Bind(R.id.tour_card_arrow)
+    @BindView(R.id.tour_card_arrow)
     ImageView tourCardArrow;
 
-    @Bind(R.id.tour_card_act_layout)
+    @BindView(R.id.tour_card_act_layout)
     RelativeLayout headerActLayout;
 
-    @Bind(R.id.tour_info_description)
+    @BindView(R.id.tour_info_description)
     TextView tourDescription;
 
-    @Bind(R.id.tour_info_discussion_view)
+    @BindView(R.id.tour_info_discussion_view)
     RecyclerView discussionView;
 
     DiscussionAdapter discussionAdapter;
 
-    @Bind(R.id.tour_info_progress_bar)
+    @BindView(R.id.tour_info_progress_bar)
     ProgressBar progressBar;
 
-    @Bind(R.id.tour_info_comment_layout)
+    @BindView(R.id.tour_info_comment_layout)
     LinearLayout commentLayout;
 
-    @Bind(R.id.tour_info_comment)
+    @BindView(R.id.tour_info_comment)
     EditText commentEditText;
 
-    @Bind(R.id.tour_info_comment_send_button)
+    @BindView(R.id.tour_info_comment_send_button)
     Button commentSendButton;
 
-    @Bind(R.id.tour_info_comment_record_button)
+    @BindView(R.id.tour_info_comment_record_button)
     AppCompatImageButton commentRecordButton;
 
-    @Bind(R.id.tour_info_options)
+    @BindView(R.id.tour_info_options)
     LinearLayout optionsLayout;
 
-    @Bind(R.id.tour_info_public_section)
+    @BindView(R.id.tour_info_public_section)
     RelativeLayout publicSection;
 
-    @Bind(R.id.tour_info_private_section)
+    @BindView(R.id.tour_info_private_section)
     RelativeLayout privateSection;
 
-    @Bind(R.id.tour_info_share_button)
+    @BindView(R.id.tour_info_share_button)
     AppCompatImageButton shareButton;
 
-    @Bind(R.id.tour_info_user_add_button)
+    @BindView(R.id.tour_info_user_add_button)
     AppCompatImageButton addUserButton;
 
-    @Bind(R.id.tour_info_more_button)
+    @BindView(R.id.tour_info_more_button)
     AppCompatImageButton moreButton;
 
-    @Bind(R.id.tour_info_act_layout)
+    @BindView(R.id.tour_info_act_layout)
     RelativeLayout actLayout;
 
-    @Bind(R.id.tour_info_join_button)
+    @BindView(R.id.tour_info_join_button)
     Button joinButton;
 
-    @Bind(R.id.tour_info_invite_source_layout)
+    @BindView(R.id.tour_info_invite_source_layout)
     RelativeLayout inviteSourceLayout;
 
-    @Bind(R.id.tour_info_invite_success_layout)
+    @BindView(R.id.tour_info_invite_success_layout)
     RelativeLayout inviteSuccessLayout;
 
-    @Bind(R.id.tour_info_members_layout)
+    @BindView(R.id.tour_info_members_layout)
     LinearLayout membersLayout;
 
-    @Bind(R.id.tour_info_member_count)
+    @BindView(R.id.tour_info_member_count)
     TextView membersCountTextView;
 
-    @Bind(R.id.tour_info_members)
+    @BindView(R.id.tour_info_members)
     RecyclerView membersView;
 
     MembersAdapter membersAdapter;
     List<TimestampedObject> membersList = new ArrayList<>();
 
     // Invitation Layout
-    @Bind(R.id.tour_info_invited_layout)
+    @BindView(R.id.tour_info_invited_layout)
     View invitedLayout;
 
     int apiRequestsCount;

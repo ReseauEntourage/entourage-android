@@ -25,7 +25,6 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -73,7 +72,7 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BackPressable;
@@ -176,68 +175,66 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private Map<Long, Tour> retrievedHistory;
     private boolean initialNewsfeedLoaded = false;
 
-    private LayoutInflater inflater;
-
     private int originalMapLayoutHeight;
 
     private int isRequestingToJoin = 0;
 
-    @Bind(R.id.fragment_map_pin)
+    @BindView(R.id.fragment_map_pin)
     View mapPin;
 
-    @Bind(R.id.fragment_map_gps_layout)
+    @BindView(R.id.fragment_map_gps_layout)
     LinearLayout gpsLayout;
 
-    @Bind(R.id.fragment_map_follow_button)
+    @BindView(R.id.fragment_map_follow_button)
     View centerButton;
 
-    @Bind(R.id.layout_map_launcher)
+    @BindView(R.id.layout_map_launcher)
     View mapLauncherLayout;
 
-    @Bind(R.id.launcher_tour_go)
+    @BindView(R.id.launcher_tour_go)
     ImageView buttonLaunchTour;
 
-    @Bind(R.id.launcher_tour_type)
+    @BindView(R.id.launcher_tour_type)
     RadioGroup radioGroupType;
 
-    @Bind(R.id.launcher_tour_progressBar)
+    @BindView(R.id.launcher_tour_progressBar)
     ProgressBar launcherProgressBar;
 
-    @Bind(R.id.fragment_map_tours_view)
+    @BindView(R.id.fragment_map_tours_view)
     RecyclerView toursListView;
 
     NewsfeedAdapter newsfeedAdapter;
 
-    @Bind(R.id.layout_map)
+    @BindView(R.id.layout_map)
     FrameLayout layoutMapMain;
 
-    @Bind(R.id.fragment_map_main_layout)
+    @BindView(R.id.fragment_map_main_layout)
     RelativeLayout layoutMain;
 
-    @Bind(R.id.map_display_type)
+    @BindView(R.id.map_display_type)
     RadioGroup mapDisplayTypeRadioGroup;
 
-    @Bind(R.id.layout_map_longclick)
+    @BindView(R.id.layout_map_longclick)
     RelativeLayout mapLongClickView;
 
-    @Bind(R.id.map_longclick_buttons)
+    @BindView(R.id.map_longclick_buttons)
     RelativeLayout mapLongClickButtonsView;
 
-    @Bind(R.id.tour_stop_button)
+    @BindView(R.id.tour_stop_button)
     FloatingActionButton tourStopButton;
 
     FloatingActionMenu mapOptionsMenu;
 
-    @Bind(R.id.fragment_map_title)
+    @BindView(R.id.fragment_map_title)
     TextView bottomTitleTextView;
 
-    @Bind(R.id.fragment_map_new_entourages_button)
+    @BindView(R.id.fragment_map_new_entourages_button)
     Button newEntouragesButton;
 
-    @Bind(R.id.fragment_map_empty_list)
+    @BindView(R.id.fragment_map_empty_list)
     TextView emptyListTextView;
 
-    @Bind(R.id.fragment_map_empty_list_popup)
+    @BindView(R.id.fragment_map_empty_list_popup)
     View emptyListPopup;
 
     Timer refreshToursTimer;
@@ -278,7 +275,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             toReturn = inflater.inflate(R.layout.fragment_map, container, false);
         }
         ButterKnife.bind(this, toReturn);
-        this.inflater = inflater;
         return toReturn;
     }
 

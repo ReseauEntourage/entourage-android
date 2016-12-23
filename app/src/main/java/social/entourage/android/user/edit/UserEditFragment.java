@@ -1,6 +1,5 @@
 package social.entourage.android.user.edit;
 
-
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,14 +20,12 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -39,11 +36,8 @@ import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.user.DaggerUserComponent;
 import social.entourage.android.user.UserFragment;
-import social.entourage.android.user.UserModule;
 import social.entourage.android.user.UserOrganizationsAdapter;
-import social.entourage.android.user.UserPresenter;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 
 public class UserEditFragment extends DialogFragment {
@@ -61,28 +55,28 @@ public class UserEditFragment extends DialogFragment {
     @Inject
     UserEditPresenter presenter;
 
-    @Bind(R.id.user_photo)
+    @BindView(R.id.user_photo)
     ImageView userPhoto;
 
-    @Bind(R.id.user_edit_firstname)
+    @BindView(R.id.user_edit_firstname)
     TextView userFirstname;
 
-    @Bind(R.id.user_email)
+    @BindView(R.id.user_email)
     TextView userEmail;
 
-    @Bind(R.id.user_phone)
+    @BindView(R.id.user_phone)
     TextView userPhone;
 
-    @Bind(R.id.user_address)
+    @BindView(R.id.user_address)
     TextView userAddress;
 
-    @Bind(R.id.user_associations_title)
+    @BindView(R.id.user_associations_title)
     TextView userAssociationsTitle;
 
-    @Bind(R.id.user_associations_public)
+    @BindView(R.id.user_associations_public)
     TextView userAssociationsPublicInfo;
 
-    @Bind(R.id.user_associations_view)
+    @BindView(R.id.user_associations_view)
     RecyclerView userAssociationsView;
 
     UserOrganizationsAdapter organizationsAdapter;

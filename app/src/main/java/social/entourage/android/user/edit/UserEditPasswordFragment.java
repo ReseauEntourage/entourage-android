@@ -15,7 +15,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
@@ -35,13 +35,13 @@ public class UserEditPasswordFragment extends DialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    @Bind(R.id.user_old_password)
+    @BindView(R.id.user_old_password)
     EditText oldPasswordEditText;
 
-    @Bind(R.id.user_new_password)
+    @BindView(R.id.user_new_password)
     EditText newPasswordEditText;
 
-    @Bind(R.id.user_confirm_password)
+    @BindView(R.id.user_confirm_password)
     EditText confirmPasswordEditText;
 
     // ----------------------------------

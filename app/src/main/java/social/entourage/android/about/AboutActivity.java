@@ -3,11 +3,11 @@ package social.entourage.android.about;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BuildConfig;
@@ -29,7 +29,7 @@ public class AboutActivity extends AppCompatActivity {
     // ATTRIBUTES
     // ----------------------------------
 
-    @Bind(R.id.about_version)
+    @BindView(R.id.about_version)
     TextView versionTextView;
 
     // ----------------------------------

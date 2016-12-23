@@ -10,7 +10,7 @@ import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
@@ -27,7 +27,7 @@ public class EncounterDisclaimerFragment extends DialogFragment {
     // Attributes
     // ----------------------------------
 
-    @Bind(R.id.encounter_disclaimer_checkbox)
+    @BindView(R.id.encounter_disclaimer_checkbox)
     CheckBox acceptCheckbox;
 
     // ----------------------------------

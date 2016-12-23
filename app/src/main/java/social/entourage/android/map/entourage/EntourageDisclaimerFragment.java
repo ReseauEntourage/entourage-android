@@ -1,22 +1,17 @@
 package social.entourage.android.map.entourage;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
@@ -37,7 +32,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     // Attributes
     // ----------------------------------
 
-    @Bind(R.id.entourage_disclaimer_text)
+    @BindView(R.id.entourage_disclaimer_text)
     TextView disclaimerTextView;
 
     private String entourageType;

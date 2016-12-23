@@ -1,25 +1,23 @@
 package social.entourage.android.map.entourage.my.filter;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.R;
 import social.entourage.android.tools.BusProvider;
 
 /**
@@ -37,28 +35,28 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
     // Attributes
     // ----------------------------------
 
-    @Bind(R.id.myentourages_filter_active_switch)
+    @BindView(R.id.myentourages_filter_active_switch)
     Switch activeSwitch;
 
-    @Bind(R.id.myentourages_filter_invited_switch)
+    @BindView(R.id.myentourages_filter_invited_switch)
     Switch invitedSwitch;
 
-    @Bind(R.id.myentourages_filter_own_switch)
+    @BindView(R.id.myentourages_filter_own_switch)
     Switch ownSwitch;
 
-    @Bind(R.id.myentourages_filter_closed_switch)
+    @BindView(R.id.myentourages_filter_closed_switch)
     Switch closedSwitch;
 
-    @Bind(R.id.myentourages_filter_demand_switch)
+    @BindView(R.id.myentourages_filter_demand_switch)
     Switch entourageDemandSwitch;
 
-    @Bind(R.id.myentourages_filter_contribution_switch)
+    @BindView(R.id.myentourages_filter_contribution_switch)
     Switch entourageContributionSwitch;
 
-    @Bind(R.id.myentourages_filter_tours_switch)
+    @BindView(R.id.myentourages_filter_tours_switch)
     Switch toursSwitch;
 
-    @Bind(R.id.myentourages_filter_tours_layout)
+    @BindView(R.id.myentourages_filter_tours_layout)
     View toursView;
 
     // ----------------------------------

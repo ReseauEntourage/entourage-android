@@ -1,11 +1,9 @@
 package social.entourage.android.map.filter;
 
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,7 @@ import android.widget.Switch;
 
 import com.flurry.android.FlurryAgent;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
@@ -37,44 +35,31 @@ public class MapFilterFragment extends DialogFragment {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-
-    private boolean isProUser = false;
-
-    @Bind(R.id.map_filter_tour_type_layout)
+    @BindView(R.id.map_filter_tour_type_layout)
     LinearLayout tourTypeLayout;
-
-    @Bind(R.id.map_filter_entourage_tours)
+    @BindView(R.id.map_filter_entourage_tours)
     View showToursLayout;
-
-    @Bind(R.id.map_filter_tour_medical_switch)
+    @BindView(R.id.map_filter_tour_medical_switch)
     Switch tourMedicalSwitch;
-
-    @Bind(R.id.map_filter_tour_social_switch)
+    @BindView(R.id.map_filter_tour_social_switch)
     Switch tourSocialSwitch;
-
-    @Bind(R.id.map_filter_tour_distributive_switch)
+    @BindView(R.id.map_filter_tour_distributive_switch)
     Switch tourDistributiveSwitch;
-
-    @Bind(R.id.map_filter_entourage_demand_switch)
+    @BindView(R.id.map_filter_entourage_demand_switch)
     Switch entourageDemandSwitch;
-
-    @Bind(R.id.map_filter_entourage_contribution_switch)
+    @BindView(R.id.map_filter_entourage_contribution_switch)
     Switch entourageContributionSwitch;
-
-    @Bind(R.id.map_filter_entourage_tours_switch)
+    @BindView(R.id.map_filter_entourage_tours_switch)
     Switch showToursSwitch;
-
-    @Bind(R.id.map_filter_entourage_user_only_switch)
+    @BindView(R.id.map_filter_entourage_user_only_switch)
     Switch onlyMyEntouragesSwitch;
-
-    @Bind(R.id.map_filter_time_days_1)
+    @BindView(R.id.map_filter_time_days_1)
     RadioButton days1RB;
-
-    @Bind(R.id.map_filter_time_days_2)
+    @BindView(R.id.map_filter_time_days_2)
     RadioButton days2RB;
-
-    @Bind(R.id.map_filter_time_days_3)
+    @BindView(R.id.map_filter_time_days_3)
     RadioButton days3RB;
+    private boolean isProUser = false;
 
     // ----------------------------------
     // Lifecycle
@@ -92,7 +77,6 @@ public class MapFilterFragment extends DialogFragment {
 
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -153,9 +137,13 @@ public class MapFilterFragment extends DialogFragment {
         mapFilter.showTours = showToursSwitch.isChecked();
         mapFilter.onlyMyEntourages = onlyMyEntouragesSwitch.isChecked();
 
-        if (days1RB.isChecked()) mapFilter.timeframe = MapFilter.DAYS_1;
-        else if (days2RB.isChecked()) mapFilter.timeframe = MapFilter.DAYS_2;
-        else if (days3RB.isChecked()) mapFilter.timeframe = MapFilter.DAYS_3;
+        if (days1RB.isChecked()) {
+            mapFilter.timeframe = MapFilter.DAYS_1;
+        } else if (days2RB.isChecked()) {
+            mapFilter.timeframe = MapFilter.DAYS_2;
+        } else if (days3RB.isChecked()) {
+            mapFilter.timeframe = MapFilter.DAYS_3;
+        }
 
         // inform the map screen to refresh the newsfeed
         BusProvider.getInstance().post(new Events.OnMapFilterChanged());

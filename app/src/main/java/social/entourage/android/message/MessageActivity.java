@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageComponent;
@@ -24,16 +24,16 @@ public class MessageActivity extends EntourageSecuredActivity {
     @Inject
     MessagePresenter presenter;
 
-    @Bind(R.id.message_author)
+    @BindView(R.id.message_author)
     TextView messageAuthor;
 
-    @Bind(R.id.message_object)
+    @BindView(R.id.message_object)
     TextView messageObject;
 
-    @Bind(R.id.message_content)
+    @BindView(R.id.message_content)
     TextView messageContent;
 
-    @Bind(R.id.message_close_button)
+    @BindView(R.id.message_close_button)
     Button closeButton;
 
     @Override

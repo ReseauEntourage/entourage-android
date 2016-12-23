@@ -32,7 +32,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -70,45 +70,45 @@ public class UserFragment extends DialogFragment {
     @Inject
     UserPresenter presenter;
 
-    @Bind(R.id.user_profile_scrollview)
+    @BindView(R.id.user_profile_scrollview)
     ScrollView scrollView;
 
-    @Bind(R.id.user_profile_edit_button)
+    @BindView(R.id.user_profile_edit_button)
     TextView userEditProfile;
 
-    @Bind(R.id.user_photo)
+    @BindView(R.id.user_photo)
     ImageView userPhoto;
 
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     TextView userName;
 
-    @Bind(R.id.user_role)
+    @BindView(R.id.user_role)
     TextView userRole;
 
-    @Bind(R.id.user_member_since)
+    @BindView(R.id.user_member_since)
     TextView userMemberSince;
 
-    @Bind(R.id.user_address)
+    @BindView(R.id.user_address)
     TextView userAddress;
 
-    @Bind(R.id.user_identification_email_check)
+    @BindView(R.id.user_identification_email_check)
     ImageView userEmailVerifiedImage;
 
-    @Bind(R.id.user_identification_phone_check)
+    @BindView(R.id.user_identification_phone_check)
     ImageView userPhoneVerifiedImage;
 
-    @Bind(R.id.user_tours_count)
+    @BindView(R.id.user_tours_count)
     TextView userTourCount;
 
-    @Bind(R.id.user_associations_title)
+    @BindView(R.id.user_associations_title)
     TextView userAssociationsTitle;
 
-    @Bind(R.id.user_associations_view)
+    @BindView(R.id.user_associations_view)
     RecyclerView userAssociationsView;
 
     UserOrganizationsAdapter organizationsAdapter;
 
-    @Bind(R.id.user_profile_progressBar)
+    @BindView(R.id.user_profile_progressBar)
     ProgressBar progressBar;
 
     private int requestedUserId;

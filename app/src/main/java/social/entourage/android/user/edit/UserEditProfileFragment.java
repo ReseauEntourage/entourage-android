@@ -11,7 +11,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
@@ -34,13 +34,13 @@ public class UserEditProfileFragment extends DialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    @Bind(R.id.user_edit_profile_firstname)
+    @BindView(R.id.user_edit_profile_firstname)
     EditText userFirstname;
 
-    @Bind(R.id.user_edit_profile_lastname)
+    @BindView(R.id.user_edit_profile_lastname)
     EditText userLastname;
 
-    @Bind(R.id.user_edit_profile_email)
+    @BindView(R.id.user_edit_profile_email)
     EditText userEmail;
 
     private User user;

@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.authentication.login.LoginPresenter;
-import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
+import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.Utils;
 
 
@@ -29,7 +28,7 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    @Bind(R.id.register_number_phone_number)
+    @BindView(R.id.register_number_phone_number)
     EditText phoneNumberEditText;
 
     private OnRegisterUserListener mListener;

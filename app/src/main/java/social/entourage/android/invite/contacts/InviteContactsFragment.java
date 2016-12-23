@@ -1,6 +1,5 @@
 package social.entourage.android.invite.contacts;
 
-
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.telephony.PhoneNumberUtils;
-import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +25,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageActivity;
@@ -104,14 +102,14 @@ public class InviteContactsFragment extends InviteBaseFragment implements
             R.id.contact_phone
     };
 
-    @Bind(R.id.invite_contacts_listView)
+    @BindView(R.id.invite_contacts_listView)
     ListView contactsList;
 
     // An adapter that binds the result Cursor to the ListView
     private InviteContactsAdapter mContactsAdapter;
 
     // Quick-jump list-view
-    @Bind(R.id.invite_contacts_quick_jump_listview)
+    @BindView(R.id.invite_contacts_quick_jump_listview)
     ListView quickJumpList;
 
     private ArrayAdapter<String> quickJumpAdapter;
@@ -132,10 +130,10 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     // Number of successfully server requests
     private int successfulyServerRequestCount = 0;
 
-    @Bind(R.id.invite_contacts_search)
+    @BindView(R.id.invite_contacts_search)
     EditText searchEditText;
 
-    @Bind(R.id.invite_contacts_send_button)
+    @BindView(R.id.invite_contacts_send_button)
     Button sendButton;
 
     // ----------------------------------

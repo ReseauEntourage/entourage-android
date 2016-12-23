@@ -16,15 +16,13 @@ import com.flurry.android.FlurryAgent;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
-import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 
@@ -40,7 +38,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    @Bind(R.id.tour_join_request_message)
+    @BindView(R.id.tour_join_request_message)
     EditText messageView;
 
     // ----------------------------------
