@@ -22,10 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionMenu;
@@ -56,7 +54,6 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
-import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
@@ -143,8 +140,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 public void onMapReady(final GoogleMap googleMap) {
                     isMapLoaded = true;
                     map = googleMap;
-
-                    clusterManager = new ClusterManager(getActivity(), googleMap);
+                    clusterManager = new ClusterManager<>(getActivity(), googleMap);
                     poiRenderer = new PoiRenderer(getActivity(), googleMap, clusterManager);
                     clusterManager.setRenderer(poiRenderer);
                     clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
@@ -154,13 +150,13 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     }
                     googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                     googleMap.getUiSettings().setMapToolbarEnabled(false);
-                    googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
                         @Override
-                        public void onCameraChange(CameraPosition cameraPosition) {
-                            clusterManager.onCameraChange(cameraPosition);
-                            EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
-                            Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
-                            float newZoom = cameraPosition.zoom;
+                        public void onCameraMove() {
+                            CameraPosition position = googleMap.getCameraPosition();
+                            EntourageLocation.getInstance().saveCurrentCameraPosition(position);
+                            Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
+                            float newZoom = position.zoom;
                             if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
                                 previousCameraZoom = newZoom;
                                 previousCameraLocation = newLocation;
@@ -169,6 +165,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                             hideEmptyListPopup();
                         }
                     });
+                    ;
 
                     // MI: We need to wait for a better solution for long press options on guide map
                     // So I'll just comment out the code
