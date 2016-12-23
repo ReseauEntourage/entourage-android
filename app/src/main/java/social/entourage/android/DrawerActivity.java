@@ -46,7 +46,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -109,31 +109,31 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Inject
     DrawerPresenter presenter;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    @Bind(R.id.navigation_view)
+    @BindView(R.id.navigation_view)
     NavigationView navigationView;
 
-    @Bind(R.id.content_view)
+    @BindView(R.id.content_view)
     View contentView;
 
-    @Bind(R.id.drawer_header_user_name)
+    @BindView(R.id.drawer_header_user_name)
     TextView userName;
 
-    @Bind(R.id.drawer_header_user_photo)
+    @BindView(R.id.drawer_header_user_photo)
     ImageView userPhoto;
 
-    @Bind(R.id.drawer_header_edit_profile)
+    @BindView(R.id.drawer_header_edit_profile)
     TextView userEditProfileTextView;
 
-    @Bind(R.id.toolbar_discussion)
+    @BindView(R.id.toolbar_discussion)
     BadgeView discussionBadgeView;
 
-    @Bind(R.id.map_fab_menu)
+    @BindView(R.id.map_fab_menu)
     public FloatingActionMenu mapOptionsMenu;
 
     private Fragment mainFragment;
