@@ -23,6 +23,8 @@ import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 import static com.google.android.gms.common.api.CommonStatusCodes.SUCCESS;
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 import static com.google.android.gms.location.LocationServices.SettingsApi;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class FusedLocationProvider {
     private final Context context;
@@ -152,15 +154,15 @@ public class FusedLocationProvider {
 
     private LocationRequest createLocationRequestForPublicUsage() {
         return new LocationRequest()
-            .setInterval(300000)
-            .setFastestInterval(60000)
+            .setInterval(MINUTES.toMillis(5))
+            .setFastestInterval(MINUTES.toMillis(1))
             .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
 
     private LocationRequest createLocationRequestForProUsage() {
         return new LocationRequest()
-            .setInterval(20000)
-            .setFastestInterval(10000)
+            .setInterval(SECONDS.toMillis(20))
+            .setFastestInterval(SECONDS.toMillis(10))
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
