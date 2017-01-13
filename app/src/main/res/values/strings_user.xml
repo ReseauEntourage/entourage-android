@@ -34,6 +34,8 @@
     <string name="user_public_information_label">Informations publiques</string>
     <string name="user_edit_address_label">Quartier</string>
     <string name="user_edit_no_association">Membre d’une association qui utilise Entourage pour ses maraudes? Contactez associations@entourage.social pour avoir accès aux fonctionnalités d’Entourage pour les membres d’associations.</string>
+    <string name="user_edit_add_association_label">Affichez sur votre profil l’association dont vous vous sentez proche !</string>
+    <string name="user_edit_add_association_button">Afficher une association</string>
     <string name="user_edit_delete_account_button">Supprimer mon compte</string>
 
     <string name="user_edit_password_old_password_label">Ancien code d’accès</string>

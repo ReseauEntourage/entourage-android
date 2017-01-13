@@ -79,6 +79,9 @@ public class UserEditFragment extends DialogFragment {
     @BindView(R.id.user_associations_view)
     RecyclerView userAssociationsView;
 
+    @BindView(R.id.user_add_association_separator)
+    View userAddAssociationSeparator;
+
     UserOrganizationsAdapter organizationsAdapter;
 
     private User editedUser;
@@ -162,9 +165,9 @@ public class UserEditFragment extends DialogFragment {
             userPhone.setText(editedUser.getPhone());
             userAddress.setText("");
 
+            List<Organization> organizationList = new ArrayList<>();
             if (organizationsAdapter == null) {
                 userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                List<Organization> organizationList = new ArrayList<>();
                 if (editedUser.getOrganization() != null) {
                     organizationList.add(editedUser.getOrganization());
                 }
@@ -172,10 +175,7 @@ public class UserEditFragment extends DialogFragment {
                 userAssociationsView.setAdapter(organizationsAdapter);
             }
 
-            boolean isPro = editedUser.isPro();
-            //userAssociationsTitle.setVisibility( isPro ? View.VISIBLE : View.GONE );
-            userAssociationsPublicInfo.setVisibility( isPro ? View.GONE : View.VISIBLE );
-            userAssociationsView.setVisibility( isPro ? View.VISIBLE : View.GONE );
+            userAddAssociationSeparator.setVisibility(organizationList.size() > 0 ? View.VISIBLE : View.GONE);
 
         }
     }
@@ -248,6 +248,11 @@ public class UserEditFragment extends DialogFragment {
     protected void onPhotoClicked() {
         PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
         fragment.show(getFragmentManager(), PhotoChooseSourceFragment.TAG);
+    }
+
+    @OnClick(R.id.user_add_association_button)
+    protected void onAddAssociationClicked() {
+        //TODO Show screen 09.2.1 Edit Associations Membership
     }
 
     private void showEditProfile(int editType) {
