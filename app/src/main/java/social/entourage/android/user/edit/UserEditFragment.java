@@ -38,7 +38,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.UserOrganizationsAdapter;
-import social.entourage.android.user.edit.association.UserEditAssociationFragment;
+import social.entourage.android.user.edit.partner.UserEditPartnerFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 
 public class UserEditFragment extends DialogFragment {
@@ -253,8 +253,8 @@ public class UserEditFragment extends DialogFragment {
 
     @OnClick(R.id.user_add_association_button)
     protected void onAddAssociationClicked() {
-        UserEditAssociationFragment userEditAssociationFragment = new UserEditAssociationFragment();
-        userEditAssociationFragment.show(getFragmentManager(), UserEditAssociationFragment.TAG);
+        UserEditPartnerFragment userEditPartnerFragment = new UserEditPartnerFragment();
+        userEditPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);
     }
 
     private void showEditProfile(int editType) {

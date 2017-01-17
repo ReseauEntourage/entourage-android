@@ -3,21 +3,21 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="social.entourage.android.user.edit.association.UserEditAssociationFragment"
+                tools:context="social.entourage.android.user.edit.partner.UserEditPartnerFragment"
                 android:background="@color/pale_grey">
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
-        android:id="@+id/user_edit_asso_title_layout"
+        android:id="@+id/user_edit_partner_title_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/user_edit_asso_close_button"
+            android:id="@+id/user_edit_partner_close_button"
             android:src="@drawable/ic_close"
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_edit_asso_title"
-            android:id="@+id/user_edit_asso_title"
+            android:id="@+id/user_edit_partner_title"
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"/>
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/user_save_button"
-            android:id="@+id/user_edit_asso_save_button"
+            android:id="@+id/user_edit_partner_save_button"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textColor="@color/accent"
@@ -50,33 +50,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/user_edit_asso_search"
+        android:id="@+id/user_edit_partner_search"
         android:layout_margin="10dp"
         style="@style/RoundedEditText"
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:hint="@string/user_edit_asso_search_hint"
         android:imeOptions="actionSearch"
         android:gravity="center"
-        android:layout_below="@+id/user_edit_asso_title_layout"/>
+        android:layout_below="@+id/user_edit_partner_title_layout"
+        android:inputType="text"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/user_edit_asso_search"
+        android:layout_below="@+id/user_edit_partner_search"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:divider="@color/separator"
         android:background="@color/white"
-        android:id="@+id/user_edit_asso_listview"
+        android:id="@+id/user_edit_partner_listview"
         android:dividerHeight="1dp"
         android:choiceMode="singleChoice"
-        android:layout_above="@+id/user_asso_public"/>
+        android:layout_above="@+id/user_partner_public"
+        android:descendantFocusability="blocksDescendants"/>
 
     <TextView
         android:text="@string/user_edit_no_association"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/user_asso_public"
+        android:id="@+id/user_partner_public"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingEnd="20dp"

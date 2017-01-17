@@ -14,8 +14,10 @@ import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.NewsfeedRequest;
+import social.entourage.android.api.PartnerRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.UserRequest;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.tape.EncounterTapeService;
 import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationController;
@@ -50,6 +52,7 @@ public interface EntourageComponent {
     EntourageRequest getEntourageRequest();
     NewsfeedRequest getNewsfeedRequest();
     InvitationRequest getInvitationRequest();
+    PartnerRequest getPartnerRequest();
 
     OkHttpClient getOkHttpClient();
 }
