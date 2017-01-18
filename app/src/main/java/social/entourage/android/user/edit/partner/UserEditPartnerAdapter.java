@@ -1,5 +1,6 @@
 package social.entourage.android.user.edit.partner;
 
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,14 +71,17 @@ public class UserEditPartnerAdapter extends BaseAdapter {
         Partner partner = getItem(position);
         if (partner != null) {
             viewHolder.mPartnerName.setText(partner.getName());
-            String organizationLogo = partner.getLogoUrl();
-            if (organizationLogo != null) {
+            viewHolder.mPartnerName.setTypeface(viewHolder.mPartnerName.getTypeface(), partner.isDefault() ? Typeface.BOLD : Typeface.NORMAL);
+
+            String partnerLogo = partner.getLargeLogoUrl();
+            if (partnerLogo != null) {
                 Picasso.with(viewGroup.getContext())
-                        .load(Uri.parse(organizationLogo))
+                        .load(Uri.parse(partnerLogo))
                         .into(viewHolder.mPartnerLogo);
             } else {
                 viewHolder.mPartnerLogo.setImageResource(0);
             }
+            
             viewHolder.mCheckbox.setChecked(partner.isDefault());
         }
 

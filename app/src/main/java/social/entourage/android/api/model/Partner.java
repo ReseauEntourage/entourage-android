@@ -19,8 +19,11 @@ public class Partner implements Serializable {
 
     private String name;
 
-    @SerializedName("logo_url")
-    private String logoUrl;
+    @SerializedName("small_logo_url")
+    private String smallLogoUrl;
+
+    @SerializedName("large_logo_url")
+    private String largeLogoUrl;
 
     @SerializedName("default")
     private boolean isDefault;
@@ -46,20 +49,28 @@ public class Partner implements Serializable {
         isDefault = aDefault;
     }
 
-    public String getLogoUrl() {
-        return logoUrl;
-    }
-
-    public void setLogoUrl(final String logoUrl) {
-        this.logoUrl = logoUrl;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public String getLargeLogoUrl() {
+        return largeLogoUrl;
+    }
+
+    public void setLargeLogoUrl(final String largeLogoUrl) {
+        this.largeLogoUrl = largeLogoUrl;
+    }
+
+    public String getSmallLogoUrl() {
+        return smallLogoUrl;
+    }
+
+    public void setSmallLogoUrl(final String smallLogoUrl) {
+        this.smallLogoUrl = smallLogoUrl;
     }
 
     // ----------------------------------
