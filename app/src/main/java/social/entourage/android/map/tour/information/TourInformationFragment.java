@@ -154,6 +154,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @BindView(R.id.tour_card_photo)
     ImageView tourAuthorPhoto;
 
+    @BindView(R.id.tour_card_partner_logo)
+    ImageView tourAuthorPartnerLogo;
+
     @BindView(R.id.tour_card_type)
     TextView tourType;
 
@@ -797,6 +800,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                         .transform(new CropCircleTransformation())
                         .into(tourAuthorPhoto);
             }
+            //TODO partner logo
         } else {
             tourAuthorName.setText("--");
         }
@@ -851,6 +855,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourPeopleCount.setVisibility(View.INVISIBLE);
             tourPeopleImage.setVisibility(View.INVISIBLE);
             tourAuthorPhoto.setVisibility(View.INVISIBLE);
+            tourAuthorPartnerLogo.setVisibility(View.INVISIBLE);
             tourCardArrow.setVisibility(View.VISIBLE);
             updateJoinStatus();
             switchToPrivateSection();
@@ -859,6 +864,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourPeopleCount.setVisibility(View.VISIBLE);
             tourPeopleImage.setVisibility(View.VISIBLE);
             tourAuthorPhoto.setVisibility(View.VISIBLE);
+            tourAuthorPartnerLogo.setVisibility(View.VISIBLE);
             tourCardArrow.setVisibility(View.GONE);
             switchToPublicSection();
         }

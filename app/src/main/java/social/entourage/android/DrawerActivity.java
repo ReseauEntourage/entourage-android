@@ -123,10 +123,13 @@ public class DrawerActivity extends EntourageSecuredActivity
     TextView userName;
     @BindView(R.id.drawer_header_user_photo)
     ImageView userPhoto;
+    @BindView(R.id.drawer_header_user_partner_logo)
+    ImageView userPartnerLogo;
     @BindView(R.id.drawer_header_edit_profile)
     TextView userEditProfileTextView;
     @BindView(R.id.toolbar_discussion)
     BadgeView discussionBadgeView;
+
     @IdRes int selectedSidemenuAction;
     ArrayList<Message> pushNotifications = new ArrayList<>();
     private Fragment mainFragment;
@@ -170,6 +173,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             } else {
                 userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
+            //TODO Show partner logo
             //refresh the user info from the server
             Location location = EntourageLocation.getInstance().getCurrentLocation();
             presenter.updateUser(null, null, null, (location != null ? location : null));
@@ -383,6 +387,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             } else {
                 userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
+            //TODO Show user partner logo
         }
     }
 

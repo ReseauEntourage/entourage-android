@@ -41,6 +41,7 @@ public class TourViewHolder extends BaseCardViewHolder {
 
     private TextView tourTitle;
     private ImageView photoView;
+    private ImageView partnerLogoView;
     private TextView tourTypeTextView;
     private TextView tourAuthor;
     private TextView tourLocation;
@@ -66,6 +67,7 @@ public class TourViewHolder extends BaseCardViewHolder {
 
         tourTitle = (TextView)itemView.findViewById(R.id.tour_card_title);
         photoView = (ImageView)itemView.findViewById(R.id.tour_card_photo);
+        partnerLogoView = (ImageView)itemView.findViewById(R.id.tour_card_partner_logo);
         tourTypeTextView = (TextView)itemView.findViewById(R.id.tour_card_type);
         tourAuthor = (TextView)itemView.findViewById(R.id.tour_card_author);
         tourLocation = (TextView)itemView.findViewById(R.id.tour_card_location);
@@ -124,6 +126,8 @@ public class TourViewHolder extends BaseCardViewHolder {
             } else {
                 photoView.setImageResource(R.drawable.ic_user_photo_small);
             }
+            //TODO partner logo
+
             //author
             tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));
         }

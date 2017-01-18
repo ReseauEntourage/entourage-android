@@ -82,6 +82,14 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="20dp"/>
 
+                <ImageView
+                    android:id="@+id/user_partner_logo"
+                    android:layout_alignBottom="@+id/user_photo"
+                    android:layout_alignRight="@+id/user_photo"
+                    android:layout_height="63dp"
+                    android:layout_width="63dp"
+                    android:scaleType="fitCenter"/>
+
                 <TextView
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"

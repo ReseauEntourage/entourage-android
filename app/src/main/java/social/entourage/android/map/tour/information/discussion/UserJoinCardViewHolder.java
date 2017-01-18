@@ -39,6 +39,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private TextView mJoinStatusView;
 
     private ImageView mPhotoView;
+    private ImageView mPartnerLogoView;
     private TextView mPrivateUsernameView;
     private TextView mJoinMessage;
     private Button mAcceptButton;
@@ -63,6 +64,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
+        mPartnerLogoView = (ImageView) itemView.findViewById(R.id.tic_partner_logo);
         mPrivateUsernameView = (TextView) itemView.findViewById(R.id.tic_private_username);
         mJoinMessage = (TextView) itemView.findViewById(R.id.tic_join_message);
         mAcceptButton = (Button) itemView.findViewById(R.id.tic_accept_button);
@@ -70,6 +72,14 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mViewProfileButton = (Button) itemView.findViewById(R.id.tic_view_profile_button);
 
         mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (userId == 0) return;
+                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
+            }
+        });
+
+        mPartnerLogoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 if (userId == 0) return;
@@ -149,6 +159,8 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
                 mPhotoView.setImageResource(R.drawable.ic_user_photo_small);
             }
 
+            //TODO partner logo
+
             mJoinMessage.setText(user.getMessage());
 
         } else {
@@ -166,6 +178,8 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             } else {
                 mPublicPhotoView.setImageResource(R.drawable.ic_user_photo_small);
             }
+
+            //TODO partner logo
 
             mJoinStatusView.setText(getJoinStatus(user.getStatus(), user.getMessage(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
         }

@@ -81,7 +81,7 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             } else {
                 viewHolder.mPartnerLogo.setImageResource(0);
             }
-            
+
             viewHolder.mCheckbox.setChecked(partner.isDefault());
         }
 

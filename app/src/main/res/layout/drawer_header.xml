@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -36,20 +37,28 @@
             />
     </RelativeLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_light">
 
         <ImageView
             android:id="@+id/drawer_header_user_photo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
             android:src="@drawable/ic_user_photo"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="136dp"
+            android:layout_height="136dp"/>
+
+        <ImageView
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:id="@+id/drawer_header_user_partner_logo"
+            android:layout_alignBottom="@+id/drawer_header_user_photo"
+            android:layout_alignRight="@+id/drawer_header_user_photo"/>
 
         <TextView
             android:id="@+id/drawer_header_user_name"
@@ -63,7 +72,9 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:textColorHint="@color/greyish_brown"/>
+            android:textColorHint="@color/greyish_brown"
+            android:layout_below="@+id/drawer_header_user_photo"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -75,8 +86,10 @@
             android:textSize="15sp"
             android:textStyle="italic"
             android:layout_marginBottom="10dp"
-            android:clickable="true"/>
-    </LinearLayout>
+            android:clickable="true"
+            android:layout_below="@+id/drawer_header_user_name"/>
+
+    </RelativeLayout>
 
 
 </LinearLayout>

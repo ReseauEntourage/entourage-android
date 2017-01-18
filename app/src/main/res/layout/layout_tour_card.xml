@@ -8,7 +8,12 @@
     android:rowCount="5"
     android:columnCount="3"
     android:layout_marginBottom="10dp"
-    android:padding="16dp">
+    android:paddingBottom="16dp"
+    android:paddingEnd="12dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="12dp"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +37,18 @@
         android:scaleType="centerInside"
         android:paddingTop="3dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"/>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/tour_card_partner_logo"
+        android:layout_alignBottom="@+id/tour_card_photo"
+        android:layout_alignRight="@+id/tour_card_photo"
+        android:layout_marginBottom="-4dp"
+        android:layout_marginRight="-4dp"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -139,7 +155,9 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tour_card_location"
         android:id="@+id/tour_card_act_layout"
-        android:layout_marginTop="1dp">
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp">
 
         <ImageView
             android:layout_width="fill_parent"
@@ -147,7 +165,8 @@
             android:id="@+id/tour_card_divider"
             android:background="@color/greyish"
             android:layout_gravity="fill_horizontal"
-            android:layout_marginTop="25dp"/>
+            android:layout_marginTop="25dp"
+            />
 
         <Button
             style="@style/ActButton"

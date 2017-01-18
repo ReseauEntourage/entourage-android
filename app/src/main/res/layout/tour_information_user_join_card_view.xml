@@ -62,12 +62,28 @@
         android:gravity="center"
         >
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/tic_photo"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_user_photo_small"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/tic_photo"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_user_photo_small"/>
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:id="@+id/tic_partner_logo"
+                android:layout_alignBottom="@+id/tic_photo"
+                android:layout_alignEnd="@+id/tic_photo"
+                android:layout_alignRight="@+id/tic_photo"
+                android:layout_marginEnd="-6dp"
+                android:layout_marginRight="-6dp"
+                android:layout_marginBottom="-6dp"/>
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"

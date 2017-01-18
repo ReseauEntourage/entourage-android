@@ -21,6 +21,7 @@ import social.entourage.android.tools.BusProvider;
 public class ChatMessageCardViewHolder extends BaseCardViewHolder {
 
     private ImageView mUserPhotoView;
+    private ImageView mPartnerLogoView;
     private TextView mUserNameView;
     private TextView mMessageView;
 
@@ -35,6 +36,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
 
         mUserPhotoView = (ImageView) itemView.findViewById(R.id.tic_chat_user_photo);
         mUserNameView = (TextView) itemView.findViewById(R.id.tic_chat_user_name);
+        mPartnerLogoView = (ImageView) itemView.findViewById(R.id.tic_chat_user_partner_logo);
         mMessageView = (TextView) itemView.findViewById(R.id.tic_chat_message);
 
         mUserPhotoView.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +64,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         } else {
             mUserPhotoView.setImageResource(R.drawable.ic_user_photo_small);
         }
+        //TODO partner logo
 
         if (chatMessage.getUserName() != null) {
             mUserNameView.setText(chatMessage.getUserName());

@@ -79,6 +79,9 @@ public class UserFragment extends DialogFragment {
     @BindView(R.id.user_photo)
     ImageView userPhoto;
 
+    @BindView(R.id.user_partner_logo)
+    ImageView userPartnerLogo;
+
     @BindView(R.id.user_name)
     TextView userName;
 
@@ -220,6 +223,7 @@ public class UserFragment extends DialogFragment {
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }
+            //TODO Show the partner logo, if available
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
             userTourCount.setText(""+entourageCount);
