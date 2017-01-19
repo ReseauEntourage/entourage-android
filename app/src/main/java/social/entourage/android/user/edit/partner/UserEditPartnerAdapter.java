@@ -71,7 +71,7 @@ public class UserEditPartnerAdapter extends BaseAdapter {
         Partner partner = getItem(position);
         if (partner != null) {
             viewHolder.mPartnerName.setText(partner.getName());
-            viewHolder.mPartnerName.setTypeface(viewHolder.mPartnerName.getTypeface(), partner.isDefault() ? Typeface.BOLD : Typeface.NORMAL);
+            viewHolder.mPartnerName.setTypeface(null, partner.isDefault() ? Typeface.BOLD : Typeface.NORMAL);
 
             String partnerLogo = partner.getLargeLogoUrl();
             if (partnerLogo != null) {
