@@ -92,7 +92,7 @@ dependencies {
     def awsVersion = "2.3.6"
 
     compile(
-            files('libs/flurryAnalytics_6.5.0.jar'),
+            files('libs/flurryAnalytics_6.8.0.jar'),
             "com.android.support:support-v4:${supportVersion}",
             "com.android.support:support-annotations:${supportVersion}",
             "com.android.support:cardview-v7:${supportVersion}",
