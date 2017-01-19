@@ -24,11 +24,13 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
@@ -110,13 +112,14 @@ public class TourViewHolder extends BaseCardViewHolder {
         //title
         tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), tour.getOrganizationName()));
 
-        if (tour.getAuthor() == null) {
+        TourAuthor author = tour.getAuthor();
+        if (author == null) {
             //author
             tourAuthor.setText("--");
             photoView.setImageResource(R.drawable.ic_user_photo_small);
         } else {
             //author photo
-            String avatarURLAsString = tour.getAuthor().getAvatarURLAsString();
+            String avatarURLAsString = author.getAvatarURLAsString();
             if (avatarURLAsString != null) {
                 Picasso.with(itemView.getContext())
                         .load(Uri.parse(avatarURLAsString))
@@ -126,7 +129,23 @@ public class TourViewHolder extends BaseCardViewHolder {
             } else {
                 photoView.setImageResource(R.drawable.ic_user_photo_small);
             }
-            //TODO partner logo
+            //partner logo
+            Partner partner = author.getPartner();
+            if (partner != null) {
+                String partnerLogoURL = partner.getSmallLogoUrl();
+                if (partnerLogoURL != null) {
+                    Picasso.with(itemView.getContext())
+                            .load(Uri.parse(partnerLogoURL))
+                            .placeholder(null)
+                            .transform(new CropCircleTransformation())
+                            .into(partnerLogoView);
+                }
+                else {
+                    partnerLogoView.setImageDrawable(null);
+                }
+            } else {
+                partnerLogoView.setImageDrawable(null);
+            }
 
             //author
             tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), tour.getAuthor().getUserName()));

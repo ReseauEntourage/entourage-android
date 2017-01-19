@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import social.entourage.android.api.model.Partner;
+
 public class TourAuthor implements Serializable {
 
     // ----------------------------------
@@ -18,6 +20,9 @@ public class TourAuthor implements Serializable {
 
     @SerializedName("avatar_url")
     private String avatarURLAsString;
+
+    @SerializedName("partner")
+    private Partner partner;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -57,4 +62,13 @@ public class TourAuthor implements Serializable {
     public void setUserName(final String userName) {
         this.userName = userName;
     }
+
+    public Partner getPartner() {
+        return partner;
+    }
+
+    public void setPartner(final Partner partner) {
+        this.partner = partner;
+    }
+
 }
