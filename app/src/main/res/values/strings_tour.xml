@@ -44,6 +44,7 @@
     <string name="tour_info_text_join_accepted">\u0020a rejoint la maraude.</string>
     <string name="tour_info_text_join_rejected">\u0020 rejeté</string>
     <string name="tour_info_text_join_pending">\u0020 en attente</string>
+    <string name="tour_info_text_join_html"><![CDATA[<font color=\"#F26521\">%1$s </font>%2$s]]></string>
     <string name="tour_info_error_chat_message">Message non envoyé</string>
     <string name="tour_info_options_freeze_tour">Clôturer</string>
     <string name="tour_info_options_stop_tour">@string/tour_stop</string>

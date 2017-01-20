@@ -7,48 +7,93 @@
     android:padding="10dp">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:id="@+id/tic_public_info_section">
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            app:srcCompat="@drawable/ic_user_photo_small"
-            android:id="@+id/tic_public_info_photo"
-            android:scaleType="centerInside"
-            android:layout_gravity="bottom"/>
-
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:id="@+id/tic_join_status"
+            android:gravity="center_horizontal"
+            android:textSize="14sp"
+            android:textColor="@color/greyish"/>
 
-            <TextView
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@color/greyish"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/tic_public_info_message_layout">
+
+            <RelativeLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    app:srcCompat="@drawable/ic_user_photo_small"
+                    android:id="@+id/tic_public_info_photo"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="bottom"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/tic_public_info_partner_logo"
+                    android:layout_marginBottom="-4dp"
+                    android:layout_alignBottom="@+id/tic_public_info_photo"
+                    android:layout_alignEnd="@+id/tic_public_info_photo"
+                    android:layout_alignRight="@+id/tic_public_info_photo"
+                    android:layout_marginRight="-4dp"
+                    android:layout_marginEnd="-4dp"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tic_public_info_username"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="5dp"
-                android:textSize="12sp"
-                android:textColor="@color/greyish"/>
+                android:layout_weight="1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/tic_join_status"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:gravity="center_horizontal"
-                android:background="@drawable/bubble_left"
-                android:autoLink="all"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tic_public_info_username"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/greyish"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/tic_public_join_message"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/bubble_left"
+                    android:autoLink="all"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="4dp"/>
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -1,6 +1,7 @@
 package social.entourage.android.map.tour.information.discussion;
 
 import android.net.Uri;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -35,8 +36,11 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private View mPrivateSection;
 
     private ImageView mPublicPhotoView;
+    private ImageView mPublicPartnerLogo;
     private TextView mPublicUsernameView;
     private TextView mJoinStatusView;
+    private View mPublicMessageSection;
+    private TextView mPublicJoinMessage;
 
     private ImageView mPhotoView;
     private ImageView mPartnerLogoView;
@@ -60,8 +64,11 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mPrivateSection = itemView.findViewById(R.id.tic_private_info_section);
 
         mPublicPhotoView = (ImageView) itemView.findViewById(R.id.tic_public_info_photo);
+        mPublicPartnerLogo = (ImageView) itemView.findViewById(R.id.tic_public_info_partner_logo);
         mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_public_info_username);
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
+        mPublicJoinMessage = (TextView) itemView.findViewById(R.id.tic_public_join_message);
+        mPublicMessageSection = (View) itemView.findViewById(R.id.tic_public_info_message_layout);
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
         mPartnerLogoView = (ImageView) itemView.findViewById(R.id.tic_partner_logo);
@@ -144,73 +151,91 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         if (user.getDisplayName() == null || user.getStatus() == null) return;
 
         if (user.getStatus().equals(FeedItem.JOIN_STATUS_PENDING)) {
-            mPrivateSection.setVisibility(View.VISIBLE);
-            mPublicSection.setVisibility(View.GONE);
-
-            mPrivateUsernameView.setText(user.getDisplayName());
-
-            String avatarURL = user.getAvatarURLAsString();
-            if (avatarURL != null) {
-                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(mPhotoView);
-            } else {
-                mPhotoView.setImageResource(R.drawable.ic_user_photo_small);
-            }
-
-            //TODO partner logo
-            if (avatarURL != null) {
-                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(mPartnerLogoView);
-            } else {
-                mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
-            }
-
-            mJoinMessage.setText(user.getMessage());
-
+            populatePendingStatus(user);
         } else {
-            mPrivateSection.setVisibility(View.GONE);
-            mPublicSection.setVisibility(View.VISIBLE);
-
-            mPublicUsernameView.setText(user.getDisplayName());
-
-            String avatarURL = user.getAvatarURLAsString();
-            if (avatarURL != null) {
-                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(mPublicPhotoView);
-            } else {
-                mPublicPhotoView.setImageResource(R.drawable.ic_user_photo_small);
-            }
-
-            //TODO partner logo
-            if (avatarURL != null) {
-                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(mPartnerLogoView);
-            } else {
-                mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
-            }
-
-            mJoinStatusView.setText(getJoinStatus(user.getStatus(), user.getMessage(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
+            populateJoinedStatus(user);
         }
 
         userId = user.getUserId();
         feedItem = user.getFeedItem();
     }
 
-    private String getJoinStatus(String joinStatus, String joinMessage, boolean isTour) {
-        if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
+    private void populatePendingStatus(TourUser user) {
+        mPrivateSection.setVisibility(View.VISIBLE);
+        mPublicSection.setVisibility(View.GONE);
+
+        mPrivateUsernameView.setText(user.getDisplayName());
+
+        String avatarURL = user.getAvatarURLAsString();
+        if (avatarURL != null) {
+            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .transform(new CropCircleTransformation())
+                    .into(mPhotoView);
+        } else {
+            mPhotoView.setImageResource(R.drawable.ic_user_photo_small);
+        }
+
+        //TODO partner logo
+        if (avatarURL != null) {
+            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .transform(new CropCircleTransformation())
+                    .into(mPartnerLogoView);
+        } else {
+            mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
+        }
+
+        mJoinMessage.setText(user.getMessage());
+    }
+
+    private void populateJoinedStatus(TourUser user) {
+        mPrivateSection.setVisibility(View.GONE);
+        mPublicSection.setVisibility(View.VISIBLE);
+
+        mPublicUsernameView.setText(user.getDisplayName());
+
+        String avatarURL = user.getAvatarURLAsString();
+        if (avatarURL != null) {
+            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .transform(new CropCircleTransformation())
+                    .into(mPublicPhotoView);
+        } else {
+            mPublicPhotoView.setImageResource(R.drawable.ic_user_photo_small);
+        }
+
+        //TODO partner logo
+        if (avatarURL != null) {
+            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .transform(new CropCircleTransformation())
+                    .into(mPublicPartnerLogo);
+        } else {
+            mPublicPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+        }
+
+        String joinStatus = getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD);
+
+        mJoinStatusView.setText(Html.fromHtml(itemView.getContext().getString(R.string.tour_info_text_join_html, user.getDisplayName(), joinStatus)), TextView.BufferType.SPANNABLE);
+
+        String joinMessage = user.getMessage();
+        if (Tour.JOIN_STATUS_ACCEPTED.equals(user.getStatus())) {
             if (joinMessage != null && joinMessage.length() > 0) {
-                return joinMessage;
+                mPublicMessageSection.setVisibility(View.VISIBLE);
+                mPublicJoinMessage.setText(joinMessage);
             } else {
-                return itemView.getContext().getString(isTour?R.string.tour_info_text_join_accepted:R.string.entourage_info_text_join_accepted);
+                mPublicMessageSection.setVisibility(View.GONE);
             }
+        } else {
+            mPublicMessageSection.setVisibility(View.GONE);
+        }
+
+    }
+
+    private String getJoinStatus(String joinStatus, boolean isTour) {
+        if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
+            return itemView.getContext().getString(isTour? R.string.tour_info_text_join_accepted : R.string.entourage_info_text_join_accepted);
         }
         else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
             return itemView.getContext().getString(R.string.tour_info_text_join_rejected);
