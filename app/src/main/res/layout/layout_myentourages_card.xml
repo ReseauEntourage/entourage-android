@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -19,18 +20,6 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/tour_card_photo"/>
 
-    <ImageView
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:id="@+id/tour_card_photo"
-        android:layout_gravity="right"
-        android:src="@drawable/ic_user_photo_small"
-        android:scaleType="fitCenter"
-        android:paddingTop="3dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/tour_card_people_count"
-        android:layout_marginRight="-10dp"/>
-
     <TextView
         android:layout_width="46dp"
         android:layout_height="46dp"
@@ -43,6 +32,29 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:paddingTop="3dp"/>
+
+    <ImageView
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:id="@+id/tour_card_photo"
+        android:layout_gravity="right"
+        android:src="@drawable/ic_user_photo_small"
+        android:scaleType="fitCenter"
+        android:paddingTop="3dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/tour_card_people_count"
+        android:layout_marginRight="-10dp"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/tour_card_partner_logo"
+        android:layout_alignBottom="@+id/tour_card_photo"
+        android:layout_alignEnd="@+id/tour_card_photo"
+        android:layout_alignRight="@+id/tour_card_photo"
+        android:layout_marginBottom="-6dp"
+        android:layout_marginEnd="-6dp"
+        android:layout_marginRight="-6dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
