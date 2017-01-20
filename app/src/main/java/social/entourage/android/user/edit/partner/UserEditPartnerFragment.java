@@ -92,28 +92,6 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
         if (adapter == null) {
             adapter = new UserEditPartnerAdapter();
             partnersListView.setAdapter(adapter);
-
-            partnersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(final AdapterView<?> adapterView, final View view, final int position, final long rowID) {
-
-                    // Uncheck the old partner, if necessary
-                    if (adapter.selectedPartnerPosition != position) {
-                        Partner oldPartner = adapter.getItem(adapter.selectedPartnerPosition);
-                        if (oldPartner != null) {
-                            oldPartner.setDefault(false);
-                        }
-                    }
-
-                    // Toggle the default switch
-                    Partner clickedPartner = adapter.getItem(position);
-                    if (clickedPartner != null) {
-                        clickedPartner.setDefault(!clickedPartner.isDefault());
-                        partnersListView.setItemChecked(position, clickedPartner.isDefault());
-                        adapter.selectedPartnerPosition = position;
-                    }
-                }
-            });
         }
 
         // Initialize the search field

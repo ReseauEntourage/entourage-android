@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,16 +30,20 @@ public class UserEditPartnerAdapter extends BaseAdapter {
         public ImageView mPartnerLogo;
         public CheckBox mCheckbox;
 
-        public PartnerViewHolder(View v) {
+        public PartnerViewHolder(View v, OnCheckedChangeListener checkboxListener) {
             mPartnerName = (TextView) v.findViewById(R.id.partner_name);
             mPartnerLogo = (ImageView) v.findViewById(R.id.partner_logo);
             mCheckbox = (CheckBox) v.findViewById(R.id.partner_checkbox);
+
+            mCheckbox.setOnCheckedChangeListener(checkboxListener);
         }
 
     }
 
 
     public int selectedPartnerPosition = -1;
+
+    private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener();
 
     private List<Partner> partnerList;
 
@@ -61,7 +66,7 @@ public class UserEditPartnerAdapter extends BaseAdapter {
         PartnerViewHolder viewHolder;
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_edit_partner, viewGroup, false);
-            viewHolder = new PartnerViewHolder(view);
+            viewHolder = new PartnerViewHolder(view, onCheckedChangeListener);
             view.setTag(viewHolder);
         } else {
             viewHolder = (PartnerViewHolder) view.getTag();
@@ -77,12 +82,18 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             if (partnerLogo != null) {
                 Picasso.with(viewGroup.getContext())
                         .load(Uri.parse(partnerLogo))
+                        .placeholder(null)
                         .into(viewHolder.mPartnerLogo);
             } else {
-                viewHolder.mPartnerLogo.setImageResource(0);
+                viewHolder.mPartnerLogo.setImageDrawable(null);
             }
 
+            // set the tag to null so that oncheckedchangelistener exits when populating the view
+            viewHolder.mCheckbox.setTag(null);
+            // set the check state
             viewHolder.mCheckbox.setChecked(partner.isDefault());
+            // set the tag to the item position
+            viewHolder.mCheckbox.setTag(position);
         }
 
         return view;
@@ -99,5 +110,39 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             return null;
         }
         return partnerList.get(position);
+    }
+
+    private class OnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
+            // if no tag, exit
+            if (compoundButton.getTag() == null) {
+                return;
+            }
+            // flag to check if we need to refresh the list view
+            boolean needsRefresh = false;
+            // get the position
+            int position = (Integer) compoundButton.getTag();
+            // unset the previously selected partner, if different than the current
+            if (UserEditPartnerAdapter.this.selectedPartnerPosition != position) {
+                Partner oldPartner = UserEditPartnerAdapter.this.getItem(UserEditPartnerAdapter.this.selectedPartnerPosition);
+                if (oldPartner != null) {
+                    oldPartner.setDefault(false);
+                    needsRefresh = true;
+                }
+            }
+
+            // save the state
+            Partner partner = UserEditPartnerAdapter.this.getItem(position);
+            if (partner != null) {
+                partner.setDefault(isChecked);
+                UserEditPartnerAdapter.this.selectedPartnerPosition = position;
+            }
+
+            // refresh the listview, if needed
+            if (needsRefresh) {
+                UserEditPartnerAdapter.this.notifyDataSetChanged();
+            }
+        }
     }
 }

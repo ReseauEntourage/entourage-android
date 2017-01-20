@@ -38,11 +38,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:visibility="visible"
-        android:clickable="false"
         android:button="@drawable/cb_contact"
         android:checked="false"
         android:id="@+id/partner_checkbox"
         android:layout_centerVertical="true"
-        android:focusable="false"/>
+        />
 
 </RelativeLayout>
