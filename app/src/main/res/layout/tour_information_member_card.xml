@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-    >
+                android:paddingStart="10dp"
+                android:layout_height="50dp">
 
     <ImageView
         android:layout_width="35dp"
@@ -14,24 +14,42 @@
         android:layout_alignParentLeft="true"
         android:scaleType="centerInside"
         android:src="@drawable/ic_user_photo_small"
-        android:layout_centerHorizontal="true"/>
+        />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:id="@+id/tic_member_partner_logo"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/tic_member_photo"
+        android:layout_alignEnd="@+id/tic_member_photo"
+        android:layout_alignRight="@+id/tic_member_photo"
+        android:layout_marginBottom="-4dp"
+        android:layout_marginEnd="-4dp"
+        android:layout_marginRight="-4dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tic_member_name"
         android:paddingLeft="10dp"
-        android:layout_toRightOf="@+id/tic_member_photo"
         android:textColor="@color/greyish_brown"
         android:textSize="15sp"
         android:paddingRight="10dp"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/tic_member_partner_logo"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/greyish_brown"
         android:layout_toRightOf="@+id/tic_member_photo"
-        android:layout_below="@+id/tic_member_photo"
-        android:layout_marginLeft="10dp"/>
+        android:layout_below="@+id/tic_member_partner_logo"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        />
+
 </RelativeLayout>

@@ -224,6 +224,17 @@ public class UserFragment extends DialogFragment {
                         .into(userPhoto);
             }
             //TODO Show the partner logo, if available
+            if (user.getAvatarURL() != null) {
+                Picasso.with(getActivity()).load(Uri.parse(user.getAvatarURL()))
+                        .placeholder(R.drawable.ic_user_photo)
+                        .transform(new CropCircleTransformation())
+                        .into(userPartnerLogo);
+            }
+            else {
+                Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
+                        .transform(new CropCircleTransformation())
+                        .into(userPartnerLogo);
+            }
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
             userTourCount.setText(""+entourageCount);

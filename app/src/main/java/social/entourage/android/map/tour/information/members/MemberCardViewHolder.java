@@ -24,6 +24,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
     private int userId = 0;
 
     private ImageView mMemberPhoto;
+    private ImageView mPartnerLogo;
     private TextView mMemberName;
 
     public MemberCardViewHolder(final View view) {
@@ -34,8 +35,9 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
 
     @Override
     protected void bindFields() {
-        mMemberPhoto = (ImageView)itemView.findViewById(R.id.tic_member_photo);
-        mMemberName = (TextView)itemView.findViewById(R.id.tic_member_name);
+        mMemberPhoto = (ImageView) itemView.findViewById(R.id.tic_member_photo);
+        mPartnerLogo = (ImageView) itemView.findViewById(R.id.tic_member_partner_logo);
+        mMemberName = (TextView) itemView.findViewById(R.id.tic_member_name);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +64,16 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
         } else {
             mMemberPhoto.setImageResource(R.drawable.ic_user_photo_small);
         }
+        //todo partner logo
+        if (avatarURL != null) {
+            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .transform(new CropCircleTransformation())
+                    .into(mPartnerLogo);
+        } else {
+            mPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+        }
+
         mMemberName.setText(tourUser.getDisplayName());
     }
 

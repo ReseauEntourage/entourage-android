@@ -801,6 +801,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                         .into(tourAuthorPhoto);
             }
             //TODO partner logo
+            if (avatarURLAsString != null) {
+                Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(tourAuthorPartnerLogo);
+            } else {
+                tourAuthorPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+            }
         } else {
             tourAuthorName.setText("--");
         }

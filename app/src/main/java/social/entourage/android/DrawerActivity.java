@@ -174,6 +174,16 @@ public class DrawerActivity extends EntourageSecuredActivity
                 userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
             //TODO Show partner logo
+            if (avatarURL != null) {
+                Picasso.with(this)
+                        .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(userPartnerLogo);
+            } else {
+                userPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+            }
+
             //refresh the user info from the server
             Location location = EntourageLocation.getInstance().getCurrentLocation();
             presenter.updateUser(null, null, null, (location != null ? location : null));
@@ -388,6 +398,15 @@ public class DrawerActivity extends EntourageSecuredActivity
                 userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
             //TODO Show user partner logo
+            if (avatarURL != null) {
+                Picasso.with(this)
+                        .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(userPartnerLogo);
+            } else {
+                userPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+            }
         }
     }
 

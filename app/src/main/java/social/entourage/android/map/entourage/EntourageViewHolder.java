@@ -42,6 +42,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
 
     private TextView entourageTitle;
     private ImageView photoView;
+    private ImageView partnerLogoView;
     private TextView entourageTypeTextView;
     private TextView entourageAuthor;
     private TextView entourageLocation;
@@ -65,15 +66,16 @@ public class EntourageViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
 
-        entourageTitle = (TextView)itemView.findViewById(R.id.tour_card_title);
-        photoView = (ImageView)itemView.findViewById(R.id.tour_card_photo);
-        entourageTypeTextView = (TextView)itemView.findViewById(R.id.tour_card_type);
-        entourageAuthor = (TextView)itemView.findViewById(R.id.tour_card_author);
-        entourageLocation = (TextView)itemView.findViewById(R.id.tour_card_location);
-        badgeCountView = (TextView)itemView.findViewById(R.id.tour_card_badge_count);
-        numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
-        actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
-        lastMessageTextView = (TextView)itemView.findViewById(R.id.tour_card_last_message);
+        entourageTitle = (TextView) itemView.findViewById(R.id.tour_card_title);
+        photoView = (ImageView) itemView.findViewById(R.id.tour_card_photo);
+        partnerLogoView = (ImageView) itemView.findViewById(R.id.tour_card_partner_logo);
+        entourageTypeTextView = (TextView) itemView.findViewById(R.id.tour_card_type);
+        entourageAuthor = (TextView) itemView.findViewById(R.id.tour_card_author);
+        entourageLocation = (TextView) itemView.findViewById(R.id.tour_card_location);
+        badgeCountView = (TextView) itemView.findViewById(R.id.tour_card_badge_count);
+        numberOfPeopleTextView = (TextView) itemView.findViewById(R.id.tour_card_people_count);
+        actButton = (Button) itemView.findViewById(R.id.tour_card_button_act);
+        lastMessageTextView = (TextView) itemView.findViewById(R.id.tour_card_last_message);
 
         onClickListener = new OnClickListener();
 
@@ -124,6 +126,37 @@ public class EntourageViewHolder extends BaseCardViewHolder {
                         .into(photoView);
             } else {
                 photoView.setImageResource(R.drawable.ic_user_photo_small);
+            }
+            //partner logo
+            if (partnerLogoView != null) {
+                //todo partner logo
+                /*
+                Partner partner = author.getPartner();
+                if (partner != null) {
+                    String partnerLogoURL = partner.getSmallLogoUrl();
+                    if (partnerLogoURL != null) {
+                        Picasso.with(itemView.getContext())
+                                .load(Uri.parse(partnerLogoURL))
+                                .placeholder(null)
+                                .transform(new CropCircleTransformation())
+                                .into(partnerLogoView);
+                    }
+                    else {
+                        partnerLogoView.setImageDrawable(null);
+                    }
+                } else {
+                    partnerLogoView.setImageDrawable(null);
+                }
+                */
+                if (avatarURLAsString != null) {
+                    Picasso.with(itemView.getContext())
+                            .load(Uri.parse(avatarURLAsString))
+                            .placeholder(R.drawable.ic_user_photo_small)
+                            .transform(new CropCircleTransformation())
+                            .into(partnerLogoView);
+                } else {
+                    partnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
+                }
             }
         }
         //Tour type

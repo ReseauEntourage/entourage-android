@@ -160,6 +160,14 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             }
 
             //TODO partner logo
+            if (avatarURL != null) {
+                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(mPartnerLogoView);
+            } else {
+                mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
+            }
 
             mJoinMessage.setText(user.getMessage());
 
@@ -180,6 +188,14 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             }
 
             //TODO partner logo
+            if (avatarURL != null) {
+                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(mPartnerLogoView);
+            } else {
+                mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
+            }
 
             mJoinStatusView.setText(getJoinStatus(user.getStatus(), user.getMessage(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
         }

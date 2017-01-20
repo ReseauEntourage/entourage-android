@@ -130,6 +130,8 @@ public class TourViewHolder extends BaseCardViewHolder {
                 photoView.setImageResource(R.drawable.ic_user_photo_small);
             }
             //partner logo
+            //todo partner logo
+            /*
             Partner partner = author.getPartner();
             if (partner != null) {
                 String partnerLogoURL = partner.getSmallLogoUrl();
@@ -145,6 +147,16 @@ public class TourViewHolder extends BaseCardViewHolder {
                 }
             } else {
                 partnerLogoView.setImageDrawable(null);
+            }
+            */
+            if (avatarURLAsString != null) {
+                Picasso.with(itemView.getContext())
+                        .load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(partnerLogoView);
+            } else {
+                partnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
             }
 
             //author

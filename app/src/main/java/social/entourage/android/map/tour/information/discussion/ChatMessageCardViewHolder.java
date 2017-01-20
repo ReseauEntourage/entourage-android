@@ -65,6 +65,16 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
             mUserPhotoView.setImageResource(R.drawable.ic_user_photo_small);
         }
         //TODO partner logo
+        if (mPartnerLogoView != null) {
+            if (avatarURL != null) {
+                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(mPartnerLogoView);
+            } else {
+                mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
+            }
+        }
 
         if (chatMessage.getUserName() != null) {
             mUserNameView.setText(chatMessage.getUserName());
