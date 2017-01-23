@@ -1,6 +1,7 @@
 package social.entourage.android.guide;
 
 import android.Manifest;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,6 +58,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.guide.poi.ReadPoiActivity;
 import social.entourage.android.tools.BusProvider;
 
@@ -364,6 +366,10 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     @OnClick(R.id.fragment_guide_empty_list_popup)
     protected void onEmptyListPopupClose() {
+        AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
+        if (authenticationController != null) {
+            authenticationController.setShowNoPOIsPopup(false);
+        }
         hideEmptyListPopup();
     }
 
@@ -377,6 +383,10 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 return;
             }
             previousEmptyListPopupLocation = currentLocation;
+        }
+        AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
+        if (authenticationController != null && !authenticationController.isShowNoPOIsPopup()) {
+            return;
         }
         emptyListPopup.setVisibility(View.VISIBLE);
     }

@@ -16,6 +16,7 @@ public class AuthenticationController {
     private User loggedUser;
     private boolean userToursOnly;
     private boolean showNoEntouragesPopup = true;
+    private boolean showNoPOIsPopup = true;
 
     public AuthenticationController(ComplexPreferences userSharedPref) {
         this.userSharedPref = userSharedPref;
@@ -96,4 +97,13 @@ public class AuthenticationController {
     public void setShowNoEntouragesPopup(final boolean showNoEntouragesPopup) {
         this.showNoEntouragesPopup = showNoEntouragesPopup;
     }
+
+    public boolean isShowNoPOIsPopup() {
+        return showNoPOIsPopup;
+    }
+
+    public void setShowNoPOIsPopup(final boolean showNoPOIsPopup) {
+        this.showNoPOIsPopup = showNoPOIsPopup;
+    }
+
 }
