@@ -1014,9 +1014,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         if (newsfeedAdapter.getItemCount() == 0) {
             hideToursList();
-        } else if (!initialNewsfeedLoaded) {
-            showToursList();
-            initialNewsfeedLoaded = true;
+        } else {
+            if (isToursListVisible()) {
+                // Hide the empty list text view
+                if (newsfeedAdapter != null) {
+                    emptyListTextView.setVisibility(View.GONE);
+                }
+            }
+            if (!initialNewsfeedLoaded) {
+                showToursList();
+                initialNewsfeedLoaded = true;
+            }
         }
         pagination.isLoading = false;
         pagination.isRefreshing = false;
