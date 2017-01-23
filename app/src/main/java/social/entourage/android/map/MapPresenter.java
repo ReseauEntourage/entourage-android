@@ -87,6 +87,14 @@ public class MapPresenter {
         authenticationController.incrementUserToursCount();
     }
 
+    public boolean isShowNoEntouragesPopup() {
+        return authenticationController.isShowNoEntouragesPopup();
+    }
+
+    public void setShowNoEntouragesPopup(boolean show) {
+        authenticationController.setShowNoEntouragesPopup(show);
+    }
+
     public void loadEncounterOnMap(Encounter encounter) {
         fragment.putEncounterOnMap(encounter, onClickListener);
     }

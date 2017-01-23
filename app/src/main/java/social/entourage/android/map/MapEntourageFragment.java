@@ -2281,6 +2281,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_empty_list_popup_close)
     protected void onEmptyListPopupClose() {
+        if (presenter != null) {
+            presenter.setShowNoEntouragesPopup(false);
+        }
         hideEmptyListPopup();
     }
 
@@ -2294,6 +2297,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 return;
             }
             previousEmptyListPopupLocation = currentLocation;
+        }
+        // Check if we need to show the popup
+        if (presenter != null && !presenter.isShowNoEntouragesPopup()) {
+            return;
         }
         emptyListPopup.setVisibility(View.VISIBLE);
     }

@@ -15,6 +15,7 @@ public class AuthenticationController {
     private final ComplexPreferences userSharedPref;
     private User loggedUser;
     private boolean userToursOnly;
+    private boolean showNoEntouragesPopup = true;
 
     public AuthenticationController(ComplexPreferences userSharedPref) {
         this.userSharedPref = userSharedPref;
@@ -86,5 +87,13 @@ public class AuthenticationController {
 
     public boolean isUserToursOnly() {
         return userToursOnly;
+    }
+
+    public boolean isShowNoEntouragesPopup() {
+        return showNoEntouragesPopup;
+    }
+
+    public void setShowNoEntouragesPopup(final boolean showNoEntouragesPopup) {
+        this.showNoEntouragesPopup = showNoEntouragesPopup;
     }
 }
