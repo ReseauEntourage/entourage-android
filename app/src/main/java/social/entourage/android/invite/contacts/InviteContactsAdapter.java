@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -63,6 +64,13 @@ public class InviteContactsAdapter extends BaseAdapter {
         return position;
     }
 
+    public void setItemSelected(final int position, boolean selected) {
+        InviteItem item = getItem(position);
+        if (item != null) {
+            item.setSelected(selected);
+        }
+    }
+
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
         ViewHolder holder = null;
@@ -74,16 +82,19 @@ public class InviteContactsAdapter extends BaseAdapter {
                 case InviteItem.TYPE_CONTACT_NAME:
                     convertView = mInflater.inflate(R.layout.layout_invite_contacts_list_name, null);
                     holder.textView = (TextView) convertView.findViewById(R.id.contact_name);
+                    holder.checkBox = null;
                     holder.separator = (View) convertView.findViewById(R.id.contact_separator);
                     break;
                 case InviteItem.TYPE_CONTACT_PHONE:
                     convertView = mInflater.inflate(R.layout.layout_invite_contacts_list_phone, null);
                     holder.textView = (TextView) convertView.findViewById(R.id.contact_phone);
+                    holder.checkBox = (CheckBox) convertView.findViewById(R.id.contact_checkBox);
                     holder.separator = (View) convertView.findViewById(R.id.contact_separator);
                     break;
                 case InviteItem.TYPE_SECTION:
                     convertView = mInflater.inflate(R.layout.layout_invite_contacts_section_header, null);
                     holder.textView = (TextView) convertView.findViewById(R.id.contact_section_name);
+                    holder.checkBox = null;
                     holder.separator = null;
                     break;
             }
@@ -91,7 +102,14 @@ public class InviteContactsAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.textView.setText(mData.get(position).getItemText());
+
+        InviteItem item = mData.get(position);
+        if (item != null) {
+            holder.textView.setText(item.getItemText());
+            if (holder.checkBox != null) {
+                holder.checkBox.setChecked(item.isSelected());
+            }
+        }
         if (holder.separator != null && position < mData.size()-1) {
             //Hide the line separator if the next item is section type
             if (mData.get(position+1).getItemType() == InviteItem.TYPE_SECTION) {
@@ -170,6 +188,7 @@ public class InviteContactsAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         public TextView textView;
+        public CheckBox checkBox;
         public View separator;
     }
 }

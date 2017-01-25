@@ -264,6 +264,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
             contactCheckbox.setChecked(!contactCheckbox.isChecked());
 
             contactsList.setItemChecked(position, contactCheckbox.isChecked());
+            mContactsAdapter.setItemSelected(position, contactCheckbox.isChecked());
 
             // Enable or disable the send button
             sendButton.setEnabled(contactsList.getCheckedItemCount() > 0);

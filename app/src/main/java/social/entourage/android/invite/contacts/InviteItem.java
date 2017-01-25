@@ -13,6 +13,7 @@ public class InviteItem {
 
     private int itemType = TYPE_CONTACT_NAME;
     private String itemText;
+    private boolean isSelected = false;
 
     public InviteItem(int itemType, String itemText) {
         this.itemType = itemType;
@@ -25,6 +26,14 @@ public class InviteItem {
 
     public String getItemText() {
         return itemText;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(final boolean selected) {
+        isSelected = selected;
     }
 
 }
