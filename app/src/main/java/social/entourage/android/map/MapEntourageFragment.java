@@ -1770,7 +1770,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public static int getTransparentColor(int color) {
-        return Color.argb(100, Color.red(color), Color.green(color), Color.blue(color));
+        return Color.argb(200, Color.red(color), Color.green(color), Color.blue(color));
     }
 
     private void hideUserHistory() {
