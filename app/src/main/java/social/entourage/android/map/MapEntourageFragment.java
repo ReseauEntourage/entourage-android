@@ -1889,7 +1889,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (tour.getTourStatus() == null) {
                 tour.setTourStatus(FeedItem.STATUS_CLOSED);
             }
-            if (FeedItem.STATUS_ON_GOING.equalsIgnoreCase(tour.getTourStatus()) && !existingTour) {
+            if (!existingTour) {
                 addTourHead(tour);
             }
         }
