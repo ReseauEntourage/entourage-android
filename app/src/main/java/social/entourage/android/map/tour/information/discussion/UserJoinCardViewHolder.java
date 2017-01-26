@@ -2,12 +2,6 @@ package social.entourage.android.map.tour.information.discussion;
 
 import android.net.Uri;
 import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,6 +40,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private ImageView mPartnerLogoView;
     private TextView mPrivateUsernameView;
     private TextView mJoinMessage;
+    private TextView mJoinDescription;
     private Button mAcceptButton;
     private Button mRefuseButton;
     private Button mViewProfileButton;
@@ -73,6 +68,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
         mPartnerLogoView = (ImageView) itemView.findViewById(R.id.tic_partner_logo);
         mPrivateUsernameView = (TextView) itemView.findViewById(R.id.tic_private_username);
+        mJoinDescription = (TextView) itemView.findViewById(R.id.tic_join_description);
         mJoinMessage = (TextView) itemView.findViewById(R.id.tic_join_message);
         mAcceptButton = (Button) itemView.findViewById(R.id.tic_accept_button);
         mRefuseButton = (Button) itemView.findViewById(R.id.tic_refuse_button);
@@ -186,6 +182,8 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
         }
 
+        mJoinDescription.setText(getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
+
         mJoinMessage.setText(user.getMessage());
     }
 
@@ -241,7 +239,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             return itemView.getContext().getString(R.string.tour_info_text_join_rejected);
         }
         else if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
-            return itemView.getContext().getString(R.string.tour_info_text_join_pending);
+            return itemView.getContext().getString(isTour? R.string.tour_join_request_received_message_short : R.string.entourage_join_request_received_message_short);
         }
         else {
             return "";
