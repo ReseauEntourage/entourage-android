@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,11 +20,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.PartnerRequest;
+import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.User;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -46,6 +49,9 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    @BindView(R.id.user_edit_partner_progressBar)
+    ProgressBar progressBar;
 
     @BindView(R.id.user_edit_partner_search)
     EditText searchEditText;
@@ -138,7 +144,24 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.user_edit_partner_save_button)
     protected void onSaveButtonClicked() {
-
+        Partner oldPartner = user.getPartner();
+        int position = adapter.selectedPartnerPosition;
+        if (oldPartner == null) {
+            // This user has no partner, so check only if the use has selected one
+            if (position != AdapterView.INVALID_POSITION) {
+                // add the partner to the user
+                Partner partner = adapter.getItem(position);
+                addPartner(partner);
+            }
+        } else {
+            if (position != AdapterView.INVALID_POSITION) {
+                Partner partner = adapter.getItem(position);
+                updatePartner(partner);
+            } else {
+                // the use deselected the current partner
+                removePartner(oldPartner);
+            }
+        }
     }
 
     // ----------------------------------
@@ -172,4 +195,62 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
 
     }
 
+    private void addPartner(Partner partner) {
+        if (partner == null) {
+            return;
+        }
+        progressBar.setVisibility(View.VISIBLE);
+        final UserRequest request = EntourageApplication.get(getContext()).getEntourageComponent().getUserRequest();
+        Partner.PartnerWrapper partnerWrapper = new Partner.PartnerWrapper(partner);
+        request.addPartner(user.getId(), partnerWrapper).enqueue(new Callback<Partner.PartnerWrapper>() {
+            @Override
+            public void onResponse(final Call<Partner.PartnerWrapper> call, final Response<Partner.PartnerWrapper> response) {
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(final Call<Partner.PartnerWrapper> call, final Throwable t) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void removePartner(Partner partner) {
+        if (partner == null) {
+            return;
+        }
+        progressBar.setVisibility(View.VISIBLE);
+        final UserRequest request = EntourageApplication.get(getContext()).getEntourageComponent().getUserRequest();
+        request.removePartnerFromUser(user.getId(), partner.getId()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void updatePartner(Partner partner) {
+        if (partner == null) {
+            return;
+        }
+        progressBar.setVisibility(View.VISIBLE);
+        final UserRequest request = EntourageApplication.get(getContext()).getEntourageComponent().getUserRequest();
+        Partner.PartnerWrapper partnerWrapper = new Partner.PartnerWrapper(partner);
+        request.updatePartner(user.getId(), partner.getId(), partnerWrapper).enqueue(new Callback<Partner.PartnerWrapper>() {
+            @Override
+            public void onResponse(final Call<Partner.PartnerWrapper> call, final Response<Partner.PartnerWrapper> response) {
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(final Call<Partner.PartnerWrapper> call, final Throwable t) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
 }

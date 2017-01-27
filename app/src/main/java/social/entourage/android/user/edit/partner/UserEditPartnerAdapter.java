@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -41,7 +42,7 @@ public class UserEditPartnerAdapter extends BaseAdapter {
     }
 
 
-    public int selectedPartnerPosition = -1;
+    public int selectedPartnerPosition = AdapterView.INVALID_POSITION;
 
     private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener();
 
@@ -136,7 +137,11 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             Partner partner = UserEditPartnerAdapter.this.getItem(position);
             if (partner != null) {
                 partner.setDefault(isChecked);
-                UserEditPartnerAdapter.this.selectedPartnerPosition = position;
+                if (UserEditPartnerAdapter.this.selectedPartnerPosition != position) {
+                    UserEditPartnerAdapter.this.selectedPartnerPosition = position;
+                } else {
+                    UserEditPartnerAdapter.this.selectedPartnerPosition = partner.isDefault() ? position : AdapterView.INVALID_POSITION;
+                }
             }
 
             // refresh the listview, if needed

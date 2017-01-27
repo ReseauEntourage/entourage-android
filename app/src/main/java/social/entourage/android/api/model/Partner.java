@@ -77,6 +77,25 @@ public class Partner implements Serializable {
     // WRAPPERS
     // ----------------------------------
 
+    public static class PartnerWrapper {
+
+        @SerializedName("partner")
+        private Partner partner;
+
+        public PartnerWrapper(final Partner partner) {
+            this.partner = partner;
+        }
+
+        public Partner getPartner() {
+            return partner;
+        }
+
+        public void setPartner(final Partner partner) {
+            this.partner = partner;
+        }
+
+    }
+
     public static class PartnersWrapper {
 
         @SerializedName("partners")

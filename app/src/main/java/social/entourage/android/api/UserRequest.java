@@ -2,6 +2,7 @@ package social.entourage.android.api;
 
 import android.support.v4.util.ArrayMap;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -10,6 +11,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import social.entourage.android.api.model.Partner;
 
 public interface UserRequest {
 
@@ -27,4 +29,13 @@ public interface UserRequest {
 
     @POST("users")
     Call<UserResponse> registerUser(@Body ArrayMap<String, Object> userInfo);
+
+    @POST("users/{user_id}/partners")
+    Call<Partner.PartnerWrapper> addPartner(@Path("user_id") int userId, @Body Partner.PartnerWrapper partner);
+
+    @DELETE("users/{user_id}/partners/{partner_id}")
+    Call<ResponseBody> removePartnerFromUser(@Path("user_id") int userId, @Path("partner_id") long partnerId);
+
+    @PUT("users/{user_id}/partners/{partner_id}")
+    Call<Partner.PartnerWrapper> updatePartner(@Path("user_id") int userId, @Path("partner_id") long partnerId, @Body Partner.PartnerWrapper partner);
 }

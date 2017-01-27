@@ -91,4 +91,13 @@
         android:paddingTop="10dp"
         android:layout_alignParentBottom="true"/>
 
+    <ProgressBar
+        style="@android:style/Widget.Material.Light.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_edit_partner_progressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
+
 </RelativeLayout>

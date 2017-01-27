@@ -50,6 +50,8 @@ public class User implements Serializable {
     @Expose(serialize = false, deserialize = true)
     private final Organization organization;
 
+    private final Partner partner;
+
     @SerializedName("avatar_url")
     private String avatarURL;
 
@@ -74,6 +76,7 @@ public class User implements Serializable {
         this.displayName = "";
         this.stats = null;
         this.organization = null;
+        this.partner = null;
         this.token = null;
         this.avatarURL = null;
     }
@@ -84,6 +87,7 @@ public class User implements Serializable {
         this.displayName = displayName;
         this.stats = stats;
         this.organization = organization;
+        this.partner = null;
         this.token = token;
         this.avatarURL = avatarURL;
     }
@@ -142,6 +146,10 @@ public class User implements Serializable {
 
     public Organization getOrganization() {
         return organization;
+    }
+
+    public Partner getPartner() {
+        return partner;
     }
 
     public String getAvatarURL() {
