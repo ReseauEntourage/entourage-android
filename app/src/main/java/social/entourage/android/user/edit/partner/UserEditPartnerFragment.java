@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ import social.entourage.android.api.PartnerRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
 import social.entourage.android.user.edit.UserEditFragment;
@@ -206,11 +208,22 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
             @Override
             public void onResponse(final Call<Partner.PartnerWrapper> call, final Response<Partner.PartnerWrapper> response) {
                 progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
+                    User user = authenticationController.getUser();
+                    if (user != null) {
+                        user.setPartner(response.body().getPartner());
+                        authenticationController.saveUser(user);
+                    }
+                } else {
+                    Toast.makeText(getContext(), R.string.partner_add_error, Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(final Call<Partner.PartnerWrapper> call, final Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), R.string.partner_add_error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -225,11 +238,22 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
+                    User user = authenticationController.getUser();
+                    if (user != null) {
+                        user.setPartner(null);
+                        authenticationController.saveUser(user);
+                    }
+                } else {
+                    Toast.makeText(getContext(), R.string.partner_remove_error, Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(final Call<ResponseBody> call, final Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), R.string.partner_remove_error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -245,11 +269,17 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
             @Override
             public void onResponse(final Call<Partner.PartnerWrapper> call, final Response<Partner.PartnerWrapper> response) {
                 progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+
+                } else {
+                    Toast.makeText(getContext(), R.string.partner_update_error, Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(final Call<Partner.PartnerWrapper> call, final Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), R.string.partner_update_error, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -43,6 +43,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Organization;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
@@ -50,6 +51,7 @@ import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditFragment;
+import social.entourage.android.view.PartnerLogoImageView;
 
 public class UserFragment extends DialogFragment {
 
@@ -80,7 +82,7 @@ public class UserFragment extends DialogFragment {
     ImageView userPhoto;
 
     @BindView(R.id.user_partner_logo)
-    ImageView userPartnerLogo;
+    PartnerLogoImageView userPartnerLogo;
 
     @BindView(R.id.user_name)
     TextView userName;
@@ -224,16 +226,19 @@ public class UserFragment extends DialogFragment {
                         .into(userPhoto);
             }
             //TODO Show the partner logo, if available
-            if (user.getAvatarURL() != null) {
-                Picasso.with(getActivity()).load(Uri.parse(user.getAvatarURL()))
-                        .placeholder(R.drawable.ic_user_photo)
-                        .transform(new CropCircleTransformation())
-                        .into(userPartnerLogo);
+            String partnerURL = null;
+            Partner partner = user.getPartner();
+            if (partner != null) {
+                partnerURL = partner.getSmallLogoUrl();
             }
-            else {
-                Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
+            if (partnerURL != null) {
+                Picasso.with(getActivity())
+                        .load(Uri.parse(partnerURL))
+                        .placeholder(null)
                         .transform(new CropCircleTransformation())
                         .into(userPartnerLogo);
+            } else {
+                userPartnerLogo.setImageDrawable(null);
             }
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());

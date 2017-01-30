@@ -53,6 +53,7 @@ import butterknife.OnClick;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.about.AboutActivity;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
@@ -90,6 +91,7 @@ import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
+import social.entourage.android.view.PartnerLogoImageView;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -124,7 +126,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     @BindView(R.id.drawer_header_user_photo)
     ImageView userPhoto;
     @BindView(R.id.drawer_header_user_partner_logo)
-    ImageView userPartnerLogo;
+    PartnerLogoImageView userPartnerLogo;
     @BindView(R.id.drawer_header_edit_profile)
     TextView userEditProfileTextView;
     @BindView(R.id.toolbar_discussion)
@@ -173,15 +175,20 @@ public class DrawerActivity extends EntourageSecuredActivity
             } else {
                 userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
-            //TODO Show partner logo
-            if (avatarURL != null) {
+            // Show partner logo
+            String partnerURL = null;
+            Partner partner = user.getPartner();
+            if (partner != null) {
+                partnerURL = partner.getSmallLogoUrl();
+            }
+            if (partnerURL != null) {
                 Picasso.with(this)
-                        .load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
+                        .load(Uri.parse(partnerURL))
+                        .placeholder(null)
                         .transform(new CropCircleTransformation())
                         .into(userPartnerLogo);
             } else {
-                userPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+                userPartnerLogo.setImageDrawable(null);
             }
 
             //refresh the user info from the server
@@ -397,15 +404,20 @@ public class DrawerActivity extends EntourageSecuredActivity
             } else {
                 userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
-            //TODO Show user partner logo
-            if (avatarURL != null) {
+            // Show partner logo
+            String partnerURL = null;
+            Partner partner = user.getPartner();
+            if (partner != null) {
+                partnerURL = partner.getSmallLogoUrl();
+            }
+            if (partnerURL != null) {
                 Picasso.with(this)
-                        .load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
+                        .load(Uri.parse(partnerURL))
+                        .placeholder(null)
                         .transform(new CropCircleTransformation())
                         .into(userPartnerLogo);
             } else {
-                userPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+                userPartnerLogo.setImageDrawable(null);
             }
         }
     }

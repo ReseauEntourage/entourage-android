@@ -65,6 +65,10 @@
     <color name="tour_type_social">#97d791</color>
     <color name="tour_type_distributive">#ffc57f</color>
 
+    <!-- Partner Logo -->
+    <color name="partner_logo_background">@color/background</color>
+    <color name="partner_logo_transparent">#00000000</color>
+
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>

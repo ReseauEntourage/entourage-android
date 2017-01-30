@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="partner_add_error">!!Error adding the partner</string>
+    <string name="partner_remove_error">!!Error removing the partner</string>
+    <string name="partner_update_error">!!Error updating the partner</string>
+
+</resources>

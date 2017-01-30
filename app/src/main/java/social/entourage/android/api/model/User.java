@@ -50,7 +50,7 @@ public class User implements Serializable {
     @Expose(serialize = false, deserialize = true)
     private final Organization organization;
 
-    private final Partner partner;
+    private Partner partner;
 
     @SerializedName("avatar_url")
     private String avatarURL;
@@ -150,6 +150,10 @@ public class User implements Serializable {
 
     public Partner getPartner() {
         return partner;
+    }
+
+    public void setPartner(final Partner partner) {
+        this.partner = partner;
     }
 
     public String getAvatarURL() {
