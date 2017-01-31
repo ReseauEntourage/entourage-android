@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
@@ -20,6 +21,7 @@ import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.view.PartnerLogoImageView;
 
 /**
  * User Card View in tour information screen
@@ -30,14 +32,14 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private View mPrivateSection;
 
     private ImageView mPublicPhotoView;
-    private ImageView mPublicPartnerLogo;
+    private PartnerLogoImageView mPublicPartnerLogo;
     private TextView mPublicUsernameView;
     private TextView mJoinStatusView;
     private View mPublicMessageSection;
     private TextView mPublicJoinMessage;
 
     private ImageView mPhotoView;
-    private ImageView mPartnerLogoView;
+    private PartnerLogoImageView mPartnerLogoView;
     private TextView mPrivateUsernameView;
     private TextView mJoinMessage;
     private TextView mJoinDescription;
@@ -59,14 +61,14 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mPrivateSection = itemView.findViewById(R.id.tic_private_info_section);
 
         mPublicPhotoView = (ImageView) itemView.findViewById(R.id.tic_public_info_photo);
-        mPublicPartnerLogo = (ImageView) itemView.findViewById(R.id.tic_public_info_partner_logo);
+        mPublicPartnerLogo = (PartnerLogoImageView) itemView.findViewById(R.id.tic_public_info_partner_logo);
         mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_public_info_username);
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
         mPublicJoinMessage = (TextView) itemView.findViewById(R.id.tic_public_join_message);
         mPublicMessageSection = (View) itemView.findViewById(R.id.tic_public_info_message_layout);
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
-        mPartnerLogoView = (ImageView) itemView.findViewById(R.id.tic_partner_logo);
+        mPartnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tic_partner_logo);
         mPrivateUsernameView = (TextView) itemView.findViewById(R.id.tic_private_username);
         mJoinDescription = (TextView) itemView.findViewById(R.id.tic_join_description);
         mJoinMessage = (TextView) itemView.findViewById(R.id.tic_join_message);
@@ -172,14 +174,22 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             mPhotoView.setImageResource(R.drawable.ic_user_photo_small);
         }
 
-        //TODO partner logo
-        if (avatarURL != null) {
-            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(new CropCircleTransformation())
-                    .into(mPartnerLogoView);
+        // Partner logo
+        Partner partner = user.getPartner();
+        if (partner != null) {
+            String partnerLogoURL = partner.getSmallLogoUrl();
+            if (partnerLogoURL != null) {
+                Picasso.with(itemView.getContext())
+                        .load(Uri.parse(partnerLogoURL))
+                        .placeholder(null)
+                        .transform(new CropCircleTransformation())
+                        .into(mPartnerLogoView);
+            }
+            else {
+                mPartnerLogoView.setImageDrawable(null);
+            }
         } else {
-            mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
+            mPartnerLogoView.setImageDrawable(null);
         }
 
         mJoinDescription.setText(getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
@@ -203,14 +213,22 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             mPublicPhotoView.setImageResource(R.drawable.ic_user_photo_small);
         }
 
-        //TODO partner logo
-        if (avatarURL != null) {
-            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(new CropCircleTransformation())
-                    .into(mPublicPartnerLogo);
+        // Partner logo
+        Partner partner = user.getPartner();
+        if (partner != null) {
+            String partnerLogoURL = partner.getSmallLogoUrl();
+            if (partnerLogoURL != null) {
+                Picasso.with(itemView.getContext())
+                        .load(Uri.parse(partnerLogoURL))
+                        .placeholder(null)
+                        .transform(new CropCircleTransformation())
+                        .into(mPublicPartnerLogo);
+            }
+            else {
+                mPublicPartnerLogo.setImageDrawable(null);
+            }
         } else {
-            mPublicPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+            mPublicPartnerLogo.setImageDrawable(null);
         }
 
         String joinStatus = getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD);

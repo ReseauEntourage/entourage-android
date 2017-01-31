@@ -25,15 +25,18 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.view.PartnerLogoImageView;
 
 /**
  * Created by mihaiionescu on 05/05/16.
@@ -42,7 +45,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
 
     private TextView entourageTitle;
     private ImageView photoView;
-    private ImageView partnerLogoView;
+    private PartnerLogoImageView partnerLogoView;
     private TextView entourageTypeTextView;
     private TextView entourageAuthor;
     private TextView entourageLocation;
@@ -68,7 +71,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
 
         entourageTitle = (TextView) itemView.findViewById(R.id.tour_card_title);
         photoView = (ImageView) itemView.findViewById(R.id.tour_card_photo);
-        partnerLogoView = (ImageView) itemView.findViewById(R.id.tour_card_partner_logo);
+        partnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tour_card_partner_logo);
         entourageTypeTextView = (TextView) itemView.findViewById(R.id.tour_card_type);
         entourageAuthor = (TextView) itemView.findViewById(R.id.tour_card_author);
         entourageLocation = (TextView) itemView.findViewById(R.id.tour_card_location);
@@ -112,12 +115,14 @@ public class EntourageViewHolder extends BaseCardViewHolder {
         entourageTitle.setText(String.format(res.getString(R.string.tour_cell_title), entourage.getTitle()));
 
         //author + photo
-        if(entourage.getAuthor() == null) {
+        TourAuthor author = entourage.getAuthor();
+        if(author == null) {
             entourageAuthor.setText("--");//@todo this should not happen!
             photoView.setImageResource(R.drawable.ic_user_photo_small);
+            partnerLogoView.setImageDrawable(null);
         } else {
-            entourageAuthor.setText(String.format(res.getString(R.string.tour_cell_author), entourage.getAuthor().getUserName()));
-            String avatarURLAsString = entourage.getAuthor().getAvatarURLAsString();
+            entourageAuthor.setText(String.format(res.getString(R.string.tour_cell_author), author.getUserName()));
+            String avatarURLAsString = author.getAvatarURLAsString();
             if (avatarURLAsString != null) {
                 Picasso.with(itemView.getContext())
                         .load(Uri.parse(avatarURLAsString))
@@ -129,8 +134,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             }
             //partner logo
             if (partnerLogoView != null) {
-                //todo partner logo
-                /*
+                // Partner logo
                 Partner partner = author.getPartner();
                 if (partner != null) {
                     String partnerLogoURL = partner.getSmallLogoUrl();
@@ -146,16 +150,6 @@ public class EntourageViewHolder extends BaseCardViewHolder {
                     }
                 } else {
                     partnerLogoView.setImageDrawable(null);
-                }
-                */
-                if (avatarURLAsString != null) {
-                    Picasso.with(itemView.getContext())
-                            .load(Uri.parse(avatarURLAsString))
-                            .placeholder(R.drawable.ic_user_photo_small)
-                            .transform(new CropCircleTransformation())
-                            .into(partnerLogoView);
-                } else {
-                    partnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
                 }
             }
         }

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
@@ -15,6 +16,7 @@ import social.entourage.android.base.BaseCardViewHolder;
 
 import social.entourage.android.R;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.view.PartnerLogoImageView;
 
 /**
  * Created by mihaiionescu on 23/05/16.
@@ -24,7 +26,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
     private int userId = 0;
 
     private ImageView mMemberPhoto;
-    private ImageView mPartnerLogo;
+    private PartnerLogoImageView mPartnerLogo;
     private TextView mMemberName;
 
     public MemberCardViewHolder(final View view) {
@@ -36,7 +38,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
         mMemberPhoto = (ImageView) itemView.findViewById(R.id.tic_member_photo);
-        mPartnerLogo = (ImageView) itemView.findViewById(R.id.tic_member_partner_logo);
+        mPartnerLogo = (PartnerLogoImageView) itemView.findViewById(R.id.tic_member_partner_logo);
         mMemberName = (TextView) itemView.findViewById(R.id.tic_member_name);
 
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,14 +66,22 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
         } else {
             mMemberPhoto.setImageResource(R.drawable.ic_user_photo_small);
         }
-        //todo partner logo
-        if (avatarURL != null) {
-            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(new CropCircleTransformation())
-                    .into(mPartnerLogo);
+        // Partner logo
+        Partner partner = tourUser.getPartner();
+        if (partner != null) {
+            String partnerLogoURL = partner.getSmallLogoUrl();
+            if (partnerLogoURL != null) {
+                Picasso.with(itemView.getContext())
+                        .load(Uri.parse(partnerLogoURL))
+                        .placeholder(null)
+                        .transform(new CropCircleTransformation())
+                        .into(mPartnerLogo);
+            }
+            else {
+                mPartnerLogo.setImageDrawable(null);
+            }
         } else {
-            mPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+            mPartnerLogo.setImageDrawable(null);
         }
 
         mMemberName.setText(tourUser.getDisplayName());

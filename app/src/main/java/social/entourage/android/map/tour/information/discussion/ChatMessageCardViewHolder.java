@@ -14,6 +14,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.view.PartnerLogoImageView;
 
 /**
  * Chat Message Card for Tour Information Screen
@@ -21,7 +22,7 @@ import social.entourage.android.tools.BusProvider;
 public class ChatMessageCardViewHolder extends BaseCardViewHolder {
 
     private ImageView mUserPhotoView;
-    private ImageView mPartnerLogoView;
+    private PartnerLogoImageView mPartnerLogoView;
     private TextView mUserNameView;
     private TextView mMessageView;
 
@@ -36,7 +37,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
 
         mUserPhotoView = (ImageView) itemView.findViewById(R.id.tic_chat_user_photo);
         mUserNameView = (TextView) itemView.findViewById(R.id.tic_chat_user_name);
-        mPartnerLogoView = (ImageView) itemView.findViewById(R.id.tic_chat_user_partner_logo);
+        mPartnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tic_chat_user_partner_logo);
         mMessageView = (TextView) itemView.findViewById(R.id.tic_chat_message);
 
         mUserPhotoView.setOnClickListener(new View.OnClickListener() {
@@ -64,15 +65,16 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         } else {
             mUserPhotoView.setImageResource(R.drawable.ic_user_photo_small);
         }
-        //TODO partner logo
+        // Partner logo
         if (mPartnerLogoView != null) {
-            if (avatarURL != null) {
+            String partnerLogoURL = chatMessage.getPartnerLogoSmall();
+            if (partnerLogoURL != null) {
                 Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
+                        .placeholder(null)
                         .transform(new CropCircleTransformation())
                         .into(mPartnerLogoView);
             } else {
-                mPartnerLogoView.setImageResource(R.drawable.ic_user_photo_small);
+                mPartnerLogoView.setImageDrawable(null);
             }
         }
 

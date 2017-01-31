@@ -225,7 +225,7 @@ public class UserFragment extends DialogFragment {
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }
-            //TODO Show the partner logo, if available
+            // Show the partner logo, if available
             String partnerURL = null;
             Partner partner = user.getPartner();
             if (partner != null) {

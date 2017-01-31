@@ -23,7 +23,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"/>
 
-        <ImageView
+        <social.entourage.android.view.PartnerLogoImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/tic_chat_user_partner_logo"

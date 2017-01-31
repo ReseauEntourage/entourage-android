@@ -87,6 +87,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
@@ -95,6 +96,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
@@ -109,6 +111,7 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.view.PartnerLogoImageView;
 
 public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
 
@@ -155,7 +158,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     ImageView tourAuthorPhoto;
 
     @BindView(R.id.tour_card_partner_logo)
-    ImageView tourAuthorPartnerLogo;
+    PartnerLogoImageView tourAuthorPartnerLogo;
 
     @BindView(R.id.tour_card_type)
     TextView tourType;
@@ -790,25 +793,35 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_info_unknown)));
         }
 
-        if (feedItem.getAuthor() != null) {
-            tourAuthorName.setText(feedItem.getAuthor().getUserName());
+        TourAuthor author = feedItem.getAuthor();
+        if (author != null) {
+            tourAuthorName.setText(author.getUserName());
 
-            String avatarURLAsString = feedItem.getAuthor().getAvatarURLAsString();
+            String avatarURLAsString = author.getAvatarURLAsString();
             if (avatarURLAsString != null) {
                 Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
                         .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(tourAuthorPhoto);
             }
-            //TODO partner logo
-            if (avatarURLAsString != null) {
-                Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(tourAuthorPartnerLogo);
+            // Partner logo
+            Partner partner = author.getPartner();
+            if (partner != null) {
+                String partnerLogoURL = partner.getSmallLogoUrl();
+                if (partnerLogoURL != null) {
+                    Picasso.with(getContext())
+                            .load(Uri.parse(partnerLogoURL))
+                            .placeholder(null)
+                            .transform(new CropCircleTransformation())
+                            .into(tourAuthorPartnerLogo);
+                }
+                else {
+                    tourAuthorPartnerLogo.setImageDrawable(null);
+                }
             } else {
-                tourAuthorPartnerLogo.setImageResource(R.drawable.ic_user_photo_small);
+                tourAuthorPartnerLogo.setImageDrawable(null);
             }
+
         } else {
             tourAuthorName.setText("--");
         }

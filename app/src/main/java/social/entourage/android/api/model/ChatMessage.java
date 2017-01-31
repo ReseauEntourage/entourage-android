@@ -83,6 +83,11 @@ public class ChatMessage extends TimestampedObject implements Serializable {
         return user.getDisplayName();
     }
 
+    public String getPartnerLogoSmall() {
+        if (user == null || user.getPartner() == null) return null;
+        return user.getPartner().getSmallLogoUrl();
+    }
+
     public boolean isMe() {
         return isMe;
     }

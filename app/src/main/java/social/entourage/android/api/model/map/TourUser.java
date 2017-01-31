@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
 
 /**
@@ -34,6 +35,8 @@ public class TourUser extends TimestampedObject implements Serializable {
     private String message;
 
     private String avatarURLAsString;
+
+    private Partner partner;
 
     private boolean isDisplayedAsMember = false;
 
@@ -94,6 +97,10 @@ public class TourUser extends TimestampedObject implements Serializable {
 
     public void setAvatarURLAsString(final String avatarURLAsString) {
         this.avatarURLAsString = avatarURLAsString;
+    }
+
+    public Partner getPartner() {
+        return partner;
     }
 
     public boolean isDisplayedAsMember() {

@@ -45,7 +45,7 @@
         android:layout_toLeftOf="@+id/tour_card_people_count"
         android:layout_marginRight="-10dp"/>
 
-    <ImageView
+    <social.entourage.android.view.PartnerLogoImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/tour_card_partner_logo"
