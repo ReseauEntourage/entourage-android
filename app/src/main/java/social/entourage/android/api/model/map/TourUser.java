@@ -34,8 +34,10 @@ public class TourUser extends TimestampedObject implements Serializable {
 
     private String message;
 
+    @SerializedName("avatar_url")
     private String avatarURLAsString;
 
+    @SerializedName("partner")
     private Partner partner;
 
     private boolean isDisplayedAsMember = false;
@@ -155,6 +157,7 @@ public class TourUser extends TimestampedObject implements Serializable {
         clone.requestDate = this.requestDate;
         clone.message = this.message;
         clone.avatarURLAsString = this.avatarURLAsString;
+        clone.partner = this.partner;
         clone.isDisplayedAsMember = this.isDisplayedAsMember;
 
         return clone;
