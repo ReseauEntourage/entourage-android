@@ -5,4 +5,7 @@
     <string name="partner_remove_error">!!Error removing the partner</string>
     <string name="partner_update_error">!!Error updating the partner</string>
 
+    <string name="member_type_organization">Maraudeur</string>
+    <string name="member_type_partner">Sympathisant</string>
+
 </resources>

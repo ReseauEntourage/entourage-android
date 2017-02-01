@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.Organization;
 
 /**
@@ -24,18 +25,22 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
 
         public TextView mOrganizationName;
         public ImageView mOrganizationLogo;
+        public TextView mOrganizationType;
+        public View mSeparator;
 
         public OrganizationViewHolder(View v) {
             super(v);
             mOrganizationName = (TextView) v.findViewById(R.id.organization_name);
+            mOrganizationType = (TextView) v.findViewById(R.id.organization_type);
             mOrganizationLogo = (ImageView) v.findViewById(R.id.organization_logo);
+            mSeparator = v.findViewById(R.id.organization_separator);
         }
 
     }
 
-    private List<Organization> organizationList;
+    private List<BaseOrganization> organizationList;
 
-    public UserOrganizationsAdapter(List<Organization> organizationList) {
+    public UserOrganizationsAdapter(List<BaseOrganization> organizationList) {
         this.organizationList = organizationList;
     }
 
@@ -47,16 +52,25 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        Organization organization = organizationList.get(position);
+        BaseOrganization organization = organizationList.get(position);
         OrganizationViewHolder organizationViewHolder = (OrganizationViewHolder) holder;
+
         organizationViewHolder.mOrganizationName.setText(organization.getName());
 
-        String organizationLogo = organization.getLogoUrl();
+        organizationViewHolder.mOrganizationType.setText(organization.getTypeAsResourceId());
+
+        String organizationLogo = organization.getLargeLogoUrl();
         if (organizationLogo != null) {
             Picasso.with(holder.itemView.getContext())
                     .load(Uri.parse(organizationLogo))
+                    .placeholder(null)
                     .into(organizationViewHolder.mOrganizationLogo);
         }
+        else {
+            organizationViewHolder.mOrganizationLogo.setImageDrawable(null);
+        }
+
+        organizationViewHolder.mSeparator.setVisibility(position == organizationList.size() - 1 ? View.GONE : View.VISIBLE);
     }
 
     @Override

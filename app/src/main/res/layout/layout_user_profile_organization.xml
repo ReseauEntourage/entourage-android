@@ -2,22 +2,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="20dp">
+                android:paddingTop="5dp"
+                android:paddingEnd="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingStart="20dp"
+                android:paddingBottom="5dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/organization_name"
         android:layout_centerVertical="true"
-        android:textColor="@color/greyish_brown"
-        android:textSize="17sp"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/organization_logo"
+        android:layout_toStartOf="@+id/organization_logo">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/organization_name"
+            android:textColor="@color/greyish_brown"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/organization_type"
+            android:textColor="@color/greyish"
+            android:textSize="13sp"
+            android:paddingTop="3dp"/>
+    </LinearLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/organization_logo"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/greyish"
+        android:alpha="0.5"
+        android:id="@+id/organization_separator"
+        android:layout_height="1dp"
+        android:layout_below="@+id/organization_logo"
+        android:layout_marginTop="10dp"/>
+
 </RelativeLayout>

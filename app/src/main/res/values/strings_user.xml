@@ -18,6 +18,7 @@
     <string name="user_profile_verified_information_label">Identitification vérifiée</string>
     <string name="user_information_email_label">Adresse e-mail</string>
     <string name="user_information_phone_label">Numéro de téléphone</string>
+    <string name="user_number_entourages_title">Entourages</string>
     <string name="user_number_entourages_label">Nombre d’entourages</string>
     <string name="user_number_tours_label">Nombre de maraudes</string>
     <string name="user_associations_title">Association(s)</string>

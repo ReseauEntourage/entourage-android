@@ -27,6 +27,7 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
@@ -247,12 +249,20 @@ public class UserFragment extends DialogFragment {
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);
             userEmailVerifiedImage.setImageResource(R.drawable.verified);
 
+            List<BaseOrganization> organizationList = new ArrayList<>();
+            if (user.getOrganization() != null) {
+                organizationList.add(user.getOrganization());
+            }
+            if (user.getPartner() != null) {
+                organizationList.add(user.getPartner());
+            }
+            // Sort the organizations alphabetically
+            if (organizationList.size() > 1) {
+                Collections.sort(organizationList, new BaseOrganization.CustomComparator());
+            }
             if (organizationsAdapter == null) {
                 userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                List<Organization> organizationList = new ArrayList<>();
-                if (user.getOrganization() != null) {
-                    organizationList.add(user.getOrganization());
-                }
+
                 organizationsAdapter = new UserOrganizationsAdapter(organizationList);
                 userAssociationsView.setAdapter(organizationsAdapter);
 
@@ -265,9 +275,9 @@ public class UserFragment extends DialogFragment {
                         });
             }
 
-            boolean isPro = user.isPro();
-            userAssociationsTitle.setVisibility( isPro ? View.VISIBLE : View.GONE );
-            userAssociationsView.setVisibility( isPro ? View.VISIBLE : View.GONE );
+            //boolean isPro = user.isPro();
+            userAssociationsTitle.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
+            userAssociationsView.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
         }
     }
 

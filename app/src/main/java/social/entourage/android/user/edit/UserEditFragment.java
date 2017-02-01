@@ -21,6 +21,7 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,6 +33,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.Organization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
@@ -166,11 +168,18 @@ public class UserEditFragment extends DialogFragment {
             userPhone.setText(editedUser.getPhone());
             userAddress.setText("");
 
-            List<Organization> organizationList = new ArrayList<>();
+            List<BaseOrganization> organizationList = new ArrayList<>();
             if (organizationsAdapter == null) {
                 userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 if (editedUser.getOrganization() != null) {
                     organizationList.add(editedUser.getOrganization());
+                }
+                if (editedUser.getPartner() != null) {
+                    organizationList.add(editedUser.getPartner());
+                }
+                // Sort the organizations alphabetically
+                if (organizationList.size() > 1) {
+                    Collections.sort(organizationList, new BaseOrganization.CustomComparator());
                 }
                 organizationsAdapter = new UserOrganizationsAdapter(organizationList);
                 userAssociationsView.setAdapter(organizationsAdapter);

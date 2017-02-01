@@ -138,23 +138,87 @@
 
             </RelativeLayout>
 
-            <View
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/background_light"/>
-            
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/user_associations_title"
+                android:id="@+id/user_associations_title"
+                android:gravity="center"
+                android:textColor="@color/greyish_brown"
+                android:textStyle="bold"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:textSize="17sp"
+                android:background="@color/pale_grey"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_associations_view"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_number_of_entourages_layout">
+
+                <TextView
+                    android:text="@string/user_number_entourages_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_number_entourages_title"
+                    android:background="@color/pale_grey"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="10dp"
+                    android:textStyle="bold"
+                    android:textSize="17sp"
+                    android:textColor="@color/greyish_brown"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/user_number_entourages_label"
+                    android:id="@+id/textView3"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="17sp"
+                    android:layout_below="@+id/user_number_entourages_title"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/user_tours_count"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/greyish"
+                    android:textStyle="bold"
+                    android:textSize="17sp"
+                    android:layout_below="@+id/user_number_entourages_title"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingRight="20dp"/>
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:weightSum="3"
-                android:layout_marginTop="10dp"
                 android:id="@+id/user_profile_identification_layout">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/user_profile_verified_information_label"
@@ -162,15 +226,23 @@
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/greyish_brown"
                     android:textStyle="bold"
-                    android:textSize="17sp"/>
+                    android:textSize="17sp"
+                    android:background="@color/pale_grey"
+                    android:paddingTop="20dp"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="10dp"/>
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/user_identification_email_layout">
+                    android:id="@+id/user_identification_email_layout"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -194,7 +266,12 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/greyish"/>
+                    android:background="@color/greyish"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginStart="20dp"
+                    android:alpha="0.5"
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -202,7 +279,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:id="@+id/user_identification_phone_layout">
+                    android:id="@+id/user_identification_phone_layout"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginStart="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -223,62 +304,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/background_light"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:id="@+id/user_number_of_entourages_layout">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/user_number_entourages_label"
-                    android:id="@+id/textView3"
-                    android:textColor="@color/greyish_brown"
-                    android:textSize="17sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/user_tours_count"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:textColor="@color/greyish"
-                    android:textStyle="bold"
-                    android:textSize="17sp"/>
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/background_light"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/user_associations_title"
-                android:id="@+id/user_associations_title"
-                android:gravity="center"
-                android:textColor="@color/greyish_brown"
-                android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:textSize="17sp"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/user_associations_view"/>
 
         </LinearLayout>
     </ScrollView>

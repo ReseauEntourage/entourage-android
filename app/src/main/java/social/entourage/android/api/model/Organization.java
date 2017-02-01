@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Organization implements Serializable {
+import social.entourage.android.R;
+
+public class Organization extends BaseOrganization implements Serializable {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -74,5 +76,25 @@ public class Organization implements Serializable {
 
     public void setLogoUrl(final String logoUrl) {
         this.logoUrl = logoUrl;
+    }
+
+    @Override
+    public String getLargeLogoUrl() {
+        return logoUrl;
+    }
+
+    @Override
+    public String getSmallLogoUrl() {
+        return logoUrl;
+    }
+
+    @Override
+    public int getType() {
+        return TYPE_ORGANIZATION;
+    }
+
+    @Override
+    public int getTypeAsResourceId() {
+        return R.string.member_type_organization;
     }
 }

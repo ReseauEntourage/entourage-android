@@ -5,11 +5,13 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+import social.entourage.android.R;
+
 /**
  * Created by mihaiionescu on 17/01/2017.
  */
 
-public class Partner implements Serializable {
+public class Partner extends BaseOrganization implements Serializable {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -71,6 +73,16 @@ public class Partner implements Serializable {
 
     public void setSmallLogoUrl(final String smallLogoUrl) {
         this.smallLogoUrl = smallLogoUrl;
+    }
+
+    @Override
+    public int getType() {
+        return TYPE_PARTNER;
+    }
+
+    @Override
+    public int getTypeAsResourceId() {
+        return R.string.member_type_partner;
     }
 
     // ----------------------------------
