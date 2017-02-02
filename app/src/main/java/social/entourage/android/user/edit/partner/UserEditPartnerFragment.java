@@ -158,10 +158,10 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
         } else {
             if (position != AdapterView.INVALID_POSITION) {
                 Partner partner = adapter.getItem(position);
-                updatePartner(partner);
+                removePartner(oldPartner, partner);
             } else {
                 // the use deselected the current partner
-                removePartner(oldPartner);
+                removePartner(oldPartner, null);
             }
         }
     }
@@ -228,22 +228,26 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
         });
     }
 
-    private void removePartner(Partner partner) {
-        if (partner == null) {
+    private void removePartner(Partner oldPartner, final Partner currentPartner) {
+        if (oldPartner == null) {
             return;
         }
         progressBar.setVisibility(View.VISIBLE);
         final UserRequest request = EntourageApplication.get(getContext()).getEntourageComponent().getUserRequest();
-        request.removePartnerFromUser(user.getId(), partner.getId()).enqueue(new Callback<ResponseBody>() {
+        request.removePartnerFromUser(user.getId(), oldPartner.getId()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
-                    AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
-                    User user = authenticationController.getUser();
-                    if (user != null) {
-                        user.setPartner(null);
-                        authenticationController.saveUser(user);
+                    if (currentPartner != null) {
+                        addPartner(currentPartner);
+                    } else {
+                        AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
+                        User user = authenticationController.getUser();
+                        if (user != null) {
+                            user.setPartner(null);
+                            authenticationController.saveUser(user);
+                        }
                     }
                 } else {
                     Toast.makeText(getContext(), R.string.partner_remove_error, Toast.LENGTH_SHORT).show();
