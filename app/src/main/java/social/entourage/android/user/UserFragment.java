@@ -250,15 +250,11 @@ public class UserFragment extends DialogFragment {
             userEmailVerifiedImage.setImageResource(R.drawable.verified);
 
             List<BaseOrganization> organizationList = new ArrayList<>();
-            if (user.getOrganization() != null) {
-                organizationList.add(user.getOrganization());
-            }
             if (user.getPartner() != null) {
                 organizationList.add(user.getPartner());
             }
-            // Sort the organizations alphabetically
-            if (organizationList.size() > 1) {
-                Collections.sort(organizationList, new BaseOrganization.CustomComparator());
+            if (user.getOrganization() != null) {
+                organizationList.add(user.getOrganization());
             }
             if (organizationsAdapter == null) {
                 userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -273,6 +269,8 @@ public class UserFragment extends DialogFragment {
                                 onEditProfileClicked();
                             }
                         });
+            } else {
+                organizationsAdapter.setOrganizationList(organizationList);
             }
 
             //boolean isPro = user.isPro();

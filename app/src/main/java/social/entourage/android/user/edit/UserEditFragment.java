@@ -169,20 +169,18 @@ public class UserEditFragment extends DialogFragment {
             userAddress.setText("");
 
             List<BaseOrganization> organizationList = new ArrayList<>();
+            if (editedUser.getPartner() != null) {
+                organizationList.add(editedUser.getPartner());
+            }
+            if (editedUser.getOrganization() != null) {
+                organizationList.add(editedUser.getOrganization());
+            }
             if (organizationsAdapter == null) {
                 userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                if (editedUser.getOrganization() != null) {
-                    organizationList.add(editedUser.getOrganization());
-                }
-                if (editedUser.getPartner() != null) {
-                    organizationList.add(editedUser.getPartner());
-                }
-                // Sort the organizations alphabetically
-                if (organizationList.size() > 1) {
-                    Collections.sort(organizationList, new BaseOrganization.CustomComparator());
-                }
                 organizationsAdapter = new UserOrganizationsAdapter(organizationList);
                 userAssociationsView.setAdapter(organizationsAdapter);
+            } else {
+                organizationsAdapter.setOrganizationList(organizationList);
             }
 
             userAddAssociationSeparator.setVisibility(organizationList.size() > 0 ? View.VISIBLE : View.GONE);
@@ -279,17 +277,9 @@ public class UserEditFragment extends DialogFragment {
     public void userInfoUpdated(Events.OnUserInfoUpdatedEvent event) {
         User user = EntourageApplication.me(getActivity());
         editedUser.setAvatarURL(user.getAvatarURL());
+        editedUser.setPartner(user.getPartner());
 
-        if (editedUser.getAvatarURL() != null) {
-            Picasso.with(getActivity()).load(Uri.parse(editedUser.getAvatarURL()))
-                    .transform(new CropCircleTransformation())
-                    .into(userPhoto);
-        }
-        else {
-            Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
-                    .transform(new CropCircleTransformation())
-                    .into(userPhoto);
-        }
+        configureView();
     }
 
     // ----------------------------------

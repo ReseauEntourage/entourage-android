@@ -78,4 +78,9 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
         if (organizationList == null) return 0;
         return organizationList.size();
     }
+
+    public void setOrganizationList(final List<BaseOrganization> organizationList) {
+        this.organizationList = organizationList;
+        notifyDataSetChanged();
+    }
 }
