@@ -83,10 +83,10 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             if (partnerLogo != null) {
                 Picasso.with(viewGroup.getContext())
                         .load(Uri.parse(partnerLogo))
-                        .placeholder(null)
+                        .placeholder(R.drawable.partner_placeholder)
                         .into(viewHolder.mPartnerLogo);
             } else {
-                viewHolder.mPartnerLogo.setImageDrawable(null);
+                viewHolder.mPartnerLogo.setImageResource(R.drawable.partner_placeholder);
             }
 
             // set the tag to null so that oncheckedchangelistener exits when populating the view
