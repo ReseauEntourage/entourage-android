@@ -181,7 +181,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             if (partnerLogoURL != null) {
                 Picasso.with(itemView.getContext())
                         .load(Uri.parse(partnerLogoURL))
-                        .placeholder(null)
+                        .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
                         .into(mPartnerLogoView);
             }
@@ -220,7 +220,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             if (partnerLogoURL != null) {
                 Picasso.with(itemView.getContext())
                         .load(Uri.parse(partnerLogoURL))
-                        .placeholder(null)
+                        .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
                         .into(mPublicPartnerLogo);
             }

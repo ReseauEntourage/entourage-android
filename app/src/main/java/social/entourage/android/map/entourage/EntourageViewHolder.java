@@ -134,14 +134,13 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             }
             //partner logo
             if (partnerLogoView != null) {
-                // Partner logo
                 Partner partner = author.getPartner();
                 if (partner != null) {
                     String partnerLogoURL = partner.getSmallLogoUrl();
                     if (partnerLogoURL != null) {
                         Picasso.with(itemView.getContext())
                                 .load(Uri.parse(partnerLogoURL))
-                                .placeholder(null)
+                                .placeholder(R.drawable.partner_placeholder)
                                 .transform(new CropCircleTransformation())
                                 .into(partnerLogoView);
                     }

@@ -811,7 +811,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 if (partnerLogoURL != null) {
                     Picasso.with(getContext())
                             .load(Uri.parse(partnerLogoURL))
-                            .placeholder(null)
+                            .placeholder(R.drawable.partner_placeholder)
                             .transform(new CropCircleTransformation())
                             .into(tourAuthorPartnerLogo);
                 }

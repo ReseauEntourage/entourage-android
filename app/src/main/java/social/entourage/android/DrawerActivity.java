@@ -184,7 +184,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (partnerURL != null) {
                 Picasso.with(this)
                         .load(Uri.parse(partnerURL))
-                        .placeholder(null)
+                        .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
                         .into(userPartnerLogo);
             } else {
@@ -413,7 +413,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (partnerURL != null) {
                 Picasso.with(this)
                         .load(Uri.parse(partnerURL))
-                        .placeholder(null)
+                        .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
                         .into(userPartnerLogo);
             } else {

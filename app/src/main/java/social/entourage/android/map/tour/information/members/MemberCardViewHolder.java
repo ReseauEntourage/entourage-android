@@ -73,7 +73,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
             if (partnerLogoURL != null) {
                 Picasso.with(itemView.getContext())
                         .load(Uri.parse(partnerLogoURL))
-                        .placeholder(null)
+                        .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
                         .into(mPartnerLogo);
             }

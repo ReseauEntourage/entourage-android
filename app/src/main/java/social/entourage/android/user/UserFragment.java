@@ -236,7 +236,7 @@ public class UserFragment extends DialogFragment {
             if (partnerURL != null) {
                 Picasso.with(getActivity())
                         .load(Uri.parse(partnerURL))
-                        .placeholder(null)
+                        .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
                         .into(userPartnerLogo);
             } else {
