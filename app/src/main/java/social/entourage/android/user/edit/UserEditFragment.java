@@ -64,6 +64,9 @@ public class UserEditFragment extends DialogFragment {
     @BindView(R.id.user_edit_firstname)
     TextView userFirstname;
 
+    @BindView(R.id.user_edit_lastname)
+    TextView userLastname;
+
     @BindView(R.id.user_email)
     TextView userEmail;
 
@@ -164,6 +167,7 @@ public class UserEditFragment extends DialogFragment {
             }
 
             userFirstname.setText(editedUser.getFirstName());
+            userLastname.setText(editedUser.getLastName());
             userEmail.setText(editedUser.getEmail());
             userPhone.setText(editedUser.getPhone());
             userAddress.setText("");
@@ -207,7 +211,7 @@ public class UserEditFragment extends DialogFragment {
         dismiss();
     }
 
-    @OnClick(R.id.user_name_layout)
+    @OnClick({R.id.user_firstname_layout, R.id.user_lastname_layout})
     protected void onEditFirstname() {
         showEditProfile(UserEditProfileFragment.EDIT_NAME);
     }

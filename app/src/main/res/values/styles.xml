@@ -183,4 +183,10 @@
         <item name="android:background">@drawable/bg_edit_text_white_rounded_corners</item>
     </style>
 
+    <!-- Separator with alpha -->
+    <style name="SeparatorAlpha">
+        <item name="android:background">@color/greyish</item>
+        <item name="android:alpha">0.5</item>
+    </style>
+
 </resources>

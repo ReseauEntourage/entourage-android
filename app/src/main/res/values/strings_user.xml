@@ -28,6 +28,7 @@
     <string name="user_save_button">Enregistrer</string>
     <string name="user_edit_firstname_label">Prénom</string>
     <string name="user_edit_lastname_label">Nom</string>
+    <string name="user_edit_privacy_label">Mes informations privées</string>
     <string name="user_edit_email_label">E-mail</string>
     <string name="user_edit_password_label">Mot de passe</string>
     <string name="user_edit_password_button">Changer</string>
