@@ -215,6 +215,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
                         user.setPartner(response.body().getPartner());
                         authenticationController.saveUser(user);
                     }
+                    dismiss();
                 } else {
                     Toast.makeText(getContext(), R.string.partner_add_error, Toast.LENGTH_SHORT).show();
                 }
@@ -248,6 +249,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
                             user.setPartner(null);
                             authenticationController.saveUser(user);
                         }
+                        dismiss();
                     }
                 } else {
                     Toast.makeText(getContext(), R.string.partner_remove_error, Toast.LENGTH_SHORT).show();
