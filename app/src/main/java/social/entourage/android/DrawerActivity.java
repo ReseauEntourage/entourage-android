@@ -886,6 +886,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void sendMapFragmentExtras() {
+        if (getAuthenticationController() == null) return;
+        User user = getAuthenticationController().getUser();
+        if (user == null) return;
         int userId = getAuthenticationController().getUser().getId();
         boolean choice = getAuthenticationController().isUserToursOnly();
         mapEntourageFragment.onNotificationExtras(userId, choice);
