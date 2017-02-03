@@ -955,7 +955,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void registerCheckCode(final String smsCode) {
-        if (loginPresenter != null) {
+        if (loginPresenter != null && onboardingUser != null) {
             loginPresenter.login(onboardingUser.getPhone(), smsCode);
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
@@ -964,7 +964,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void registerResendCode() {
-        if (loginPresenter != null) {
+        if (loginPresenter != null && onboardingUser != null) {
             FlurryAgent.logEvent(Constants.EVENT_SMS_CODE_REQUEST);
             loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
         } else {
@@ -976,7 +976,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (smsSent) {
             displayToast(R.string.registration_smscode_sent);
         }
-        onboardingUser.setPhone(phoneNumber);
+        if (onboardingUser != null) {
+            onboardingUser.setPhone(phoneNumber);
+        }
         RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
         fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
     }
