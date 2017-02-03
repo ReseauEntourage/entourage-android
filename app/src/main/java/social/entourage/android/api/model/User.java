@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import social.entourage.android.api.model.map.TourAuthor;
+
 public class User implements Serializable {
 
     // ----------------------------------
@@ -229,6 +231,10 @@ public class User implements Serializable {
 
     public boolean isPro() {
         return TYPE_PRO.equals(type);
+    }
+
+    public TourAuthor asTourAuthor() {
+        return new TourAuthor(avatarURL, id, displayName, partner);
     }
 
     // ----------------------------------

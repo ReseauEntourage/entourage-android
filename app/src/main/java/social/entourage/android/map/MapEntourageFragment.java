@@ -93,6 +93,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
@@ -574,6 +575,35 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             showUserHistory();
         } else {
             hideUserHistory();
+        }
+    }
+
+    @Subscribe
+    public void onUserInfoUpdated(Events.OnUserInfoUpdatedEvent event) {
+        User user = EntourageApplication.me(getContext());
+        if (user == null) return;
+        TourAuthor userAsAuthor = user.asTourAuthor();
+        List<TimestampedObject> dirtyList = new ArrayList<>();
+        // See which cards needs updating
+        for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
+            if (!(timestampedObject instanceof FeedItem)) continue;
+            FeedItem feedItem = (FeedItem)timestampedObject;
+            TourAuthor author = feedItem.getAuthor();
+            // Skip null author
+            if (author == null) continue;
+            // Skip not same author id
+            if (author.getUserID() != userAsAuthor.getUserID()) continue;
+            // Skip if nothing changed
+            if (author.isSame(userAsAuthor)) continue;
+            // Update the tour author
+            userAsAuthor.setUserName(author.getUserName());
+            feedItem.setAuthor(userAsAuthor);
+            // Mark as dirty
+            dirtyList.add(feedItem);
+        }
+        // Update the dirty cards
+        for (TimestampedObject dirty : dirtyList) {
+            newsfeedAdapter.updateCard(dirty);
         }
     }
 

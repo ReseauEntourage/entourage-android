@@ -28,10 +28,11 @@ public class TourAuthor implements Serializable {
     // CONSTRUCTORS
     // ----------------------------------
 
-    public TourAuthor(final String avatarURLAsString, final int userID, final String userName) {
+    public TourAuthor(final String avatarURLAsString, final int userID, final String userName, Partner partner) {
         this.avatarURLAsString = avatarURLAsString;
         this.userID = userID;
         this.userName = userName;
+        this.partner = partner;
     }
 
     // ----------------------------------
@@ -77,6 +78,7 @@ public class TourAuthor implements Serializable {
 
     public boolean isSame(TourAuthor author) {
         if (author == null) return false;
+        if (userID != author.userID) return false;
         if (avatarURLAsString != null) {
             if (!avatarURLAsString.equals(author.avatarURLAsString)) return false;
         } else {
