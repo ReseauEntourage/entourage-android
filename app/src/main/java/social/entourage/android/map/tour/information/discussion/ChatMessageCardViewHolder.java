@@ -69,7 +69,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         if (mPartnerLogoView != null) {
             String partnerLogoURL = chatMessage.getPartnerLogoSmall();
             if (partnerLogoURL != null) {
-                Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+                Picasso.with(itemView.getContext()).load(Uri.parse(partnerLogoURL))
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
                         .into(mPartnerLogoView);
