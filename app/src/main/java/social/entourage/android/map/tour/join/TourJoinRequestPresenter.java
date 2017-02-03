@@ -82,17 +82,23 @@ public class TourJoinRequestPresenter {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (response.isSuccessful()) {
+                    if (fragment.getActivity() != null) {
+                        Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
+                    }
                     fragment.dismiss();
-                    Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                    if (fragment.getActivity() != null) {
+                        Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
-                Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                if (fragment.getActivity() != null) {
+                    Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -110,17 +116,23 @@ public class TourJoinRequestPresenter {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    if (fragment.getActivity() != null) {
+                        Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
+                    }
                     fragment.dismiss();
-                    Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                    if (fragment.getActivity() != null) {
+                        Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(final Call<ResponseBody> call, final Throwable t) {
-                Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                if (fragment.getActivity() != null) {
+                    Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
