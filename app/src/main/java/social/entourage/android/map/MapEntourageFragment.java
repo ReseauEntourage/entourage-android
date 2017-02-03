@@ -924,6 +924,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onUserStatusChanged(TourUser user, FeedItem feedItem) {
+        if (getActivity() == null || getActivity().isFinishing()) return;
         if (user == null) {
             //error changing the status
             if (isRequestingToJoin > 0 && getContext() != null) {
