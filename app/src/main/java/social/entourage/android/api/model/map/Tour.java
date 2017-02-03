@@ -214,6 +214,10 @@ public class Tour extends FeedItem implements Serializable {
         if (id != tour.id) return false;
         if (tourPoints.size() != tour.tourPoints.size()) return false;
         if (!status.equals(tour.status)) return false;
+        if (numberOfPeople != tour.numberOfPeople) return false;
+        if (getAuthor() != null) {
+            if (!getAuthor().isSame(tour.getAuthor())) return false;
+        }
         return joinStatus.equals(tour.joinStatus);
 
     }

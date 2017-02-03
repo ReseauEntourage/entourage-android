@@ -71,4 +71,23 @@ public class TourAuthor implements Serializable {
         this.partner = partner;
     }
 
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+
+    public boolean isSame(TourAuthor author) {
+        if (author == null) return false;
+        if (avatarURLAsString != null) {
+            if (!avatarURLAsString.equals(author.avatarURLAsString)) return false;
+        } else {
+            if (author.avatarURLAsString != null) return false;
+        }
+        if (partner != null) {
+            if (!partner.isSame(author.partner)) return false;
+        } else {
+            if (author.partner != null) return false;
+        }
+        return true;
+    }
+
 }

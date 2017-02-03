@@ -117,6 +117,10 @@ public class Entourage extends FeedItem implements Serializable {
         if (id != entourage.id) return false;
         if (!status.equals(entourage.status)) return false;
         if (!joinStatus.equals(entourage.joinStatus)) return false;
+        if (numberOfPeople != entourage.numberOfPeople) return false;
+        if (getAuthor() != null) {
+            if (!getAuthor().isSame(entourage.getAuthor())) return false;
+        }
 
         return true;
     }
