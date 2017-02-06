@@ -32,7 +32,7 @@ public class User implements Serializable {
 
     private String email;
 
-    @Expose(serialize = false, deserialize = false)
+    @Expose(serialize = false)
     private String phone;
 
     @SerializedName("first_name")
@@ -44,12 +44,13 @@ public class User implements Serializable {
     @SerializedName("display_name")
     private final String displayName;
 
+    @Expose(serialize = false)
     private final String token;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private final Stats stats;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private final Organization organization;
 
     private Partner partner;
@@ -57,12 +58,16 @@ public class User implements Serializable {
     @SerializedName("avatar_url")
     private String avatarURL;
 
+    @Expose(serialize = false)
     private String smsCode;
 
     @SerializedName("user_type")
     private String type = TYPE_PRO;
 
+    @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
+
+    @Expose(serialize = false)
     private boolean encounterDisclaimerShown = false;
 
     @Expose(serialize = false, deserialize = false)

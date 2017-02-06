@@ -174,8 +174,6 @@ public class LoginPresenter {
     public void updateUserName(String firstname, String lastname) {
         authenticationController.getUser().setFirstName(firstname);
         authenticationController.getUser().setLastName(lastname);
-
-        updateUserToServer();
     }
 
     protected void updateUserToServer() {
@@ -198,6 +196,7 @@ public class LoginPresenter {
                 public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
                     activity.stopLoader();
                     if (response.isSuccessful()) {
+                        authenticationController.saveUser(response.body().getUser());
                         activity.showPhotoChooseSource();
                         activity.displayToast(activity.getString(R.string.login_text_email_update_success));
                     }

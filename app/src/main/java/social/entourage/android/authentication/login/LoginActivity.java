@@ -336,10 +336,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             loginWelcome.setVisibility(View.VISIBLE);
         } else if (loginWelcome.getVisibility() == View.VISIBLE) {
             loginWelcome.setVisibility(View.GONE);
-            loginSignin.setVisibility(View.VISIBLE);
+            loginNameView.setVisibility(View.VISIBLE);
         } else if (loginNameView.getVisibility() == View.VISIBLE) {
             loginNameView.setVisibility(View.GONE);
-            loginWelcome.setVisibility(View.VISIBLE);
+            loginSignin.setVisibility(View.VISIBLE);
         } else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
             newsletterEmail.setText("");
             loginNewsletter.setVisibility(View.GONE);
@@ -486,11 +486,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginStartup.setVisibility(View.GONE);
         loginSignin.setVisibility(View.GONE);
         loginVerifyCode.setVisibility(View.GONE);
-        if (user.getEmail() == null || user.getEmail().length() == 0) {
+        if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
+            showNameView();
+        } else if (user.getEmail() == null || user.getEmail().length() == 0) {
             loginWelcome.setVisibility(View.VISIBLE);
             profileEmail.requestFocus();
-        } else if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
-            showNameView();
         } else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
             showPhotoChooseSource();
         } else {
@@ -713,13 +713,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             FlurryAgent.logEvent(Constants.EVENT_EMAIL_SUBMIT);
             loginPresenter.updateUserEmail(profileEmail.getText().toString());
 
-            User user = loginPresenter.authenticationController.getUser();
-            if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
-                loginWelcome.setVisibility(View.GONE);
-                showNameView();
-            } else {
-                loginPresenter.updateUserToServer();
-            }
+            loginPresenter.updateUserToServer();
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
@@ -756,8 +750,28 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void onNameGoClicked() {
         if (loginPresenter != null) {
             FlurryAgent.logEvent(Constants.EVENT_NAME_SUBMIT);
+            String firstname = firstnameEditText.getText().toString().trim();
+            String lastname = lastnameEditText.getText().toString().trim();
+            if (firstname.length() == 0) {
+                Toast.makeText(this, R.string.login_firstname_error, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (lastname.length() == 0) {
+                Toast.makeText(this, R.string.login_lastname_error, Toast.LENGTH_SHORT).show();
+                return;
+            }
             hideKeyboard();
-            loginPresenter.updateUserName(firstnameEditText.getText().toString(), lastnameEditText.getText().toString());
+            loginPresenter.updateUserName(firstname, lastname);
+            User user = loginPresenter.authenticationController.getUser();
+            if (user != null) {
+                if (user.getEmail() == null || user.getEmail().length() == 0) {
+                    loginNameView.setVisibility(View.GONE);
+                    loginWelcome.setVisibility(View.VISIBLE);
+                    profileEmail.requestFocus();
+                    return;
+                }
+            }
+            loginPresenter.updateUserToServer();
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
