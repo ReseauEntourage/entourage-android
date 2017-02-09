@@ -14,7 +14,6 @@ import java.util.List;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
-import social.entourage.android.api.model.Organization;
 
 /**
  * Created by mihaiionescu on 24/03/16.

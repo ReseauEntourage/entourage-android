@@ -2,7 +2,6 @@ package social.entourage.android.invite;
 
 import dagger.Module;
 import dagger.Provides;
-import social.entourage.android.invite.contacts.InviteContactsFragment;
 
 /**
  * Created by mihaiionescu on 12/07/16.

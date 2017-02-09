@@ -9,7 +9,6 @@ import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;

@@ -17,7 +17,6 @@
         android:layout_marginBottom="16dp"
         android:textColor="@color/greyish_brown"
         android:textSize="18sp"
-        android:layout_toLeftOf="@+id/contact_checkBox"
         />
 
     <View

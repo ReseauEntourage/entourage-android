@@ -99,7 +99,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/tour_card_badge_count"
             android:background="@drawable/bg_badge"
-            android:text="1"
             android:gravity="center"
             android:minWidth="15dp"
             android:textSize="10sp"

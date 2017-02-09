@@ -1,13 +1,10 @@
 package social.entourage.android.api;
 
-import java.util.Date;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.EntourageDate;
 import social.entourage.android.api.model.Newsfeed;
-import social.entourage.android.api.model.map.Entourage;
 
 /**
  * Created by mihaiionescu on 05/05/16.

@@ -1,7 +1,6 @@
 package social.entourage.android.guide;
 
 import android.Manifest;
-import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -167,7 +166,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                             hideEmptyListPopup();
                         }
                     });
-                    ;
 
                     // MI: We need to wait for a better solution for long press options on guide map
                     // So I'll just comment out the code

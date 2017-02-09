@@ -31,7 +31,6 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/login_text_verify_code_back"
             android:id="@+id/login_verify_code_back"
-            android:layout_weight="0.5"
             android:textColor="@color/custom_clickable_text_white"
             android:gravity="end"
             android:layout_alignParentRight="true"
@@ -44,7 +43,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3"
         android:id="@+id/login_verify_code_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/login_verify_code_navigation"
@@ -113,8 +111,6 @@
             android:layout_height="wrap_content"
             android:text="@string/login_button_verify_code"
             android:id="@+id/login_button_verify_code"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"/>
     </LinearLayout>
 
@@ -128,7 +124,7 @@
         android:visibility="gone">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/login_text_lost_code"

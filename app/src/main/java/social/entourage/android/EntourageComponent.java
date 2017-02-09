@@ -17,7 +17,6 @@ import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.PartnerRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.UserRequest;
-import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.tape.EncounterTapeService;
 import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationController;

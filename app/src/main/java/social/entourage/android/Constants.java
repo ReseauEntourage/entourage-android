@@ -1,7 +1,5 @@
 package social.entourage.android;
 
-import java.lang.ref.SoftReference;
-
 public class Constants {
 
     //TODO: should be changed after each release

@@ -62,7 +62,7 @@
                 android:id="@+id/login_name_description"
                 android:layout_below="@+id/login_name_title"
                 android:textColor="@color/white"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:layout_marginTop="10dp"/>
         </RelativeLayout>
     </ScrollView>

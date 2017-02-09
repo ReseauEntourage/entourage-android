@@ -4,17 +4,13 @@ package social.entourage.android.invite;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.R;
 
 /**
  * A simple {@link Fragment} subclass.

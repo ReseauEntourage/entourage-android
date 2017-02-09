@@ -18,9 +18,8 @@ public class AmazonS3Utils {
     // We only need one instance of the clients and credentials provider
     private static AmazonS3Client sS3Client;
     private static BasicAWSCredentials sCredProvider;
-    private static TransferUtility sTransferUtility;
 
-    private static BasicAWSCredentials getCredProvider(Context context) {
+    private static BasicAWSCredentials getCredProvider() {
         if (sCredProvider == null) {
             sCredProvider = new BasicAWSCredentials(BuildConfig.AWS_KEY, BuildConfig.AWS_SECRET);
         }
@@ -31,12 +30,11 @@ public class AmazonS3Utils {
      * Gets an instance of a S3 client which is constructed using the given
      * Context.
      *
-     * @param context An Context instance.
      * @return A default S3 client.
      */
-    public static AmazonS3Client getS3Client(Context context) {
+    public static AmazonS3Client getS3Client() {
         if (sS3Client == null) {
-            sS3Client = new AmazonS3Client(getCredProvider(context.getApplicationContext()));
+            sS3Client = new AmazonS3Client(getCredProvider());
             sS3Client.setRegion(Region.getRegion(Regions.EU_WEST_1));
         }
         return sS3Client;
@@ -50,12 +48,8 @@ public class AmazonS3Utils {
      * @return a TransferUtility instance
      */
     public static TransferUtility getTransferUtility(Context context) {
-        if (sTransferUtility == null) {
-            sTransferUtility = new TransferUtility(getS3Client(context.getApplicationContext()),
+        return new TransferUtility(getS3Client(),
                     context.getApplicationContext());
-        }
-
-        return sTransferUtility;
     }
 
 }
