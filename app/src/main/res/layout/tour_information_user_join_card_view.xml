@@ -29,7 +29,8 @@
             android:layout_marginRight="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:background="@color/greyish"/>
+            android:background="@color/greyish"
+            android:id="@+id/tic_public_info_separator"/>
 
         <LinearLayout
             android:orientation="horizontal"

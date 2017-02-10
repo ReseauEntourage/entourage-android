@@ -36,6 +36,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private TextView mPublicUsernameView;
     private TextView mJoinStatusView;
     private View mPublicMessageSection;
+    private View mPublicSectionSeparator;
     private TextView mPublicJoinMessage;
 
     private ImageView mPhotoView;
@@ -66,6 +67,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
         mPublicJoinMessage = (TextView) itemView.findViewById(R.id.tic_public_join_message);
         mPublicMessageSection = (View) itemView.findViewById(R.id.tic_public_info_message_layout);
+        mPublicSectionSeparator = itemView.findViewById(R.id.tic_public_info_separator);
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
         mPartnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tic_partner_logo);
@@ -239,12 +241,15 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         if (Tour.JOIN_STATUS_ACCEPTED.equals(user.getStatus())) {
             if (joinMessage != null && joinMessage.length() > 0) {
                 mPublicMessageSection.setVisibility(View.VISIBLE);
+                mPublicSectionSeparator.setVisibility(View.VISIBLE);
                 mPublicJoinMessage.setText(joinMessage);
             } else {
                 mPublicMessageSection.setVisibility(View.GONE);
+                mPublicSectionSeparator.setVisibility(View.GONE);
             }
         } else {
             mPublicMessageSection.setVisibility(View.GONE);
+            mPublicSectionSeparator.setVisibility(View.GONE);
         }
 
     }
