@@ -35,7 +35,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
@@ -50,6 +50,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 

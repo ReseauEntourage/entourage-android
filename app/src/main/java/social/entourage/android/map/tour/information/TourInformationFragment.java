@@ -78,7 +78,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -111,6 +111,7 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
 
 public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener, InviteFriendsListener {

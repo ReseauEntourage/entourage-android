@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
 
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
@@ -30,6 +29,7 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
 
 /**

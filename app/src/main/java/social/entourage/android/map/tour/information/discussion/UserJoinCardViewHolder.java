@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
@@ -21,6 +20,7 @@ import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
 
 /**
