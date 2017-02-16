@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:paddingLeft="40dp"
+              android:paddingRight="40dp"
+              android:paddingStart="40dp"
+              android:paddingEnd="40dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:text="@string/carousel_p1_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/carousel_p1_title"
+            android:textStyle="bold"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/carousel_title"/>
+
+        <TextView
+            android:text="@string/carousel_p1_content1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/carousel_p1_content1"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/carousel_content"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:text="@string/carousel_p1_content2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/carousel_p1_content2"
+            android:textStyle="bold"
+            android:textSize="@dimen/carousel_content"
+            android:textColor="@color/greyish_brown"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:id="@+id/carousel_p1_handshake">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_handshake"
+                android:id="@+id/carousel_p1_handshake_image"
+                />
+
+            <TextView
+                android:text="@string/carousel_p1_handshake"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/carousel_p1_handshake_text"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:textStyle="normal|bold"
+                android:textColor="@color/accent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:srcCompat="@drawable/carousel_bullet_filled"
+            android:id="@+id/carousel_p1_b1"
+            />
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:srcCompat="@drawable/carousel_bullet_empty"
+            android:id="@+id/carousel_p1_b2"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"/>
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:srcCompat="@drawable/carousel_bullet_empty"
+            android:id="@+id/carousel_p1_b3"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"/>
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:srcCompat="@drawable/carousel_bullet_empty"
+            android:id="@+id/carousel_p1_b4"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"/>
+    </LinearLayout>
+
+</RelativeLayout>

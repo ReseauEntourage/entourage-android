@@ -3,4 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="about_items_padding">16dp</dimen>
+
+    <dimen name="carousel_title">24sp</dimen>
+    <dimen name="carousel_content">16sp</dimen>
 </resources>

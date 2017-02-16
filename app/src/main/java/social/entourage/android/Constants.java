@@ -20,6 +20,7 @@ public class Constants {
     // Links
     public static final String BLOG_URL = "https://blog.entourage.social/category/franchir-le-pas/";
     public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
+    public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";
@@ -197,4 +198,7 @@ public class Constants {
 
     // Don't show the popup again within this radius
     public static final int EMPTY_POPUP_DISPLAY_LIMIT = 300; //meters
+
+    // Carousel delay time
+    public static final long CAROUSEL_DELAY_MILLIS = 2000; // 2 seconds
 }

@@ -38,6 +38,7 @@ public class AuthenticationController {
             if (user != loggedUser) {
                 user.setEntourageDisclaimerShown(loggedUser.isEntourageDisclaimerShown());
                 user.setEncounterDisclaimerShown(loggedUser.isEncounterDisclaimerShown());
+                user.setOnboardingUser(loggedUser.isOnboardingUser());
             }
         }
         loggedUser = user;

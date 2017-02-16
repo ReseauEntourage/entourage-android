@@ -80,6 +80,10 @@
         <item name="android:background">@drawable/bg_button_accent_rounded</item>
     </style>
 
+    <style name="AccentButton.BigRoundedCorners">
+        <item name="android:background">@drawable/bg_button_accent_rounded_large_radius</item>
+    </style>
+
     <style name="AccentButtonStraightTop" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@drawable/bg_button_accent_straight_top</item>
         <item name="android:textColor">@android:color/white</item>

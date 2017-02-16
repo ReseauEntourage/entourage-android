@@ -21,6 +21,7 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
@@ -102,6 +103,7 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
@@ -893,6 +895,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         // check if we are opening an invitation
         invitedLayout.setVisibility(invitationId == 0 ? View.GONE : View.VISIBLE);
+
+        // check if we need to display the carousel
+        User me = EntourageApplication.me(getContext());
+        if (me != null && me.isOnboardingUser()) {
+            showCarousel();
+            me.setOnboardingUser(false);
+        }
+
     }
 
     private void initializeOptionsView() {
@@ -1833,6 +1843,27 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         inviteSuccessHandler.postDelayed(inviteSuccessRunnable, Constants.INVITE_SUCCESS_HIDE_DELAY);
     }
 
+    // ----------------------------------
+    // CAROUSEL
+    // ----------------------------------
+
+    private void showCarousel() {
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Check if the activity is still running
+                if (getActivity() == null || getActivity().isFinishing()) {
+                    return;
+                }
+                if (!isVisible()) {
+                    return;
+                }
+                CarouselFragment carouselFragment = new CarouselFragment();
+                carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
+            }
+        }, Constants.CAROUSEL_DELAY_MILLIS);
+    }
 
     // ----------------------------------
     // INNER CLASSES

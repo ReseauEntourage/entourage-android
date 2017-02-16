@@ -51,16 +51,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/registration_welcome_title"
-            android:id="@+id/register_welcome_title"
-            android:textColor="@color/white"
-            android:textSize="32sp"
-            android:layout_below="@+id/register_welcome_logo"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/register_welcome_description"
             android:layout_below="@+id/register_welcome_title"
@@ -79,6 +69,18 @@
             style="@style/WhiteButton.RoundedCorners"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/registration_welcome_title"
+            android:id="@+id/register_welcome_title"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:layout_below="@+id/register_welcome_logo"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
 
     </RelativeLayout>
 

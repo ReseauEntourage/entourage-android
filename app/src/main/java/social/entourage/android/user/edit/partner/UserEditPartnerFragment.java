@@ -93,9 +93,10 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
     private void configureView() {
         UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
         if (userEditFragment == null) {
-            return;
+            user = EntourageApplication.me(getActivity());
+        } else {
+            user = userEditFragment.getEditedUser();
         }
-        user = userEditFragment.getEditedUser();
 
         // Configure the partners list
         if (adapter == null) {

@@ -103,6 +103,7 @@ import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
 import social.entourage.android.base.EntouragePagination;
+import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
@@ -2281,13 +2282,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (presenter != null) {
             presenter.getMyPendingInvitations();
         }
-        // Reset the onboarding flag
-        me.setOnboardingUser(false);
     }
 
     protected void onInvitationsReceived(List<Invitation> invitationList) {
-        // Ignore errors and empty list
+        // Get the user
+        User me = EntourageApplication.me(getActivity());
+        // Check for errors and empty list
         if (invitationList == null || invitationList.size() == 0) {
+            // Check if we need to show the carousel
+            if (me != null && me.isOnboardingUser()) {
+                showCarousel();
+                // Reset the onboarding flag
+                me.setOnboardingUser(false);
+            }
             return;
         }
         // Check for null presenter
@@ -2338,6 +2345,33 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void hideEmptyListPopup() {
         emptyListPopup.setVisibility(View.GONE);
+    }
+
+    // ----------------------------------
+    // CAROUSEL
+    // ----------------------------------
+
+    private void showCarousel() {
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Check if the activity is still running
+                if (getActivity() == null || getActivity().isFinishing()) {
+                    return;
+                }
+                // Check if the map fragment is still on top
+                List<Fragment> fragmentList = getFragmentManager().getFragments();
+                if (fragmentList != null && fragmentList.size() > 0) {
+                    Fragment topFragment = fragmentList.get(fragmentList.size()-1);
+                    if ( !(topFragment instanceof MapEntourageFragment) ) {
+                        return;
+                    }
+                }
+                CarouselFragment carouselFragment = new CarouselFragment();
+                carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
+            }
+        }, Constants.CAROUSEL_DELAY_MILLIS);
     }
 
     // ----------------------------------

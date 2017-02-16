@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="social.entourage.android.carousel.pages.CarouselPage4Fragment"
+              android:orientation="vertical"
+              android:paddingEnd="40dp"
+              android:paddingLeft="40dp"
+              android:paddingRight="40dp"
+              android:paddingStart="40dp"
+              android:gravity="center_vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/user_with_badge"
+        android:id="@+id/carousel_p4_user_image"/>
+
+    <TextView
+        android:text="@string/carousel_p4_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/carousel_p4_title"
+        android:textStyle="bold"
+        android:textColor="@color/greyish_brown"
+        android:textSize="@dimen/carousel_title"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:text="@string/carousel_p4_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/carousel_p4_content"
+        android:textColor="@color/greyish_brown"
+        android:textSize="@dimen/carousel_content"
+        android:layout_marginTop="10dp"
+        />
+
+    <Button
+        android:text="@string/carousel_p4_partner_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/carousel_p4_partner_button"
+        style="@style/AccentButton.BigRoundedCorners"
+        android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"/>
+
+    <Button
+        android:text="@string/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/carousel_p4_close_button"
+        style="@style/WhiteButton.RoundedCorners"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/greyish_brown"
+        android:layout_gravity="center_horizontal"
+        android:textSize="14sp"/>
+
+</LinearLayout>
