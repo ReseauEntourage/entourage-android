@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.base.EntourageDialogFragment;

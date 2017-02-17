@@ -44,7 +44,7 @@ public class AmazonS3Utils {
      * Gets an instance of the TransferUtility which is constructed using the
      * given Context
      *
-     * @param context
+     * @param context Context
      * @return a TransferUtility instance
      */
     public static TransferUtility getTransferUtility(Context context) {
