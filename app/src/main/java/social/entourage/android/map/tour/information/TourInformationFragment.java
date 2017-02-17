@@ -930,7 +930,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     if (feedItem.isClosed()) {
                         stopTourButton.setText(R.string.tour_info_options_freeze_tour);
                     } else {
-                        stopTourButton.setText(R.string.tour_info_options_stop_tour);
+                        stopTourButton.setText(feedItem.getType() == FeedItem.ENTOURAGE_CARD ? R.string.tour_info_options_freeze_tour : R.string.tour_info_options_stop_tour);
                     }
                     if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
                         editEntourageButton.setVisibility(View.VISIBLE);
