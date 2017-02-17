@@ -1387,14 +1387,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         TourTimestamp tourTimestamp = new TourTimestamp(
                 feedItem.getEndTime(),
-                now,
+                feedItem.getEndTime() != null ? feedItem.getEndTime() : now,
                 feedItem.getType(),
                 FeedItem.STATUS_CLOSED,
                 endPoint,
                 duration,
                 distance
         );
-        discussionAdapter.addCardInfo(tourTimestamp);
+        discussionAdapter.addCardInfoAfterTimestamp(tourTimestamp);
     }
 
     private void scrollToLastCard() {

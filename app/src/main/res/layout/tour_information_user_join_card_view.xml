@@ -12,6 +12,18 @@
         android:layout_height="match_parent"
         android:id="@+id/tic_public_info_section">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginStart="60dp"
+            android:background="@color/greyish"
+            android:id="@+id/tic_public_info_top_separator"
+            android:alpha="0.5"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,12 +37,13 @@
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginStart="60dp"
             android:background="@color/greyish"
-            android:id="@+id/tic_public_info_separator"/>
+            android:id="@+id/tic_public_info_separator"
+            android:alpha="0.5"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -87,12 +100,12 @@
                     android:id="@+id/tic_public_join_message"
                     android:textSize="18sp"
                     android:textColor="@color/black"
-                    android:gravity="center_horizontal"
                     android:background="@drawable/bubble_left"
                     android:autoLink="all"
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
-                    android:layout_marginBottom="4dp"/>
+                    android:layout_marginBottom="4dp"
+                    android:gravity="left|start"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -106,7 +119,10 @@
         android:id="@+id/tic_private_info_section"
         android:background="@drawable/rounded_dialog"
         android:gravity="center"
-        >
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp">
 
         <RelativeLayout
             android:layout_width="66dp"
@@ -148,7 +164,8 @@
             android:text="@string/tour_join_request_received_message_short"
             android:id="@+id/tic_join_description"
             android:textColor="@color/white"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="match_parent"

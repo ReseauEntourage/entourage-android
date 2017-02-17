@@ -69,7 +69,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyItemInserted(position);
     }
 
-    public void addCardInfoAfterTimestamp(TimestampedObject cardInfo) {
+    public synchronized void addCardInfoAfterTimestamp(TimestampedObject cardInfo) {
         //search for the insert point
         for (int i = 0; i < items.size(); i++) {
             TimestampedObject timestampedObject = items.get(i);

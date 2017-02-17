@@ -50,31 +50,38 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
         notifyItemInserted(position);
     }
 
-    @Override
-    public void addCardInfo(TimestampedObject cardInfo) {
-        if (items.size() > 0) {
-            addSeparator();
-        }
-        items.add(cardInfo);
-        notifyItemInserted(items.size()-1);
-    }
+//    @Override
+//    public void addCardInfo(TimestampedObject cardInfo) {
+//        addCardInfo(cardInfo, true);
+//    }
+//
+//    @Override
+//    public void addCardInfo(TimestampedObject cardInfo, boolean notifyView) {
+//        if (items.size() > 0) {
+//            addSeparator();
+//        }
+//        items.add(cardInfo);
+//        if (notifyView) {
+//            notifyItemInserted(items.size()-1);
+//        }
+//    }
 
-    @Override
-    public void insertCardInfo(TimestampedObject cardInfo, int position) {
-        if (position != 0) position--;
-        //add separator if not adding at the top of the list
-        if (position != 0) {
-            insertSeparator(position);
-            position++;
-        }
-        //add the card
-        items.add(position, cardInfo);
-        notifyItemInserted(position);
-        //add the separator if adding at the top of the list and more cards exist
-        if (position == 0 && items.size() > 1) {
-            position++;
-            insertSeparator(position);
-        }
-    }
+//    @Override
+//    public void insertCardInfo(TimestampedObject cardInfo, int position) {
+//        if (position != 0) position--;
+//        //add separator if not adding at the top of the list
+//        if (position != 0) {
+//            insertSeparator(position);
+//            position++;
+//        }
+//        //add the card
+//        items.add(position, cardInfo);
+//        notifyItemInserted(position);
+//        //add the separator if adding at the top of the list and more cards exist
+//        if (position == 0 && items.size() > 1) {
+//            position++;
+//            insertSeparator(position);
+//        }
+//    }
 
 }
