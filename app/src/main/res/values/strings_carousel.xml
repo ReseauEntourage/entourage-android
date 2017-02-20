@@ -8,8 +8,8 @@
     <string name="carousel_p1_content2">Pour vous aider, nous avons réalisé un guide complet :</string>
     <string name="carousel_p1_handshake">Simple comme bonjour</string>
 
-    <string name="carousel_p2_title">2. Rejoignez</string>
-    <string name="carousel_p2_content">Les actions bienveillantes, ou « <font color="#ec4e1a">entourages</font> », créées par vos voisins sont représentées par des <font color="#ec4e1a">zones orangées</font> sur la carte de votre quartier.\n\nRejoignez-les pour donner du temps, des compétences, des conseils, etc.</string>
+    <string name="carousel_p2_title">2. Rejoignez</string>entourages
+    <string name="carousel_p2_content">Les zones orangées sur la carte, ou \"<font color="#ec4e1a">entourages</font>\", représentent les actions bienveillantes créées par vos voisins.\n\nRejoignez-les pour donner du temps, des compétences, des conseils, etc.</string>
 
     <string name="carousel_p3_title">3. Créez</string>
     <string name="carousel_p3_content">A votre tour, lancez vos propres initiatives solidaires  à tout moment en cliquant sur le bouton <b>+</b> en bas à droite.\n\nVos voisins pourront vous rejoindre pour se coordonner et vous aider dans votre action !</string>

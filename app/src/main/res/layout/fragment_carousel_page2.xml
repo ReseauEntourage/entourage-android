@@ -4,16 +4,28 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               tools:context="social.entourage.android.carousel.pages.CarouselPage2Fragment"
-              android:paddingEnd="40dp"
-              android:paddingLeft="40dp"
-              android:paddingRight="40dp"
-              android:paddingStart="40dp">
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/carousel_p2_map"
+        android:id="@+id/carousel_p2_map_view"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:adjustViewBounds="true"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
 
         <TextView
             android:text="@string/carousel_p2_title"
