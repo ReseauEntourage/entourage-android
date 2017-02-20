@@ -115,6 +115,7 @@ public class PhotoEditFragment extends DialogFragment {
             cropImageView.setImageUriAsync(photoUri);
         }
         cropImageView.setCropShape(CropImageView.CropShape.OVAL);
+        cropImageView.setAspectRatio(1, 1);
     }
 
     @Override
