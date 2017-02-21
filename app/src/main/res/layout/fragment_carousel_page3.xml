@@ -43,7 +43,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="80dp">
+        android:layout_marginBottom="@dimen/carousel_bullets_bottom">
 
         <ImageView
             android:layout_width="16dp"
@@ -77,7 +77,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/button_create"
+        app:srcCompat="@drawable/carousel_p3_plus_image"
         android:id="@+id/carousel_p3_create_entourage_image"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
