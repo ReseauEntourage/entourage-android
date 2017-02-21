@@ -18,6 +18,8 @@ import java.util.List;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Created by mihaiionescu on 16/01/2017.
@@ -31,12 +33,23 @@ public class UserEditPartnerAdapter extends BaseAdapter {
         public ImageView mPartnerLogo;
         public CheckBox mCheckbox;
 
+        public long partnerId = 0;
+
         public PartnerViewHolder(View v, OnCheckedChangeListener checkboxListener) {
             mPartnerName = (TextView) v.findViewById(R.id.partner_name);
             mPartnerLogo = (ImageView) v.findViewById(R.id.partner_logo);
             mCheckbox = (CheckBox) v.findViewById(R.id.partner_checkbox);
 
             mCheckbox.setOnCheckedChangeListener(checkboxListener);
+
+            mPartnerLogo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    if (partnerId != 0) {
+                        BusProvider.getInstance().post(new Events.OnPartnerViewRequestedEvent(partnerId));
+                    }
+                }
+            });
         }
 
     }
@@ -95,6 +108,9 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             viewHolder.mCheckbox.setChecked(partner.isDefault());
             // set the tag to the item position
             viewHolder.mCheckbox.setTag(position);
+
+            // set the partner id
+            viewHolder.partnerId = partner.getId();
         }
 
         return view;

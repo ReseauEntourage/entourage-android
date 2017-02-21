@@ -14,6 +14,9 @@ import java.util.List;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
+import social.entourage.android.api.model.Partner;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Created by mihaiionescu on 24/03/16.
@@ -27,12 +30,25 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
         public TextView mOrganizationType;
         public View mSeparator;
 
+        public long partnerId = 0;
+
         public OrganizationViewHolder(View v) {
             super(v);
             mOrganizationName = (TextView) v.findViewById(R.id.organization_name);
             mOrganizationType = (TextView) v.findViewById(R.id.organization_type);
             mOrganizationLogo = (ImageView) v.findViewById(R.id.organization_logo);
             mSeparator = v.findViewById(R.id.organization_separator);
+
+            if (mOrganizationLogo != null) {
+                mOrganizationLogo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View view) {
+                        if (partnerId != 0) {
+                            BusProvider.getInstance().post(new Events.OnPartnerViewRequestedEvent(partnerId));
+                        }
+                    }
+                });
+            }
         }
 
     }
@@ -67,6 +83,13 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
         }
         else {
             organizationViewHolder.mOrganizationLogo.setImageDrawable(null);
+        }
+
+        if (organization.getType() == BaseOrganization.TYPE_PARTNER) {
+            organizationViewHolder.partnerId = ((Partner)organization).getId();
+        }
+        else {
+            organizationViewHolder.partnerId = 0;
         }
 
         organizationViewHolder.mSeparator.setVisibility(position == organizationList.size() - 1 ? View.GONE : View.VISIBLE);

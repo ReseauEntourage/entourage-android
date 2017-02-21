@@ -11,7 +11,8 @@
         android:background="@color/background"
         android:id="@+id/user_title_layout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -21,7 +22,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"/>
 
         <TextView
             style="@style/EntourageTitle"
@@ -42,7 +44,9 @@
             android:layout_centerVertical="true"
             android:textColor="@color/accent"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 
     </RelativeLayout>
 
@@ -87,7 +91,8 @@
                     android:layout_alignRight="@+id/user_photo"
                     android:layout_height="63dp"
                     android:layout_width="63dp"
-                    android:scaleType="fitCenter"/>
+                    android:scaleType="fitCenter"
+                    android:layout_alignEnd="@+id/user_photo"/>
 
                 <TextView
                     android:id="@+id/user_name"
@@ -189,7 +194,9 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:paddingLeft="20dp"
-                    android:paddingStart="20dp"/>
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingRight="20dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -206,7 +213,9 @@
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:paddingEnd="20dp"
-                    android:paddingRight="20dp"/>
+                    android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"/>
             </RelativeLayout>
 
             <LinearLayout

@@ -49,6 +49,7 @@ import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.base.ItemClickSupport;
+import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.edit.UserEditFragment;
@@ -422,6 +423,18 @@ public class UserFragment extends DialogFragment {
         //update the current view
         this.user = user;
         configureView();
+    }
+
+    @Subscribe
+    public void onPartnerViewRequested(Events.OnPartnerViewRequestedEvent event) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        if (event == null) {
+            return;
+        }
+        PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartnerId());
+        partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
     }
 
 }

@@ -396,4 +396,21 @@ public class Events {
         }
     }
 
+    /**
+     * Event signaling that partner view is requested
+     */
+
+    public static class OnPartnerViewRequestedEvent {
+
+        private long partnerId;
+
+        public OnPartnerViewRequestedEvent(long partnerId) {
+            this.partnerId = partnerId;
+        }
+
+        public long getPartnerId() {
+            return partnerId;
+        }
+    }
+
 }
