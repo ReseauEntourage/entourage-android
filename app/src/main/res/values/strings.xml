@@ -3,7 +3,7 @@
     <string name="app_name">Entourage</string>
     <string name="button_loading">Chargement…</string>
     <string name="entourage_title">Entourage</string>
-    <string name="entourage_slogan">Un peu de chaleur humaine\navec Entourage.</string>
+    <string name="entourage_slogan">Un peu de chaleur humaine.</string>
     <string name="error_end_tour_before_logout">Terminez la maraude avant de vous déconnecter</string>
     <string name="error_not_yet_implemented">Indisponible</string>
     <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>
