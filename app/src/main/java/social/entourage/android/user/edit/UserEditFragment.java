@@ -1,6 +1,8 @@
 package social.entourage.android.user.edit;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -21,6 +23,7 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,12 +32,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
+import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.UserFragment;
@@ -233,9 +240,11 @@ public class UserEditFragment extends DialogFragment {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        UserFragment fragment = (UserFragment)getFragmentManager().findFragmentByTag(UserFragment.TAG);
-                        if (fragment != null) {
-                            fragment.deleteAccount();
+                        if (presenter != null) {
+                            if (getActivity() instanceof EntourageActivity) {
+                                ((EntourageActivity) getActivity()).showProgressDialog(0);
+                            }
+                            presenter.deleteAccount();
                         }
                     }
                 })
@@ -296,6 +305,29 @@ public class UserEditFragment extends DialogFragment {
         else {
             displayToast(getString(R.string.user_text_update_ok));
             dismiss();
+        }
+    }
+
+    protected void onDeletedAccount(boolean success) {
+        boolean hasActivity = getActivity() != null && !getActivity().isFinishing() && getActivity() instanceof EntourageActivity;
+        if (hasActivity) {
+            ((EntourageActivity) getActivity()).dismissProgressDialog();
+        }
+        if (success) {
+            //remove the tutorial flag
+            SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+            HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+            loggedNumbers.remove(this.editedUser.getPhone());
+            sharedPreferences.edit().putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers).commit();
+            //go back to login screen
+            if (getActivity() instanceof DrawerActivity) {
+                ((DrawerActivity) getActivity()).selectItem(R.id.action_logout);
+            }
+        }
+        else {
+            if (hasActivity) {
+                Toast.makeText(getActivity(), R.string.user_delete_account_failure, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

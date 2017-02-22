@@ -295,15 +295,6 @@ public class UserFragment extends DialogFragment {
         }
     }
 
-    public void deleteAccount() {
-        if (presenter != null) {
-            if (getActivity() instanceof EntourageActivity) {
-                ((EntourageActivity) getActivity()).showProgressDialog(0);
-            }
-            presenter.deleteAccount();
-        }
-    }
-
     public void saveAccount(User user) {
         if (presenter != null) {
             presenter.updateUser(user);
@@ -322,26 +313,6 @@ public class UserFragment extends DialogFragment {
         }
         this.user = user;
         configureView();
-    }
-
-    protected void onDeletedAccount(boolean success) {
-        if (getActivity() != null && getActivity() instanceof EntourageActivity) {
-            ((EntourageActivity) getActivity()).dismissProgressDialog();
-        }
-        if (success) {
-            //remove the tutorial flag
-            SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-            HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
-            loggedNumbers.remove(this.user.getPhone());
-            sharedPreferences.edit().putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers).commit();
-            //go back to login screen
-            if (getActivity() instanceof DrawerActivity) {
-                ((DrawerActivity) getActivity()).selectItem(R.id.action_logout);
-            }
-        }
-        else {
-            displayToast(R.string.user_delete_account_failure);
-        }
     }
 
     protected void onUserUpdated(User user) {
