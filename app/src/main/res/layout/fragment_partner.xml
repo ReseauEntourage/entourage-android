@@ -51,7 +51,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:src="@drawable/partner_badge_atd"
-        android:scaleType="centerInside"/>
+        android:scaleType="centerInside"
+        />
 
     <TextView
         android:layout_width="match_parent"
