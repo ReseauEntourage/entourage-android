@@ -2293,7 +2293,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (me != null && me.isOnboardingUser()) {
                 showCarousel();
                 // Reset the onboarding flag
-                me.setOnboardingUser(false);
+                if (presenter != null) {
+                    presenter.resetUserOnboardingFlag();
+                }
             }
             return;
         }

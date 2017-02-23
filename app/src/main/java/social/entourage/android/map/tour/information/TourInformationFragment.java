@@ -900,6 +900,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (me != null && me.isOnboardingUser()) {
             showCarousel();
             me.setOnboardingUser(false);
+            if (getActivity() != null) {
+                EntourageComponent entourageComponent = EntourageApplication.get(getActivity()).getEntourageComponent();
+                if (entourageComponent != null && entourageComponent.getAuthenticationController() != null) {
+                    entourageComponent.getAuthenticationController().saveUser(me);
+                }
+            }
         }
 
     }

@@ -20,6 +20,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.model.Invitation;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -170,6 +171,14 @@ public class MapPresenter {
             public void onFailure(final Call<Invitation.InvitationWrapper> call, final Throwable t) {
             }
         });
+    }
+
+    public void resetUserOnboardingFlag() {
+        User me = authenticationController.getUser();
+        if (me != null) {
+            me.setOnboardingUser(false);
+            authenticationController.saveUser(me);
+        }
     }
 
     // ----------------------------------
