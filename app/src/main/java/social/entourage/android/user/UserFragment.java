@@ -152,15 +152,16 @@ public class UserFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         requestedUserId = getArguments().getInt(User.KEY_USER_ID);
-        User authenticatedUser = presenter.getAuthenticatedUser();
-        if (requestedUserId == authenticatedUser.getId()) {
-            isMyProfile = true;
-            user = authenticatedUser;
-            configureView();
-        }
-        else {
-            progressBar.setVisibility(View.VISIBLE);
-            presenter.getUser(requestedUserId);
+        if (presenter != null) {
+            User authenticatedUser = presenter.getAuthenticatedUser();
+            if (authenticatedUser != null && requestedUserId == authenticatedUser.getId()) {
+                isMyProfile = true;
+                user = authenticatedUser;
+                configureView();
+            } else {
+                progressBar.setVisibility(View.VISIBLE);
+                presenter.getUser(requestedUserId);
+            }
         }
 
     }
@@ -206,7 +207,7 @@ public class UserFragment extends DialogFragment {
     // ----------------------------------
 
     private void configureView() {
-        if (getActivity() != null) {
+        if (getActivity() != null && !getActivity().isFinishing()) {
             Resources res = getResources();
             Stats stats = user.getStats();
             int entourageCount = 0;
@@ -306,6 +307,9 @@ public class UserFragment extends DialogFragment {
     // ----------------------------------
 
     protected void onUserReceived(User user) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
         progressBar.setVisibility(View.GONE);
         if (user == null) {
             displayToast(R.string.user_retrieval_error);
@@ -316,6 +320,9 @@ public class UserFragment extends DialogFragment {
     }
 
     protected void onUserUpdated(User user) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
         if (user == null) {
             displayToast(R.string.user_text_update_ko);
         }

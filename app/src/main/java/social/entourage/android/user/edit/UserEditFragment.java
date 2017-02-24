@@ -287,6 +287,10 @@ public class UserEditFragment extends DialogFragment {
 
     @Subscribe
     public void userInfoUpdated(Events.OnUserInfoUpdatedEvent event) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+
         User user = EntourageApplication.me(getActivity());
         editedUser.setAvatarURL(user.getAvatarURL());
         editedUser.setPartner(user.getPartner());
@@ -299,6 +303,9 @@ public class UserEditFragment extends DialogFragment {
     // ----------------------------------
 
     protected void onUserUpdated(User user) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
         if (user == null) {
             displayToast(getString(R.string.user_text_update_ko));
         }

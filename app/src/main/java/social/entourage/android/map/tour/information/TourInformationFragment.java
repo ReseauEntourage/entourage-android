@@ -1772,6 +1772,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Override
     public void onUserStatusChanged(final TourUser user, final FeedItem feedItem) {
         //ignore requests that are not related to our feed item
+        if (feedItem == null || this.feedItem == null) return;
         if (feedItem.getType() != this.feedItem.getType()) return;
         if (feedItem.getId() != this.feedItem.getId()) return;
 
