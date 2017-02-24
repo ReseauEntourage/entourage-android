@@ -1,21 +1,17 @@
 package social.entourage.android.partner;
 
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.squareup.picasso.Picasso;
+import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.tools.CropCircleTransformation;
-import social.entourage.android.view.PartnerLogoImageView;
 
 /**
  * Fragment that displays the details of a partner organisation
@@ -35,7 +31,7 @@ public class PartnerFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     @BindView(R.id.partner_view_logo)
-    PartnerLogoImageView logoImageView;
+    ImageView logoImageView;
 
     private long partnerId;
 
