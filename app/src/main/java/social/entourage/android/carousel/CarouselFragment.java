@@ -1,6 +1,8 @@
 package social.entourage.android.carousel;
 
 
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -8,12 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
+
+import static social.entourage.android.carousel.CarouselPageAdapter.NUM_PAGES;
 
 /**
  * Help carousel
@@ -35,6 +44,11 @@ public class CarouselFragment extends EntourageDialogFragment {
 
     @BindView(R.id.carousel_view)
     ViewPager pagerView;
+
+    @BindView(R.id.carousel_indicator_layout)
+    LinearLayout indicatorLayout;
+
+    List<ImageView> dots;
 
     // ----------------------------------
     // LIFECYCLE
@@ -74,7 +88,9 @@ public class CarouselFragment extends EntourageDialogFragment {
 
             @Override
             public void onPageSelected(final int position) {
-                closeButton.setVisibility(position == CarouselPageAdapter.NUM_PAGES - 1 ? View.GONE : View.VISIBLE);
+                closeButton.setVisibility(position == NUM_PAGES - 1 ? View.GONE : View.VISIBLE);
+                indicatorLayout.setVisibility(position == NUM_PAGES - 1 ? View.INVISIBLE : View.VISIBLE);
+                selectDot(position);
             }
 
             @Override
@@ -82,6 +98,33 @@ public class CarouselFragment extends EntourageDialogFragment {
 
             }
         });
+
+        addDots();
+    }
+
+    private void addDots() {
+        dots = new ArrayList<>();
+
+        ImageView dot1 = (ImageView)indicatorLayout.findViewById(R.id.carousel_b1);
+        dots.add(dot1);
+
+        ImageView dot2 = (ImageView)indicatorLayout.findViewById(R.id.carousel_b2);
+        dots.add(dot2);
+
+        ImageView dot3 = (ImageView)indicatorLayout.findViewById(R.id.carousel_b3);
+        dots.add(dot3);
+
+        ImageView dot4 = (ImageView)indicatorLayout.findViewById(R.id.carousel_b4);
+        dots.add(dot4);
+    }
+
+    public void selectDot(int idx) {
+        Resources res = getResources();
+        for(int i = 0; i < NUM_PAGES; i++) {
+            int drawableId = (i==idx)?(R.drawable.carousel_bullet_filled):(R.drawable.carousel_bullet_empty);
+            Drawable drawable = res.getDrawable(drawableId);
+            dots.get(i).setImageDrawable(drawable);
+        }
     }
 
     // ----------------------------------

@@ -36,44 +36,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/carousel_bullets_bottom">
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            app:srcCompat="@drawable/carousel_bullet_empty"
-            android:id="@+id/carousel_p3_b1"
-            />
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            app:srcCompat="@drawable/carousel_bullet_empty"
-            android:id="@+id/carousel_p3_b2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"/>
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            app:srcCompat="@drawable/carousel_bullet_filled"
-            android:id="@+id/carousel_p3_b3"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"/>
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            app:srcCompat="@drawable/carousel_bullet_empty"
-            android:id="@+id/carousel_p3_b4"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"/>
-    </LinearLayout>
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
