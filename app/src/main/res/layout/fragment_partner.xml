@@ -142,7 +142,9 @@
                     android:textStyle="bold"
                     android:textColor="@color/greyish_brown"
                     android:autoLink="phone"
-                    android:textColorLink="@color/greyish_brown"/>
+                    android:textColorLink="@color/greyish_brown"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -173,7 +175,9 @@
                     android:textStyle="bold"
                     android:textColor="@color/greyish_brown"
                     android:autoLink="map"
-                    android:textColorLink="@color/greyish_brown"/>
+                    android:textColorLink="@color/greyish_brown"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -204,7 +208,9 @@
                     android:textStyle="bold"
                     android:textColor="@color/greyish_brown"
                     android:textColorLink="@color/accent"
-                    android:autoLink="web"/>
+                    android:autoLink="web"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"/>
             </LinearLayout>
 
         </LinearLayout>
