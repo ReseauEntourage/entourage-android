@@ -735,10 +735,10 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onCreateEntourageContributionClicked() {
         FlurryAgent.logEvent(Constants.EVENT_FEED_OFFER_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
+            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
         } else {
             onPOILauncherClicked();
-            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
+            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
         }
     }
 
@@ -746,10 +746,10 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onCreateEntouragDemandClicked() {
         FlurryAgent.logEvent(Constants.EVENT_FEED_ASK_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
+            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_DEMAND);
         } else {
             onPOILauncherClicked();
-            mapEntourageFragment.displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
+            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_DEMAND);
         }
     }
 

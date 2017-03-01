@@ -68,5 +68,11 @@
     <string name="myentourages_filter_demand">Demandes</string>
     <string name="myentourages_filter_contribution">Contributions</string>
     <string name="myentourages_filter_tours">Maraudes</string>
+    
+    <!-- Create entourage dialog while tour is ongoing -->
+    <string name="entourage_tour_ongoing_title">@string/tour_info_text_ongoing</string>
+    <string name="entourage_tour_ongoing_demand">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une demande visible de tous?</string>
+    <string name="entourage_tour_ongoing_contribution">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une contribution visible de tous?</string>
+    <string name="entourage_tour_ongoing_proceed">Rencontre</string>
 
 </resources>

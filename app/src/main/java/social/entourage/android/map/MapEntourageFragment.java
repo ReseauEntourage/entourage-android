@@ -486,6 +486,33 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    public void displayEntouragePopupWhileTour(final String entourageType) {
+        // if we have an ongoing tour
+        if (isBound && tourService != null && tourService.isRunning()) {
+            // Show the dialog that asks the user if he really wants to create an entourage instead of encounter
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder
+                    .setMessage(Entourage.TYPE_CONTRIBUTION.equals(entourageType) ? R.string.entourage_tour_ongoing_contribution : R.string.entourage_tour_ongoing_demand)
+                    .setTitle(R.string.entourage_tour_ongoing_title)
+                    .setPositiveButton(R.string.entourage_tour_ongoing_proceed, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            onAddEncounter();
+                        }
+                    })
+                    .setNegativeButton(R.string.next, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            displayEntourageDisclaimer(entourageType);
+                        }
+                    });
+
+            builder.show();
+        } else {
+            displayEntourageDisclaimer(entourageType);
+        }
+    }
+
     public void displayEntourageDisclaimer(final String entourageType) {
         if (mapLongClickView == null) {
             // Binder haven't kicked in yet
@@ -1188,12 +1215,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.map_longclick_button_entourage_demand)
     protected void onCreateEntourageDemand() {
-        displayEntourageDisclaimer(Entourage.TYPE_DEMAND);
+        displayEntouragePopupWhileTour(Entourage.TYPE_DEMAND);
     }
 
     @OnClick(R.id.map_longclick_button_entourage_contribution)
     protected void onCreateEntourageContribution() {
-        displayEntourageDisclaimer(Entourage.TYPE_CONTRIBUTION);
+        displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
     }
 
     @OnClick(R.id.fragment_map_filter_button)
