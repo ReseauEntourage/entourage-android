@@ -30,8 +30,13 @@ public class LastMessage implements Serializable {
         // Add the last name
         String lastName = author.getLastName();
         if (lastName != null && lastName.length() > 0) {
-            if (fulltext.length() > 0) fulltext.append(" ");
-            fulltext.append(lastName);
+            if (fulltext.length() > 0) {
+                fulltext.append(" ");
+                // only the first letter
+                fulltext.append(lastName.charAt(0));
+            } else {
+                fulltext.append(lastName);
+            }
         }
         // Add the text
         if (fulltext.length() > 0) fulltext.append(": ");
