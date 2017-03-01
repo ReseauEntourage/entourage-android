@@ -4,7 +4,7 @@ public class Constants {
 
     //TODO: should be changed after each release
     // API Key
-    public static final String API_KEY = "e467ee4b5918753fca9cc8af";
+    public static final String API_KEY = "d75e03bd7cce4ebe45b3e45b";
 
     // Filenames
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
