@@ -2,6 +2,8 @@ package social.entourage.android.authentication;
 
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.map.filter.MapFilter;
+import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.tools.BusProvider;
 
 /**
@@ -11,12 +13,15 @@ public class AuthenticationController {
 
     private static final String PREF_KEY_USER = "user";
     private static final String PREF_KEY_USER_TOURS_ONLY = "user_tours_only";
+    private static final String PREF_KEY_MAP_FILTER = "map_filter";
 
     private final ComplexPreferences userSharedPref;
     private User loggedUser;
     private boolean userToursOnly;
     private boolean showNoEntouragesPopup = true;
     private boolean showNoPOIsPopup = true;
+
+    private MapFilter mapFilter = null;
 
     public AuthenticationController(ComplexPreferences userSharedPref) {
         this.userSharedPref = userSharedPref;
@@ -25,8 +30,11 @@ public class AuthenticationController {
 
     public AuthenticationController init() {
         loggedUser = userSharedPref.getObject(PREF_KEY_USER, User.class);
-        if(loggedUser != null && loggedUser.getToken() == null) {
+        if (loggedUser != null && loggedUser.getToken() == null) {
             loggedUser = null;
+        }
+        if (loggedUser != null) {
+            mapFilter = userSharedPref.getObject(PREF_KEY_MAP_FILTER, MapFilter.class);
         }
         return this;
     }
@@ -71,7 +79,12 @@ public class AuthenticationController {
             userSharedPref.putObject(PREF_KEY_USER, null);
             userSharedPref.commit();
         }
+        if (mapFilter != null) {
+            userSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
+            userSharedPref.commit();
+        }
         loggedUser = null;
+        mapFilter = null;
     }
 
     public boolean isAuthenticated() {
@@ -107,4 +120,22 @@ public class AuthenticationController {
         this.showNoPOIsPopup = showNoPOIsPopup;
     }
 
+    public MapFilter getMapFilter() {
+        if (mapFilter == null && loggedUser != null) {
+            // create the default map filter
+            mapFilter = MapFilterFactory.getMapFilter(loggedUser.isPro());
+            // save it
+            saveMapFilter();
+        }
+        return mapFilter;
+    }
+
+    public void setMapFilter(final MapFilter mapFilter) {
+        this.mapFilter = mapFilter;
+    }
+
+    public void saveMapFilter() {
+        userSharedPref.putObject(PREF_KEY_MAP_FILTER, this.mapFilter);
+        userSharedPref.commit();
+    }
 }

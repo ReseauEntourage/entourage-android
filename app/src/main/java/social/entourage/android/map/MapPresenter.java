@@ -181,6 +181,12 @@ public class MapPresenter {
         }
     }
 
+    public void saveMapFilter() {
+        if (authenticationController != null) {
+            authenticationController.saveMapFilter();
+        }
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------

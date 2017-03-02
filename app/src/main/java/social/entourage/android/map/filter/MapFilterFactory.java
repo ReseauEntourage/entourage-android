@@ -4,6 +4,7 @@ import android.content.Context;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.AuthenticationController;
 
 /**
  * Created by mihaiionescu on 27/10/16.
@@ -12,14 +13,19 @@ import social.entourage.android.api.model.User;
 public class MapFilterFactory {
 
     public static MapFilter getMapFilter(boolean isProUser) {
-        if (isProUser) return MapFilterPro.getInstance();
-        return MapFilterPublic.getInstance();
+        if (isProUser) return new MapFilterPro();
+        return new MapFilterPublic();
     }
 
     public static MapFilter getMapFilter(Context context) {
-        User me = EntourageApplication.me(context);
-        if (me == null) return MapFilterPublic.getInstance();
-        return getMapFilter(me.isPro());
+        EntourageApplication app = EntourageApplication.get(context);
+        if (app != null && app.getEntourageComponent() != null) {
+            AuthenticationController authenticationController = app.getEntourageComponent().getAuthenticationController();
+            if (authenticationController != null) {
+                return authenticationController.getMapFilter();
+            }
+        }
+        return new MapFilterPublic();
     }
 
 }

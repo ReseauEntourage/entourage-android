@@ -107,6 +107,8 @@ import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
+import social.entourage.android.map.filter.MapFilter;
+import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.map.filter.MapFilterFragment;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourService;
@@ -661,11 +663,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (entourage == null) {
             return;
         }
-        /*
-        drawNearbyEntourage(entourage, false);
-        addNewsfeedCard(entourage);
-        toursListView.scrollToPosition(0);
-        */
+
+        // Force the map filtering for entourages as ON
+        MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
+        mapFilter.entourageTypeContribution = true;
+        mapFilter.entourageTypeDemand = true;
+        if (presenter != null) {
+            presenter.saveMapFilter();
+        }
+
+        // Update the newsfeed
         clearAll();
         tourService.updateNewsfeed(pagination);
 
@@ -682,6 +689,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Subscribe
     public void onMapFilterChanged(Events.OnMapFilterChanged event) {
+        // Save the filter
+        if (presenter != null) {
+            presenter.saveMapFilter();
+        }
+        // Refresh the newsfeed
         if (tourService != null) {
             clearAll();
             tourService.updateNewsfeed(pagination);

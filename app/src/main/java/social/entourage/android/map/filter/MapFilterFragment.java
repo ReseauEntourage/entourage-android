@@ -126,7 +126,7 @@ public class MapFilterFragment extends DialogFragment {
     @OnClick(R.id.map_filter_validate_button)
     protected void onValidateClicked() {
         // save the values to the filter
-        MapFilter mapFilter = MapFilterFactory.getMapFilter(isProUser);
+        MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
 
         mapFilter.tourTypeMedical = tourMedicalSwitch.isChecked();
         mapFilter.tourTypeSocial = tourSocialSwitch.isChecked();
@@ -213,7 +213,7 @@ public class MapFilterFragment extends DialogFragment {
         tourTypeLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
         showToursLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
 
-        MapFilter mapFilter = MapFilterFactory.getMapFilter(isProUser);
+        MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
 
         tourMedicalSwitch.setChecked(mapFilter.tourTypeMedical);
         tourSocialSwitch.setChecked(mapFilter.tourTypeSocial);

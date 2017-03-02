@@ -1,12 +1,14 @@
 package social.entourage.android.map.filter;
 
+import java.io.Serializable;
+
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Entourage;
 
 /**
  * Created by mihaiionescu on 17/05/16.
  */
-public class MapFilter {
+public class MapFilter implements Serializable {
 
     // ----------------------------------
     // Attributes
