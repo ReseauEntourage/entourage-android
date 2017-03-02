@@ -162,6 +162,11 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
                 .inject(this);
     }
 
+    @Override
+    protected int getSlideStyle() {
+        return R.style.CustomDialogFragmentFromRight;
+    }
+
     // ----------------------------------
     // Private methods
     // ----------------------------------

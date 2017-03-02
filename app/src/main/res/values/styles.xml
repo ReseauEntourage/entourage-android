@@ -62,6 +62,12 @@
         <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
     </style>
 
+    <!-- Dialog fragment theme with slide from right animation -->
+    <style name="CustomDialogFragmentFromRight" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowEnterAnimation">@anim/slide_in_from_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_to_right</item>
+    </style>
+
     <!-- Dialog fragment theme with fade animation. -->
     <style name="CustomDialogFragmentFade" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowEnterAnimation">@anim/abc_fade_in</item>
