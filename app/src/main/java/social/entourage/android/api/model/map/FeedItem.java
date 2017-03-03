@@ -186,6 +186,13 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return status.equals(STATUS_FREEZED);
     }
 
+    @Override
+    public void copyLocalFields(final TimestampedObject other) {
+        super.copyLocalFields(other);
+        FeedItem otherFeedItem = (FeedItem)other;
+        this.badgeCount = otherFeedItem.badgeCount;
+    }
+
     // ----------------------------------
     // CARD INFO METHODS
     // ----------------------------------

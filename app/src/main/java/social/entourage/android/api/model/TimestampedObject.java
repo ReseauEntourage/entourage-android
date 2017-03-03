@@ -40,6 +40,12 @@ public abstract class TimestampedObject {
 
     public abstract long getId();
 
+    /**
+     * Copies the local fields (the ones not retrieved from the server) from other object
+     * @param other The object to copy from
+     */
+    public void copyLocalFields(TimestampedObject other) {}
+
 
     // ----------------------------------
     // INNER CLASSES

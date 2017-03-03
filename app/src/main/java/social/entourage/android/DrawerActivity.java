@@ -78,6 +78,7 @@ import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
+import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
@@ -435,14 +436,17 @@ public class DrawerActivity extends EntourageSecuredActivity
             FeedItem feedItem = event.getFeedItem();
             if (feedItem != null) {
                 mapEntourageFragment.displayChosenFeedItem(feedItem);
-                //decrease the badge count
-                int tourBadgeCount = feedItem.getBadgeCount();
-                decreaseBadgeCount(tourBadgeCount);
-                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                    Tour tour = (Tour) feedItem;
-                    removePushNotificationsForTour(tour.getId());
-                    //update the tour card
-                    mapEntourageFragment.onPushNotificationConsumedForTour(tour.getId());
+                // decrease the badge count
+                int badgeCount = feedItem.getBadgeCount();
+                decreaseBadgeCount(badgeCount);
+
+                removePushNotificationsForFeedItem(feedItem.getId(), feedItem.getType());
+                // update the newsfeed card
+                mapEntourageFragment.onPushNotificationConsumedForFeedItem(feedItem);
+                // update the my entourages card, if necessary
+                MyEntouragesFragment myEntouragesFragment = (MyEntouragesFragment) getSupportFragmentManager().findFragmentByTag(MyEntouragesFragment.TAG);
+                if (myEntouragesFragment != null) {
+                    myEntouragesFragment.onPushNotificationConsumedForFeedItem(feedItem);
                 }
                 return;
             }
@@ -560,13 +564,20 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    public int getPushNotificationsCountForTour(long tourId) {
+    public int getPushNotificationsCountForFeedItem(FeedItem feedItem) {
         int count = 0;
         for (int i = 0; i < pushNotifications.size(); i++) {
             Message message = pushNotifications.get(i);
             PushNotificationContent content = message.getContent();
-            if (content != null && content.isTourRelated() && content.getJoinableId() == tourId) {
-                count++;
+            if (content != null && content.getJoinableId() == feedItem.getId()) {
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD && content.isTourRelated()) {
+                    count++;
+                    continue;
+                }
+                if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated()) {
+                    count++;
+                    continue;
+                }
             }
         }
         return count;
@@ -1102,19 +1113,30 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mapEntourageFragment != null) {
             mapEntourageFragment.onPushNotificationReceived(message);
         }
-        MyToursFragment myToursFragment = (MyToursFragment) getSupportFragmentManager().findFragmentByTag(MyToursFragment.TAG);
-        if (myToursFragment != null) {
-            myToursFragment.onPushNotificationReceived(message);
+        MyEntouragesFragment myEntouragesFragment = (MyEntouragesFragment) getSupportFragmentManager().findFragmentByTag(MyEntouragesFragment.TAG);
+        if (myEntouragesFragment != null) {
+            myEntouragesFragment.onPushNotificationReceived(message);
         }
     }
 
-    private void removePushNotificationsForTour(long tourId) {
+    private void removePushNotificationsForFeedItem(long feedItemId, int feedType) {
         for (int i = 0; i < pushNotifications.size(); i++) {
             Message message = pushNotifications.get(i);
+            if (message == null) {
+                continue;
+            }
             PushNotificationContent content = message.getContent();
-            if (content != null && content.isTourRelated() && content.getJoinableId() == tourId) {
-                pushNotifications.remove(i);
-                i--;
+            if (content != null && content.getJoinableId() == feedItemId) {
+                if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
+                    pushNotifications.remove(i);
+                    i--;
+                    continue;
+                }
+                if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
+                    pushNotifications.remove(i);
+                    i--;
+                    continue;
+                }
             }
         }
     }

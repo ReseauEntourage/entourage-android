@@ -32,7 +32,9 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
+import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
@@ -307,6 +309,40 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     }
 
     // ----------------------------------
+    // Push handling
+    // ----------------------------------
+
+    public void onPushNotificationReceived(Message message) {
+        PushNotificationContent content = message.getContent();
+        if (content == null) return;
+        String joinableTypeString = content.getType();
+        int cardType = 0;
+        if (content.isTourRelated()) cardType = TimestampedObject.TOUR_CARD;
+        else if (content.isEntourageRelated()) cardType = TimestampedObject.ENTOURAGE_CARD;
+        else return;
+        long joinableId = content.getJoinableId();
+
+        TimestampedObject card = entouragesAdapter.findCard(cardType, joinableId);
+        if (card != null && card instanceof FeedItem) {
+            ((FeedItem)card).increaseBadgeCount();
+            entouragesAdapter.updateCard(card);
+            return;
+        }
+    }
+
+    public void onPushNotificationConsumedForFeedItem(FeedItem feedItem) {
+        if (entouragesAdapter == null) {
+            return;
+        }
+        FeedItem feedItemCard = (FeedItem) entouragesAdapter.findCard(feedItem);
+        if (feedItemCard == null) {
+            return;
+        }
+        feedItemCard.setBadgeCount(0);
+        entouragesAdapter.updateCard(feedItemCard);
+    }
+
+    // ----------------------------------
     // Refresh invitations timer handling
     // ----------------------------------
 
@@ -374,9 +410,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
                     continue;
                 }
                 FeedItem feedItem = (FeedItem)newsfeed.getData();
-                // TODO Badge count for entourages
-                if (activity != null && feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                    feedItem.setBadgeCount(activity.getPushNotificationsCountForTour(feedItem.getId()));
+                if (activity != null) {
+                    feedItem.setBadgeCount(activity.getPushNotificationsCountForFeedItem(feedItem));
                 }
 
                 if (entouragesAdapter.findCard(feedItem) == null) {

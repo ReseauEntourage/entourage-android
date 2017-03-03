@@ -136,6 +136,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         for (int i = 0; i < items.size(); i++) {
             TimestampedObject timestampedObject = items.get(i);
             if (timestampedObject.equals(card)) {
+                card.copyLocalFields(timestampedObject);
                 items.remove(i);
                 items.add(i, card);
                 notifyItemChanged(i);

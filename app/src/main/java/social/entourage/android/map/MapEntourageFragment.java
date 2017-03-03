@@ -25,6 +25,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -1944,11 +1945,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
-            DrawerActivity activity;
-            if (getActivity() instanceof DrawerActivity) {
-                activity = (DrawerActivity) getActivity();
-                tour.setBadgeCount(activity.getPushNotificationsCountForTour(tour.getId()));
-            }
             boolean existingTour = drawnToursMap.containsKey(tour.getId());
             if (isHistory) {
                 retrievedHistory.put(tour.getId(), tour);
@@ -2016,6 +2012,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (newsfeedAdapter.findCard(card) != null) {
             newsfeedAdapter.updateCard(card);
         } else {
+            // set the badge count
+            if (card instanceof FeedItem) {
+                DrawerActivity activity = null;
+                if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+                    activity = (DrawerActivity) getActivity();
+                }
+                ((FeedItem) card).setBadgeCount(activity.getPushNotificationsCountForFeedItem((FeedItem)card));
+            }
+            // add the card
             newsfeedAdapter.addCardInfoBeforeTimestamp(card);
         }
     }
@@ -2259,16 +2264,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void onPushNotificationConsumedForTour(long tourId) {
+    public void onPushNotificationConsumedForFeedItem(FeedItem feedItem) {
         if (newsfeedAdapter == null) {
             return;
         }
-        Tour tour = (Tour) newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, tourId);
-        if (tour == null) {
+        FeedItem feedItemCard = (FeedItem) newsfeedAdapter.findCard(feedItem);
+        if (feedItemCard == null) {
             return;
         }
-        tour.setBadgeCount(0);
-        newsfeedAdapter.updateCard(tour);
+        feedItemCard.setBadgeCount(0);
+        newsfeedAdapter.updateCard(feedItemCard);
     }
 
     // ----------------------------------

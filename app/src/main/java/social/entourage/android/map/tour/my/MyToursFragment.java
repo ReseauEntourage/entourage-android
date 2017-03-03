@@ -273,7 +273,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
                 }
                 FeedItem feedItem = (FeedItem)newsfeed.getData();
                 if (activity != null) {
-                    feedItem.setBadgeCount(activity.getPushNotificationsCountForTour(feedItem.getId()));
+                    feedItem.setBadgeCount(activity.getPushNotificationsCountForFeedItem(feedItem));
                 }
 //                if (tour.getTourStatus().equals(FeedItem.STATUS_ON_GOING)) {
 //                    ongoingToursAdapter.add(tour);
@@ -344,13 +344,6 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
         else return;
         long joinableId = content.getJoinableId();
 
-//        Tour tour;
-//        tour = ongoingToursAdapter.findTour(tourId);
-//        if (tour != null) {
-//            tour.increaseBadgeCount();
-//            ongoingToursAdapter.updateTour(tour);
-//            return;
-//        }
         TimestampedObject card = activeFeedsAdapter.findCard(cardType, joinableId);
         if (card != null && card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
@@ -366,13 +359,6 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     }
 
     public void onPushNotificationConsumedForTour(long tourId) {
-//        Tour tour;
-//        tour = ongoingToursAdapter.findTour(tourId);
-//        if (tour != null) {
-//            tour.setBadgeCount(0);
-//            ongoingToursAdapter.updateTour(tour);
-//            return;
-//        }
         TimestampedObject card = activeFeedsAdapter.findCard(TimestampedObject.TOUR_CARD, tourId);
         if (card != null && card instanceof Tour) {
             ((Tour)card).setBadgeCount(0);
