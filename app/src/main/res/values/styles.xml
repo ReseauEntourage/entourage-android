@@ -199,4 +199,15 @@
         <item name="android:alpha">0.5</item>
     </style>
 
+    <!-- Entourage Disclaimer -->
+    <style name="EntourageDisclaimerSectionTitle" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+    <style name="EntourageDisclaimerSectionDetails" parent="android:Widget.TextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+
+
 </resources>

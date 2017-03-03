@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +34,11 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     // Attributes
     // ----------------------------------
 
-    @BindView(R.id.entourage_disclaimer_text)
+    @BindView(R.id.entourage_disclaimer_text_chart)
     TextView disclaimerTextView;
+
+    @BindView(R.id.entourage_disclaimer_switch)
+    Switch disclaimerSwitch;
 
     private String entourageType;
 
@@ -86,10 +91,10 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
             disclaimerTextView.setMovementMethod(LinkMovementMethod.getInstance());
             String disclaimer = "";
             if (isPro) {
-                disclaimer = getString(R.string.entourage_disclaimer_text, getString(R.string.disclaimer_link_pro));
+                disclaimer = getString(R.string.entourage_disclaimer_text_chart, getString(R.string.disclaimer_link_pro));
 
             } else {
-                disclaimer = getString(R.string.entourage_disclaimer_text, getString(R.string.disclaimer_link_public));
+                disclaimer = getString(R.string.entourage_disclaimer_text_chart, getString(R.string.disclaimer_link_public));
             }
             disclaimerTextView.setText(Html.fromHtml(disclaimer));
         }
@@ -129,19 +134,12 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.entourage_disclaimer_ok_button)
     protected void onOkClicked() {
-        //MI: No longer need the checkbox
-        /*
-        if (acceptCheckbox.isChecked()) {
+        if (disclaimerSwitch.isChecked()) {
             //inform the listener that the user accepted the CGU
             mListener.onEntourageDisclaimerAccepted(this, entourageType);
-        }
-        else {
+        } else {
             Toast.makeText(getActivity(), R.string.entourage_disclaimer_error_notaccepted, Toast.LENGTH_SHORT).show();
         }
-        */
-
-        //inform the listener that the user accepted the CGU
-        mListener.onEntourageDisclaimerAccepted(this, entourageType);
     }
 
     // ----------------------------------

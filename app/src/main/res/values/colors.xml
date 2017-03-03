@@ -73,7 +73,7 @@
     <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>
     <color name="grey_contour">#DADADA</color>
-    <color name="blue_dark">#007EA9</color>
+    <color name="blue_dark">#007ea9</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="badge_background">#EE3E3A</color>
