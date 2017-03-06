@@ -18,7 +18,7 @@ public class Constants {
     public static final int RESULT_CREATE_ENCOUNTER_OK = 2;
 
     // Links
-    public static final String BLOG_URL = "https://blog.entourage.social/category/franchir-le-pas/";
+    public static final String BLOG_URL = "https://blog.entourage.social/2016/10/28/franchir-le-pas/";
     public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
     public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";
 
