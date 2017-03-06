@@ -1,5 +1,6 @@
 package social.entourage.android;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -564,25 +565,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    public int getPushNotificationsCountForFeedItem(FeedItem feedItem) {
-        int count = 0;
-        for (int i = 0; i < pushNotifications.size(); i++) {
-            Message message = pushNotifications.get(i);
-            PushNotificationContent content = message.getContent();
-            if (content != null && content.getJoinableId() == feedItem.getId()) {
-                if (feedItem.getType() == TimestampedObject.TOUR_CARD && content.isTourRelated()) {
-                    count++;
-                    continue;
-                }
-                if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated()) {
-                    count++;
-                    continue;
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     public void closeTourInformationFragment(TourInformationFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -1128,17 +1110,91 @@ public class DrawerActivity extends EntourageSecuredActivity
             PushNotificationContent content = message.getContent();
             if (content != null && content.getJoinableId() == feedItemId) {
                 if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
-                    pushNotifications.remove(i);
-                    i--;
+                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
+                        // Don't delete the join requests push, just hide them
+                        message.setVisible(false);
+                    }
+                    else {
+                        pushNotifications.remove(i);
+                        i--;
+                    }
                     continue;
                 }
                 if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
-                    pushNotifications.remove(i);
-                    i--;
+                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
+                        // Don't delete the join requests push, just hide them
+                        message.setVisible(false);
+                    }
+                    else {
+                        pushNotifications.remove(i);
+                        i--;
+                    }
                     continue;
                 }
             }
         }
+    }
+
+    public void removePushNotification(FeedItem feedItem, int userId, String pushType) {
+
+        // Sanity checks
+        if (feedItem == null || pushType == null) {
+            return;
+        }
+
+        long feedId = feedItem.getId();
+        int feedType = feedItem.getType();
+
+        // get the notification manager
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (notificationManager == null) {
+            return;
+        }
+
+        // search for a push notification that matches our parameters
+        for (int i = 0; i < pushNotifications.size(); i++) {
+            Message message = pushNotifications.get(i);
+            if (message == null) {
+                continue;
+            }
+            PushNotificationContent content = message.getContent();
+            if (content != null && content.getJoinableId() == feedId && content.getType() != null && content.getType().equals(pushType)) {
+                if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
+                    // remove the notification from the system
+                    notificationManager.cancel(message.getPushNotificationId());
+                    // remove the notification from our internal list
+                    pushNotifications.remove(i);
+                    break;
+                }
+                if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
+                    notificationManager.cancel(message.getPushNotificationId());
+                    pushNotifications.remove(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    public int getPushNotificationsCountForFeedItem(FeedItem feedItem) {
+        int count = 0;
+        for (int i = 0; i < pushNotifications.size(); i++) {
+            Message message = pushNotifications.get(i);
+            if (message == null || !message.isVisible()) {
+                continue;
+            }
+            PushNotificationContent content = message.getContent();
+            if (content != null && content.getJoinableId() == feedItem.getId()) {
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD && content.isTourRelated()) {
+                    count++;
+                    continue;
+                }
+                if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated()) {
+                    count++;
+                    continue;
+                }
+            }
+        }
+        return count;
     }
 
     private void increaseBadgeCount() {

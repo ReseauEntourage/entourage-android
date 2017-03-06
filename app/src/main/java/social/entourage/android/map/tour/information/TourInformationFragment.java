@@ -80,6 +80,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
@@ -1631,6 +1632,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     discussionAdapter.removeCard(card);
                     // remove from cached cards
                     feedItem.removeCardInfo(card);
+                }
+            }
+            // Remove the push notification
+            if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
+                if (isAdded() && (getActivity() instanceof DrawerActivity)) {
+                    DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+                    drawerActivity.removePushNotification(feedItem, userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
                 }
             }
         }

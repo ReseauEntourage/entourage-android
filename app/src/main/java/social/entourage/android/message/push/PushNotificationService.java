@@ -110,7 +110,7 @@ public class PushNotificationService extends IntentService {
     @Nullable
     private Message getMessageFromNotification(Bundle args) {
         Log.d("notification", KEY_SENDER+"= "+args.getString(KEY_SENDER)+"; "+KEY_OBJECT+"= "+args.getString(KEY_OBJECT)+"; "+KEY_CONTENT+"= "+args.getString(KEY_CONTENT));
-        return new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT));
+        return new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), notificationId);
     }
 
 }

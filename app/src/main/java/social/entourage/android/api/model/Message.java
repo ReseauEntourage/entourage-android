@@ -16,15 +16,21 @@ public class Message implements Serializable {
 
     private PushNotificationContent content;
 
+    private int pushNotificationId;
+
+    private boolean visible;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
-    public Message(String author, String object, String content) {
+    public Message(String author, String object, String content, int pushNotificationId) {
         this.author = author;
         this.object = object;
         Gson gson = new Gson();
         this.content = gson.fromJson(content, PushNotificationContent.class);
+        this.pushNotificationId = pushNotificationId;
+        this.visible = true;
     }
 
     // ----------------------------------
@@ -56,4 +62,19 @@ public class Message implements Serializable {
         return content;
     }
 
+    public int getPushNotificationId() {
+        return pushNotificationId;
+    }
+
+    public void setPushNotificationId(final int pushNotificationId) {
+        this.pushNotificationId = pushNotificationId;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(final boolean visible) {
+        this.visible = visible;
+    }
 }
