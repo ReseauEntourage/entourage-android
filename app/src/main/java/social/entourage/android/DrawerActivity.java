@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -111,39 +110,52 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ATTRIBUTES
     // ----------------------------------
 
-    @BindView(R.id.map_fab_menu)
-    public FloatingActionMenu mapOptionsMenu;
     @Inject
     DrawerPresenter presenter;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
+
     @BindView(R.id.content_view)
     View contentView;
+
     @BindView(R.id.drawer_header_user_name)
     TextView userName;
+
     @BindView(R.id.drawer_header_user_photo)
     ImageView userPhoto;
+
     @BindView(R.id.drawer_header_user_partner_logo)
     PartnerLogoImageView userPartnerLogo;
+
     @BindView(R.id.drawer_header_edit_profile)
     TextView userEditProfileTextView;
+
     @BindView(R.id.toolbar_discussion)
     BadgeView discussionBadgeView;
 
-    @IdRes int selectedSidemenuAction;
-    ArrayList<Message> pushNotifications = new ArrayList<>();
+    @BindView(R.id.map_fab_menu)
+    public FloatingActionMenu mapOptionsMenu;
+
     private Fragment mainFragment;
     private MapEntourageFragment mapEntourageFragment;
     private GuideMapEntourageFragment guideMapEntourageFragment;
     private UserFragment userFragment;
+
     private SharedPreferences gcmSharedPreferences;
     private String intentAction;
     private Tour intentTour;
+
+    @IdRes int selectedSidemenuAction;
+
     private int badgeCount = 0;
+    ArrayList<Message> pushNotifications = new ArrayList<>();
 
     // ----------------------------------
     // LIFECYCLE
@@ -205,33 +217,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    protected void onStart() {
-        BusProvider.getInstance().register(this);
-        presenter.checkForUpdate();
-
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        highlightCurrentMenuItem();
-
-        String action = getIntent().getAction();
-        if (action != null) {
-            if (TourService.KEY_GPS_DISABLED.equals(action)) {
-                displayAlertNoGps();
-                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-            } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
-                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-            }
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        BusProvider.getInstance().unregister(this);
-        super.onStop();
+    protected void setupComponent(EntourageComponent entourageComponent) {
+        DaggerDrawerComponent.builder()
+            .entourageComponent(entourageComponent)
+            .drawerModule(new DrawerModule(this))
+            .build()
+            .inject(this);
     }
 
     @Override
@@ -246,6 +237,33 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        this.setIntent(intent);
+        getIntentAction(intent);
+        if (mainFragment != null) {
+            switchToMapFragment();
+            if (intentAction != null) {
+                switch (intentAction) {
+                    case ConfirmationActivity.KEY_RESUME_TOUR:
+                        break;
+                    case ConfirmationActivity.KEY_END_TOUR:
+                        break;
+                    case TourService.KEY_NOTIFICATION_STOP_TOUR:
+                    case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
+                        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                        break;
+                    case TourService.KEY_LOCATION_PROVIDER_DISABLED:
+                        displayLocationProviderDisabledAlert();
+                        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                    default:
+                        break;
+                }
+            }
+            sendMapFragmentExtras();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         if (mainFragment instanceof BackPressable) {
             BackPressable backPressable = (BackPressable) mainFragment;
@@ -254,6 +272,216 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         } else {
             finish();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        BusProvider.getInstance().register(this);
+        presenter.checkForUpdate();
+
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        highlightCurrentMenuItem();
+
+        String action = getIntent().getAction();
+        if (action != null) {
+            if (TourService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
+                displayLocationProviderDisabledAlert();
+                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+            } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        BusProvider.getInstance().unregister(this);
+        super.onStop();
+    }
+
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+
+    private void displayLocationProviderDisabledAlert() {
+        new AlertDialog.Builder(this)
+            .setMessage(getString(R.string.error_dialog_disabled))
+            .setCancelable(false)
+            .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                }
+            })
+            .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            })
+            .create()
+            .show();
+    }
+
+    private void sendMapFragmentExtras() {
+        int userId = getAuthenticationController().getUser().getId();
+        boolean choice = getAuthenticationController().isUserToursOnly();
+        mapEntourageFragment.onNotificationExtras(userId, choice);
+    }
+
+    private void getIntentAction(Intent intent) {
+        String action = intent.getAction();
+        Bundle args = intent.getExtras();
+        if (args != null) {
+            intentTour = (Tour) args.getSerializable(Tour.KEY_TOUR);
+            if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
+                intentAction = ConfirmationActivity.KEY_RESUME_TOUR;
+            } else if (args.getBoolean(ConfirmationActivity.KEY_END_TOUR, false)) {
+                intentAction = ConfirmationActivity.KEY_END_TOUR;
+            } else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
+            } else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
+            } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
+            } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
+            }
+        } else if (action != null) {
+            getIntent().setAction(null);
+            if (TourService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
+                intentAction = TourService.KEY_LOCATION_PROVIDER_DISABLED;
+            } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
+                intentAction = TourService.KEY_NOTIFICATION_PAUSE_TOUR;
+            } else if (TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+                intentAction = TourService.KEY_NOTIFICATION_STOP_TOUR;
+            } else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
+            } else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
+            } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
+            } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
+            }
+        }
+    }
+
+    private void switchToMapFragment() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment = (MapEntourageFragment) mainFragment;
+        } else {
+            loadFragmentWithExtras();
+        }
+    }
+
+    private void highlightCurrentMenuItem() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            navigationView.setCheckedItem(R.id.action_tours);
+        } else if (mainFragment instanceof GuideMapEntourageFragment) {
+            navigationView.setCheckedItem(R.id.action_guide);
+        } else if (mainFragment instanceof UserFragment) {
+            navigationView.setCheckedItem(R.id.action_user);
+        }
+    }
+
+    private void configureToolbar() {
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        discussionBadgeView = (BadgeView) toolbar.findViewById(R.id.toolbar_discussion);
+        if (discussionBadgeView != null) {
+            discussionBadgeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    FlurryAgent.logEvent(Constants.EVENT_FEED_MESSAGES);
+                    //presenter.displayMyTours();
+                    presenter.displayMyEntourages();
+                }
+            });
+        }
+
+    }
+
+    private void configureNavigationItem() {
+        //make the navigation view full screen
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
+        params.width = metrics.widthPixels;
+        navigationView.setLayoutParams(params);
+
+        //add listener to back button
+        ImageView backView = (ImageView) navigationView.findViewById(R.id.drawer_header_back);
+        backView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        //add navigationitemlistener
+        drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                selectItem(selectedSidemenuAction);
+            }
+        });
+
+        //add listener to user photo and name, that opens the user profile screen
+        userPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                selectedSidemenuAction = R.id.action_user;
+                drawerLayout.closeDrawers();
+            }
+        });
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                selectedSidemenuAction = R.id.action_user;
+                drawerLayout.closeDrawers();
+            }
+        });
+        //add listener to modify profile text view
+        userEditProfileTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                selectedSidemenuAction = R.id.action_edit_user;
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        int childCount = navigationView.getChildCount();
+        View v;
+        for (int i = 0; i < childCount; i++) {
+            v = navigationView.getChildAt(i);
+            if (v instanceof LinearLayout) {
+                int itemsCount = ((LinearLayout) v).getChildCount();
+                for (int j = 0; j < itemsCount; j++) {
+                    View child = ((LinearLayout) v).getChildAt(j);
+                    if (child instanceof SideMenuItemView) {
+                        child.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                selectedSidemenuAction = v.getId();
+                                drawerLayout.closeDrawers();
+                            }
+                        });
+                    }
+                }
+            }
         }
     }
 
@@ -326,6 +554,50 @@ public class DrawerActivity extends EntourageSecuredActivity
         selectedSidemenuAction = 0;
     }
 
+    private void loadFragment(Fragment newFragment, String tag) {
+        mainFragment = newFragment;
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    private void loadFragmentWithExtras() {
+        mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
+        if (mapEntourageFragment == null) {
+            mapEntourageFragment = new MapEntourageFragment();
+        }
+        loadFragment(mapEntourageFragment, MapEntourageFragment.TAG);
+        if (getAuthenticationController().getUser() != null) {
+            final int userId = getAuthenticationController().getUser().getId();
+            final boolean choice = getAuthenticationController().isUserToursOnly();
+            if (mainFragment instanceof MapEntourageFragment) {
+                Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
+                        mapEntourageFragment.onNotificationExtras(userId, choice);
+                    }
+                });
+            }
+        }
+    }
+
+    private void initializePushNotifications() {
+        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+        if (notificationsEnabled) {
+            startService(new Intent(this, RegisterGCMService.class));
+        } else {
+            presenter.updateApplicationInfo("");
+        }
+    }
+
+    // ----------------------------------
+    // BUS LISTENERS
+    // ----------------------------------
+
     @Subscribe
     public void GCMTokenObtained(OnGCMTokenObtainedEvent event) {
         if (event.getRegistrationId() != null) {
@@ -337,10 +609,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         */
     }
-
-    // ----------------------------------
-    // PRIVATE METHODS
-    // ----------------------------------
 
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
@@ -536,6 +804,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         logout();
     }
 
+    // ----------------------------------
+    // PUSH NOTIFICATION HANDLING
+    // ----------------------------------
+
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
@@ -570,10 +842,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
     }
-
-    // ----------------------------------
-    // BUS LISTENERS
-    // ----------------------------------
 
     @Override
     public void showStopTourActivity(Tour tour) {
@@ -699,6 +967,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         });
     }
 
+    // ----------------------------------
+    // Floating Action Buttons handling
+    // ----------------------------------
+
     @OnClick(R.id.button_start_tour_launcher)
     public void onStartTourClicked() {
         FlurryAgent.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
@@ -709,10 +981,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.onStartTourLauncher();
         }
     }
-
-    // ----------------------------------
-    // PUSH NOTIFICATION HANDLING
-    // ----------------------------------
 
     @OnClick(R.id.button_add_tour_encounter)
     public void onAddTourEncounterClicked() {
@@ -743,50 +1011,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         } else {
             onPOILauncherClicked();
             mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_DEMAND);
-        }
-    }
-
-    public boolean isGuideShown() {
-        return !(mainFragment instanceof MapEntourageFragment);
-    }
-
-    @Override
-    protected void setupComponent(EntourageComponent entourageComponent) {
-        DaggerDrawerComponent.builder()
-            .entourageComponent(entourageComponent)
-            .drawerModule(new DrawerModule(this))
-            .build()
-            .inject(this);
-    }
-
-    // ----------------------------------
-    // BADGE COUNT HANDLING
-    // ----------------------------------
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        this.setIntent(intent);
-        getIntentAction(intent);
-        if (mainFragment != null) {
-            switchToMapFragment();
-            if (intentAction != null) {
-                switch (intentAction) {
-                    case ConfirmationActivity.KEY_RESUME_TOUR:
-                        break;
-                    case ConfirmationActivity.KEY_END_TOUR:
-                        break;
-                    case TourService.KEY_NOTIFICATION_STOP_TOUR:
-                    case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
-                        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                        break;
-                    case TourService.KEY_GPS_DISABLED:
-                        displayAlertNoGps();
-                        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                    default:
-                        break;
-                }
-            }
-            sendMapFragmentExtras();
         }
     }
 
@@ -836,7 +1060,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
-    // INTERFACES CALLBACKS
+    // Logo icon click handling
     // ----------------------------------
 
     @OnClick(R.id.toolbar_entourage_logo)
@@ -1218,9 +1442,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     // Helper functions
     // ----------------------------------
 
-    private void resetBadgeCount() {
-        badgeCount = 0;
-        discussionBadgeView.setBadgeCount(badgeCount);
+    public boolean isGuideShown() {
+        return !(mainFragment instanceof MapEntourageFragment);
     }
 
 }

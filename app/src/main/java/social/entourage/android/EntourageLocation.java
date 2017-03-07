@@ -16,6 +16,7 @@ public class EntourageLocation {
 
     private Location lastLocation;
     private Location currentLocation;
+    private Location initialLocation;
     private CameraPosition lastCameraPosition;
     private CameraPosition currentCameraPosition;
 
@@ -29,9 +30,14 @@ public class EntourageLocation {
     }
 
     public void setInitialLocation(Location initialLocation) {
+        this.initialLocation = initialLocation;
         saveCurrentLocation(initialLocation);
         currentCameraPosition = new CameraPosition(new LatLng(initialLocation.getLatitude(), initialLocation.getLongitude()), INITIAL_CAMERA_FACTOR, 0, 0);
         lastCameraPosition = currentCameraPosition;
+    }
+
+    public Location getInitialLocation() {
+        return initialLocation;
     }
 
     public Location getLocation() {

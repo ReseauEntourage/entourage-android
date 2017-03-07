@@ -336,8 +336,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onStart() {
         super.onStart();
-
-        checkPermission();
+        presenter.handleLocationPermission();
         toursListView.addOnScrollListener(scrollListener);
     }
 
@@ -707,7 +706,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         if (event.isPermissionGranted()) {
-            onGpsStatusChanged(true);
+            onLocationProviderStatusChanged(true);
             if (map != null) {
                 try {
                     map.setMyLocationEnabled(true);
@@ -715,7 +714,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
             }
         } else {
-            onGpsStatusChanged(false);
+            onLocationProviderStatusChanged(false);
         }
     }
 
@@ -953,7 +952,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onGpsStatusChanged(boolean active) {
+    public void onLocationProviderStatusChanged(boolean active) {
         if (gpsLayout != null) {
             if (active) {
                 gpsLayout.setVisibility(View.GONE);
@@ -1102,6 +1101,40 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         pagination.isRefreshing = false;
     }
 
+    public void checkPermission(final String permission) {
+        if (getActivity() == null) {
+            return;
+        }
+
+        if (PermissionChecker.checkSelfPermission(getActivity(), permission) == PackageManager.PERMISSION_GRANTED) {
+            BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
+            return;
+        }
+
+        if (shouldShowRequestPermissionRationale(permission)) {
+            new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.map_permission_title)
+                .setMessage(R.string.map_permission_description)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        requestPermissions(new String[]{permission}, PERMISSIONS_REQUEST_LOCATION);
+                    }
+                })
+                .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int i) {
+                        NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
+                        noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), "fragment_no_location_permission");
+                        BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
+                    }
+                })
+                .show();
+        } else {
+            requestPermissions(new String[]{permission}, PERMISSIONS_REQUEST_LOCATION);
+        }
+    }
+
     // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
@@ -1117,7 +1150,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     void onFollowGeolocation() {
         FlurryAgent.logEvent(Constants.EVENT_FEED_RECENTERCLICK);
         // Check if geolocation is enabled
-        if (!isGeolocationPermitted()) {
+        if (!isGeolocationGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER);
             return;
         }
@@ -1163,22 +1196,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (mapOptionsMenu.isOpened()) {
             mapOptionsMenu.toggle(false);
         }
-        /*
-        // Check if we need to show the encounter disclaimer
-        User me = EntourageApplication.me(getActivity());
-        if (me == null) {
-            return;
-        }
-        if (me.isEncounterDisclaimerShown()) {
-            // Already shown, display the create entourage fragment
-            addEncounter();
-        } else {
-            // Show the disclaimer fragment
-            if (presenter != null) {
-                presenter.displayEncounterDisclaimer();
-            }
-        }
-        */
 
         // MI: EMA-920 Show the disclaimer every time
         // Show the disclaimer fragment
@@ -1207,7 +1224,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude);
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates.longitude);
                 longTapCoordinates = null;
-            } else if(EntourageLocation.getInstance().getCurrentLocation() !=null){
+            } else if (EntourageLocation.getInstance().getCurrentLocation() != null) {
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().getCurrentLocation().getLatitude());
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().getCurrentLocation().getLongitude());
             } else {
@@ -1299,7 +1316,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService != null) {
             if (!tourService.isRunning()) {
                 // Check if the geolocation is permitted
-                if (!isGeolocationPermitted()) {
+                if (!isGeolocationGranted()) {
                     showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR);
                     return;
                 }
@@ -1377,38 +1394,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // PRIVATE METHODS (lifecycle)
     // ----------------------------------
 
-    private void checkPermission() {
-        if (getActivity() != null) {
-            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.map_permission_title)
-                        .setMessage(R.string.map_permission_description)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
-                            }
-                        })
-                        .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialog, final int i) {
-                                NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
-                                noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), "fragment_no_location_permission");
-                                BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
-                            }
-                        })
-                        .show();
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
-                }
-            } else {
-                BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
-            }
-        }
-    }
-
-    private boolean isGeolocationPermitted() {
+    private boolean isGeolocationGranted() {
         return (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
             PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
@@ -1483,29 +1469,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
                             float newZoom = cameraPosition.zoom;
 
-                        if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
-                            if (previousCameraZoom != newZoom) {
-                                if (previousCameraZoom > newZoom) {
-                                    FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_IN);
-                                } else {
-                                    FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
+                            if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+                                if (previousCameraZoom != newZoom) {
+                                    if (previousCameraZoom > newZoom) {
+                                        FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_IN);
+                                    } else {
+                                        FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
+                                    }
+                                }
+                                previousCameraZoom = newZoom;
+                                previousCameraLocation = newLocation;
+
+                                // check if we need to cancel the current request
+                                if (pagination.isLoading) {
+                                    tourService.cancelNewsFeedUpdate();
+                                }
+
+                                newsfeedAdapter.removeAll();
+                                pagination = new EntouragePagination();
+                                tourService.updateNewsfeed(pagination);
+                                if (userHistory) {
+                                    tourService.updateUserHistory(userId, 1, 500);
                                 }
                             }
-                            previousCameraZoom = newZoom;
-                            previousCameraLocation = newLocation;
-
-                            // check if we need to cancel the current request
-                            if (pagination.isLoading) {
-                                tourService.cancelNewsFeedUpdate();
-                            }
-
-                            newsfeedAdapter.removeAll();
-                            pagination = new EntouragePagination();
-                            tourService.updateNewsfeed(pagination);
-                            if (userHistory) {
-                                tourService.updateUserHistory(userId, 1, 500);
-                            }
-                        }
 
                             if (isFollowing && currentLocation != null) {
                                 if (currentLocation.distanceTo(newLocation) > 1) {
