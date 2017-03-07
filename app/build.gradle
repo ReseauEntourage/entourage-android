@@ -1,4 +1,3 @@
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'appaloosa-deploy'
@@ -9,7 +8,7 @@ def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.1'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId 'social.entourage.android'
@@ -139,7 +138,9 @@ dependencies {
             "de.bechte.junit:junit-hierarchicalcontextrunner:4.12.1"
     )
 
-    androidTestCompile "com.android.support.test.espresso:espresso-core:2.2.2"
+    androidTestCompile ("com.android.support.test.espresso:espresso-core:2.2.2") {
+        exclude group: 'com.android.support'
+    }
     androidTestCompile("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0") {
         exclude group: 'com.android.support'
         exclude group: 'com.squareup.okhttp3'
