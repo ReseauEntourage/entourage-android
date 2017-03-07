@@ -8,8 +8,8 @@
             <solid
                 android:color="@color/custom_button_white_disabled" />
             <padding
-                android:bottom="7dp"
-                android:top="7dp"
+                android:bottom="0dp"
+                android:top="0dp"
                 android:left="20dp"
                 android:right="20dp" />
             <stroke
@@ -25,8 +25,8 @@
             <solid
                 android:color="@color/custom_button_white_pressed" />
             <padding
-                android:bottom="7dp"
-                android:top="7dp"
+                android:bottom="0dp"
+                android:top="0dp"
                 android:left="20dp"
                 android:right="20dp" />
             <stroke
@@ -42,8 +42,8 @@
             <solid
                 android:color="@color/custom_button_white_focused" />
             <padding
-                android:bottom="7dp"
-                android:top="7dp"
+                android:bottom="0dp"
+                android:top="0dp"
                 android:left="20dp"
                 android:right="20dp" />
             <stroke
@@ -59,8 +59,8 @@
             <solid
                 android:color="@color/custom_button_white_enabled" />
             <padding
-                android:bottom="7dp"
-                android:top="7dp"
+                android:bottom="0dp"
+                android:top="0dp"
                 android:left="20dp"
                 android:right="20dp" />
             <stroke

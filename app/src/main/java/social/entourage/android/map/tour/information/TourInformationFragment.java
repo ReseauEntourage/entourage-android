@@ -246,6 +246,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @BindView(R.id.tour_info_members)
     RecyclerView membersView;
 
+    @BindView(R.id.tour_info_request_join_layout)
+    LinearLayout requestJoinLayout;
+
     MembersAdapter membersAdapter;
     List<TimestampedObject> membersList = new ArrayList<>();
 
@@ -618,7 +621,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         builder.create().show();
     }
 
-    @OnClick({R.id.tour_info_join_button, R.id.feeditem_option_join})
+    @OnClick({R.id.tour_info_join_button, R.id.feeditem_option_join, R.id.tour_info_request_join_button})
     public void onJoinTourButton() {
         if (tourService != null) {
             showProgressBar();
@@ -1256,6 +1259,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private void switchToPrivateSection() {
         actLayout.setVisibility(feedItem.isFreezed() ? View.VISIBLE : View.GONE);
+        requestJoinLayout.setVisibility(View.GONE);
         membersLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.GONE);
         privateSection.setVisibility(View.VISIBLE);
@@ -1289,6 +1293,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private void updateJoinStatus() {
         if (feedItem == null) return;
+
+        requestJoinLayout.setVisibility(View.GONE);
+
         if (feedItem.isFreezed()) {
             //actLayout.setVisibility(View.GONE);
 
@@ -1313,9 +1320,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 joinButton.setText(R.string.tour_cell_button_rejected);
                 joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_rejected), null, null);
             } else {
+                /*
                 joinButton.setEnabled(true);
                 joinButton.setText(R.string.tour_cell_button_join);
                 joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_join), null, null);
+                */
+                // Different layout for requesting to join
+                actLayout.setVisibility(View.INVISIBLE);
+                requestJoinLayout.setVisibility(View.VISIBLE);
             }
         }
     }
