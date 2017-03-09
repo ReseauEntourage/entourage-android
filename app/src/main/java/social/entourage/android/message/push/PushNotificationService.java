@@ -15,7 +15,9 @@ import android.widget.RemoteViews;
 
 import java.util.Random;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
 import social.entourage.android.DrawerActivity;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
@@ -46,8 +48,8 @@ public class PushNotificationService extends IntentService {
         notificationId = new Random().nextInt(MAX - MIN + 1) + MIN;
         Log.d("notification", "" + notificationId);
         Message message = getMessageFromNotification(intent.getExtras());
-        BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
         displayPushNotification(message);
+        BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
@@ -78,6 +80,11 @@ public class PushNotificationService extends IntentService {
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(notificationId, notification);
+
+        EntourageApplication application = EntourageApplication.get(getApplicationContext());
+        if (application != null) {
+            application.addPushNotification(message);
+        }
     }
 
     private PendingIntent createMessagePendingIntent(Message message) {

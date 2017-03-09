@@ -50,6 +50,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import social.entourage.android.about.AboutActivity;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Partner;
@@ -153,9 +154,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     private Tour intentTour;
 
     @IdRes int selectedSidemenuAction;
-
-    private int badgeCount = 0;
-    ArrayList<Message> pushNotifications = new ArrayList<>();
 
     // ----------------------------------
     // LIFECYCLE
@@ -297,6 +295,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                 sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
         }
+
+        refreshBadgeCount();
     }
 
     @Override
@@ -620,40 +620,33 @@ public class DrawerActivity extends EntourageSecuredActivity
             return;
         }
         mapEntourageFragment.checkAction(intentAction, intentTour);
-        if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
-            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
-            if (message != null) {
-                PushNotificationContent content = message.getContent();
-                if (content != null) {
+        Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+        if (message != null) {
+            PushNotificationContent content = message.getContent();
+            if (content != null) {
+                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
                     if (content.isTourRelated()) {
                         mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.TOUR_CARD);
                     } else if (content.isEntourageRelated()) {
                         mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD);
                     }
-                }
-            }
-        } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
-            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
-            if (message != null) {
-                PushNotificationContent content = message.getContent();
-                if (content != null) {
+                } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
                     PushNotificationContent.Extra extra = content.extra;
                     if (extra != null) {
                         mapEntourageFragment.displayChosenFeedItem(extra.entourageId, TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
                     }
-                }
-            }
-        } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
-            Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
-            if (message != null) {
-                PushNotificationContent content = message.getContent();
-                if (content != null) {
+                } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
                     PushNotificationContent.Extra extra = content.extra;
                     if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
                         mapEntourageFragment.displayChosenFeedItem(extra.joinableId, content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
                     }
                 }
             }
+            EntourageApplication application = EntourageApplication.get(getApplicationContext());
+            if (application != null) {
+                application.removePushNotification(message);
+            }
+            refreshBadgeCount();
         }
         intentAction = null;
         intentTour = null;
@@ -706,10 +699,10 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (feedItem != null) {
                 mapEntourageFragment.displayChosenFeedItem(feedItem);
                 // decrease the badge count
-                int badgeCount = feedItem.getBadgeCount();
-                decreaseBadgeCount(badgeCount);
+                EntourageApplication application = EntourageApplication.get(getApplicationContext());
+                application.removePushNotificationsForFeedItem(feedItem.getId(), feedItem.getType());
 
-                removePushNotificationsForFeedItem(feedItem.getId(), feedItem.getType());
+                refreshBadgeCount();
                 // update the newsfeed card
                 mapEntourageFragment.onPushNotificationConsumedForFeedItem(feedItem);
                 // update the my entourages card, if necessary
@@ -802,39 +795,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onUnauthorized(OnUnauthorizedEvent event) {
         gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
         logout();
-    }
-
-    // ----------------------------------
-    // PUSH NOTIFICATION HANDLING
-    // ----------------------------------
-
-    @Subscribe
-    public void onPushNotificationReceived(OnPushNotificationReceived event) {
-        final Message message = event.getMessage();
-        if (message != null && message.getContent() != null && message.getContent().getJoinableId() != 0) {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    PushNotificationContent content = message.getContent();
-                    if (content != null) {
-                        String contentType = content.getType();
-                        if (contentType.equals(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE)) {
-                            if (!onPushNotificationChatMessageReceived(message)) {
-                                addPushNotification(message);
-                            }
-                        } else {
-                            addPushNotification(message);
-                            if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
-                                if (mapEntourageFragment != null) {
-                                    mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -1080,8 +1040,47 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
-    // Floating Action Buttons handling
+    // PUSH NOTIFICATION HANDLING
     // ----------------------------------
+
+    @Subscribe
+    public void onPushNotificationReceived(OnPushNotificationReceived event) {
+        final Message message = event.getMessage();
+        if (message != null && message.getContent() != null && message.getContent().getJoinableId() != 0) {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    PushNotificationContent content = message.getContent();
+                    if (content != null) {
+                        String contentType = content.getType();
+                        if (contentType.equals(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE)) {
+                            if (!onPushNotificationChatMessageReceived(message)) {
+                                addPushNotification(message);
+                            } else {
+                                EntourageApplication application = EntourageApplication.get(getApplicationContext());
+                                if (application != null) {
+                                    if (content.isTourRelated()) {
+                                        application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_CHAT_MESSAGE);
+                                    }
+                                    else if (content.isEntourageRelated()) {
+                                        application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_CHAT_MESSAGE);
+                                    }
+                                }
+                            }
+                        } else {
+                            addPushNotification(message);
+                            if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
+                                if (mapEntourageFragment != null) {
+                                    mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
 
     private boolean onPushNotificationChatMessageReceived(Message message) {
         TourInformationFragment fragment = (TourInformationFragment) getSupportFragmentManager().findFragmentByTag(TourInformationFragment.TAG);
@@ -1092,8 +1091,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void addPushNotification(Message message) {
-        pushNotifications.add(message);
-        increaseBadgeCount();
+        refreshBadgeCount();
         if (mapEntourageFragment != null) {
             mapEntourageFragment.onPushNotificationReceived(message);
         }
@@ -1103,117 +1101,13 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void removePushNotificationsForFeedItem(long feedItemId, int feedType) {
-        for (int i = 0; i < pushNotifications.size(); i++) {
-            Message message = pushNotifications.get(i);
-            if (message == null) {
-                continue;
-            }
-            PushNotificationContent content = message.getContent();
-            if (content != null && content.getJoinableId() == feedItemId) {
-                if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
-                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
-                        // Don't delete the join requests push, just hide them
-                        message.setVisible(false);
-                    }
-                    else {
-                        pushNotifications.remove(i);
-                        i--;
-                    }
-                    continue;
-                }
-                if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
-                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
-                        // Don't delete the join requests push, just hide them
-                        message.setVisible(false);
-                    }
-                    else {
-                        pushNotifications.remove(i);
-                        i--;
-                    }
-                    continue;
-                }
-            }
-        }
-    }
-
-    public void removePushNotification(FeedItem feedItem, int userId, String pushType) {
-
-        // Sanity checks
-        if (feedItem == null || pushType == null) {
-            return;
-        }
-
-        long feedId = feedItem.getId();
-        int feedType = feedItem.getType();
-
-        // get the notification manager
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (notificationManager == null) {
-            return;
-        }
-
-        // search for a push notification that matches our parameters
-        for (int i = 0; i < pushNotifications.size(); i++) {
-            Message message = pushNotifications.get(i);
-            if (message == null) {
-                continue;
-            }
-            PushNotificationContent content = message.getContent();
-            if (content != null && content.getJoinableId() == feedId && content.getType() != null && content.getType().equals(pushType)) {
-                if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
-                    // remove the notification from the system
-                    notificationManager.cancel(message.getPushNotificationId());
-                    // remove the notification from our internal list
-                    pushNotifications.remove(i);
-                    break;
-                }
-                if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
-                    notificationManager.cancel(message.getPushNotificationId());
-                    pushNotifications.remove(i);
-                    break;
-                }
-            }
-        }
-    }
-
-    public int getPushNotificationsCountForFeedItem(FeedItem feedItem) {
-        int count = 0;
-        for (int i = 0; i < pushNotifications.size(); i++) {
-            Message message = pushNotifications.get(i);
-            if (message == null || !message.isVisible()) {
-                continue;
-            }
-            PushNotificationContent content = message.getContent();
-            if (content != null && content.getJoinableId() == feedItem.getId()) {
-                if (feedItem.getType() == TimestampedObject.TOUR_CARD && content.isTourRelated()) {
-                    count++;
-                    continue;
-                }
-                if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated()) {
-                    count++;
-                    continue;
-                }
-            }
-        }
-        return count;
-    }
-
-    private void increaseBadgeCount() {
-        badgeCount++;
-        discussionBadgeView.setBadgeCount(badgeCount);
-    }
-
     // ----------------------------------
-    // Logo icon click handling
+    // Helper functions
     // ----------------------------------
 
-    private void decreaseBadgeCount(int amount) {
-        badgeCount -= amount;
-        if (badgeCount < 0) {
-            badgeCount = 0;
-        }
-        discussionBadgeView.setBadgeCount(badgeCount);
+    private void refreshBadgeCount() {
+        EntourageApplication application = EntourageApplication.get(getApplicationContext());
+        discussionBadgeView.setBadgeCount(application.badgeCount);
     }
 
     // ----------------------------------

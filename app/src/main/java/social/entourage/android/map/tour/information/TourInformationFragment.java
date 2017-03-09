@@ -1648,9 +1648,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             }
             // Remove the push notification
             if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
-                if (isAdded() && (getActivity() instanceof DrawerActivity)) {
-                    DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-                    drawerActivity.removePushNotification(feedItem, userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
+                EntourageApplication application = EntourageApplication.get(getContext());
+                if (application != null) {
+                    application.removePushNotification(feedItem, userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
                 }
             }
         }

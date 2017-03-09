@@ -2000,11 +2000,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         } else {
             // set the badge count
             if (card instanceof FeedItem) {
-                DrawerActivity activity = null;
-                if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-                    activity = (DrawerActivity) getActivity();
+                EntourageApplication application = EntourageApplication.get(getContext());
+                if (application != null) {
+                    ((FeedItem) card).setBadgeCount(application.getPushNotificationsCountForFeedItem((FeedItem) card));
                 }
-                ((FeedItem) card).setBadgeCount(activity.getPushNotificationsCountForFeedItem((FeedItem)card));
             }
             // add the card
             newsfeedAdapter.addCardInfoBeforeTimestamp(card);

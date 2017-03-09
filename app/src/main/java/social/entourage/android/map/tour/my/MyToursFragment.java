@@ -260,10 +260,8 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
         if (newsfeedList == null) return;
         //add the tours
         if (newsfeedList.size() > 0) {
-            DrawerActivity activity = null;
-            if (getActivity() instanceof DrawerActivity) {
-                activity = (DrawerActivity) getActivity();
-            }
+            EntourageApplication application = EntourageApplication.get(getContext());
+
             Iterator<Newsfeed> iterator = newsfeedList.iterator();
             while (iterator.hasNext()) {
                 Newsfeed newsfeed = iterator.next();
@@ -272,8 +270,8 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
                     continue;
                 }
                 FeedItem feedItem = (FeedItem)newsfeed.getData();
-                if (activity != null) {
-                    feedItem.setBadgeCount(activity.getPushNotificationsCountForFeedItem(feedItem));
+                if (application != null) {
+                    feedItem.setBadgeCount(application.getPushNotificationsCountForFeedItem(feedItem));
                 }
 //                if (tour.getTourStatus().equals(FeedItem.STATUS_ON_GOING)) {
 //                    ongoingToursAdapter.add(tour);

@@ -1,6 +1,7 @@
 package social.entourage.android;
 
 import android.app.Application;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
 
@@ -13,8 +14,13 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import social.entourage.android.api.ApiModule;
+import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.PushNotificationContent;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
 import social.entourage.android.authentication.login.LoginActivity;
@@ -28,6 +34,9 @@ public class EntourageApplication extends Application {
 
     private ArrayList<EntourageActivity> activities;
 
+    public int badgeCount = 0;
+    public ArrayList<Message> pushNotifications = new ArrayList<>();
+
     @Override
     public void onCreate() {
         activities = new ArrayList<>();
@@ -37,6 +46,7 @@ public class EntourageApplication extends Application {
         setupFlurry();
         JodaTimeAndroid.init(this);
         setupDagger();
+        setupBadgeCount();
     }
 
     private void setupFabric() {
@@ -58,6 +68,10 @@ public class EntourageApplication extends Application {
         FlurryAgent.setLogLevel(Log.VERBOSE);
         FlurryAgent.setLogEvents(true);
         FlurryAgent.init(this, BuildConfig.FLURRY_API_KEY);
+    }
+
+    private void setupBadgeCount() {
+        decreaseBadgeCount(0);
     }
 
     public EntourageComponent getEntourageComponent() {
@@ -101,4 +115,156 @@ public class EntourageApplication extends Application {
             loginActivity.finish();
         }
     }
+
+    // ----------------------------------
+    // Push notifications and badge handling
+    // ----------------------------------
+
+    private void decreaseBadgeCount(int amount) {
+        badgeCount -= amount;
+        if (badgeCount < 0) {
+            badgeCount = 0;
+        }
+
+        if (badgeCount == 0) {
+            ShortcutBadger.removeCount(getApplicationContext());
+        } else {
+            ShortcutBadger.applyCount(getApplicationContext(), badgeCount);
+        }
+    }
+
+    public void addPushNotification(Message message) {
+        pushNotifications.add(message);
+        badgeCount++;
+        ShortcutBadger.applyCount(this, badgeCount);
+    }
+
+    public void removePushNotificationsForFeedItem(long feedItemId, int feedType) {
+        int count = 0;
+        for (int i = 0; i < pushNotifications.size(); i++) {
+            Message message = pushNotifications.get(i);
+            if (message == null) {
+                continue;
+            }
+            PushNotificationContent content = message.getContent();
+            if (content != null && content.getJoinableId() == feedItemId) {
+                if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
+                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
+                        // Don't delete the join requests push, just hide them
+                        message.setVisible(false);
+                    }
+                    else {
+                        pushNotifications.remove(i);
+                        i--;
+                    }
+                    count++;
+                    continue;
+                }
+                if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
+                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
+                        // Don't delete the join requests push, just hide them
+                        message.setVisible(false);
+                    }
+                    else {
+                        pushNotifications.remove(i);
+                        i--;
+                    }
+                    count++;
+                    continue;
+                }
+            }
+        }
+        decreaseBadgeCount(count);
+    }
+
+    public void removePushNotification(Message message) {
+        if (message == null) {
+            return;
+        }
+        for (Message msg : pushNotifications) {
+            if (msg.getPushNotificationId() == message.getPushNotificationId()) {
+                if (pushNotifications.remove(msg)) {
+                    decreaseBadgeCount(1);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void removePushNotification(FeedItem feedItem, int userId, String pushType) {
+        if (feedItem == null) {
+            return;
+        }
+        long feedId = feedItem.getId();
+        int feedType = feedItem.getType();
+
+        removePushNotification(feedId, feedType, userId, pushType);
+    }
+
+    public void removePushNotification(long feedId, int feedType, int userId, String pushType) {
+        // Sanity checks
+        if (pushType == null) {
+            return;
+        }
+
+        // get the notification manager
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (notificationManager == null) {
+            return;
+        }
+
+        int count = 0;
+        // search for a push notification that matches our parameters
+        for (int i = 0; i < pushNotifications.size(); i++) {
+            Message message = pushNotifications.get(i);
+            if (message == null) {
+                continue;
+            }
+            PushNotificationContent content = message.getContent();
+            if (content != null && content.getJoinableId() == feedId && content.getType() != null && content.getType().equals(pushType)) {
+                if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
+                    // remove the notification from the system
+                    notificationManager.cancel(message.getPushNotificationId());
+                    // remove the notification from our internal list
+                    pushNotifications.remove(i);
+                    if (message.isVisible()) {
+                        count++;
+                    }
+                    break;
+                }
+                if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
+                    notificationManager.cancel(message.getPushNotificationId());
+                    pushNotifications.remove(i);
+                    if (message.isVisible()) {
+                        count++;
+                    }
+                    break;
+                }
+            }
+        }
+        decreaseBadgeCount(count);
+    }
+
+    public int getPushNotificationsCountForFeedItem(FeedItem feedItem) {
+        int count = 0;
+        for (int i = 0; i < pushNotifications.size(); i++) {
+            Message message = pushNotifications.get(i);
+            if (message == null || !message.isVisible()) {
+                continue;
+            }
+            PushNotificationContent content = message.getContent();
+            if (content != null && content.getJoinableId() == feedItem.getId()) {
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD && content.isTourRelated()) {
+                    count++;
+                    continue;
+                }
+                if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated()) {
+                    count++;
+                    continue;
+                }
+            }
+        }
+        return count;
+    }
+
 }

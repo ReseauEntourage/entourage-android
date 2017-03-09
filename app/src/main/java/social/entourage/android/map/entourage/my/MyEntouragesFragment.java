@@ -398,10 +398,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         if (newsfeedList == null) return;
         //add the feed
         if (newsfeedList.size() > 0) {
-            DrawerActivity activity = null;
-            if (getActivity() instanceof DrawerActivity) {
-                activity = (DrawerActivity) getActivity();
-            }
+            EntourageApplication application = EntourageApplication.get(getContext());
+
             Iterator<Newsfeed> iterator = newsfeedList.iterator();
             while (iterator.hasNext()) {
                 Newsfeed newsfeed = iterator.next();
@@ -410,8 +408,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
                     continue;
                 }
                 FeedItem feedItem = (FeedItem)newsfeed.getData();
-                if (activity != null) {
-                    feedItem.setBadgeCount(activity.getPushNotificationsCountForFeedItem(feedItem));
+                if (application != null) {
+                    feedItem.setBadgeCount(application.getPushNotificationsCountForFeedItem(feedItem));
                 }
 
                 if (entouragesAdapter.findCard(feedItem) == null) {
