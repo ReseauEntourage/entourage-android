@@ -245,6 +245,22 @@ public class EntourageApplication extends Application {
         decreaseBadgeCount(count);
     }
 
+    public void removeAllPushNotifications() {
+        // get the notification manager
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (notificationManager == null) {
+            return;
+        }
+        // cancel all the notifications
+        for (Message msg : pushNotifications) {
+            notificationManager.cancel(msg.getPushNotificationId());
+        }
+        // remove all the notifications from our internal list
+        pushNotifications.clear();
+        // reset the badge count
+        decreaseBadgeCount(badgeCount);
+    }
+
     public int getPushNotificationsCountForFeedItem(FeedItem feedItem) {
         int count = 0;
         for (int i = 0; i < pushNotifications.size(); i++) {

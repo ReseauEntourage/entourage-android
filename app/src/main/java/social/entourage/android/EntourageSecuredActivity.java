@@ -35,6 +35,10 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
 
     protected void logout() {
         authenticationController.logOutUser();
+        EntourageApplication application = EntourageApplication.get(getApplicationContext());
+        if (application != null) {
+            application.removeAllPushNotifications();
+        }
         //FlurryAgent.logEvent(Constants.EVENT_LOGOUT);
         startActivity(new Intent(this, LoginActivity.class));
         finish();
