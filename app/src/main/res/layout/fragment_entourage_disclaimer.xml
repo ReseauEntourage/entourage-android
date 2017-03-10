@@ -200,15 +200,17 @@
             android:paddingStart="5dp"
             android:text="@string/entourage_disclaimer_checkbox"/>
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/entourage_disclaimer_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="false"
             android:paddingEnd="5dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingStart="5dp"
-            />
+            android:switchMinWidth="0dp"
+            android:theme="@style/EntourageGreenSwitch"/>
     </LinearLayout>
 
 </RelativeLayout>

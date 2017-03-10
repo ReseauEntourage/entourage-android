@@ -2,13 +2,17 @@ package social.entourage.android.map.entourage;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +42,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     TextView disclaimerTextView;
 
     @BindView(R.id.entourage_disclaimer_switch)
-    Switch disclaimerSwitch;
+    SwitchCompat disclaimerSwitch;
 
     private String entourageType;
 
@@ -92,11 +96,26 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
             String disclaimer = "";
             if (isPro) {
                 disclaimer = getString(R.string.entourage_disclaimer_text_chart, getString(R.string.disclaimer_link_pro));
-
             } else {
                 disclaimer = getString(R.string.entourage_disclaimer_text_chart, getString(R.string.disclaimer_link_public));
             }
             disclaimerTextView.setText(Html.fromHtml(disclaimer));
+
+            disclaimerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+                    if (isChecked) {
+                        // trigger the accept after a delay
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                onOkClicked();
+                            }
+                        }, 1000);
+                    }
+                }
+            });
         }
     }
 
