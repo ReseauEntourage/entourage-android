@@ -7,7 +7,6 @@ import social.entourage.android.api.model.map.Entourage;
  */
 public class MyEntouragesFilter {
 
-    public boolean activeEntourages = true;
     public boolean closedEntourages = true;
     public boolean showOwnEntourages = false;
     public boolean showJoinedEntourages= false;
@@ -49,10 +48,8 @@ public class MyEntouragesFilter {
     }
 
     public String getStatus() {
-        if (activeEntourages && closedEntourages) return "all";
-        if (activeEntourages) return "active";
-        if (closedEntourages) return "closed";
-        return "";
+        if (closedEntourages) return "all";
+        return "active";
     }
 
     public String getTourTypes() {

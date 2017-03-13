@@ -66,7 +66,7 @@
     <string name="myentourages_filter_active">Actifs</string>
     <string name="myentourages_filter_invited">Invitations</string>
     <string name="myentourages_filter_own">Créés par moi uniquement</string>
-    <string name="myentourages_filter_closed">Passés</string>
+    <string name="myentourages_filter_closed">Inclure entourages clôturés</string>
     <string name="myentourages_filter_types_title">Types d’entourage</string>
     <string name="myentourages_filter_demand">Demandes</string>
     <string name="myentourages_filter_contribution">Contributions</string>
