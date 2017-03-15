@@ -2,6 +2,7 @@ package social.entourage.android.map.tour.information.discussion;
 
 import android.net.Uri;
 import android.text.Html;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import social.entourage.android.Constants;
 import social.entourage.android.R;
@@ -37,6 +40,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private TextView mJoinStatusView;
     private View mPublicMessageSection;
     private TextView mPublicJoinMessage;
+    private TextView mPublicTimestampView;
 
     private ImageView mPhotoView;
     private PartnerLogoImageView mPartnerLogoView;
@@ -66,6 +70,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
         mPublicJoinMessage = (TextView) itemView.findViewById(R.id.tic_public_join_message);
         mPublicMessageSection = (View) itemView.findViewById(R.id.tic_public_info_message_layout);
+        mPublicTimestampView = (TextView) itemView.findViewById(R.id.tic_public_info_timestamp);
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
         mPartnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tic_partner_logo);
@@ -240,6 +245,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             if (joinMessage != null && joinMessage.length() > 0) {
                 mPublicMessageSection.setVisibility(View.VISIBLE);
                 mPublicJoinMessage.setText(joinMessage);
+                mPublicTimestampView.setText(DateFormat.format("H'h'm", user.getTimestamp()));
             } else {
                 mPublicMessageSection.setVisibility(View.GONE);
             }

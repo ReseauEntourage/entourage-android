@@ -1,5 +1,8 @@
 package social.entourage.android.map.tour.information.discussion;
 
+import java.util.Date;
+import java.util.HashMap;
+
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.api.model.TimestampedObject;
 
@@ -8,11 +11,13 @@ import social.entourage.android.api.model.TimestampedObject;
  */
 public class DiscussionAdapter extends EntourageBaseAdapter {
 
+    private HashMap<Date, Integer> mSections = new HashMap<>();
+
     public DiscussionAdapter() {
 
         viewHolderFactory.registerViewHolder(
-                TimestampedObject.SEPARATOR,
-                new ViewHolderFactory.ViewHolderType(SeparatorCardViewHolder.class, SeparatorCardViewHolder.getLayoutResource())
+                TimestampedObject.DATE_SEPARATOR,
+                new ViewHolderFactory.ViewHolderType(DateSeparatorViewHolder.class, DateSeparatorViewHolder.getLayoutResource())
         );
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.CHAT_MESSAGE_OTHER,
@@ -38,50 +43,58 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
         setHasStableIds(false);
     }
 
-    private void addSeparator() {
-        Separator separator = new Separator();
+    private void addDateSeparator(Date date, boolean notifyView) {
+        DateSeparator separator = new DateSeparator();
+        separator.setDate(date);
         items.add(separator);
-        notifyItemInserted(items.size()-1);
+        mSections.put(date, items.size()-1);
+        if (notifyView) {
+            notifyItemInserted(items.size() - 1);
+        }
     }
 
-    private void insertSeparator(int position) {
-        Separator separator = new Separator();
+    private void insertDateSeparator(Date date, int position) {
+        DateSeparator separator = new DateSeparator();
+        separator.setDate(date);
         items.add(position, separator);
+        mSections.put(date, position);
         notifyItemInserted(position);
     }
 
-//    @Override
-//    public void addCardInfo(TimestampedObject cardInfo) {
-//        addCardInfo(cardInfo, true);
-//    }
-//
-//    @Override
-//    public void addCardInfo(TimestampedObject cardInfo, boolean notifyView) {
-//        if (items.size() > 0) {
-//            addSeparator();
-//        }
-//        items.add(cardInfo);
-//        if (notifyView) {
-//            notifyItemInserted(items.size()-1);
-//        }
-//    }
+    @Override
+    public void addCardInfo(TimestampedObject cardInfo, boolean notifyView) {
+        Date timestamp = cardInfo.getTimestamp();
+        if (timestamp != null) {
+            Date dateOnly = new Date(0);
+            dateOnly.setYear(timestamp.getYear());
+            dateOnly.setMonth(timestamp.getMonth());
+            dateOnly.setDate(timestamp.getDate());
+            if (!mSections.containsKey(dateOnly)) {
+                addDateSeparator(dateOnly, notifyView);
+            }
+        }
+        items.add(cardInfo);
+        if (notifyView) {
+            notifyItemInserted(items.size()-1);
+        }
+    }
 
-//    @Override
-//    public void insertCardInfo(TimestampedObject cardInfo, int position) {
-//        if (position != 0) position--;
-//        //add separator if not adding at the top of the list
-//        if (position != 0) {
-//            insertSeparator(position);
-//            position++;
-//        }
-//        //add the card
-//        items.add(position, cardInfo);
-//        notifyItemInserted(position);
-//        //add the separator if adding at the top of the list and more cards exist
-//        if (position == 0 && items.size() > 1) {
-//            position++;
-//            insertSeparator(position);
-//        }
-//    }
+    @Override
+    public void insertCardInfo(TimestampedObject cardInfo, int position) {
+        Date timestamp = cardInfo.getTimestamp();
+        if (timestamp != null) {
+            Date dateOnly = new Date(0);
+            dateOnly.setYear(timestamp.getYear());
+            dateOnly.setMonth(timestamp.getMonth());
+            dateOnly.setDate(timestamp.getDate());
+            if (!mSections.containsKey(dateOnly)) {
+                insertDateSeparator(dateOnly, position);
+                position++;
+            }
+        }
+        //add the card
+        items.add(position, cardInfo);
+        notifyItemInserted(position);
+    }
 
 }

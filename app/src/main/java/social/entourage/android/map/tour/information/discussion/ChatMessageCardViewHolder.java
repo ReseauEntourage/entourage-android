@@ -1,11 +1,14 @@
 package social.entourage.android.map.tour.information.discussion;
 
 import android.net.Uri;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
@@ -25,6 +28,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
     private PartnerLogoImageView mPartnerLogoView;
     private TextView mUserNameView;
     private TextView mMessageView;
+    private TextView mTimestampView;
 
     private int userId = 0;
 
@@ -39,6 +43,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         mUserNameView = (TextView) itemView.findViewById(R.id.tic_chat_user_name);
         mPartnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tic_chat_user_partner_logo);
         mMessageView = (TextView) itemView.findViewById(R.id.tic_chat_message);
+        mTimestampView = (TextView) itemView.findViewById(R.id.tic_chat_timestamp);
 
         mUserPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +61,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
     }
 
     public void populate(ChatMessage chatMessage) {
+        // user avatar
         String avatarURL = chatMessage.getUserAvatarURL();
         if (avatarURL != null) {
             Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
@@ -78,11 +84,16 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
             }
         }
 
+        // user name
         if (chatMessage.getUserName() != null) {
             mUserNameView.setText(chatMessage.getUserName());
         }
 
+        // the actual chat
         mMessageView.setText(chatMessage.getContent());
+
+        // chat timestamp
+        mTimestampView.setText(DateFormat.format("H'h'm", chatMessage.getTimestamp()));
 
         userId = chatMessage.getUserId();
     }

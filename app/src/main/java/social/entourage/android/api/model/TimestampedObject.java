@@ -20,6 +20,7 @@ public abstract class TimestampedObject {
     public static final int ENTOURAGE_CARD = 7;
     public static final int FEED_MEMBER_CARD = 8;
     public static final int INVITATION_CARD = 9;
+    public static final int DATE_SEPARATOR = 10;
 
     @Expose(serialize = false)
     private int hashCode;
