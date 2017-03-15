@@ -113,6 +113,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
         int myId = me.getId();
         if (feedItem.getAuthor().getUserID() != myId) {
             quitButton.setVisibility(View.VISIBLE);
+            quitButton.setText(FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? R.string.tour_info_options_cancel_request : R.string.tour_info_options_quit_tour);
         }
         else {
             stopButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);

@@ -748,7 +748,11 @@ public class DrawerActivity extends EntourageSecuredActivity
                             if (me == null) {
                                 Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
                             } else {
-                                mapEntourageFragment.removeUserFromNewsfeedCard(event.getFeedItem(), me.getId());
+                                FeedItem item = event.getFeedItem();
+                                if (item != null && FeedItem.JOIN_STATUS_PENDING.equals(item.getJoinStatus())) {
+                                    FlurryAgent.logEvent(Constants.EVENT_FEED_CANCEL_JOIN_REQUEST);
+                                }
+                                mapEntourageFragment.removeUserFromNewsfeedCard(item, me.getId());
                             }
                         }
                     }

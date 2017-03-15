@@ -309,7 +309,7 @@ public class TourViewHolder extends BaseCardViewHolder {
             else if (v == actButton) {
                 String joinStatus = tour.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(tour));
+                    BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
 //                    if (tour.getAuthor() != null) {
 //                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {

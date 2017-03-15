@@ -933,7 +933,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             if (me != null && feedItem.getAuthor() != null) {
                 int myId = me.getId();
                 if (feedItem.getAuthor().getUserID() != myId) {
-                    quitTourButton.setVisibility((FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || !feedItem.isPrivate() ? View.GONE : View.VISIBLE));
+                    //quitTourButton.setVisibility((FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || !feedItem.isPrivate() ? View.GONE : View.VISIBLE));
+                    quitTourButton.setVisibility(FeedItem.JOIN_STATUS_NOT_REQUESTED.equals(feedItem.getJoinStatus()) ? View.GONE : View.VISIBLE);
+                    quitTourButton.setText(FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? R.string.tour_info_options_cancel_request : R.string.tour_info_options_quit_tour);
                     reportEntourageButton.setVisibility(View.VISIBLE);
                 } else {
                     stopTourButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);

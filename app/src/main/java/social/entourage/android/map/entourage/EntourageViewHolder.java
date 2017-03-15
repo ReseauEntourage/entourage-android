@@ -275,7 +275,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             else if (v == actButton) {
                 String joinStatus = entourage.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
-                        BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
+                    BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(entourage));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
 //                        if (entourage.getAuthor() != null) {
 //                            if (entourage.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
