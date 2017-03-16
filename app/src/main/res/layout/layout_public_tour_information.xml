@@ -75,14 +75,17 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
+        android:visibility="visible"
         android:weightSum="5">
 
         <ImageView
-            android:id="@+id/tour_info_join_separator"
-            android:layout_width="fill_parent"
+            android:id="@+id/tour_info_join_separator_left"
+            android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_centerVertical="true"
             android:layout_gravity="fill_horizontal"
-            android:layout_marginTop="25dp"
+            android:layout_toLeftOf="@+id/tour_info_join_button"
+            android:layout_toStartOf="@+id/tour_info_join_button"
             android:background="@color/greyish"/>
 
         <Button
@@ -91,9 +94,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:drawableTop="@drawable/button_act_join"
+            android:layout_marginEnd="@dimen/act_button_right_padding"
+            android:layout_marginRight="@dimen/act_button_right_padding"
+            android:drawableLeft="@drawable/button_act_join"
+            android:drawableStart="@drawable/button_act_join"
             android:enabled="true"
             android:text="@string/tour_cell_button_join"/>
+
+        <ImageView
+            android:id="@+id/tour_info_join_separator_right"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="fill_horizontal"
+            android:layout_toRightOf="@+id/tour_info_join_button"
+            android:layout_toEndOf="@+id/tour_info_join_button"
+            android:background="@color/greyish"/>
 
     </RelativeLayout>
 
@@ -108,7 +124,8 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tour_info_request_join_title"

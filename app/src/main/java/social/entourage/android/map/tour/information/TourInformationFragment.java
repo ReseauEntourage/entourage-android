@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -1297,36 +1298,37 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (feedItem == null) return;
 
         requestJoinLayout.setVisibility(View.GONE);
+        actLayout.setVisibility(View.VISIBLE);
+
+        joinButton.setPadding(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
+        if (Build.VERSION.SDK_INT >= 16) {
+            joinButton.setPaddingRelative(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
+        }
 
         if (feedItem.isFreezed()) {
-            //actLayout.setVisibility(View.GONE);
-
             // MI: Instead of hiding it, display the freezed text
-            actLayout.setVisibility(View.VISIBLE);
             joinButton.setText(R.string.tour_cell_button_freezed);
-            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_freezed), null, null);
+            joinButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            joinButton.setPadding(0, 0, 0, 0);
+            if (Build.VERSION.SDK_INT >= 16) {
+                joinButton.setPaddingRelative(0, 0, 0, 0);
+            }
         }
         else {
-            actLayout.setVisibility(View.VISIBLE);
             String joinStatus = feedItem.getJoinStatus();
             if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
                 joinButton.setEnabled(false);
                 joinButton.setText(R.string.tour_cell_button_pending);
-                joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_pending), null, null);
+                joinButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.button_act_pending), null, null, null);
             } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
                 joinButton.setEnabled(false);
                 joinButton.setText(R.string.tour_cell_button_accepted);
-                joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_accepted), null, null);
+                joinButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.button_act_accepted), null, null, null);
             } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
                 joinButton.setEnabled(false);
                 joinButton.setText(R.string.tour_cell_button_rejected);
-                joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_rejected), null, null);
+                joinButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.button_act_rejected), null, null, null);
             } else {
-                /*
-                joinButton.setEnabled(true);
-                joinButton.setText(R.string.tour_cell_button_join);
-                joinButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.button_act_join), null, null);
-                */
                 // Different layout for requesting to join
                 actLayout.setVisibility(View.INVISIBLE);
                 requestJoinLayout.setVisibility(View.VISIBLE);

@@ -8,4 +8,6 @@
     <dimen name="carousel_content">16sp</dimen>
     <dimen name="carousel_bullets_bottom">100dp</dimen>
 
+    <dimen name="act_button_right_padding">10dp</dimen>
+
 </resources>

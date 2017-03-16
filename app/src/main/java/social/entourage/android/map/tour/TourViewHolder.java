@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -207,16 +208,24 @@ public class TourViewHolder extends BaseCardViewHolder {
         //act button
         if (actButton != null) {
             actButton.setVisibility(View.VISIBLE);
+            actButton.setPadding(0, 0, res.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
+            if (Build.VERSION.SDK_INT >= 16) {
+                actButton.setPaddingRelative(0, 0, res.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
+            }
             if (tour.isFreezed()) {
                 //actButton.setVisibility(View.GONE);
                 actButton.setText(R.string.tour_cell_button_freezed);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_freezed), null, null);
+                actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                actButton.setPadding(0, 0, 0, 0);
+                if (Build.VERSION.SDK_INT >= 16) {
+                    actButton.setPaddingRelative(0, 0, 0, 0);
+                }
             } else {
                 //actButton.setVisibility(View.VISIBLE);
                 String joinStatus = tour.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_pending);
-                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_pending), null, null);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(res.getDrawable(R.drawable.button_act_pending), null, null, null);
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
                     if (tour.getAuthor() != null) {
                         if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
@@ -227,13 +236,13 @@ public class TourViewHolder extends BaseCardViewHolder {
                     } else {
                         actButton.setText(R.string.tour_cell_button_accepted);
                     }
-                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_accepted), null, null);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(res.getDrawable(R.drawable.button_act_accepted), null, null, null);
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_rejected);
-                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_rejected), null, null);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(res.getDrawable(R.drawable.button_act_rejected), null, null, null);
                 } else {
-                    actButton.setText(R.string.tour_cell_button_join);
-                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, res.getDrawable(R.drawable.button_act_join), null, null);
+                    actButton.setText(R.string.tour_cell_button_view);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(res.getDrawable(R.drawable.button_act_join), null, null, null);
                 }
             }
         }
@@ -311,17 +320,11 @@ public class TourViewHolder extends BaseCardViewHolder {
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-//                    if (tour.getAuthor() != null) {
-//                        if (tour.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
-                            BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
-                            return;
-//                        }
-//                    }
-//                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, tour));
+                    BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //What to do on rejected status ?
                 } else {
-                    BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_JOIN, tour));
+                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(tour));
                 }
 
             }

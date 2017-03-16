@@ -92,6 +92,7 @@
     <string name="tour_cell_button_pending">Demande en attente</string>
     <string name="tour_cell_button_rejected">Demande refusée</string>
     <string name="tour_cell_button_freezed">Clôturé</string>
+    <string name="tour_cell_button_view">Voir</string>
 
     <!-- Join Request -->
     <string name="tour_join_request_success">Requête envoyée</string>
