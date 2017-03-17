@@ -20,8 +20,6 @@ public class JoinRequestOkFragment extends DialogFragment {
 
     public static final String TAG = "tour_join_request_ok";
 
-    private static final String KEY_FEED_ITEM = "social.entourage.android.KEY_FEEDITEM";
-
     // ----------------------------------
     // PRIVATE MEMBERS
     // ----------------------------------
@@ -41,7 +39,7 @@ public class JoinRequestOkFragment extends DialogFragment {
     public static JoinRequestOkFragment newInstance(FeedItem feedItem) {
         JoinRequestOkFragment fragment = new JoinRequestOkFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_FEED_ITEM, feedItem);
+        args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,7 +48,7 @@ public class JoinRequestOkFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            feedItem = (FeedItem)getArguments().getSerializable(KEY_FEED_ITEM);
+            feedItem = (FeedItem)getArguments().getSerializable(FeedItem.KEY_FEEDITEM);
         }
     }
 

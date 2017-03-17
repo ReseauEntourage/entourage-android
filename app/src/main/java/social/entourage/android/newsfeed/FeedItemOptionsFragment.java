@@ -3,6 +3,7 @@ package social.entourage.android.newsfeed;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.map.entourage.CreateEntourageFragment;
+import social.entourage.android.map.entourage.EntourageCloseFragment;
 import social.entourage.android.tools.BusProvider;
 
 
@@ -42,8 +44,6 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     public static final String TAG = "social.entourage.android.FeedItemOptions";
-
-    private static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -74,7 +74,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
     public static FeedItemOptionsFragment newInstance(FeedItem feedItem) {
         FeedItemOptionsFragment fragment = new FeedItemOptionsFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_FEEDITEM, feedItem);
+        args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,7 +83,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            feedItem = (FeedItem)getArguments().getSerializable(KEY_FEEDITEM);
+            feedItem = (FeedItem)getArguments().getSerializable(FeedItem.KEY_FEEDITEM);
         }
     }
 
@@ -120,7 +120,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
             if (feedItem.isClosed() && feedItem.getType() == FeedItem.TOUR_CARD) {
                 stopButton.setText(R.string.tour_info_options_freeze_tour);
             } else {
-                stopButton.setText(R.string.tour_info_options_stop_tour);
+                stopButton.setText(feedItem.getType() == FeedItem.TOUR_CARD ? R.string.tour_info_options_stop_tour : R.string.tour_info_options_freeze_tour);
             }
             if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
                 editButton.setVisibility(View.VISIBLE);
@@ -170,7 +170,10 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
                 dismiss();
             }
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+                //BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+                FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+                EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
+                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG);
                 dismiss();
             }
         }

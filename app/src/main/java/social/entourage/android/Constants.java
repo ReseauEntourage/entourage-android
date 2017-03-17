@@ -128,6 +128,10 @@ public class Constants {
     public static final String EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC = "EntouragePublicPageFromMessages";
     public static final String EVENT_ENTOURAGE_VIEW_ASK_JOIN = "AskJoinFromPublicPage";
     public static final String EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION = "ChangeLocationClick";
+    public static final String EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS = "SuccessfulClosePopup";
+    public static final String EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE = "BlockedClosePopup";
+    public static final String EVENT_ENTOURAGE_CLOSE_POPUP_HELP = "HelpRequestOnClosePopup";
+    public static final String EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL = "CancelClosePopup";
 
     //MY ENTOURAGES Events
     public static final String EVENT_MYENTOURAGES_BANNER_CLICK = "BannerMessageClick";

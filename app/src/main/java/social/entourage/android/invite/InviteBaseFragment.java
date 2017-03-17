@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.base.EntourageDialogFragment;
 
 /**
@@ -20,9 +21,6 @@ public class InviteBaseFragment extends EntourageDialogFragment {
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
-
-    private static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
-    private static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -46,8 +44,8 @@ public class InviteBaseFragment extends EntourageDialogFragment {
 
     protected void setFeedData(long feedId, int feedItemType) {
         Bundle args = new Bundle();
-        args.putLong(KEY_FEEDITEM_ID, feedId);
-        args.putInt(KEY_FEEDITEM_TYPE, feedItemType);
+        args.putLong(FeedItem.KEY_FEEDITEM_ID, feedId);
+        args.putInt(FeedItem.KEY_FEEDITEM_TYPE, feedItemType);
         this.setArguments(args);
     }
 
@@ -55,8 +53,8 @@ public class InviteBaseFragment extends EntourageDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            feedItemId = getArguments().getLong(KEY_FEEDITEM_ID);
-            feedItemType = getArguments().getInt(KEY_FEEDITEM_TYPE);
+            feedItemId = getArguments().getLong(FeedItem.KEY_FEEDITEM_ID);
+            feedItemType = getArguments().getInt(FeedItem.KEY_FEEDITEM_TYPE);
         }
     }
 

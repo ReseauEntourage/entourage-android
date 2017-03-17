@@ -78,4 +78,16 @@
     <string name="entourage_tour_ongoing_contribution">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une contribution visible de tous?</string>
     <string name="entourage_tour_ongoing_proceed">Rencontre</string>
 
+    <!-- Close Entourage Popup -->
+    <string name="entourage_close_title">Comment cela s’est passé?</string>
+    <string name="entourage_close_description">En clôturant l’entourage, vous mettez fin au projet.\n\nDites-nous en plus avant de clôturer !</string>
+    <string name="entourage_close_success_button">Mon projet a réussi</string>
+    <string name="entourage_close_failed_button">Mon projet n\'a pas abouti</string>
+    <string name="entourage_close_help_button">Je demande de l\'aide</string>
+    <string name="entourage_close_help_text">Mon projet est bloqué</string>
+
+    <string name="entourage_close_email_title_success">Mes retours sur l\'entourage \'%1$s\' qui a été un succès</string>
+    <string name="entourage_close_email_title_failed">Mes retours sur l\'entourage \'%1$s\' qui n\'a pas abouti</string>
+    <string name="entourage_close_email_title_help">Aide pour l\'entourage \'%1$s\'</string>
+
 </resources>

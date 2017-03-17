@@ -110,6 +110,7 @@ import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.entourage.CreateEntourageFragment;
+import social.entourage.android.map.entourage.EntourageCloseFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.map.tour.information.members.MembersAdapter;
@@ -136,9 +137,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private static final int MAP_SNAPSHOT_ZOOM = 15;
 
-    private static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
-    private static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
-    private static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
     private static final String KEY_INVITATION_ID = "social.entourage.android_KEY_INVITATION_ID";
 
     // ----------------------------------
@@ -299,7 +297,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     public static TourInformationFragment newInstance(FeedItem feedItem, long invitationId) {
         TourInformationFragment fragment = new TourInformationFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_FEEDITEM, feedItem);
+        args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem);
         args.putLong(KEY_INVITATION_ID, invitationId);
         fragment.setArguments(args);
         return fragment;
@@ -308,8 +306,8 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     public static TourInformationFragment newInstance(long feedId, int feedItemType, long invitationId) {
         TourInformationFragment fragment = new TourInformationFragment();
         Bundle args = new Bundle();
-        args.putLong(KEY_FEEDITEM_ID, feedId);
-        args.putInt(KEY_FEEDITEM_TYPE, feedItemType);
+        args.putLong(FeedItem.KEY_FEEDITEM_ID, feedId);
+        args.putInt(FeedItem.KEY_FEEDITEM_TYPE, feedItemType);
         args.putLong(KEY_INVITATION_ID, invitationId);
         fragment.setArguments(args);
         return fragment;
@@ -333,14 +331,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
-        feedItem = (FeedItem) getArguments().getSerializable(KEY_FEEDITEM);
+        feedItem = (FeedItem) getArguments().getSerializable(FeedItem.KEY_FEEDITEM);
         invitationId = getArguments().getLong(KEY_INVITATION_ID);
         if (feedItem != null) {
             initializeView();
         }
         else {
-            requestedFeedItemId = getArguments().getLong(KEY_FEEDITEM_ID);
-            requestedFeedItemType = getArguments().getInt(KEY_FEEDITEM_TYPE);
+            requestedFeedItemId = getArguments().getLong(FeedItem.KEY_FEEDITEM_ID);
+            requestedFeedItemType = getArguments().getInt(FeedItem.KEY_FEEDITEM_TYPE);
             if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
                 presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType);
             }
@@ -577,7 +575,13 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             }
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
-                tourService.stopFeedItem(feedItem);
+                //tourService.stopFeedItem(feedItem);
+                //hide the options
+                optionsLayout.setVisibility(View.GONE);
+                //show close fragment
+                FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+                EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
+                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG);
             }
         }
         else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {

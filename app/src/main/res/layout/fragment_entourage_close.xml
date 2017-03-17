@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/rounded_dialog"
+              android:orientation="vertical"
+              android:padding="10dp"
+              tools:context="social.entourage.android.map.entourage.EntourageCloseFragment">
+
+    <RelativeLayout
+        android:id="@+id/hack_for_proper_width"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/entourage_close_close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="?attr/selectableItemBackground"
+            app:srcCompat="@drawable/ic_close_white"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/entourage_close_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/entourage_close_title"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/entourage_close_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/entourage_close_description"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/entourage_close_success_button"
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ec_award"
+        android:drawableStart="@drawable/ec_award"
+        android:text="@string/entourage_close_success_button"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/entourage_close_failed_button"
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/ec_no_entry"
+        android:drawableStart="@drawable/ec_no_entry"
+        android:text="@string/entourage_close_failed_button"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/entourage_close_help_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/entourage_close_help_text"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/entourage_close_help_button"
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ec_rescue"
+        android:drawableStart="@drawable/ec_rescue"
+        android:text="@string/entourage_close_help_button"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/entourage_close_cancel_button"
+        style="@style/AccentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/cancel"
+        android:textSize="16sp"
+        android:textStyle="normal"/>
+
+</LinearLayout>

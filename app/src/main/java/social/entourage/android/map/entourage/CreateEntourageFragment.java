@@ -36,6 +36,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.TourPoint;
 
 /**
@@ -49,7 +50,6 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     public static final String TAG = "social.entourage.android.createentourage";
 
-    private static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
     protected static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
     private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
 
@@ -113,7 +113,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     public static CreateEntourageFragment newInstance(Entourage entourage) {
         CreateEntourageFragment fragment = new CreateEntourageFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_FEEDITEM, entourage);
+        args.putSerializable(FeedItem.KEY_FEEDITEM, entourage);
         fragment.setArguments(args);
 
         return fragment;
@@ -267,7 +267,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     private void initializeView() {
         Bundle args = getArguments();
         if (args != null) {
-            editedEntourage = (Entourage)args.getSerializable(KEY_FEEDITEM);
+            editedEntourage = (Entourage)args.getSerializable(FeedItem.KEY_FEEDITEM);
             if (editedEntourage != null) {
                 entourageType = editedEntourage.getEntourageType();
             } else {
