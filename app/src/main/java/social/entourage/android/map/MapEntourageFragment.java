@@ -25,7 +25,6 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -442,13 +441,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void displayChosenFeedItem(long feedItemId, int feedItemType, long invitationId) {
-        //check if we are not already displaying the tour
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
-        if (tourInformationFragment != null && tourInformationFragment.getFeedItemType() == feedItemId && tourInformationFragment.getFeedItemId() == feedItemId) {
-            //TODO refresh the tour info screen
-            return;
-        }
         //display the feed item
         FeedItem feedItem = (FeedItem) newsfeedAdapter.findCard(feedItemType, feedItemId);
         if (feedItem != null) {
@@ -466,6 +458,18 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void displayChosenFeedItem(FeedItem feedItem, long invitationId) {
+        // decrease the badge count
+        EntourageApplication application = EntourageApplication.get(getContext());
+        if (application != null) {
+            application.removePushNotificationsForFeedItem(feedItem);
+        }
+        //check if we are not already displaying the tour
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
+        if (tourInformationFragment != null && tourInformationFragment.getFeedItemType() == feedItem.getType() && tourInformationFragment.getFeedItemId() == feedItem.getId()) {
+            //TODO refresh the tour info screen
+            return;
+        }
         if (presenter != null) {
             FlurryAgent.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
             presenter.openFeedItem(feedItem, invitationId);
@@ -2002,7 +2006,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (card instanceof FeedItem) {
                 EntourageApplication application = EntourageApplication.get(getContext());
                 if (application != null) {
-                    ((FeedItem) card).setBadgeCount(application.getPushNotificationsCountForFeedItem((FeedItem) card));
+                    application.updateBadgeCountForFeedItem((FeedItem) card);
                 }
             }
             // add the card

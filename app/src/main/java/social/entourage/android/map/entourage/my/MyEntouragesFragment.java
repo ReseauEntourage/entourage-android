@@ -409,7 +409,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
                 }
                 FeedItem feedItem = (FeedItem)newsfeed.getData();
                 if (application != null) {
-                    feedItem.setBadgeCount(application.getPushNotificationsCountForFeedItem(feedItem));
+                    application.updateBadgeCountForFeedItem(feedItem);
                 }
 
                 if (entouragesAdapter.findCard(feedItem) == null) {

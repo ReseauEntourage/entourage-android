@@ -21,6 +21,7 @@ import social.entourage.android.api.tape.EncounterTapeService;
 import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
+import social.entourage.android.authentication.ComplexPreferences;
 import social.entourage.android.map.tour.TourService;
 
 /**
@@ -54,4 +55,6 @@ public interface EntourageComponent {
     PartnerRequest getPartnerRequest();
 
     OkHttpClient getOkHttpClient();
+
+    ComplexPreferences getComplexPreferences();
 }

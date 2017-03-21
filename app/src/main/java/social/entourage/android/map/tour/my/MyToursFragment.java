@@ -27,7 +27,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -271,7 +270,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
                 }
                 FeedItem feedItem = (FeedItem)newsfeed.getData();
                 if (application != null) {
-                    feedItem.setBadgeCount(application.getPushNotificationsCountForFeedItem(feedItem));
+                    application.updateBadgeCountForFeedItem(feedItem);
                 }
 //                if (tour.getTourStatus().equals(FeedItem.STATUS_ON_GOING)) {
 //                    ongoingToursAdapter.add(tour);

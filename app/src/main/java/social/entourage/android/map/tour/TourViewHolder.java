@@ -2,6 +2,7 @@ package social.entourage.android.map.tour;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -255,6 +256,7 @@ public class TourViewHolder extends BaseCardViewHolder {
             } else {
                 lastMessageTextView.setText("");
             }
+            lastMessageTextView.setTypeface(null, tour.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
         }
 
     }

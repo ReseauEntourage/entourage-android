@@ -698,10 +698,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             FeedItem feedItem = event.getFeedItem();
             if (feedItem != null) {
                 mapEntourageFragment.displayChosenFeedItem(feedItem);
-                // decrease the badge count
-                EntourageApplication application = EntourageApplication.get(getApplicationContext());
-                application.removePushNotificationsForFeedItem(feedItem.getId(), feedItem.getType());
-
+                //refresh badge count
                 refreshBadgeCount();
                 // update the newsfeed card
                 mapEntourageFragment.onPushNotificationConsumedForFeedItem(feedItem);
@@ -710,12 +707,13 @@ public class DrawerActivity extends EntourageSecuredActivity
                 if (myEntouragesFragment != null) {
                     myEntouragesFragment.onPushNotificationConsumedForFeedItem(feedItem);
                 }
-                return;
-            }
-            //check if we are receiving feed type and id
-            int feedItemType = event.getFeedItemType();
-            long feedItemId = event.getFeedItemId();
-            if (feedItemType != 0 && feedItemId != 0) {
+            } else {
+                //check if we are receiving feed type and id
+                int feedItemType = event.getFeedItemType();
+                long feedItemId = event.getFeedItemId();
+                if (feedItemType == 0 || feedItemId == 0) {
+                    return;
+                }
                 mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
             }
         }

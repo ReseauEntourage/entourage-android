@@ -12,6 +12,7 @@ import com.flurry.android.FlurryAgent;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.fabric.sdk.android.Fabric;
 import me.leolin.shortcutbadger.ShortcutBadger;
@@ -23,7 +24,9 @@ import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
+import social.entourage.android.authentication.ComplexPreferences;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.newsfeed.FeedItemsStorage;
 
 /**
  * Application setup for Flurry, JodaTime and Dagger
@@ -37,6 +40,8 @@ public class EntourageApplication extends Application {
     public int badgeCount = 0;
     public ArrayList<Message> pushNotifications = new ArrayList<>();
 
+    private FeedItemsStorage feedItemsStorage;
+
     @Override
     public void onCreate() {
         activities = new ArrayList<>();
@@ -47,6 +52,7 @@ public class EntourageApplication extends Application {
         JodaTimeAndroid.init(this);
         setupDagger();
         setupBadgeCount();
+        setupFeedItemsStorage();
     }
 
     private void setupFabric() {
@@ -97,6 +103,7 @@ public class EntourageApplication extends Application {
 
     public void onActivityDestroyed(EntourageActivity activity) {
         activities.remove(activity);
+        saveFeedItemsStorage();
     }
 
     public LoginActivity getLoginActivity() {
@@ -135,11 +142,14 @@ public class EntourageApplication extends Application {
 
     public void addPushNotification(Message message) {
         pushNotifications.add(message);
+        updateFeedItemsStorage(message, true);
         badgeCount++;
         ShortcutBadger.applyCount(this, badgeCount);
     }
 
-    public void removePushNotificationsForFeedItem(long feedItemId, int feedType) {
+    public void removePushNotificationsForFeedItem(FeedItem feedItem) {
+        long feedItemId = feedItem.getId();
+        int feedType = feedItem.getType();
         int count = 0;
         for (int i = 0; i < pushNotifications.size(); i++) {
             Message message = pushNotifications.get(i);
@@ -174,6 +184,9 @@ public class EntourageApplication extends Application {
                 }
             }
         }
+        feedItem.setBadgeCount(0);
+        updateFeedItemsStorage(feedItem);
+
         decreaseBadgeCount(count);
     }
 
@@ -184,6 +197,7 @@ public class EntourageApplication extends Application {
         for (Message msg : pushNotifications) {
             if (msg.getPushNotificationId() == message.getPushNotificationId()) {
                 if (pushNotifications.remove(msg)) {
+                    updateFeedItemsStorage(message, false);
                     decreaseBadgeCount(1);
                     break;
                 }
@@ -228,6 +242,7 @@ public class EntourageApplication extends Application {
                     // remove the notification from our internal list
                     pushNotifications.remove(i);
                     if (message.isVisible()) {
+                        updateFeedItemsStorage(message, false);
                         count++;
                     }
                     break;
@@ -236,6 +251,7 @@ public class EntourageApplication extends Application {
                     notificationManager.cancel(message.getPushNotificationId());
                     pushNotifications.remove(i);
                     if (message.isVisible()) {
+                        updateFeedItemsStorage(message, false);
                         count++;
                     }
                     break;
@@ -261,26 +277,73 @@ public class EntourageApplication extends Application {
         decreaseBadgeCount(badgeCount);
     }
 
-    public int getPushNotificationsCountForFeedItem(FeedItem feedItem) {
-        int count = 0;
-        for (int i = 0; i < pushNotifications.size(); i++) {
-            Message message = pushNotifications.get(i);
-            if (message == null || !message.isVisible()) {
-                continue;
-            }
-            PushNotificationContent content = message.getContent();
-            if (content != null && content.getJoinableId() == feedItem.getId()) {
-                if (feedItem.getType() == TimestampedObject.TOUR_CARD && content.isTourRelated()) {
-                    count++;
-                    continue;
-                }
-                if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated()) {
-                    count++;
-                    continue;
-                }
-            }
+    public void updateBadgeCountForFeedItem(FeedItem feedItem) {
+        updateFeedItemFromStorage(feedItem);
+    }
+
+    // ----------------------------------
+    // FeedItemsStorage
+    // ----------------------------------
+
+    private void setupFeedItemsStorage() {
+        this.feedItemsStorage = component.getComplexPreferences().getObject(FeedItemsStorage.KEY, FeedItemsStorage.class);
+        if (this.feedItemsStorage == null) {
+            this.feedItemsStorage = new FeedItemsStorage();
         }
-        return count;
+    }
+
+    private void saveFeedItemsStorage() {
+        if (component == null || feedItemsStorage == null) {
+            return;
+        }
+        ComplexPreferences preferences = component.getComplexPreferences();
+        if (preferences == null) {
+            return;
+        }
+        preferences.putObject(FeedItemsStorage.KEY, feedItemsStorage);
+        preferences.commit();
+    }
+
+    public void updateFeedItemsStorage(FeedItem feedItem) {
+        if (feedItemsStorage == null) {
+            return;
+        }
+        if (component.getAuthenticationController() == null) {
+            return;
+        }
+        User me = component.getAuthenticationController().getUser();
+        if (me == null) {
+            return;
+        }
+        feedItemsStorage.updateFeedItemStorage(me.getId(), feedItem);
+    }
+
+    public void updateFeedItemsStorage(Message message, boolean isAdded) {
+        if (feedItemsStorage == null) {
+            return;
+        }
+        if (component.getAuthenticationController() == null) {
+            return;
+        }
+        User me = component.getAuthenticationController().getUser();
+        if (me == null) {
+            return;
+        }
+        feedItemsStorage.updateFeedItemStorage(me.getId(), message, isAdded);
+    }
+
+    public void updateFeedItemFromStorage(FeedItem feedItem) {
+        if (feedItemsStorage == null) {
+            return;
+        }
+        if (component.getAuthenticationController() == null) {
+            return;
+        }
+        User me = component.getAuthenticationController().getUser();
+        if (me == null) {
+            return;
+        }
+        feedItemsStorage.updateFeedItemFromStorage(me.getId(), feedItem);
     }
 
 }
