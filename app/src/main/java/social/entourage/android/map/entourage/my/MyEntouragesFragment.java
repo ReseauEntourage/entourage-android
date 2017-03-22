@@ -1,7 +1,11 @@
 package social.entourage.android.map.entourage.my;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,14 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.otto.Subscribe;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,18 +46,23 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.invite.view.InvitationsAdapter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
+import social.entourage.android.map.tour.TourService;
+import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.tools.BusProvider;
 
 /**
- * A simple {@link Fragment} subclass.
+ * My Entourages Fragment
  */
-public class MyEntouragesFragment extends EntourageDialogFragment {
+public class MyEntouragesFragment extends EntourageDialogFragment implements TourService.TourServiceListener {
 
     // ----------------------------------
     // Constants
@@ -66,6 +79,10 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
 
     @Inject
     MyEntouragesPresenter presenter;
+
+    TourService tourService;
+    private ServiceConnection connection = new ServiceConnection();
+    private boolean isBound = false;
 
     @BindView(R.id.myentourages_fab_menu)
     FloatingActionMenu fabMenu;
@@ -111,12 +128,19 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        doBindService();
+
         BusProvider.getInstance().register(this);
     }
 
     @Override
     public void onDestroy() {
         BusProvider.getInstance().unregister(this);
+
+        if (isBound) {
+            tourService.unregisterTourServiceListener(this);
+        }
+        doUnbindService();
 
         super.onDestroy();
     }
@@ -456,6 +480,87 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
     }
 
     // ----------------------------------
+    // SERVICE BINDING METHODS
+    // ----------------------------------
+
+    void doBindService() {
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), TourService.class);
+            getActivity().startService(intent);
+            getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    void doUnbindService() {
+        if (getActivity() != null && isBound) {
+            getActivity().unbindService(connection);
+            isBound = false;
+        }
+    }
+
+    // ----------------------------------
+    // Tour Service listener implementation
+    // ----------------------------------
+
+    @Override
+    public void onTourCreated(final boolean created, final long tourId) {
+
+    }
+
+    @Override
+    public void onTourUpdated(final LatLng newPoint) {
+
+    }
+
+    @Override
+    public void onTourResumed(final List<TourPoint> pointsToDraw, final String tourType, final Date startDate) {
+
+    }
+
+    @Override
+    public void onLocationUpdated(final LatLng location) {
+
+    }
+
+    @Override
+    public void onRetrieveToursNearby(final List<Tour> tours) {
+    }
+
+    @Override
+    public void onRetrieveToursByUserId(final List<Tour> tours) {
+
+    }
+
+    @Override
+    public void onUserToursFound(final Map<Long, Tour> tours) {
+
+    }
+
+    @Override
+    public void onToursFound(final Map<Long, Tour> tours) {
+
+    }
+
+    @Override
+    public void onFeedItemClosed(final boolean closed, final FeedItem feedItem) {
+    }
+
+    @Override
+    public void onLocationProviderStatusChanged(final boolean active) {
+
+    }
+
+    @Override
+    public void onUserStatusChanged(final TourUser user, final FeedItem feedItem) {
+        if (feedItem == null || user == null) return;
+        // if the user was rejected or canceled the request
+        if ( FeedItem.JOIN_STATUS_REJECTED.equals(user.getStatus()) || FeedItem.JOIN_STATUS_CANCELLED.equals(user.getStatus()) ) {
+            // remove the feed item
+            entouragesAdapter.removeCard(feedItem);
+        }
+    }
+
+    // ----------------------------------
     // PRIVATE CLASSES
     // ----------------------------------
 
@@ -476,6 +581,24 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         }
         @Override
         public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        }
+    }
+
+    private class ServiceConnection implements android.content.ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            if (getActivity() != null) {
+                tourService = ((TourService.LocalBinder) service).getService();
+                tourService.registerTourServiceListener(MyEntouragesFragment.this);
+                isBound = true;
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            tourService.unregisterTourServiceListener(MyEntouragesFragment.this);
+            tourService = null;
+            isBound = false;
         }
     }
 
