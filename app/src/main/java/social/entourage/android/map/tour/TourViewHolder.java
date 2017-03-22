@@ -15,12 +15,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
@@ -320,6 +322,7 @@ public class TourViewHolder extends BaseCardViewHolder {
             else if (v == actButton) {
                 String joinStatus = tour.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                    FlurryAgent.logEvent(Constants.EVENT_FEED_PENDING_OVERLAY);
                     BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
                     BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(tour));

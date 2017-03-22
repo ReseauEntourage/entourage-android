@@ -15,11 +15,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
 
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
@@ -285,6 +287,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
             else if (v == actButton) {
                 String joinStatus = entourage.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
+                    FlurryAgent.logEvent(Constants.EVENT_FEED_PENDING_OVERLAY);
                     BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(entourage));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
                     BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(entourage));
