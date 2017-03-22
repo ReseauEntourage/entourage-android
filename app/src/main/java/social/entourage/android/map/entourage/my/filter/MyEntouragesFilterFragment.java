@@ -35,8 +35,8 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
     // Attributes
     // ----------------------------------
 
-    @BindView(R.id.myentourages_filter_own_switch)
-    Switch ownSwitch;
+    @BindView(R.id.myentourages_filter_unread_switch)
+    Switch unreadSwitch;
 
     @BindView(R.id.myentourages_filter_closed_switch)
     Switch closedSwitch;
@@ -96,7 +96,7 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         MyEntouragesFilter filter = MyEntouragesFilter.getInstance();
 
         filter.closedEntourages = closedSwitch.isChecked();
-        filter.showOwnEntourages = ownSwitch.isChecked();
+        filter.showUnreadOnly = unreadSwitch.isChecked();
 
         filter.entourageTypeDemand = entourageDemandSwitch.isChecked();
         filter.entourageTypeContribution = entourageContributionSwitch.isChecked();
@@ -112,9 +112,9 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         dismiss();
     }
 
-    @OnClick(R.id.myentourages_filter_own_switch)
+    @OnClick(R.id.myentourages_filter_unread_switch)
     protected void onOrganizerSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_ORGANIZER);
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_UNREAD);
     }
 
     @OnClick(R.id.myentourages_filter_closed_switch)
@@ -144,7 +144,7 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
     private void initializeView() {
         MyEntouragesFilter filter = MyEntouragesFilter.getInstance();
 
-        ownSwitch.setChecked(filter.showOwnEntourages);
+        unreadSwitch.setChecked(filter.showUnreadOnly);
         closedSwitch.setChecked(filter.closedEntourages);
 
         entourageDemandSwitch.setChecked(filter.entourageTypeDemand);

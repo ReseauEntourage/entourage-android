@@ -70,9 +70,9 @@
                     style="@style/EntourageTitle"/>
 
                 <RelativeLayout
-                    android:id="@+id/myentourages_filter_own_layout"
+                    android:id="@+id/myentourages_filter_unread_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@color/background"
                     android:paddingEnd="10dp"
                     android:paddingLeft="10dp"
@@ -80,22 +80,22 @@
                     android:paddingStart="10dp">
 
                     <TextView
-                        android:id="@+id/myentourages_filter_own_text"
+                        android:id="@+id/myentourages_filter_unread_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_toLeftOf="@+id/myentourages_filter_own_switch"
-                        android:layout_toStartOf="@+id/myentourages_filter_own_switch"
-                        android:text="@string/myentourages_filter_own"
+                        android:layout_toLeftOf="@+id/myentourages_filter_unread_switch"
+                        android:layout_toStartOf="@+id/myentourages_filter_unread_switch"
+                        android:text="@string/myentourages_filter_unread"
                         android:textColor="@color/greyish_brown"
                         android:textSize="18sp"/>
 
                     <Switch
-                        android:id="@+id/myentourages_filter_own_switch"
+                        android:id="@+id/myentourages_filter_unread_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

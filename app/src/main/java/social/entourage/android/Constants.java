@@ -147,6 +147,7 @@ public class Constants {
     public static final String EVENT_MYENTOURAGES_FILTER_ACTIVE = "ActiveMessagesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_INVITATIONS = "InvitationsFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_ORGANIZER = "OrganizerFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_UNREAD = "UnreadMessagesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_PAST = "PastFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_ASK = "AskMessagesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_OFFER = "OfferMessagesFilter";

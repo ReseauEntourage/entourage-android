@@ -42,6 +42,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.invite.view.InvitationsAdapter;
+import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
 import social.entourage.android.tools.BusProvider;
 
@@ -397,6 +398,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
         //ignore errors
         if (newsfeedList == null) return;
         //add the feed
+        MyEntouragesFilter filter = MyEntouragesFilter.getInstance();
+        boolean showUnreadOnly = filter.showUnreadOnly;
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
 
@@ -410,6 +413,11 @@ public class MyEntouragesFragment extends EntourageDialogFragment {
                 FeedItem feedItem = (FeedItem)newsfeed.getData();
                 if (application != null) {
                     application.updateBadgeCountForFeedItem(feedItem);
+                }
+
+                // show only the unread ones if filter is set
+                if (showUnreadOnly && feedItem.getBadgeCount() <= 0) {
+                    continue;
                 }
 
                 if (entouragesAdapter.findCard(feedItem) == null) {
