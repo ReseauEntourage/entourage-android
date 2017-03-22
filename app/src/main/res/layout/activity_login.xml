@@ -22,8 +22,8 @@
         android:id="@+id/login_include_verify_code"/>
 
     <include
-        android:id="@+id/login_include_welcome"
-        layout="@layout/login_welcome"/>
+        android:id="@+id/login_include_email"
+        layout="@layout/login_email"/>
 
     <include
         android:layout_width="wrap_content"

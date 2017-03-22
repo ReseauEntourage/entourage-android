@@ -28,6 +28,7 @@
     <string name="login_text_email_update_success">Mise à jour de l\'email effectué</string>
     <string name="login_text_email_update_fail">Mise à jour de l\'email impossible</string>
     <string name="login_text_email_title">Quel est votre email ?</string>
+    <string name="login_text_email_details">Nous ne l’utiliserons que pour vous envoyer notre newsletter et les dernières actualités d’Entourage</string>
     <string name="login_text_fill_in_profile">Merci de compléter votre profil\n\nVotre adresse nous servira à vous envoyer vos comptes-rendus de maraudes</string>
     <string name="login_text_tutorial">En cours de construction…</string>
     <string name="login_text_lost_code">Redemander un code</string>

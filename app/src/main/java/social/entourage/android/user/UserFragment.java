@@ -247,8 +247,9 @@ public class UserFragment extends DialogFragment {
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
             userTourCount.setText(""+entourageCount);
 
+            boolean userEmailVerified = user.getEmail() != null;
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);
-            userEmailVerifiedImage.setImageResource(R.drawable.verified);
+            userEmailVerifiedImage.setImageResource(userEmailVerified ? R.drawable.verified : R.drawable.not_verified);
 
             List<BaseOrganization> organizationList = new ArrayList<>();
             if (user.getPartner() != null) {
