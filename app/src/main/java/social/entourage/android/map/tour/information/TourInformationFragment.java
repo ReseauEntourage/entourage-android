@@ -1530,9 +1530,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 }
                 //show only the accepted users
                 if (!tourUser.getStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED)) {
-                    // if it's my entourage, show the pending requests too
-                    if (!isMyEntourage || !tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING))
-                    continue;
+                    // if it's my entourage
+                    if (!isMyEntourage) {
+                        continue;
+                    }
+                    //show the pending and cancelled requests too (by skipping the others)
+                    if (!(tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING) || tourUser.getStatus().equals(FeedItem.JOIN_STATUS_CANCELLED))) {
+                        continue;
+                    }
                 }
                 tourUser.setFeedItem(feedItem);
                 timestampedObjectList.add(tourUser);
