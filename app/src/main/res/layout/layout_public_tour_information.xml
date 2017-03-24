@@ -79,13 +79,14 @@
         android:weightSum="5">
 
         <ImageView
-            android:id="@+id/tour_info_act_separator_left"
+            android:id="@+id/tour_info_act_divider_left"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_centerVertical="true"
             android:layout_gravity="fill_horizontal"
             android:layout_toLeftOf="@+id/tour_info_act_button"
             android:layout_toStartOf="@+id/tour_info_act_button"
+            android:alpha="0.5"
             android:background="@color/greyish"/>
 
         <Button
@@ -102,13 +103,14 @@
             android:text="@string/tour_cell_button_join"/>
 
         <ImageView
-            android:id="@+id/tour_info_act_separator_right"
+            android:id="@+id/tour_info_act_divider_right"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_centerVertical="true"
             android:layout_gravity="fill_horizontal"
             android:layout_toEndOf="@+id/tour_info_act_button"
             android:layout_toRightOf="@+id/tour_info_act_button"
+            android:alpha="0.5"
             android:background="@color/greyish"/>
 
     </RelativeLayout>

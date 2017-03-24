@@ -7,7 +7,6 @@
     android:layout_marginBottom="10dp"
     android:background="@color/background"
     android:columnCount="3"
-    android:paddingBottom="8dp"
     android:paddingEnd="12dp"
     android:paddingLeft="16dp"
     android:paddingRight="12dp"
@@ -175,6 +174,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/tour_card_button_act"
             android:layout_toStartOf="@+id/tour_card_button_act"
+            android:alpha="0.5"
             android:background="@color/greyish"/>
 
         <Button
@@ -183,8 +183,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:paddingEnd="10dp"
-            android:paddingRight="10dp"/>
+            android:paddingEnd="@dimen/act_button_right_padding"
+            android:paddingRight="@dimen/act_button_right_padding"/>
 
         <ImageView
             android:id="@+id/tour_card_divider_right"
@@ -193,6 +193,7 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/tour_card_button_act"
             android:layout_toRightOf="@+id/tour_card_button_act"
+            android:alpha="0.5"
             android:background="@color/greyish"/>
 
     </RelativeLayout>

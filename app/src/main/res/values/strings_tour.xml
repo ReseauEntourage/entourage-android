@@ -91,8 +91,8 @@
     <string name="tour_cell_button_join">Je rejoins</string>
     <string name="tour_cell_button_accepted">Actif</string>
     <string name="tour_cell_button_ongoing">En cours</string>
-    <string name="tour_cell_button_pending">Demande en attente</string>
-    <string name="tour_cell_button_rejected">Demande refusée</string>
+    <string name="tour_cell_button_pending">En attente</string>
+    <string name="tour_cell_button_rejected">Refusé</string>
     <string name="tour_cell_button_freezed">Clôturé</string>
     <string name="tour_cell_button_view">Voir</string>
 
