@@ -183,6 +183,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private int isRequestingToJoin = 0;
 
+    private boolean isStopped = false;
+
     @BindView(R.id.fragment_map_pin)
     View mapPin;
 
@@ -337,6 +339,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         super.onStart();
         presenter.handleLocationPermission();
         toursListView.addOnScrollListener(scrollListener);
+        isStopped = false;
     }
 
     @Override
@@ -344,6 +347,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         super.onStop();
 
         toursListView.removeOnScrollListener(scrollListener);
+        isStopped = true;
     }
 
     @Override
@@ -2392,7 +2396,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             @Override
             public void run() {
                 // Check if the activity is still running
-                if (getActivity() == null || getActivity().isFinishing()) {
+                if (getActivity() == null || getActivity().isFinishing() || isStopped) {
                     return;
                 }
                 // Check if the map fragment is still on top
