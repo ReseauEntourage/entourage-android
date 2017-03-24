@@ -226,6 +226,7 @@ public class EntourageViewHolder extends BaseCardViewHolder {
                 lastMessageTextView.setText("");
             }
             lastMessageTextView.setTypeface(null, entourage.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
+            lastMessageTextView.setTextColor(entourage.getBadgeCount() == 0 ? res.getColor(R.color.greyish) : res.getColor(R.color.black));
         }
 
     }

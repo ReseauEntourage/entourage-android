@@ -259,6 +259,7 @@ public class TourViewHolder extends BaseCardViewHolder {
                 lastMessageTextView.setText("");
             }
             lastMessageTextView.setTypeface(null, tour.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
+            lastMessageTextView.setTextColor(tour.getBadgeCount() == 0 ? res.getColor(R.color.greyish) : res.getColor(R.color.black));
         }
 
     }
