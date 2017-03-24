@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageError;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.TourRequest;
@@ -304,7 +305,7 @@ public class TourInformationPresenter {
                 rejectJoinTourRequest(feedItem.getId(), userId);
             }
             else {
-                fragment.onUserJoinRequestUpdated(userId, status, false);
+                fragment.onUserJoinRequestUpdated(userId, status, EntourageError.ERROR_UNKNOWN);
             }
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
@@ -316,12 +317,12 @@ public class TourInformationPresenter {
                 rejectJoinEntourageRequest(feedItem.getId(), userId);
             }
             else {
-                fragment.onUserJoinRequestUpdated(userId, status, false);
+                fragment.onUserJoinRequestUpdated(userId, status, EntourageError.ERROR_UNKNOWN);
             }
         }
         else {
             // Unknown type
-            fragment.onUserJoinRequestUpdated(userId, status, false);
+            fragment.onUserJoinRequestUpdated(userId, status, EntourageError.ERROR_UNKNOWN);
         }
     }
 
@@ -336,10 +337,10 @@ public class TourInformationPresenter {
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
-                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, true);
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NONE);
                     }
                     else {
-                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, false);
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, response.code());
                     }
                 }
             }
@@ -347,7 +348,7 @@ public class TourInformationPresenter {
             @Override
             public void onFailure(final Call<ResponseBody> call, final Throwable t) {
                 if (fragment != null) {
-                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, false);
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NETWORK);
                 }
             }
         });
@@ -360,9 +361,9 @@ public class TourInformationPresenter {
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
-                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, true);
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NONE);
                     } else {
-                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, response.code());
                     }
                 }
             }
@@ -370,7 +371,7 @@ public class TourInformationPresenter {
             @Override
             public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
                 if (fragment != null) {
-                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NETWORK);
                 }
             }
         });
@@ -387,10 +388,10 @@ public class TourInformationPresenter {
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
-                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, true);
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NONE);
                     }
                     else {
-                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, false);
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, response.code());
                     }
                 }
             }
@@ -398,7 +399,7 @@ public class TourInformationPresenter {
             @Override
             public void onFailure(final Call<ResponseBody> call, final Throwable t) {
                 if (fragment != null) {
-                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, false);
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NETWORK);
                 }
             }
         });
@@ -411,9 +412,9 @@ public class TourInformationPresenter {
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
-                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, true);
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NONE);
                     } else {
-                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
+                        fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, response.code());
                     }
                 }
             }
@@ -421,7 +422,7 @@ public class TourInformationPresenter {
             @Override
             public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
                 if (fragment != null) {
-                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, false);
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NETWORK);
                 }
             }
         });

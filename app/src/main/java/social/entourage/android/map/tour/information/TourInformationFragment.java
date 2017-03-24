@@ -84,6 +84,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageError;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
@@ -1248,10 +1249,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     private void initializeMembersView() {
-
-        // Show the members count
-        membersCountTextView.setText(getString(R.string.tour_info_members_count, membersList.size()));
-
         if (membersAdapter == null) {
             // Initialize the recycler view
             membersView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -1261,6 +1258,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         // add the members
         membersAdapter.addItems(membersList);
+
+        // Show the members count
+        membersCountTextView.setText(getString(R.string.tour_info_members_count, membersAdapter.getItemCount()));
     }
 
     private void switchToPublicSection() {
@@ -1511,6 +1511,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (getActivity() == null || !isAdded()) return;
 
         if (tourUsers != null) {
+            membersList.clear();
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
             Iterator<TourUser> iterator = tourUsers.iterator();
             // check if this is my entourage
@@ -1524,15 +1525,18 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 TourUser tourUser =  iterator.next();
                 // add the author to members list and skip it
                 if (tourUser.getUserId() == feedItem.getAuthor().getUserID()) {
-                    TourUser clone = tourUser.clone();
-                    clone.setDisplayedAsMember(true);
-                    membersList.add(clone);
+                    if (membersAdapter.findCard(tourUser) == null) {
+                        TourUser clone = tourUser.clone();
+                        clone.setDisplayedAsMember(true);
+                        membersList.add(clone);
+                    }
                     continue;
                 }
                 //show only the accepted users
                 if (!tourUser.getStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED)) {
                     // if it's my entourage
                     if (!isMyEntourage) {
+                        membersAdapter.removeCard(tourUser);
                         continue;
                     }
                     //show the pending and cancelled requests too (by skipping the others)
@@ -1541,12 +1545,19 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                     }
                 }
                 tourUser.setFeedItem(feedItem);
-                timestampedObjectList.add(tourUser);
 
-                if (FeedItem.JOIN_STATUS_ACCEPTED.equals(tourUser.getStatus())) {
-                    TourUser clone = tourUser.clone();
-                    clone.setDisplayedAsMember(true);
-                    membersList.add(clone);
+                // check if we already have this user
+                TourUser oldUser = (TourUser)discussionAdapter.findCard(tourUser);
+                if (oldUser != null && !oldUser.getStatus().equals(tourUser.getStatus())) {
+                    discussionAdapter.updateCard(tourUser);
+                } else {
+                    timestampedObjectList.add(tourUser);
+
+                    if (FeedItem.JOIN_STATUS_ACCEPTED.equals(tourUser.getStatus())) {
+                        TourUser clone = tourUser.clone();
+                        clone.setDisplayedAsMember(true);
+                        membersList.add(clone);
+                    }
                 }
             }
             feedItem.addCardInfoList(timestampedObjectList);
@@ -1649,9 +1660,9 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
     }
 
-    protected void onUserJoinRequestUpdated(int userId, String status, boolean success) {
+    protected void onUserJoinRequestUpdated(int userId, String status, int error) {
         hideProgressBar();
-        if (success) {
+        if (error == EntourageError.ERROR_NONE) {
             // Updated ok
             Toast.makeText(getActivity(), R.string.tour_join_request_success, Toast.LENGTH_SHORT).show();
             // Update the card
@@ -1683,6 +1694,12 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         else {
             // Error
             Toast.makeText(getActivity(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
+            // If we get a bad request error, retrieve the users, maybe the status changed
+            if (error == EntourageError.ERROR_BAD_REQUEST) {
+                if (presenter != null) {
+                    presenter.getFeedItemUsers();
+                }
+            }
         }
     }
 
