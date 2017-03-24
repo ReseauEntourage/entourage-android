@@ -241,7 +241,8 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mJoinStatusView.setText(Html.fromHtml(itemView.getContext().getString(R.string.tour_info_text_join_html, user.getDisplayName(), joinStatus)), TextView.BufferType.SPANNABLE);
 
         String joinMessage = user.getMessage();
-        if (Tour.JOIN_STATUS_ACCEPTED.equals(user.getStatus())) {
+        String userStatus = user.getStatus();
+        if (Tour.JOIN_STATUS_ACCEPTED.equals(userStatus) || Tour.JOIN_STATUS_CANCELLED.equals(userStatus)) {
             if (joinMessage != null && joinMessage.length() > 0) {
                 mPublicMessageSection.setVisibility(View.VISIBLE);
                 mPublicJoinMessage.setText(joinMessage);
