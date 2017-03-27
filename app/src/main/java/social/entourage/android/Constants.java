@@ -60,6 +60,24 @@ public class Constants {
     public static final String EVENT_GEOLOCATION_ACCEPT = "AcceptGeolocFromPopup";
     public static final String EVENT_GEOLOCATION_REFUSE = "RefuseGeolocFromPopup";
 
+    // SCREEN Events
+    public static final String EVENT_SCREEN_02_1 = "Screen02OnboardingLoginView";
+    public static final String EVENT_SCREEN_03_1 = "Screen03_1OnboardingCodeResendView";
+    public static final String EVENT_SCREEN_03_2 = "Screen03_2OnboardingPhoneNotFoundView";
+    public static final String EVENT_SCREEN_04 = "Screen04_GoEnableGeolocView"; //Not implemented on Android
+    public static final String EVENT_SCREEN_30_1 = "Screen30_1WelcomeView";
+    public static final String EVENT_SCREEN_30_2 = "Screen30_2InputPhoneView";
+    public static final String EVENT_SCREEN_30_2_E = "Screen30_2PhoneAlreadyExistsError";
+    public static final String EVENT_SCREEN_30_3 = "Screen30_3InputPasscodeView";
+    public static final String EVENT_SCREEN_09_1_ME = "Screen09_1MyProfileViewAsPublicView";
+    public static final String EVENT_SCREEN_09_1_OTHER = "Screen09_1OtherUserProfileView";
+    public static final String EVENT_SCREEN_09_2 = "Screen09_2EditMyProfileView";
+    public static final String EVENT_SCREEN_09_4 = "Screen09_4EditPasswordView";
+    public static final String EVENT_SCREEN_09_4_SUBMIT = "Screen09_4ChangePasswordSubmit";
+    public static final String EVENT_SCREEN_06_1 = "Screen06_1FeedView";
+    public static final String EVENT_SCREEN_06_2 = "Screen06_2MapView";
+    public static final String EVENT_SCREEN_17_2 = "Screen17_2MyMessagesView";
+
     //MENU Events
     public static final String EVENT_PROFILE_FROM_MENU = "Open_Profile_From_Menu";
     public static final String EVENT_OPEN_GUIDE_FROM_MENU = "Open_Guide_From_Menu";
@@ -69,7 +87,7 @@ public class Constants {
     public static final String EVENT_MENU_ABOUT = "AboutClick";
 
     //FEED Events
-    public static final String EVENT_FEED_MESSAGES = "GoToMessages";
+    public static final String EVENT_FEED_MESSAGES = "GoToMessages"; // No longer used
     public static final String EVENT_FEED_MENU = "OpenMenu";
     public static final String EVENT_FEED_USERPROFILE = "UserProfileClick";
     public static final String EVENT_FEED_ACTIVE_CLOSE_OVERLAY = "OpenActiveCloseOverlay";

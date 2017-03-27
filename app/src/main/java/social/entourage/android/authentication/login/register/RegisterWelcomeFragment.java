@@ -9,9 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 
@@ -49,6 +52,8 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register_welcome, container, false);
         ButterKnife.bind(this, view);
+
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_1);
 
         return view;
     }

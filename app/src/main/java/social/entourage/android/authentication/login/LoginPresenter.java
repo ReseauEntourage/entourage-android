@@ -295,6 +295,7 @@ public class LoginPresenter {
                             String errorString = response.errorBody().string();
                             if (errorString.contains("PHONE_ALREADY_EXIST")) {
                                 // Phone number already registered
+                                FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_2_E);
                                 activity.registerPhoneNumberSent(phoneNumber, false);
                                 activity.displayToast(R.string.registration_number_error_already_registered);
                             } else if (errorString.contains("INVALID_PHONE_FORMAT")) {

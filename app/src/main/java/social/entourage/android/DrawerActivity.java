@@ -404,8 +404,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             discussionBadgeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    FlurryAgent.logEvent(Constants.EVENT_FEED_MESSAGES);
-                    //presenter.displayMyTours();
+                    FlurryAgent.logEvent(Constants.EVENT_SCREEN_17_2);
                     presenter.displayMyEntourages();
                 }
             });
@@ -987,7 +986,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     @OnClick(R.id.button_poi_launcher)
     protected void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
-            FlurryAgent.logEvent(Constants.EVENT_FEED_GUIDE_SHOW_CLICK);
+            FlurryAgent.logEvent(Constants.EVENT_SCREEN_06_2);
             // Change the Guide Option text
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_close_button));
@@ -1003,7 +1002,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             // Show the guide screen
             selectItem(R.id.action_guide);
         } else {
-            FlurryAgent.logEvent(Constants.EVENT_GUIDE_MASK_CLICK);
+            FlurryAgent.logEvent(Constants.EVENT_SCREEN_06_1);
             // Change the Guide Option text
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_launcher_button));

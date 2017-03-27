@@ -686,6 +686,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             }
         } else {
             if (isOnboarding) {
+                FlurryAgent.logEvent(Constants.EVENT_SCREEN_03_2);
                 displayToast(getString(R.string.login_text_lost_code_ko));
             } else {
                 if (loginLostCode.getVisibility() == View.VISIBLE) {
@@ -874,8 +875,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     @OnClick(R.id.login_button_login)
-    void showLoginScreen() {
+    void onStartupLoginClicked() {
         FlurryAgent.logEvent(Constants.EVENT_SPLASH_LOGIN);
+        showLoginScreen();
+    }
+
+    void showLoginScreen() {
         loginStartup.setVisibility(View.GONE);
         loginSignin.setVisibility(View.VISIBLE);
         showKeyboard(phoneEditText);
@@ -949,6 +954,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_verify_code_back)
     void showLostCodeScreen() {
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_03_1);
         hideKeyboard();
         receivedCode.setText("");
         loginVerifyCode.setVisibility(View.GONE);
@@ -963,6 +969,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // OnRegisterUserListener
     @Override
     public void registerShowSignIn() {
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_02_1);
         showLoginScreen();
     }
 
@@ -988,7 +995,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     public void registerResendCode() {
         if (loginPresenter != null && onboardingUser != null) {
-            FlurryAgent.logEvent(Constants.EVENT_SMS_CODE_REQUEST);
+            FlurryAgent.logEvent(Constants.EVENT_SCREEN_03_1);
             loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();

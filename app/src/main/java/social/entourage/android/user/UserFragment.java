@@ -207,6 +207,7 @@ public class UserFragment extends DialogFragment {
     // ----------------------------------
 
     private void configureView() {
+        FlurryAgent.logEvent(isMyProfile ? Constants.EVENT_SCREEN_09_1_ME : Constants.EVENT_SCREEN_09_1_OTHER);
         if (getActivity() != null && !getActivity().isFinishing()) {
             Resources res = getResources();
             Stats stats = user.getStats();

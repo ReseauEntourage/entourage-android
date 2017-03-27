@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
@@ -113,6 +114,7 @@ public class UserEditFragment extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View v = inflater.inflate(R.layout.fragment_user_edit, container, false);
         ButterKnife.bind(this, v);
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_2);
         return v;
     }
 
