@@ -153,6 +153,11 @@ public class Constants {
     public static final String EVENT_MYENTOURAGES_FILTER_OFFER = "OfferMessagesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_TOUR = "TourMessagesFilter";
 
+    //ENTOURAGE DISCLAIMER Events
+    public static final String EVENT_ENTOURAGE_DISCLAIMER_CLOSE = "CloseEthicsPopupClick";
+    public static final String EVENT_ENTOURAGE_DISCLAIMER_ACCEPT = "AcceptEthicsChartClick";
+    public static final String EVENT_ENTOURAGE_DISCLAIMER_LINK = "LinkToEthicsChartClick";
+
     //TOUR Events
     public static final String EVENT_START_TOUR = "StartTourClick";
     public static final String EVENT_STOP_TOUR = "TourStop";

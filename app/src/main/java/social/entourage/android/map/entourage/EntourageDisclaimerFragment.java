@@ -1,6 +1,8 @@
 package social.entourage.android.map.entourage;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,9 +19,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -45,6 +50,8 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     SwitchCompat disclaimerSwitch;
 
     private String entourageType;
+
+    private boolean isPro;
 
     // ----------------------------------
     // Lifecycle
@@ -90,21 +97,23 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
         Bundle args = getArguments();
         if (args != null) {
             entourageType = args.getString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE, Entourage.TYPE_CONTRIBUTION);
-            boolean isPro = args.getBoolean(EntourageDisclaimerFragment.KEY_IS_PRO, false);
+            isPro = args.getBoolean(EntourageDisclaimerFragment.KEY_IS_PRO, false);
 
-            disclaimerTextView.setMovementMethod(LinkMovementMethod.getInstance());
-            String disclaimer = "";
-            if (isPro) {
-                disclaimer = getString(R.string.entourage_disclaimer_text_chart, getString(R.string.disclaimer_link_pro));
-            } else {
-                disclaimer = getString(R.string.entourage_disclaimer_text_chart, getString(R.string.disclaimer_link_public));
-            }
-            disclaimerTextView.setText(Html.fromHtml(disclaimer));
+            disclaimerTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_LINK);
+                    String disclaimerURL = isPro ? getString(R.string.disclaimer_link_pro) : getString(R.string.disclaimer_link_public);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(disclaimerURL));
+                    startActivity(browserIntent);
+                }
+            });
 
             disclaimerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
                     if (isChecked) {
+                        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_ACCEPT);
                         // trigger the accept after a delay
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.postDelayed(new Runnable() {
@@ -148,6 +157,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.entourage_disclaimer_close_button)
     protected void onCloseClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_CLOSE);
         dismiss();
     }
 
