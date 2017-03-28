@@ -17,6 +17,9 @@
     <string name="encounter_listen_to_voice_message">Ecoutez leur message vocal</string>
     <string name="tweet_with_audio">Ecoutez le message que j\'ai enregistré avec %1$s via l\'application Entourage : %2$s %3$s %4$s</string>
     <string name="tweet_without_audio">J\'ai rencontré %1$s %2$s %3$s</string>
+    <string name="poi_report_description">J\'ai des informations sur cette structure</string>
+    <string name="poi_report_button">Mettre à jour</string>
+    <string name="poi_report_email_subject_format">Information sur la structure \'%1$s\'</string>
 
     <!-- Empty Guide Popup -->
     <string name="map_poi_empty_popup"><![CDATA[On dirait que c\'est calme ici!<br/><br/>
