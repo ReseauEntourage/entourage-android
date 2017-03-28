@@ -62,14 +62,15 @@ public class PoiRenderer extends DefaultClusterRenderer<Poi> {
     }
 
     public enum CategoryType {
-        INSERTION("Se réinsérer", 7, R.drawable.poi_category_7, R.drawable.poi_transparent_category_7, Color.parseColor("#97d791")),
-        SELF_CARE("S'occuper de soi", 6,  R.drawable.poi_category_6, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff")),
-        ORIENTATION("S'orienter", 5,  R.drawable.poi_category_5, R.drawable.poi_transparent_category_5, Color.parseColor("#bfbfb9")),
-        WATER("Se rafraîchir", 4, R.drawable.poi_category_4, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff")),
-        MEDICAL("Se soigner", 3, R.drawable.poi_category_3, R.drawable.poi_transparent_category_3, Color.parseColor("#ff9999")),
-        HOUSING("Se loger", 2, R.drawable.poi_category_2, R.drawable.poi_transparent_category_2, Color.parseColor("#caa7ea")),
+
+        OTHER("Other", 0, 0, 0, Color.parseColor("#000000")),
         FOOD("Se nourrir", 1, R.drawable.poi_category_1, R.drawable.poi_transparent_category_1, Color.parseColor("#ffc57f")),
-        OTHER("Other", 0, 0, 0, Color.parseColor("#000000"));
+        HOUSING("Se loger", 2, R.drawable.poi_category_2, R.drawable.poi_transparent_category_2, Color.parseColor("#caa7ea")),
+        MEDICAL("Se soigner", 3, R.drawable.poi_category_3, R.drawable.poi_transparent_category_3, Color.parseColor("#ff9999")),
+        WATER("Se rafraîchir", 4, R.drawable.poi_category_4, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff")),
+        ORIENTATION("S'orienter", 5,  R.drawable.poi_category_5, R.drawable.poi_transparent_category_5, Color.parseColor("#bfbfb9")),
+        SELF_CARE("S'occuper de soi", 6,  R.drawable.poi_category_6, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff")),
+        INSERTION("Se réinsérer", 7, R.drawable.poi_category_7, R.drawable.poi_transparent_category_7, Color.parseColor("#97d791"));
 
         private final String name;
         private final int categoryId;
@@ -99,6 +100,10 @@ public class PoiRenderer extends DefaultClusterRenderer<Poi> {
 
         public String getName() {
             return name;
+        }
+
+        public int getCategoryId() {
+            return categoryId;
         }
 
         public static CategoryType findCategoryTypeByName(String name) {

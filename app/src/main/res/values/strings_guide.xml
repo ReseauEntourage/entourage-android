@@ -27,4 +27,8 @@
     Une structure manque sur la carte?<<br/>
     <a href=\"%1$s\">Proposez une structure</a>]]></string>
 
+    <!-- Guide Filter -->
+    <string name="guide_filter_title">FILTRES</string>
+    <string name="guide_filter_categories_title">Catégories</string>
+
 </resources>

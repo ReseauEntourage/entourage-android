@@ -58,6 +58,8 @@ import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.guide.filter.GuideFilter;
+import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiActivity;
 import social.entourage.android.tools.BusProvider;
 
@@ -248,6 +250,12 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
             map.moveCamera(cameraUpdate);
         }
+    }
+
+    @OnClick(R.id.fragment_guide_filter_button)
+    void onShowFilter() {
+        GuideFilterFragment guideFilterFragment = new GuideFilterFragment();
+        guideFilterFragment.show(getFragmentManager(), GuideFilterFragment.TAG);
     }
 
     // ----------------------------------
