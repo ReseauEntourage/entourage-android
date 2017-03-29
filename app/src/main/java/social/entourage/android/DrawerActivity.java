@@ -945,6 +945,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_add_tour_encounter)
     public void onAddTourEncounterClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onAddEncounter();
         } else {

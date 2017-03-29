@@ -263,6 +263,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
                     FlurryAgent.logEvent(Constants.EVENT_FEED_PENDING_OVERLAY);
                     BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                    FlurryAgent.logEvent(Constants.EVENT_FEED_OPEN_ACTIVE_OVERLAY);
                     BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //What to do on rejected status ?

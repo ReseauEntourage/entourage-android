@@ -99,6 +99,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.register_welcome_start_button)
     protected void onStartClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_WELCOME_CONTINUE);
         RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
         registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);
     }

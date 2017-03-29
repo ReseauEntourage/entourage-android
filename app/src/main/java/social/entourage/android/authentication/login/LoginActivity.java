@@ -1023,7 +1023,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_notifications_ignore_button)
     protected void onNotificationsIgnore() {
-        FlurryAgent.logEvent(Constants.EVENT_NOTIFICATIONS_REFUSE);
         saveNotifications(false);
         loginNotificationsView.setVisibility(View.GONE);
         showGeolocationView();
@@ -1047,7 +1046,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_geolocation_ignore_button)
     protected void onGeolocationIgnore() {
-        FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_REFUSE);
         loginGeolocationView.setVisibility(View.GONE);
         finishTutorial();
     }

@@ -55,10 +55,13 @@ public class Constants {
     public static final String EVENT_PHOTO_IGNORE = "IgnorePhoto";
     public static final String EVENT_PHOTO_BACK = "BackFromPhoto1";
     public static final String EVENT_PHOTO_SUBMIT = "SubmitInstantPhoto";
-    public static final String EVENT_NOTIFICATIONS_ACCEPT = "AcceptNotificationsFromPopup";
-    public static final String EVENT_NOTIFICATIONS_REFUSE = "RefuseNotificationsFromPopup";
-    public static final String EVENT_GEOLOCATION_ACCEPT = "AcceptGeolocFromPopup";
-    public static final String EVENT_GEOLOCATION_REFUSE = "RefuseGeolocFromPopup";
+    public static final String EVENT_NOTIFICATIONS_ACCEPT = "AcceptNotifications";
+    public static final String EVENT_NOTIFICATIONS_POPUP_ACCEPT = "AcceptNotificationsFromPopup";
+    public static final String EVENT_NOTIFICATIONS_POPUP_REFUSE = "RefuseNotificationsFromPopup";
+    public static final String EVENT_GEOLOCATION_ACCEPT = "AcceptGeoloc";
+    public static final String EVENT_GEOLOCATION_POPUP_ACCEPT = "AcceptGeolocFromPopup";
+    public static final String EVENT_GEOLOCATION_POPUP_REFUSE = "RefuseGeolocFromPopup";
+    public static final String EVENT_WELCOME_CONTINUE = "WelcomeScreenContinue";
 
     // SCREEN Events
     public static final String EVENT_SCREEN_02_1 = "Screen02OnboardingLoginView";
@@ -113,7 +116,7 @@ public class Constants {
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromRecenterPopup";
 
     //MAP Events
-    public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick"; //Not used
+    public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick";
     public static final String EVENT_MAP_LISTVIEW_CLICK = "ListViewClick";
     public static final String EVENT_MAP_LONGPRESS = "HiddenButtonsOverlayPress";
     public static final String EVENT_MAP_ZOOM_IN = "ZoomIn";
@@ -188,6 +191,7 @@ public class Constants {
     public static final String EVENT_TOUR_PLUS_CLICK = "PlusOnTourClick";
 
     //TOUR ENCOUNTER Events
+    public static final String EVENT_CREATE_ENCOUNTER_CLICK = "CreateEncounterClick";
     public static final String EVENT_CREATE_ENCOUNTER_START = "Open_Create_Encounter_From_Tour";
     public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK = "Encounter_Voice_Message_Recorded_OK";
     public static final String EVENT_CREATE_ENCOUNTER_OK = "Encounter_Created";
@@ -199,15 +203,25 @@ public class Constants {
     public static final String EVENT_MAP_FILTER_FILTER1 = "ClickFilter1Value";
     public static final String EVENT_MAP_FILTER_FILTER2 = "ClickFilter2Value";
     public static final String EVENT_MAP_FILTER_FILTER3 = "ClickFilter3Value";
-    public static final String EVENT_MAP_FILTER_ONLY_MINE = "ShowOnlyMineClick";
-    public static final String EVENT_MAP_FILTER_ONLY_TOURS = "ShowOnlyToursFilterClick";
+    public static final String EVENT_MAP_FILTER_ONLY_MINE = "ShowOnlyMineFilter";
+    public static final String EVENT_MAP_FILTER_ONLY_TOURS = "ShowToursOnlyFilterClick";
     public static final String EVENT_MAP_FILTER_ONLY_OFFERS = "ShowOnlyOffersClick";
     public static final String EVENT_MAP_FILTER_ONLY_ASK = "ShowOnlyAsksClick";
     public static final String EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS = "ShowOnlyMedicalToursClick";
     public static final String EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS = "ShowOnlySocialToursClick";
     public static final String EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS = "ShowOnlyDistributionToursClick";
-    public static final String EVENT_MAP_FILTER_SUBMIT = "SubmitFilterPrefferences";
+    public static final String EVENT_MAP_FILTER_SUBMIT = "SubmitFilterPreferences";
     public static final String EVENT_MAP_FILTER_CLOSE = "CloseFilter";
+
+    // USER Events
+    public static final String EVENT_USER_EDIT_PROFILE = "EditMyProfile";
+    public static final String EVENT_USER_EDIT_PHOTO = "EditPhoto";
+
+    // ABOUT Events
+    public static final String EVENT_ABOUT_RATING = "RatingClick";
+    public static final String EVENT_ABOUT_FACEBOOK = "FacebookPageClick";
+    public static final String EVENT_ABOUT_WEBSITE = "WebsiteVisitClick";
+    public static final String EVENT_ABOUT_CGU = "CGUClick";
 
     // Geolocation
     public static final long UPDATE_TIMER_MILLIS_OFF_TOUR = 20000;

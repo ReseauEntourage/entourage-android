@@ -325,8 +325,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             for (int index = 0; index < permissions.length; index++) {
                 if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
                     //checkPermission();
+                    FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_POPUP_REFUSE);
                     BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
                 } else {
+                    FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_POPUP_ACCEPT);
                     BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
                 }
             }
@@ -1249,6 +1251,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onDisplayTypeList() {
         FlurryAgent.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
         showToursList();
+    }
+
+    @OnClick(R.id.map_display_type_carte)
+    public void onDisplayTypeCarte() {
+        FlurryAgent.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
     }
 
     @OnClick(R.id.map_longclick_button_entourage_demand)

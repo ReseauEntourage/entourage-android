@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,6 +62,8 @@ public class AboutActivity extends AppCompatActivity {
 
     @OnClick(R.id.about_rate_us_layout)
     protected void onRateUsClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ABOUT_RATING);
+
         Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         // To count with Play market backstack, After pressing back button,
@@ -77,18 +81,24 @@ public class AboutActivity extends AppCompatActivity {
 
     @OnClick(R.id.about_facebook_layout)
     protected void onFacebookClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ABOUT_FACEBOOK);
+
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_URL));
         startActivity(browserIntent);
     }
 
     @OnClick(R.id.about_conditions_layout)
     protected void onTermsClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ABOUT_CGU);
+
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_URL));
         startActivity(browserIntent);
     }
 
     @OnClick(R.id.about_website_layout)
     protected void onWebsiteClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_ABOUT_WEBSITE);
+
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WEBSITE_URL));
         startActivity(browserIntent);
     }

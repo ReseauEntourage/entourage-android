@@ -282,6 +282,14 @@ public class UserFragment extends DialogFragment {
         }
     }
 
+    private void showUserEditFragment() {
+        // Allow editing only of the logged user
+        if (!isMyProfile) return;
+        // Show the edit profile screen
+        UserEditFragment fragment = new UserEditFragment();
+        fragment.show(getFragmentManager(), UserEditFragment.TAG);
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -352,13 +360,21 @@ public class UserFragment extends DialogFragment {
         dismiss();
     }
 
-    @OnClick({R.id.user_profile_edit_button, R.id.user_photo, R.id.user_name, R.id.user_identification_email_layout, R.id.user_identification_phone_layout, R.id.user_number_of_entourages_layout})
+    @OnClick(R.id.user_profile_edit_button)
+    protected void onEditButtonClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_USER_EDIT_PROFILE);
+        showUserEditFragment();
+    }
+
+    @OnClick(R.id.user_photo)
+    protected void onUserPhotoClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_USER_EDIT_PHOTO);
+        showUserEditFragment();
+    }
+
+    @OnClick({R.id.user_name, R.id.user_identification_email_layout, R.id.user_identification_phone_layout, R.id.user_number_of_entourages_layout})
     protected void onEditProfileClicked() {
-        // Allow editing only of the logged user
-        if (!isMyProfile) return;
-        // Show the edit profile screen
-        UserEditFragment fragment = new UserEditFragment();
-        fragment.show(getFragmentManager(), UserEditFragment.TAG);
+        showUserEditFragment();
     }
 
     /*
