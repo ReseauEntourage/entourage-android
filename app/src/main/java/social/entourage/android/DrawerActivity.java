@@ -775,16 +775,28 @@ public class DrawerActivity extends EntourageSecuredActivity
             return;
         }
         if (mapEntourageFragment != null) {
-            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && event.isShowUI()) {
+            if (event.isShowUI()) {
                 FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
                 FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
                 feedItemOptionsFragment.show(getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
                 return;
             }
+            // Only the author can close entourages/tours
+            User me = EntourageApplication.me(this);
+            if (me == null || feedItem.getAuthor() == null) {
+                return;
+            }
+            int myId = me.getId();
+            if (feedItem.getAuthor().getUserID() != myId) {
+                return;
+            }
+
             if (!feedItem.isClosed()) {
+                // close
                 mapEntourageFragment.stopFeedItem(feedItem);
             } else {
-                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
+                    // freeze
                     Tour tour = (Tour) feedItem;
                     mapEntourageFragment.freezeTour(tour);
                 }
