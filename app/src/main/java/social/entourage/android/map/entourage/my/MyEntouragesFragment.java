@@ -445,7 +445,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 }
 
                 if (entouragesAdapter.findCard(feedItem) == null) {
-                    entouragesAdapter.addCardInfoBeforeTimestamp(feedItem);
+                    entouragesAdapter.addCardInfo(feedItem);
                 }
                 else {
                     entouragesAdapter.updateCard(feedItem);
