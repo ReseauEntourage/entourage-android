@@ -1,11 +1,15 @@
 package social.entourage.android.map.entourage;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
@@ -54,6 +58,9 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
     private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
 
     private static final int TITLE_MAX_CHAR_COUNT = 150;
+
+    private static final int VOICE_RECOGNITION_TITLE_CODE = 1;
+    private static final int VOICE_RECOGNITION_DESCRIPTION_CODE = 2;
 
     // ----------------------------------
     // Attributes
@@ -177,6 +184,36 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.background)));
     }
 
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == VOICE_RECOGNITION_TITLE_CODE) {
+                List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (!textMatchList.isEmpty()) {
+                    if (titleEditText.getText().toString().equals("")) {
+                        titleEditText.setText(textMatchList.get(0));
+                    } else {
+                        titleEditText.setText(titleEditText.getText() + " " + textMatchList.get(0));
+                    }
+                    titleEditText.setSelection(titleEditText.getText().length());
+                }
+            }
+            else if (requestCode == VOICE_RECOGNITION_DESCRIPTION_CODE) {
+                List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (!textMatchList.isEmpty()) {
+                    if (descriptionEditText.getText().toString().equals("")) {
+                        descriptionEditText.setText(textMatchList.get(0));
+                    } else {
+                        descriptionEditText.setText(descriptionEditText.getText() + " " + textMatchList.get(0));
+                    }
+                    descriptionEditText.setSelection(descriptionEditText.getText().length());
+                }
+            }
+        }
+
+    }
+
     // ----------------------------------
     // Interactions handling
     // ----------------------------------
@@ -224,12 +261,39 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
 
     @OnClick(R.id.create_entourage_title_mic)
     protected void onTitleMicClick() {
-        showKeyboard(titleEditText);
+        // Try to start SPEECH TO TEXT
+        if (!startRecording(VOICE_RECOGNITION_TITLE_CODE)) {
+            // Failed, show the keyboard
+            showKeyboard(titleEditText);
+        }
     }
 
     @OnClick(R.id.create_entourage_description_mic)
     protected void onDescriptionMicClick() {
-        showKeyboard(descriptionEditText);
+        // Try to start SPEECH TO TEXT
+        if (!startRecording(VOICE_RECOGNITION_DESCRIPTION_CODE)) {
+            // Failed, show the keyboard
+            showKeyboard(descriptionEditText);
+        }
+    }
+
+    // ----------------------------------
+    // Microphone handling
+    // ----------------------------------
+
+    private boolean startRecording(int callbackCode) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message));
+        try {
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SPEECH);
+            startActivityForResult(intent, callbackCode);
+        } catch (ActivityNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 
     // ----------------------------------
