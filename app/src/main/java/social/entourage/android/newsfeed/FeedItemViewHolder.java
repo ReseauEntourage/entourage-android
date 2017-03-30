@@ -89,7 +89,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         onClickListener = new OnClickListener();
 
         itemView.setOnClickListener(onClickListener);
-        tourAuthor.setOnClickListener(onClickListener);
+        //tourAuthor.setOnClickListener(onClickListener);
         photoView.setOnClickListener(onClickListener);
         if (actButton != null) actButton.setOnClickListener(onClickListener);
 
