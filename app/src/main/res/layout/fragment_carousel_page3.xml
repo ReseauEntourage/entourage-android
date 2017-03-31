@@ -37,17 +37,18 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/carousel_p3_create_entourage_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/carousel_p3_plus_image"
-        android:id="@+id/carousel_p3_create_entourage_image"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginStart="5dp"/>
+        android:layout_marginStart="5dp"
+        android:contentDescription="@string/empty_description"
+        app:srcCompat="@drawable/carousel_p3_plus_image"/>
 
 </RelativeLayout>

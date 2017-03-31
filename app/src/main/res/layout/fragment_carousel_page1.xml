@@ -50,11 +50,11 @@
             android:id="@+id/carousel_p1_handshake">
 
             <ImageView
+                android:id="@+id/carousel_p1_handshake_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_handshake"
-                android:id="@+id/carousel_p1_handshake_image"
-                />
+                android:contentDescription="@string/empty_description"
+                app:srcCompat="@drawable/ic_handshake"/>
 
             <TextView
                 android:text="@string/carousel_p1_handshake"

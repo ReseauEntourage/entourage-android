@@ -10,17 +10,19 @@
               android:paddingBottom="10dp">
 
     <ImageButton
+        android:id="@+id/tour_join_request_ok_x_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tour_join_request_ok_x_button"
-        android:src="@drawable/ic_close_white"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="5dp"/>
+        android:contentDescription="@string/empty_description"
+        android:padding="5dp"
+        android:src="@drawable/ic_close_white"/>
 
     <ImageView
+        android:id="@+id/tour_join_request_ok_logo"
         android:layout_width="50dp"
         android:layout_height="74dp"
-        android:id="@+id/tour_join_request_ok_logo"
+        android:contentDescription="@string/empty_description"
         android:src="@drawable/entourage_logo"/>
 
     <TextView

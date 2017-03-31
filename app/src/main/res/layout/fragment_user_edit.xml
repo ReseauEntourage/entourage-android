@@ -6,44 +6,48 @@
                 android:background="@color/background">
 
     <RelativeLayout
-        android:orientation="vertical"
+        android:id="@+id/user_edit_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:id="@+id/user_edit_title_layout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/background"
+        android:orientation="vertical">
 
         <ImageButton
+            android:id="@+id/user_edit_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/user_edit_close_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:padding="5dp"/>
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
+            android:id="@+id/textView5"
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/activity_display_user_title"
-            android:id="@+id/textView5"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_centerHorizontal="true"/>
+            android:text="@string/activity_display_user_title"/>
 
         <TextView
+            android:id="@+id/user_save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/user_save_button"
-            android:id="@+id/user_save_button"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/accent"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            />
+            android:text="@string/user_save_button"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/accent"/>
     </RelativeLayout>
 
     <ScrollView
@@ -81,15 +85,16 @@
                     android:layout_marginTop="20dp"/>
 
                 <ImageButton
+                    android:id="@+id/user_photo_button"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:id="@+id/user_photo_button"
-                    android:layout_centerHorizontal="true"
                     android:layout_alignBottom="@+id/user_photo"
-                    android:src="@drawable/camera_square"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
                     android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/empty_description"
                     android:scaleType="centerInside"
-                    android:layout_marginBottom="10dp"/>
+                    android:src="@drawable/camera_square"/>
 
             </RelativeLayout>
 
@@ -111,12 +116,12 @@
                     style="@style/UserProfileTextViewStyle"/>
 
                 <TextView
+                    android:id="@+id/user_edit_firstname"
+                    style="@style/UserProfileTextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/user_edit_firstname"
-                    android:gravity="right|end"
-                    android:textColor="@color/accent"
-                    style="@style/UserProfileTextViewStyle"/>
+                    android:gravity="end"
+                    android:textColor="@color/accent"/>
             </LinearLayout>
 
             <View
@@ -148,11 +153,11 @@
                     style="@style/UserProfileTextViewStyle"/>
 
                 <TextView
+                    android:id="@+id/user_edit_lastname"
+                    style="@style/UserProfileTextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/user_edit_lastname"
-                    android:gravity="right|end"
-                    style="@style/UserProfileTextViewStyle"
+                    android:gravity="end"
                     android:textColor="@color/accent"/>
             </LinearLayout>
 
@@ -267,12 +272,12 @@
                         style="@style/UserProfileTextViewStyle"/>
 
                     <TextView
+                        android:id="@+id/user_email"
+                        style="@style/UserProfileTextViewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/user_email"
-                        android:gravity="right|end"
-                        android:textColor="@color/accent"
-                        style="@style/UserProfileTextViewStyle"/>
+                        android:gravity="end"
+                        android:textColor="@color/accent"/>
                 </LinearLayout>
 
                 <View
@@ -297,13 +302,14 @@
                         android:layout_centerVertical="true"/>
 
                     <ImageView
+                        android:id="@+id/user_change_password_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/user_change_password_arrow"
-                        android:src="@drawable/arrow_grey"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/empty_description"
+                        android:src="@drawable/arrow_grey"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -338,10 +344,10 @@
                         style="@style/UserProfileTextViewStyle"/>
 
                     <TextView
+                        android:id="@+id/user_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/user_phone"
-                        android:gravity="right|end"
+                        android:gravity="end"
                         android:textColor="@color/greyish"/>
                 </LinearLayout>
 
@@ -380,14 +386,15 @@
                     style="@style/UserProfileTextViewStyle"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/user_address"
                     style="@style/UserProfileTextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/accent"
+                    android:layout_toEndOf="@+id/textView12"
                     android:layout_toRightOf="@+id/textView12"
-                    android:gravity="right|end"/>
+                    android:gravity="end"
+                    android:textColor="@color/accent"/>
             </RelativeLayout>
 
             <View

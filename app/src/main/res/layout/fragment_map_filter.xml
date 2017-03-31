@@ -13,14 +13,16 @@
         android:id="@+id/map_filter_title_layout">
 
         <ImageButton
+            android:id="@+id/map_filter_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/map_filter_close_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:padding="5dp"/>
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
             style="@style/EntourageTitle"
@@ -32,14 +34,16 @@
             android:layout_centerInParent="true"/>
 
         <Button
+            android:id="@+id/map_filter_validate_button"
             style="@style/TransparentAccentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register"
-            android:id="@+id/map_filter_validate_button"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/register"/>
     </RelativeLayout>
 
     <ScrollView
@@ -69,120 +73,152 @@
                     android:textSize="18sp"/>
 
                 <RelativeLayout
+                    android:id="@+id/map_filter_tour_medical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
+                    android:paddingEnd="0dp"
                     android:paddingLeft="10dp"
-                    android:id="@+id/map_filter_tour_medical">
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
 
                     <ImageView
+                        android:id="@+id/map_filter_tour_medical_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_tour_medical_image"
+                        android:contentDescription="@string/empty_description"
                         android:src="@drawable/ic_medical_active"/>
 
                     <TextView
+                        android:id="@+id/map_filter_tour_medical_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tour_type_medical"
-                        android:id="@+id/map_filter_tour_medical_text"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/map_filter_tour_medical_image"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"/>
+                        android:layout_marginRight="5dp"
+                        android:layout_toEndOf="@+id/map_filter_tour_medical_image"
+                        android:layout_toLeftOf="@+id/map_filter_tour_medical_image"
+                        android:layout_toRightOf="@+id/map_filter_tour_medical_image"
+                        android:layout_toStartOf="@+id/map_filter_tour_medical_switch"
+                        android:text="@string/tour_type_medical"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"/>
 
                     <Switch
+                        android:id="@+id/map_filter_tour_medical_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_tour_medical_switch"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
                         android:layout_marginRight="16dp"
-                        />
+                        android:layout_marginStart="0dp"/>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/greyish"
                         android:layout_alignParentBottom="false"
-                        android:layout_below="@+id/map_filter_tour_medical_image"/>
+                        android:layout_below="@+id/map_filter_tour_medical_image"
+                        android:background="@color/greyish"/>
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/map_filter_tour_social"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/map_filter_tour_social"
                     android:background="@color/background"
-                    android:paddingLeft="10dp">
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
 
                     <ImageView
+                        android:id="@+id/map_filter_tour_social_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_tour_social_image"
+                        android:contentDescription="@string/empty_description"
                         android:src="@drawable/ic_social_active"/>
 
                     <TextView
+                        android:id="@+id/map_filter_tour_social_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tour_type_bare_hands"
-                        android:id="@+id/map_filter_tour_social_text"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/map_filter_tour_social_image"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/map_filter_tour_social_switch"/>
+                        android:layout_toEndOf="@+id/map_filter_tour_social_image"
+                        android:layout_toLeftOf="@+id/map_filter_tour_social_switch"
+                        android:layout_toRightOf="@+id/map_filter_tour_social_image"
+                        android:layout_toStartOf="@+id/map_filter_tour_social_switch"
+                        android:text="@string/tour_type_bare_hands"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"/>
 
                     <Switch
+                        android:id="@+id/map_filter_tour_social_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_tour_social_switch"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:layout_marginRight="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/greyish"
                         android:layout_alignParentBottom="false"
-                        android:layout_below="@+id/map_filter_tour_social_image"/>
+                        android:layout_below="@+id/map_filter_tour_social_image"
+                        android:background="@color/greyish"/>
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/map_filter_tour_distributive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
-                    android:id="@+id/map_filter_tour_distributive"
-                    android:paddingLeft="10dp">
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
 
                     <ImageView
+                        android:id="@+id/map_filter_tour_distributive_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_tour_distributive_image"
+                        android:contentDescription="@string/empty_description"
                         android:src="@drawable/ic_distributive_active"/>
 
                     <TextView
+                        android:id="@+id/map_filter_tour_distributive_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tour_type_alimentary"
-                        android:id="@+id/map_filter_tour_distributive_text"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/map_filter_tour_distributive_image"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/map_filter_tour_distributive_switch"/>
+                        android:layout_toEndOf="@+id/map_filter_tour_distributive_image"
+                        android:layout_toLeftOf="@+id/map_filter_tour_distributive_switch"
+                        android:layout_toRightOf="@+id/map_filter_tour_distributive_image"
+                        android:layout_toStartOf="@+id/map_filter_tour_distributive_switch"
+                        android:text="@string/tour_type_alimentary"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"/>
 
                     <Switch
+                        android:id="@+id/map_filter_tour_distributive_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_tour_distributive_switch"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:layout_marginRight="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -201,129 +237,161 @@
                     style="@style/EntourageTitle"/>
 
                 <RelativeLayout
+                    android:id="@+id/map_filter_entourage_demand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
                     android:background="@color/background"
-                    android:id="@+id/map_filter_entourage_demand">
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/entourage_type_demand"
                         android:id="@+id/map_filter_entourage_demand_title"
-                        android:textSize="18sp"
-                        android:textColor="@color/greyish_brown"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:layout_toLeftOf="@+id/map_filter_entourage_demand_switch"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_demand_switch"
+                        android:layout_toStartOf="@+id/map_filter_entourage_demand_switch"
+                        android:text="@string/entourage_type_demand"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"/>
 
                     <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/map_filter_entourage_demand_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:layout_marginRight="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/greyish"
-                        android:layout_below="@+id/map_filter_entourage_demand_title"/>
+                        android:layout_below="@+id/map_filter_entourage_demand_title"
+                        android:background="@color/greyish"/>
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/map_filter_entourage_contribution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
                     android:background="@color/background"
-                    android:id="@+id/map_filter_entourage_contribution">
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/entourage_type_contribution"
                         android:id="@+id/map_filter_entourage_contribution_title"
-                        android:textSize="18sp"
-                        android:textColor="@color/greyish_brown"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:layout_toLeftOf="@+id/map_filter_entourage_contribution_switch"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_contribution_switch"
+                        android:layout_toStartOf="@+id/map_filter_entourage_contribution_switch"
+                        android:text="@string/entourage_type_contribution"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"/>
 
                     <Switch
+                        android:id="@+id/map_filter_entourage_contribution_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_entourage_contribution_switch"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:layout_marginRight="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/greyish"
-                        android:layout_below="@+id/map_filter_entourage_contribution_title"/>
+                        android:layout_below="@+id/map_filter_entourage_contribution_title"
+                        android:background="@color/greyish"/>
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/map_filter_entourage_tours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
-                    android:id="@+id/map_filter_entourage_tours"
-                    android:paddingLeft="10dp">
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
 
                     <TextView
+                        android:id="@+id/map_filter_entourage_tours_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/map_filter_tours_text"
-                        android:id="@+id/map_filter_entourage_tours_text"
-                        android:textSize="18sp"
-                        android:textColor="@color/greyish_brown"
-                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_toLeftOf="@+id/map_filter_entourage_tours_switch"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_tours_switch"
+                        android:layout_toStartOf="@+id/map_filter_entourage_tours_switch"
+                        android:text="@string/map_filter_tours_text"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"/>
 
                     <Switch
+                        android:id="@+id/map_filter_entourage_tours_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_entourage_tours_switch"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:layout_marginRight="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/greyish"
-                        android:layout_below="@+id/map_filter_entourage_tours_text"/>
+                        android:layout_below="@+id/map_filter_entourage_tours_text"
+                        android:background="@color/greyish"/>
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/map_filter_entourage_user_only"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/map_filter_entourage_user_only"
+                    android:background="@color/background"
+                    android:paddingEnd="0dp"
                     android:paddingLeft="10dp"
-                    android:background="@color/background">
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
 
                     <TextView
+                        android:id="@+id/map_filter_entourage_user_only_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/map_filter_user_only_text"
-                        android:id="@+id/map_filter_entourage_user_only_text"
-                        android:textSize="18sp"
-                        android:textColor="@color/greyish_brown"
-                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_toLeftOf="@+id/map_filter_entourage_user_only_switch"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_user_only_switch"
+                        android:layout_toStartOf="@+id/map_filter_entourage_user_only_switch"
+                        android:text="@string/map_filter_user_only_text"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"/>
 
                     <Switch
+                        android:id="@+id/map_filter_entourage_user_only_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/map_filter_entourage_user_only_switch"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:layout_marginRight="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -334,12 +402,11 @@
                 android:id="@+id/map_filter_time_layout">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/map_filter_time_title"
                     android:id="@+id/map_filter_time_title"
                     style="@style/EntourageTitle"
-                    android:singleLine="true"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map_filter_time_title"/>
 
                 <RadioGroup
                     android:layout_width="match_parent"

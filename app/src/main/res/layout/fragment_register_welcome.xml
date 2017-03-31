@@ -14,25 +14,28 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/register_welcome_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/register_welcome_back_button"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_action_back"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:background="?android:attr/selectableItemBackground"/>
+            android:src="@drawable/ic_action_back"/>
 
         <Button
+            android:id="@+id/register_welcome_signin_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/registration_welcome_signin"
-            android:id="@+id/register_welcome_signin_button"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:background="?android:attr/selectableItemBackground"
-            android:textColor="@color/white"
+            android:text="@string/registration_welcome_signin"
             android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="22sp"/>
     </RelativeLayout>
 
@@ -43,9 +46,10 @@
         android:paddingRight="20dp">
 
         <ImageView
+            android:id="@+id/register_welcome_logo"
             android:layout_width="50dp"
             android:layout_height="74dp"
-            android:id="@+id/register_welcome_logo"
+            android:contentDescription="@string/empty_description"
             android:src="@drawable/entourage_logo"/>
 
         <TextView
@@ -60,15 +64,16 @@
             android:textColorLink="@color/white"/>
 
         <Button
+            android:id="@+id/register_welcome_start_button"
+            style="@style/WhiteButton.RoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/registration_welcome_start"
-            android:id="@+id/register_welcome_start_button"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            style="@style/WhiteButton.RoundedCorners"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"/>
+            android:text="@string/registration_welcome_start"/>
 
         <TextView
             android:layout_width="wrap_content"

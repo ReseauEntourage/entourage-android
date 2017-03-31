@@ -19,7 +19,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="5dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
@@ -39,32 +40,38 @@
         android:layout_marginTop="10dp">
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            app:srcCompat="@drawable/carousel_bullet_filled"
             android:id="@+id/carousel_b1"
-            />
-        <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            app:srcCompat="@drawable/carousel_bullet_empty"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/carousel_bullet_filled"/>
+
+        <ImageView
             android:id="@+id/carousel_b2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"/>
-        <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            app:srcCompat="@drawable/carousel_bullet_empty"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/carousel_bullet_empty"/>
+
+        <ImageView
             android:id="@+id/carousel_b3"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"/>
-        <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            app:srcCompat="@drawable/carousel_bullet_empty"
-            android:id="@+id/carousel_b4"
             android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/carousel_bullet_empty"/>
+
+        <ImageView
+            android:id="@+id/carousel_b4"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/carousel_bullet_empty"/>
     </LinearLayout>
 
 </RelativeLayout>

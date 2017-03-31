@@ -15,15 +15,16 @@
         android:layout_alignParentStart="true">
 
         <ImageButton
+            android:id="@+id/user_profile_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/user_profile_close_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"/>
+            android:src="@drawable/ic_close"/>
 
         <TextView
             style="@style/EntourageTitle"
@@ -263,11 +264,12 @@
                         android:textSize="17sp"/>
 
                     <ImageView
+                        android:id="@+id/user_identification_email_check"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/user_identification_email_check"
-                        android:scaleType="fitEnd"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/empty_description"
+                        android:scaleType="fitEnd"/>
 
                 </LinearLayout>
 
@@ -304,11 +306,12 @@
                         android:textSize="17sp"/>
 
                     <ImageView
+                        android:id="@+id/user_identification_phone_check"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/user_identification_phone_check"
-                        android:scaleType="fitEnd"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/empty_description"
+                        android:scaleType="fitEnd"/>
                 </LinearLayout>
 
             </LinearLayout>

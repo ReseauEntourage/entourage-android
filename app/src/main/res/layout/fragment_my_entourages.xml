@@ -6,32 +6,35 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
-        android:orientation="vertical"
+        android:id="@+id/myentourages_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:id="@+id/myentourages_navigation_layout">
+        android:background="@color/background"
+        android:orientation="vertical">
 
         <ImageButton
+            android:id="@+id/myentourages_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/myentourages_back_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:padding="5dp"/>
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
+            android:id="@+id/myentourages_title"
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mytours_title"
-            android:id="@+id/myentourages_title"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_centerHorizontal="true"/>
+            android:text="@string/mytours_title"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -54,87 +57,96 @@
         android:layout_above="@+id/myentourages_filter_layout"/>
 
     <RelativeLayout
+        android:id="@+id/myentourages_filter_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/background"
-        android:id="@+id/myentourages_filter_layout">
+        android:layout_alignParentStart="true"
+        android:background="@color/background">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/greyish"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+            android:background="@color/greyish"/>
 
         <ImageButton
+            android:id="@+id/myentourages_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/myentourages_filter_button"
-            android:src="@drawable/ic_filters"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="5dp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:clickable="true"/>
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_filters"/>
 
     </RelativeLayout>
 
     <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/myentourages_fab_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/myentourages_fab_menu"
-        android:layout_gravity="right"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:paddingRight="10dp"
+        android:layout_gravity="end"
         android:paddingBottom="15dp"
-        app:menu_labels_singleLine="true"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp"
         app:menu_backgroundColor="#ccffffff"
-        app:menu_labels_style="@style/MapActionLabelStyle"
         app:menu_colorNormal="@color/accent"
         app:menu_colorPressed="@color/accent"
-        app:menu_colorRipple="@color/accent">
+        app:menu_colorRipple="@color/accent"
+        app:menu_labels_singleLine="true"
+        app:menu_labels_style="@style/MapActionLabelStyle">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/button_create_entourage_contribution"
+            style="@style/MapActionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_entourage_contribution"
-            app:fab_size="mini"
             app:fab_label="@string/entourage_create_menu_contribution"
-            style="@style/MapActionButtonStyle"/>
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/button_create_entourage_demand"
+            style="@style/MapActionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_entourage_demand"
-            app:fab_size="mini"
             app:fab_label="@string/entourage_create_menu_demand"
-            style="@style/MapActionButtonStyle"/>
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/button_start_tour_launcher"
+            style="@style/MapActionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_button_create_maraude"
-            app:fab_size="mini"
             app:fab_label="@string/tour_create"
-            style="@style/MapActionButtonStyle"/>
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/button_add_tour_encounter"
+            style="@style/MapActionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_encounter"
-            app:fab_size="mini"
+            android:visibility="gone"
             app:fab_label="@string/tour_create_encounter_button"
-            style="@style/MapActionButtonStyle"
-            android:visibility="gone"/>
+            app:fab_size="mini"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 

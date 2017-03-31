@@ -15,14 +15,16 @@
             android:layout_alignParentTop="true">
 
             <ImageButton
+                android:id="@+id/register_number_back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/register_number_back_button"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_action_back"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
                 android:padding="5dp"
-                android:background="?android:attr/selectableItemBackground"/>
+                android:src="@drawable/ic_action_back"/>
 
         </RelativeLayout>
 
@@ -43,12 +45,13 @@
                 android:orientation="vertical"
             >
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/register_number_phone_image"
-                    android:src="@drawable/phone"
-                    android:layout_alignParentTop="true"/>
+            <ImageView
+                android:id="@+id/register_number_phone_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:contentDescription="@string/empty_description"
+                android:src="@drawable/phone"/>
 
                 <TextView
                     android:layout_width="wrap_content"

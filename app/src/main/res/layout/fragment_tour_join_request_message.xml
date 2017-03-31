@@ -18,14 +18,16 @@
             android:id="@+id/tour_join_title_layout">
 
             <ImageButton
+                android:id="@+id/tour_join_request_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tour_join_request_close"
-                android:src="@drawable/ic_close"
-                android:background="?android:attr/selectableItemBackground"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:padding="5dp"/>
+                android:layout_marginStart="10dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
+                android:padding="5dp"
+                android:src="@drawable/ic_close"/>
 
             <TextView
                 android:layout_width="wrap_content"

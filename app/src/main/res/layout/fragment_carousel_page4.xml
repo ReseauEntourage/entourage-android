@@ -12,10 +12,11 @@
               android:gravity="center_vertical">
 
     <ImageView
+        android:id="@+id/carousel_p4_user_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/user_with_badge"
-        android:id="@+id/carousel_p4_user_image"/>
+        android:contentDescription="@string/empty_description"
+        app:srcCompat="@drawable/user_with_badge"/>
 
     <TextView
         android:text="@string/carousel_p4_title"

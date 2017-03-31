@@ -9,32 +9,35 @@
     android:background="@color/background">
 
     <RelativeLayout
-        android:orientation="vertical"
+        android:id="@+id/about_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:id="@+id/about_title_layout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/background"
+        android:orientation="vertical">
 
         <ImageButton
+            android:id="@+id/about_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/about_close_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:padding="5dp"/>
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
+            android:id="@+id/about_title"
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/about_title"
-            android:id="@+id/about_title"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_centerHorizontal="true"/>
+            android:text="@string/about_title"/>
 
     </RelativeLayout>
 
@@ -46,213 +49,231 @@
         android:layout_below="@+id/about_title_layout"/>
 
     <RelativeLayout
-        android:orientation="horizontal"
+        android:id="@+id/about_rate_us_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/about_rate_us_layout"
         android:layout_below="@+id/about_separator_top"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/about_items_padding"
         android:paddingLeft="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding"
-        android:paddingBottom="@dimen/about_items_padding">
+        android:paddingStart="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/about_rate_us"
             android:id="@+id/about_rate_us"
-            android:textSize="16sp"
-            android:textColor="@color/greyish_brown"
-            android:layout_gravity="center_vertical"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="false"
-            android:layout_centerVertical="true"/>
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/about_version"
-            android:gravity="right|end"
-            android:textColor="@color/accent"
-            android:textSize="14sp"
-            android:layout_gravity="center_vertical"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/about_arrow_rate_us"/>
+            android:layout_gravity="center_vertical"
+            android:text="@string/about_rate_us"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/greyish_brown"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/about_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_toLeftOf="@+id/about_arrow_rate_us"
+            android:layout_toStartOf="@+id/about_arrow_rate_us"
+            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/accent"
+            android:textSize="14sp"/>
 
         <ImageView
+            android:id="@+id/about_arrow_rate_us"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/about_arrow_rate_us"
-            android:src="@drawable/arrow_grey"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/arrow_grey"/>
     </RelativeLayout>
 
     <View
+        android:id="@+id/about_separator_about_us"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/greyish"
-        android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_below="@+id/about_rate_us_layout"
-        android:id="@+id/about_separator_about_us"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_marginStart="@dimen/about_items_padding"
+        android:background="@color/greyish"/>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/about_facebook_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/about_separator_about_us"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/about_items_padding"
         android:paddingLeft="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding"
-        android:paddingBottom="@dimen/about_items_padding">
+        android:paddingStart="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/about_facebook"
             android:id="@+id/about_facebook"
-            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/about_facebook"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/greyish_brown"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="16sp"/>
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/arrow_grey"
-            android:scaleType="fitEnd"/>
+            android:contentDescription="@string/empty_description"
+            android:scaleType="fitEnd"
+            android:src="@drawable/arrow_grey"/>
     </LinearLayout>
 
     <View
+        android:id="@+id/about_separator_facebook"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/greyish"
-        android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_below="@+id/about_facebook_layout"
-        android:id="@+id/about_separator_facebook"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_marginStart="@dimen/about_items_padding"
+        android:background="@color/greyish"/>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/about_conditions_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/about_separator_facebook"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/about_items_padding"
         android:paddingLeft="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding"
-        android:paddingBottom="@dimen/about_items_padding">
+        android:paddingStart="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/about_conditions"
             android:id="@+id/about_conditions"
-            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/about_conditions"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/greyish_brown"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="16sp"/>
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/arrow_grey"
-            android:scaleType="fitEnd"/>
+            android:contentDescription="@string/empty_description"
+            android:scaleType="fitEnd"
+            android:src="@drawable/arrow_grey"/>
     </LinearLayout>
 
     <View
+        android:id="@+id/about_separator_conditions"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/greyish"
-        android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_below="@+id/about_conditions_layout"
-        android:id="@+id/about_separator_conditions"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_marginStart="@dimen/about_items_padding"
+        android:background="@color/greyish"/>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/about_website_layout"
-        android:layout_below="@+id/about_separator_conditions"
-        android:paddingLeft="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding"
-        android:paddingBottom="@dimen/about_items_padding">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/about_website"
-            android:id="@+id/about_website"
-            android:textSize="16sp"
-            android:textColor="@color/greyish_brown"
-            android:layout_gravity="center_vertical"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView5"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/arrow_grey"
-            android:scaleType="fitEnd"/>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/greyish"
-        android:layout_marginLeft="@dimen/about_items_padding"
-        android:layout_below="@+id/about_website_layout"
-        android:id="@+id/about_separator_website"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/about_email_layout"
-        android:layout_below="@+id/about_separator_website"
+        android:layout_below="@+id/about_separator_conditions"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/about_items_padding"
         android:paddingLeft="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding"
-        android:paddingBottom="@dimen/about_items_padding">
+        android:paddingStart="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding">
 
         <TextView
+            android:id="@+id/about_website"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/about_website"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/about_email"
-            android:id="@+id/about_email"
-            android:textSize="16sp"
             android:textColor="@color/greyish_brown"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="16sp"/>
 
         <ImageView
+            android:id="@+id/imageView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView6"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/arrow_grey"
-            android:scaleType="fitEnd"/>
+            android:contentDescription="@string/empty_description"
+            android:scaleType="fitEnd"
+            android:src="@drawable/arrow_grey"/>
     </LinearLayout>
 
     <View
+        android:id="@+id/about_separator_website"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/greyish"
+        android:layout_below="@+id/about_website_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_marginStart="@dimen/about_items_padding"
+        android:background="@color/greyish"/>
+
+    <LinearLayout
+        android:id="@+id/about_email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about_separator_website"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/about_items_padding"
+        android:paddingLeft="@dimen/about_items_padding"
+        android:paddingStart="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding">
+
+        <TextView
+            android:id="@+id/about_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/about_email"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/greyish_brown"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/empty_description"
+            android:scaleType="fitEnd"
+            android:src="@drawable/arrow_grey"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/about_separator_email"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_below="@+id/about_email_layout"
-        android:id="@+id/about_separator_email"/>
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_marginStart="@dimen/about_items_padding"
+        android:background="@color/greyish"/>
 
     <ImageView
+        android:id="@+id/about_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/about_logo"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/entourage_logo_grey"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/about_items_padding"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/about_items_padding"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/entourage_logo_grey"/>
 
 </RelativeLayout>

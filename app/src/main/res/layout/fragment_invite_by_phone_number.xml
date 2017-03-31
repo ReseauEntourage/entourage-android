@@ -7,87 +7,88 @@
                 android:background="@color/background_light">
 
     <RelativeLayout
+        android:id="@+id/invite_phone_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/invite_phone_navigation_layout"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
         android:background="@color/white">
 
         <ImageButton
+            android:id="@+id/invite_phone_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/invite_phone_close_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="5dp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
+            android:id="@+id/invite_phone_title"
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/invite_phone_title"
-            android:id="@+id/invite_phone_title"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="@string/invite_phone_title"/>
 
         <Button
+            android:id="@+id/invite_phone_send_button"
             style="@style/TransparentAccentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send"
-            android:id="@+id/invite_phone_send_button"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:text="@string/send"/>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/invite_phone_description_layout"
         android:layout_width="match_parent"
         android:layout_height="180dp"
+        android:layout_below="@+id/invite_phone_navigation_layout"
         android:background="@color/background_light"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_marginLeft="0dp"
-        android:id="@+id/invite_phone_description_layout"
-        android:layout_below="@+id/invite_phone_navigation_layout">
+        android:paddingRight="10dp">
 
         <TextView
+            android:id="@+id/invite_phone_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/invite_phone_description"
-            android:id="@+id/invite_phone_description"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:text="@string/invite_phone_description"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/invite_phone_form_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
         android:layout_below="@+id/invite_phone_description_layout"
-        android:id="@+id/invite_phone_form_layout"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:background="@color/white"
-        android:paddingTop="20dp"
-        android:paddingBottom="10dp">
+        android:paddingTop="20dp">
 
         <EditText
+            android:id="@+id/invite_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
             android:ems="10"
-            android:id="@+id/invite_phone_number"
             android:hint="@string/invite_phone_number_hint"
-            android:textColorHint="@color/greyish"
-            android:textColor="@color/greyish_brown"/>
+            android:inputType="phone"
+            android:textColor="@color/greyish_brown"
+            android:textColorHint="@color/greyish"/>
     </LinearLayout>
 
     <View

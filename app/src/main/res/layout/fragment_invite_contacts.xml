@@ -7,80 +7,84 @@
                 android:background="@color/background">
 
     <RelativeLayout
+        android:id="@+id/invite_contacts_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/invite_contacts_navigation_layout"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <ImageButton
+            android:id="@+id/invite_contacts_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/invite_contacts_close_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="5dp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
+            android:id="@+id/invite_contacts_title"
+            style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/invite_contacts_title"
-            android:id="@+id/invite_contacts_title"
             android:layout_centerInParent="true"
-            style="@style/EntourageTitle"/>
+            android:text="@string/invite_contacts_title"/>
 
         <Button
+            android:id="@+id/invite_contacts_send_button"
+            style="@style/TransparentAccentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send"
-            android:id="@+id/invite_contacts_send_button"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            style="@style/TransparentAccentButton"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:text="@string/send"/>
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/invite_contacts_search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_below="@+id/invite_contacts_navigation_layout"
         android:background="@color/silver"
-        android:id="@+id/invite_contacts_search_layout"
-        android:layout_marginLeft="0dp"
-        android:layout_below="@+id/invite_contacts_navigation_layout">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/invite_contacts_search"
+            style="@style/RoundedEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/invite_contacts_search"
             android:layout_margin="10dp"
-            style="@style/RoundedEditText"
             android:drawableLeft="@android:drawable/ic_menu_search"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:ems="10"
+            android:gravity="center"
             android:hint="@string/invite_contacts_search_hint"
             android:imeOptions="actionSearch"
-            android:gravity="center"/>
+            android:inputType="textPersonName"/>
     </LinearLayout>
 
     <ListView
+        android:id="@+id/invite_contacts_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/invite_contacts_listView"
-        android:choiceMode="multipleChoice"
-        android:layout_marginLeft="0dp"
         android:layout_below="@+id/invite_contacts_search_layout"
-        android:layout_toLeftOf="@+id/invite_contacts_quick_jump_listview"/>
+        android:layout_toLeftOf="@+id/invite_contacts_quick_jump_listview"
+        android:layout_toStartOf="@+id/invite_contacts_quick_jump_listview"
+        android:choiceMode="multipleChoice"/>
 
     <ListView
+        android:id="@+id/invite_contacts_quick_jump_listview"
         android:layout_width="20dp"
         android:layout_height="match_parent"
-        android:id="@+id/invite_contacts_quick_jump_listview"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/invite_contacts_search_layout"
         android:choiceMode="singleChoice"/>

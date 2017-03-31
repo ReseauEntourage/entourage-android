@@ -26,76 +26,80 @@
             android:layout_below="@+id/toolbar"/>
 
         <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/map_fab_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/map_fab_menu"
-            android:layout_gravity="right"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:paddingRight="10dp"
+            android:layout_gravity="end"
             android:paddingBottom="5dp"
-            app:menu_labels_singleLine="true"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
             app:menu_backgroundColor="#ccffffff"
-            app:menu_labels_style="@style/MapActionLabelStyle"
             app:menu_colorNormal="@color/accent"
             app:menu_colorPressed="@color/accent"
-            app:menu_colorRipple="@color/accent">
+            app:menu_colorRipple="@color/accent"
+            app:menu_labels_singleLine="true"
+            app:menu_labels_style="@style/MapActionLabelStyle">
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_poi_launcher"
+                style="@style/MapActionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_solidarity"
-                app:fab_size="mini"
                 app:fab_label="@string/map_poi_launcher_button"
-                style="@style/MapActionButtonStyle"/>
+                app:fab_size="mini"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_poi_propose"
+                style="@style/MapActionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_solidarity"
-                app:fab_size="mini"
+                android:visibility="gone"
                 app:fab_label="@string/map_poi_propose_button"
-                style="@style/MapActionButtonStyle"
-                android:visibility="gone"/>
+                app:fab_size="mini"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_create_entourage_contribution"
+                style="@style/MapActionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_entourage_contribution"
-                app:fab_size="mini"
                 app:fab_label="@string/entourage_create_menu_contribution"
-                style="@style/MapActionButtonStyle"/>
+                app:fab_size="mini"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_create_entourage_demand"
+                style="@style/MapActionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_entourage_demand"
-                app:fab_size="mini"
                 app:fab_label="@string/entourage_create_menu_demand"
-                style="@style/MapActionButtonStyle"/>
+                app:fab_size="mini"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_start_tour_launcher"
+                style="@style/MapActionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_button_create_maraude"
-                app:fab_size="mini"
                 app:fab_label="@string/tour_create"
-                style="@style/MapActionButtonStyle"/>
+                app:fab_size="mini"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_add_tour_encounter"
+                style="@style/MapActionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_encounter"
-                app:fab_size="mini"
+                android:visibility="gone"
                 app:fab_label="@string/tour_create_encounter_button"
-                style="@style/MapActionButtonStyle"
-                android:visibility="gone"/>
+                app:fab_size="mini"/>
 
         </com.github.clans.fab.FloatingActionMenu>
 

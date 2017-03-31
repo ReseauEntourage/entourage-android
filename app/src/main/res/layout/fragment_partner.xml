@@ -16,15 +16,16 @@
         android:layout_alignParentStart="true">
 
         <ImageButton
+            android:id="@+id/partner_view_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/partner_view_close_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:padding="5dp"/>
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
             style="@style/EntourageTitle"
@@ -46,14 +47,15 @@
     <ImageView
         android:id="@+id/partner_view_logo"
         android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_below="@+id/user_title_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:scaleType="centerInside"
-        android:layout_height="140dp"
-        app:srcCompat="@drawable/partner_badge_atd"
         android:background="@drawable/bg_partner_logo_bordered"
-        android:padding="18dp"/>
+        android:contentDescription="@string/empty_description"
+        android:padding="18dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/partner_badge_atd"/>
 
     <TextView
         android:layout_width="match_parent"

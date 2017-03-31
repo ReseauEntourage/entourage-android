@@ -25,6 +25,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:padding="5dp"
             android:src="@drawable/ic_close"/>
 
@@ -86,6 +87,7 @@
                     android:id="@+id/imageView8"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:contentDescription="@string/empty_description"
                     app:srcCompat="@drawable/ic_entourage_disclaimer_hand"/>
 
                 <TextView
@@ -120,6 +122,7 @@
                     android:id="@+id/imageView9"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:contentDescription="@string/empty_description"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/password"/>
 
@@ -157,6 +160,7 @@
                     android:id="@+id/imageView7"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:contentDescription="@string/empty_description"
                     app:srcCompat="@drawable/ic_map_pin_grey"/>
 
                 <TextView

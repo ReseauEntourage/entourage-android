@@ -5,93 +5,99 @@
                 tools:context="social.entourage.android.map.entourage.EntourageLocationFragment">
 
     <RelativeLayout
-        android:orientation="vertical"
+        android:id="@+id/entourage_location_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:id="@+id/entourage_location_title_layout">
+        android:background="@color/background"
+        android:orientation="vertical">
 
         <ImageButton
+            android:id="@+id/entourage_location_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/entourage_location_back_button"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:padding="5dp"/>
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
+            android:id="@+id/entourage_location_title"
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/entourage_location_title"
-            android:id="@+id/entourage_location_title"
+            android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"/>
+            android:text="@string/entourage_location_title"/>
 
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/entourage_location_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:id="@+id/entourage_location_bar_layout">
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/entourage_location_current_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/entourage_location_current_position"
-            android:src="@drawable/ic_geoloc"
             android:background="?android:attr/selectableItemBackground"
-            android:padding="10dp"/>
+            android:contentDescription="@string/empty_description"
+            android:padding="10dp"
+            android:src="@drawable/ic_geoloc"/>
 
         <TextView
+            android:id="@+id/entourage_location_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/entourage_location_address"
             android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
-            android:textSize="16sp"
-            android:gravity="center_horizontal"/>
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/entourage_location_map_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/entourage_location_title_layout"
         android:layout_above="@+id/entourage_location_bar_layout"
-        android:id="@+id/entourage_location_map_layout">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/entourage_location_title_layout">
 
     </FrameLayout>
 
     <EditText
+        android:id="@+id/entourage_location_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
-        android:ems="10"
-        android:id="@+id/entourage_location_search"
         android:layout_below="@+id/entourage_location_title_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:background="@color/white"
-        android:padding="10dp"
-        android:hint="@string/entourage_location_search_hint"
-        android:textColorHint="@color/greyish"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:elevation="1dp"
-        android:textColor="@color/black"
         android:drawableLeft="@android:drawable/ic_menu_search"
-        android:imeOptions="actionSearch"/>
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/entourage_location_search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="textPostalAddress"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/greyish"
+        android:textSize="16sp"/>
 
 </RelativeLayout>

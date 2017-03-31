@@ -3,63 +3,65 @@
                 android:layout_width="match_parent" android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/fragment_guide_map_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/fragment_guide_filter_layout"
         android:layout_alignParentLeft="true"
-        android:id="@+id/fragment_guide_map_layout"
-        android:layout_above="@+id/fragment_guide_filter_layout">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
-        <fragment android:id="@+id/fragment_map"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  class="com.google.android.gms.maps.SupportMapFragment"
-                  android:layout_marginLeft="0dp"
-                  android:layout_marginTop="0dp"/>
+        <fragment
+            android:id="@+id/fragment_map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/fragment_guide_empty_list_popup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fragment_guide_empty_list_popup"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
         android:background="@drawable/rounded_dialog"
         android:orientation="vertical"
-        android:elevation="2dp"
         android:visibility="gone"
         >
 
         <ImageView
+            android:id="@+id/fragment_guide_empty_list_popup_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/fragment_guide_empty_list_popup_close"
-            android:padding="3dp"
             android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="3dp"
+            android:contentDescription="@string/empty_description"
+            android:padding="3dp"
             android:src="@drawable/ic_close_white"/>
 
         <TextView
-            android:text="@string/map_poi_empty_popup"
+            android:id="@+id/fragment_guide_empty_list_popup_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/fragment_guide_empty_list_popup_text"
+            android:gravity="center_horizontal"
             android:paddingBottom="15dp"
             android:paddingEnd="10dp"
-            android:paddingRight="10dp"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:paddingStart="10dp"
             android:paddingTop="4dp"
+            android:text="@string/map_poi_empty_popup"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            android:gravity="center_horizontal"
+            android:textColorHint="@color/white"
             android:textColorLink="@color/white"
-            android:textColorHint="@color/white"/>
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <include
@@ -70,30 +72,37 @@
         android:visibility="gone"/>
 
     <RelativeLayout
+        android:id="@+id/fragment_guide_filter_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/background"
-        android:id="@+id/fragment_guide_filter_layout">
+        android:layout_alignParentStart="true"
+        android:background="@color/background">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/greyish"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+            android:background="@color/greyish"/>
 
         <ImageButton
             android:id="@+id/fragment_guide_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="5dp"
+            android:layout_marginEnd="0dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:padding="5dp"
             android:src="@drawable/ic_filters"/>
 
@@ -103,24 +112,27 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/fragment_guide_filter_button"
             android:layout_toRightOf="@+id/fragment_guide_filter_button"
             android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:padding="5dp"
             android:src="@drawable/ic_geoloc"/>
 
         <TextView
+            android:id="@+id/fragment_guide_bottom_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/fragment_guide_bottom_title"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:text="@string/map_poi_bottom_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
-            android:textSize="14sp"
-            android:text="@string/map_poi_bottom_title"/>
+            android:textSize="14sp"/>
 
     </RelativeLayout>
 

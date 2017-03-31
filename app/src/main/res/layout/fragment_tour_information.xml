@@ -9,64 +9,71 @@
     tools:context="social.entourage.android.DrawerActivity">
 
     <RelativeLayout
-        android:orientation="vertical"
+        android:id="@+id/tour_info_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:id="@+id/tour_info_title_layout">
+        android:background="@color/background"
+        android:orientation="vertical">
 
         <ImageButton
+            android:id="@+id/tour_info_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tour_info_close"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:padding="5dp"/>
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
+            android:id="@+id/tour_info_title"
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tour_info_title"
-            android:id="@+id/tour_info_title"
-            android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/tour_info_title"
             android:textAllCaps="true"/>
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/tour_info_share_button"
-            android:src="@drawable/ic_share"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            android:layout_alignParentRight="true"/>
-
-        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tour_info_user_add_button"
-            android:layout_toLeftOf="@+id/tour_info_more_button"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_user_plus"
             android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/ic_share"
             android:visibility="gone"/>
 
         <ImageButton
+            android:id="@+id/tour_info_user_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tour_info_more_button"
-            android:src="@drawable/ic_more"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tour_info_more_button"
+            android:layout_toStartOf="@+id/tour_info_more_button"
             android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/ic_user_plus"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/tour_info_more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/ic_more"
             android:visibility="visible"/>
     </RelativeLayout>
 
@@ -75,6 +82,7 @@
         android:layout_height="wrap_content"
         layout="@layout/layout_tour_card"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/tour_info_title_layout"
         android:id="@+id/tour_info_header_layout"
         android:layout_marginTop="10dp"/>

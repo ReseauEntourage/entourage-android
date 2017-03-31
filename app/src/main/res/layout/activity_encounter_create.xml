@@ -16,102 +16,106 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:id="@+id/create_encounter_title_layout">
+            <RelativeLayout
+                android:id="@+id/create_encounter_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/background"
+                android:orientation="vertical">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/create_encounter_close"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:padding="5dp"/>
+                <ImageButton
+                    android:id="@+id/create_encounter_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/empty_description"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_close"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/activity_create_encounter_title"
-            android:id="@+id/create_encounter_title"
-            style="@style/EntourageTitle"
-            android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"
-            />
+                <TextView
+                    android:id="@+id/create_encounter_title"
+                    style="@style/EntourageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/activity_create_encounter_title"
+                    />
 
-        <Button
-            android:text="@string/validate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_create_encounter"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            style="@style/TransparentAccentButton"/>
+                <Button
+                    android:id="@+id/button_create_encounter"
+                    style="@style/TransparentAccentButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/validate"/>
 
-    </RelativeLayout>
+            </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/create_encounter_position_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/create_encounter_position_layout"
+                android:layout_below="@+id/create_encounter_title_layout"
                 android:layout_marginTop="18dp"
                 android:background="@color/background"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:layout_below="@+id/create_encounter_title_layout">
+                android:gravity="center_vertical"
+                android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_map_pin_grey"
                     android:id="@+id/create_encounter_position_pin"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty_description"
+                    app:srcCompat="@drawable/ic_map_pin_grey"/>
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/arrow_grey"
                     android:id="@+id/create_encounter_position_arrow"
-                    android:layout_marginRight="10dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:contentDescription="@string/empty_description"
+                    app:srcCompat="@drawable/arrow_grey"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/create_encounter_position"
-                    android:layout_toRightOf="@+id/create_encounter_location_description"
-                    android:layout_toLeftOf="@+id/create_encounter_position_arrow"
-                    android:layout_centerVertical="true"
-                    android:gravity="right|end"
-                    android:textColor="@color/accent"
-                    android:textSize="18sp"
-                    android:paddingLeft="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/create_encounter_location_description"
-                    android:textColor="@color/greyish"
-                    android:textSize="18sp"
-                    android:text="@string/entourage_create_position_description"
-                    android:layout_alignBaseline="@+id/create_encounter_position"
-                    android:layout_alignBottom="@+id/create_encounter_position"
-                    android:layout_toRightOf="@+id/create_encounter_position_pin"
-                    android:layout_toEndOf="@+id/create_encounter_position_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"/>
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/create_encounter_position_pin"
+                    android:layout_toRightOf="@+id/create_encounter_position_pin"
+                    android:text="@string/entourage_create_position_description"
+                    android:textColor="@color/greyish"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/create_encounter_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/create_encounter_location_description"
+                    android:layout_toLeftOf="@+id/create_encounter_position_arrow"
+                    android:layout_toRightOf="@+id/create_encounter_location_description"
+                    android:layout_toStartOf="@+id/create_encounter_position_arrow"
+                    android:gravity="end"
+                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"
+                    android:textSize="18sp"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -121,17 +125,18 @@
                 android:layout_below="@+id/create_encounter_position_layout">
 
                 <TextView
+                    android:id="@+id/encounter_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/encounter_author"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:textColor="@color/greyish_brown"
+                    android:layout_marginTop="10dp"
+                    android:paddingEnd="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:textSize="17sp"
-                    android:layout_marginLeft="0dp"/>
+                    android:paddingStart="10dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="17sp"/>
 
                 <EditText
                     android:id="@+id/edittext_street_person_name"
@@ -169,26 +174,28 @@
                     android:id="@+id/edittext_message"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="left|top"
-                    android:inputType="textMultiLine"
-                    android:textCursorDrawable="@drawable/bg_cursor_yellow"
-                    android:background="@color/background"
-                    android:hint="@string/encounter_hint_notes"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:background="@color/background"
+                    android:gravity="top|start"
+                    android:hint="@string/encounter_hint_notes"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
                     android:padding="10dp"
-                    android:lines="5"/>
+                    android:textCursorDrawable="@drawable/bg_cursor_yellow"/>
 
                 <ImageButton
                     android:id="@+id/button_record"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:src="@drawable/ic_action_record_sound"
-                    android:contentDescription="@string/encounter_voice_message_button"
+                    android:layout_alignEnd="@+id/edittext_message"
                     android:layout_alignRight="@+id/edittext_message"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"/>
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/encounter_voice_message_button"
+                    android:src="@drawable/ic_action_record_sound"/>
 
                 <View
                     android:layout_width="match_parent"

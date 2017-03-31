@@ -13,14 +13,16 @@
         android:background="@color/background">
 
         <ImageButton
+            android:id="@+id/encounter_read_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/encounter_read_close"
-            android:src="@drawable/ic_close"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:padding="5dp"/>
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
             style="@style/EntourageTitle"
@@ -40,30 +42,31 @@
         android:layout_marginTop="20dp">
 
         <EditText
-        android:id="@+id/edittext_street_person_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:textCursorDrawable="@drawable/bg_cursor_yellow"
-        android:background="@color/white"
-        android:padding="10dp"
-        android:textSize="17sp"
-        android:textColor="@color/greyish_brown"/>
+            android:id="@+id/edittext_street_person_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:enabled="false"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/greyish_brown"
+            android:textCursorDrawable="@drawable/bg_cursor_yellow"
+            android:textSize="17sp"/>
 
         <EditText
-        android:id="@+id/edittext_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:lines="10"
-        android:gravity="left|top"
-        android:inputType="textMultiLine"
-        android:layout_below="@id/edittext_street_person_name"
-        android:enabled="false"
-        android:textCursorDrawable="@drawable/bg_cursor_yellow"
-        android:background="@color/white"
-        android:textSize="17sp"
-        android:textColor="@color/greyish_brown"/>
+            android:id="@+id/edittext_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edittext_street_person_name"
+            android:background="@color/white"
+            android:enabled="false"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:lines="10"
+            android:padding="10dp"
+            android:textColor="@color/greyish_brown"
+            android:textCursorDrawable="@drawable/bg_cursor_yellow"
+            android:textSize="17sp"/>
 
     </RelativeLayout>
 

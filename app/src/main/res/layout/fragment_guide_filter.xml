@@ -22,6 +22,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:padding="5dp"
             android:src="@drawable/ic_close"/>
 
