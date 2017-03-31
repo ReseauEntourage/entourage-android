@@ -1706,15 +1706,42 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 }
             }
         }
+        else if (error == EntourageError.ERROR_BAD_REQUEST) {
+            // Assume that the other user cancelled the request
+            // Get the card
+            TourUser card = (TourUser) discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId);
+            if (card != null) {
+                if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
+                    // Mark the user as accepted
+                    card.setStatus(FeedItem.JOIN_STATUS_ACCEPTED);
+                    discussionAdapter.updateCard(card);
+                    // Add a quited card
+                    TourUser clone = card.clone();
+                    clone.setStatus(FeedItem.JOIN_STATUS_QUITED);
+                    discussionAdapter.addCardInfoAfterTimestamp(clone);
+                    // remove from cached cards
+                    feedItem.removeCardInfo(card);
+                }
+                else if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
+                    // Mark the user as cancelled
+                    card.setStatus(FeedItem.JOIN_STATUS_CANCELLED);
+                    // Remove the message
+                    card.setMessage("");
+                    discussionAdapter.updateCard(card);
+                    // remove from cached cards
+                    feedItem.removeCardInfo(card);
+                }
+                else {
+                    // remove from the adapter
+                    discussionAdapter.removeCard(card);
+                    // remove from cached cards
+                    feedItem.removeCardInfo(card);
+                }
+            }
+        }
         else {
             // Error
             Toast.makeText(getActivity(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
-            // If we get a bad request error, retrieve the users, maybe the status changed
-            if (error == EntourageError.ERROR_BAD_REQUEST) {
-                if (presenter != null) {
-                    presenter.getFeedItemUsers();
-                }
-            }
         }
     }
 

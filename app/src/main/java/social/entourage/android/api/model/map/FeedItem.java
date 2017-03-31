@@ -40,6 +40,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     public static final String JOIN_STATUS_ACCEPTED = "accepted";
     public static final String JOIN_STATUS_REJECTED = "rejected";
     public static final String JOIN_STATUS_CANCELLED = "cancelled";
+    public static final String JOIN_STATUS_QUITED = "quited"; // This status does not exist on server, just locally
 
     // ----------------------------------
     // Attributes

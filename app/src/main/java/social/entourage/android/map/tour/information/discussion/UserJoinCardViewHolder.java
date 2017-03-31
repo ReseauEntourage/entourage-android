@@ -269,6 +269,9 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         else if (joinStatus.equals(Tour.JOIN_STATUS_CANCELLED)) {
             return itemView.getContext().getString(isTour ? R.string.tour_info_text_join_cancelled_tour : R.string.tour_info_text_join_cancelled_entourage);
         }
+        else if (joinStatus.equals(Tour.JOIN_STATUS_QUITED)) {
+            return itemView.getContext().getString(isTour ? R.string.tour_info_text_join_quited_tour : R.string.tour_info_text_join_quited_entourage);
+        }
         else {
             return "";
         }

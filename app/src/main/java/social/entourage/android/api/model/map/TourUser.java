@@ -151,6 +151,7 @@ public class TourUser extends TimestampedObject implements Serializable {
     public TourUser clone() {
         TourUser clone = new TourUser();
         clone.userId = this.userId;
+        clone.feedItem = this.feedItem;
         clone.displayName = this.displayName;
         clone.email = this.email;
         clone.status = this.status;
