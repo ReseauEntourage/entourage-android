@@ -5,23 +5,25 @@
                 android:background="@color/accent">
 
     <RelativeLayout
+        android:id="@+id/login_geolocation_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_geolocation_navigation"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
         <Button
+            android:id="@+id/login_geolocation_ignore_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ignore"
-            android:id="@+id/login_geolocation_ignore_button"
-            android:background="?android:attr/selectableItemBackground"
-            android:textColor="@color/white"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/ignore"
             android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="22sp"/>
     </RelativeLayout>
 
@@ -35,9 +37,10 @@
         android:paddingRight="10dp">
 
         <ImageView
+            android:id="@+id/login_geolocation_pin_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/login_geolocation_pin_image"
+            android:contentDescription="@string/empty_description"
             android:src="@drawable/map_pin_square"/>
 
         <TextView
@@ -63,14 +66,15 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/login_geolocation_accept_button"
+        style="@style/WhiteButton.RoundedCorners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login_permission_geolocation_accept"
-        android:id="@+id/login_geolocation_accept_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        style="@style/WhiteButton.RoundedCorners"/>
+        android:text="@string/login_permission_geolocation_accept"/>
 </RelativeLayout>

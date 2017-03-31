@@ -58,18 +58,18 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/map_filter_tour_type_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/map_filter_tour_type_layout"
+                android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
+                    android:id="@+id/map_filter_tour_type_title"
+                    style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/map_filter_tour_type_title"
-                    android:id="@+id/map_filter_tour_type_title"
-                    style="@style/EntourageTitle"
                     android:textSize="18sp"/>
 
                 <RelativeLayout
@@ -97,7 +97,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_toEndOf="@+id/map_filter_tour_medical_image"
-                        android:layout_toLeftOf="@+id/map_filter_tour_medical_image"
+                        android:layout_toLeftOf="@+id/map_filter_tour_medical_switch"
                         android:layout_toRightOf="@+id/map_filter_tour_medical_image"
                         android:layout_toStartOf="@+id/map_filter_tour_medical_switch"
                         android:text="@string/tour_type_medical"

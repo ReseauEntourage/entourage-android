@@ -88,7 +88,8 @@
             android:layout_toLeftOf="@+id/tour_info_act_button"
             android:layout_toStartOf="@+id/tour_info_act_button"
             android:alpha="0.5"
-            android:background="@color/greyish"/>
+            android:background="@color/greyish"
+            android:contentDescription="@string/empty_description"/>
 
         <Button
             android:id="@+id/tour_info_act_button"
@@ -112,7 +113,8 @@
             android:layout_toEndOf="@+id/tour_info_act_button"
             android:layout_toRightOf="@+id/tour_info_act_button"
             android:alpha="0.5"
-            android:background="@color/greyish"/>
+            android:background="@color/greyish"
+            android:contentDescription="@string/empty_description"/>
 
     </RelativeLayout>
 

@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
@@ -38,6 +39,7 @@
         android:layout_gravity="end"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
+        android:contentDescription="@string/empty_description"
         android:paddingTop="3dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_user_photo_small"/>
@@ -60,6 +62,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="3dp"
+        android:contentDescription="@string/empty_description"
         android:padding="5dp"
         android:visibility="gone"
         app:srcCompat="@drawable/arrow_grey_light"/>
@@ -118,12 +121,14 @@
             android:minWidth="15dp"
             android:textColor="@color/white"
             android:textSize="10sp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:ignore="SmallSp"/>
 
         <ImageView
             android:id="@+id/tour_card_people_image"
             android:layout_width="22dp"
             android:layout_height="22dp"
+            android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_users"/>
 
         <TextView
@@ -131,7 +136,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:paddingEnd="0dp"
             android:paddingLeft="3dp"
+            android:paddingRight="0dp"
             android:paddingStart="3dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
@@ -175,7 +182,8 @@
             android:layout_toLeftOf="@+id/tour_card_button_act"
             android:layout_toStartOf="@+id/tour_card_button_act"
             android:alpha="0.5"
-            android:background="@color/greyish"/>
+            android:background="@color/greyish"
+            android:contentDescription="@string/empty_description"/>
 
         <Button
             android:id="@+id/tour_card_button_act"
@@ -184,7 +192,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:paddingEnd="@dimen/act_button_right_padding"
-            android:paddingRight="@dimen/act_button_right_padding"/>
+            android:paddingLeft="0dp"
+            android:paddingRight="@dimen/act_button_right_padding"
+            android:paddingStart="0dp"/>
 
         <ImageView
             android:id="@+id/tour_card_divider_right"
@@ -194,7 +204,8 @@
             android:layout_toEndOf="@+id/tour_card_button_act"
             android:layout_toRightOf="@+id/tour_card_button_act"
             android:alpha="0.5"
-            android:background="@color/greyish"/>
+            android:background="@color/greyish"
+            android:contentDescription="@string/empty_description"/>
 
     </RelativeLayout>
 </RelativeLayout>

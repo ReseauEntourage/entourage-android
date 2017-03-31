@@ -16,10 +16,11 @@
         android:padding="20dp">
 
         <ImageButton
+            android:id="@+id/invite_source_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/invite_source_close_button"
             android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_close_white"/>
 
         <TextView
@@ -44,22 +45,23 @@
             android:layout_marginBottom="20dp"/>
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/invite_source_contacts"
             android:id="@+id/invite_source_contacts_button"
             style="@style/WhiteButton.RoundedCorners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_adress_book_square"
-            />
+            android:drawableStart="@drawable/ic_adress_book_square"
+            android:text="@string/invite_source_contacts"/>
 
         <Button
+            android:id="@+id/invite_source_number_button"
             style="@style/WhiteButton.RoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/invite_source_number"
-            android:id="@+id/invite_source_number_button"
+            android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/ic_phone_square"
-            android:layout_marginTop="10dp"/>
+            android:drawableStart="@drawable/ic_phone_square"
+            android:text="@string/invite_source_number"/>
 
         <Button
             android:layout_width="match_parent"

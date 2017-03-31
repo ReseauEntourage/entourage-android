@@ -109,14 +109,15 @@
             android:layout_marginTop="40dp"/>
 
         <ImageView
+            android:id="@+id/launcher_tour_go"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/launcher_tour_go"
             android:layout_below="@+id/textView"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/tour_start"
+            android:layout_marginBottom="40dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="40dp"/>
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/tour_start"/>
 
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"

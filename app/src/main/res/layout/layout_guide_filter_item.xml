@@ -23,6 +23,7 @@
             android:id="@+id/guide_filter_item_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/empty_description"
             app:srcCompat="@drawable/poi_category_1"/>
 
         <TextView

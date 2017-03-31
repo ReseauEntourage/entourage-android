@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -9,92 +10,98 @@
                 android:paddingRight="20dp">
 
     <RelativeLayout
-        android:orientation="vertical"
+        android:id="@+id/login_verify_code_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:id="@+id/login_verify_code_navigation">
+        android:orientation="vertical">
 
         <ImageButton
+            android:id="@+id/login_code_sent_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/login_code_sent_close"
-            android:src="@drawable/ic_close_white"
-            android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
-            android:padding="5dp"/>
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close_white"/>
 
         <TextView
+            android:id="@+id/login_verify_code_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/login_text_verify_code_back"
-            android:id="@+id/login_verify_code_back"
-            android:textColor="@color/custom_clickable_text_white"
-            android:gravity="end"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textSize="16sp"
             android:layout_centerInParent="true"
-            />
+            android:gravity="end"
+            android:text="@string/login_text_verify_code_back"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/custom_clickable_text_white"
+            android:textSize="16sp"/>
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/login_verify_code_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/login_verify_code_content"
+        android:layout_above="@+id/login_verify_code_form"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/login_verify_code_navigation"
-        android:layout_above="@+id/login_verify_code_form">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/login_verify_code_navigation">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/login_verify_code_image"
-            android:src="@drawable/code"
-            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="10dp"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/code"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/registration_smscode_title"
             android:id="@+id/login_verify_code_title"
-            android:textColor="@color/white"
-            android:layout_below="@+id/login_verify_code_image"
-            android:textSize="28sp"
-            android:layout_marginTop="10dp"/>
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/registration_smscode_description"
-            android:id="@+id/login_verify_code_details"
+            android:layout_below="@+id/login_verify_code_image"
+            android:layout_marginTop="10dp"
+            android:text="@string/registration_smscode_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="28sp"/>
+
+        <TextView
+            android:id="@+id/login_verify_code_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/login_verify_code_title"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:text="@string/registration_smscode_description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/login_verify_code_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/login_verify_code_form"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
         <EditText
+            android:id="@+id/login_verify_code_code"
             style="@style/CustomEditTextThemeAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/login_verify_code_code"
             android:hint="@string/registration_smscode_hint"
             android:inputType="numberPassword"
             android:maxLength="6"
@@ -106,33 +113,35 @@
             android:background="@color/login_edittext_hint_alpha"/>
 
         <Button
+            android:id="@+id/login_button_verify_code"
             style="@style/WhiteButton.RoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login_button_verify_code"
-            android:id="@+id/login_button_verify_code"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:text="@string/login_button_verify_code"/>
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:visibility="gone">
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="1">
 
         <TextView
+            android:id="@+id/login_verify_code_resend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/login_text_lost_code"
-            android:id="@+id/login_verify_code_resend"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="0.5"
-            android:textColor="@color/custom_clickable_text_yellow"
             android:gravity="start"
-            android:layout_marginLeft="10dp"/>
+            android:text="@string/login_text_lost_code"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/custom_clickable_text_yellow"/>
 
     </LinearLayout>
 </RelativeLayout>

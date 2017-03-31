@@ -16,9 +16,10 @@
         android:padding="20dp">
 
         <ImageView
+            android:id="@+id/invite_success_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/invite_success_image"
+            android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_invitation"/>
 
         <TextView

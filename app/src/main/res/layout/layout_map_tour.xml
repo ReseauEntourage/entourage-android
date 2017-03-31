@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/local_service_running"
-        android:textColor="@color/abc_input_method_navigation_guard"
         android:textSize="20sp"/>
 
     <LinearLayout

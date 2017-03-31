@@ -27,6 +27,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:padding="5dp"
             android:src="@drawable/ic_action_back"/>
 
@@ -62,8 +63,11 @@
                 android:id="@+id/login_user_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_user_white"
-                />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:contentDescription="@string/empty_description"
+                android:src="@drawable/ic_user_white"/>
 
             <TextView
                 android:id="@+id/login_email_title"

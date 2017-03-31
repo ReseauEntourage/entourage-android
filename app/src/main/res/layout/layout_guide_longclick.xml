@@ -12,13 +12,15 @@
         android:id="@+id/guide_longclicks_buttons">
 
         <ImageView
+            android:id="@+id/guide_longclick_button_poi_propose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_button_create_maraude"
-            android:id="@+id/guide_longclick_button_poi_propose"
-            android:src="@drawable/ic_button_create_maraude"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/ic_button_create_maraude"
+            app:srcCompat="@drawable/ic_button_create_maraude"/>
     </RelativeLayout>
 
 </RelativeLayout>

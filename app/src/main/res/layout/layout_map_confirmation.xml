@@ -58,65 +58,65 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:gravity="left"
-            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
             android:baselineAligned="false"
+            android:gravity="start"
+            android:orientation="horizontal"
             >
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/confirmation_encounters"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="40sp"
                     android:gravity="center_horizontal"
+                    android:textColor="@color/greyish"
                     android:textIsSelectable="false"
-                    android:textColor="@color/greyish"/>
+                    android:textSize="40sp"/>
 
                 <TextView
+                    android:id="@+id/confirmation_encounters_explanation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/tour_end_encounters"
-                    android:id="@+id/confirmation_encounters_explanation"
                     android:gravity="center_horizontal"
-                    android:textSize="15sp"
-                    android:textColor="@color/greyish"/>
+                    android:text="@string/tour_end_encounters"
+                    android:textColor="@color/greyish"
+                    android:textSize="15sp"/>
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/greyish"
-                android:alpha="0.5"/>
+                android:alpha="0.5"
+                android:background="@color/greyish"/>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/confirmation_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="40sp"
+                    android:gravity="center_horizontal"
                     android:text=""
                     android:textColor="@color/greyish"
-                    android:gravity="center_horizontal"/>
+                    android:textSize="40sp"/>
 
                 <TextView
+                    android:id="@+id/confirmation_distance_explanation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/tour_end_distance"
-                    android:id="@+id/confirmation_distance_explanation"
                     android:gravity="center_horizontal"
+                    android:text="@string/tour_end_distance"
                     android:textColor="@color/greyish"
                     android:textSize="15sp"/>
             </LinearLayout>

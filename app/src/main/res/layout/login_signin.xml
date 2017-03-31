@@ -12,22 +12,24 @@
     android:paddingRight="10dp">
 
     <RelativeLayout
+        android:id="@+id/login_block_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_block_navigation"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        >
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <ImageButton
+            android:id="@+id/login_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/login_back_button"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_action_back"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:background="?android:attr/selectableItemBackground"/>
+            android:src="@drawable/ic_action_back"/>
 
     </RelativeLayout>
 
@@ -35,93 +37,96 @@
         android:id="@+id/login_block_welcome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_above="@+id/login_block_signup"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/login_block_navigation"
-        android:layout_above="@+id/login_block_signup">
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/login_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/login_title_welcome"
-            android:id="@+id/login_title"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
+            android:text="@string/login_title_welcome"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
             android:textSize="32sp"/>
     </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/login_block_signup"
+    <LinearLayout
+        android:id="@+id/login_block_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/login_edit_phone"
+            style="@style/CustomEditTextThemeAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp">
+            android:focusable="true"
+            android:hint="@string/login_hint_phone"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
+            android:maxLength="12"
+            android:textColor="@color/white"
+            android:textSize="22sp"/>
 
-            <EditText
-                android:id="@+id/login_edit_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:hint="@string/login_hint_phone"
-                android:maxLength="12"
-                android:textSize="22sp"
-                android:focusable="true"
-                android:textColor="@color/white"
-                style="@style/CustomEditTextThemeAccent"
-                android:imeOptions="actionNext"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/login_edittext_hint_alpha"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/login_edittext_hint_alpha"/>
+        <EditText
+            android:id="@+id/login_edit_code"
+            style="@style/CustomEditTextThemeAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="@string/login_hint_code"
+            android:inputType="numberPassword"
+            android:maxLength="6"
+            android:textColor="@color/white"
+            android:textSize="22sp"/>
 
-            <EditText
-                android:id="@+id/login_edit_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/login_hint_code"
-                android:maxLength="6"
-                android:inputType="numberPassword"
-                android:textSize="22sp"
-                android:textColor="@color/white"
-                style="@style/CustomEditTextThemeAccent"
-                android:layout_marginTop="5dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/login_edittext_hint_alpha"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/login_edittext_hint_alpha"/>
+        <Button
+            android:id="@+id/login_button_signup"
+            style="@style/WhiteButton.RoundedCorners"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="@string/login_button_signup"
+            android:textAllCaps="false"
+            />
 
-            <Button
-                android:id="@+id/login_button_signup"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/login_button_signup"
-                android:textAllCaps="false"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                style="@style/WhiteButton.RoundedCorners"
-                />
+        <TextView
+            android:id="@+id/login_text_lost_code"
+            style="@style/SpacedTextViewSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="@string/login_text_lost_code"
+            android:textAllCaps="false"
+            android:textColor="@color/custom_clickable_text_white"
+            android:textSize="13sp"/>
 
-            <TextView
-                style="@style/SpacedTextViewSmall"
-                android:id="@+id/login_text_lost_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/login_text_lost_code"
-                android:textSize="13sp"
-                android:textColor="@color/custom_clickable_text_white"
-                android:textAllCaps="false"
-                android:clickable="true"
-                android:layout_gravity="center_horizontal"
-                android:padding="10dp"/>
-
-        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -47,6 +47,7 @@
         android:id="@+id/tic_chat_user_photo"
         android:layout_width="35dp"
         android:layout_height="35dp"
+        android:contentDescription="@string/empty_description"
         android:src="@drawable/ic_user_photo_small"
         android:visibility="gone"/>
 

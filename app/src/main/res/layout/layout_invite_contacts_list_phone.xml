@@ -7,31 +7,33 @@
                 android:clickable="false"
                 android:descendantFocusability="blocksDescendants">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/contact_phone"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/greyish_brown"
-        android:textSize="18sp"
-        android:layout_toLeftOf="@+id/contact_checkBox"
-        android:gravity="right"
-        android:layout_marginRight="10dp"
-        />
-
     <CheckBox
+        android:id="@+id/contact_checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/contact_checkBox"
-        android:layout_alignParentRight="true"
         android:layout_alignBaseline="@+id/contact_phone"
-        android:visibility="visible"
-        android:clickable="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:button="@drawable/cb_contact"
-        android:checked="false"/>
+        android:checked="false"
+        android:clickable="false"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/contact_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@+id/contact_checkBox"
+        android:gravity="end"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/greyish_brown"
+        android:textSize="18sp"/>
 
     <View
         android:layout_width="match_parent"

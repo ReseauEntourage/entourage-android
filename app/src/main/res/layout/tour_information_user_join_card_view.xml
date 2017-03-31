@@ -39,6 +39,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="bottom"
+                    android:contentDescription="@string/empty_description"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/ic_user_photo_small"/>
 
@@ -123,10 +124,11 @@
             android:layout_height="76dp">
 
             <ImageView
+                android:id="@+id/tic_photo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:id="@+id/tic_photo"
                 android:layout_marginTop="10dp"
+                android:contentDescription="@string/empty_description"
                 android:src="@drawable/ic_user_photo_small"/>
 
             <social.entourage.android.view.PartnerLogoImageView

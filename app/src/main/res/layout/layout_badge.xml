@@ -4,22 +4,22 @@
                 android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/badge_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/badge_icon"
-        android:src="@drawable/ic_discussion"
-        />
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/ic_discussion"/>
 
     <TextView
+        android:id="@+id/badge_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/badge_count"
-        android:background="@drawable/bg_badge"
+        android:layout_alignEnd="@+id/badge_icon"
+        android:layout_alignRight="@+id/badge_icon"
         android:layout_alignTop="@+id/badge_icon"
+        android:background="@drawable/bg_badge"
+        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="10sp"
-        android:gravity="center"
-        android:layout_alignRight="@+id/badge_icon"
-        android:visibility="gone"
-        />
+        android:visibility="gone"/>
 </merge>

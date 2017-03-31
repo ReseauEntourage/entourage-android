@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,6 +32,7 @@
         android:layout_gravity="end"
         android:layout_marginEnd="6dp"
         android:layout_marginRight="6dp"
+        android:contentDescription="@string/empty_description"
         android:paddingTop="3dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_user_photo_small"/>
@@ -99,12 +101,14 @@
             android:minWidth="15dp"
             android:textColor="@color/white"
             android:textSize="10sp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:ignore="SmallSp"/>
 
         <ImageView
             android:id="@+id/tour_card_people_image"
             android:layout_width="22dp"
             android:layout_height="22dp"
+            android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_users"/>
 
         <TextView

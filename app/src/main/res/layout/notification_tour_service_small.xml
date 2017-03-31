@@ -9,11 +9,12 @@
         android:id="@+id/notification_tour_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_notification" />
+        android:src="@drawable/ic_notification"/>
 
     <LinearLayout
         android:id="@+id/notification_tour_infos"
@@ -45,35 +46,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/notification_tour_infos"
         android:layout_toRightOf="@id/notification_tour_infos"
-        android:layout_toEndOf="@id/notification_tour_infos">
+        android:orientation="horizontal">
 
         <Button
-            style="@style/NotificationButton.Small"
             android:id="@+id/notification_tour_stop_button"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
+            style="@style/NotificationButton.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="@string/tour_stop"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="@string/tour_stop"
             android:visibility="visible"/>
 
         <Button
+            android:id="@+id/notification_tour_pause_button"
             style="@style/NotificationButton.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tour_pause"
-            android:id="@+id/notification_tour_pause_button"
             android:layout_marginLeft="5dp"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
             android:layout_marginRight="5dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="@string/tour_pause"
             android:visibility="visible"/>
 
 

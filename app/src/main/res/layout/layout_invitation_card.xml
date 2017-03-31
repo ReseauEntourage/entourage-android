@@ -13,34 +13,39 @@
         >
 
         <ImageView
+            android:id="@+id/invitation_card_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/invitation_card_icon"
-            android:src="@drawable/ic_invitation"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/ic_invitation"/>
 
         <TextView
+            android:id="@+id/invitation_card_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/invitation_card_description"
-            android:id="@+id/invitation_card_description"
-            android:textColor="@color/white"
-            android:layout_toRightOf="@+id/invitation_card_icon"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/invitation_card_icon"
+            android:layout_toRightOf="@+id/invitation_card_icon"
+            android:text="@string/invitation_card_description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/invitation_card_inviter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/invitation_card_inviter"
-            android:textColor="@color/white"
-            android:layout_below="@+id/invitation_card_description"
             android:layout_alignLeft="@+id/invitation_card_description"
+            android:layout_alignStart="@+id/invitation_card_description"
+            android:layout_below="@+id/invitation_card_description"
             android:layout_marginTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
             android:textSize="14sp"/>
     </RelativeLayout>
 </FrameLayout>

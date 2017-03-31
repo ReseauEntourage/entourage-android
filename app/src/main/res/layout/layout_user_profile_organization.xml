@@ -37,12 +37,13 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/organization_logo"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:id="@+id/organization_logo"
-        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/empty_description"/>
 
     <View
         android:layout_width="match_parent"

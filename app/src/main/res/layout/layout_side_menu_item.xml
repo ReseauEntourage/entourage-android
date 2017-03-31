@@ -6,28 +6,35 @@
 
     <ImageView
         android:id="@+id/side_menu_item_icon"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_about"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_centerVertical="true"
+        android:layout_marginEnd="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_height="32dp"
-        android:layout_width="32dp"/>
+        android:layout_marginStart="15dp"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_about"/>
+
     <TextView
         android:id="@+id/side_menu_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/side_menu_item_icon"
         android:layout_toRightOf="@id/side_menu_item_icon"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/greyish_brown"
-        android:layout_centerVertical="true"/>
+        android:textColor="@color/greyish_brown"/>
+
     <ImageView
         android:id="@+id/side_menu_item_divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_toRightOf="@id/side_menu_item_icon"
         android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/side_menu_item_icon"
+        android:layout_toRightOf="@id/side_menu_item_icon"
         android:background="@color/sidemenu_divider"
-        />
+        android:contentDescription="@string/empty_description"/>
 
 </merge>
