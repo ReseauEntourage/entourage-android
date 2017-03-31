@@ -64,19 +64,29 @@ public class Constants {
     public static final String EVENT_WELCOME_CONTINUE = "WelcomeScreenContinue";
 
     // SCREEN Events
+    public static final String EVENT_SCREEN_01 = "Screen01SplashVew";
     public static final String EVENT_SCREEN_02_1 = "Screen02OnboardingLoginView";
     public static final String EVENT_SCREEN_03_1 = "Screen03_1OnboardingCodeResendView";
     public static final String EVENT_SCREEN_03_2 = "Screen03_2OnboardingPhoneNotFoundView";
     public static final String EVENT_SCREEN_04 = "Screen04_GoEnableGeolocView"; //Not implemented on Android
+    public static final String EVENT_SCREEN_04_2 = "Screen04_2OnboardingGeolocView";
+    public static final String EVENT_SCREEN_04_3 = "Screen04_3OnboardingNotificationsView";
     public static final String EVENT_SCREEN_30_1 = "Screen30_1WelcomeView";
     public static final String EVENT_SCREEN_30_2 = "Screen30_2InputPhoneView";
     public static final String EVENT_SCREEN_30_2_E = "Screen30_2PhoneAlreadyExistsError";
     public static final String EVENT_SCREEN_30_3 = "Screen30_3InputPasscodeView";
+    public static final String EVENT_SCREEN_30_4 = "Screen30_4InputEmailView";
+    public static final String EVENT_SCREEN_30_5 = "Screen30_5InputNameView";
     public static final String EVENT_SCREEN_09_1_ME = "Screen09_1MyProfileViewAsPublicView";
     public static final String EVENT_SCREEN_09_1_OTHER = "Screen09_1OtherUserProfileView";
     public static final String EVENT_SCREEN_09_2 = "Screen09_2EditMyProfileView";
     public static final String EVENT_SCREEN_09_4 = "Screen09_4EditPasswordView";
     public static final String EVENT_SCREEN_09_4_SUBMIT = "Screen09_4ChangePasswordSubmit";
+    public static final String EVENT_SCREEN_09_5 = "Screen09_5EditNameView";
+    public static final String EVENT_SCREEN_09_6 = "Screen09_6ChoosePhotoView";
+    public static final String EVENT_SCREEN_09_7 = "Screen09_7TakePhotoView";
+    public static final String EVENT_SCREEN_09_8 = "Screen09_8ConfirmPhotoView";
+    public static final String EVENT_SCREEN_09_9 = "Screen09_9MovePhotoView";
     public static final String EVENT_SCREEN_06_1 = "Screen06_1FeedView";
     public static final String EVENT_SCREEN_06_2 = "Screen06_2MapView";
     public static final String EVENT_SCREEN_17_2 = "Screen17_2MyMessagesView";

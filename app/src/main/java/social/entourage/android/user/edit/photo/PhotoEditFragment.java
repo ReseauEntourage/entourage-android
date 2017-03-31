@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -26,6 +27,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 
 public class PhotoEditFragment extends DialogFragment {
@@ -59,12 +61,6 @@ public class PhotoEditFragment extends DialogFragment {
     public static PhotoEditFragment newInstance(Uri photoUri) {
         PhotoEditFragment fragment = new PhotoEditFragment();
         Bundle args = new Bundle();
-        /*
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        args.putByteArray(PHOTO_PARAM, byteArray);
-        */
         args.putParcelable(PHOTO_PARAM, photoUri);
         fragment.setArguments(args);
         return fragment;
@@ -85,12 +81,6 @@ public class PhotoEditFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            /*
-            byte[] byteArray = getArguments().getByteArray(PHOTO_PARAM);
-            if (byteArray != null) {
-                photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            }
-            */
             photoUri = getArguments().getParcelable(PHOTO_PARAM);
         }
     }
@@ -99,6 +89,7 @@ public class PhotoEditFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_9);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_edit, container, false);
         ButterKnife.bind(this, view);

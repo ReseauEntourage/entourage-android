@@ -242,7 +242,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        FlurryAgent.logEvent(Constants.EVENT_LOGIN_START);
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_01);
 
         loginSignin.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.GONE);
@@ -333,7 +333,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             showKeyboard(phoneEditText);
         } else if (loginTutorial.getVisibility() == View.VISIBLE) {
             loginTutorial.setVisibility(View.GONE);
-            loginEmail.setVisibility(View.VISIBLE);
+            showEmailView();
         } else if (loginEmail.getVisibility() == View.VISIBLE) {
             loginEmail.setVisibility(View.GONE);
             loginNameView.setVisibility(View.VISIBLE);
@@ -489,8 +489,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
             showNameView();
         } else if (user.getEmail() == null || user.getEmail().length() == 0) {
-            loginEmail.setVisibility(View.VISIBLE);
-            profileEmail.requestFocus();
+            showEmailView();
         } else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
             showPhotoChooseSource();
         } else {
@@ -703,6 +702,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Email View
      ************************/
 
+    private void showEmailView() {
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_4);
+        loginEmail.setVisibility(View.VISIBLE);
+        profileEmail.requestFocus();
+    }
+
     @OnClick(R.id.login_email_back_button)
     void onEmailBackClicked() {
         onBackPressed();
@@ -734,6 +739,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     void showNameView() {
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_5);
         loginNameView.setVisibility(View.VISIBLE);
 
         if (loginPresenter != null && loginPresenter.authenticationController != null) {
@@ -776,8 +782,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             if (user != null) {
                 if (user.getEmail() == null || user.getEmail().length() == 0) {
                     loginNameView.setVisibility(View.GONE);
-                    loginEmail.setVisibility(View.VISIBLE);
-                    profileEmail.requestFocus();
+                    showEmailView();
                     return;
                 }
             }
@@ -881,6 +886,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     void showLoginScreen() {
+        FlurryAgent.logEvent(Constants.EVENT_LOGIN_START);
         loginStartup.setVisibility(View.GONE);
         loginSignin.setVisibility(View.VISIBLE);
         showKeyboard(phoneEditText);
@@ -1018,6 +1024,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     private void showNotificationPermissionView() {
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_04_3);
         loginNotificationsView.setVisibility(View.VISIBLE);
     }
 
@@ -1041,6 +1048,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     private void showGeolocationView() {
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_04_2);
         loginGeolocationView.setVisibility(View.VISIBLE);
     }
 

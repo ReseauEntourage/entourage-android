@@ -11,9 +11,12 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 
@@ -66,6 +69,7 @@ public class UserEditProfileFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_5);
         View toReturn = inflater.inflate(R.layout.fragment_user_edit_profile, container, false);
         ButterKnife.bind(this, toReturn);
         return toReturn;

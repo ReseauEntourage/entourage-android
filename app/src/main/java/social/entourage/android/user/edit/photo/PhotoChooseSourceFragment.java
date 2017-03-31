@@ -81,6 +81,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_6);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_choose_source, container, false);
         ButterKnife.bind(this, view);
