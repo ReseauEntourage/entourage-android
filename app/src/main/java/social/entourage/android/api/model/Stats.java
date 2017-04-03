@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Stats implements Serializable{
+public class Stats implements Serializable {
+
+    private static final long serialVersionUID = -6285877183504670635L;
 
     // ----------------------------------
     // ATTRIBUTES

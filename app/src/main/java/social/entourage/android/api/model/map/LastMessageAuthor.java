@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 public class LastMessageAuthor implements Serializable{
 
+    private static final long serialVersionUID = 8632217230061284659L;
+    
     @SerializedName("first_name")
     private String firstName;
 

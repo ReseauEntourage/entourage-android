@@ -13,6 +13,8 @@ import social.entourage.android.api.model.TimestampedObject;
 @SuppressWarnings("unused")
 public class Encounter extends TimestampedObject implements Serializable {
 
+    private static final long serialVersionUID = -274834914755989518L;
+
     private final static String HASH_STRING_HEAD = "Encounter-";
 
     // ----------------------------------

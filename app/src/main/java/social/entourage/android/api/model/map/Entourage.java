@@ -18,6 +18,8 @@ public class Entourage extends FeedItem implements Serializable {
     // Constants
     // ----------------------------------
 
+    private static final long serialVersionUID = -4705290634210244790L;
+
     private final static String HASH_STRING_HEAD = "Entourage-";
 
     public static final String TYPE_CONTRIBUTION = "contribution";

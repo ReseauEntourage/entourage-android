@@ -10,6 +10,8 @@ import social.entourage.android.api.model.map.Entourage;
  */
 public class MapFilter implements Serializable {
 
+    private static final long serialVersionUID = -2822136342813499636L;
+
     // ----------------------------------
     // Attributes
     // ----------------------------------

@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public class Message implements Serializable {
 
+    private static final long serialVersionUID = 929859042482137137L;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

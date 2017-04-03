@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class PushNotificationContent implements Serializable {
 
+    private static final long serialVersionUID = -8538280283990931663L;
+
     public static final String TYPE_NEW_CHAT_MESSAGE = "NEW_CHAT_MESSAGE";
     public static final String TYPE_JOIN_REQUEST_ACCEPTED = "JOIN_REQUEST_ACCEPTED";
     public static final String TYPE_NEW_JOIN_REQUEST = "NEW_JOIN_REQUEST";
@@ -49,6 +51,8 @@ public class PushNotificationContent implements Serializable {
     }
 
     public class Extra implements Serializable {
+
+        private static final long serialVersionUID = 9200497161789347105L;
 
         public static final String JOINABLE_TYPE_TOUR = "Tour";
         public static final String JOINABLE_TYPE_ENTOURAGE = "Entourage";

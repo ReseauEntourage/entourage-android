@@ -9,6 +9,8 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 public class Poi implements Serializable, ClusterItem {
 
+    private static final long serialVersionUID = 7508582427596761716L;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

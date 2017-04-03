@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 public class LastMessage implements Serializable {
 
+    private static final long serialVersionUID = -5067887626222236770L;
+
     @SerializedName("text")
     private String text;
 

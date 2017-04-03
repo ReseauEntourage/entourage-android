@@ -13,6 +13,8 @@ import social.entourage.android.EntourageLocation;
 
 @SuppressWarnings("unused")
 public class TourPoint implements Serializable {
+    
+    private static final long serialVersionUID = -5620241951845660404L;
 
     // ----------------------------------
     // ATTRIBUTES

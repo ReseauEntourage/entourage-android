@@ -13,6 +13,7 @@ import java.util.List;
 public class ChatMessage extends TimestampedObject implements Serializable {
 
     private final static String HASH_STRING_HEAD = "ChatMessage-";
+    private static final long serialVersionUID = 2171009008739523540L;
 
     @Expose(serialize = false)
     @SerializedName("id")

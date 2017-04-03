@@ -13,6 +13,8 @@ import social.entourage.android.R;
 
 public class Partner extends BaseOrganization implements Serializable {
 
+    private static final long serialVersionUID = -8314100695611710517L;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

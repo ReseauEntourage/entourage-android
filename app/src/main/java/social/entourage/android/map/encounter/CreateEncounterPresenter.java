@@ -89,6 +89,8 @@ public class CreateEncounterPresenter {
 
     public class EncounterUploadTask implements Task<EncounterUploadCallback>, Serializable {
 
+        private static final long serialVersionUID = -4119167198701340648L;
+        
         private Encounter encounter;
         private EncounterUploadCallback callback;
 

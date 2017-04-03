@@ -15,6 +15,8 @@ import social.entourage.android.api.model.TimestampedObject;
  */
 public class TourUser extends TimestampedObject implements Serializable {
 
+    private static final long serialVersionUID = 6896801856163434601L;
+
     private final static String HASH_STRING_HEAD = "TourUser-";
 
     @SerializedName("id")

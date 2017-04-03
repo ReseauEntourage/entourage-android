@@ -22,6 +22,8 @@ public class FeedItemsStorage implements Serializable {
     // Constants
     // ----------------------------------
 
+    private static final long serialVersionUID = -7135458066881059190L;
+
     public static final String KEY = "FeedItemsStorage";
 
     // ----------------------------------
@@ -115,6 +117,8 @@ public class FeedItemsStorage implements Serializable {
     // ----------------------------------
 
     private static class FeedItemStorage implements Serializable {
+
+        private static final long serialVersionUID = 6917587786160136512L;
 
         private int type;
         private long feedId;

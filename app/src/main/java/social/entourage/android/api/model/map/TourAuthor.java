@@ -8,6 +8,8 @@ import social.entourage.android.api.model.Partner;
 
 public class TourAuthor implements Serializable {
 
+    private static final long serialVersionUID = 3412722274231780458L;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

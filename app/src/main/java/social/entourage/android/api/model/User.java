@@ -18,6 +18,8 @@ public class User implements Serializable {
     // CONSTANTS
     // ----------------------------------
 
+    private static final long serialVersionUID = 6066574628451729752L;
+
     public static final String KEY_USER_ID = "social.entourage.android.KEY_USER_ID";
     public static final String KEY_USER = "social.entourage.android.KEY_USER";
 

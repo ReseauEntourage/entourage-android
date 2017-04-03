@@ -6,6 +6,8 @@ package social.entourage.android.map.filter;
 
 public class MapFilterPublic extends MapFilter {
 
+    private static final long serialVersionUID = 4224570539967770078L;
+
     private static MapFilter ourInstance = new MapFilterPublic();
 
     public static MapFilter getInstance() {

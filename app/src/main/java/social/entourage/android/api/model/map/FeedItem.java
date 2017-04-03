@@ -26,6 +26,8 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // CONSTANTS
     // ----------------------------------
 
+    private static final long serialVersionUID = 6130079334883067122L;
+
     public static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
     public static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
     public static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";

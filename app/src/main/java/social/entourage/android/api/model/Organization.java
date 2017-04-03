@@ -8,6 +8,8 @@ import social.entourage.android.R;
 
 public class Organization extends BaseOrganization implements Serializable {
 
+    private static final long serialVersionUID = 987327362138435972L;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

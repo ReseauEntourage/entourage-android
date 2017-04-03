@@ -22,6 +22,8 @@ public class Tour extends FeedItem implements Serializable {
     // CONSTANTS
     // ----------------------------------
 
+    private static final long serialVersionUID = -5072027793523981962L;
+
     private final static String HASH_STRING_HEAD = "Tour-";
 
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
@@ -293,6 +295,8 @@ public class Tour extends FeedItem implements Serializable {
     // ----------------------------------
 
     public static class Tours implements Serializable {
+
+        private static final long serialVersionUID = -9137864560567548841L;
 
         private List<Tour> tours;
 
