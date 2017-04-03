@@ -134,7 +134,7 @@ public class ReadEncounterActivity extends EntourageActivity {
                 }
                 return encounter;
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
 
             }
             return null;

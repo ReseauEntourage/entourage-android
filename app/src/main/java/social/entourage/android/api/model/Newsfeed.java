@@ -110,12 +110,10 @@ public class Newsfeed {
                 newsfeed.type = type;
                 if (type != null) {
                     if (type.equals(Tour.NEWSFEED_TYPE)) {
-                        Tour tour = gson.fromJson(jsonObject.get(DATA), Tour.class);
-                        newsfeed.data = tour;
+                        newsfeed.data = gson.fromJson(jsonObject.get(DATA), Tour.class);
                     }
                     else if (type.equals(Entourage.NEWSFEED_TYPE)) {
-                        Entourage entourage = gson.fromJson(jsonObject.get(DATA), Entourage.class);
-                        newsfeed.data = entourage;
+                        newsfeed.data = gson.fromJson(jsonObject.get(DATA), Entourage.class);
                     }
 
                 }

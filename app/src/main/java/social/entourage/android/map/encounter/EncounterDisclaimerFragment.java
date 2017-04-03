@@ -41,8 +41,7 @@ public class EncounterDisclaimerFragment extends DialogFragment {
     }
 
     public static EncounterDisclaimerFragment newInstance() {
-        EncounterDisclaimerFragment fragment = new EncounterDisclaimerFragment();
-        return fragment;
+        return new EncounterDisclaimerFragment();
     }
 
     @Override

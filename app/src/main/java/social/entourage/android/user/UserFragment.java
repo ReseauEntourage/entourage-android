@@ -409,9 +409,8 @@ public class UserFragment extends DialogFragment {
         if (!isAdded()) {
             return;
         }
-        User user = EntourageApplication.me(getActivity());
         //update the current view
-        this.user = user;
+        this.user = EntourageApplication.me(getActivity());
         configureView();
     }
 

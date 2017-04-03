@@ -116,7 +116,7 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
                 }
                 return encounter;
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
 
             }
             return null;

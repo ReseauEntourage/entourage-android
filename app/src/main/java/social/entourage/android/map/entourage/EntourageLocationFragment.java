@@ -352,7 +352,7 @@ public class EntourageLocationFragment extends DialogFragment {
                 }
                 return addressLine;
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
 
             }
             return null;
@@ -381,7 +381,7 @@ public class EntourageLocationFragment extends DialogFragment {
                 }
                 return null;
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
 
             }
             return null;

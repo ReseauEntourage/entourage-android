@@ -185,13 +185,12 @@ public class PhotoEditFragment extends DialogFragment {
         String imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+
+        return File.createTempFile(
             imageFileName,  /* prefix */
             ".jpg",         /* suffix */
             storageDir      /* directory */
         );
-
-        return image;
     }
 
 }

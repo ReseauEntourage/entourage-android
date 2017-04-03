@@ -273,7 +273,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
                 }
                 return addressLine;
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
 
             }
             return null;

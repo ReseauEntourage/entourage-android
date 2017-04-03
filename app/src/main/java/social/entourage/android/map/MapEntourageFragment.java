@@ -720,7 +720,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (map != null) {
                 try {
                     map.setMyLocationEnabled(true);
-                } catch (SecurityException e) {
+                } catch (SecurityException ignored) {
                 }
             }
         } else {

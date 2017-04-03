@@ -38,8 +38,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
     @Override
     public ChoiceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.choice_tour_card, parent, false);
-        ChoiceViewHolder choiceViewHolder = new ChoiceViewHolder(view);
-        return choiceViewHolder;
+        return new ChoiceViewHolder(view);
     }
 
     @Override

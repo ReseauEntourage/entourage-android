@@ -484,7 +484,7 @@ public class CreateEntourageFragment extends DialogFragment implements Entourage
                 }
                 return addressLine;
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
 
             }
             return null;
