@@ -51,9 +51,7 @@ public class FeedItemsStorage implements Serializable {
         // get the list
         List<FeedItemStorage> userFeeds = getUserFeeds(userId);
         // search for a saved feeditem
-        ListIterator<FeedItemStorage> listIterator = userFeeds.listIterator();
-        while (listIterator.hasNext()) {
-            FeedItemStorage feedItemStorage = listIterator.next();
+        for (final FeedItemStorage feedItemStorage : userFeeds) {
             if (feedItemStorage.feedId == feedItem.getId() && feedItemStorage.type == feedItem.getType()) {
                 feedItemStorage.updateFrom(feedItem);
                 return;
@@ -104,9 +102,7 @@ public class FeedItemsStorage implements Serializable {
         // get the list
         List<FeedItemStorage> userFeeds = getUserFeeds(userId);
         // search for a saved feeditem
-        ListIterator<FeedItemStorage> listIterator = userFeeds.listIterator();
-        while (listIterator.hasNext()) {
-            FeedItemStorage feedItemStorage = listIterator.next();
+        for (final FeedItemStorage feedItemStorage : userFeeds) {
             if (feedItemStorage.feedId == feedItem.getId() && feedItemStorage.type == feedItem.getType()) {
                 feedItemStorage.updateTo(feedItem);
                 return;

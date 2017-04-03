@@ -261,14 +261,12 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
 
-            Iterator<Newsfeed> iterator = newsfeedList.iterator();
-            while (iterator.hasNext()) {
-                Newsfeed newsfeed = iterator.next();
+            for (final Newsfeed newsfeed : newsfeedList) {
                 Object feedData = newsfeed.getData();
                 if (feedData == null || !(feedData instanceof FeedItem)) {
                     continue;
                 }
-                FeedItem feedItem = (FeedItem)newsfeed.getData();
+                FeedItem feedItem = (FeedItem) newsfeed.getData();
                 if (application != null) {
                     application.updateBadgeCountForFeedItem(feedItem);
                 }
@@ -278,16 +276,13 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
                 if (status.equals(Newsfeed.STATUS_ACTIVE)) {
                     if (activeFeedsAdapter.findCard(feedItem) == null) {
                         activeFeedsAdapter.addCardInfoBeforeTimestamp(feedItem);
-                    }
-                    else {
+                    } else {
                         activeFeedsAdapter.updateCard(feedItem);
                     }
-                }
-                else if (status.equals(Newsfeed.STATUS_CLOSED)) {
+                } else if (status.equals(Newsfeed.STATUS_CLOSED)) {
                     if (frozenFeedsAdapter.findCard(feedItem) == null) {
                         frozenFeedsAdapter.addCardInfoBeforeTimestamp(feedItem);
-                    }
-                    else {
+                    } else {
                         frozenFeedsAdapter.updateCard(feedItem);
                     }
                 }

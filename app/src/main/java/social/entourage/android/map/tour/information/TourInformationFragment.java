@@ -1027,17 +1027,14 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
     private void initOldestChatMessageDate() {
         List<TimestampedObject> cachedCardInfoList = feedItem.getCachedCardInfoList();
-        Iterator<TimestampedObject> iterator = cachedCardInfoList.iterator();
-        while (iterator.hasNext()) {
-            TimestampedObject timestampedObject = iterator.next();
+        for (final TimestampedObject timestampedObject : cachedCardInfoList) {
             if (timestampedObject.getClass() != ChatMessage.class) continue;
             ChatMessage chatMessage = (ChatMessage) timestampedObject;
             Date chatCreationDate = chatMessage.getCreationDate();
             if (chatCreationDate == null) continue;
             if (oldestChatMessageDate == null) {
                 oldestChatMessageDate = chatCreationDate;
-            }
-            else {
+            } else {
                 if (chatCreationDate.before(oldestChatMessageDate)) {
                     oldestChatMessageDate = chatCreationDate;
                 }
@@ -1337,28 +1334,32 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         }
         else {
             String joinStatus = feedItem.getJoinStatus();
-            if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
-                actButton.setEnabled(true);
-                actButton.setText(R.string.tour_cell_button_pending);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            } else if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
-                actButton.setPadding(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
-                if (Build.VERSION.SDK_INT >= 16) {
-                    actButton.setPaddingRelative(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
-                }
-                actButton.setEnabled(false);
-                actButton.setText(R.string.tour_cell_button_accepted);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            } else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
-                actButton.setEnabled(false);
-                actButton.setText(R.string.tour_cell_button_rejected);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                textColor = R.color.tomato;
-            } else {
-                // Different layout for requesting to join
-                actLayout.setVisibility(View.INVISIBLE);
-                requestJoinLayout.setVisibility(View.VISIBLE);
-                return;
+            switch (joinStatus) {
+                case Tour.JOIN_STATUS_PENDING:
+                    actButton.setEnabled(true);
+                    actButton.setText(R.string.tour_cell_button_pending);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    break;
+                case Tour.JOIN_STATUS_ACCEPTED:
+                    actButton.setPadding(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
+                    if (Build.VERSION.SDK_INT >= 16) {
+                        actButton.setPaddingRelative(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
+                    }
+                    actButton.setEnabled(false);
+                    actButton.setText(R.string.tour_cell_button_accepted);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    break;
+                case Tour.JOIN_STATUS_REJECTED:
+                    actButton.setEnabled(false);
+                    actButton.setText(R.string.tour_cell_button_rejected);
+                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    textColor = R.color.tomato;
+                    break;
+                default:
+                    // Different layout for requesting to join
+                    actLayout.setVisibility(View.INVISIBLE);
+                    requestJoinLayout.setVisibility(View.VISIBLE);
+                    return;
             }
             actButton.setTextColor(getResources().getColor(textColor));
 
@@ -1595,9 +1596,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
                 AuthenticationController authenticationController = EntourageApplication.get(getActivity()).getEntourageComponent().getAuthenticationController();
                 if (authenticationController.isAuthenticated()) {
                     int me = authenticationController.getUser().getId();
-                    Iterator chatMessageIterator = chatMessageList.iterator();
-                    while (chatMessageIterator.hasNext()) {
-                        ChatMessage chatMessage = (ChatMessage) chatMessageIterator.next();
+                    for (final ChatMessage chatMessage : chatMessageList) {
                         chatMessage.setIsMe(chatMessage.getUserId() == me);
                     }
                 }

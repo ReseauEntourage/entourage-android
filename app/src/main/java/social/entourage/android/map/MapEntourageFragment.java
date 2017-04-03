@@ -1848,9 +1848,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void hideUserHistory() {
-        Iterator iteratorTours = retrievedHistory.entrySet().iterator();
-        while (iteratorTours.hasNext()) {
-            Map.Entry pair = (Map.Entry) iteratorTours.next();
+        for (final Object o : retrievedHistory.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
             Tour tour = (Tour) pair.getValue();
             Polyline line = drawnUserHistory.get(tour.getId());
             line.setColor(getTrackColor(true, tour.getTourType(), tour.getStartTime()));
@@ -1858,9 +1857,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void showUserHistory() {
-        Iterator iteratorLines = drawnUserHistory.entrySet().iterator();
-        while (iteratorLines.hasNext()) {
-            Map.Entry pair = (Map.Entry) iteratorLines.next();
+        for (final Object o : drawnUserHistory.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
             Tour tour = retrievedHistory.get(pair.getKey());
             Polyline line = (Polyline) pair.getValue();
             line.setColor(getTrackColor(true, tour.getTourType(), tour.getStartTime()));
@@ -2348,9 +2346,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (presenter == null) {
             return;
         }
-        Iterator<Invitation> iterator = invitationList.iterator();
-        while (iterator.hasNext()) {
-            Invitation invitation = iterator.next();
+        for (final Invitation invitation : invitationList) {
             presenter.acceptInvitation(invitation.getId());
         }
         // Show the first invitation

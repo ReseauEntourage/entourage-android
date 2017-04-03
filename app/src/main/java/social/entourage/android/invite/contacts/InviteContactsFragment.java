@@ -206,7 +206,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
             quickJumpArray.add(String.format("%c", c));
         }
         quickJumpArray.add("#");
-        quickJumpAdapter = new ArrayAdapter<String>(
+        quickJumpAdapter = new ArrayAdapter<>(
                 getContext(),
                 R.layout.layout_invite_contacts_quick_jump_item,
                 R.id.invite_contacts_quick_jump_textview,

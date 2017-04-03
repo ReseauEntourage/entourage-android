@@ -424,14 +424,12 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
 
-            Iterator<Newsfeed> iterator = newsfeedList.iterator();
-            while (iterator.hasNext()) {
-                Newsfeed newsfeed = iterator.next();
+            for (final Newsfeed newsfeed : newsfeedList) {
                 Object feedData = newsfeed.getData();
                 if (feedData == null || !(feedData instanceof FeedItem)) {
                     continue;
                 }
-                FeedItem feedItem = (FeedItem)newsfeed.getData();
+                FeedItem feedItem = (FeedItem) newsfeed.getData();
                 if (application != null) {
                     application.updateBadgeCountForFeedItem(feedItem);
                 }
@@ -443,8 +441,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
                 if (entouragesAdapter.findCard(feedItem) == null) {
                     entouragesAdapter.addCardInfo(feedItem);
-                }
-                else {
+                } else {
                     entouragesAdapter.updateCard(feedItem);
                 }
             }
@@ -469,9 +466,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         }
         invitationsAdapter.removeAll();
         // add the invitations
-        Iterator<Invitation> iterator = invitationList.iterator();
-        while (iterator.hasNext()) {
-            Invitation invitation = iterator.next();
+        for (final Invitation invitation : invitationList) {
             invitationsAdapter.addCardInfoBeforeTimestamp(invitation);
         }
     }

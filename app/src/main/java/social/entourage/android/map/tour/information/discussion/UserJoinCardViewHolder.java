@@ -255,23 +255,19 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     }
 
     private String getJoinStatus(String joinStatus, boolean isTour) {
-        if (joinStatus.equals(Tour.JOIN_STATUS_ACCEPTED)) {
-            return itemView.getContext().getString(isTour? R.string.tour_info_text_join_accepted : R.string.entourage_info_text_join_accepted);
-        }
-        else if (joinStatus.equals(Tour.JOIN_STATUS_REJECTED)) {
-            return itemView.getContext().getString(R.string.tour_info_text_join_rejected);
-        }
-        else if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
-            return itemView.getContext().getString(isTour? R.string.tour_join_request_received_message_short : R.string.entourage_join_request_received_message_short);
-        }
-        else if (joinStatus.equals(Tour.JOIN_STATUS_CANCELLED)) {
-            return itemView.getContext().getString(isTour ? R.string.tour_info_text_join_cancelled_tour : R.string.tour_info_text_join_cancelled_entourage);
-        }
-        else if (joinStatus.equals(Tour.JOIN_STATUS_QUITED)) {
-            return itemView.getContext().getString(isTour ? R.string.tour_info_text_join_quited_tour : R.string.tour_info_text_join_quited_entourage);
-        }
-        else {
-            return "";
+        switch (joinStatus) {
+            case Tour.JOIN_STATUS_ACCEPTED:
+                return itemView.getContext().getString(isTour ? R.string.tour_info_text_join_accepted : R.string.entourage_info_text_join_accepted);
+            case Tour.JOIN_STATUS_REJECTED:
+                return itemView.getContext().getString(R.string.tour_info_text_join_rejected);
+            case Tour.JOIN_STATUS_PENDING:
+                return itemView.getContext().getString(isTour ? R.string.tour_join_request_received_message_short : R.string.entourage_join_request_received_message_short);
+            case Tour.JOIN_STATUS_CANCELLED:
+                return itemView.getContext().getString(isTour ? R.string.tour_info_text_join_cancelled_tour : R.string.tour_info_text_join_cancelled_entourage);
+            case Tour.JOIN_STATUS_QUITED:
+                return itemView.getContext().getString(isTour ? R.string.tour_info_text_join_quited_tour : R.string.tour_info_text_join_quited_entourage);
+            default:
+                return "";
         }
     }
 
