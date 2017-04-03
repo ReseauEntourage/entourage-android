@@ -1,11 +1,9 @@
 package social.entourage.android.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import social.entourage.android.R;
 
@@ -14,7 +12,7 @@ import social.entourage.android.R;
  * Created by mihaiionescu on 30/01/2017.
  */
 
-public class PartnerLogoImageView extends ImageView {
+public class PartnerLogoImageView extends android.support.v7.widget.AppCompatImageView {
 
     public PartnerLogoImageView(final Context context) {
         super(context);
@@ -26,11 +24,6 @@ public class PartnerLogoImageView extends ImageView {
 
     public PartnerLogoImageView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    @TargetApi(21)
-    public PartnerLogoImageView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override

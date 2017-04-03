@@ -1,16 +1,14 @@
 package social.entourage.android.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import social.entourage.android.R;
 
-public class HtmlTextView extends TextView {
+public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
 
     private String htmlString;
 
@@ -25,12 +23,6 @@ public class HtmlTextView extends TextView {
 
     public HtmlTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        buildAttrs(context, attrs);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public HtmlTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         buildAttrs(context, attrs);
     }
 

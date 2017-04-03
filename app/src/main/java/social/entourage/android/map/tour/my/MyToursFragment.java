@@ -18,7 +18,6 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
