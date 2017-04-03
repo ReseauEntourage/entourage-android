@@ -185,8 +185,7 @@ public class Entourage extends FeedItem implements Serializable {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null || o.getClass() != this.getClass()) return false;
-        return this.id == ((Entourage)o).id;
+        return !(o == null || o.getClass() != this.getClass()) && this.id == ((Entourage) o).id;
     }
 
     @Override

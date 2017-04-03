@@ -238,8 +238,7 @@ public class Tour extends FeedItem implements Serializable {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null || o.getClass() != this.getClass()) return false;
-        return this.id == ((Tour)o).id;
+        return !(o == null || o.getClass() != this.getClass()) && this.id == ((Tour) o).id;
     }
 
     @Override

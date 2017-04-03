@@ -1095,10 +1095,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     private boolean onPushNotificationChatMessageReceived(Message message) {
         TourInformationFragment fragment = (TourInformationFragment) getSupportFragmentManager().findFragmentByTag(TourInformationFragment.TAG);
-        if (fragment != null) {
-            return fragment.onPushNotificationChatMessageReceived(message);
-        }
-        return false;
+        return fragment != null && fragment.onPushNotificationChatMessageReceived(message);
     }
 
     private void addPushNotification(Message message) {

@@ -133,8 +133,7 @@ public class Invitation extends TimestampedObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null || o.getClass() != this.getClass()) return false;
-        return this.invitationId == ((Invitation)o).invitationId;
+        return !(o == null || o.getClass() != this.getClass()) && this.invitationId == ((Invitation) o).invitationId;
     }
 
     // ----------------------------------

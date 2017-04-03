@@ -149,8 +149,7 @@ public class Encounter extends TimestampedObject implements Serializable {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null || o.getClass() != this.getClass()) return false;
-        return this.id == ((Encounter)o).id;
+        return !(o == null || o.getClass() != this.getClass()) && this.id == ((Encounter) o).id;
     }
 
     @Override

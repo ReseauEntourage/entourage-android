@@ -2170,10 +2170,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public boolean isToursListVisible() {
-        if (toursListView == null) {
-            return false;
-        }
-        return toursListView.getVisibility() == View.VISIBLE;
+        return toursListView != null && toursListView.getVisibility() == View.VISIBLE;
     }
 
     public void ensureMapVisible() {

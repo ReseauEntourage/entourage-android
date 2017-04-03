@@ -41,17 +41,11 @@ public class PushNotificationContent implements Serializable {
     }
 
     public boolean isTourRelated() {
-        if (extra != null) {
-            return Extra.JOINABLE_TYPE_TOUR.equals(extra.joinableType);
-        }
-        return false;
+        return extra != null && Extra.JOINABLE_TYPE_TOUR.equals(extra.joinableType);
     }
 
     public boolean isEntourageRelated() {
-        if (extra != null) {
-            return Extra.JOINABLE_TYPE_ENTOURAGE.equals(extra.joinableType);
-        }
-        return false;
+        return extra != null && Extra.JOINABLE_TYPE_ENTOURAGE.equals(extra.joinableType);
     }
 
     public class Extra implements Serializable {

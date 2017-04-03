@@ -108,8 +108,7 @@ public class ChatMessage extends TimestampedObject implements Serializable {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null || o.getClass() != this.getClass()) return false;
-        return this.chatId == ((ChatMessage)o).chatId;
+        return !(o == null || o.getClass() != this.getClass()) && this.chatId == ((ChatMessage) o).chatId;
     }
 
     @Override
