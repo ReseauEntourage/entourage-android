@@ -58,7 +58,6 @@ import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.guide.filter.GuideFilter;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiActivity;
 import social.entourage.android.tools.BusProvider;

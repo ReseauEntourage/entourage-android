@@ -1,6 +1,5 @@
 package social.entourage.android;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,14 +42,12 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.leolin.shortcutbadger.ShortcutBadger;
 import social.entourage.android.about.AboutActivity;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Partner;

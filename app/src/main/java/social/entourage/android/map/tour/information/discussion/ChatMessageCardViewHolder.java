@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
-
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;

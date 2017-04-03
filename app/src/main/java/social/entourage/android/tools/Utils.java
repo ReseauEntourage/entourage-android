@@ -1,10 +1,7 @@
 package social.entourage.android.tools;
 
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.util.Patterns;
-
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Calendar;
 import java.util.Date;

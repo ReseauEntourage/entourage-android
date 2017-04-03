@@ -15,7 +15,6 @@ import android.widget.RemoteViews;
 
 import java.util.Random;
 
-import me.leolin.shortcutbadger.ShortcutBadger;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;

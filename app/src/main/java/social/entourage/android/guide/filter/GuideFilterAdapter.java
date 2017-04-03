@@ -1,26 +1,19 @@
 package social.entourage.android.guide.filter;
 
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.Partner;
 import social.entourage.android.guide.PoiRenderer;
-import social.entourage.android.user.edit.partner.UserEditPartnerAdapter;
 
 /**
  * Created by mihaiionescu on 28/03/2017.

@@ -12,14 +12,12 @@ import com.flurry.android.FlurryAgent;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import io.fabric.sdk.android.Fabric;
 import me.leolin.shortcutbadger.ShortcutBadger;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
-import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.authentication.AuthenticationController;

@@ -81,7 +81,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageError;

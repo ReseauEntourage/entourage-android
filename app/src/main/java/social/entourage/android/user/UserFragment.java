@@ -1,7 +1,5 @@
 package social.entourage.android.user;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -27,7 +25,6 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,8 +34,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
-import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
@@ -47,7 +42,6 @@ import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;

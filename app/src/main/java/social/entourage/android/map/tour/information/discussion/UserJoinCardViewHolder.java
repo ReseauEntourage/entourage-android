@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;

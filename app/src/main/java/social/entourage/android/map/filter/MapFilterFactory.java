@@ -3,7 +3,6 @@ package social.entourage.android.map.filter;
 import android.content.Context;
 
 import social.entourage.android.EntourageApplication;
-import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**
