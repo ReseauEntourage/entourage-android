@@ -21,7 +21,6 @@ import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
@@ -34,7 +33,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -104,6 +102,7 @@ import social.entourage.android.api.model.map.TourTimestamp;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
@@ -118,7 +117,7 @@ import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
 
-public class TourInformationFragment extends DialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
+public class TourInformationFragment extends EntourageDialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -322,7 +321,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreateView(inflater, container, savedInstanceState);
         View toReturn = inflater.inflate(R.layout.fragment_tour_information, container, false);
         ButterKnife.bind(this, toReturn);
@@ -389,12 +387,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
-    @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
@@ -434,8 +426,6 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.background)));
 
         //setup scroll listener
         discussionView.addOnScrollListener(discussionScrollListener);
@@ -454,6 +444,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         inviteSuccessRunnable.run();
         inviteSuccessHandler.removeCallbacks(inviteSuccessRunnable);
+    }
+
+    @Override
+    protected ColorDrawable getBackgroundDrawable() {
+        return new ColorDrawable(getResources().getColor(R.color.background));
     }
 
     public long getFeedItemId() {
@@ -1755,8 +1750,11 @@ public class TourInformationFragment extends DialogFragment implements TourServi
     }
 
     protected void onInvitationStatusUpdated(boolean success, String status) {
-        Button acceptInvitationButton = (Button) this.getView().findViewById(R.id.tour_info_invited_accept_button);
-        Button rejectInvitationButton = (Button) this.getView().findViewById(R.id.tour_info_invited_reject_button);
+        if (getView() == null) {
+            return;
+        }
+        Button acceptInvitationButton = (Button) getView().findViewById(R.id.tour_info_invited_accept_button);
+        Button rejectInvitationButton = (Button) getView().findViewById(R.id.tour_info_invited_reject_button);
         acceptInvitationButton.setEnabled(true);
         rejectInvitationButton.setEnabled(true);
         if (success) {

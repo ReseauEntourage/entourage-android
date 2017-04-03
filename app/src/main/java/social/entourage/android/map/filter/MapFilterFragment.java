@@ -1,13 +1,10 @@
 package social.entourage.android.map.filter;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Switch;
@@ -20,9 +17,10 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.BusProvider;
 
-public class MapFilterFragment extends DialogFragment {
+public class MapFilterFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // Constants
@@ -81,7 +79,6 @@ public class MapFilterFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map_filter, container, false);
@@ -98,19 +95,6 @@ public class MapFilterFragment extends DialogFragment {
             isProUser = args.getBoolean(KEY_PRO_USER, false);
         }
         initializeView();
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.background)));
     }
 
     // ----------------------------------

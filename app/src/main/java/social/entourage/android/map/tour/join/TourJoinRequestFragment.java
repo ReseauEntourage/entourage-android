@@ -79,8 +79,10 @@ public class TourJoinRequestFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         feedItem = (FeedItem) getArguments().getSerializable(Tour.KEY_TOUR);
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        }
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tour_join_request_message, container, false);
         ButterKnife.bind(this, view);
@@ -127,7 +129,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     @OnClick(R.id.tour_join_request_message_send)
     protected void onMessageSend() {
         if (presenter != null && messageView != null) {
-            if (feedItem != null && feedItem.getType() == FeedItem.TOUR_CARD || feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+            if ( feedItem != null && (feedItem.getType() == FeedItem.TOUR_CARD || feedItem.getType() == FeedItem.ENTOURAGE_CARD) ) {
                 FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_SUBMIT);
                 presenter.sendMessage(messageView.getText().toString(), feedItem);
             }

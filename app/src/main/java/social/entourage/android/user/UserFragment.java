@@ -1,19 +1,15 @@
 package social.entourage.android.user;
 
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -42,6 +38,7 @@ import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
@@ -49,7 +46,7 @@ import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 
-public class UserFragment extends DialogFragment {
+public class UserFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -131,7 +128,6 @@ public class UserFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreateView(inflater, container, savedInstanceState);
         if (toReturn == null) {
             toReturn = inflater.inflate(R.layout.fragment_user, container, false);
@@ -169,17 +165,10 @@ public class UserFragment extends DialogFragment {
     }
 
     @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
+
         BusProvider.getInstance().register(this);
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -193,6 +182,7 @@ public class UserFragment extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
+
         BusProvider.getInstance().unregister(this);
     }
 
@@ -203,7 +193,6 @@ public class UserFragment extends DialogFragment {
     private void configureView() {
         FlurryAgent.logEvent(isMyProfile ? Constants.EVENT_SCREEN_09_1_ME : Constants.EVENT_SCREEN_09_1_OTHER);
         if (getActivity() != null && !getActivity().isFinishing()) {
-            Resources res = getResources();
             Stats stats = user.getStats();
             int entourageCount = 0;
             if (stats != null) {

@@ -1,5 +1,6 @@
 package social.entourage.android.base;
 
+import android.app.Dialog;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.view.Window;
 import social.entourage.android.R;
 
 /**
+ * Base DialogFragment with no title and full screen
  * Created by mihaiionescu on 17/06/16.
  */
 public class EntourageDialogFragment extends DialogFragment {
@@ -20,7 +22,13 @@ public class EntourageDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.requestFeature(Window.FEATURE_NO_TITLE);
+            }
+        }
 
         return null;
     }
@@ -28,18 +36,34 @@ public class EntourageDialogFragment extends DialogFragment {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = getSlideStyle();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            Window window = dialog.getWindow();
+            if (window != null && window.getAttributes() != null) {
+                window.getAttributes().windowAnimations = getSlideStyle();
+            }
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                window.setBackgroundDrawable(getBackgroundDrawable());
+            }
+        }
     }
 
     protected @StyleRes int getSlideStyle() {
         return R.style.CustomDialogFragmentSlide;
+    }
+
+    protected ColorDrawable getBackgroundDrawable() {
+        return new ColorDrawable(Color.TRANSPARENT);
     }
 
 }

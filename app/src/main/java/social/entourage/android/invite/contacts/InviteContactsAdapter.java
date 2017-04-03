@@ -73,7 +73,7 @@ public class InviteContactsAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder;
         int rowType = getItemViewType(position);
 
         if (convertView == null) {
@@ -98,7 +98,9 @@ public class InviteContactsAdapter extends BaseAdapter {
                     holder.separator = null;
                     break;
             }
-            convertView.setTag(holder);
+            if (convertView != null) {
+                convertView.setTag(holder);
+            }
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -143,17 +145,18 @@ public class InviteContactsAdapter extends BaseAdapter {
             String startChar = cursorData.substring(0, 1).toUpperCase();
             if (!mSectionHeader.containsKey(startChar)) {
                 mData.add(new InviteItemSection(startChar));
-                mSectionHeader.put(startChar, mData.size()-1);
+                mSectionHeader.put(startChar, mData.size() - 1);
             }
             mData.add(new InviteItemContactName(cursorData, mCursor.getPosition()));
 
-            Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",new String[]{ contactID }, null);
-            while (pCur.moveToNext())
-            {
-                String contactNumber = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                mData.add(new InviteItemContactPhone(contactNumber, mCursor.getPosition()));
+            Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{contactID}, null);
+            if (pCur != null) {
+                while (pCur.moveToNext()) {
+                    String contactNumber = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    mData.add(new InviteItemContactPhone(contactNumber, mCursor.getPosition()));
+                }
+                pCur.close();
             }
-            pCur.close();
 
         }
         notifyDataSetChanged();

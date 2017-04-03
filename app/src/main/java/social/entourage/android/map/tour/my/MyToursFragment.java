@@ -5,13 +5,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TabWidget;
@@ -35,10 +33,11 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 
-public class MyToursFragment extends DialogFragment implements TabHost.OnTabChangeListener {
+public class MyToursFragment extends EntourageDialogFragment implements TabHost.OnTabChangeListener {
 
     // ----------------------------------
     // Constants
@@ -100,7 +99,7 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_tours, container, false);
         ButterKnife.bind(this, view);
@@ -142,16 +141,8 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.background)));
 
 //        ongoingToursRecyclerView.addOnScrollListener(scrollListener);
         activeFeedsRecyclerView.addOnScrollListener(scrollListener);
@@ -165,6 +156,11 @@ public class MyToursFragment extends DialogFragment implements TabHost.OnTabChan
 //        ongoingToursRecyclerView.removeOnScrollListener(scrollListener);
         activeFeedsRecyclerView.removeOnScrollListener(scrollListener);
         frozenFeedsRecyclerView.removeOnScrollListener(scrollListener);
+    }
+
+    @Override
+    protected ColorDrawable getBackgroundDrawable() {
+        return new ColorDrawable(getResources().getColor(R.color.background));
     }
 
     // ----------------------------------

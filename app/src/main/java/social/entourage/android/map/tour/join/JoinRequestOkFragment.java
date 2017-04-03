@@ -56,7 +56,9 @@ public class JoinRequestOkFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
 
         View view = inflater.inflate(R.layout.fragment_tour_join_request_ok, container, false);
         ButterKnife.bind(this, view);

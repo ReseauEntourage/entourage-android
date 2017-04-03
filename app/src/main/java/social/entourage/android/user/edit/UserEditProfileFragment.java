@@ -68,7 +68,9 @@ public class UserEditProfileFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_5);
         View toReturn = inflater.inflate(R.layout.fragment_user_edit_profile, container, false);
         ButterKnife.bind(this, toReturn);

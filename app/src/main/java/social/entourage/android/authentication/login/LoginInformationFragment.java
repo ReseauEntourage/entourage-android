@@ -2,16 +2,12 @@ package social.entourage.android.authentication.login;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,8 +24,9 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.base.EntourageDialogFragment;
 
-public class LoginInformationFragment extends DialogFragment {
+public class LoginInformationFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -69,7 +66,7 @@ public class LoginInformationFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onCreateView(inflater, container, savedInstanceState);
         View toReturn = inflater.inflate(R.layout.fragment_login_information, container, false);
         ButterKnife.bind(this, toReturn);
         return toReturn;
@@ -95,19 +92,6 @@ public class LoginInformationFragment extends DialogFragment {
         if (!(activity instanceof OnEntourageInformationFragmentFinish)) {
             throw new ClassCastException(activity.toString()  + " must implement OnEntourageInformationFragmentFinish");
         }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     // ----------------------------------

@@ -1,18 +1,14 @@
 package social.entourage.android.user.edit.photo;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -29,8 +25,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.R;
+import social.entourage.android.base.EntourageDialogFragment;
 
-public class PhotoEditFragment extends DialogFragment {
+public class PhotoEditFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -88,7 +85,7 @@ public class PhotoEditFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onCreateView(inflater, container, savedInstanceState);
         FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_9);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_edit, container, false);
@@ -107,19 +104,6 @@ public class PhotoEditFragment extends DialogFragment {
         }
         cropImageView.setCropShape(CropImageView.CropShape.OVAL);
         cropImageView.setAspectRatio(1, 1);
-    }
-
-    @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override

@@ -2,21 +2,18 @@ package social.entourage.android.map.entourage;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,6 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.base.EntourageDialogFragment;
 
 /**
  * Fragment to choose the location of an entourage
@@ -53,7 +51,7 @@ import social.entourage.android.R;
  * create an instance of this fragment.
  */
 
-public class EntourageLocationFragment extends DialogFragment {
+public class EntourageLocationFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // Constants
@@ -131,7 +129,6 @@ public class EntourageLocationFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_entourage_location, container, false);
@@ -151,19 +148,6 @@ public class EntourageLocationFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.background)));
     }
 
     // ----------------------------------

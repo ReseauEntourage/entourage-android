@@ -1,17 +1,13 @@
 package social.entourage.android.user.edit;
 
 
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
-import android.support.v4.app.DialogFragment;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,8 +19,9 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.base.EntourageDialogFragment;
 
-public class UserEditPasswordFragment extends DialogFragment {
+public class UserEditPasswordFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -59,20 +56,14 @@ public class UserEditPasswordFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View toReturn = inflater.inflate(R.layout.fragment_user_edit_password, container, false);
         ButterKnife.bind(this, toReturn);
         FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_4);
         configureView();
 
         return toReturn;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     // ----------------------------------

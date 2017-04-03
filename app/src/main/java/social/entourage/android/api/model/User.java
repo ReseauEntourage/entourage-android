@@ -222,16 +222,20 @@ public class User implements Serializable {
     }
 
     public void incrementTours() {
-        stats.setTourCount(stats.getTourCount() + 1);
+        if (stats != null) {
+            stats.setTourCount(stats.getTourCount() + 1);
+        }
     }
 
     public void incrementEncouters() {
-        stats.setEncounterCount(stats.getEncounterCount() + 1);
+        if (stats != null) {
+            stats.setEncounterCount(stats.getEncounterCount() + 1);
+        }
     }
 
     public static String decodeURL(String encodedURL) {
         if (encodedURL == null) {
-            return encodedURL;
+            return null;
         }
         return encodedURL.replace('\u0026', '&');
     }

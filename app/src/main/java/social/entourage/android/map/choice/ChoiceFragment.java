@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,11 +57,19 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         View toReturn = inflater.inflate(R.layout.fragment_choice, container, false);
         ButterKnife.bind(this, toReturn);
 
-        tours = ((Tour.Tours) getArguments().getSerializable(Tour.KEY_TOURS)).getTours();
+        Tour.Tours receivedTours = (Tour.Tours) getArguments().getSerializable(Tour.KEY_TOURS);
+        if (receivedTours != null) {
+            tours = receivedTours.getTours();
+        }
+        else {
+            tours = new ArrayList<>();
+        }
         Collections.sort(tours, new Tour.TourComparatorNewToOld());
         initializeView();
 
@@ -84,7 +93,9 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentFade;
+        if (getDialog() != null && getDialog().getWindow() != null && getDialog().getWindow().getAttributes() != null) {
+            getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentFade;
+        }
     }
 
     @Override
@@ -137,7 +148,7 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
 
     @Override
     public void recyclerViewListClicked(Tour tour) {
-        if (tour != null) {
+        if (tour != null && getOnChoiceFragmentFinish() != null) {
             getOnChoiceFragmentFinish().closeChoiceFragment(this, tour);
         }
     }

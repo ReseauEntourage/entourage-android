@@ -3,18 +3,14 @@ package social.entourage.android.user.edit;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +39,7 @@ import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.UserFragment;
@@ -50,7 +47,7 @@ import social.entourage.android.user.UserOrganizationsAdapter;
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 
-public class UserEditFragment extends DialogFragment {
+public class UserEditFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -111,7 +108,7 @@ public class UserEditFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_user_edit, container, false);
         ButterKnife.bind(this, v);
         FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_2);
@@ -134,16 +131,8 @@ public class UserEditFragment extends DialogFragment {
     }
 
     @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.CustomDialogFragmentSlide;
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         BusProvider.getInstance().register(this);
     }
