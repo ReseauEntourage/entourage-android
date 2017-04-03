@@ -12,7 +12,6 @@
     <string name="entourage_create_description_demand_hint">Gilles passe la journée dehors la main tendue. Avec ce froid, il a les doigts tout engourdis. Qui aurait une paire de gants à donner ?\n(Attention: n\'incluez pas de données permettant d\'identifier ou localiser des personnes)</string>
     <string name="entourage_create_description_contribution_hint">Je suis ancien employé de mairie et je peux aider dans des démarches administratives.\n(Attention: n\'incluez pas de données permettant d\'identifier ou localiser des personnes.)</string>
 
-
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
     <string name="entourage_create_error_title_empty">Le titre ne peut pas être vide</string>

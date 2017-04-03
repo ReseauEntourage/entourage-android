@@ -892,7 +892,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
 
         tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
 
-        tourPeopleCount.setText("" + feedItem.getNumberOfPeople());
+        tourPeopleCount.setText(getString(R.string.tour_cell_numberOfPeople, feedItem.getNumberOfPeople()));
 
         headerActLayout.setVisibility(View.GONE);
 

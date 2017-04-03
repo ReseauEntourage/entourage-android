@@ -56,7 +56,7 @@ public class BadgeView extends RelativeLayout {
             badgeCountView.setVisibility(GONE);
         }
         else {
-            badgeCountView.setText("" + badgeCount);
+            badgeCountView.setText(getContext().getString(R.string.badge_count_format, badgeCount));
             if (badgeCountView.getVisibility() == GONE) {
                 badgeCountView.setVisibility(VISIBLE);
             }

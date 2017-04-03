@@ -240,7 +240,7 @@ public class UserFragment extends DialogFragment {
             }
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
-            userTourCount.setText(""+entourageCount);
+            userTourCount.setText(getString(R.string.user_entourage_count_format, entourageCount));
 
             boolean userEmailVerified = user.getEmail() != null;
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);

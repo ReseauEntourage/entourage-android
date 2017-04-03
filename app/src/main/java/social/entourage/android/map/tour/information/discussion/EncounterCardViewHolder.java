@@ -89,7 +89,7 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
         if (encounter.getCreationDate() != null) {
             encounterDate = DateFormat.getTimeFormat(context).format(encounter.getCreationDate());
         }
-        mAuthorView.setText(encounter.getUserName()+" ");
+        mAuthorView.setText(itemView.getContext().getString(R.string.encounter_author_format, encounter.getUserName()));
         String encounterLocation = itemView.getResources().getString(R.string.tour_info_encounter_location,
                 encounter.getStreetPersonName(),
                 encounterDate);

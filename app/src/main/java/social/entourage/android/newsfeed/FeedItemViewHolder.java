@@ -154,7 +154,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
 
         //tour members
-        numberOfPeopleTextView.setText(""+feedItem.getNumberOfPeople());
+        numberOfPeopleTextView.setText(res.getString(R.string.tour_cell_numberOfPeople, feedItem.getNumberOfPeople()));
 
         //badge count
         int badgeCount = feedItem.getBadgeCount();
@@ -163,7 +163,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         }
         else {
             badgeCountView.setVisibility(View.VISIBLE);
-            badgeCountView.setText("" + feedItem.getBadgeCount());
+            badgeCountView.setText(res.getString(R.string.badge_count_format, feedItem.getBadgeCount()));
         }
 
         //act button
