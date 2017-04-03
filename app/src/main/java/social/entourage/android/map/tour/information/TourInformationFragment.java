@@ -881,7 +881,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         String distanceAsString = "";
         TourPoint startPoint = null;
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            startPoint = ((Tour)feedItem).getStartPoint();
+            startPoint = feedItem.getStartPoint();
         }
         else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
             startPoint = ((Entourage)feedItem).getLocation();

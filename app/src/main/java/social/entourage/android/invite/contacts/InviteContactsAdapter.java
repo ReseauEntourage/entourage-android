@@ -83,13 +83,13 @@ public class InviteContactsAdapter extends BaseAdapter {
                     convertView = mInflater.inflate(R.layout.layout_invite_contacts_list_name, null);
                     holder.textView = (TextView) convertView.findViewById(R.id.contact_name);
                     holder.checkBox = null;
-                    holder.separator = (View) convertView.findViewById(R.id.contact_separator);
+                    holder.separator = convertView.findViewById(R.id.contact_separator);
                     break;
                 case InviteItem.TYPE_CONTACT_PHONE:
                     convertView = mInflater.inflate(R.layout.layout_invite_contacts_list_phone, null);
                     holder.textView = (TextView) convertView.findViewById(R.id.contact_phone);
                     holder.checkBox = (CheckBox) convertView.findViewById(R.id.contact_checkBox);
-                    holder.separator = (View) convertView.findViewById(R.id.contact_separator);
+                    holder.separator = convertView.findViewById(R.id.contact_separator);
                     break;
                 case InviteItem.TYPE_SECTION:
                     convertView = mInflater.inflate(R.layout.layout_invite_contacts_section_header, null);

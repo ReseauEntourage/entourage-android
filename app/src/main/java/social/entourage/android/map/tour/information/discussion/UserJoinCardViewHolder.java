@@ -67,7 +67,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_public_info_username);
         mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
         mPublicJoinMessage = (TextView) itemView.findViewById(R.id.tic_public_join_message);
-        mPublicMessageSection = (View) itemView.findViewById(R.id.tic_public_info_message_layout);
+        mPublicMessageSection = itemView.findViewById(R.id.tic_public_info_message_layout);
         mPublicTimestampView = (TextView) itemView.findViewById(R.id.tic_public_info_timestamp);
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
