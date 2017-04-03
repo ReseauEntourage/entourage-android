@@ -487,6 +487,16 @@ public class TourInformationFragment extends DialogFragment implements TourServi
             return;
         }
 
+        // Hide the keyboard
+        Activity activity = getActivity();
+        if (activity != null) {
+            View view = getDialog().getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+
         // Switch sections
         boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
         publicSection.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
@@ -495,6 +505,7 @@ public class TourInformationFragment extends DialogFragment implements TourServi
         if (!isPublicSectionVisible) {
             FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC);
         }
+
     }
 
     @OnClick(R.id.tour_info_comment_send_button)
