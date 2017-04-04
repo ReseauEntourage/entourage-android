@@ -965,7 +965,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         quitTourButton.setVisibility(View.VISIBLE);
                         quitTourButton.setText(FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? R.string.tour_info_options_cancel_request : R.string.tour_info_options_quit_tour);
                     }
-                    reportEntourageButton.setVisibility(View.VISIBLE);
+                    if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+                        reportEntourageButton.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     stopTourButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);
                     if (feedItem.isClosed()) {
