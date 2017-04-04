@@ -42,57 +42,58 @@ public class Utils {
     public static String dateAsStringFromNow(Date date, Context context) {
         if (date == null) return "";
         Date now = new Date();
-        Calendar.getInstance().setTime(date);
         // check for today
         if (now.getYear() == date.getYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
             return context.getString(R.string.date_today);
         }
         // check for yesterday
         long sinceMidnight = now.getSeconds() * 1000 + now.getMinutes() * 60 * 1000 + now.getHours() * 60 * 60 * 1000;
-        long oneDay = 24 * 60 * 60 * 1000; // 24 hours in millis
+        long oneDay = 86400000L; // 24 hours in millis
         if ( (now.getTime() - date.getTime()) < (oneDay + sinceMidnight) ) {
             return context.getString(R.string.date_yesterday);
         }
         // regular date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         String month = "";
-        switch (date.getMonth()) {
-            case 1:
+        switch (calendar.get(Calendar.MONTH)) {
+            case Calendar.JANUARY:
                 month = context.getString(R.string.date_month_1);
                 break;
-            case 2:
+            case Calendar.FEBRUARY:
                 month = context.getString(R.string.date_month_2);
                 break;
-            case 3:
+            case Calendar.MARCH:
                 month = context.getString(R.string.date_month_3);
                 break;
-            case 4:
+            case Calendar.APRIL:
                 month = context.getString(R.string.date_month_4);
                 break;
-            case 5:
+            case Calendar.MAY:
                 month = context.getString(R.string.date_month_5);
                 break;
-            case 6:
+            case Calendar.JUNE:
                 month = context.getString(R.string.date_month_6);
                 break;
-            case 7:
+            case Calendar.JULY:
                 month = context.getString(R.string.date_month_7);
                 break;
-            case 8:
+            case Calendar.AUGUST:
                 month = context.getString(R.string.date_month_8);
                 break;
-            case 9:
+            case Calendar.SEPTEMBER:
                 month = context.getString(R.string.date_month_9);
                 break;
-            case 10:
+            case Calendar.OCTOBER:
                 month = context.getString(R.string.date_month_10);
                 break;
-            case 11:
+            case Calendar.NOVEMBER:
                 month = context.getString(R.string.date_month_11);
                 break;
-            case 12:
+            case Calendar.DECEMBER:
                 month = context.getString(R.string.date_month_12);
                 break;
         }
-        return context.getString(R.string.date_format, date.getDate(), month, date.getYear()+1900);
+        return context.getString(R.string.date_format, calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
     }
 }
