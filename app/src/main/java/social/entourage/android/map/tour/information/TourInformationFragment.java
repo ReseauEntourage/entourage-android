@@ -531,7 +531,16 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
-    @OnClick({R.id.tour_info_more_button, R.id.tour_info_share_button})
+    @OnClick(R.id.tour_info_share_button)
+    public void onShareButton() {
+        //TODO Add Proper sharing parameters
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, "http://www.google.com");
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
+    @OnClick(R.id.tour_info_more_button)
     public void onMoreButton() {
         Animation bottomUp = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.bottom_up);
@@ -984,17 +993,26 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void updateHeaderButtons() {
+        if (feedItem == null) {
+            return;
+        }
         boolean isTourPrivate = feedItem.isPrivate();
         User me = EntourageApplication.me(getActivity());
         int myId = 0;
         if (me != null) {
             myId = me.getId();
         }
-        shareButton.setVisibility(isTourPrivate ? View.GONE : View.VISIBLE );
+        // Share button available only for entourages and non-members
+        shareButton.setVisibility( ((feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) && !isTourPrivate) ? View.VISIBLE : View.GONE );
 
         addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && !feedItem.isClosed() ? View.VISIBLE : View.GONE) : View.GONE);
 
-        moreButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
+        moreButton.setVisibility(View.VISIBLE);
+
+        if (invitationId > 0) {
+            shareButton.setVisibility(View.GONE);
+            moreButton.setVisibility(View.GONE);
+        }
     }
 
     private void initializeDiscussionList() {
@@ -1760,6 +1778,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         acceptInvitationButton.setEnabled(true);
         rejectInvitationButton.setEnabled(true);
         if (success) {
+            invitationId = 0;
             // Update UI
             invitedLayout.setVisibility(View.GONE);
             Toast.makeText(getActivity(), R.string.invited_updated_ok, Toast.LENGTH_SHORT).show();
