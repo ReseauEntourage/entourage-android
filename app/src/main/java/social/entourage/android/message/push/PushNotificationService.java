@@ -54,7 +54,7 @@ public class PushNotificationService extends IntentService {
 
     private void displayPushNotification(Message message) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_map);
+        builder.setSmallIcon(R.drawable.ic_notification_small);
         builder.setContentIntent(createMessagePendingIntent(message));
         builder.setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_entourage));
         builder.setContentTitle(message.getAuthor());
