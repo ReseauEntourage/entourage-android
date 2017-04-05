@@ -91,4 +91,10 @@
     <string name="entourage_close_email_title_failed">Mes retours sur l\'entourage \'%1$s\' qui n\'a pas abouti</string>
     <string name="entourage_close_email_title_help">Aide pour l\'entourage \'%1$s\'</string>
 
+    <!-- Share Entourage -->
+    <string name="entourage_share_intent_title">Partager via</string>
+    <string name="entourage_share_link">http://entourage.social</string>
+    <string name="entourage_share_text_author">J\'ai créé ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
+    <string name="entourage_share_text_member">J\'ai rejoint ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
+
 </resources>

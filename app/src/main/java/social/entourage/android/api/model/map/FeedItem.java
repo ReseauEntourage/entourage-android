@@ -72,6 +72,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     @SerializedName("last_message")
     protected LastMessage lastMessage;
 
+    @Expose(serialize = false)
+    @SerializedName("share_url")
+    protected String shareURL;
+
     @Expose(serialize = false, deserialize = false)
     protected int badgeCount = 0;
 
@@ -171,6 +175,14 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public void setLastMessage(final LastMessage lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public String getShareURL() {
+        return shareURL;
+    }
+
+    public void setShareURL(final String shareURL) {
+        this.shareURL = shareURL;
     }
 
     public List<TimestampedObject> getCachedCardInfoList() {

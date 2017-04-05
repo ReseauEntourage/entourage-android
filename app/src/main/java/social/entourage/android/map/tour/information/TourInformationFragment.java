@@ -531,13 +531,33 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
-    @OnClick(R.id.tour_info_share_button)
+    @OnClick({R.id.tour_info_share_button, R.id.invite_source_share_button})
     public void onShareButton() {
-        //TODO Add Proper sharing parameters
+        // close the invite source view
+        inviteSourceLayout.setVisibility(View.GONE);
+
+        // check if the user is the author
+        boolean isMyEntourage = false;
+        User me = EntourageApplication.me(getContext());
+        if (me != null && feedItem != null) {
+            TourAuthor author = feedItem.getAuthor();
+            if (author != null) {
+                isMyEntourage = me.getId() == author.getUserID();
+            }
+        }
+
+        // build the share text
+        String shareLink = feedItem.getShareURL();
+        if (shareLink == null) {
+            shareLink = getString(R.string.entourage_share_link);
+        }
+        String shareText = isMyEntourage ? getString(R.string.entourage_share_text_author, shareLink) : getString(R.string.entourage_share_text_member, shareLink);
+
+        // start the share intent
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, "http://www.google.com");
-        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)));
     }
 
     @OnClick(R.id.tour_info_more_button)

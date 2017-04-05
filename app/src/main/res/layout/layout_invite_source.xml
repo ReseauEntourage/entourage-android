@@ -45,10 +45,21 @@
             android:layout_marginBottom="20dp"/>
 
         <Button
+            android:id="@+id/invite_source_share_button"
+            style="@style/WhiteButton.RoundedCorners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_friends"
+            android:drawableStart="@drawable/ic_friends"
+            android:drawableTint="@color/accent"
+            android:text="@string/invite_source_share"/>
+
+        <Button
             android:id="@+id/invite_source_contacts_button"
             style="@style/WhiteButton.RoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/ic_adress_book_square"
             android:drawableStart="@drawable/ic_adress_book_square"
             android:text="@string/invite_source_contacts"/>
