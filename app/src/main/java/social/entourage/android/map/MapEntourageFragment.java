@@ -40,6 +40,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
@@ -185,9 +186,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private boolean isStopped = false;
 
-    @BindView(R.id.fragment_map_pin)
-    View mapPin;
-
     @BindView(R.id.fragment_map_gps_layout)
     LinearLayout gpsLayout;
 
@@ -217,8 +215,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @BindView(R.id.fragment_map_main_layout)
     RelativeLayout layoutMain;
 
-    @BindView(R.id.map_display_type)
-    RadioGroup mapDisplayTypeRadioGroup;
+    @BindView(R.id.fragment_map_display_toggle)
+    ToggleButton mapDisplayToggle;
 
     @BindView(R.id.layout_map_longclick)
     RelativeLayout mapLongClickView;
@@ -230,9 +228,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     FloatingActionButton tourStopButton;
 
     FloatingActionMenu mapOptionsMenu;
-
-    @BindView(R.id.fragment_map_title)
-    TextView bottomTitleTextView;
 
     @BindView(R.id.fragment_map_new_entourages_button)
     Button newEntouragesButton;
@@ -770,12 +765,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     hideToursList();
                 }
                 addTourCard(tourService.getCurrentTour());
-                //mapPin.setVisibility(View.VISIBLE);
+
                 mapOptionsMenu.setVisibility(View.VISIBLE);
                 updateFloatingMenuOptions();
                 tourStopButton.setVisibility(View.VISIBLE);
 
-                bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
+                //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
             } else {
                 if (getActivity() != null) {
                     Toast.makeText(getActivity(), R.string.tour_creation_fail, Toast.LENGTH_SHORT).show();
@@ -912,13 +907,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 clearAll();
 
-                //mapPin.setVisibility(View.GONE);
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                     if (feedItem.getId() == currentTourId) {
                         mapOptionsMenu.setVisibility(View.VISIBLE);
                         updateFloatingMenuOptions();
                         tourStopButton.setVisibility(View.GONE);
-                        bottomTitleTextView.setText(R.string.activity_map_title_small);
+                        //bottomTitleTextView.setText(R.string.activity_map_title_small);
 
                         currentTourId = -1;
                     } else {
@@ -1248,15 +1242,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    @OnClick(R.id.map_display_type_list)
-    public void onDisplayTypeList() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
-        showToursList();
-    }
-
-    @OnClick(R.id.map_display_type_carte)
-    public void onDisplayTypeCarte() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
+    @OnClick(R.id.fragment_map_display_toggle)
+    public void onDisplayToggle() {
+        if (mapDisplayToggle.isChecked()) {
+            FlurryAgent.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
+        }
+        else {
+            FlurryAgent.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
+        }
+        toggleToursList();
     }
 
     @OnClick(R.id.map_longclick_button_entourage_demand)
@@ -1650,7 +1644,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService.isRunning()) {
             tourService.resumeTreatment();
             //buttonStartLauncher.setVisibility(View.GONE);
-            //mapPin.setVisibility(View.VISIBLE);
         }
     }
 
@@ -2091,8 +2084,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         newEntouragesButton.setVisibility(View.GONE);
 
-        mapDisplayTypeRadioGroup.check(R.id.map_display_type_carte);
-        mapDisplayTypeRadioGroup.setVisibility(View.VISIBLE);
+        mapDisplayToggle.setChecked(true);
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
         originalMapLayoutHeight = lp.height;
@@ -2119,7 +2111,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     protected void showToursList() {
-        if (layoutMapMain == null || toursListView == null || mapDisplayTypeRadioGroup == null) {
+        if (layoutMapMain == null || toursListView == null || mapDisplayToggle == null) {
             return;
         }
 
@@ -2132,7 +2124,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         toursListView.setVisibility(View.VISIBLE);
 
-        mapDisplayTypeRadioGroup.setVisibility(View.GONE);
+        mapDisplayToggle.setChecked(false);
 
         hideEmptyListPopup();
 
@@ -2432,8 +2424,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     updateFloatingMenuOptions();
 
                     currentTourId = tourService.getCurrentTourId();
-                    //mapPin.setVisibility(View.VISIBLE);
-                    bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
+                    //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
 
                     addCurrentTourEncounters();
                 }

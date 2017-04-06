@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent" android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/fragment_guide_map_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/fragment_guide_filter_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
@@ -19,6 +19,39 @@
             />
 
     </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/fragment_guide_filter_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/ic_filters_black"/>
+
+    <ImageButton
+        android:id="@+id/fragment_guide_follow_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/ic_position"/>
 
     <LinearLayout
         android:id="@+id/fragment_guide_empty_list_popup"
@@ -65,75 +98,10 @@
     </LinearLayout>
 
     <include
+        android:id="@+id/fragment_guide_longclick"
+        layout="@layout/layout_guide_longclick"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/layout_guide_longclick"
-        android:id="@+id/fragment_guide_longclick"
         android:visibility="gone"/>
-
-    <RelativeLayout
-        android:id="@+id/fragment_guide_filter_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/background">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/greyish"/>
-
-        <ImageButton
-            android:id="@+id/fragment_guide_filter_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_filters"/>
-
-        <ImageButton
-            android:id="@+id/fragment_guide_follow_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/fragment_guide_filter_button"
-            android:layout_toRightOf="@+id/fragment_guide_filter_button"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_geoloc"/>
-
-        <TextView
-            android:id="@+id/fragment_guide_bottom_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/map_poi_bottom_title"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/greyish_brown"
-            android:textSize="14sp"/>
-
-    </RelativeLayout>
 
 </RelativeLayout>
