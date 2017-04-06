@@ -257,6 +257,13 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         guideFilterFragment.show(getFragmentManager(), GuideFilterFragment.TAG);
     }
 
+    @OnClick(R.id.fragment_guide_hide_button)
+    void onHideClicked() {
+        DrawerActivity activity = (DrawerActivity) getActivity();
+        if (activity == null) return;
+        activity.onPOILauncherClicked();
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------

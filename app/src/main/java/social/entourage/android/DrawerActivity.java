@@ -994,7 +994,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @OnClick(R.id.button_poi_launcher)
-    protected void onPOILauncherClicked() {
+    public void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             FlurryAgent.logEvent(Constants.EVENT_SCREEN_06_2);
             // Change the Guide Option text
