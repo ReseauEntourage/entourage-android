@@ -8,6 +8,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -66,6 +67,13 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
         return toReturn;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
     // ----------------------------------
     // BUTTONS HANDLING
     // ----------------------------------
@@ -81,8 +89,7 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
             FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_4_SUBMIT);
             UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
             if (userEditFragment != null) {
-                User user = userEditFragment.getEditedUser();
-                user.setSmsCode(newPasswordEditText.getText().toString().trim());
+                userEditFragment.saveNewPassword(newPasswordEditText.getText().toString().trim());
             }
 
             dismiss();

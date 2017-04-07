@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,6 +92,9 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @BindView(R.id.user_add_association_separator)
     View userAddAssociationSeparator;
+
+    @BindView(R.id.user_edit_progressBar)
+    ProgressBar progressBar;
 
     UserOrganizationsAdapter organizationsAdapter;
 
@@ -199,6 +203,13 @@ public class UserEditFragment extends EntourageDialogFragment {
         }
     }
 
+    public void saveNewPassword(String newPassword) {
+        if (presenter != null) {
+            progressBar.setVisibility(View.VISIBLE);
+            presenter.saveNewPassword(newPassword);
+        }
+    }
+
     // ----------------------------------
     // Buttons Handling
     // ----------------------------------
@@ -304,6 +315,22 @@ public class UserEditFragment extends EntourageDialogFragment {
             displayToast(getString(R.string.user_text_update_ok));
             dismiss();
         }
+    }
+
+    protected void onSaveNewPassword(String newPassword) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        if (newPassword == null) {
+            displayToast(getString(R.string.user_text_update_ko));
+        }
+        else {
+            if (editedUser != null) {
+                editedUser.setSmsCode(newPassword);
+            }
+            displayToast(getString(R.string.user_text_update_ok));
+        }
+        progressBar.setVisibility(View.GONE);
     }
 
     protected void onDeletedAccount(boolean success) {

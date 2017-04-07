@@ -79,6 +79,35 @@ public class UserEditPresenter {
         }
     }
 
+    public void saveNewPassword(final String newPassword) {
+        if (fragment != null) {
+            ArrayMap<String, Object> userMap = new ArrayMap<>();
+            userMap.put("sms_code", newPassword);
+            Call<UserResponse> call = userRequest.updateUser(userMap);
+            call.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    if (response.isSuccessful()) {
+                        //inform the fragment
+                        User user = authenticationController.getUser();
+                        if (user != null) {
+                            authenticationController.saveUserPhoneAndCode(user.getPhone(), newPassword);
+                        }
+                        fragment.onSaveNewPassword(newPassword);
+                    }
+                    else {
+                        fragment.onSaveNewPassword(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    fragment.onSaveNewPassword(null);
+                }
+            });
+        }
+    }
+
     public void deleteAccount() {
         if (fragment != null) {
             Call<UserResponse> call = userRequest.deleteUser();
