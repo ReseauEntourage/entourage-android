@@ -64,8 +64,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     // Attributes
     // ----------------------------------
 
-    private OnFragmentInteractionListener mListener;
-
     @Inject
     CreateEntouragePresenter presenter;
 
@@ -149,23 +147,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
                 .createEntourageModule(new CreateEntourageModule(this))
                 .build()
                 .inject(this);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -493,13 +474,4 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnFragmentInteractionListener {
-
-    }
 }

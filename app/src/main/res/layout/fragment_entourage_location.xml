@@ -35,6 +35,16 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/entourage_location_title"/>
 
+        <Button
+            android:id="@+id/entourage_location_validate_button"
+            style="@style/TransparentAccentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/validate"/>
+
     </RelativeLayout>
 
     <LinearLayout

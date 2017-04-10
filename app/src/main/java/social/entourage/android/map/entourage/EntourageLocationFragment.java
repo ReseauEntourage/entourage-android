@@ -156,6 +156,11 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.entourage_location_back_button)
     protected void onBackClicked() {
+        dismiss();
+    }
+
+    @OnClick(R.id.entourage_location_validate_button)
+    protected void onValidateClicked() {
         if (mListener != null) {
             mListener.onEntourageLocationChoosen(location, addressTextView.getText().toString());
         }
