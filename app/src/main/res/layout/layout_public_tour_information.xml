@@ -136,7 +136,7 @@
             android:id="@+id/tour_info_request_join_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tour_info_request_join_title"
+            android:text="@string/tour_info_request_join_title_entourage"
             android:textColor="@color/white"
             android:textSize="16sp"/>
 

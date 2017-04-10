@@ -253,6 +253,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @BindView(R.id.tour_info_request_join_layout)
     LinearLayout requestJoinLayout;
 
+    @BindView(R.id.tour_info_request_join_title)
+    TextView requestJoinTitle;
+
     MembersAdapter membersAdapter;
     List<TimestampedObject> membersList = new ArrayList<>();
 
@@ -1405,6 +1408,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     // Different layout for requesting to join
                     actLayout.setVisibility(View.INVISIBLE);
                     requestJoinLayout.setVisibility(View.VISIBLE);
+                    requestJoinTitle.setText(feedItem.getType() == TimestampedObject.TOUR_CARD ? R.string.tour_info_request_join_title_tour : R.string.tour_info_request_join_title_entourage);
                     return;
             }
             actButton.setTextColor(getResources().getColor(textColor));
