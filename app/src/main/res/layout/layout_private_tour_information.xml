@@ -22,6 +22,15 @@
         android:textSize="14sp"
         android:visibility="gone"/>
 
+    <View
+        android:id="@+id/tour_info_private_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/greyish"/>
+
     <LinearLayout
         android:id="@+id/tour_info_comment_layout"
         android:layout_width="match_parent"
@@ -85,7 +94,7 @@
         android:layout_above="@+id/tour_info_comment_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tour_info_discussion_title"
+        android:layout_below="@+id/tour_info_private_separator"
         android:background="@color/background"/>
 
     <FrameLayout

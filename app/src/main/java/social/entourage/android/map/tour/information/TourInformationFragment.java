@@ -1347,6 +1347,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         //hide the comment section if the user is not accepted or tour is freezed
         if (!feedItem.getJoinStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED) || feedItem.isFreezed()) {
             commentLayout.setVisibility(View.GONE);
+            discussionView.setBackgroundResource(R.color.background_login_grey);
+        }
+        else {
+            commentLayout.setVisibility(View.VISIBLE);
+            discussionView.setBackgroundResource(R.color.background);
         }
 
         initializeDiscussionList();
