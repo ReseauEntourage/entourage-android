@@ -219,7 +219,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             guideLongClickView.setVisibility(View.GONE);
             return true;
         }
-        return false;
+        // Switch to map view
+        onHideClicked();
+        return true;
     }
 
     @Override
