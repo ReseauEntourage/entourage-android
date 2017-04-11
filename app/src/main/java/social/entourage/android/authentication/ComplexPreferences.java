@@ -7,6 +7,8 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
+
 /**
  * Source : https://github.com/fsilvestremorais/android-complex-preferences/blob/master/ComplexPreferences/src/br/com/kots/mob/complex/preferences/ComplexPreferences.java
  */
@@ -54,6 +56,19 @@ public class ComplexPreferences {
         } else {
             try{
                 return GSON.fromJson(gson, a);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Object storaged with key " + key + " is instanceof other class");
+            }
+        }
+    }
+
+    public <T> T getObject(String key, Type t) {
+        String gson = preferences.getString(key, null);
+        if (gson == null) {
+            return null;
+        } else {
+            try{
+                return GSON.fromJson(gson, t);
             } catch (Exception e) {
                 throw new IllegalArgumentException("Object storaged with key " + key + " is instanceof other class");
             }

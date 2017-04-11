@@ -1,6 +1,10 @@
 package social.entourage.android.authentication;
 
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
@@ -24,7 +28,7 @@ public class AuthenticationController {
     private boolean showNoEntouragesPopup = true;
     private boolean showNoPOIsPopup = true;
 
-    private HashMap<Integer, MapFilter> mapFilterHashMap;
+    private Map<Integer, MapFilter> mapFilterHashMap = new HashMap<>();
     private MapFilter mapFilter = null;
 
     public AuthenticationController(ComplexPreferences userSharedPref) {
@@ -37,7 +41,10 @@ public class AuthenticationController {
         if (loggedUser != null && loggedUser.getToken() == null) {
             loggedUser = null;
         }
-        mapFilterHashMap = userSharedPref.getObject(PREF_KEY_MAP_FILTER_HASHMAP, HashMap.class);
+        //userSharedPref.putObject(PREF_KEY_MAP_FILTER_HASHMAP, null);
+        //userSharedPref.commit();
+        Type type = new TypeToken<Map<Integer, MapFilter>>(){}.getType();
+        mapFilterHashMap = userSharedPref.getObject(PREF_KEY_MAP_FILTER_HASHMAP, type);
         if (mapFilterHashMap == null) {
             mapFilterHashMap = new HashMap<>();
         }
@@ -147,6 +154,7 @@ public class AuthenticationController {
         }
         return mapFilter;
     }
+
 
     public void saveMapFilter() {
         if (loggedUser == null) {
