@@ -70,8 +70,8 @@ public class TourServiceManager {
     private static final int POINT_PER_REQUEST = 10;
     private static final double ALIGNMENT_PRECISION = .000001;
     private static final long VIBRATION_DURATION = 1000;
-    private static final double MAX_DISTANCE_BETWEEN_TWO_POINTS = 50; //meters
-    private static final double MAX_DISTANCE_TO_LINE = .0005;
+    private static final double MAX_DISTANCE_BETWEEN_TWO_POINTS = 200; //meters
+    private static final double MAX_DISTANCE_TO_LINE = .0020;
 
     // ----------------------------------
     // ATTRIBUTES
