@@ -1,6 +1,8 @@
 package social.entourage.android.map.tour.join;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
@@ -23,6 +26,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 
@@ -38,7 +42,10 @@ public class TourJoinRequestFragment extends DialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    @BindView(R.id.tour_join_request_message)
+    @BindView(R.id.tour_join_request_ok_description)
+    TextView descriptionTextView;
+
+    @BindView(R.id.tour_join_request_ok_message)
     EditText messageView;
 
     // ----------------------------------
@@ -72,6 +79,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth);
     }
 
     @Override
@@ -81,10 +89,11 @@ public class TourJoinRequestFragment extends DialogFragment {
         feedItem = (FeedItem) getArguments().getSerializable(Tour.KEY_TOUR);
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_tour_join_request_message, container, false);
+        View view = inflater.inflate(R.layout.fragment_tour_join_request_ok, container, false);
         ButterKnife.bind(this, view);
 
         return view;
@@ -93,7 +102,12 @@ public class TourJoinRequestFragment extends DialogFragment {
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+
+        if (feedItem != null) {
+            descriptionTextView.setText(feedItem.getType() == TimestampedObject.TOUR_CARD ? R.string.tour_join_request_ok_description_tour : R.string.tour_join_request_ok_description_entourage);
+        }
 
         messageView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -116,17 +130,7 @@ public class TourJoinRequestFragment extends DialogFragment {
         });
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @OnClick(R.id.tour_join_request_message_send)
+    @OnClick(R.id.tour_join_request_ok_message_button)
     protected void onMessageSend() {
         if (presenter != null && messageView != null) {
             if ( feedItem != null && (feedItem.getType() == FeedItem.TOUR_CARD || feedItem.getType() == FeedItem.ENTOURAGE_CARD) ) {
@@ -139,7 +143,7 @@ public class TourJoinRequestFragment extends DialogFragment {
         }
     }
 
-    @OnClick(R.id.tour_join_request_close)
+    @OnClick(R.id.tour_join_request_ok_x_button)
     protected void onClosePressed() {
         dismiss();
     }

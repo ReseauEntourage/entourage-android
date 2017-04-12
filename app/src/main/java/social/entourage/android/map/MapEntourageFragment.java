@@ -115,6 +115,7 @@ import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.join.JoinRequestOkFragment;
+import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
 
@@ -979,10 +980,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 feedItem.setJoinStatus(user.getStatus());
                 if (user.getStatus().equals(Tour.JOIN_STATUS_PENDING)) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    JoinRequestOkFragment joinRequestOkFragment = JoinRequestOkFragment.newInstance(feedItem);
-                    joinRequestOkFragment.show(fragmentManager, JoinRequestOkFragment.TAG);
-//                    TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(tour);
-//                    tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
+//                    JoinRequestOkFragment joinRequestOkFragment = JoinRequestOkFragment.newInstance(feedItem);
+//                    joinRequestOkFragment.show(fragmentManager, JoinRequestOkFragment.TAG);
+                    TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(feedItem);
+                    tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
                 }
             }
             updateNewsfeedJoinStatus(feedItem);

@@ -112,9 +112,10 @@
     <string name="tour_join_request_received_message">%1$s veut rejoindre votre maraude.</string>
     <string name="tour_join_request_received_message_short">veut rejoindre votre maraude.</string>
     <string name="tour_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre maraude]]></string>
-    <string name="tour_join_request_ok_title">Merci pour votre chaleur humaine.</string>
-    <string name="tour_join_request_ok_description">Votre demande a été transmise et vous allez bientôt recevoir une réponse !\n\nVous pouvez préciser votre démarche dans un message bienveillant.</string>
-    <string name="tour_join_request_ok_message_button">Envoyer un message</string>
+    <string name="tour_join_request_ok_title">Votre demande est transmise</string>
+    <string name="tour_join_request_ok_description_tour">Que souhaitez-vous coordonner avec cette maraude ? Ajoutez un petit mot !</string>
+    <string name="tour_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nPourquoi rejoignez-vous cet entourage ? Ajoutez un petit mot !</string>
+    <string name="tour_join_request_ok_message_hint">Votre message…</string>
     <string name="tour_join_request_rejected">Requête envoyée</string>
 
     <!-- My tours -->

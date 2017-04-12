@@ -70,7 +70,7 @@ public class JoinRequestOkFragment extends DialogFragment {
     // BUTTON HANDLING
     // ----------------------------------
 
-    @OnClick({R.id.tour_join_request_ok_close_button, R.id.tour_join_request_ok_x_button})
+    @OnClick(R.id.tour_join_request_ok_x_button)
     protected void onCloseClicked() {
         dismiss();
     }
