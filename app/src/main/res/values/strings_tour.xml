@@ -101,7 +101,7 @@
     <string name="tour_cell_button_view">Voir</string>
 
     <!-- Join Request -->
-    <string name="tour_join_request_success">Requête envoyée</string>
+    <string name="tour_join_request_success">Demande acceptée</string>
     <string name="tour_join_request_error">Erreur d\'envoi de la requête</string>
     <string name="tour_join_request_title">MERCI !</string>
     <string name="tour_join_request_description">Cet entourage étant privé, votre demande a été transmise au créateur.</string>
@@ -115,6 +115,7 @@
     <string name="tour_join_request_ok_title">Merci pour votre chaleur humaine.</string>
     <string name="tour_join_request_ok_description">Votre demande a été transmise et vous allez bientôt recevoir une réponse !\n\nVous pouvez préciser votre démarche dans un message bienveillant.</string>
     <string name="tour_join_request_ok_message_button">Envoyer un message</string>
+    <string name="tour_join_request_rejected">Requête envoyée</string>
 
     <!-- My tours -->
     <string name="mytours_title">MES ENTOURAGES</string>

@@ -50,10 +50,10 @@ public class TourJoinRequestReceivedPresenter {
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
-                        activity.onUserTourStatusChanged(true);
+                        activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, true);
                     }
                     else {
-                        activity.onUserTourStatusChanged(false);
+                        activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, false);
                     }
                 }
             }
@@ -61,7 +61,7 @@ public class TourJoinRequestReceivedPresenter {
             @Override
             public void onFailure(final Call<ResponseBody> call, final Throwable t) {
                 if (activity != null) {
-                    activity.onUserTourStatusChanged(false);
+                    activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, false);
                 }
             }
         });
@@ -74,9 +74,9 @@ public class TourJoinRequestReceivedPresenter {
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
-                        activity.onUserTourStatusChanged(true);
+                        activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, true);
                     } else {
-                        activity.onUserTourStatusChanged(false);
+                        activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, false);
                     }
                 }
             }
@@ -84,7 +84,7 @@ public class TourJoinRequestReceivedPresenter {
             @Override
             public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
                 if (activity != null) {
-                    activity.onUserTourStatusChanged(false);
+                    activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, false);
                 }
             }
         });
@@ -101,10 +101,10 @@ public class TourJoinRequestReceivedPresenter {
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
-                        activity.onUserTourStatusChanged(true);
+                        activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, true);
                     }
                     else {
-                        activity.onUserTourStatusChanged(false);
+                        activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, false);
                     }
                 }
             }
@@ -112,7 +112,7 @@ public class TourJoinRequestReceivedPresenter {
             @Override
             public void onFailure(final Call<ResponseBody> call, final Throwable t) {
                 if (activity != null) {
-                    activity.onUserTourStatusChanged(false);
+                    activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, false);
                 }
             }
         });
@@ -125,9 +125,9 @@ public class TourJoinRequestReceivedPresenter {
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
-                        activity.onUserTourStatusChanged(true);
+                        activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, true);
                     } else {
-                        activity.onUserTourStatusChanged(false);
+                        activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, false);
                     }
                 }
             }
@@ -135,7 +135,7 @@ public class TourJoinRequestReceivedPresenter {
             @Override
             public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
                 if (activity != null) {
-                    activity.onUserTourStatusChanged(false);
+                    activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, false);
                 }
             }
         });

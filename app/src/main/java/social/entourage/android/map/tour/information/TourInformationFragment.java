@@ -1732,7 +1732,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         hideProgressBar();
         if (error == EntourageError.ERROR_NONE) {
             // Updated ok
-            Toast.makeText(getActivity(), R.string.tour_join_request_success, Toast.LENGTH_SHORT).show();
+            int messageId = R.string.tour_join_request_success;
+            if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
+                messageId = R.string.tour_join_request_rejected;
+            }
+            Toast.makeText(getActivity(), messageId, Toast.LENGTH_SHORT).show();
             // Update the card
             TourUser card = (TourUser) discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId);
             if (card != null) {

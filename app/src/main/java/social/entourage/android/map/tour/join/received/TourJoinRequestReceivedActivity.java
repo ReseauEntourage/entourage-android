@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,7 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.view.HtmlTextView;
@@ -147,13 +149,17 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
         }
     }
 
-    protected void onUserTourStatusChanged(boolean statusChanged) {
+    protected void onUserTourStatusChanged(String status, boolean statusChanged) {
         if (!statusChanged) {
             Toast.makeText(this, R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
             displayMessage();
         }
         else {
-            Toast toast = Toast.makeText(this, R.string.tour_join_request_success, Toast.LENGTH_SHORT);
+            int messageId = R.string.tour_join_request_success;
+            if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
+                messageId = R.string.tour_join_request_rejected;
+            }
+            Toast toast = Toast.makeText(this, messageId, Toast.LENGTH_SHORT);
             int duration = toast.getDuration();
             toast.show();
             Handler handler = new Handler(Looper.getMainLooper());
