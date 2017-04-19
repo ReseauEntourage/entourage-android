@@ -2,16 +2,18 @@ package social.entourage.android.user.edit.photo;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.PermissionChecker;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -44,7 +47,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     public static final String TAG = "social.entourage.android.photo_choose_source";
 
     private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int REQUEST_TAKE_PHOTO = 2;
+    private static final int TAKE_PHOTO_REQUEST = 2;
 
     private static final int READ_STORAGE_PERMISSION_CODE = 3;
     private static final int WRITE_STORAGE_PERMISSION_CODE = 4;
@@ -151,7 +154,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             return;
         }
 
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+        if (requestCode == TAKE_PHOTO_REQUEST && resultCode == Activity.RESULT_OK) {
             if (intent != null && intent.getData() != null ) {
                 showNextStep(intent.getData());
                 return;
@@ -227,16 +230,6 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         } else {
             showChoosePhotoActivity();
         }
-
-
-        /*
-        Intent intent = new Intent();
-        // Show only images, no videos or anything else
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        // Always show the chooser (if there are multiple options available)
-        startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST);
-        */
     }
 
     @OnClick(R.id.photo_choose_take_photo_button)
@@ -288,49 +281,49 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             Toast.makeText(getActivity(), R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show();
         } else {
             // Create the File where the photo should go
-            File photoFile = null;
+            Uri photoFileUri = null;
             try {
-                photoFile = createImageFile();
+                photoFileUri = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Toast.makeText(getActivity(), R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show();
             }
             // Continue only if the File was successfully created
-            if (photoFile != null) {
+            if (photoFileUri != null) {
                 if (Build.VERSION.SDK_INT <= 19) {
                     // Start a separate activity, to handle the issue with onActivityResult
                     Intent intent = new Intent(getContext(), TakePhotoActivity.class);
-                    intent.setData(Uri.fromFile(photoFile));
+                    intent.setData(photoFileUri);
                     if (mCurrentPhotoPath != null) {
                         intent.putExtra(TakePhotoActivity.KEY_PHOTO_PATH, mCurrentPhotoPath);
                     }
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else {
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(photoFile));
-                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri);
+                    takePictureIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST);
                 }
             }
         }
     }
 
-    private File createImageFile() throws IOException {
+    private Uri createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "ENTOURAGE_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
+        File storageDir = new File(getContext().getFilesDir(), "images");
+        if (!storageDir.exists()) {
+            storageDir.mkdir();
+        }
+        File image = new File(storageDir, imageFileName+".jpg");
         // Save a file: path for use with ACTION_VIEW intents
-        //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+        // Return the URI
+//        if (Build.VERSION.SDK_INT <= 19) {
+//            return Uri.fromFile(image);
+//        }
+        return FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".fileprovider", image);
     }
 
     private void showNextStep(Uri photoUri) {
