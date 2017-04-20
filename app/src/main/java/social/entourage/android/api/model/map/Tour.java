@@ -260,11 +260,11 @@ public class Tour extends FeedItem implements Serializable {
     public String getFeedTypeLong(Context context) {
         if (tourType != null) {
             if (tourType.equals(TourType.MEDICAL.getName())) {
-                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_medical));
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_medical).toLowerCase());
             } else if (tourType.equals(TourType.ALIMENTARY.getName())) {
-                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_alimentary));
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_alimentary).toLowerCase());
             } else if (tourType.equals(TourType.BARE_HANDS.getName())) {
-                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_bare_hands));
+                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_bare_hands).toLowerCase());
             }
         }
         return null;
