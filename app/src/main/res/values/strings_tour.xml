@@ -90,7 +90,7 @@
     <string name="tour_cell_title">%1$s</string>
     <string name="tour_cell_type">Maraude %1$s par\u0020</string>
     <string name="tour_cell_author">%1$s</string>
-    <string name="tour_cell_location">%1$s à %2$s</string>
+    <string name="tour_cell_location">Créée il y a %1$s à %2$s</string>
     <string name="tour_cell_numberOfPeople">%1$d</string>
     <string name="tour_cell_button_join">Je rejoins</string>
     <string name="tour_cell_button_accepted">Actif</string>
