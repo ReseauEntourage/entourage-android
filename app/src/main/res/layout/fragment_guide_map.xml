@@ -115,6 +115,39 @@
             android:textSize="14sp"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/fragment_guide_info_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginStart="50dp"
+        android:background="@drawable/rounded_dialog"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/fragment_guide_info_popup_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/ic_close_white"/>
+
+        <TextView
+            android:id="@+id/fragment_guide_info_popup_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/map_poi_info_popup"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
     <include
         android:id="@+id/fragment_guide_longclick"
         layout="@layout/layout_guide_longclick"

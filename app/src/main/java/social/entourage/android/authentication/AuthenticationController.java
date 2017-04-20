@@ -27,6 +27,7 @@ public class AuthenticationController {
     private boolean userToursOnly;
     private boolean showNoEntouragesPopup = true;
     private boolean showNoPOIsPopup = true;
+    private boolean showInfoPOIsPopup = true;
 
     private Map<Integer, MapFilter> mapFilterHashMap = new HashMap<>();
     private MapFilter mapFilter = null;
@@ -140,6 +141,14 @@ public class AuthenticationController {
 
     public void setShowNoPOIsPopup(final boolean showNoPOIsPopup) {
         this.showNoPOIsPopup = showNoPOIsPopup;
+    }
+
+    public boolean isShowInfoPOIsPopup() {
+        return showInfoPOIsPopup;
+    }
+
+    public void setShowInfoPOIsPopup(final boolean showInfoPOIsPopup) {
+        this.showInfoPOIsPopup = showInfoPOIsPopup;
     }
 
     public MapFilter getMapFilter() {

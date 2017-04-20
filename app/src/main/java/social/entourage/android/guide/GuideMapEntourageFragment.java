@@ -103,6 +103,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @BindView(R.id.fragment_guide_empty_list_popup_text)
     TextView emptyListTextView;
 
+    @BindView(R.id.fragment_guide_info_popup)
+    View infoPopup;
+
     @BindView(R.id.fragment_guide_longclick)
     RelativeLayout guideLongClickView;
 
@@ -164,7 +167,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                                 previousCameraLocation = newLocation;
                                 presenter.updatePoisNearby();
                             }
-                            hideEmptyListPopup();
                         }
                     });
 
@@ -279,6 +281,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 if (map != null) {
                     clusterManager.addItems(removeRedundantPois(pois));
                     clusterManager.cluster();
+                    hideEmptyListPopup();
+                    showInfoPopup();
                 }
             } else {
                 showEmptyListPopup();
@@ -407,6 +411,31 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     private void hideEmptyListPopup() {
         emptyListPopup.setVisibility(View.GONE);
+    }
+
+    // ----------------------------------
+    // INFO POPUP
+    // ----------------------------------
+
+    @OnClick(R.id.fragment_guide_info_popup_close)
+    protected void onInfoPopupClose() {
+        AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
+        if (authenticationController != null) {
+            authenticationController.setShowInfoPOIsPopup(false);
+        }
+        hideInfoPopup();
+    }
+
+    private void showInfoPopup() {
+        AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
+        if (authenticationController != null && !authenticationController.isShowInfoPOIsPopup()) {
+            return;
+        }
+        infoPopup.setVisibility(View.VISIBLE);
+    }
+
+    private void hideInfoPopup() {
+        infoPopup.setVisibility(View.GONE);
     }
 
     // ----------------------------------
