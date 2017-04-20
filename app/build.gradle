@@ -18,7 +18,7 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        def AWS_KEY = System.env.FLURRY_API_KEY ? '"' + System.env.FLURRY_API_KEY + '"' : entourageAWSKey;
+        def AWS_KEY = System.env.AWS_KEY ? '"' + System.env.AWS_KEY + '"' : entourageAWSKey;
         def AWS_SECRET = System.env.AWS_SECRET ? '"' + System.env.AWS_SECRET + '"': entourageAWSSecret;
 
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
