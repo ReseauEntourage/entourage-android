@@ -21,6 +21,8 @@ public class Constants {
     public static final String BLOG_URL = "https://blog.entourage.social/2016/10/28/franchir-le-pas/";
     public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
     public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";
+    public static final String GOAL_URL= "https://blog.entourage.social/quelles-actions-faire-avec-entourage";
+    public static final String FAQ_URL = "https://blog.entourage.social/comment-utiliser-l-application-entourage/";
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";
@@ -98,6 +100,8 @@ public class Constants {
     public static final String EVENT_MENU_TAP_MY_PROFILE = "TapMyProfilePhoto";
     public static final String EVENT_MENU_LOGOUT = "LogOut";
     public static final String EVENT_MENU_ABOUT = "AboutClick";
+    public static final String EVENT_MENU_GOAL = "WhatActionsClick";
+    public static final String EVENT_MENU_FAQ = "AppFAQClick";
 
     //FEED Events
     public static final String EVENT_FEED_MESSAGES = "GoToMessages"; // No longer used

@@ -12,22 +12,33 @@
         android:layout_marginTop="20dp"
         layout="@layout/drawer_header"/>
 
-    <social.entourage.android.sidemenu.SideMenuItemView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:id="@+id/action_user"
-        android:visibility="gone"/>
-
-    <social.entourage.android.sidemenu.SideMenuItemView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/action_guide"
-        android:title="@string/action_guide"
-        android:icon="@drawable/ic_guide"
-        android:background="@color/white"
-        android:visibility="gone"/>
+        android:layout_height="match_parent">
 
-    <!--social.entourage.android.sidemenu.SideMenuItemView
+        <LinearLayout
+            android:id="@+id/sidemenuitems_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_user"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:visibility="gone"/>
+
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_guide"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_guide"
+                android:title="@string/action_guide"
+                android:visibility="gone"/>
+
+            <!--social.entourage.android.sidemenu.SideMenuItemView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/action_settings"
@@ -35,50 +46,71 @@
         android:icon="@drawable/ic_settings"
         android:background="@color/white"/-->
 
-    <social.entourage.android.sidemenu.SideMenuItemView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/action_blog"
-        android:title="@string/action_blog"
-        android:icon="@drawable/ic_blog"
-        app:showDivider="true"
-        android:background="@color/white"/>
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_blog"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_blog"
+                android:title="@string/action_blog"
+                app:showDivider="true"/>
 
-    <social.entourage.android.sidemenu.SideMenuItemView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/action_charte"
-        android:title="@string/action_charte"
-        android:icon="@drawable/ic_charte"
-        app:showDivider="true"
-        android:background="@color/white"/>
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_goal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_goal"
+                android:title="@string/action_goal"
+                app:showDivider="true"/>
 
-    <social.entourage.android.sidemenu.SideMenuItemView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/action_about"
-        android:title="@string/action_about"
-        android:icon="@drawable/ic_about"
-        app:showDivider="false"
-        android:background="@color/white"/>
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_charte"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_charte"
+                android:title="@string/action_charte"
+                app:showDivider="true"/>
 
-    <social.entourage.android.sidemenu.SideMenuItemView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/action_tours"
-        android:title="@string/action_tours"
-        android:icon="@drawable/ic_map"
-        android:background="@color/white"
-        android:visibility="gone"/>
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_faq"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_phone_grey"
+                android:title="@string/action_faq"
+                app:showDivider="true"/>
 
-    <social.entourage.android.sidemenu.SideMenuItemView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/action_logout"
-        android:title="@string/action_logout"
-        android:textColor="@color/accent"
-        app:showDivider="false"
-        app:centerText="true"
-        android:layout_marginTop="30dp"
-        android:background="@color/white"/>
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_about"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_about"
+                android:title="@string/action_about"
+                app:showDivider="false"/>
+
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_tours"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_map"
+                android:title="@string/action_tours"
+                android:visibility="gone"/>
+
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_logout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/white"
+                android:textColor="@color/accent"
+                android:title="@string/action_logout"
+                app:centerText="true"
+                app:showDivider="false"/>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

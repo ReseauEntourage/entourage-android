@@ -459,23 +459,20 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         });
 
-        int childCount = navigationView.getChildCount();
-        View v;
-        for (int i = 0; i < childCount; i++) {
-            v = navigationView.getChildAt(i);
-            if (v instanceof LinearLayout) {
-                int itemsCount = ((LinearLayout) v).getChildCount();
-                for (int j = 0; j < itemsCount; j++) {
-                    View child = ((LinearLayout) v).getChildAt(j);
-                    if (child instanceof SideMenuItemView) {
-                        child.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                selectedSidemenuAction = v.getId();
-                                drawerLayout.closeDrawers();
-                            }
-                        });
-                    }
+        //add listeners to side menu items
+        LinearLayout sideMenuItemsLayout = (LinearLayout) navigationView.findViewById(R.id.sidemenuitems_layout);
+        if (sideMenuItemsLayout != null) {
+            int itemsCount = sideMenuItemsLayout.getChildCount();
+            for (int j = 0; j < itemsCount; j++) {
+                View child = sideMenuItemsLayout.getChildAt(j);
+                if (child instanceof SideMenuItemView) {
+                    child.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            selectedSidemenuAction = v.getId();
+                            drawerLayout.closeDrawers();
+                        }
+                    });
                 }
             }
         }
@@ -542,6 +539,16 @@ public class DrawerActivity extends EntourageSecuredActivity
                     charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_public)));
                 }
                 startActivity(charteIntent);
+                break;
+            case R.id.action_goal:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_GOAL);
+                Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GOAL_URL));
+                startActivity(goalIntent);
+                break;
+            case R.id.action_faq:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_FAQ);
+                Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_URL));
+                startActivity(userGuideIntent);
                 break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
