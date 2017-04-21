@@ -247,6 +247,7 @@ public class MapPresenter {
             if (entourageMarkerHashMap.get(markerPosition) != null) {
                 FlurryAgent.logEvent(Constants.EVENT_FEED_HEATZONECLICK);
                 if (fragment != null) {
+                    fragment.centerMapAndZoom(markerPosition);
                     fragment.toggleToursList();
                 }
             }

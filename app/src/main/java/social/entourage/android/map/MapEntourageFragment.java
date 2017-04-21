@@ -1874,6 +1874,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR));
     }
 
+    protected void centerMapAndZoom(LatLng latLng) {
+        CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom, 0, 0);
+        if (map != null) {
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            saveCameraPosition();
+        }
+    }
+
     private void centerMap(LatLng latLng) {
         CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom, 0, 0);
         centerMap(cameraPosition);
