@@ -420,6 +420,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     public void putEncounterOnMap(Encounter encounter,
                                   MapPresenter.OnEntourageMarkerClickListener onClickListener) {
+        if (map == null) {
+            // The map is not yet initialized or the google play services are outdated on the phone
+            return;
+        }
         double encounterLatitude = encounter.getLatitude();
         double encounterLongitude = encounter.getLongitude();
         LatLng encounterPosition = new LatLng(encounterLatitude, encounterLongitude);
@@ -427,11 +431,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         MarkerOptions markerOptions = new MarkerOptions().position(encounterPosition)
             .icon(encounterIcon);
-
-        if (map != null) {
-            map.addMarker(markerOptions);
-            onClickListener.addEncounterMarker(encounterPosition, encounter);
-        }
+        map.addMarker(markerOptions);
+        onClickListener.addEncounterMarker(encounterPosition, encounter);
     }
 
     public void initializeMapZoom() {
@@ -2032,7 +2033,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void addTourHead(Tour tour) {
-        if (displayedTourHeads >= MAX_TOUR_HEADS_DISPLAYED) {
+        if (displayedTourHeads >= MAX_TOUR_HEADS_DISPLAYED || map == null) {
             return;
         }
         displayedTourHeads++;
