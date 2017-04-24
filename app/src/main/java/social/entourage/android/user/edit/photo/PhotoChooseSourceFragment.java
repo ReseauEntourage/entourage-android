@@ -311,7 +311,10 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         String imageFileName = "ENTOURAGE_" + timeStamp + "_";
         File storageDir = new File(getContext().getFilesDir(), "images");
         if (!storageDir.exists()) {
-            storageDir.mkdir();
+            if (!storageDir.mkdir()) {
+                // Failed to create the folder
+                throw new IOException();
+            }
         }
         File image = new File(storageDir, imageFileName+".jpg");
         // Save a file: path for use with ACTION_VIEW intents

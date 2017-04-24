@@ -1983,13 +1983,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
             }
-
-            if (isHistory) {
-//                retrievedHistory.put(tour.getId(), tour);
-//                drawnUserHistory.put(tour.getId(), map.addPolyline(line));
-            } else {
-                //addNewsfeedCard(entourage);
-            }
         }
     }
 
@@ -2136,8 +2129,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         mapDisplayToggle.setChecked(false);
 
         hideEmptyListPopup();
-
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
 
         ValueAnimator anim = ValueAnimator.ofInt(layoutMapMain.getMeasuredHeight(), originalMapLayoutHeight);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

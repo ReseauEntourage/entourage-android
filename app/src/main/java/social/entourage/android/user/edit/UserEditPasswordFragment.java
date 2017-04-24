@@ -71,7 +71,9 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
     public void onResume() {
         super.onResume();
 
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
     }
 
     // ----------------------------------

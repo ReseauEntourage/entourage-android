@@ -324,8 +324,7 @@ public class MyToursFragment extends EntourageDialogFragment implements TabHost.
     public void onPushNotificationReceived(Message message) {
         PushNotificationContent content = message.getContent();
         if (content == null) return;
-        String joinableTypeString = content.getType();
-        int cardType = 0;
+        int cardType;
         if (content.isTourRelated()) cardType = TimestampedObject.TOUR_CARD;
         else if (content.isEntourageRelated()) cardType = TimestampedObject.ENTOURAGE_CARD;
         else return;

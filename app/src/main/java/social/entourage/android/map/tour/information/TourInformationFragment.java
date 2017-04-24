@@ -550,7 +550,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
 
         // build the share text
-        String shareLink = feedItem.getShareURL();
+        String shareLink = feedItem != null ? feedItem.getShareURL() : null;
         if (shareLink == null) {
             shareLink = getString(R.string.entourage_share_link);
         }
@@ -1020,11 +1020,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             return;
         }
         boolean isTourPrivate = feedItem.isPrivate();
-        User me = EntourageApplication.me(getActivity());
-        int myId = 0;
-        if (me != null) {
-            myId = me.getId();
-        }
+
         // Share button available only for entourages and non-members
         shareButton.setVisibility( ((feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) && !isTourPrivate) ? View.VISIBLE : View.GONE );
 
@@ -1455,13 +1451,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (feedItem.getStartTime() != null && !feedItem.isClosed()) {
             duration = now.getTime() - feedItem.getStartTime().getTime();
         }
-        Date timestamp;
-        if (feedItem.getCachedCardInfoList().size() == 0) {
-            timestamp = feedItem.getStartTime();
-        }
-        else {
-            timestamp = duration == 0 ? feedItem.getStartTime() : now;
-        }
+
         TourPoint startPoint = feedItem.getStartPoint();
         TourTimestamp tourTimestamp = new TourTimestamp(
                 feedItem.getStartTime(),

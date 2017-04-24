@@ -102,7 +102,7 @@ public class RegisterSMSCodeFragment extends EntourageDialogFragment {
 
     private boolean checkValidLocalSMSCode() {
         String code = codeEditText.getText().toString();
-        if (code == null || code.trim().length() == 0) return false;
+        if (code.trim().length() == 0) return false;
         return true;
     }
 
