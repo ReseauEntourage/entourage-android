@@ -1,6 +1,5 @@
 package social.entourage.android.map.tour.join;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;

@@ -114,7 +114,6 @@ import social.entourage.android.map.filter.MapFilterFragment;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
-import social.entourage.android.map.tour.join.JoinRequestOkFragment;
 import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
