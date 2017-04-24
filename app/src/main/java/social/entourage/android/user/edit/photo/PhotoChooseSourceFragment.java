@@ -197,7 +197,6 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             } else {
                 Toast.makeText(getActivity(), R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show();
             }
-            return;
         }
     }
 

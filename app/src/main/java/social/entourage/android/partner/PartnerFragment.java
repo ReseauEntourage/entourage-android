@@ -97,7 +97,6 @@ public class PartnerFragment extends EntourageDialogFragment {
     private void configureView() {
         // Check for valid activity
         if (getActivity() == null || getActivity().isFinishing()) {
-            return;
         }
 
         // For the moment populate with hardcoded values related to ATD

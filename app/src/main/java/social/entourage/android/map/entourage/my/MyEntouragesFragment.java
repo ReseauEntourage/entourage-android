@@ -346,7 +346,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         if (card != null && card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
             entouragesAdapter.updateCard(card);
-            return;
         }
     }
 

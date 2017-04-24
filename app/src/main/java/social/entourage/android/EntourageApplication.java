@@ -178,7 +178,6 @@ public class EntourageApplication extends Application {
                         i--;
                     }
                     count++;
-                    continue;
                 }
             }
         }

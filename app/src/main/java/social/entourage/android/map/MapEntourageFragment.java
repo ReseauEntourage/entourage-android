@@ -1360,7 +1360,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //update the visible buttons
         boolean isTourRunning = tourService != null && tourService.isRunning();
         User me = EntourageApplication.me(getActivity());
-        boolean isPro = (me != null ? me.isPro() : false);
+        boolean isPro = (me != null && me.isPro());
         mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : (isPro ? View.VISIBLE : View.GONE));
         mapLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
         if (!isPro) {
@@ -2308,7 +2308,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void initializeInvitations() {
         // Check if it's a valid user and onboarding
         User me = EntourageApplication.me(getActivity());
-        if (me == null || me.isOnboardingUser() == false) {
+        if (me == null || !me.isOnboardingUser()) {
             return;
         }
         // Retrieve the list of invitations

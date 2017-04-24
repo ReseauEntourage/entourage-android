@@ -340,7 +340,6 @@ public class MyToursFragment extends EntourageDialogFragment implements TabHost.
         if (card != null && card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
             frozenFeedsAdapter.updateCard(card);
-            return;
         }
     }
 
@@ -355,7 +354,6 @@ public class MyToursFragment extends EntourageDialogFragment implements TabHost.
         if (card != null && card instanceof Tour) {
             ((Tour)card).setBadgeCount(0);
             frozenFeedsAdapter.updateCard(card);
-            return;
         }
     }
 
