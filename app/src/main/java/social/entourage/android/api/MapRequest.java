@@ -8,7 +8,8 @@ public interface MapRequest {
 
     @GET("pois.json")
     Call<MapResponse> retrievePoisNearby(@Query("latitude") double latitude,
-                            @Query("longitude") double longitude,
-                            @Query("distance") double distance);
+                                         @Query("longitude") double longitude,
+                                         @Query("distance") double distance,
+                                         @Query("category_ids") String categoryIDs);
 }
 

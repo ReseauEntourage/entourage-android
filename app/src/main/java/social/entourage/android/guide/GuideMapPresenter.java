@@ -13,6 +13,7 @@ import retrofit2.Response;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
+import social.entourage.android.guide.filter.GuideFilter;
 
 /**
  * Presenter controlling the GuideMapEntourageFragment
@@ -61,7 +62,8 @@ public class GuideMapPresenter {
             float zoom = currentPosition.zoom;
             float distance = 40000f / (float) Math.pow(2f, zoom) / 2.5f;
             distance = Math.max(1, distance);
-            Call<MapResponse> call = mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance);
+            GuideFilter filter = GuideFilter.getInstance();
+            Call<MapResponse> call = mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance, filter.getRequestedCategories());
             call.enqueue(new Callback<MapResponse>() {
                 @Override
                 public void onResponse(Call<MapResponse> call, Response<MapResponse> response) {

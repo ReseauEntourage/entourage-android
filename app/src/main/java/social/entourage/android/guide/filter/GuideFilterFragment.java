@@ -12,7 +12,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Guide Filter Fragment
@@ -78,7 +80,8 @@ public class GuideFilterFragment extends EntourageDialogFragment {
             GuideFilterAdapter.GuideFilterItem filterItem = filterAdapter.getItem(i);
             guideFilter.setValueForCategoryId(filterItem.categoryType.getCategoryId(), filterItem.isChecked);
         }
-        //TODO apply the filter
+        // Apply the filter
+        BusProvider.getInstance().post(new Events.OnSolidarityGuideFilterChanged());
         // Dismiss the fragment
         dismiss();
     }

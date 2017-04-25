@@ -35,6 +35,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
+import com.squareup.otto.Subscribe;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -209,6 +210,15 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     public void onStart() {
         super.onStart();
         presenter.start();
+
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -266,6 +276,19 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         DrawerActivity activity = (DrawerActivity) getActivity();
         if (activity == null) return;
         activity.onPOILauncherClicked();
+    }
+
+    // ----------------------------------
+    // BUS EVENTS
+    // ----------------------------------
+
+    @Subscribe
+    public void onSolidarityGuideFilterChanged(Events.OnSolidarityGuideFilterChanged event) {
+        if (presenter != null) {
+            clusterManager.clearItems();
+            poisMap.clear();
+            presenter.updatePoisNearby();
+        }
     }
 
     // ----------------------------------

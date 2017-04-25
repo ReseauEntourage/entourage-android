@@ -348,6 +348,16 @@ public class Events {
     }
 
     /**
+     * Event signaling that the solidarity guide filter was changed
+     */
+    public static class OnSolidarityGuideFilterChanged {
+
+        public OnSolidarityGuideFilterChanged() {
+        }
+
+    }
+
+    /**
      * Event signaling that the map filter was changed
      */
     public static class OnMyEntouragesFilterChanged {
