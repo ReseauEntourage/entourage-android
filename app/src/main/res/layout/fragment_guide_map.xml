@@ -3,22 +3,35 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/fragment_guide_map_layout"
+    <RelativeLayout
+        android:id="@+id/fragment_guide_main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/fragment_map"
-            class="com.google.android.gms.maps.SupportMapFragment"
+        <FrameLayout
+            android:id="@+id/fragment_guide_map_layout"
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+            <fragment
+                android:id="@+id/fragment_map"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_guide_pois_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:layout_below="@+id/fragment_guide_map_layout"/>
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/fragment_guide_filter_button"
@@ -36,6 +49,18 @@
         android:contentDescription="@string/empty_description"
         android:scaleType="centerInside"
         app:srcCompat="@drawable/ic_filters_black"/>
+
+    <ToggleButton
+        android:id="@+id/fragment_guide_display_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:button="@drawable/bg_map_type_tab"
+        android:checked="false"
+        android:textOff=""
+        android:textOn=""/>
 
     <ImageButton
         android:id="@+id/fragment_guide_follow_button"

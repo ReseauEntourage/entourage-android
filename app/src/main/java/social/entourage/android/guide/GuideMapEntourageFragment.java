@@ -1,6 +1,7 @@
 package social.entourage.android.guide;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Display;
@@ -22,8 +25,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Adapter;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionMenu;
@@ -61,6 +67,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiActivity;
+import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
 
 public class GuideMapEntourageFragment extends Fragment implements BackPressable {
@@ -93,6 +100,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     private Map<Long, Poi> poisMap;
     private PoiRenderer poiRenderer;
     private boolean isMapLoaded = false;
+    private int originalMapLayoutHeight;
 
     private Location previousEmptyListPopupLocation = null;
 
@@ -112,6 +120,20 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     @BindView(R.id.guide_longclicks_buttons)
     RelativeLayout guideLongClickButtonsView;
+
+    @BindView(R.id.fragment_guide_display_toggle)
+    ToggleButton guideDisplayToggle;
+
+    @BindView(R.id.fragment_guide_main_layout)
+    RelativeLayout layoutMain;
+
+    @BindView(R.id.fragment_guide_map_layout)
+    FrameLayout layoutMapMain;
+
+    @BindView(R.id.fragment_guide_pois_view)
+    RecyclerView poisListView;
+
+    PoisAdapter poisAdapter;
 
     private LatLng longTapCoordinates;
 
@@ -139,6 +161,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         poisMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         initializeEmptyListPopup();
+        initializePOIList();
 
         if (!isMapLoaded) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -278,6 +301,17 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         activity.onPOILauncherClicked();
     }
 
+    @OnClick(R.id.fragment_guide_display_toggle)
+    public void onDisplayToggle() {
+        if (guideDisplayToggle.isChecked()) {
+            //FlurryAgent.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
+        }
+        else {
+            //FlurryAgent.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
+        }
+        togglePOIList();
+    }
+
     // ----------------------------------
     // BUS EVENTS
     // ----------------------------------
@@ -291,6 +325,12 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
     }
 
+    @Subscribe
+    public void onPoiViewRequested(Events.OnPoiViewRequestedEvent event) {
+        if (event == null || event.getPoi() == null) return;
+        showPoiDetails(event.getPoi());
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -301,11 +341,15 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 poiRenderer.setCategories(categories);
             }
             if (pois != null && pois.size() > 0) {
+                Collection<Poi> poiCollection = removeRedundantPois(pois);
                 if (map != null) {
-                    clusterManager.addItems(removeRedundantPois(pois));
+                    clusterManager.addItems(poiCollection);
                     clusterManager.cluster();
                     hideEmptyListPopup();
                     showInfoPopup();
+                }
+                if (poisAdapter != null) {
+                    poisAdapter.addItems(poiCollection);
                 }
             } else {
                 showEmptyListPopup();
@@ -354,6 +398,14 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             }
         }
         return pois;
+    }
+
+    private void showPoiDetails(Poi poi) {
+        Intent intent = new Intent(getActivity(), ReadPoiActivity.class);
+        Bundle extras = new Bundle();
+        extras.putSerializable(ReadPoiActivity.BUNDLE_KEY_POI, poi);
+        intent.putExtras(extras);
+        startActivity(intent);
     }
 
     // ----------------------------------
@@ -498,6 +550,108 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     }
 
     // ----------------------------------
+    // POI List
+    // ----------------------------------
+
+    private void initializePOIList() {
+        if (poisAdapter == null) {
+            poisListView.setLayoutManager(new LinearLayoutManager(getContext()));
+            poisAdapter = new PoisAdapter();
+            poisListView.setAdapter(poisAdapter);
+        }
+    }
+
+    public void togglePOIList() {
+        if (poisListView == null) {
+            return;
+        }
+        if (poisListView.getVisibility() == View.VISIBLE) {
+            hidePOIList();
+        } else {
+            showPOIList();
+        }
+    }
+
+    private void hidePOIList() {
+
+        if (poisListView.getVisibility() == View.GONE) {
+            return;
+        }
+        poisListView.setVisibility(View.GONE);
+
+        guideDisplayToggle.setChecked(true);
+
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+        originalMapLayoutHeight = lp.height;
+
+        ensureMapVisible();
+
+        emptyListTextView.setVisibility(View.GONE);
+
+        final int targetHeight = layoutMain.getMeasuredHeight();
+        ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                layoutParams.height = val;
+                layoutMapMain.setLayoutParams(layoutParams);
+                layoutMain.forceLayout();
+            }
+
+        });
+        anim.start();
+
+    }
+
+    private void showPOIList() {
+        if (layoutMapMain == null || poisListView == null || guideDisplayToggle == null) {
+            return;
+        }
+
+        if (poisListView.getVisibility() == View.VISIBLE) {
+            return;
+        }
+        poisListView.setVisibility(View.VISIBLE);
+
+        guideDisplayToggle.setChecked(false);
+
+        hideEmptyListPopup();
+
+        ValueAnimator anim = ValueAnimator.ofInt(layoutMapMain.getMeasuredHeight(), originalMapLayoutHeight);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+                layoutParams.height = val;
+                layoutMapMain.setLayoutParams(layoutParams);
+                layoutMain.forceLayout();
+            }
+
+        });
+        anim.start();
+    }
+
+    public void ensureMapVisible() {
+        if (layoutMapMain == null || poisListView == null) {
+            return;
+        }
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+        originalMapLayoutHeight = lp.height;
+
+        if (lp.topMargin < 0) {
+            lp.topMargin = 0;
+            layoutMapMain.setLayoutParams(lp);
+
+            layoutMain.forceLayout();
+        }
+
+        poisListView.scrollToPosition(0);
+    }
+
+    // ----------------------------------
     // INNER CLASS
     // ----------------------------------
 
@@ -506,11 +660,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         public boolean onClusterItemClick(Poi poi) {
             FlurryAgent.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
             saveCameraPosition();
-            Intent intent = new Intent(getActivity(), ReadPoiActivity.class);
-            Bundle extras = new Bundle();
-            extras.putSerializable(ReadPoiActivity.BUNDLE_KEY_POI, poi);
-            intent.putExtras(extras);
-            startActivity(intent);
+            showPoiDetails(poi);
             return false;
         }
     }

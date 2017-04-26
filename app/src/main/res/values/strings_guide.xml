@@ -35,4 +35,8 @@
     <string name="guide_filter_title">FILTRES</string>
     <string name="guide_filter_categories_title">Catégories</string>
 
+    <!-- POI Card -->
+    <string name="poi_card_call">APPELER</string>
+    <string name="poi_card_bullet">•</string>
+
 </resources>
