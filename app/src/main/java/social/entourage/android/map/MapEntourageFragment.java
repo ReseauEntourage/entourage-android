@@ -179,6 +179,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private Map<String, Object> markersMap;
     private Map<Long, Tour> retrievedHistory;
     private boolean initialNewsfeedLoaded = false;
+    private BitmapDescriptor heatmapIcon;
 
     private int originalMapLayoutHeight;
 
@@ -1460,7 +1461,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (map == null) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
-                public void onMapReady(final GoogleMap googleMap) {
+                public void onMapReady(GoogleMap googleMap) {
                     map = googleMap;
                     if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                         googleMap.setMyLocationEnabled(true);
@@ -1472,9 +1473,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     setOnMarkerClickListener(presenter.getOnClickListener());
                     map.setOnGroundOverlayClickListener(presenter.getOnGroundOverlayClickListener());
 
-                    googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                         @Override
-                        public void onCameraChange(CameraPosition cameraPosition) {
+                        public void onCameraIdle() {
+                            CameraPosition cameraPosition = map.getCameraPosition();
                             EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition);
                             Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
                             Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
@@ -1970,9 +1972,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (entourage.getLocation() != null) {
                 if (markersMap.get(entourage.hashString()) == null) {
                     LatLng position = entourage.getLocation().getLocation();
-                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.heat_zone);
+                    if (heatmapIcon == null) {
+                        heatmapIcon = BitmapDescriptorFactory.fromResource(R.drawable.heat_zone);
+                    }
                     GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
-                        .image(icon)
+                        .image(heatmapIcon)
                         .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
                         .clickable(true)
                         .anchor(0.5f, 0.5f);
