@@ -208,6 +208,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     */
 
                     initializeMapZoom();
+                    if (presenter != null) {
+                        presenter.updatePoisNearby();
+                    }
                 }
             });
         }
@@ -321,6 +324,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         if (presenter != null) {
             clusterManager.clearItems();
             poisMap.clear();
+            poisAdapter.removeAll();
             presenter.updatePoisNearby();
         }
     }
@@ -353,6 +357,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 }
             } else {
                 showEmptyListPopup();
+                if (poisAdapter != null && poisAdapter.getItemCount() == 0) {
+                    hidePOIList();
+                }
             }
         }
     }

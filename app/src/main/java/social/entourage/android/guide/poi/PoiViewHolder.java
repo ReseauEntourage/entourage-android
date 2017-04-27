@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.guide.PoiRenderer;
 import social.entourage.android.tools.BusProvider;
@@ -72,7 +73,13 @@ public class PoiViewHolder extends RecyclerView.ViewHolder {
         PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.findCategoryTypeById(poi.getCategoryId());
         poiType.setText(categoryType != null ? categoryType.getName() : "");
         poiAddress.setText(poi.getAdress() != null ? poi.getAdress() : "");
-        poiDistance.setText("???");
+
+        String distanceAsString = "";
+        TourPoint poiLocation = new TourPoint(poi.getLatitude(), poi.getLongitude());
+        if (poiLocation != null) {
+            distanceAsString = poiLocation.distanceToCurrentLocation();
+        }
+        poiDistance.setText(distanceAsString);
         phone = poi.getPhone();
         poiCallButton.setVisibility( (phone == null || phone.length() == 0) ? View.GONE : View.VISIBLE);
     }

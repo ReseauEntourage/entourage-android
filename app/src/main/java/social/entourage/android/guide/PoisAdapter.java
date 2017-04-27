@@ -40,7 +40,6 @@ public class PoisAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void addItems(Collection<Poi> poiList) {
-        items.clear();
         items.addAll(poiList);
         notifyDataSetChanged();
     }
