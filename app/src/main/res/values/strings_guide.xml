@@ -25,10 +25,10 @@
     <string name="map_poi_empty_popup"><![CDATA[On dirait que c\'est calme ici!<br/><br/>
     Déplacez la carte pour trouver des structures d’assistance: restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…<br/><br/>
     Une structure manque sur la carte?<<br/>
-    <a href=\"%1$s\">Proposez une structure</a>]]></string>
+    <a href=\'%1$s\'>Proposez une structure</a>]]></string>
 
     <!-- Info Popup -->
-    <string name="map_poi_info_popup">Le Guide de solidarité vous permet de s’informer sur les structures d’assistance : restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…\n\n
+    <string name="map_poi_info_popup">Le Guide de solidarité vous permet de vous informer sur les structures d’assistance : restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…\n\n
         En tant que riverain, vous pouvez suggérer un lieu à une personne de la rue, mais gardez à l’esprit que c’est le rôle des travailleurs sociaux d’accompagner chaque situation.</string>
 
     <!-- Guide Filter -->

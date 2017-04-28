@@ -10,6 +10,8 @@ import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -592,8 +594,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         originalMapLayoutHeight = lp.height;
 
         ensureMapVisible();
-
-        emptyListTextView.setVisibility(View.GONE);
 
         final int targetHeight = layoutMain.getMeasuredHeight();
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
