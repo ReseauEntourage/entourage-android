@@ -550,6 +550,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_URL));
                 startActivity(userGuideIntent);
                 break;
+            case R.id.action_atd:
+                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.ATD_URL));
+                startActivity(atdIntent);
+                break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();

@@ -27,6 +27,7 @@ public class Constants {
     public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";
     public static final String GOAL_URL= "https://blog.entourage.social/quelles-actions-faire-avec-entourage";
     public static final String FAQ_URL = "https://blog.entourage.social/comment-utiliser-l-application-entourage/";
+    public static final String ATD_URL = "https://www.atd-quartmonde.fr/entourage/";
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";
