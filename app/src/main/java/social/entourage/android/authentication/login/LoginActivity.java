@@ -818,7 +818,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
         if (updated) {
             PhotoChooseSourceFragment fragment = (PhotoChooseSourceFragment) getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
-            if (fragment != null) {
+            if (fragment != null && !fragment.isStopped()) {
                 fragment.dismiss();
             }
             showNotificationPermissionView();

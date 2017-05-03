@@ -117,7 +117,7 @@ public class PhotoEditFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     public boolean onPhotoSent(boolean success) {
-        if (success && !fabButton.isEnabled()) {
+        if (success && !fabButton.isEnabled() && !isStopped()) {
             //getContext().getContentResolver().delete(photoUri, "", null);
             dismiss();
             return true;

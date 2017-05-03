@@ -19,6 +19,8 @@ import social.entourage.android.R;
  */
 public class EntourageDialogFragment extends DialogFragment {
 
+    private boolean isStopped = true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,6 +58,18 @@ public class EntourageDialogFragment extends DialogFragment {
                 window.setBackgroundDrawable(getBackgroundDrawable());
             }
         }
+        isStopped = false;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        isStopped = true;
+    }
+
+    public boolean isStopped() {
+        return isStopped;
     }
 
     protected @StyleRes int getSlideStyle() {
