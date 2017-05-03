@@ -28,6 +28,9 @@ public class ViewHolderFactory {
 
     public RecyclerView.ViewHolder getViewHolder(ViewGroup parent, int viewType) {
         ViewHolderType viewHolderType = viewHolderTypeHashMap.get(viewType);
+        if (viewHolderType == null) {
+            return null;
+        }
         View view = LayoutInflater.from(parent.getContext()).inflate(viewHolderType.layoutResource, parent, false);
         BaseCardViewHolder cardViewHolder = null;
         try {

@@ -21,6 +21,7 @@ public abstract class TimestampedObject {
     public static final int FEED_MEMBER_CARD = 8;
     public static final int INVITATION_CARD = 9;
     public static final int DATE_SEPARATOR = 10;
+    public static final int LOADING_INDICATOR = 999;
 
     @Expose(serialize = false)
     private int hashCode;

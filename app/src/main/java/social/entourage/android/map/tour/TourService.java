@@ -296,12 +296,13 @@ public class TourService extends Service {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void updateNewsfeed(EntouragePagination pagination) {
+    public boolean updateNewsfeed(EntouragePagination pagination) {
         if (pagination.isLoading) {
-            return;
+            return false;
         }
         pagination.isLoading = true;
         tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate(), getApplicationContext());
+        return true;
     }
 
     public void cancelNewsFeedUpdate() {

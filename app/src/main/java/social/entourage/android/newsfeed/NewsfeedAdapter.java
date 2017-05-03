@@ -2,6 +2,7 @@ package social.entourage.android.newsfeed;
 
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.base.LoadingViewHolder;
 import social.entourage.android.map.entourage.EntourageViewHolder;
 import social.entourage.android.map.tour.TourViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
@@ -23,6 +24,12 @@ public class NewsfeedAdapter extends EntourageBaseAdapter {
                 new ViewHolderFactory.ViewHolderType(EntourageViewHolder.class, EntourageViewHolder.getLayoutResource())
         );
 
+        viewHolderFactory.registerViewHolder(
+                TimestampedObject.LOADING_INDICATOR,
+                new ViewHolderFactory.ViewHolderType(LoadingViewHolder.class, LoadingViewHolder.getLayoutResource())
+        );
+
         setHasStableIds(false);
+        needsLoader = true;
     }
 }

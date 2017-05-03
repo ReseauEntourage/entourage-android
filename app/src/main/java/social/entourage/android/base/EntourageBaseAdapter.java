@@ -18,6 +18,9 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     protected ViewHolderFactory viewHolderFactory = new ViewHolderFactory();
 
+    protected boolean needsLoader = false;
+    private boolean showLoader = false;
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
 
@@ -26,16 +29,26 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if (position != 0 && position == getItemCount() - 1 && needsLoader) {
+            ((LoadingViewHolder)holder).populate(showLoader);
+            return;
+        }
         ((BaseCardViewHolder)holder).populate(items.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        if (items == null || items.size() == 0) {
+            return 0;
+        }
+        return items.size() + (needsLoader ? 1 : 0); // +1 for the loader
     }
 
     @Override
     public int getItemViewType(final int position) {
+        if (position != 0 && position == getItemCount() - 1 && needsLoader) {
+            return TimestampedObject.LOADING_INDICATOR;
+        }
         return items.get(position).getType();
     }
 
@@ -163,5 +176,12 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void removeAll() {
         items.clear();
         notifyDataSetChanged();
+    }
+
+    public void showLoading(final boolean showLoader) {
+        this.showLoader = showLoader;
+        if (items != null && items.size() > 0 && needsLoader) {
+            notifyItemChanged(items.size());
+        }
     }
 }

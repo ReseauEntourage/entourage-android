@@ -997,6 +997,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_LONG).show();
         }
+        if (newsfeedAdapter != null) {
+            newsfeedAdapter.showLoading(false);
+            newsfeedAdapter.notifyDataSetChanged();
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false;
             pagination.isRefreshing = false;
@@ -1005,6 +1009,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onCurrentPositionNotRetrieved() {
+        if (newsfeedAdapter != null) {
+            newsfeedAdapter.showLoading(false);
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false;
             pagination.isRefreshing = false;
@@ -1016,6 +1023,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
         }
+        if (newsfeedAdapter != null) {
+            newsfeedAdapter.showLoading(false);
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false;
             pagination.isRefreshing = false;
@@ -1026,6 +1036,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onTechnicalException(Throwable throwable) {
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
+        }
+        if (newsfeedAdapter != null) {
+            newsfeedAdapter.showLoading(false);
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;
@@ -1040,6 +1053,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             pagination.isRefreshing = false;
             return;
         }
+
+        //hide the loader
+        newsfeedAdapter.showLoading(false);
+
         newsfeeds = removeRedundantNewsfeed(newsfeeds, false);
         //add or update the received newsfeed
         for (Newsfeed newsfeed : newsfeeds) {
@@ -2480,18 +2497,24 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     return;
                 }
 
-                if (scrollDeltaY > MIN_SCROLL_DELTA_Y) {
+                //if (scrollDeltaY > MIN_SCROLL_DELTA_Y) {
+                    int visibleItemCount = recyclerView.getChildCount();
                     LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int position = linearLayoutManager.findLastVisibleItemPosition();
-                    if (position == recyclerView.getAdapter().getItemCount() - 1) {
+                    int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+                    int totalItemCount = linearLayoutManager.getItemCount();
+                    if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
                         FlurryAgent.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
                         if (tourService != null) {
-                            tourService.updateNewsfeed(pagination);
+                            if (tourService.updateNewsfeed(pagination)) {
+                                if (newsfeedAdapter != null) {
+                                    newsfeedAdapter.showLoading(true);
+                                }
+                            }
                         }
                     }
 
                     scrollDeltaY = 0;
-                }
+                //}
             }
         }
 
