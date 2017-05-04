@@ -73,6 +73,9 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
 
     private LatLng location;
 
+    private Encounter editedEncounter;
+    private boolean readOnly = true;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -89,11 +92,19 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         if (arguments == null || arguments.isEmpty()) {
             throw new IllegalArgumentException("You must provide latitude and longitude");
         } else {
-            presenter.setTourId(arguments.getLong(BUNDLE_KEY_TOUR_ID));
-            presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE));
-            presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
+            editedEncounter = (Encounter)arguments.getSerializable(BUNDLE_KEY_ENCOUNTER);
+            if (editedEncounter == null) {
+                // Create mode
+                readOnly = false;
+                presenter.setTourId(arguments.getLong(BUNDLE_KEY_TOUR_ID));
+                presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE));
+                presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
 
-            location = new LatLng(arguments.getDouble(BUNDLE_KEY_LATITUDE), arguments.getDouble(BUNDLE_KEY_LONGITUDE));
+                location = new LatLng(arguments.getDouble(BUNDLE_KEY_LATITUDE), arguments.getDouble(BUNDLE_KEY_LONGITUDE));
+            } else {
+                readOnly = editedEncounter.isReadOnly();
+                location = new LatLng(editedEncounter.getLatitude(), editedEncounter.getLongitude());
+            }
         }
         initialiseFields();
         FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_START);
@@ -150,9 +161,20 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
 
     private void initialiseFields() {
         encounterAuthor.setText(getResources().getString(R.string.encounter_label_person_name_and, presenter.getAuthor()));
+        if (editedEncounter != null) {
+            streetPersonNameEditText.setText(editedEncounter.getStreetPersonName());
+        }
+
         Date today = new Date();
         String todayDateString = DateFormat.getDateFormat(getApplicationContext()).format(today);
+        if (editedEncounter != null && editedEncounter.getCreationDate() != null) {
+            todayDateString = DateFormat.getDateFormat(getApplicationContext()).format(editedEncounter.getCreationDate());
+        }
         encounterDate.setText(getResources().getString(R.string.encounter_encountered, todayDateString));
+
+        if (editedEncounter != null) {
+            messageEditText.setText(editedEncounter.getMessage());
+        }
 
         if (location != null) {
             CreateEncounterActivity.GeocoderTask geocoderTask = new CreateEncounterActivity.GeocoderTask();
@@ -175,8 +197,14 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         String personName = streetPersonNameEditText.getText().toString().trim();
         String message = messageEditText.getText().toString().trim();
         if (!message.equals("") && !personName.equals("")) {
-            showProgressDialog(R.string.creating_encounter);
-            presenter.createEncounter(messageEditText.getText().toString(), streetPersonNameEditText.getText().toString());
+            showProgressDialog(editedEncounter == null ? R.string.creating_encounter : R.string.updating_encounter);
+            if (editedEncounter == null) {
+                presenter.createEncounter(messageEditText.getText().toString(), streetPersonNameEditText.getText().toString());
+            } else {
+                editedEncounter.setStreetPersonName(personName);
+                editedEncounter.setMessage(message);
+                presenter.updateEncounter(editedEncounter);
+            }
         } else {
             if (personName.equals("")) {
                 Toast.makeText(getApplicationContext(), R.string.encounter_empty_name, Toast.LENGTH_SHORT).show();
@@ -214,11 +242,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         if (errorMessage == null) {
             getAuthenticationController().incrementUserEncountersCount();
             message = getString(R.string.create_encounter_success);
-//            Intent resultIntent = new Intent();
-//            Bundle arguments = getIntent().getExtras();
-//            arguments.putSerializable(BUNDLE_KEY_ENCOUNTER, encounterResponse);
-//            resultIntent.putExtras(arguments);
-//            setResult(Constants.RESULT_CREATE_ENCOUNTER_OK, resultIntent);
             BusProvider.getInstance().post(new Events.OnEncounterCreated(encounterResponse));
 
             finish();
@@ -227,6 +250,25 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             message = getString(R.string.create_encounter_failure);
             Log.e(logTag, message);
             FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
+
+        }
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    public void onUpdatingEncounterFinished(String errorMessage, Encounter encounterResponse) {
+        dismissProgressDialog();
+        String message;
+        if (errorMessage == null) {
+            getAuthenticationController().incrementUserEncountersCount();
+            message = getString(R.string.update_encounter_success);
+            BusProvider.getInstance().post(new Events.OnEncounterUpdated(encounterResponse));
+
+            finish();
+            //FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
+        } else {
+            message = getString(R.string.update_encounter_failure);
+            Log.e(logTag, message);
+            //FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
@@ -242,6 +284,10 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             if (presenter != null) {
                 presenter.setLatitude(location.latitude);
                 presenter.setLongitude(location.longitude);
+            }
+            if (editedEncounter != null) {
+                editedEncounter.setLatitude(location.latitude);
+                editedEncounter.setLongitude(location.longitude);
             }
             if (address != null) {
                 positionTextView.setText(address);

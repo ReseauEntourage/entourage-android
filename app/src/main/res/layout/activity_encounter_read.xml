@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:enabled="false"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:padding="10dp"
             android:textColor="@color/greyish_brown"
             android:textCursorDrawable="@drawable/bg_cursor_yellow"

@@ -2,6 +2,7 @@ package social.entourage.android.api.model.map;
 
 import android.location.Address;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -45,7 +46,11 @@ public class Encounter extends TimestampedObject implements Serializable {
 
     private transient Address address;
 
+    @Expose(serialize = false)
     private boolean isMyEncounter = false;
+
+    @Expose(serialize = false)
+    private boolean isReadOnly = false;
 
     // ----------------------------------
     // GETTERS & SETTERS
@@ -137,6 +142,14 @@ public class Encounter extends TimestampedObject implements Serializable {
 
     public void setIsMyEncounter(final boolean isMyEncounter) {
         this.isMyEncounter = isMyEncounter;
+    }
+
+    public boolean isReadOnly() {
+        return isReadOnly;
+    }
+
+    public void setReadOnly(final boolean readOnly) {
+        isReadOnly = readOnly;
     }
 
     @Override

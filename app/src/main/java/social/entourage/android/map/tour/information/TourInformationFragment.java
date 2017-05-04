@@ -1697,6 +1697,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 for (int i = 0; i < encounterList.size(); i++) {
                     Encounter encounter = encounterList.get(i);
                     encounter.setIsMyEncounter(encounter.getUserId() == me.getId());
+                    encounter.setReadOnly(feedItem.isClosed());
                 }
             }
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
@@ -1906,6 +1907,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             if (feedItem.getStatus().equals(FeedItem.STATUS_CLOSED) && feedItem.isPrivate()) {
                 addDiscussionTourEndCard(new Date());
                 updateDiscussionList();
+                //TODO Set the encounters cards as read-only
             }
             if (feedItem.isFreezed()){
                 commentLayout.setVisibility(View.GONE);

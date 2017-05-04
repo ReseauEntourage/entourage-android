@@ -299,7 +299,17 @@ public class TourServiceManager {
     @SuppressWarnings("unused")
     @Subscribe
     public void encounterToSend(EncounterUploadTask task) {
-        sendEncounter(task.getEncounter());
+        Encounter encounter = task.getEncounter();
+        if (encounter == null) {
+            return;
+        }
+        if (encounter.getId() > 0) {
+            // edited encounter
+            editEncounter(encounter);
+        } else {
+            // new encounter
+            sendEncounter(encounter);
+        }
     }
 
     protected void freezeTour(final Tour tour) {
@@ -383,6 +393,37 @@ public class TourServiceManager {
                     if (response.isSuccessful()) {
                         Log.d("tape:", "success");
                         BusProvider.getInstance().post(new EncounterTaskResult(true, encounter));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<EncounterResponse> call, Throwable t) {
+                    Log.d("tape:", "failure");
+                    BusProvider.getInstance().post(new EncounterTaskResult(false, null));
+                }
+            });
+        } else {
+            Log.d("tape:", "no network");
+            BusProvider.getInstance().post(new EncounterTaskResult(false, null));
+        }
+    }
+
+    protected void editEncounter(final Encounter encounter) {
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
+            encounterWrapper.setEncounter(encounter);
+            Call<EncounterResponse> call = encounterRequest.edit(encounter.getTourId(), encounter.getId(), encounterWrapper);
+            call.enqueue(new Callback<EncounterResponse>() {
+                @Override
+                public void onResponse(Call<EncounterResponse> call, Response<EncounterResponse> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("tape:", "success");
+                        BusProvider.getInstance().post(new EncounterTaskResult(true, encounter));
+                    }
+                    else {
+                        Log.d("tape:", "not successful");
+                        BusProvider.getInstance().post(new EncounterTaskResult(false, null));
                     }
                 }
 

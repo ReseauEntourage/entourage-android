@@ -54,6 +54,7 @@ import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
@@ -73,6 +74,7 @@ import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
+import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
@@ -769,11 +771,23 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void tourEncounterViewRequested(OnTourEncounterViewRequestedEvent event) {
-        Intent intent = new Intent(this, ReadEncounterActivity.class);
-        Bundle extras = new Bundle();
-        extras.putSerializable(ReadEncounterActivity.BUNDLE_KEY_ENCOUNTER, event.getEncounter());
-        intent.putExtras(extras);
-        this.startActivity(intent);
+        Encounter encounter = event.getEncounter();
+        if (encounter == null) {
+            return;
+        }
+        if (encounter.isReadOnly()) {
+            Intent intent = new Intent(this, ReadEncounterActivity.class);
+            Bundle extras = new Bundle();
+            extras.putSerializable(ReadEncounterActivity.BUNDLE_KEY_ENCOUNTER, encounter);
+            intent.putExtras(extras);
+            this.startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, CreateEncounterActivity.class);
+            Bundle extras = new Bundle();
+            extras.putSerializable(CreateEncounterActivity.BUNDLE_KEY_ENCOUNTER, encounter);
+            intent.putExtras(extras);
+            this.startActivity(intent);
+        }
     }
 
     @Subscribe

@@ -18,16 +18,11 @@ import social.entourage.android.tools.BusProvider;
  * Presenter controlling the CreateEncounterActivity
  * @see CreateEncounterActivity
  */
-public class CreateEncounterPresenter {
+public class CreateEncounterPresenter implements EncounterUploadCallback {
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-
-    public interface EncounterUploadCallback {
-        void onSuccess();
-        void onFailure();
-    }
 
     private final CreateEncounterActivity activity;
     private final AuthenticationController authenticationController;
@@ -64,6 +59,13 @@ public class CreateEncounterPresenter {
         activity.onCreateEncounterFinished(null, encounter);
     }
 
+    public void updateEncounter(Encounter encounter) {
+        // to avoid endless requests to the server, we execute this task only once
+        // with our presenter as the callback
+        EncounterUploadTask encounterUploadTask = new EncounterUploadTask(encounter);
+        encounterUploadTask.execute(this);
+    }
+
     public void setTourId(long tourId) {
         this.tourId = tourId;
     }
@@ -81,6 +83,22 @@ public class CreateEncounterPresenter {
             return "";
         }
         return authenticationController.getUser().getDisplayName();
+    }
+
+    // ----------------------------------
+    // EncounterUploadCallback
+    // ----------------------------------
+
+    public void onSuccess() {
+        if (activity != null) {
+            activity.onUpdatingEncounterFinished(null, null);
+        }
+    }
+
+    public void onFailure() {
+        if (activity != null) {
+            activity.onUpdatingEncounterFinished("error", null);
+        }
     }
 
     // ----------------------------------

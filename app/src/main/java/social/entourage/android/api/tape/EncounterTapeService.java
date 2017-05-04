@@ -14,7 +14,7 @@ import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.tape.Events.*;
-import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadCallback;
+import social.entourage.android.map.encounter.EncounterUploadCallback;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.tools.BusProvider;
 

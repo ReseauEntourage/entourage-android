@@ -305,6 +305,23 @@ public class Events {
     }
 
     /**
+     * Event signaling that an encounter was updated
+     */
+    public static class OnEncounterUpdated {
+
+        private Encounter encounter;
+
+        public OnEncounterUpdated(Encounter encounter) {
+            this.encounter = encounter;
+        }
+
+        public Encounter getEncounter() {
+            return encounter;
+        }
+
+    }
+
+    /**
      * Event signaling that an entourage was created
      */
     public static class OnEntourageCreated {
