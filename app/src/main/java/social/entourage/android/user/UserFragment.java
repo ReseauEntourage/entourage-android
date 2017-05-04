@@ -1,5 +1,6 @@
 package social.entourage.android.user;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -69,6 +71,9 @@ public class UserFragment extends EntourageDialogFragment {
 
     @BindView(R.id.user_profile_edit_button)
     TextView userEditProfile;
+
+    @BindView(R.id.user_profile_report_button)
+    ImageButton userReportButton;
 
     @BindView(R.id.user_photo)
     ImageView userPhoto;
@@ -199,6 +204,7 @@ public class UserFragment extends EntourageDialogFragment {
             }
 
             userEditProfile.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
+            userReportButton.setVisibility(isMyProfile ? View.GONE : View.VISIBLE);
 
             if (user.getAvatarURL() != null) {
                 Picasso.with(getActivity()).load(Uri.parse(user.getAvatarURL()))
@@ -359,34 +365,26 @@ public class UserFragment extends EntourageDialogFragment {
         showUserEditFragment();
     }
 
-    /*
-    @OnClick(R.id.user_button_confirm_changes)
-    void confirmChanges() {
-        String emailEdit = userEditEmail.getText().toString();
-        String codeEdit = userEditCode.getText().toString();
-        String confirmationEdit = userEditConfirmation.getText().toString();
-
-        String email = null;
-        String code = null;
-
-        if (!emailEdit.equals("")) {
-            email = emailEdit;
-        }
-
-        if ((!codeEdit.equals("") && codeEdit.length() == 6) &&
-                (!confirmationEdit.equals("") && confirmationEdit.length() == 6)) {
-            if (codeEdit.equals(confirmationEdit)) {
-                code = codeEdit;
-            } else {
-                displayToast("Erreur de confirmation du code");
-            }
-        }
-
-        if (email != null || code != null) {
-            presenter.updateUser(email, code);
+    @OnClick(R.id.user_profile_report_button)
+    protected void onReportUserClicked() {
+        if (user == null) return;
+        // Build the email intent
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        // Set the email to
+        String[] addresses = {Constants.EMAIL_CONTACT};
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        // Set the subject
+        String emailSubject = getString(R.string.user_report_email_subject, user.getDisplayName());
+        intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Start the intent
+            startActivity(intent);
+        } else {
+            // No Email clients
+            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
         }
     }
-    */
 
     // ----------------------------------
     // Events Handling

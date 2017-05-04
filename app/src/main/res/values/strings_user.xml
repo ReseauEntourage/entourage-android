@@ -24,6 +24,8 @@
     <string name="user_associations_title">Association(s)</string>
     <string name="user_entourage_count_format">%1$d</string>
 
+    <string name="user_report_email_subject">Signalement d\'un utilisateur - %1$s</string>
+
     <string name="user_retrieval_error">Erreur de récupération du profil</string>
 
     <string name="user_save_button">Enregistrer</string>
