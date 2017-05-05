@@ -25,68 +25,72 @@
 
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/tour_join_request_ok_message_button"
-        android:layout_below="@+id/haxor">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/tour_join_request_ok_logo"
-                android:layout_width="50dp"
-                android:layout_height="74dp"
-                android:contentDescription="@string/empty_description"
-                android:src="@drawable/entourage_logo"
-                android:visibility="visible"/>
-
-            <TextView
-                android:id="@+id/tour_join_request_ok_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tour_join_request_ok_title"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white"
-                android:textSize="28sp"/>
-
-            <TextView
-                android:id="@+id/tour_join_request_ok_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tour_join_request_ok_description_entourage"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white"
-                android:textSize="16sp"/>
-
-            <EditText
-                android:id="@+id/tour_join_request_ok_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:ems="10"
-                android:gravity="top"
-                android:hint="@string/tour_join_request_ok_message_hint"
-                android:inputType="textMultiLine"
-                android:minLines="4"
-                android:padding="3dp"
-                android:textColorHint="@color/greyish"
-                android:textSize="16sp"/>
-
-        </LinearLayout>
-    </ScrollView>
-
-    <Button
-        android:id="@+id/tour_join_request_ok_message_button"
-        style="@style/AccentButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:text="@string/send"/>
+        android:layout_below="@+id/haxor"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/tour_join_request_ok_logo"
+            android:layout_width="50dp"
+            android:layout_height="74dp"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/entourage_logo"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tour_join_request_ok_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_join_request_ok_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="28sp"/>
+
+        <TextView
+            android:id="@+id/tour_join_request_ok_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_join_request_ok_description_entourage"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/tour_join_request_ok_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="@string/tour_join_request_ok_message_hint"
+            android:imeOptions="actionSend"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:minLines="4"
+            android:padding="3dp"
+            android:textColorHint="@color/greyish"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/tour_join_request_ok_message_button"
+            style="@style/AccentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/send"/>
+
+    </LinearLayout>
+
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_above="@+id/tour_join_request_ok_message_button"-->
+        <!--android:layout_below="@+id/haxor">-->
+
+    <!--</ScrollView>-->
 
 </RelativeLayout>
