@@ -1501,6 +1501,17 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         discussionView.scrollToPosition(discussionAdapter.getItemCount()-1);
     }
 
+    private void setEncountersToReadOnly() {
+        if (feedItem == null) return;
+        List<TimestampedObject> encounters = feedItem.getTypedCardInfoList(TimestampedObject.ENCOUNTER);
+        if (encounters == null || encounters.size() == 0) return;
+        for (TimestampedObject timestampedObject: encounters) {
+            Encounter encounter = (Encounter) timestampedObject;
+            encounter.setReadOnly(true);
+            discussionAdapter.updateCard(encounter);
+        }
+    }
+
     protected void showProgressBar() {
         apiRequestsCount++;
         progressBar.setVisibility(View.VISIBLE);
@@ -1548,6 +1559,16 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             distanceAsString = entourageLocation.distanceToCurrentLocation();
         }
         tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
+    }
+
+    @Subscribe
+    public void onEncounterUpdated(Events.OnEncounterUpdated event) {
+        Encounter updatedEncounter = event.getEncounter();
+        if (updatedEncounter == null || feedItem == null) return;
+        Encounter oldEncounter = (Encounter) discussionAdapter.findCard(TimestampedObject.ENCOUNTER, updatedEncounter.getId());
+        if (oldEncounter == null) return;
+        feedItem.removeCardInfo(oldEncounter);
+        discussionAdapter.updateCard(updatedEncounter);
     }
 
     // ----------------------------------
@@ -1907,7 +1928,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             if (feedItem.getStatus().equals(FeedItem.STATUS_CLOSED) && feedItem.isPrivate()) {
                 addDiscussionTourEndCard(new Date());
                 updateDiscussionList();
-                //TODO Set the encounters cards as read-only
+                setEncountersToReadOnly();
             }
             if (feedItem.isFreezed()){
                 commentLayout.setVisibility(View.GONE);

@@ -42,7 +42,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     // CONSTANTS
     // ----------------------------------
 
-    public static final String BUNDLE_KEY_TOUR_ID = "BUNDLE_KEY_ENCOUNTER";
+    public static final String BUNDLE_KEY_TOUR_ID = "BUNDLE_KEY_TOUR_ID";
     public static final String BUNDLE_KEY_ENCOUNTER = "BUNDLE_KEY_ENCOUNTER";
     public static final String BUNDLE_KEY_LATITUDE = "BUNDLE_KEY_LATITUDE";
     public static final String BUNDLE_KEY_LONGITUDE = "BUNDLE_KEY_LONGITUDE";
@@ -261,7 +261,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         if (errorMessage == null) {
             getAuthenticationController().incrementUserEncountersCount();
             message = getString(R.string.update_encounter_success);
-            BusProvider.getInstance().post(new Events.OnEncounterUpdated(encounterResponse));
+            BusProvider.getInstance().post(new Events.OnEncounterUpdated(editedEncounter));
 
             finish();
             //FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
