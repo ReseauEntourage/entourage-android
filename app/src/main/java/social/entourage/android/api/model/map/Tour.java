@@ -194,6 +194,16 @@ public class Tour extends FeedItem implements Serializable {
         this.encounters.add(encounter);
     }
 
+    public void updateEncounter(Encounter updatedEncounter) {
+        for (Encounter encounter : this.encounters) {
+            if (encounter.getId() == updatedEncounter.getId()) {
+                this.encounters.remove(encounter);
+                break;
+            }
+        }
+        this.encounters.add(updatedEncounter);
+    }
+
     public static long getHoursDiffToNow(Date fromDate) {
         long currentHours = System.currentTimeMillis() / Constants.MILLIS_HOUR;
         long startHours = currentHours;

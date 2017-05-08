@@ -54,6 +54,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -431,8 +432,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         MarkerOptions markerOptions = new MarkerOptions().position(encounterPosition)
             .icon(encounterIcon);
-        map.addMarker(markerOptions);
-        onClickListener.addEncounterMarker(encounterPosition, encounter);
+        Marker marker = map.addMarker(markerOptions);
+        onClickListener.addEncounterMarker(marker, encounter);
     }
 
     public void initializeMapZoom() {
@@ -662,6 +663,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService != null) {
             tourStopButton.setVisibility(tourService.isRunning() ? View.VISIBLE : View.GONE);
         }
+    }
+
+    @Subscribe
+    public void onEncounterUpdated(Events.OnEncounterUpdated event) {
+        if (event == null || presenter == null) return;
+        Encounter updatedEncounter = event.getEncounter();
+        if (updatedEncounter == null) return;
+        Marker marker = presenter.getOnClickListener().removeEncounterMarker(updatedEncounter.getId());
+        if (marker != null) {
+            marker.remove();
+        }
+        updateEncounter(updatedEncounter);
+        presenter.loadEncounterOnMap(updatedEncounter);
     }
 
     @Subscribe
@@ -1072,6 +1086,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             map.clear();
             markersMap.clear();
             drawnToursMap.clear();
+            if (presenter != null) {
+                presenter.getOnClickListener().clear();
+            }
             displayedTourHeads = 0;
             //redraw the whole newsfeed
             for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
@@ -1758,6 +1775,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         tourService.addEncounter(encounter);
     }
 
+    private void updateEncounter(Encounter encounter) {
+        tourService.updateEncounter(encounter);
+    }
+
     // ----------------------------------
     // PRIVATE METHODS (views)
     // ----------------------------------
@@ -2065,8 +2086,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             .anchor(0.5f, 1.0f);
 
         if (map != null) {
-            markersMap.put(tour.hashString(), map.addMarker(markerOptions));
-            presenter.getOnClickListener().addTourMarker(position, tour);
+            Marker marker = map.addMarker(markerOptions);
+            markersMap.put(tour.hashString(), marker);
+            presenter.getOnClickListener().addTourMarker(marker, tour);
         }
     }
 
@@ -2078,6 +2100,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         currentTourLines.clear();
         drawnToursMap.clear();
         drawnUserHistory.clear();
+        if (presenter != null) {
+            presenter.getOnClickListener().clear();
+        }
 
         displayedTourHeads = 0;
 

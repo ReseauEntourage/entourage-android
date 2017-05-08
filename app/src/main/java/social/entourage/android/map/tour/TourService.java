@@ -408,6 +408,10 @@ public class TourService extends Service {
         tourServiceManager.addEncounter(encounter);
     }
 
+    public void updateEncounter(Encounter encounter) {
+        tourServiceManager.updateEncounter(encounter);
+    }
+
     public boolean isLocationInTour(LatLng latLng) {
         return tourServiceManager.isLocationInTour(latLng);
     }

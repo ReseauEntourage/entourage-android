@@ -55,8 +55,10 @@ public class CreateEncounterPresenter implements EncounterUploadCallback {
         encounter.setLongitude(longitude);
 
 
-        queue.add(new EncounterUploadTask(encounter));
-        activity.onCreateEncounterFinished(null, encounter);
+//        queue.add(new EncounterUploadTask(encounter));
+//        activity.onCreateEncounterFinished(null, encounter);
+        EncounterUploadTask encounterUploadTask = new EncounterUploadTask(encounter);
+        encounterUploadTask.execute(this);
     }
 
     public void updateEncounter(Encounter encounter) {
@@ -89,15 +91,33 @@ public class CreateEncounterPresenter implements EncounterUploadCallback {
     // EncounterUploadCallback
     // ----------------------------------
 
-    public void onSuccess() {
+    public void onSuccess(Encounter encounter, EncounterTaskResult.OperationType operationType) {
         if (activity != null) {
-            activity.onUpdatingEncounterFinished(null, null);
+            switch (operationType) {
+                case ENCOUNTER_ADD:
+                    activity.onCreateEncounterFinished(null, encounter);
+                    break;
+                case ENCOUNTER_UPDATE:
+                    activity.onUpdatingEncounterFinished(null, encounter);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    public void onFailure() {
+    public void onFailure(Encounter encounter, EncounterTaskResult.OperationType operationType) {
         if (activity != null) {
-            activity.onUpdatingEncounterFinished("error", null);
+            switch (operationType) {
+                case ENCOUNTER_ADD:
+                    activity.onCreateEncounterFinished("error", null);
+                    break;
+                case ENCOUNTER_UPDATE:
+                    activity.onUpdatingEncounterFinished("error", null);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -127,14 +147,15 @@ public class CreateEncounterPresenter implements EncounterUploadCallback {
         public void taskResult(EncounterTaskResult result) {
             BusProvider.getInstance().unregister(this);
             Encounter resultEncounter = result.getEncounter();
+            EncounterTaskResult.OperationType operationType = result.getOperationType();
             if (resultEncounter != null && encounter.getCreationDate().equals(resultEncounter.getCreationDate())) {
                 if (result.isSuccess()) {
-                    callback.onSuccess();
+                    callback.onSuccess(resultEncounter, operationType);
                 } else {
-                    callback.onFailure();
+                    callback.onFailure(resultEncounter, operationType);
                 }
             } else {
-                callback.onFailure();
+                callback.onFailure(resultEncounter, operationType);
             }
         }
 

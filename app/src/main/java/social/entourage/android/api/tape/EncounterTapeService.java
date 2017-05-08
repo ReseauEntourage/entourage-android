@@ -13,6 +13,7 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.map.encounter.EncounterUploadCallback;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
@@ -87,14 +88,14 @@ public class EncounterTapeService extends Service implements EncounterUploadCall
     }
 
     @Override
-    public void onSuccess() {
+    public void onSuccess(Encounter encounter, EncounterTaskResult.OperationType operationType) {
         running = false;
         queue.remove();
         executeNext();
     }
 
     @Override
-    public void onFailure() {
+    public void onFailure(Encounter encounter, EncounterTaskResult.OperationType operationType) {
         running = false;
         executeNext();
     }

@@ -201,6 +201,10 @@ public class TourServiceManager {
         tour.addEncounter(encounter);
     }
 
+    public void updateEncounter(Encounter encounter) {
+        tour.updateEncounter(encounter);
+    }
+
     public void unregisterFromBus() {
         BusProvider.getInstance().unregister(this);
     }
@@ -305,7 +309,7 @@ public class TourServiceManager {
         }
         if (encounter.getId() > 0) {
             // edited encounter
-            editEncounter(encounter);
+            updateEncounterToServer(encounter);
         } else {
             // new encounter
             sendEncounter(encounter);
@@ -392,50 +396,50 @@ public class TourServiceManager {
                 public void onResponse(Call<EncounterResponse> call, Response<EncounterResponse> response) {
                     if (response.isSuccessful()) {
                         Log.d("tape:", "success");
-                        BusProvider.getInstance().post(new EncounterTaskResult(true, encounter));
+                        BusProvider.getInstance().post(new EncounterTaskResult(true, response.body().getEncounter(), EncounterTaskResult.OperationType.ENCOUNTER_ADD));
                     }
                 }
 
                 @Override
                 public void onFailure(Call<EncounterResponse> call, Throwable t) {
                     Log.d("tape:", "failure");
-                    BusProvider.getInstance().post(new EncounterTaskResult(false, null));
+                    BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
                 }
             });
         } else {
             Log.d("tape:", "no network");
-            BusProvider.getInstance().post(new EncounterTaskResult(false, null));
+            BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
         }
     }
 
-    protected void editEncounter(final Encounter encounter) {
+    protected void updateEncounterToServer(final Encounter encounter) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
             Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
             encounterWrapper.setEncounter(encounter);
-            Call<EncounterResponse> call = encounterRequest.edit(encounter.getTourId(), encounter.getId(), encounterWrapper);
+            Call<EncounterResponse> call = encounterRequest.update(encounter.getId(), encounterWrapper);
             call.enqueue(new Callback<EncounterResponse>() {
                 @Override
                 public void onResponse(Call<EncounterResponse> call, Response<EncounterResponse> response) {
                     if (response.isSuccessful()) {
                         Log.d("tape:", "success");
-                        BusProvider.getInstance().post(new EncounterTaskResult(true, encounter));
+                        BusProvider.getInstance().post(new EncounterTaskResult(true, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                     }
                     else {
                         Log.d("tape:", "not successful");
-                        BusProvider.getInstance().post(new EncounterTaskResult(false, null));
+                        BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                     }
                 }
 
                 @Override
                 public void onFailure(Call<EncounterResponse> call, Throwable t) {
                     Log.d("tape:", "failure");
-                    BusProvider.getInstance().post(new EncounterTaskResult(false, null));
+                    BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                 }
             });
         } else {
             Log.d("tape:", "no network");
-            BusProvider.getInstance().post(new EncounterTaskResult(false, null));
+            BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
         }
     }
 

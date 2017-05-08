@@ -12,6 +12,6 @@ public interface EncounterRequest {
     @POST("tours/{tour_id}/encounters.json")
     Call<EncounterResponse> create( @Path("tour_id") long tourId, @Body Encounter.EncounterWrapper encounterWrapper);
 
-    @PATCH("tours/{tour_id}/encounters/{encounter_id}")
-    Call<EncounterResponse> edit( @Path("tour_id") long tourId, @Path("encounter_id") long encounterId, @Body Encounter.EncounterWrapper encounterWrapper);
+    @PATCH("encounters/{encounter_id}")
+    Call<EncounterResponse> update( @Path("encounter_id") long encounterId, @Body Encounter.EncounterWrapper encounterWrapper);
 }

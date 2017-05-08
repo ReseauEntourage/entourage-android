@@ -210,24 +210,42 @@ public class MapPresenter {
     // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
-        final Map<LatLng, Encounter> encounterMarkerHashMap = new HashMap<>();
-        final Map<LatLng, Tour> tourMarkerHashMap = new HashMap<>();
+        final Map<Marker, Encounter> encounterMarkerHashMap = new HashMap<>();
+        final Map<Marker, Tour> tourMarkerHashMap = new HashMap<>();
 
-        public void addEncounterMarker(LatLng markerPosition, Encounter encounter) {
-            encounterMarkerHashMap.put(markerPosition, encounter);
+        public void addEncounterMarker(Marker marker, Encounter encounter) {
+            encounterMarkerHashMap.put(marker, encounter);
         }
 
-        public void addTourMarker(LatLng markerPosition, Tour tour) {
-            tourMarkerHashMap.put(markerPosition, tour);
+        public Marker removeEncounterMarker(long encounterId) {
+            Marker marker = null;
+            for (Marker key :encounterMarkerHashMap.keySet()) {
+                Encounter encounter = encounterMarkerHashMap.get(key);
+                if (encounter.getId() == encounterId) {
+                    marker = key;
+                    encounterMarkerHashMap.remove(key);
+                    break;
+                }
+            }
+            return marker;
+        }
+
+        public void addTourMarker(Marker marker, Tour tour) {
+            tourMarkerHashMap.put(marker, tour);
+        }
+
+        public void clear() {
+            encounterMarkerHashMap.clear();
+            tourMarkerHashMap.clear();
         }
 
         @Override
         public boolean onMarkerClick(Marker marker) {
             LatLng markerPosition = marker.getPosition();
-            if (encounterMarkerHashMap.get(markerPosition) != null) {
-                openEncounter(encounterMarkerHashMap.get(markerPosition));
-            } else if (tourMarkerHashMap.get(markerPosition) != null) {
-                openFeedItem(tourMarkerHashMap.get(markerPosition), 0);
+            if (encounterMarkerHashMap.get(marker) != null) {
+                openEncounter(encounterMarkerHashMap.get(marker));
+            } else if (tourMarkerHashMap.get(marker) != null) {
+                openFeedItem(tourMarkerHashMap.get(marker), 0);
             }
             return false;
         }
