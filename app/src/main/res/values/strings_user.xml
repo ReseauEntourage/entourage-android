@@ -41,6 +41,7 @@
     <string name="user_edit_no_association">Vous ne trouvez pas votre association ? Ecrivez à associations@entourage.social pour nous demander de l’ajouter !</string>
     <string name="user_edit_add_association_label">Affichez sur votre profil l’association dont vous vous sentez proche !</string>
     <string name="user_edit_add_association_button">Afficher une association</string>
+    <string name="user_edit_notifications_label">Notifications</string>
     <string name="user_edit_delete_account_button">Supprimer mon compte</string>
 
     <string name="user_edit_password_old_password_label">Ancien code d’accès</string>

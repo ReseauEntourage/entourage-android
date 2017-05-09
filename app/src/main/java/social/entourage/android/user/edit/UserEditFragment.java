@@ -1,13 +1,20 @@
 package social.entourage.android.user.edit;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
@@ -80,6 +88,9 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @BindView(R.id.user_address)
     TextView userAddress;
+
+    @BindView(R.id.user_notifications_image)
+    ImageView userNotificationsStatusImage;
 
     @BindView(R.id.user_associations_title)
     TextView userAssociationsTitle;
@@ -137,6 +148,8 @@ public class UserEditFragment extends EntourageDialogFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        configureNotifications();
 
         BusProvider.getInstance().register(this);
     }
@@ -278,9 +291,40 @@ public class UserEditFragment extends EntourageDialogFragment {
         userEditPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);
     }
 
+    @OnClick(R.id.user_notifications_layout)
+    protected void onShowNotificationsSettingsClicked() {
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Intent intent = new Intent();
+                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                intent.putExtra("app_package", getActivity().getPackageName());
+                intent.putExtra("app_uid", getActivity().getApplicationInfo().uid);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
+                startActivity(intent);
+            }
+        } catch (ActivityNotFoundException ex) {
+            Log.d("Exception", "Cannot open Notifications Settings page");
+        } catch (Exception ex) {
+
+        }
+    }
+
+    // ----------------------------------
+    // Private methods
+    // ----------------------------------
+
     private void showEditProfile(int editType) {
         UserEditProfileFragment fragment = UserEditProfileFragment.newInstance(editType);
         fragment.show(getFragmentManager(), UserEditProfileFragment.TAG);
+    }
+
+    private void configureNotifications() {
+        boolean areNotificationsEnabled = NotificationManagerCompat.from(getContext()).areNotificationsEnabled();
+        userNotificationsStatusImage.setImageResource(areNotificationsEnabled ? R.drawable.verified  : R.drawable.not_verified);
     }
 
     // ----------------------------------
