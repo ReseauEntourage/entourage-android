@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="social.entourage.android.DrawerActivity">
 
@@ -75,63 +75,72 @@
             android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_more"
             android:visibility="visible"/>
+
     </RelativeLayout>
 
+    <View
+        android:id="@+id/tour_info_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tour_info_title_layout"
+        android:layout_marginTop="3dp"
+        android:background="@color/greyish"/>
+
     <include
+        android:id="@+id/tour_info_header_layout"
+        layout="@layout/layout_tour_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        layout="@layout/layout_tour_card"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tour_info_title_layout"
-        android:id="@+id/tour_info_header_layout"
-        android:layout_marginTop="10dp"/>
+        android:layout_below="@+id/tour_info_separator"
+        />
 
     <include
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/layout_private_tour_information"
         android:id="@+id/tour_info_private_section"
-        android:visibility = "gone"
-        android:layout_below="@+id/tour_info_header_layout"/>
-
-    <include
+        layout="@layout/layout_private_tour_information"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/layout_public_tour_information"
+        android:layout_below="@+id/tour_info_header_layout"
+        android:visibility="gone"/>
+
+    <include
         android:id="@+id/tour_info_public_section"
+        layout="@layout/layout_public_tour_information"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/tour_info_header_layout"/>
 
     <ProgressBar
+        android:id="@+id/tour_info_progress_bar"
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/tour_info_progress_bar"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/circular_progress_bar"
         android:visibility="gone"/>
 
     <include
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/layout_invite_source"
         android:id="@+id/tour_info_invite_source_layout"
-        android:visibility = "gone"/>
-
-    <include
+        layout="@layout/layout_invite_source"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/layout_invite_success"
+        android:visibility="gone"/>
+
+    <include
         android:id="@+id/tour_info_invite_success_layout"
-        android:visibility = "gone"/>
-
-    <include
+        layout="@layout/layout_invite_success"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/layout_feeditem_options"
+        android:visibility="gone"/>
+
+    <include
         android:id="@+id/tour_info_options"
-        android:visibility = "gone"/>
+        layout="@layout/layout_feeditem_options"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
 </RelativeLayout>
