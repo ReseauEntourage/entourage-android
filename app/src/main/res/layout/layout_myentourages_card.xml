@@ -84,9 +84,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tour_card_photo"
+        android:layout_below="@+id/tour_card_type_layout"
         android:layout_gravity="end"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -132,8 +132,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tour_card_photo"
-        android:layout_marginTop="6dp"
+        android:layout_below="@+id/tour_card_type_layout"
+        android:layout_marginTop="8dp"
         android:layout_toLeftOf="@+id/tour_card_people_layout"
         android:layout_toStartOf="@+id/tour_card_people_layout"
         android:lines="1"
