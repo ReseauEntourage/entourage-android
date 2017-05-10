@@ -458,4 +458,15 @@ public class Events {
         }
     }
 
+    /**
+     * Event signaling that loading more newsfeed is requested
+     */
+
+    public static class OnNewsfeedLoadMoreEvent {
+
+        public OnNewsfeedLoadMoreEvent() {
+        }
+
+    }
+
 }

@@ -297,7 +297,7 @@ public class TourService extends Service {
     // ----------------------------------
 
     public boolean updateNewsfeed(EntouragePagination pagination) {
-        if (pagination.isLoading) {
+        if (pagination.isLoading && !pagination.isRefreshing) {
             return false;
         }
         pagination.isLoading = true;

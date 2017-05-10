@@ -12,16 +12,16 @@ import social.entourage.android.api.model.TimestampedObject;
  * Created by mihaiionescu on 03/05/2017.
  */
 
-public class LoadingViewHolder extends BaseCardViewHolder {
+public class BottomViewHolder extends BaseCardViewHolder {
 
-    ProgressBar progressBar;
+    protected View content;
 
-    public LoadingViewHolder(final View view) {
+    public BottomViewHolder(final View view) {
         super(view);
     }
 
     protected void bindFields() {
-        progressBar = (ProgressBar)itemView.findViewById(R.id.layout_loader_card_progressBar);
+        content = (ProgressBar)itemView.findViewById(R.id.layout_loader_card_progressBar);
     }
 
     @Override
@@ -29,9 +29,9 @@ public class LoadingViewHolder extends BaseCardViewHolder {
         // Does nothing
     }
 
-    public void populate(boolean showLoader) {
-        if (progressBar != null) {
-            progressBar.setVisibility(showLoader ? View.VISIBLE : View.GONE);
+    public void populate(boolean showContent) {
+        if (content != null) {
+            content.setVisibility(showContent ? View.VISIBLE : View.GONE);
         }
     }
 

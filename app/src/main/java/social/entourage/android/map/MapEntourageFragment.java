@@ -25,6 +25,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -739,6 +740,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    @Subscribe
+    public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
+        //TODO Change the radius of the newsfeed and do a new request
+        Log.d("LoadMore", "Load more requested");
+    }
+
     // ----------------------------------
     // SERVICE BINDING METHODS
     // ----------------------------------
@@ -1011,10 +1018,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_LONG).show();
         }
-        if (newsfeedAdapter != null) {
-            newsfeedAdapter.showLoading(false);
-            newsfeedAdapter.notifyDataSetChanged();
-        }
         if (pagination.isLoading) {
             pagination.isLoading = false;
             pagination.isRefreshing = false;
@@ -1023,9 +1026,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onCurrentPositionNotRetrieved() {
-        if (newsfeedAdapter != null) {
-            newsfeedAdapter.showLoading(false);
-        }
         if (pagination.isLoading) {
             pagination.isLoading = false;
             pagination.isRefreshing = false;
@@ -1037,9 +1037,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
         }
-        if (newsfeedAdapter != null) {
-            newsfeedAdapter.showLoading(false);
-        }
         if (pagination.isLoading) {
             pagination.isLoading = false;
             pagination.isRefreshing = false;
@@ -1050,9 +1047,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onTechnicalException(Throwable throwable) {
         if (getActivity() != null) {
             Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
-        }
-        if (newsfeedAdapter != null) {
-            newsfeedAdapter.showLoading(false);
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;
@@ -1067,9 +1061,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             pagination.isRefreshing = false;
             return;
         }
-
-        //hide the loader
-        newsfeedAdapter.showLoading(false);
 
         newsfeeds = removeRedundantNewsfeed(newsfeeds, false);
         //add or update the received newsfeed
@@ -1122,6 +1113,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
             }
+        }
+
+        // update the bottom view, if not refreshing
+        if (!pagination.isRefreshing) {
+            newsfeedAdapter.showBottomView(newsfeeds.size() == 0);
         }
 
         if (newsfeedAdapter.getItemCount() == 0) {
@@ -2530,11 +2526,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
                         FlurryAgent.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
                         if (tourService != null) {
-                            if (tourService.updateNewsfeed(pagination)) {
-                                if (newsfeedAdapter != null) {
-                                    newsfeedAdapter.showLoading(true);
-                                }
-                            }
+                            tourService.updateNewsfeed(pagination);
                         }
                     }
 
