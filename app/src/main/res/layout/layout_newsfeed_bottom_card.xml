@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/newsfeed_load_more_content"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
               android:orientation="vertical"
               android:padding="10dp">
 
-    <Button
-        android:id="@+id/newsfeed_load_more"
-        style="@style/AccentButton"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/newsfeed_load_more_description"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/newsfeed_load_more_button"/>
+        android:gravity="center_horizontal"
+        android:text="@string/newsfeed_load_more_description"
+        android:textColor="@color/greyish_brown"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/newsfeed_load_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/newsfeed_load_more_button"
+        android:textColor="@color/accent"
+        android:textSize="18sp"/>
+
 </LinearLayout>

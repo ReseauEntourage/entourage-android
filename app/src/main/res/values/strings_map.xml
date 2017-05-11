@@ -18,7 +18,8 @@
     <string name="map_error_geolocation_disabled_recenter">Pour recentrer autour de vous, vous devez activer la géolocalisation</string>
     <string name="map_empty_newsfeed">Aucun entourage près de cette position</string>
     <string name="map_empty_newsfeed_popup">On dirait que c\'est calme ici!\n\nDéplacez la carte pour trouver des entourages crées par le réseau\n\nVous aussi, vous pouvez créer un entourage: appuyez sur +</string>
-    <string name="newsfeed_load_more_button">!!Load More</string>
+    <string name="newsfeed_load_more_description">C’est tout pour les actions dans ce rayon autour de vous !</string>
+    <string name="newsfeed_load_more_button"><u>Afficher les entourages plus lointains</u></string>
 
     <!-- Map Filter -->
     <string name="map_filter_title">FILTRES</string>

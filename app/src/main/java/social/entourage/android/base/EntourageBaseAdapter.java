@@ -184,4 +184,8 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
             notifyItemChanged(items.size());
         }
     }
+
+    public boolean isShowBottomView() {
+        return showBottomView;
+    }
 }

@@ -1,6 +1,7 @@
 package social.entourage.android.map;
 
 import android.Manifest;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -208,7 +209,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     ProgressBar launcherProgressBar;
 
     @BindView(R.id.fragment_map_tours_view)
-    RecyclerView toursListView;
+    RecyclerView newsfeedListView;
 
     NewsfeedAdapter newsfeedAdapter;
 
@@ -249,6 +250,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private EntouragePagination pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
     private int scrollDeltaY = 0;
     private OnScrollListener scrollListener = new OnScrollListener();
+
+    //original fab bottom paddings
+    private int mapOptionsMenuPaddingBottom;
+    // Delta on Y to move the FABs when bottom view is displayed
+    private int FAB_BOTTOM_DELTA;
+    // FAB Animator
+    ValueAnimator fabAnimatorUp;
+    ValueAnimator fabAnimatorDown;
 
     // ----------------------------------
     // LIFECYCLE
@@ -338,7 +347,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onStart() {
         super.onStart();
         presenter.handleLocationPermission();
-        toursListView.addOnScrollListener(scrollListener);
+        newsfeedListView.addOnScrollListener(scrollListener);
         isStopped = false;
     }
 
@@ -346,7 +355,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onStop() {
         super.onStop();
 
-        toursListView.removeOnScrollListener(scrollListener);
+        newsfeedListView.removeOnScrollListener(scrollListener);
         isStopped = true;
     }
 
@@ -784,7 +793,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 currentTourId = tourId;
                 presenter.incrementUserToursCount();
                 mapLauncherLayout.setVisibility(View.GONE);
-                if (toursListView.getVisibility() == View.VISIBLE) {
+                if (newsfeedListView.getVisibility() == View.VISIBLE) {
                     hideToursList();
                 }
                 addTourCard(tourService.getCurrentTour());
@@ -876,7 +885,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         //scroll to latest
         if (newsfeedAdapter.getItemCount() > 0) {
-            toursListView.scrollToPosition(0);
+            newsfeedListView.scrollToPosition(0);
         }
     }
 
@@ -1117,7 +1126,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         // update the bottom view, if not refreshing
         if (!pagination.isRefreshing) {
-            newsfeedAdapter.showBottomView(newsfeeds.size() == 0);
+            showNewsfeedBottomView(newsfeeds.size() == 0);
         }
 
         if (newsfeedAdapter.getItemCount() == 0) {
@@ -1306,7 +1315,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_new_entourages_button)
     protected void onNewEntouragesReceivedButton() {
-        toursListView.scrollToPosition(0);
+        newsfeedListView.scrollToPosition(0);
         newEntouragesButton.setVisibility(View.GONE);
     }
 
@@ -1336,6 +1345,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
             }
         });
+        mapOptionsMenuPaddingBottom = mapOptionsMenu.getPaddingBottom();
+        FAB_BOTTOM_DELTA = getResources().getDimensionPixelOffset(R.dimen.newsfeed_fab_bottowm_view_delta);
 
         updateFloatingMenuOptions();
     }
@@ -1378,7 +1389,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void showLongClickOnMapOptions(LatLng latLng) {
         //only show when map is in full screen and not visible
-        if (toursListView.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
+        if (newsfeedListView.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
             return;
         }
         //save the tap coordinates
@@ -1551,7 +1562,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         public void onMapClick(LatLng latLng) {
                             if (getActivity() != null) {
                                 FlurryAgent.logEvent(Constants.EVENT_FEED_MAPCLICK);
-                                if (toursListView.getVisibility() == View.VISIBLE) {
+                                if (newsfeedListView.getVisibility() == View.VISIBLE) {
                                     hideToursList();
                                 }
                                 // EMA-341 Disabling the search tour feature
@@ -1585,16 +1596,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     });
                 }
             });
+
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+            originalMapLayoutHeight = lp.height;
         }
     }
 
     private void initializeToursListView() {
         if (newsfeedAdapter == null) {
-            toursListView.setLayoutManager(new LinearLayoutManager(getContext()));
+            newsfeedListView.setLayoutManager(new LinearLayoutManager(getContext()));
             newsfeedAdapter = new NewsfeedAdapter();
-            toursListView.setAdapter(newsfeedAdapter);
+            newsfeedListView.setAdapter(newsfeedAdapter);
 
-            toursListView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            newsfeedListView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
                 @Override
                 public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
                     if (e.getAction() == MotionEvent.ACTION_MOVE) {
@@ -2121,17 +2135,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             showEmptyListPopup();
         }
 
-        if (toursListView.getVisibility() == View.GONE) {
+        if (newsfeedListView.getVisibility() == View.GONE) {
             return;
         }
-        toursListView.setVisibility(View.GONE);
+        newsfeedListView.setVisibility(View.GONE);
 
         newEntouragesButton.setVisibility(View.GONE);
 
         mapDisplayToggle.setChecked(true);
 
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-        originalMapLayoutHeight = lp.height;
+        moveFABDown();
 
         ensureMapVisible();
 
@@ -2155,18 +2168,18 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     protected void showToursList() {
-        if (layoutMapMain == null || toursListView == null || mapDisplayToggle == null) {
+        if (layoutMapMain == null || newsfeedListView == null || mapDisplayToggle == null) {
             return;
         }
 
-        if (toursListView.getVisibility() == View.VISIBLE) {
+        if (newsfeedListView.getVisibility() == View.VISIBLE) {
             // See if we need to show the empty newsfeed textview
             if (newsfeedAdapter != null) {
                 emptyListTextView.setVisibility(newsfeedAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
             }
             return;
         }
-        toursListView.setVisibility(View.VISIBLE);
+        newsfeedListView.setVisibility(View.VISIBLE);
 
         mapDisplayToggle.setChecked(false);
 
@@ -2194,10 +2207,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void toggleToursList() {
-        if (toursListView == null) {
+        if (newsfeedListView == null) {
             return;
         }
-        if (toursListView.getVisibility() == View.VISIBLE) {
+        if (newsfeedListView.getVisibility() == View.VISIBLE) {
             hideToursList();
         } else {
             showToursList();
@@ -2205,11 +2218,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public boolean isToursListVisible() {
-        return toursListView != null && toursListView.getVisibility() == View.VISIBLE;
+        return newsfeedListView != null && newsfeedListView.getVisibility() == View.VISIBLE;
     }
 
     public void ensureMapVisible() {
-        if (layoutMapMain == null || toursListView == null) {
+        if (layoutMapMain == null || newsfeedListView == null) {
             return;
         }
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
@@ -2222,7 +2235,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             layoutMain.forceLayout();
         }
 
-        toursListView.scrollToPosition(0);
+        newsfeedListView.scrollToPosition(0);
     }
 
     private void updatePagination(List<Newsfeed> newsfeedList) {
@@ -2450,6 +2463,112 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     // ----------------------------------
+    // Newsfeed Bottom View Handling
+    // ----------------------------------
+
+    private void showNewsfeedBottomView(boolean show) {
+        if (newsfeedAdapter == null) return;
+        newsfeedAdapter.showBottomView(show);
+        if (newsfeedAdapter.getItemCount() > 0) {
+            moveFABUp();
+        }
+    }
+
+    /**
+     * Moves the FAB buttons up, if the bottom view is displayed and visible
+     **/
+    private void moveFABUp() {
+        if (newsfeedListView == null) return;
+        int visibleItemCount = newsfeedListView.getChildCount();
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) newsfeedListView.getLayoutManager();
+        int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+        int totalItemCount = linearLayoutManager.getItemCount();
+        if ( (totalItemCount - visibleItemCount <= firstVisibleItem) && newsfeedAdapter.isShowBottomView() ) {
+            int paddingBottom = mapOptionsMenu.getPaddingBottom();
+            if (paddingBottom <= mapOptionsMenuPaddingBottom) {
+                if (fabAnimatorDown != null && fabAnimatorDown.isRunning()) {
+                    fabAnimatorDown.end();
+                }
+                RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
+                if (fabAnimatorUp == null) {
+                    fabAnimatorUp = ValueAnimator.ofPropertyValuesHolder(
+                            PropertyValuesHolder.ofInt("fabMenu", mapOptionsMenuPaddingBottom, mapOptionsMenuPaddingBottom + FAB_BOTTOM_DELTA),
+                            PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin + FAB_BOTTOM_DELTA)
+                            );
+                    fabAnimatorUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(final ValueAnimator animation) {
+                            int fabMenu = (Integer) animation.getAnimatedValue("fabMenu");
+                            mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), fabMenu);
+                            int fabStop = (Integer) animation.getAnimatedValue("fabStop");
+                            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
+                            lp.bottomMargin = fabStop;
+                            tourStopButton.setLayoutParams(lp);
+                        }
+                    });
+                } else {
+                    if (fabAnimatorUp.isRunning()) {
+                        fabAnimatorUp.end();
+                    }
+                    fabAnimatorUp.setValues(
+                            PropertyValuesHolder.ofInt("fabMenu", mapOptionsMenuPaddingBottom, mapOptionsMenuPaddingBottom + FAB_BOTTOM_DELTA),
+                            PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin + FAB_BOTTOM_DELTA)
+                    );
+                }
+                fabAnimatorUp.start();
+//                mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), mapOptionsMenu.getPaddingBottom() + FAB_BOTTOM_DELTA);
+//                RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
+//                lp.bottomMargin += FAB_BOTTOM_DELTA;
+//                tourStopButton.setLayoutParams(lp);
+            }
+        }
+    }
+
+    /**
+     * Moves the FAB buttons to their original positions, if necessary
+     */
+    private void moveFABDown() {
+        int paddingBottom = mapOptionsMenu.getPaddingBottom();
+        if (paddingBottom > mapOptionsMenuPaddingBottom) {
+            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
+            if (fabAnimatorUp != null && fabAnimatorUp.isRunning()) {
+                fabAnimatorUp.end();
+            }
+            paddingBottom = mapOptionsMenu.getPaddingBottom();
+            if (fabAnimatorDown == null) {
+                fabAnimatorDown = ValueAnimator.ofPropertyValuesHolder(
+                        PropertyValuesHolder.ofInt("fabMenu", paddingBottom, mapOptionsMenuPaddingBottom),
+                        PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin - FAB_BOTTOM_DELTA)
+                );
+                fabAnimatorDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(final ValueAnimator animation) {
+                        int fabMenu = (Integer) animation.getAnimatedValue("fabMenu");
+                        mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), fabMenu);
+                        int fabStop = (Integer) animation.getAnimatedValue("fabStop");
+                        RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
+                        lp.bottomMargin = fabStop;
+                        tourStopButton.setLayoutParams(lp);
+                    }
+                });
+            } else {
+                if (fabAnimatorDown.isRunning()) {
+                    return;
+                }
+                fabAnimatorDown.setValues(
+                        PropertyValuesHolder.ofInt("fabMenu", paddingBottom, mapOptionsMenuPaddingBottom),
+                        PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin - FAB_BOTTOM_DELTA)
+                );
+            }
+            fabAnimatorDown.start();
+//            mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), mapOptionsMenu.getPaddingBottom() - FAB_BOTTOM_DELTA);
+//            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
+//            lp.bottomMargin -= FAB_BOTTOM_DELTA;
+//            tourStopButton.setLayoutParams(lp);
+        }
+    }
+
+    // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
 
@@ -2532,7 +2651,18 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                     scrollDeltaY = 0;
                 //}
-            }
+            } else {
+                // Scrolling up
+                if (newsfeedAdapter.isShowBottomView()) {
+                    int visibleItemCount = recyclerView.getChildCount();
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+                    int totalItemCount = linearLayoutManager.getItemCount();
+                    if ((totalItemCount - visibleItemCount > firstVisibleItem)) {
+                        moveFABDown();
+                    }
+                }
+             }
         }
 
         @Override
