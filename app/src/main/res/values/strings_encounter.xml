@@ -30,9 +30,9 @@
     <string name="encounter_author_format">%1$s\u0020</string>
     <string name="encounter_count_format">%1$d</string>
 
-    <string name="updating_encounter">!!Saving the encounter …</string>
-    <string name="update_encounter_failure">!!Echec de la création de rencontre</string>
-    <string name="update_encounter_success">!!Rencontre créée</string>
+    <string name="updating_encounter">Mise à jour de la rencontre …</string>
+    <string name="update_encounter_failure">La rencontre n’a pu être modifiée</string>
+    <string name="update_encounter_success">Rencontre modifiée</string>
 
     <!-- Encounter disclaimer -->
     <string name="encounter_disclaimer_text">Bonjour,\nnous vous rappelons qu\'en vertu de la charte d\'Entourage (http://entourage.social/cgu), vous devez vous assurer que les personnes que vous rencontrerez consentent à ce que des données sur vos échanges soient stockées et échangées au sein de votre association.</string>
