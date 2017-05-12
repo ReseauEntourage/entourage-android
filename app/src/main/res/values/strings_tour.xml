@@ -66,6 +66,7 @@
     <string name="tour_info_request_join_title_entourage">On a besoin de vous !</string>
     <string name="tour_info_request_join_title_tour">Maraude voisine ? Coordonnez-vous</string>
     <string name="tour_info_request_join_button">@string/tour_info_options_join</string>
+    <string name="tour_info_error_retrieve_entourage">!!Error retrieving the entourage!</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>

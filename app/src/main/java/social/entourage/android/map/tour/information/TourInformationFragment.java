@@ -137,6 +137,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private static final int MAP_SNAPSHOT_ZOOM = 15;
 
     private static final String KEY_INVITATION_ID = "social.entourage.android_KEY_INVITATION_ID";
+    private static final String KEY_FEED_POSITION = "social.entourage.android.KEY_FEED_POSITION";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -302,11 +303,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     // LIFECYCLE
     // ----------------------------------
 
-    public static TourInformationFragment newInstance(FeedItem feedItem, long invitationId) {
+    public static TourInformationFragment newInstance(FeedItem feedItem, long invitationId, int feedRank) {
         TourInformationFragment fragment = new TourInformationFragment();
         Bundle args = new Bundle();
         args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem);
         args.putLong(KEY_INVITATION_ID, invitationId);
+        args.putInt(KEY_FEED_POSITION, feedRank);
         fragment.setArguments(args);
         return fragment;
     }
@@ -341,13 +343,21 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         feedItem = (FeedItem) getArguments().getSerializable(FeedItem.KEY_FEEDITEM);
         invitationId = getArguments().getLong(KEY_INVITATION_ID);
         if (feedItem != null) {
-            initializeView();
+            if (feedItem.isPrivate()) {
+                initializeView();
+            } else {
+                // public entourage
+                // we need to retrieve the whole entourage again, just to send the distance and feed position
+                int feedRank = getArguments().getInt(KEY_FEED_POSITION);
+                presenter.getFeedItem(feedItem.getId(), feedItem.getType(), feedRank);
+                feedItem = null;
+            }
         }
         else {
             requestedFeedItemId = getArguments().getLong(FeedItem.KEY_FEEDITEM_ID);
             requestedFeedItemType = getArguments().getInt(FeedItem.KEY_FEEDITEM_TYPE);
             if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
-                presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType);
+                presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType, 0);
             }
         }
         if (feedItem != null && feedItem.isPrivate()) {
@@ -1585,6 +1595,16 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             if (feedItem.isPrivate()) {
                 loadPrivateCards();
             }
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage(R.string.tour_info_error_retrieve_entourage);
+            builder.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(final DialogInterface dialog, final int which) {
+                    dismiss();
+                }
+            });
+            builder.create().show();
         }
     }
 

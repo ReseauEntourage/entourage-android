@@ -99,10 +99,10 @@ public class MapPresenter {
         fragment.putEncounterOnMap(encounter, onClickListener);
     }
 
-    public void openFeedItem(FeedItem feedItem, long invitationId) {
+    public void openFeedItem(FeedItem feedItem, long invitationId, int feedRank) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItem, invitationId);
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItem, invitationId, feedRank);
             tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }
@@ -245,7 +245,7 @@ public class MapPresenter {
             if (encounterMarkerHashMap.get(marker) != null) {
                 openEncounter(encounterMarkerHashMap.get(marker));
             } else if (tourMarkerHashMap.get(marker) != null) {
-                openFeedItem(tourMarkerHashMap.get(marker), 0);
+                openFeedItem(tourMarkerHashMap.get(marker), 0, 0);
             }
             return false;
         }

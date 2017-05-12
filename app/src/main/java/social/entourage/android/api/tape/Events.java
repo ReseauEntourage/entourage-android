@@ -180,9 +180,15 @@ public class Events {
         private int feedItemType = 0;
         private long feedItemId = 0;
         private long invitationId = 0;
+        private int feedRank = 0;
 
         public OnFeedItemInfoViewRequestedEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
+        }
+
+        public OnFeedItemInfoViewRequestedEvent(FeedItem feedItem, int feedRank) {
+            this.feedItem = feedItem;
+            this.feedRank = feedRank;
         }
 
         public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId) {
@@ -210,6 +216,10 @@ public class Events {
 
         public long getInvitationId() {
             return invitationId;
+        }
+
+        public int getfeedRank() {
+            return feedRank;
         }
     }
 

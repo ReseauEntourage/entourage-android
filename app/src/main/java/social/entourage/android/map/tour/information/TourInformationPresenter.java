@@ -59,7 +59,7 @@ public class TourInformationPresenter {
     // Api calls
     // ----------------------------------
 
-    public void getFeedItem(long feedItemId, int feedItemType) {
+    public void getFeedItem(long feedItemId, int feedItemType, int feedRank) {
         fragment.showProgressBar();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
             Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(feedItemId);
@@ -80,7 +80,8 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(feedItemId);
+            int distance = 1;
+            Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(feedItemId, distance, feedRank);
             call.enqueue(new Callback<Entourage.EntourageWrapper>() {
                 @Override
                 public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {

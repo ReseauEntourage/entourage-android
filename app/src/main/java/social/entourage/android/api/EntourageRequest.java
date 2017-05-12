@@ -33,7 +33,9 @@ public interface EntourageRequest {
 
     @GET("entourages/{entourage_id}")
     Call<Entourage.EntourageWrapper> retrieveEntourageById(
-            @Path("entourage_id") long entourageId
+            @Path("entourage_id") long entourageId,
+            @Query("distance") Integer distance,
+            @Query("feed_rank") Integer feedRank
     );
 
     @PUT("entourages/{id}.json")

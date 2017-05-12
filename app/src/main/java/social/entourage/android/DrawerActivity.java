@@ -703,10 +703,10 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void feedItemViewRequested(OnFeedItemInfoViewRequestedEvent event) {
-        if (mapEntourageFragment != null) {
+        if (mapEntourageFragment != null && event != null) {
             FeedItem feedItem = event.getFeedItem();
             if (feedItem != null) {
-                mapEntourageFragment.displayChosenFeedItem(feedItem);
+                mapEntourageFragment.displayChosenFeedItem(feedItem, event.getfeedRank());
                 //refresh badge count
                 refreshBadgeCount();
                 // update the newsfeed card
@@ -856,7 +856,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (tour != null) {
             if (mainFragment instanceof MapEntourageFragment) {
                 MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                mapEntourageFragment.displayChosenFeedItem(tour);
+                mapEntourageFragment.displayChosenFeedItem(tour, 0);
             }
         }
     }

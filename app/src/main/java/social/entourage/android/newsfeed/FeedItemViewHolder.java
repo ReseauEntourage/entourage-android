@@ -256,12 +256,14 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //What to do on rejected status ?
                 } else {
-                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem));
+                    // The server wants the position starting with 1
+                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem, getAdapterPosition()+1));
                 }
 
             }
             else if (v == itemView) {
-                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem));
+                // The server wants the position starting with 1
+                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem, getAdapterPosition()+1));
             }
         }
 

@@ -467,11 +467,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void displayChosenFeedItem(FeedItem feedItem) {
-        displayChosenFeedItem(feedItem, 0);
+    public void displayChosenFeedItem(FeedItem feedItem, int feedRank) {
+        displayChosenFeedItem(feedItem, 0, feedRank);
     }
 
     public void displayChosenFeedItem(FeedItem feedItem, long invitationId) {
+        displayChosenFeedItem(feedItem, invitationId, 0);
+    }
+
+    public void displayChosenFeedItem(FeedItem feedItem, long invitationId, int feedRank) {
         // decrease the badge count
         EntourageApplication application = EntourageApplication.get(getContext());
         if (application != null) {
@@ -486,7 +490,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         if (presenter != null) {
             FlurryAgent.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
-            presenter.openFeedItem(feedItem, invitationId);
+            presenter.openFeedItem(feedItem, invitationId, feedRank);
         }
     }
 
@@ -926,7 +930,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     choiceFragment.show(fragmentManager, "fragment_choice");
                 } else {
                     TreeMap<Long, Tour> toursTree = new TreeMap<>(tours);
-                    presenter.openFeedItem(toursTree.firstEntry().getValue(), 0);
+                    presenter.openFeedItem(toursTree.firstEntry().getValue(), 0, 0);
                 }
             }
         }
