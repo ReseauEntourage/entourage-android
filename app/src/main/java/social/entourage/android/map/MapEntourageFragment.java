@@ -2451,7 +2451,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         private static final int MIN_SCROLL_DELTA_Y = 20;
-        private static final int MIN_MAP_SCROLL_DELTA_Y = 20;
+        private static final int MIN_MAP_SCROLL_DELTA_Y = 10;
 
         private int mapScrollDeltaY = 0;
 
