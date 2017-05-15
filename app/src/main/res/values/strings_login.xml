@@ -73,6 +73,7 @@
     <string name="login_error_title">Veuillez réessayer</string>
     <string name="login_error_invalid_credentials">Le numéro de téléphone et ce code d’accès ne correspondent pas.</string>
     <string name="login_error_invalid_phone_format">Votre téléphone doit être au format +33, 06, ou 07</string>
+    <string name="login_error_network">Vérifiez votre connexion et réessayez</string>
     <string name="login_retry_label">Réessayer</string>
 
     <string name="login_name_title">Quel est votre nom ?</string>

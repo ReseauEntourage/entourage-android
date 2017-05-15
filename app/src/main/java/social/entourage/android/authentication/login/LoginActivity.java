@@ -408,6 +408,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
                 break;
             case LOGIN_ERROR_NETWORK:
+                errorMessage = R.string.login_error_network;
+                FlurryAgent.logEvent(Constants.EVENT_LOGIN_ERROR);
+                break;
             default:
                 errorMessage = R.string.login_error;
                 FlurryAgent.logEvent(Constants.EVENT_LOGIN_ERROR);
