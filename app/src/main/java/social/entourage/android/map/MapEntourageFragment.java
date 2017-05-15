@@ -121,6 +121,9 @@ import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
 
+import static social.entourage.android.Constants.EVENT_SCREEN_06_1;
+import static social.entourage.android.Constants.EVENT_SCREEN_06_2;
+
 public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener, TourService.NewsFeedListener {
 
     // ----------------------------------
@@ -2216,8 +2219,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         if (newsfeedListView.getVisibility() == View.VISIBLE) {
             hideToursList();
+            FlurryAgent.logEvent(EVENT_SCREEN_06_2);
         } else {
             showToursList();
+            FlurryAgent.logEvent(EVENT_SCREEN_06_1);
         }
     }
 

@@ -489,11 +489,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                 loadFragmentWithExtras();
                 break;
             case R.id.action_guide:
-                guideMapEntourageFragment = (GuideMapEntourageFragment) getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
-                if (guideMapEntourageFragment == null) {
-                    guideMapEntourageFragment = new GuideMapEntourageFragment();
-                }
-                loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
+                loadSolidarityGuide();
+                FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
                 break;
             case R.id.action_user:
                 FlurryAgent.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
@@ -591,6 +588,14 @@ public class DrawerActivity extends EntourageSecuredActivity
                 });
             }
         }
+    }
+
+    private void loadSolidarityGuide() {
+        guideMapEntourageFragment = (GuideMapEntourageFragment) getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
+        if (guideMapEntourageFragment == null) {
+            guideMapEntourageFragment = new GuideMapEntourageFragment();
+        }
+        loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
     }
 
     private void initializePushNotifications() {
@@ -1021,7 +1026,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     @OnClick(R.id.button_poi_launcher)
     public void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
-            FlurryAgent.logEvent(Constants.EVENT_SCREEN_06_2);
+            FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
             // Change the Guide Option text
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_close_button));
@@ -1035,7 +1040,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 mapOptionsMenu.toggle(false);
             }
             // Show the guide screen
-            selectItem(R.id.action_guide);
+            loadSolidarityGuide();
         } else {
             FlurryAgent.logEvent(Constants.EVENT_SCREEN_06_1);
             // Change the Guide Option text

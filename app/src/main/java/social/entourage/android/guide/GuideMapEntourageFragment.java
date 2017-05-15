@@ -149,7 +149,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             toReturn = inflater.inflate(R.layout.fragment_guide_map, container, false);
         }
         ButterKnife.bind(this, toReturn);
-        FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_MENU);
         return toReturn;
     }
 
