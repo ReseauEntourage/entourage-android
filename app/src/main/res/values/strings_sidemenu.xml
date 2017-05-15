@@ -9,7 +9,7 @@
     <string name="action_edit_profile"><u>Modifier mon profil</u></string>
     <string name="action_blog">Comment franchir le pas ?</string>
     <string name="action_charte">Charte éthique</string>
-    <string name="action_goal">Quelles actions faire avec Entourage ?</string>
+    <string name="action_goal">Idées d\'actions avec Entourage</string>
     <string name="action_faq">Utilisation de l\'appli</string>
-    <string name="action_atd">Notre parteneriat avec ATD</string>
+    <string name="action_atd">Notre partenariat avec ATD</string>
 </resources>
