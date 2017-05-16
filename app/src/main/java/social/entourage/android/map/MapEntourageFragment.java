@@ -2146,9 +2146,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         newsfeedListView.setVisibility(View.GONE);
-
         newEntouragesButton.setVisibility(View.GONE);
-
         mapDisplayToggle.setChecked(true);
 
         moveFABDown();
@@ -2156,6 +2154,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         ensureMapVisible();
 
         emptyListTextView.setVisibility(View.GONE);
+
+        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
+        button.setVisibility(View.GONE);
 
         final int targetHeight = layoutMain.getMeasuredHeight();
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
@@ -2189,6 +2190,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         newsfeedListView.setVisibility(View.VISIBLE);
 
         mapDisplayToggle.setChecked(false);
+
+        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
+        button.setVisibility(View.VISIBLE);
 
         hideEmptyListPopup();
 
