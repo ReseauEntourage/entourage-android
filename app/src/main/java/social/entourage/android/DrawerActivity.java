@@ -1046,9 +1046,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             // Change the Guide Option text
             FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
             button.setLabelText(getString(R.string.map_poi_launcher_button));
-            if (mapEntourageFragment != null) {
-                button.setVisibility(mapEntourageFragment.isToursListVisible() ? View.VISIBLE : View.GONE);
-            }
             // Make the 'Propose POI' button gone
             FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
             if (proposePOIButton != null) {
