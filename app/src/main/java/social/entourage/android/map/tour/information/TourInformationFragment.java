@@ -349,7 +349,15 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 // public entourage
                 // we need to retrieve the whole entourage again, just to send the distance and feed position
                 int feedRank = getArguments().getInt(KEY_FEED_POSITION);
-                presenter.getFeedItem(feedItem.getId(), feedItem.getType(), feedRank);
+                int distance = 0;
+                TourPoint startPoint = feedItem.getStartPoint();
+                if (startPoint != null) {
+                    Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                    if (currentLocation != null) {
+                        distance = (int) Math.ceil(startPoint.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude())));
+                    }
+                }
+                presenter.getFeedItem(feedItem.getId(), feedItem.getType(), feedRank, distance);
                 feedItem = null;
             }
         }
@@ -357,7 +365,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             requestedFeedItemId = getArguments().getLong(FeedItem.KEY_FEEDITEM_ID);
             requestedFeedItemType = getArguments().getInt(FeedItem.KEY_FEEDITEM_TYPE);
             if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
-                presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType, 0);
+                presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType, 0, 0);
             }
         }
         if (feedItem != null && feedItem.isPrivate()) {
