@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 
 import social.entourage.android.R;
 
@@ -78,6 +79,16 @@ public class EntourageDialogFragment extends DialogFragment {
 
     protected ColorDrawable getBackgroundDrawable() {
         return new ColorDrawable(Color.TRANSPARENT);
+    }
+
+    public void showKeyboard() {
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            }
+        }
     }
 
 }

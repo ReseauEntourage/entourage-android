@@ -5,10 +5,10 @@
     <string name="entourage_create_contribution_title">CONTRIBUTION</string>
     <string name="entourage_create_position_description">Ma position</string>
     <string name="entourage_create_title_demand_hint_long">Paire de gants pour Gilles</string>
-    <string name="entourage_create_title_demand_hint">Titre de votre demande*</string>
-    <string name="entourage_create_title_contribution_hint">Titre de votre contribution*</string>
+    <string name="entourage_create_title_demand_hint">Titre</string>
+    <string name="entourage_create_title_contribution_hint">Titre</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
-    <string name="entourage_create_description_hint">Description détaillée</string>
+    <string name="entourage_create_description_hint">Description</string>
     <string name="entourage_create_description_demand_hint">Gilles passe la journée dehors la main tendue. Avec ce froid, il a les doigts tout engourdis. Qui aurait une paire de gants à donner ?\n(Attention: n\'incluez pas de données permettant d\'identifier ou localiser des personnes)</string>
     <string name="entourage_create_description_contribution_hint">Je suis ancien employé de mairie et je peux aider dans des démarches administratives.\n(Attention: n\'incluez pas de données permettant d\'identifier ou localiser des personnes.)</string>
 
@@ -20,6 +20,12 @@
 
     <string name="entourage_create_menu_demand">Créer une demande</string>
     <string name="entourage_create_menu_contribution">Créer une contribution</string>
+
+    <!-- Entourage Title Fragment -->
+    <string name="entourage_title_fragment_title">TITRE</string>
+    <string name="entourage_title_fragment_hint">Exemple : Je suis disponible pour aide administrative pour l’accès au logement </string>
+    <string name="entourage_title_fragment_info">Les actions avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
+    <string name="entourage_title_fragment_error">Votre titre doit faire moins de 100 caractères. Vous pourrez en dire plus dans la description.</string>
 
     <!-- Edit Entourage -->
     <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>

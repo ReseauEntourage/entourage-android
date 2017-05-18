@@ -88,7 +88,7 @@
                     android:layout_toRightOf="@+id/create_entourage_position_pin"
                     android:text="@string/entourage_create_position_description"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/greyish"
+                    android:textColor="@color/greyish_brown"
                     android:textSize="18sp"/>
 
                 <ImageView
@@ -120,142 +120,95 @@
                     android:textSize="18sp"/>
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/create_entourage_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/create_entourage_position_layout"
                 android:layout_marginTop="18dp"
                 android:background="@color/background"
-                android:paddingEnd="0dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="0dp"
-                android:paddingStart="20dp">
-
-                <EditText
-                    android:id="@+id/create_entourage_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/create_entourage_title_mic"
-                    android:layout_toStartOf="@+id/create_entourage_title_mic"
-                    android:background="@color/background"
-                    android:ems="10"
-                    android:gravity="top|start"
-                    android:hint="@string/entourage_create_title_demand_hint"
-                    android:inputType="textMultiLine"
-                    android:lines="3"
-                    android:paddingTop="14dp"
-                    android:textColorHint="@color/greyish"/>
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/create_entourage_title_hint"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
                     android:text="@string/entourage_create_title_demand_hint"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/accent"
-                    android:textSize="12sp"
-                    android:visibility="invisible"/>
-
-                <ImageView
-                    android:id="@+id/create_entourage_title_mic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="false"
-                    android:layout_below="@+id/create_entourage_title_hint"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:contentDescription="@string/empty_description"
-                    android:src="@drawable/ic_action_record_sound"/>
-
-                <View
-                    android:id="@+id/create_entourage_title_separator"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/create_entourage_title"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginStart="0dp"
-                    android:background="@color/greyish"/>
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="18sp"
+                    />
 
                 <TextView
-                    android:id="@+id/create_entourage_title_char_count"
+                    android:id="@+id/create_entourage_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"
+                    android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/create_entourage_title_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/create_entourage_title_separator"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/greyish"
-                    android:textSize="14sp"/>
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/arrow_grey"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/create_entourage_description_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/create_entourage_title_layout"
                 android:layout_marginTop="16dp"
                 android:background="@color/background"
-                android:paddingBottom="10dp"
-                android:paddingEnd="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="10dp"
-                android:paddingStart="20dp"
-                android:paddingTop="10dp">
-
-                <EditText
-                    android:id="@+id/create_entourage_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/create_entourage_description_mic"
-                    android:layout_toStartOf="@+id/create_entourage_description_mic"
-                    android:autoLink="all"
-                    android:background="@color/background"
-                    android:ems="10"
-                    android:gravity="top|start"
-                    android:hint="@string/entourage_create_description_hint"
-                    android:inputType="textMultiLine"
-                    android:lines="5"
-                    android:paddingTop="16dp"
-                    android:textColorHint="@color/greyish"/>
-
-                <ImageView
-                    android:id="@+id/create_entourage_description_mic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/create_entourage_description_hint"
-                    android:contentDescription="@string/empty_description"
-                    android:src="@drawable/ic_action_record_sound"/>
-
-                <View
-                    android:id="@+id/create_entourage_description_separator"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/create_entourage_description"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/greyish"/>
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/create_entourage_description_hint"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/entourage_create_description_hint"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/accent"
-                    android:textSize="12sp"
-                    android:visibility="invisible"/>
-            </RelativeLayout>
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:id="@+id/create_entourage_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"/>
+
+                <ImageView
+                    android:id="@+id/create_entourage_description_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/arrow_grey"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
 
     </ScrollView>

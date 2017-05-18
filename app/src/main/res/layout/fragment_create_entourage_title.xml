@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/pale_grey"
+              android:orientation="vertical"
+              tools:context="social.entourage.android.map.entourage.CreateEntourageTitleFragment">
+
+    <RelativeLayout
+        android:id="@+id/title_entourage_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/title_entourage_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"/>
+
+        <TextView
+            android:id="@+id/title_entourage_type"
+            style="@style/EntourageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/entourage_title_fragment_title"/>
+
+        <Button
+            android:id="@+id/title_entourage_validate_button"
+            style="@style/TransparentAccentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/validate"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/title_entourage_edit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp">
+
+        <EditText
+            android:id="@+id/title_entourage_edittext"
+            style="@style/CustomEditTextTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="@string/entourage_title_fragment_hint"
+            android:inputType="textMultiLine"
+            android:maxLength="100"
+            android:maxLines="3"
+            android:minLines="3"
+            android:textColor="@color/greyish_brown"
+            android:textColorHint="@color/greyish"
+            android:textSize="16sp"/>
+
+        <View
+            style="@style/SeparatorAlpha"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/title_entourage_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/entourage_ok"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/title_entourage_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/tip"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:text="@string/entourage_title_fragment_info"
+            android:textColor="@color/greyish_brown"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/title_entourage_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingEnd="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingStart="20dp"
+        android:text="@string/entourage_title_fragment_error"
+        android:textColor="@color/entourage_error"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
+</LinearLayout>

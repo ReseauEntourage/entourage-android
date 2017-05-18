@@ -71,6 +71,10 @@
     <color name="partner_logo_background">@color/background</color>
     <color name="partner_logo_transparent">#00000000</color>
 
+    <!-- Create Entourage -->
+    <color name="entourage_ok">@color/greyish</color>
+    <color name="entourage_error">@color/tomato</color>
+
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>

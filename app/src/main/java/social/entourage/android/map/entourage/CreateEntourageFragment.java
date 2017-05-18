@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -44,7 +46,7 @@ import social.entourage.android.base.EntourageDialogFragment;
 /**
  *
  */
-public class CreateEntourageFragment extends EntourageDialogFragment implements EntourageLocationFragment.OnFragmentInteractionListener {
+public class CreateEntourageFragment extends EntourageDialogFragment implements EntourageLocationFragment.OnFragmentInteractionListener, CreateEntourageListener {
 
     // ----------------------------------
     // Constants
@@ -54,8 +56,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     protected static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
     private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
-
-    private static final int TITLE_MAX_CHAR_COUNT = 150;
 
     private static final int VOICE_RECOGNITION_TITLE_CODE = 1;
     private static final int VOICE_RECOGNITION_DESCRIPTION_CODE = 2;
@@ -74,16 +74,16 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     TextView positionTextView;
 
     @BindView(R.id.create_entourage_title)
-    EditText titleEditText;
+    TextView titleEditText;
 
     @BindView(R.id.create_entourage_title_hint)
     TextView titleHintTextView;
 
-    @BindView(R.id.create_entourage_title_char_count)
-    TextView titleCharCountTextView;
+//    @BindView(R.id.create_entourage_title_char_count)
+//    TextView titleCharCountTextView;
 
     @BindView(R.id.create_entourage_description)
-    EditText descriptionEditText;
+    TextView descriptionEditText;
 
     @BindView(R.id.create_entourage_description_hint)
     TextView descriptionHintTextView;
@@ -161,7 +161,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
                     } else {
                         titleEditText.setText(titleEditText.getText() + " " + textMatchList.get(0));
                     }
-                    titleEditText.setSelection(titleEditText.getText().length());
+                    //titleEditText.setSelection(titleEditText.getText().length());
                 }
             }
             else if (requestCode == VOICE_RECOGNITION_DESCRIPTION_CODE) {
@@ -172,7 +172,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
                     } else {
                         descriptionEditText.setText(descriptionEditText.getText() + " " + textMatchList.get(0));
                     }
-                    descriptionEditText.setSelection(descriptionEditText.getText().length());
+                    //descriptionEditText.setSelection(descriptionEditText.getText().length());
                 }
             }
         }
@@ -224,22 +224,11 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         fragment.show(getFragmentManager(), EntourageLocationFragment.TAG);
     }
 
-    @OnClick(R.id.create_entourage_title_mic)
-    protected void onTitleMicClick() {
-        // Try to start SPEECH TO TEXT
-        if (!startRecording(VOICE_RECOGNITION_TITLE_CODE)) {
-            // Failed, show the keyboard
-            showKeyboard(titleEditText);
-        }
-    }
-
-    @OnClick(R.id.create_entourage_description_mic)
-    protected void onDescriptionMicClick() {
-        // Try to start SPEECH TO TEXT
-        if (!startRecording(VOICE_RECOGNITION_DESCRIPTION_CODE)) {
-            // Failed, show the keyboard
-            showKeyboard(descriptionEditText);
-        }
+    @OnClick(R.id.create_entourage_title_layout)
+    protected void onEditTitleClicked() {
+        CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString());
+        entourageTitleFragment.setListener(this);
+        entourageTitleFragment.show(getFragmentManager(), CreateEntourageTitleFragment.TAG);
     }
 
     // ----------------------------------
@@ -335,85 +324,55 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     private void initializeTitleEditText() {
         if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
             titleHintTextView.setText(R.string.entourage_create_title_contribution_hint);
-            titleEditText.setHint(R.string.entourage_create_title_contribution_hint);
+            //titleEditText.setHint(R.string.entourage_create_title_contribution_hint);
         } else {
             titleHintTextView.setText(R.string.entourage_create_title_demand_hint);
-            titleEditText.setHint(R.string.entourage_create_title_demand_hint_long);
+            //titleEditText.setHint(R.string.entourage_create_title_demand_hint_long);
         }
 
         if (editedEntourage != null) {
             titleEditText.setText(editedEntourage.getTitle());
         }
-
-        titleEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-                if (s.length() == 0) {
-                    titleHintTextView.setVisibility(View.INVISIBLE);
-                } else {
-                    titleHintTextView.setVisibility(View.VISIBLE);
-                }
-                String charCountString = getContext().getString(R.string.entourage_create_title_char_count_format, s.length(), TITLE_MAX_CHAR_COUNT);
-                titleCharCountTextView.setText(charCountString);
-            }
-        });
-
-        String charCountString = getContext().getString(R.string.entourage_create_title_char_count_format, titleEditText.length(), TITLE_MAX_CHAR_COUNT);
-        titleCharCountTextView.setText(charCountString);
     }
 
     private void initializeDescriptionEditText() {
 
-        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
-            descriptionEditText.setHint(R.string.entourage_create_description_contribution_hint);
-        } else {
-            descriptionEditText.setHint(R.string.entourage_create_description_demand_hint);
-        }
+//        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
+//            descriptionEditText.setHint(R.string.entourage_create_description_contribution_hint);
+//        } else {
+//            descriptionEditText.setHint(R.string.entourage_create_description_demand_hint);
+//        }
 
         if (editedEntourage != null) {
             descriptionEditText.setText(editedEntourage.getDescription());
         }
 
-        descriptionEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-                if (s.length() == 0) {
-                    descriptionHintTextView.setVisibility(View.INVISIBLE);
-                } else {
-                    descriptionHintTextView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+//        descriptionEditText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(final Editable s) {
+//                if (s.length() == 0) {
+//                    descriptionHintTextView.setVisibility(View.INVISIBLE);
+//                } else {
+//                    descriptionHintTextView.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
     }
 
     private boolean isValid() {
         String title = titleEditText.getText().toString().trim();
         if (title.length() == 0) {
             Toast.makeText(getActivity(), R.string.entourage_create_error_title_empty, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (title.length() > TITLE_MAX_CHAR_COUNT) {
-            Toast.makeText(getActivity(), R.string.entourage_create_error_title_too_long, Toast.LENGTH_SHORT).show();
             return false;
         }
         /*
@@ -474,4 +433,17 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         }
     }
 
+    // ----------------------------------
+    // CreateEntourageListener
+    // ----------------------------------
+
+    @Override
+    public void onTitleChanged(final String title) {
+        titleEditText.setText(title);
+    }
+
+    @Override
+    public void onDescriptionChanged(final String description) {
+        descriptionEditText.setText(description);
+    }
 }
