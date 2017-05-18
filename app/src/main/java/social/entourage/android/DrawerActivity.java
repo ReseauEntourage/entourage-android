@@ -608,7 +608,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    private void logout(){
+    protected void logout(){
         //TODO: do a proper DELETE not an UPDATE
         //presenter.deleteApplicationInfo(getDeviceID());
         presenter.updateApplicationInfo("");
