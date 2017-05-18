@@ -106,7 +106,6 @@ import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
-import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
@@ -119,6 +118,8 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
+import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
+import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 
 import static social.entourage.android.Constants.EVENT_SCREEN_06_1;
@@ -253,7 +254,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     final Handler refreshToursHandler = new Handler();
 
     //pagination
-    private EntouragePagination pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+    private NewsfeedPagination pagination = new NewsfeedPagination();
     private int scrollDeltaY = 0;
     private OnScrollListener scrollListener = new OnScrollListener();
 
@@ -761,8 +762,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Subscribe
     public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
-        //TODO Change the radius of the newsfeed and do a new request
-        Log.d("LoadMore", "Load more requested");
+        clearAll();
+        ensureMapVisible();
+        pagination.setNextRadius();
+
+        if (newsfeedAdapter != null) {
+            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
+        }
+        if (tourService != null) {
+            tourService.updateNewsfeed(pagination);
+        }
     }
 
     // ----------------------------------
@@ -847,7 +856,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onRetrieveToursNearby(List<Tour> tours) {
         //check if there are tours to add or update
-        int previousToursCount = newsfeedAdapter.getItemCount();
+        int previousToursCount = newsfeedAdapter.getDataItemCount();
         tours = removeRedundantTours(tours, false);
         Collections.sort(tours, new Tour.TourComparatorOldToNew());
         for (Tour tour : tours) {
@@ -888,13 +897,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
 
         //show the map if no tours
-        if (newsfeedAdapter.getItemCount() == 0) {
+        if (newsfeedAdapter.getDataItemCount() == 0) {
             hideToursList();
         } else if (previousToursCount == 0) {
             showToursList();
         }
         //scroll to latest
-        if (newsfeedAdapter.getItemCount() > 0) {
+        if (newsfeedAdapter.getDataItemCount() > 0) {
             newsfeedListView.scrollToPosition(0);
         }
     }
@@ -1139,15 +1148,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             showNewsfeedBottomView(newsfeeds.size() == 0);
         }
 
-        if (newsfeedAdapter.getItemCount() == 0) {
-            hideToursList();
-        } else {
-            if (isToursListVisible()) {
-                // Hide the empty list text view
-                if (newsfeedAdapter != null) {
-                    emptyListTextView.setVisibility(View.GONE);
-                }
+        if (newsfeedAdapter.getDataItemCount() == 0) {
+            if (!pagination.isRefreshing) {
+                hideToursList();
             }
+        } else {
             if (!initialNewsfeedLoaded) {
                 showToursList();
                 initialNewsfeedLoaded = true;
@@ -1550,7 +1555,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                 }
 
                                 newsfeedAdapter.removeAll();
-                                pagination = new EntouragePagination();
+                                pagination = new NewsfeedPagination();
                                 tourService.updateNewsfeed(pagination);
                                 if (userHistory) {
                                     tourService.updateUserHistory(userId, 1, 500);
@@ -2127,13 +2132,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         displayedTourHeads = 0;
 
         newsfeedAdapter.removeAll();
+        moveFABDown();
 
         // check if we need to cancel the current request
         if (pagination.isLoading && tourService != null) {
             tourService.cancelNewsFeedUpdate();
         }
 
-        pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+        pagination.reset();
 
         previousCoordinates = null;
     }
@@ -2141,7 +2147,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void hideToursList() {
 
         // show the empty list popup if necessary
-        if (newsfeedAdapter.getItemCount() == 0) {
+        if (newsfeedAdapter.getDataItemCount() == 0) {
             showEmptyListPopup();
         }
 
@@ -2156,8 +2162,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         moveFABDown();
 
         ensureMapVisible();
-
-        emptyListTextView.setVisibility(View.GONE);
 
         final int targetHeight = layoutMain.getMeasuredHeight();
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
@@ -2182,10 +2186,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
 
         if (newsfeedListView.getVisibility() == View.VISIBLE) {
-            // See if we need to show the empty newsfeed textview
-            if (newsfeedAdapter != null) {
-                emptyListTextView.setVisibility(newsfeedAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
-            }
             return;
         }
         newsfeedListView.setVisibility(View.VISIBLE);
@@ -2202,12 +2202,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
                 layoutParams.height = val;
                 layoutMapMain.setLayoutParams(layoutParams);
-                if (val == originalMapLayoutHeight) {
-                    // See if we need to show the empty newsfeed textview
-                    if (newsfeedAdapter != null) {
-                        emptyListTextView.setVisibility(newsfeedAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
-                    }
-                }
                 layoutMain.forceLayout();
             }
 
@@ -2237,8 +2231,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-        originalMapLayoutHeight = lp.height;
-
         if (lp.topMargin < 0) {
             lp.topMargin = 0;
             layoutMapMain.setLayoutParams(lp);
@@ -2479,8 +2471,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void showNewsfeedBottomView(boolean show) {
         if (newsfeedAdapter == null) return;
-        newsfeedAdapter.showBottomView(show);
-        if (newsfeedAdapter.getItemCount() > 0) {
+        if (pagination.isNextRadiusAvailable()) {
+            // we can increase the radius
+            newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
+        } else {
+            if (newsfeedAdapter.getDataItemCount() == 0) {
+                // max radius and still no items, show no items info
+                newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
+            } else {
+                // max radius and items, show nothing
+                newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
+            }
+        }
+        if (newsfeedAdapter.getDataItemCount() > 0) {
             moveFABUp();
         }
     }
@@ -2684,6 +2687,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         moveFABDown();
                     }
                 }
+                mapScrollDeltaY = 0;
              }
         }
 

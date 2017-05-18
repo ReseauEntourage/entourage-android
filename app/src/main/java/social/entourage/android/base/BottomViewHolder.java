@@ -29,7 +29,7 @@ public class BottomViewHolder extends BaseCardViewHolder {
         // Does nothing
     }
 
-    public void populate(boolean showContent) {
+    public void populate(boolean showContent, int contentType) {
         if (content != null) {
             content.setVisibility(showContent ? View.VISIBLE : View.GONE);
         }

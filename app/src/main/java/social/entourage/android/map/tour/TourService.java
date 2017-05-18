@@ -45,6 +45,7 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntouragePagination;
+import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.CrashlyticsNewsFeedListener;
 import social.entourage.android.tools.LoggerNewsFeedListener;
 
@@ -296,12 +297,12 @@ public class TourService extends Service {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public boolean updateNewsfeed(EntouragePagination pagination) {
+    public boolean updateNewsfeed(NewsfeedPagination pagination) {
         if (pagination.isLoading && !pagination.isRefreshing) {
             return false;
         }
         pagination.isLoading = true;
-        tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate(), getApplicationContext());
+        tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate(), pagination.radius, getApplicationContext());
         return true;
     }
 

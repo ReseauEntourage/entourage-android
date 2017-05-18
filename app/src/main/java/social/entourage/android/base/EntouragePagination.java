@@ -14,8 +14,8 @@ public class EntouragePagination {
     // ----------------------------------
     public int page = 1;
     public int itemsPerPage = 0;
-    private Date beforeDate = new Date();
-    private Date newestDate = null;
+    protected Date beforeDate = new Date();
+    protected Date newestDate = null;
     public boolean isLoading = false;
     public boolean isRefreshing = false;
     public boolean newItemsAvailable = false;

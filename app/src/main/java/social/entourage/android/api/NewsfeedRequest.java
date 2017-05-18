@@ -16,6 +16,7 @@ public interface NewsfeedRequest {
             @Query("before") EntourageDate before,
             @Query("longitude") double longitude,
             @Query("latitude") double latitude,
+            @Query("radius") int radius,
             @Query("tour_types") String tourTypes,
             @Query("show_tours") boolean showTours,
             @Query("show_my_entourages_only") boolean onlyMyEntourages,

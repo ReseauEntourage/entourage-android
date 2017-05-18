@@ -20,6 +20,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     protected boolean needsBottomView = false;
     private boolean showBottomView = false;
+    private int bottomViewContentType;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
@@ -29,8 +30,8 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (position != 0 && position == getItemCount() - 1 && needsBottomView) {
-            ((BottomViewHolder)holder).populate(showBottomView);
+        if (position == getItemCount() - 1 && needsBottomView) {
+            ((BottomViewHolder)holder).populate(showBottomView, bottomViewContentType);
             return;
         }
         ((BaseCardViewHolder)holder).populate(items.get(position));
@@ -38,15 +39,20 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        if (items == null || items.size() == 0) {
+        if (items == null) {
             return 0;
         }
         return items.size() + (needsBottomView ? 1 : 0); // +1 for the loader
     }
 
+    public int getDataItemCount() {
+        if (items == null) return 0;
+        return items.size();
+    }
+
     @Override
     public int getItemViewType(final int position) {
-        if (position != 0 && position == getItemCount() - 1 && needsBottomView) {
+        if (position == getItemCount() - 1 && needsBottomView) {
             return TimestampedObject.BOTTOM_VIEW;
         }
         return items.get(position).getType();
@@ -178,10 +184,11 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged();
     }
 
-    public void showBottomView(final boolean showBottomView) {
+    public void showBottomView(final boolean showBottomView, int bottomViewContentType) {
         this.showBottomView = showBottomView;
-        if (items != null && items.size() > 0 && needsBottomView) {
-            notifyItemChanged(items.size());
+        this.bottomViewContentType = bottomViewContentType;
+        if (items != null && needsBottomView) {
+            notifyItemChanged(getItemCount()-1);
         }
     }
 
