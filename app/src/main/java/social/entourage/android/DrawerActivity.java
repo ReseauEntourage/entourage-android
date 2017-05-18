@@ -510,7 +510,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 if (mapEntourageFragment != null) {
                     mapEntourageFragment.saveOngoingTour();
                 }
-                gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
                 logout();
                 break;
             case R.id.action_settings:
@@ -606,6 +605,17 @@ public class DrawerActivity extends EntourageSecuredActivity
         } else {
             presenter.updateApplicationInfo("");
         }
+    }
+
+    @Override
+    private void logout(){
+        //TODO: do a proper DELETE not an UPDATE
+        //presenter.deleteApplicationInfo(getDeviceID());
+        presenter.updateApplicationInfo("");
+
+        gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
+
+        super.logout();
     }
 
     // ----------------------------------
@@ -833,7 +843,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void onUnauthorized(OnUnauthorizedEvent event) {
-        gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
         logout();
     }
 
