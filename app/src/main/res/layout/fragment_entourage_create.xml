@@ -198,7 +198,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:paddingStart="5dp"
-                    android:textColor="@color/accent"/>
+                    android:textColor="@color/accent"
+                    android:textSize="18sp"/>
 
                 <ImageView
                     android:id="@+id/create_entourage_description_arrow"

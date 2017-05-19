@@ -231,6 +231,13 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         entourageTitleFragment.show(getFragmentManager(), CreateEntourageTitleFragment.TAG);
     }
 
+    @OnClick(R.id.create_entourage_description_layout)
+    protected void onEditDescriptionClicked() {
+        CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString());
+        descriptionFragment.setListener(this);
+        descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
+    }
+
     // ----------------------------------
     // Microphone handling
     // ----------------------------------

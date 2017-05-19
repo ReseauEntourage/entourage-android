@@ -125,6 +125,7 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
         if (mListener != null) {
             mListener.onTitleChanged(titleEditText.getText().toString());
         }
+        mListener = null;
         dismiss();
     }
 

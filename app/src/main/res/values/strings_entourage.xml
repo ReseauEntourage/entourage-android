@@ -27,6 +27,11 @@
     <string name="entourage_title_fragment_info">Les actions avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
     <string name="entourage_title_fragment_error">Votre titre doit faire moins de 100 caractères. Vous pourrez en dire plus dans la description.</string>
 
+    <!-- Entourage Description Fragment -->
+    <string name="entourage_description_fragment_title">DESCRIPTION</string>
+    <string name="entourage_description_fragment_hint">Exemple : Je suis ancien employé de mairie et disponible pour aide administrative pour l’accès au logement.\nSi vous pensez avoir besoin d’aide, nous pouvons nous retrouver dans un café le weekend.</string>
+    <string name="entourage_description_fragment_info">Racontez votre histoire. Les actions avec une description claire attirent plus de membres et ont plus de chances d’aboutir !</string>
+
     <!-- Edit Entourage -->
     <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
     <string name="entourage_save_ok">Entourage enregistré.</string>
