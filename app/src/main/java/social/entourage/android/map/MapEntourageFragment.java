@@ -26,7 +26,6 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -764,7 +763,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
         clearAll();
         ensureMapVisible();
-        pagination.setNextRadius();
+        pagination.setNextDistance();
 
         if (newsfeedAdapter != null) {
             newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
@@ -1145,7 +1144,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         // update the bottom view, if not refreshing
         if (!pagination.isRefreshing) {
-            showNewsfeedBottomView(newsfeeds.size() == 0);
+            showNewsfeedBottomView(newsfeeds.size() < pagination.itemsPerPage);
         }
 
         if (newsfeedAdapter.getDataItemCount() == 0) {
@@ -2471,15 +2470,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void showNewsfeedBottomView(boolean show) {
         if (newsfeedAdapter == null) return;
-        if (pagination.isNextRadiusAvailable()) {
-            // we can increase the radius
+        if (pagination.isNextDistanceAvailable()) {
+            // we can increase the distance
             newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
         } else {
             if (newsfeedAdapter.getDataItemCount() == 0) {
-                // max radius and still no items, show no items info
+                // max distance and still no items, show no items info
                 newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
             } else {
-                // max radius and items, show nothing
+                // max distance and items, show nothing
                 newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
             }
         }

@@ -44,7 +44,6 @@ import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.CrashlyticsNewsFeedListener;
 import social.entourage.android.tools.LoggerNewsFeedListener;
@@ -302,7 +301,7 @@ public class TourService extends Service {
             return false;
         }
         pagination.isLoading = true;
-        tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate(), pagination.radius, getApplicationContext());
+        tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate(), pagination.distance, pagination.itemsPerPage, getApplicationContext());
         return true;
     }
 

@@ -50,7 +50,7 @@ public class TourServiceManagerTest {
     public void retrieveNewsFeed_WithoutNetworkInfo() {
         given(connectivityManager.getActiveNetworkInfo()).willReturn(null);
 
-        tourServiceManager.retrieveNewsFeed(new Date(), 0, context);
+        tourServiceManager.retrieveNewsFeed(new Date(), 0, 1, context);
 
         verify(service).notifyListenersNetworkException();
     }
@@ -61,7 +61,7 @@ public class TourServiceManagerTest {
         given(connectivityManager.getActiveNetworkInfo()).willReturn(networkInfo);
         given(networkInfo.isConnected()).willReturn(false);
 
-        tourServiceManager.retrieveNewsFeed(new Date(), 0, context);
+        tourServiceManager.retrieveNewsFeed(new Date(), 0, 1, context);
 
         verify(service).notifyListenersNetworkException();
     }
@@ -73,7 +73,7 @@ public class TourServiceManagerTest {
         given(networkInfo.isConnected()).willReturn(true);
         given(location.getCurrentCameraPosition()).willReturn(null);
 
-        tourServiceManager.retrieveNewsFeed(new Date(), 0, context);
+        tourServiceManager.retrieveNewsFeed(new Date(), 0, 1, context);
 
         verify(service).notifyListenersCurrentPositionNotRetrieved();
     }

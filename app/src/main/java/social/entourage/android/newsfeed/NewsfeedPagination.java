@@ -11,15 +11,15 @@ import social.entourage.android.base.EntouragePagination;
 
 public class NewsfeedPagination extends EntouragePagination {
 
-    private static final int[] availableRadius = { 10, 20, 40 };
+    private static final int[] availableDistances = { 10, 20, 40 };
 
-    public int radius; // kilometers
-    private int radiusIndex;
+    public int distance; // kilometers
+    private int distanceIndex;
 
     public NewsfeedPagination() {
         super();
-        this.radius = availableRadius[0];
-        this.radiusIndex = 0;
+        this.distance = availableDistances[0];
+        this.distanceIndex = 0;
     }
 
     public void reset() {
@@ -31,13 +31,13 @@ public class NewsfeedPagination extends EntouragePagination {
         isRefreshing = false;
     }
 
-    public boolean isNextRadiusAvailable() {
-        return radiusIndex < availableRadius.length -1;
+    public boolean isNextDistanceAvailable() {
+        return distanceIndex < (availableDistances.length - 1);
     }
 
-    public void setNextRadius() {
-        radiusIndex ++;
-        if (radiusIndex == availableRadius.length) return;
-        this.radius = availableRadius[radiusIndex];
+    public void setNextDistance() {
+        if (distanceIndex == (availableDistances.length - 1)) return;
+        distanceIndex++;
+        this.distance = availableDistances[distanceIndex];
     }
 }

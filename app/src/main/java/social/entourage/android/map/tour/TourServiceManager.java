@@ -360,7 +360,7 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveNewsFeed(Date beforeDate, int radius, Context context) {
+    protected void retrieveNewsFeed(Date beforeDate, int distance, int itemsPerPage, Context context) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
             tourService.notifyListenersNetworkException();
@@ -371,7 +371,7 @@ public class TourServiceManager {
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
             MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
-            currentNewsFeedCall = createNewsfeedWrapperCall(beforeDate, location, radius, mapFilter);
+            currentNewsFeedCall = createNewsfeedWrapperCall(beforeDate, location, distance, itemsPerPage, mapFilter);
             currentNewsFeedCall.enqueue(new NewsFeedCallback(this, tourService));
         } else {
             tourService.notifyListenersCurrentPositionNotRetrieved();
@@ -567,12 +567,13 @@ public class TourServiceManager {
         }
     }
 
-    private Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(Date beforeDate, LatLng location, int radius, MapFilter mapFilter) {
+    private Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(Date beforeDate, LatLng location, int distance, int itemsPerPage, MapFilter mapFilter) {
         return newsfeedRequest.retrieveFeed(
                 (beforeDate == null ? null : new EntourageDate(beforeDate)),
                 location.longitude,
                 location.latitude,
-                radius,
+                distance,
+                itemsPerPage,
                 mapFilter.getTourTypes(),
                 mapFilter.showTours,
                 mapFilter.onlyMyEntourages,
