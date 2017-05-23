@@ -383,12 +383,7 @@ public class UserEditFragment extends EntourageDialogFragment {
             ((EntourageActivity) getActivity()).dismissProgressDialog();
         }
         if (success) {
-            //remove the tutorial flag
-            SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-            HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
-            loggedNumbers.remove(this.editedUser.getPhone());
-            sharedPreferences.edit().putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers).commit();
-            //go back to login screen
+            //logout and go back to login screen
             if (getActivity() instanceof DrawerActivity) {
                 ((DrawerActivity) getActivity()).selectItem(R.id.action_logout);
             }
