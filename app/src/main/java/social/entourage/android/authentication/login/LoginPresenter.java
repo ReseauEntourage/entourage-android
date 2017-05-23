@@ -301,13 +301,13 @@ public class LoginPresenter {
                             } else if (errorString.contains("INVALID_PHONE_FORMAT")) {
                                 activity.displayToast(R.string.login_error_invalid_phone_format);
                             } else {
-                                activity.displayToast(R.string.registration_number_error_already_registered);
+                                activity.displayToast(R.string.login_error);
                             }
                         } catch (IOException e) {
-                            activity.displayToast(R.string.registration_number_error_already_registered);
+                            activity.displayToast(R.string.login_error);
                         }
                     } else {
-                        activity.displayToast(R.string.registration_number_error_already_registered);
+                        activity.displayToast(R.string.login_error);
                     }
                     FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
                 }
@@ -315,7 +315,7 @@ public class LoginPresenter {
 
             @Override
             public void onFailure(final Call<UserResponse> call, final Throwable t) {
-                activity.displayToast(R.string.login_error);
+                activity.displayToast(R.string.login_error_network);
                 FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_ERROR);
             }
         });
