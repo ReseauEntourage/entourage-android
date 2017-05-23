@@ -354,7 +354,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 if (startPoint != null) {
                     Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
                     if (currentLocation != null) {
-                        distance = (int) Math.ceil(startPoint.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude())));
+                        distance = (int) Math.ceil(startPoint.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()))/1000); // in kilometers
                     }
                 }
                 presenter.getFeedItem(feedItem.getId(), feedItem.getType(), feedRank, distance);
