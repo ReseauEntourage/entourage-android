@@ -164,6 +164,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         initializeEmptyListPopup();
         initializePOIList();
 
+        originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
+
         if (!isMapLoaded) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -588,9 +590,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         poisListView.setVisibility(View.GONE);
 
         guideDisplayToggle.setChecked(true);
-
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-        originalMapLayoutHeight = lp.height;
 
         ensureMapVisible();
 
