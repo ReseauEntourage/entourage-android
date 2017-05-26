@@ -159,7 +159,9 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     protected void onOkClicked() {
         if (disclaimerSwitch.isChecked()) {
             //inform the listener that the user accepted the CGU
-            mListener.onEntourageDisclaimerAccepted(this, entourageType);
+            if (mListener != null) {
+                mListener.onEntourageDisclaimerAccepted(this, entourageType);
+            }
         } else {
             Toast.makeText(getActivity(), R.string.entourage_disclaimer_error_notaccepted, Toast.LENGTH_SHORT).show();
         }
