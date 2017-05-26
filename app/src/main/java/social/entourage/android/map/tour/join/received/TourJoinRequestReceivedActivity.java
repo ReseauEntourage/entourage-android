@@ -149,6 +149,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
     }
 
     protected void onUserTourStatusChanged(String status, boolean statusChanged) {
+        if (isFinishing()) return;
         if (!statusChanged) {
             Toast.makeText(this, R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
             displayMessage();
