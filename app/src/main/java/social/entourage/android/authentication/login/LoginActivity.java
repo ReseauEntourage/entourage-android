@@ -796,6 +796,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     protected void showPhotoChooseSource() {
+        if (isFinishing()) return;
         if (loginPresenter != null && loginPresenter.authenticationController != null) {
             hideKeyboard();
             loginEmail.setVisibility(View.GONE);
@@ -814,6 +815,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     protected void onUserPhotoUpdated(boolean updated) {
+        if (isFinishing()) return;
         dismissProgressDialog();
         PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
         if (photoEditFragment != null) {
