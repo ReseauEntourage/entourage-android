@@ -362,6 +362,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         super.onStop();
 
         newsfeedListView.removeOnScrollListener(scrollListener);
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
         isStopped = true;
     }
 
