@@ -1,6 +1,7 @@
 package social.entourage.android.carousel.pages;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,7 +41,11 @@ public class CarouselPage1Fragment extends Fragment {
     @OnClick(R.id.carousel_p1_handshake)
     void onHandshakeClicked() {
         Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.HELP_URL));
-        startActivity(blogIntent);
+        try {
+            startActivity(blogIntent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(getActivity(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

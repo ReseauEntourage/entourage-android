@@ -523,7 +523,11 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_blog:
                 Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.BLOG_URL));
-                startActivity(blogIntent);
+                try {
+                    startActivity(blogIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.action_charte:
                 boolean isPro = false;
@@ -537,21 +541,38 @@ public class DrawerActivity extends EntourageSecuredActivity
                 } else {
                     charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_public)));
                 }
-                startActivity(charteIntent);
+                try {
+                    startActivity(charteIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.action_goal:
                 FlurryAgent.logEvent(Constants.EVENT_MENU_GOAL);
                 Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GOAL_URL));
-                startActivity(goalIntent);
+                try {
+                    startActivity(goalIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.action_faq:
                 FlurryAgent.logEvent(Constants.EVENT_MENU_FAQ);
                 Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_URL));
-                startActivity(userGuideIntent);
+                try {
+                    startActivity(userGuideIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.action_atd:
                 Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.ATD_URL));
-                startActivity(atdIntent);
+                try {
+                    startActivity(atdIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();

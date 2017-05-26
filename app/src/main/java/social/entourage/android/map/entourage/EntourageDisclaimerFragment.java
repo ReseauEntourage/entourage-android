@@ -1,5 +1,6 @@
 package social.entourage.android.map.entourage;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -100,7 +101,11 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
                     FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_LINK);
                     String disclaimerURL = isPro ? getString(R.string.disclaimer_link_pro) : getString(R.string.disclaimer_link_public);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(disclaimerURL));
-                    startActivity(browserIntent);
+                    try {
+                        startActivity(browserIntent);
+                    } catch (ActivityNotFoundException ex) {
+                        Toast.makeText(getActivity(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 

@@ -2,6 +2,7 @@ package social.entourage.android.guide;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import android.widget.Adapter;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.flurry.android.FlurryAgent;
@@ -390,7 +392,11 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         onBackPressed();
         // Open the link to propose a POI
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.POI_PROPOSE_URL));
-        startActivity(browserIntent);
+        try {
+            startActivity(browserIntent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(getActivity(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     // ----------------------------------

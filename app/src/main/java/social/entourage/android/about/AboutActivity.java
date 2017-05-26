@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
@@ -84,7 +85,11 @@ public class AboutActivity extends AppCompatActivity {
         FlurryAgent.logEvent(Constants.EVENT_ABOUT_FACEBOOK);
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_URL));
-        startActivity(browserIntent);
+        try {
+            startActivity(browserIntent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.about_conditions_layout)
@@ -92,7 +97,11 @@ public class AboutActivity extends AppCompatActivity {
         FlurryAgent.logEvent(Constants.EVENT_ABOUT_CGU);
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_URL));
-        startActivity(browserIntent);
+        try {
+            startActivity(browserIntent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.about_website_layout)
@@ -100,7 +109,11 @@ public class AboutActivity extends AppCompatActivity {
         FlurryAgent.logEvent(Constants.EVENT_ABOUT_WEBSITE);
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WEBSITE_URL));
-        startActivity(browserIntent);
+        try {
+            startActivity(browserIntent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.about_email_layout)
@@ -111,6 +124,8 @@ public class AboutActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
+        } else {
+            Toast.makeText(this, R.string.error_no_email, Toast.LENGTH_SHORT).show();
         }
     }
 }
