@@ -1012,6 +1012,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     protected void registerPhoneNumberSent(String phoneNumber, boolean smsSent) {
+        if (isFinishing()) return;
         if (smsSent) {
             displayToast(R.string.registration_smscode_sent);
         }
