@@ -68,6 +68,7 @@ import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
 import social.entourage.android.api.tape.Events.OnUserActEvent;
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.guide.GuideMapEntourageFragment;
@@ -329,8 +330,10 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void sendMapFragmentExtras() {
-        int userId = getAuthenticationController().getUser().getId();
-        boolean choice = getAuthenticationController().isUserToursOnly();
+        AuthenticationController authenticationController = getAuthenticationController();
+        if (authenticationController == null || authenticationController.getUser() == null) return;
+        int userId = authenticationController.getUser().getId();
+        boolean choice = authenticationController.isUserToursOnly();
         mapEntourageFragment.onNotificationExtras(userId, choice);
     }
 
