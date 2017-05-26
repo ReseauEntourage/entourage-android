@@ -1443,6 +1443,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     private void updateDiscussionList(boolean scrollToLastCard) {
 
+        if (discussionAdapter == null || feedItem == null) return;
+
         List<TimestampedObject> addedCardInfoList = feedItem.getAddedCardInfoList();
         if (addedCardInfoList == null || addedCardInfoList.size() == 0) {
             return;
