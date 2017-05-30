@@ -2087,7 +2087,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
             }
             // add the card
-            newsfeedAdapter.addCardInfoBeforeTimestamp(card);
+            if (pagination.isRefreshing) {
+                newsfeedAdapter.addCardInfoBeforeTimestamp(card);
+            } else {
+                newsfeedAdapter.addCardInfo(card);
+            }
         }
     }
 
@@ -2483,8 +2487,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 // max distance and still no items, show no items info
                 newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
             } else {
-                // max distance and items, show nothing
-                newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
+                // max distance and items, show no more items info
+                newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_MORE_ITEMS);
             }
         }
         if (newsfeedAdapter.getDataItemCount() > 0) {

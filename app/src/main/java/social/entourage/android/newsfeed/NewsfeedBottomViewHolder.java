@@ -18,10 +18,13 @@ public class NewsfeedBottomViewHolder extends BottomViewHolder {
 
     public static final int CONTENT_TYPE_LOAD_MORE = 0;
     public static final int CONTENT_TYPE_NO_ITEMS = 1;
+    public static final int CONTENT_TYPE_NO_MORE_ITEMS = 2;
 
     private View loadMoreView;
     private TextView loadMoreTextView;
     private TextView noItemsTextView;
+
+    private int contentType = -1;
 
     public NewsfeedBottomViewHolder(final View view) {
         super(view);
@@ -46,17 +49,26 @@ public class NewsfeedBottomViewHolder extends BottomViewHolder {
         super.populate(showContent, contentType);
         if (showContent) {
             // switch between content types
-            switch (contentType) {
-                case CONTENT_TYPE_LOAD_MORE:
-                    loadMoreView.setVisibility(View.VISIBLE);
-                    noItemsTextView.setVisibility(View.GONE);
-                    break;
-                case CONTENT_TYPE_NO_ITEMS:
-                    loadMoreView.setVisibility(View.GONE);
-                    noItemsTextView.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    break;
+            if (this.contentType != contentType) {
+                switch (contentType) {
+                    case CONTENT_TYPE_LOAD_MORE:
+                        loadMoreView.setVisibility(View.VISIBLE);
+                        noItemsTextView.setVisibility(View.GONE);
+                        break;
+                    case CONTENT_TYPE_NO_ITEMS:
+                        loadMoreView.setVisibility(View.GONE);
+                        noItemsTextView.setVisibility(View.VISIBLE);
+                        noItemsTextView.setText(R.string.map_empty_newsfeed);
+                        break;
+                    case CONTENT_TYPE_NO_MORE_ITEMS:
+                        loadMoreView.setVisibility(View.GONE);
+                        noItemsTextView.setVisibility(View.VISIBLE);
+                        noItemsTextView.setText(R.string.newsfeed_no_more_items);
+                        break;
+                    default:
+                        break;
+                }
+                this.contentType = contentType;
             }
         }
     }
