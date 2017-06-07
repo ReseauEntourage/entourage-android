@@ -1094,6 +1094,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
 
+        int previousItemCount = newsfeedAdapter.getDataItemCount();
+
         newsfeeds = removeRedundantNewsfeed(newsfeeds, false);
         //add or update the received newsfeed
         for (Newsfeed newsfeed : newsfeeds) {
@@ -1160,6 +1162,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (!initialNewsfeedLoaded) {
                 showToursList();
                 initialNewsfeedLoaded = true;
+            }
+            if (!pagination.isRefreshing && previousItemCount == 0) {
+                newsfeedListView.scrollToPosition(0);
             }
         }
         pagination.isLoading = false;
@@ -1558,7 +1563,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                     tourService.cancelNewsFeedUpdate();
                                 }
 
-                                newsfeedAdapter.removeAll();
+                                if (newsfeedAdapter != null) {
+                                    newsfeedAdapter.removeAll();
+                                    newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
+                                }
                                 pagination = new NewsfeedPagination();
                                 tourService.updateNewsfeed(pagination);
                                 if (userHistory) {
