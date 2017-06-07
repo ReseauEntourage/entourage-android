@@ -345,6 +345,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         super.onStop();
 
         toursListView.removeOnScrollListener(scrollListener);
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
         isStopped = true;
     }
 
@@ -2406,7 +2411,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
                 CarouselFragment carouselFragment = new CarouselFragment();
-                carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
+                try {
+                    carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
+                } catch (Exception e) {
+                    // This is just to see if we still get the Illegal state exception
+                    FlurryAgent.logEvent("CAROUSEL_EXCEPTION");
+                }
             }
         }, Constants.CAROUSEL_DELAY_MILLIS);
     }
