@@ -51,7 +51,8 @@ public interface EntourageRequest {
 
     @POST("entourages/{entourage_id}/users")
     Call<TourUser.TourUserWrapper> requestToJoinEntourage(
-            @Path("entourage_id") long entourageId
+            @Path("entourage_id") long entourageId,
+            @Body Entourage.EntourageJoinInfo info
     );
 
     @PUT("entourages/{entourage_id}/users/{user_id}")

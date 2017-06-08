@@ -17,6 +17,7 @@ import com.squareup.otto.Subscribe;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -522,7 +523,8 @@ public class TourServiceManager {
     protected void requestToJoinEntourage(final Entourage entourage) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            Call<TourUser.TourUserWrapper> call = entourageRequest.requestToJoinEntourage(entourage.getId());
+            Entourage.EntourageJoinInfo joinInfo = new Entourage.EntourageJoinInfo(entourage.distanceToCurrentLocation());
+            Call<TourUser.TourUserWrapper> call = entourageRequest.requestToJoinEntourage(entourage.getId(), joinInfo);
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {

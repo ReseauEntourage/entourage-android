@@ -1,12 +1,14 @@
 package social.entourage.android.api.model.map;
 
 import android.content.Context;
+import android.location.Location;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 
 /**
@@ -127,6 +129,22 @@ public class Entourage extends FeedItem implements Serializable {
         return true;
     }
 
+    /**
+     * Returns the distance from the entourage starting point to the current location
+     * If the current location or the starting point is null, it returns zero
+     * @return distance in kilometers
+     */
+    public int distanceToCurrentLocation() {
+        EntourageLocation entourageLocation = EntourageLocation.getInstance();
+        Location location = entourageLocation.getCurrentLocation();
+        TourPoint startPoint = getStartPoint();
+        if (location == null || startPoint == null) {
+            return 0;
+        }
+        float distance = startPoint.distanceTo(new TourPoint(location.getLatitude(), location.getLongitude()));
+        return (int)Math.floor(distance/1000.0f);
+    }
+
     // ----------------------------------
     // FeedItem overrides
     // ----------------------------------
@@ -209,6 +227,24 @@ public class Entourage extends FeedItem implements Serializable {
 
         public void setEntourage(final Entourage entourage) {
             this.entourage = entourage;
+        }
+
+    }
+
+    public static class EntourageJoinInfo {
+
+        private Integer distance;
+
+        public EntourageJoinInfo(int distance) {
+            this.distance = distance;
+        }
+
+        public Integer getDistance() {
+            return distance;
+        }
+
+        public void setDistance(final Integer distance) {
+            this.distance = distance;
         }
 
     }
