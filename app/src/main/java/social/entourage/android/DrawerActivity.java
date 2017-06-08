@@ -1119,6 +1119,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                     PushNotificationContent content = message.getContent();
                     if (content != null) {
                         String contentType = content.getType();
+                        if (contentType == null) {
+                            return;
+                        }
                         if (contentType.equals(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE)) {
                             if (!onPushNotificationChatMessageReceived(message)) {
                                 addPushNotification(message);
