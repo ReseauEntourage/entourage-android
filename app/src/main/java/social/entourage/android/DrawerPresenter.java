@@ -114,6 +114,12 @@ public class DrawerPresenter {
         }
     }
 
+    protected String getDeviceID() {
+        return activity.getApplicationContext()
+                .getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE)
+                .getString(RegisterGCMService.KEY_REGISTRATION_ID, null);
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -162,9 +168,7 @@ public class DrawerPresenter {
     public void updateUser(String email, String smsCode, String phone, Location location) {
         if (activity != null) {
 
-            String deviceId = activity.getApplicationContext()
-                    .getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE)
-                    .getString(RegisterGCMService.KEY_REGISTRATION_ID, null);
+            String deviceId = getDeviceID();
 
             if (deviceId != null) {
 

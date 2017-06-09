@@ -42,6 +42,7 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.HashSet;
 
 import javax.inject.Inject;
 
@@ -69,6 +70,7 @@ import social.entourage.android.api.tape.Events.OnUserActEvent;
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.guide.GuideMapEntourageFragment;
@@ -513,7 +515,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 if (mapEntourageFragment != null) {
                     mapEntourageFragment.saveOngoingTour();
                 }
-                gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
                 logout();
                 break;
             case R.id.action_settings:
@@ -630,6 +631,23 @@ public class DrawerActivity extends EntourageSecuredActivity
         } else {
             presenter.updateApplicationInfo("");
         }
+    }
+
+    @Override
+    protected void logout(){
+        //remove the tutorial flag
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+        loggedNumbers.remove(EntourageApplication.me(getApplicationContext()).getPhone());
+        sharedPreferences.edit().putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers).commit();
+
+        //TODO: do a proper DELETE not an UPDATE
+        //presenter.deleteApplicationInfo(getDeviceID());
+        presenter.updateApplicationInfo("");
+
+        gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
+
+        super.logout();
     }
 
     // ----------------------------------
@@ -857,7 +875,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void onUnauthorized(OnUnauthorizedEvent event) {
-        gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
         logout();
     }
 
