@@ -4,10 +4,13 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -36,6 +39,7 @@ public class PushNotificationService extends IntentService {
     private static final String KEY_OBJECT = "object";
     private static final String KEY_CONTENT = "content";
 
+    private static final String PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID";
     private int notificationId;
 
     public PushNotificationService() {
@@ -44,10 +48,14 @@ public class PushNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        notificationId = new Random().nextInt(MAX - MIN + 1) + MIN;
+        notificationId = getNextNotificationId(getApplicationContext());
         Log.d("notification", "" + notificationId);
         Message message = getMessageFromNotification(intent.getExtras());
-        displayPushNotification(message);
+        PushNotificationContent content = message.getContent();
+        // Display all notifications except the join_request_canceled
+        if (content == null || !PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED.equals(content.getType())) {
+            displayPushNotification(message);
+        }
         BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
@@ -117,6 +125,16 @@ public class PushNotificationService extends IntentService {
     private Message getMessageFromNotification(Bundle args) {
         Log.d("notification", KEY_SENDER+"= "+args.getString(KEY_SENDER)+"; "+KEY_OBJECT+"= "+args.getString(KEY_OBJECT)+"; "+KEY_CONTENT+"= "+args.getString(KEY_CONTENT));
         return new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), notificationId);
+    }
+
+    private static int getNextNotificationId(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int id = sharedPreferences.getInt(PREFERENCE_LAST_NOTIFICATION_ID, 0) + 1;
+        if (id == Integer.MAX_VALUE) {
+            id = 0;
+        }
+        sharedPreferences.edit().putInt(PREFERENCE_LAST_NOTIFICATION_ID, id).apply();
+        return id;
     }
 
 }

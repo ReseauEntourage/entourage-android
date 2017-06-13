@@ -1153,7 +1153,19 @@ public class DrawerActivity extends EntourageSecuredActivity
                                     }
                                 }
                             }
-                        } else {
+                        }
+                        else if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED)) {
+                            EntourageApplication application = EntourageApplication.get(getApplicationContext());
+                            if (application != null) {
+                                if (content.isTourRelated()) {
+                                    application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
+                                }
+                                else if (content.isEntourageRelated()) {
+                                    application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
+                                }
+                            }
+                        }
+                        else {
                             addPushNotification(message);
                             if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
                                 if (mapEntourageFragment != null) {
