@@ -1,5 +1,6 @@
 package social.entourage.android.map.entourage.my.filter;
 
+import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Entourage;
 
 /**
@@ -16,6 +17,8 @@ public class MyEntouragesFilter {
     public boolean entourageTypeContribution = true;
 
     public boolean showTours = true;
+
+    private String allTourTypes;
 
     // ----------------------------------
     // Lifecycle
@@ -55,7 +58,16 @@ public class MyEntouragesFilter {
 
     public String getTourTypes() {
         if (showTours) {
-            return "medical,social,distributive";
+            if (allTourTypes == null) {
+                StringBuilder tourTypes = new StringBuilder();
+                tourTypes.append(TourType.MEDICAL.getName());
+                tourTypes.append(',');
+                tourTypes.append(TourType.BARE_HANDS.getName());
+                tourTypes.append(',');
+                tourTypes.append(TourType.ALIMENTARY.getName());
+                allTourTypes = tourTypes.toString();
+            }
+            return allTourTypes;
         }
         return "";
     }
