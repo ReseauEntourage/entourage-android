@@ -32,19 +32,19 @@
         android:id="@+id/login_include_name"/>
 
     <include
+        android:id="@+id/login_include_geolocation"
+        layout="@layout/login_geolocation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/login_notifications_permission"
-        android:id="@+id/login_include_notifications"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"/>
 
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/login_geolocation"
-        android:id="@+id/login_include_geolocation"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"/>
+        layout="@layout/login_notifications_permission"
+        android:id="@+id/login_include_notifications"/>
 
     <include
         android:id="@+id/login_include_tutorial"

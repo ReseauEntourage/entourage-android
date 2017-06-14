@@ -1195,7 +1195,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void onClick(final DialogInterface dialog, final int i) {
                         NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
-                        noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), "fragment_no_location_permission");
+                        noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), NoLocationPermissionFragment.TAG);
                         BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
                     }
                 })

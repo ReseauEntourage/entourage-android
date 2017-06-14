@@ -1,18 +1,30 @@
 package social.entourage.android.map.permissions;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.flurry.android.FlurryAgent;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.R;
+import social.entourage.android.authentication.login.LoginActivity;
 
 public class NoLocationPermissionFragment extends DialogFragment {
+
+    public static final String TAG = "fragment_no_location_permission";
+
+    private boolean showingGeolocationSettings = false;
 
     public NoLocationPermissionFragment() {
         // Required empty public constructor
@@ -34,6 +46,17 @@ public class NoLocationPermissionFragment extends DialogFragment {
         return view;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        return new Dialog(getActivity(), getTheme()) {
+            @Override
+            public void onBackPressed() {
+                onBackButton();
+            }
+        };
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -44,8 +67,27 @@ public class NoLocationPermissionFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (showingGeolocationSettings) {
+            onBackButton();
+        }
+    }
+
     @OnClick(R.id.no_location_back_button)
     protected void onBackButton() {
+        if ( (getActivity() != null) && (getActivity() instanceof LoginActivity) ) {
+            LoginActivity loginActivity = (LoginActivity)getActivity();
+            loginActivity.showNotificationPermissionView();
+        }
         dismiss();
+    }
+
+    @OnClick(R.id.no_location_activate_button)
+    protected void onActivateButton() {
+        FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_ACTIVATE_04_4A);
+        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        showingGeolocationSettings = true;
     }
 }

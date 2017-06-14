@@ -64,6 +64,7 @@ public class Constants {
     public static final String EVENT_GEOLOCATION_ACCEPT = "AcceptGeoloc";
     public static final String EVENT_GEOLOCATION_POPUP_ACCEPT = "AcceptGeolocFromPopup";
     public static final String EVENT_GEOLOCATION_POPUP_REFUSE = "RefuseGeolocFromPopup";
+    public static final String EVENT_GEOLOCATION_ACTIVATE_04_4A = "ActivateGeolocFromScreen04_4UserBlocked";
     public static final String EVENT_WELCOME_CONTINUE = "WelcomeScreenContinue";
 
     // SCREEN Events

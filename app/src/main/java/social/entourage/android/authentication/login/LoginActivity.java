@@ -56,6 +56,7 @@ import social.entourage.android.authentication.login.register.RegisterNumberFrag
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
 import social.entourage.android.base.AmazonS3Utils;
+import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -496,7 +497,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         } else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
             showPhotoChooseSource();
         } else {
-            showNotificationPermissionView();
+            showGeolocationView();
         }
     }
 
@@ -515,13 +516,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     public void onPhotoBack() {
         FlurryAgent.logEvent(Constants.EVENT_PHOTO_BACK);
-        showNotificationPermissionView();
+        showGeolocationView();
     }
 
     @Override
     public void onPhotoIgnore() {
         FlurryAgent.logEvent(Constants.EVENT_PHOTO_IGNORE);
-        showNotificationPermissionView();
+        showGeolocationView();
     }
 
     @Override
@@ -807,7 +808,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
                 fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
             } else {
-                showNotificationPermissionView();
+                showGeolocationView();
             }
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
@@ -826,7 +827,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             if (fragment != null && !fragment.isStopped()) {
                 fragment.dismiss();
             }
-            showNotificationPermissionView();
+            showGeolocationView();
         } else {
             Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
         }
@@ -1029,7 +1030,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Notifications View
      ************************/
 
-    private void showNotificationPermissionView() {
+    public void showNotificationPermissionView() {
         FlurryAgent.logEvent(Constants.EVENT_SCREEN_04_3);
         loginNotificationsView.setVisibility(View.VISIBLE);
     }
@@ -1037,16 +1038,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_notifications_ignore_button)
     protected void onNotificationsIgnore() {
         saveNotifications(false);
-        loginNotificationsView.setVisibility(View.GONE);
-        showGeolocationView();
+        //loginNotificationsView.setVisibility(View.GONE);
+        finishTutorial();
     }
 
     @OnClick(R.id.login_notifications_accept)
     protected void onNotificationsAccept() {
         FlurryAgent.logEvent(Constants.EVENT_NOTIFICATIONS_ACCEPT);
         saveNotifications(true);
-        loginNotificationsView.setVisibility(View.GONE);
-        showGeolocationView();
+        //loginNotificationsView.setVisibility(View.GONE);
+        finishTutorial();
     }
 
     /************************
@@ -1060,15 +1061,15 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_geolocation_ignore_button)
     protected void onGeolocationIgnore() {
-        loginGeolocationView.setVisibility(View.GONE);
-        finishTutorial();
+        NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
+        noLocationPermissionFragment.show(getSupportFragmentManager(), NoLocationPermissionFragment.TAG);
     }
 
     @OnClick(R.id.login_geolocation_accept_button)
     protected void onGeolocationAccepted() {
         FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_ACCEPT);
         loginGeolocationView.setVisibility(View.GONE);
-        finishTutorial();
+        showNotificationPermissionView();
     }
 
     @OnClick(R.id.login_startup_logo)
