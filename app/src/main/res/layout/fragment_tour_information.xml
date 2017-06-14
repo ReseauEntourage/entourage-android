@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:text="@string/tour_info_title"
             android:textAllCaps="true"/>
 
         <ImageButton
@@ -110,6 +109,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tour_info_header_layout"/>
+
+    <View
+        android:id="@+id/tour_info_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tour_info_separator"
+        android:background="@color/white"/>
 
     <ProgressBar
         android:id="@+id/tour_info_progress_bar"

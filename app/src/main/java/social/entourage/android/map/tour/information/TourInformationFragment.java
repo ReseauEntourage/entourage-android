@@ -191,6 +191,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     DiscussionAdapter discussionAdapter;
 
+    @BindView(R.id.tour_info_loading_view)
+    View loadingView;
+
     @BindView(R.id.tour_info_progress_bar)
     ProgressBar progressBar;
 
@@ -583,6 +586,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.tour_info_more_button)
     public void onMoreButton() {
+
+        if (feedItem == null) return;
+
         Animation bottomUp = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.bottom_up);
 
@@ -853,6 +859,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private void initializeView() {
 
         apiRequestsCount = 0;
+
+        // Hide the loading view
+        loadingView.setVisibility(View.GONE);
 
         // Initialize the header
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
