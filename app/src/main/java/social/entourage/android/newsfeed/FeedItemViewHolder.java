@@ -191,7 +191,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
                         actButton.setPaddingRelative(0, 0, res.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
                     }
                     if (feedItem.getAuthor() != null) {
-                        if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getAuthor().getUserID() == EntourageApplication.me(itemView.getContext()).getId()) {
+                        if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
                             actButton.setText(R.string.tour_cell_button_ongoing);
                         } else {
                             actButton.setText(R.string.tour_cell_button_accepted);

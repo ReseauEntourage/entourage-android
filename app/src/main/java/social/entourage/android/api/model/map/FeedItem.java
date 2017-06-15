@@ -194,15 +194,19 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     }
 
     public boolean isClosed() {
-        return status.equals(STATUS_CLOSED) || status.equals(STATUS_FREEZED);
+        return STATUS_CLOSED.equals(status) || STATUS_FREEZED.equals(status);
+    }
+
+    public boolean isOngoing() {
+        return STATUS_ON_GOING.equals(status);
     }
 
     public boolean isPrivate() {
-        return joinStatus.equals(JOIN_STATUS_ACCEPTED);
+        return JOIN_STATUS_ACCEPTED.equals(joinStatus);
     }
 
     public boolean isFreezed() {
-        return status.equals(STATUS_FREEZED);
+        return STATUS_FREEZED.equals(status);
     }
 
     @Override

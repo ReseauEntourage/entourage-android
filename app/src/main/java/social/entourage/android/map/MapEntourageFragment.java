@@ -105,6 +105,7 @@ import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
+import social.entourage.android.base.BottomViewHolder;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
@@ -961,6 +962,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (closed) {
 
                 clearAll();
+                newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
 
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                     if (feedItem.getId() == currentTourId) {
