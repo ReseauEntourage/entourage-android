@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -31,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -199,6 +201,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @BindView(R.id.fragment_map_follow_button)
     View centerButton;
+
+    @BindView(R.id.fragment_map_filter_button)
+    View filterButton;
 
     @BindView(R.id.layout_map_launcher)
     View mapLauncherLayout;
@@ -1018,8 +1023,54 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onLocationProviderStatusChanged(boolean active) {
         if (gpsLayout != null) {
             if (active) {
+                if (gpsLayout.getVisibility() == View.VISIBLE) {
+                    // Move filter and center buttons up
+                    gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            } else {
+                                gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            }
+
+                            int h = gpsLayout.getHeight();
+
+                            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)centerButton.getLayoutParams();
+                            lp.topMargin -= h;
+                            centerButton.setLayoutParams(lp);
+
+                            lp = (RelativeLayout.LayoutParams)filterButton.getLayoutParams();
+                            lp.topMargin -= h;
+                            filterButton.setLayoutParams(lp);
+                        }
+                    });
+                }
                 gpsLayout.setVisibility(View.GONE);
             } else {
+                if (gpsLayout.getVisibility() == View.GONE) {
+                    // Move filter and center buttons down, so they are not covered by the gps layout
+                    gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            } else {
+                                gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            }
+
+                            int h = gpsLayout.getHeight();
+
+                            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)centerButton.getLayoutParams();
+                            lp.topMargin += h;
+                            centerButton.setLayoutParams(lp);
+
+                            lp = (RelativeLayout.LayoutParams)filterButton.getLayoutParams();
+                            lp.topMargin += h;
+                            filterButton.setLayoutParams(lp);
+                        }
+                    });
+                }
                 gpsLayout.setVisibility(View.VISIBLE);
             }
         }
