@@ -339,8 +339,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             loginEmail.setVisibility(View.GONE);
             loginNameView.setVisibility(View.VISIBLE);
         } else if (loginNameView.getVisibility() == View.VISIBLE) {
+            hideKeyboard();
             loginNameView.setVisibility(View.GONE);
             loginSignin.setVisibility(View.VISIBLE);
+            showKeyboard(phoneEditText);
         } else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
             newsletterEmail.setText("");
             loginNewsletter.setVisibility(View.GONE);
