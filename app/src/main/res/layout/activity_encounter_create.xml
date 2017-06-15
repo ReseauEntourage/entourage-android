@@ -111,7 +111,9 @@
                     android:layout_toRightOf="@+id/create_encounter_location_description"
                     android:layout_toStartOf="@+id/create_encounter_position_arrow"
                     android:gravity="end"
+                    android:paddingEnd="0dp"
                     android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
                     android:paddingStart="5dp"
                     android:textColor="@color/accent"
                     android:textSize="18sp"/>
@@ -181,7 +183,12 @@
                     android:hint="@string/encounter_hint_notes"
                     android:inputType="textMultiLine"
                     android:lines="5"
-                    android:padding="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingEnd="45dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="45dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
                     android:textCursorDrawable="@drawable/bg_cursor_yellow"/>
 
                 <ImageButton
@@ -195,7 +202,8 @@
                     android:layout_marginTop="10dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:contentDescription="@string/encounter_voice_message_button"
-                    android:src="@drawable/ic_action_record_sound"/>
+                    android:src="@drawable/ic_action_record_sound"
+                    app:srcCompat="@drawable/ic_action_record_sound"/>
 
                 <View
                     android:layout_width="match_parent"
