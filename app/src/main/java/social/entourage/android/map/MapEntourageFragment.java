@@ -743,6 +743,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         // Refresh the newsfeed
         if (tourService != null) {
             clearAll();
+            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
+
             tourService.updateNewsfeed(pagination);
         }
     }
@@ -2516,6 +2518,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
      **/
     private void moveFABUp() {
         if (newsfeedListView == null) return;
+        if (!isToursListVisible()) return;
         int visibleItemCount = newsfeedListView.getChildCount();
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) newsfeedListView.getLayoutManager();
         int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
