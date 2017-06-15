@@ -70,29 +70,10 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
     }
 
     public void populate(Encounter encounter) {
-        /*
-        String location = "";
-        Address address = encounter.getAddress();
-        if (address != null) {
-            if (address.getMaxAddressLineIndex() > 0) {
-                location = address.getAddressLine(0);
-            }
-        }
-        else {
-            if (!addressRetrieved) {
-                new GeocoderTask().execute(encounter);
-            }
-        }
-        */
 
-        String encounterDate = "";
-        if (encounter.getCreationDate() != null) {
-            encounterDate = DateFormat.getTimeFormat(context).format(encounter.getCreationDate());
-        }
         mAuthorView.setText(itemView.getContext().getString(R.string.encounter_author_format, encounter.getUserName()));
         String encounterLocation = itemView.getResources().getString(R.string.tour_info_encounter_location,
-                encounter.getStreetPersonName(),
-                encounterDate);
+                encounter.getStreetPersonName());
         mStreetPersonNameView.setText(encounterLocation);
         //mMessageView.setText(encounter.getMessage());
 
@@ -103,29 +84,4 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
         return R.layout.tour_information_encounter_card_view;
     }
 
-    private class GeocoderTask extends AsyncTask<Encounter, Void, Encounter> {
-
-        @Override
-        protected Encounter doInBackground(final Encounter... params) {
-            try {
-                Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
-                Encounter encounter = params[0];
-                List<Address> addresses = geoCoder.getFromLocation(encounter.getLatitude(), encounter.getLongitude(), 1);
-                if (addresses != null && addresses.size() > 0) {
-                    encounter.setAddress(addresses.get(0));
-                }
-                return encounter;
-            }
-            catch (IOException ignored) {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(final Encounter encounter) {
-            addressRetrieved = true;
-            populate(encounter);
-        }
-    }
 }
