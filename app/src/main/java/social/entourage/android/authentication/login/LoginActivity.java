@@ -51,6 +51,7 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.register.OnRegisterUserListener;
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
@@ -291,11 +292,15 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             }
         });
 
-        /*
-        Picasso.with(this).load(R.drawable.ic_user_photo)
-                .transform(new CropCircleTransformation())
-                .into(profilePhoto);
-                */
+        if (loginPresenter != null) {
+            AuthenticationController authenticationController = loginPresenter.authenticationController;
+            if (authenticationController != null) {
+                User user = authenticationController.getUser();
+                if (user != null) {
+                    launchFillInProfileView(user.getPhone(), user);
+                }
+            }
+        }
     }
 
     @Override
@@ -852,7 +857,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.add(loggedPhoneNumber);
-        sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
+        sharedPreferences.edit().clear().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
 
         startMapActivity();
     }

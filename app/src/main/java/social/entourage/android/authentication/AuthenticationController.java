@@ -1,13 +1,19 @@
 package social.entourage.android.authentication;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import social.entourage.android.Constants;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.tools.BusProvider;
@@ -112,6 +118,13 @@ public class AuthenticationController {
 
     public boolean isAuthenticated() {
         return loggedUser != null;
+    }
+
+    public boolean isTutorialDone(Context context) {
+        if (loggedUser == null) return false;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+        return loggedNumbers.contains(loggedUser.getPhone());
     }
 
     public User getUser() {

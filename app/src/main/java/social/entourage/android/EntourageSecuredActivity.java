@@ -1,7 +1,11 @@
 package social.entourage.android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import java.util.HashSet;
 
 import javax.inject.Inject;
 
@@ -20,7 +24,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(!authenticationController.isAuthenticated()) {
+        if(!authenticationController.isAuthenticated() || !authenticationController.isTutorialDone(getApplicationContext())) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         } else {

@@ -639,7 +639,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.remove(EntourageApplication.me(getApplicationContext()).getPhone());
-        sharedPreferences.edit().putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers).commit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers);
+        editor.commit();
 
         //TODO: do a proper DELETE not an UPDATE
         //presenter.deleteApplicationInfo(getDeviceID());
