@@ -83,6 +83,10 @@ android {
         disable 'InvalidPackage'
         abortOnError false
     }
+
+    dexOptions {
+        jumboMode = true
+    }
 }
 
 dependencies {

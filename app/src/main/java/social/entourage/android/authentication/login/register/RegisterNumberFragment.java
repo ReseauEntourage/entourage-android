@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +31,9 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    @BindView(R.id.register_number_ccp)
+    CountryCodePicker countryCodePicker;
 
     @BindView(R.id.register_number_phone_number)
     EditText phoneNumberEditText;
@@ -86,7 +90,7 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
     @OnClick(R.id.register_number_next_button)
     protected void onNextClicked() {
         // Check the phone
-        String phoneNumber = Utils.checkPhoneNumberFormat(phoneNumberEditText.getText().toString());
+        String phoneNumber = Utils.checkPhoneNumberFormat(countryCodePicker.getSelectedCountryCodeWithPlus(), phoneNumberEditText.getText().toString());
         if (phoneNumber == null) {
             Toast.makeText(getActivity(), R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show();
         }

@@ -89,8 +89,7 @@
     <string name="registration_welcome_start">Commencer</string>
 
     <string name="registration_number_title">Quel est votre numéro de portable ? </string>
-    <string name="registration_number_description">Entourage vous envoie un code SMS.
-        Incluez l’indicatif pays si hors France métropolitaine.</string>
+    <string name="registration_number_description">Entourage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
     <string name="registration_number_hint">Numéro de portable</string>
     <string name="registration_number_error_server">Echec de l’envoi du numéro</string>
     <string name="registration_number_error_already_registered">Le numéro est déjà enregistré.</string>

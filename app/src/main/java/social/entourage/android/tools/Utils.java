@@ -19,10 +19,20 @@ public class Utils {
     }
 
     public static String checkPhoneNumberFormat(String phoneNumber) {
+        return checkPhoneNumberFormat(null, phoneNumber);
+    }
+
+    public static String checkPhoneNumberFormat(String countryCode, String phoneNumber) {
 
         if (phoneNumber.startsWith("0")) {
-            phoneNumber = "+33" + phoneNumber.substring(1);
-        } else if (!phoneNumber.startsWith("+")) {
+            phoneNumber = phoneNumber.substring(1);
+        }
+        if (countryCode != null) {
+            phoneNumber = countryCode + phoneNumber;
+        } else {
+            phoneNumber = "+33" + phoneNumber;
+        }
+        if (!phoneNumber.startsWith("+")) {
             phoneNumber = "+" + phoneNumber;
         }
 

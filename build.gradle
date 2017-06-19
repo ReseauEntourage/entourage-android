@@ -3,7 +3,7 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven{ url 'https://jitpack.io' }
+        maven { url 'https://jitpack.io' }
         maven { url "https://jcenter.bintray.com" }
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://github.com/joel1di1/joel1di1-mvn-repo/raw/master/releases/' }
