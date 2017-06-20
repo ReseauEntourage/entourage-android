@@ -523,6 +523,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         if (!isPublicSectionVisible) {
             FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC);
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER);
+        } else {
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCUSSION_VIEW);
         }
 
     }
@@ -582,6 +585,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText);
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)));
+
+        FlurryAgent.logEvent((feedItem != null && feedItem.isPrivate()) ? Constants.EVENT_ENTOURAGE_SHARE_MEMBER : Constants.EVENT_ENTOURAGE_SHARE_NONMEMBER);
     }
 
     @OnClick(R.id.tour_info_more_button)
@@ -1348,6 +1353,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         updateJoinStatus();
 
         initializeMap();
+
+        if (feedItem != null && feedItem.isPrivate()) {
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER);
+        } else {
+            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_PUBLIC_VIEW_NONMEMBER);
+        }
     }
 
     private void switchToPrivateSection() {
@@ -1379,6 +1390,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         initializeDiscussionList();
         initializeMembersView();
+
+        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCUSSION_VIEW);
     }
 
     private void loadPrivateCards() {

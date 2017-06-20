@@ -50,6 +50,7 @@ public class Constants {
     public static final String EVENT_PHONE_SUBMIT_ERROR = "TelephoneSubmitError";
     public static final String EVENT_SMS_CODE_REQUEST = "SMSCodeRequest";
     public static final String EVENT_EMAIL_SUBMIT = "EmailSubmit";
+    public static final String EVENT_EMAIL_IGNORE = "IgnoreEmail";
     public static final String EVENT_NAME_SUBMIT = "NameSubmit";
     public static final String EVENT_NAME_SUBMIT_ERROR = "NameSubmitError";
     public static final String EVENT_NAME_TYPE = "NameType";
@@ -68,7 +69,7 @@ public class Constants {
     public static final String EVENT_WELCOME_CONTINUE = "WelcomeScreenContinue";
 
     // SCREEN Events
-    public static final String EVENT_SCREEN_01 = "Screen01SplashVew";
+    public static final String EVENT_SCREEN_01 = "Screen01SplashView";
     public static final String EVENT_SCREEN_02_1 = "Screen02OnboardingLoginView";
     public static final String EVENT_SCREEN_03_1 = "Screen03_1OnboardingCodeResendView";
     public static final String EVENT_SCREEN_03_2 = "Screen03_2OnboardingPhoneNotFoundView";
@@ -106,6 +107,9 @@ public class Constants {
     public static final String EVENT_MENU_ABOUT = "AboutClick";
     public static final String EVENT_MENU_GOAL = "WhatActionsClick";
     public static final String EVENT_MENU_FAQ = "AppFAQClick";
+    public static final String EVENT_MENU_BLOG = "SimpleCommeBonjourClick";
+    public static final String EVENT_MENU_CHART = "ViewEthicsChartClick";
+    public static final String EVENT_MENU_ATD = "ATDPartnershipView";
 
     //FEED Events
     public static final String EVENT_FEED_MESSAGES = "GoToMessages"; // No longer used
@@ -136,6 +140,7 @@ public class Constants {
     //MAP Events
     public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick";
     public static final String EVENT_MAP_LISTVIEW_CLICK = "ListViewClick";
+    public static final String EVENT_MAP_PLUS_CLICK = "PlusFromMapClick";
     public static final String EVENT_MAP_LONGPRESS = "HiddenButtonsOverlayPress";
     public static final String EVENT_MAP_ZOOM_IN = "ZoomIn";
     public static final String EVENT_MAP_ZOOM_OUT = "ZoomOut";
@@ -145,6 +150,9 @@ public class Constants {
     public static final String EVENT_GUIDE_POI_VIEW = "POIView";
     public static final String EVENT_GUIDE_PLUS_CLICK = "PlusFromGDSClick";
     public static final String EVENT_GUIDE_MASK_CLICK = "MaskGDSClick";
+    public static final String EVENT_GUIDE_X_CLICK = "MaskGDSXClick";
+    public static final String EVENT_GUIDE_LIST_VIEW = "GDSListViewClick";
+    public static final String EVENT_GUIDE_MAP_VIEW = "GDSMapViewClick";
 
     //SEND JOIN REQUEST Events
     public static final String EVENT_JOIN_REQUEST_START = "StartJoinMessage";
@@ -153,6 +161,9 @@ public class Constants {
     public static final String EVENT_JOIN_REQUEST_REJECT = "RejectJoinRequest";
 
     //ENTOURAGE VIEW Events
+    public static final String EVENT_ENTOURAGE_DISCUSSION_VIEW = "Screen14_1DiscussionView";
+    public static final String EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER = "Screen14_2PublicPageViewAsMemberOrCreator";
+    public static final String EVENT_ENTOURAGE_PUBLIC_VIEW_NONMEMBER = "Screen14_2PublicPageViewAsNonMember";
     public static final String EVENT_ENTOURAGE_VIEW_WRITE_MESSAGE = "WriteMessage";
     public static final String EVENT_ENTOURAGE_VIEW_SPEECH = "SpeechRecognitionMessage";
     public static final String EVENT_ENTOURAGE_VIEW_ADD_MESSAGE = "AddContentToMessage";
@@ -171,10 +182,12 @@ public class Constants {
     public static final String EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE = "BlockedClosePopup";
     public static final String EVENT_ENTOURAGE_CLOSE_POPUP_HELP = "HelpRequestOnClosePopup";
     public static final String EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL = "CancelClosePopup";
+    public static final String EVENT_ENTOURAGE_SHARE_MEMBER = "ShareLinkAsMemberOrCreator";
+    public static final String EVENT_ENTOURAGE_SHARE_NONMEMBER = "ShareLinkAsNonMember";
 
     //MY ENTOURAGES Events
     public static final String EVENT_MYENTOURAGES_BANNER_CLICK = "BannerMessageClick";
-    public static final String EVENT_MYENTOURAGES_MESSAGE_OPEN = "MessageOpen"; //The entourage card is reused in multiple screens
+    public static final String EVENT_MYENTOURAGES_MESSAGE_OPEN = "MessageOpen";
     public static final String EVENT_MYENTOURAGES_PLUS_CLICK = "PlusOnMessagesPageClick";
     public static final String EVENT_MYENTOURAGES_FILTER_CLICK = "MessagesFilterClick";
     public static final String EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick"; //A lot of code needs to be written to detect this
@@ -187,7 +200,7 @@ public class Constants {
     public static final String EVENT_MYENTOURAGES_FILTER_INVITATIONS = "InvitationsFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_ORGANIZER = "OrganizerFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_UNREAD = "UnreadMessagesFilter";
-    public static final String EVENT_MYENTOURAGES_FILTER_PAST = "PastFilter";
+    public static final String EVENT_MYENTOURAGES_FILTER_PAST = "ExcludeClosedEntouragesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_ASK = "AskMessagesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_OFFER = "OfferMessagesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_TOUR = "TourMessagesFilter";
@@ -234,12 +247,20 @@ public class Constants {
     // USER Events
     public static final String EVENT_USER_EDIT_PROFILE = "EditMyProfile";
     public static final String EVENT_USER_EDIT_PHOTO = "EditPhoto";
+    public static final String EVENT_USER_SAVE = "SaveProfileEdits";
+    public static final String EVENT_USER_TOBADGE = "ToBadgePageFromProfile";
+    public static final String EVENT_USER_TONOTIFICATIONS = "ToNotifications";
 
     // ABOUT Events
     public static final String EVENT_ABOUT_RATING = "RatingClick";
     public static final String EVENT_ABOUT_FACEBOOK = "FacebookPageClick";
     public static final String EVENT_ABOUT_WEBSITE = "WebsiteVisitClick";
     public static final String EVENT_ABOUT_CGU = "CGUClick";
+
+    // Encounter Popup While Tour Events
+    public static final String EVENT_ENCOUNTER_POPUP_SHOW = "SwitchToEncounterPopupView";
+    public static final String EVENT_ENCOUNTER_POPUP_ENCOUNTER = "SwitchToCreateEncounter";
+    public static final String EVENT_ENCOUNTER_POPUP_ENTOURAGE = "ContinueCreatePublicEntourage";
 
     // Geolocation
     public static final long UPDATE_TIMER_MILLIS_OFF_TOUR = 20000;

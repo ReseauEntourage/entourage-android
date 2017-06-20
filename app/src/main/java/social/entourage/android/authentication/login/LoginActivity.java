@@ -738,6 +738,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_email_ignore_button)
     void ignoreEmail() {
+        FlurryAgent.logEvent(Constants.EVENT_EMAIL_IGNORE);
         if (loginPresenter != null) {
             loginPresenter.updateUserToServer();
         } else {

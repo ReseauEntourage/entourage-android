@@ -304,6 +304,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     @OnClick(R.id.fragment_guide_hide_button)
     void onHideClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_GUIDE_X_CLICK);
         DrawerActivity activity = (DrawerActivity) getActivity();
         if (activity == null) return;
         activity.onPOILauncherClicked();
@@ -312,10 +313,10 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @OnClick(R.id.fragment_guide_display_toggle)
     public void onDisplayToggle() {
         if (guideDisplayToggle.isChecked()) {
-            //FlurryAgent.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
+            FlurryAgent.logEvent(Constants.EVENT_GUIDE_MAP_VIEW);
         }
         else {
-            //FlurryAgent.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
+            FlurryAgent.logEvent(Constants.EVENT_GUIDE_LIST_VIEW);
         }
         togglePOIList();
     }
@@ -337,6 +338,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @Subscribe
     public void onPoiViewRequested(Events.OnPoiViewRequestedEvent event) {
         if (event == null || event.getPoi() == null) return;
+        FlurryAgent.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
         showPoiDetails(event.getPoi());
     }
 

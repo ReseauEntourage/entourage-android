@@ -526,6 +526,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 startActivity(intent);
                 break;
             case R.id.action_blog:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_BLOG);
                 Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.BLOG_URL));
                 try {
                     startActivity(blogIntent);
@@ -534,6 +535,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
                 break;
             case R.id.action_charte:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_CHART);
                 boolean isPro = false;
                 User me = getAuthenticationController().getUser();
                 if (me != null) {
@@ -571,6 +573,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
                 break;
             case R.id.action_atd:
+                FlurryAgent.logEvent(Constants.EVENT_MENU_ATD);
                 Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.ATD_URL));
                 try {
                     startActivity(atdIntent);

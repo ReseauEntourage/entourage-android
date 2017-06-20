@@ -18,6 +18,8 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     protected ViewHolderFactory viewHolderFactory = new ViewHolderFactory();
 
+    protected EntourageViewHolderListener viewHolderListener;
+
     protected boolean needsBottomView = false;
     private boolean showBottomView = false;
     private int bottomViewContentType;
@@ -25,7 +27,10 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
 
-        return viewHolderFactory.getViewHolder(parent, viewType);
+        BaseCardViewHolder cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType);
+        cardViewHolder.setViewHolderListener(viewHolderListener);
+
+        return cardViewHolder;
     }
 
     @Override
@@ -195,4 +200,13 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     public boolean isShowBottomView() {
         return showBottomView;
     }
+
+    public EntourageViewHolderListener getViewHolderListener() {
+        return viewHolderListener;
+    }
+
+    public void setViewHolderListener(final EntourageViewHolderListener viewHolderListener) {
+        this.viewHolderListener = viewHolderListener;
+    }
+
 }

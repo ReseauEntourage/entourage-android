@@ -10,9 +10,19 @@ import social.entourage.android.api.model.TimestampedObject;
  */
 abstract public class BaseCardViewHolder extends RecyclerView.ViewHolder {
 
+    protected EntourageViewHolderListener viewHolderListener;
+
     public BaseCardViewHolder(View view) {
         super(view);
         bindFields();
+    }
+
+    public EntourageViewHolderListener getViewHolderListener() {
+        return viewHolderListener;
+    }
+
+    public void setViewHolderListener(final EntourageViewHolderListener viewHolderListener) {
+        this.viewHolderListener = viewHolderListener;
     }
 
     abstract protected void bindFields();

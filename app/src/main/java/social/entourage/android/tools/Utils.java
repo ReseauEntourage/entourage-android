@@ -26,12 +26,17 @@ public class Utils {
 
         if (phoneNumber.startsWith("0")) {
             phoneNumber = phoneNumber.substring(1);
-        }
-        if (countryCode != null) {
-            phoneNumber = countryCode + phoneNumber;
+            if (countryCode != null) {
+                phoneNumber = countryCode + phoneNumber;
+            } else {
+                phoneNumber = "+33" + phoneNumber;
+            }
         } else {
-            phoneNumber = "+33" + phoneNumber;
+            if (countryCode != null) {
+                phoneNumber = countryCode + phoneNumber;
+            }
         }
+
         if (!phoneNumber.startsWith("+")) {
             phoneNumber = "+" + phoneNumber;
         }

@@ -269,6 +269,7 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.user_save_button)
     protected void onSaveButtonClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_USER_SAVE);
         // If we have an user fragment in the stack, let it handle the update
         UserFragment fragment = (UserFragment)getFragmentManager().findFragmentByTag(UserFragment.TAG);
         if (fragment != null) {
@@ -287,6 +288,7 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.user_add_association_button)
     protected void onAddAssociationClicked() {
+        FlurryAgent.logEvent(Constants.EVENT_USER_TOBADGE);
         UserEditPartnerFragment userEditPartnerFragment = new UserEditPartnerFragment();
         userEditPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);
     }
@@ -294,6 +296,7 @@ public class UserEditFragment extends EntourageDialogFragment {
     @OnClick(R.id.user_notifications_layout)
     protected void onShowNotificationsSettingsClicked() {
         try {
+            FlurryAgent.logEvent(Constants.EVENT_USER_TONOTIFICATIONS);
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Intent intent = new Intent();
                 intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");

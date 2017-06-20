@@ -26,7 +26,7 @@ public class ViewHolderFactory {
         viewHolderTypeHashMap.put(viewType, viewHolderType);
     }
 
-    public RecyclerView.ViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseCardViewHolder getViewHolder(ViewGroup parent, int viewType) {
         ViewHolderType viewHolderType = viewHolderTypeHashMap.get(viewType);
         if (viewHolderType == null) {
             return null;

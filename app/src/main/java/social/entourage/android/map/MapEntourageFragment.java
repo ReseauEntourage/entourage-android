@@ -530,6 +530,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void displayEntouragePopupWhileTour(final String entourageType) {
         // if we have an ongoing tour
         if (isBound && tourService != null && tourService.isRunning()) {
+            FlurryAgent.logEvent(Constants.EVENT_ENCOUNTER_POPUP_SHOW);
             // Show the dialog that asks the user if he really wants to create an entourage instead of encounter
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder
@@ -538,12 +539,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     .setPositiveButton(R.string.entourage_tour_ongoing_proceed, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
+                            FlurryAgent.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENCOUNTER);
                             onAddEncounter();
                         }
                     })
                     .setNegativeButton(R.string.next, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
+                            FlurryAgent.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENTOURAGE);
                             displayEntourageDisclaimer(entourageType);
                         }
                     });
@@ -1417,7 +1420,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             } else if (activity.isGuideShown()) {
                                 FlurryAgent.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
                             } else {
-                                FlurryAgent.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
+                                if (isToursListVisible()) {
+                                    FlurryAgent.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
+                                } else {
+                                    FlurryAgent.logEvent(Constants.EVENT_MAP_PLUS_CLICK);
+                                }
                             }
                         }
                     }

@@ -262,6 +262,9 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
 
             }
             else if (v == itemView) {
+                if (viewHolderListener != null) {
+                    viewHolderListener.onViewHolderDetailsClicked(0);
+                }
                 // The server wants the position starting with 1
                 BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem, getAdapterPosition()+1));
             }

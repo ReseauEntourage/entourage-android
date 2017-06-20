@@ -49,6 +49,7 @@ import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
+import social.entourage.android.base.EntourageViewHolderListener;
 import social.entourage.android.invite.view.InvitationsAdapter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
@@ -58,7 +59,7 @@ import social.entourage.android.tools.BusProvider;
 /**
  * My Entourages Fragment
  */
-public class MyEntouragesFragment extends EntourageDialogFragment implements TourService.TourServiceListener {
+public class MyEntouragesFragment extends EntourageDialogFragment implements TourService.TourServiceListener, EntourageViewHolderListener {
 
     // ----------------------------------
     // Constants
@@ -209,6 +210,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     private void initializeEntouragesView() {
         entouragesView.setLayoutManager(new LinearLayoutManager(getContext()));
         entouragesAdapter = new MyEntouragesAdapter();
+        entouragesAdapter.setViewHolderListener(this);
         entouragesView.setAdapter(entouragesAdapter);
     }
 
@@ -547,6 +549,15 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             // remove the feed item
             entouragesAdapter.removeCard(feedItem);
         }
+    }
+
+    // ----------------------------------
+    // EntourageViewHolderListener
+    // ----------------------------------
+
+    @Override
+    public void onViewHolderDetailsClicked(final int detailType) {
+        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_MESSAGE_OPEN);
     }
 
     // ----------------------------------
