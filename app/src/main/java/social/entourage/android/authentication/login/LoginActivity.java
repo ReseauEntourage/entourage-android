@@ -62,6 +62,7 @@ import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
+import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 import social.entourage.android.view.HtmlTextView;
 
 /**
@@ -102,6 +103,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @BindView(R.id.login_include_signin)
     View loginSignin;
+
+    @BindView(R.id.login_ccp)
+    CountryCodePicker countryCodePicker;
 
     @BindView(R.id.login_edit_phone)
     EditText phoneEditText;
@@ -621,6 +625,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void onLoginClick() {
         if (loginPresenter != null) {
             loginPresenter.login(
+                countryCodePicker.getSelectedCountryCodeWithPlus(),
                 phoneEditText.getText().toString(),
                 passwordEditText.getText().toString());
         } else {
@@ -959,6 +964,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void verifyCode() {
         if (loginPresenter != null) {
             loginPresenter.login(
+                null,
                 lostCodePhone.getText().toString(),
                 receivedCode.getText().toString()
             );
@@ -1006,7 +1012,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     public void registerCheckCode(final String smsCode) {
         if (loginPresenter != null && onboardingUser != null) {
-            loginPresenter.login(onboardingUser.getPhone(), smsCode);
+            loginPresenter.login(null, onboardingUser.getPhone(), smsCode);
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }

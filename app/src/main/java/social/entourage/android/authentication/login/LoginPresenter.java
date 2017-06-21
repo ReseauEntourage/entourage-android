@@ -69,9 +69,9 @@ public class LoginPresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void login(final String phone, final String smsCode) {
+    public void login(String countryCode, final String phone, final String smsCode) {
         if (activity != null) {
-            final String phoneNumber = Utils.checkPhoneNumberFormat(phone);
+            final String phoneNumber = Utils.checkPhoneNumberFormat(countryCode, phone);
             if (phoneNumber != null) {
                 HashMap<String, String> user = new HashMap<>();
                 user.put("phone", phoneNumber);
