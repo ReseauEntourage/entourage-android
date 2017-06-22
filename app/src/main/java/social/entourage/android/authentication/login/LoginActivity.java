@@ -59,6 +59,7 @@ import social.entourage.android.authentication.login.register.RegisterWelcomeFra
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.tools.Utils;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
@@ -125,6 +126,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @BindView(R.id.login_include_lost_code)
     View loginLostCode;
+
+    @BindView(R.id.login_lost_code_ccp)
+    CountryCodePicker lostCodeCountryCodePicker;
 
     @BindView(R.id.login_edit_phone_lost_code)
     EditText lostCodePhone;
@@ -642,6 +646,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         loginLostCode.setVisibility(View.VISIBLE);
         confirmationBlock.setVisibility(View.GONE);
 
+        String phoneNumber = phoneEditText.getText().toString();
+        lostCodePhone.setText(phoneNumber);
+
         showKeyboard(lostCodePhone);
     }
 
@@ -666,9 +673,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_ask_code)
     void sendNewCode() {
+        String phoneNumber = Utils.checkPhoneNumberFormat(lostCodeCountryCodePicker.getSelectedCountryCodeWithPlus(), lostCodePhone.getText().toString());
+        if (phoneNumber == null) {
+            displayToast(getString(R.string.login_text_invalid_format));
+            return;
+        }
         if (loginPresenter != null) {
             startLoader();
-            loginPresenter.sendNewCode(lostCodePhone.getText().toString());
+            loginPresenter.sendNewCode(phoneNumber);
             FlurryAgent.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
@@ -964,7 +976,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void verifyCode() {
         if (loginPresenter != null) {
             loginPresenter.login(
-                null,
+                lostCodeCountryCodePicker.getSelectedCountryCodeWithPlus(),
                 lostCodePhone.getText().toString(),
                 receivedCode.getText().toString()
             );
@@ -1012,7 +1024,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     public void registerCheckCode(final String smsCode) {
         if (loginPresenter != null && onboardingUser != null) {
-            loginPresenter.login(null, onboardingUser.getPhone(), smsCode);
+            loginPresenter. login(null, onboardingUser.getPhone(), smsCode);
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }

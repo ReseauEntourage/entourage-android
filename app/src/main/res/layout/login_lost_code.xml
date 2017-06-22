@@ -110,28 +110,69 @@
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/login_edit_phone_lost_code"
-                style="@style/CustomEditTextThemeAccent"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:hint="@string/login_hint_phone_long"
-                android:inputType="phone"
-                android:maxLength="12"
-                android:textSize="22sp"/>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <View
+                <social.entourage.android.view.CountryCodePicker.CountryCodePicker
+                    android:id="@+id/login_lost_code_ccp"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    app:ccp_backgroundColor="@color/accent"
+                    app:ccp_countryPreference="FR,BE,CA,GP,GF,MQ,MU,YT,PF,RE"
+                    app:ccp_defaultNameCode="FR"
+                    app:ccp_hidePhoneCode="true"
+                    app:ccp_selectionDialogShowSearch="false"
+                    app:ccp_showFlag="false"
+                    app:ccp_textColor="@color/white">
+
+                </social.entourage.android.view.CountryCodePicker.CountryCodePicker>
+
+                <EditText
+                    android:id="@+id/login_edit_phone_lost_code"
+                    style="@style/CustomEditTextThemeAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:hint="@string/login_hint_phone_long"
+                    android:inputType="phone"
+                    android:maxLength="12"
+                    android:textSize="22sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/login_edittext_hint_alpha"/>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:alpha=".5"
+                    android:background="@color/white"/>
+
+                <Space
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    />
+
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha=".5"
+                    android:background="@color/white"/>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/login_button_ask_code"
                 style="@style/WhiteButton.RoundedCorners"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/login_button_ask_code"
                 android:textAllCaps="false"/>
 
