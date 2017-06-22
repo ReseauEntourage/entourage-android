@@ -94,6 +94,7 @@ import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 
@@ -961,7 +962,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    public void onPhotoChosen(final Uri photoUri) {
+    public void onPhotoChosen(final Uri photoUri, int photoSource) {
+
+        if (photoSource == PhotoChooseSourceFragment.TAKE_PHOTO_REQUEST) {
+            FlurryAgent.logEvent(Constants.EVENT_PHOTO_SUBMIT);
+        }
 
         //Upload the photo to Amazon S3
         showProgressDialog(R.string.user_photo_uploading);

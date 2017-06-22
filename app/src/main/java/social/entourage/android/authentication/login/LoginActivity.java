@@ -541,9 +541,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     @Override
-    public void onPhotoChosen(final Uri photoUri) {
+    public void onPhotoChosen(final Uri photoUri, int photoSource) {
 
-        FlurryAgent.logEvent(Constants.EVENT_PHOTO_SUBMIT);
+        if (photoSource == PhotoChooseSourceFragment.TAKE_PHOTO_REQUEST) {
+            FlurryAgent.logEvent(Constants.EVENT_PHOTO_SUBMIT);
+        }
 
         if (loginPresenter == null || loginPresenter.authenticationController == null || loginPresenter.authenticationController.getUser() == null) {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();

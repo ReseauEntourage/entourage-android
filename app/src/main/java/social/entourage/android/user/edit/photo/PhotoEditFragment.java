@@ -36,6 +36,7 @@ public class PhotoEditFragment extends EntourageDialogFragment {
     public static final String TAG = "social.entourage.android.photo_edit";
 
     private static final String PHOTO_PARAM = "social.entourage.android.photo_param";
+    private static final String PHOTO_SOURCE = "social.entourage.android.photo_source";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -46,6 +47,7 @@ public class PhotoEditFragment extends EntourageDialogFragment {
     FloatingActionButton fabButton;
     private PhotoChooseInterface mListener;
     private Uri photoUri;
+    private int photoSource;
 
     // ----------------------------------
     // LIFECYCLE
@@ -55,10 +57,11 @@ public class PhotoEditFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    public static PhotoEditFragment newInstance(Uri photoUri) {
+    public static PhotoEditFragment newInstance(Uri photoUri, int photoSource) {
         PhotoEditFragment fragment = new PhotoEditFragment();
         Bundle args = new Bundle();
         args.putParcelable(PHOTO_PARAM, photoUri);
+        args.putInt(PHOTO_SOURCE, photoSource);
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,6 +82,7 @@ public class PhotoEditFragment extends EntourageDialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             photoUri = getArguments().getParcelable(PHOTO_PARAM);
+            photoSource = getArguments().getInt(PHOTO_SOURCE);
         }
     }
 
@@ -148,7 +152,7 @@ public class PhotoEditFragment extends EntourageDialogFragment {
                     fabButton.setEnabled(true);
                     return;
                 }
-                mListener.onPhotoChosen(uri);
+                mListener.onPhotoChosen(uri, photoSource);
             }
         });
         try {

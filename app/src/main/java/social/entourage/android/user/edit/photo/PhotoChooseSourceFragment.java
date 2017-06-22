@@ -43,8 +43,8 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
     public static final String TAG = "social.entourage.android.photo_choose_source";
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int TAKE_PHOTO_REQUEST = 2;
+    public static final int PICK_IMAGE_REQUEST = 1;
+    public static final int TAKE_PHOTO_REQUEST = 2;
 
     private static final int READ_STORAGE_PERMISSION_CODE = 3;
     private static final int WRITE_STORAGE_PERMISSION_CODE = 4;
@@ -59,6 +59,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
     String mCurrentPhotoPath;
     Uri pickedImageUri = null;
+    int photoSource;
 
     // ----------------------------------
     // LIFECYCLE
@@ -138,6 +139,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && intent != null && intent.getData() != null) {
+            photoSource = requestCode;
 
             Uri uri = intent.getData();
 
@@ -152,6 +154,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         }
 
         if (requestCode == TAKE_PHOTO_REQUEST && resultCode == Activity.RESULT_OK) {
+            photoSource = requestCode;
             if (intent != null && intent.getData() != null ) {
                 showNextStep(intent.getData());
                 return;
@@ -330,7 +333,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
             return;
         }
-        PhotoEditFragment fragment = PhotoEditFragment.newInstance(photoUri);
+        PhotoEditFragment fragment = PhotoEditFragment.newInstance(photoUri, photoSource);
         fragment.show(getFragmentManager(), PhotoEditFragment.TAG);
     }
 

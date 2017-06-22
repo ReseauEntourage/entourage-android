@@ -11,5 +11,5 @@ public interface PhotoChooseInterface {
 
     void onPhotoBack();
     void onPhotoIgnore();
-    void onPhotoChosen(Uri photoURI);
+    void onPhotoChosen(Uri photoURI, int photoSource);
 }
