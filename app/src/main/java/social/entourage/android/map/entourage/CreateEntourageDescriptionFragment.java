@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.base.EntourageDialogFragment;
 
 /**
@@ -35,6 +36,7 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
     EditText descriptionEditText;
 
     private String entourageDescription;
+    private String entourageType;
 
     private CreateEntourageListener mListener;
 
@@ -46,10 +48,11 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
         // Required empty public constructor
     }
 
-    public static CreateEntourageDescriptionFragment newInstance(String description) {
+    public static CreateEntourageDescriptionFragment newInstance(String description, String entourageType) {
         CreateEntourageDescriptionFragment fragment = new CreateEntourageDescriptionFragment();
         Bundle args = new Bundle();
         args.putString(ENTOURAGE_DESCRIPTION, description);
+        args.putString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE, entourageType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,6 +62,7 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             entourageDescription = getArguments().getString(ENTOURAGE_DESCRIPTION);
+            entourageType = getArguments().getString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE);
         }
     }
 
@@ -118,6 +122,7 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
             descriptionEditText.setText(entourageDescription);
             descriptionEditText.setSelection(entourageDescription.length());
         }
+        descriptionEditText.setHint(Entourage.TYPE_CONTRIBUTION.equals(entourageType) ? R.string.entourage_create_description_contribution_hint : R.string.entourage_create_description_demand_hint);
     }
 
 }

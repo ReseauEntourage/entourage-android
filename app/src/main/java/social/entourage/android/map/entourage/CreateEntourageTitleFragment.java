@@ -1,18 +1,14 @@
 package social.entourage.android.map.entourage;
 
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.base.EntourageDialogFragment;
 
 /**
@@ -33,7 +30,7 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
 
     public static final String TAG = CreateEntourageTitleFragment.class.getSimpleName();
 
-    private static final String ENTOURAGE_TITLE = "ENTOURAGE_TITLE";
+    private static final String KEY_ENTOURAGE_TITLE = "KEY_ENTOURAGE_TITLE";
 
     private static final int TITLE_MAX_CHAR_COUNT = 100;
 
@@ -54,6 +51,7 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
     View errorView;
 
     private String entourageTitle;
+    private String entourageType;
 
     private CreateEntourageListener mListener;
 
@@ -65,10 +63,11 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    public static CreateEntourageTitleFragment newInstance(String title) {
+    public static CreateEntourageTitleFragment newInstance(String title, String entourageType) {
         CreateEntourageTitleFragment fragment = new CreateEntourageTitleFragment();
         Bundle args = new Bundle();
-        args.putString(ENTOURAGE_TITLE, title);
+        args.putString(KEY_ENTOURAGE_TITLE, title);
+        args.putString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE, entourageType);
         fragment.setArguments(args);
 
         return fragment;
@@ -78,7 +77,8 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            entourageTitle = getArguments().getString(ENTOURAGE_TITLE);
+            entourageTitle = getArguments().getString(KEY_ENTOURAGE_TITLE);
+            entourageType = getArguments().getString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE);
         }
     }
 
@@ -169,6 +169,8 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
 
         String charCountString = getContext().getString(R.string.entourage_create_title_char_count_format, titleEditText.length(), TITLE_MAX_CHAR_COUNT);
         titleCharCountTextView.setText(charCountString);
+
+        titleEditText.setHint(Entourage.TYPE_CONTRIBUTION.equals(entourageType) ? R.string.entourage_create_title_contribution_hint : R.string.entourage_create_title_demand_hint);
 
     }
 }

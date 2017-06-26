@@ -76,8 +76,8 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     @BindView(R.id.create_entourage_title)
     TextView titleEditText;
 
-    @BindView(R.id.create_entourage_title_hint)
-    TextView titleHintTextView;
+    @BindView(R.id.create_entourage_title_label)
+    TextView titleLabelTextView;
 
 //    @BindView(R.id.create_entourage_title_char_count)
 //    TextView titleCharCountTextView;
@@ -85,8 +85,8 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     @BindView(R.id.create_entourage_description)
     TextView descriptionEditText;
 
-    @BindView(R.id.create_entourage_description_hint)
-    TextView descriptionHintTextView;
+    @BindView(R.id.create_entourage_description_label)
+    TextView descriptionLabelTextView;
 
     private String entourageType;
     private LatLng location;
@@ -226,14 +226,14 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.create_entourage_title_layout)
     protected void onEditTitleClicked() {
-        CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString());
+        CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString(), entourageType);
         entourageTitleFragment.setListener(this);
         entourageTitleFragment.show(getFragmentManager(), CreateEntourageTitleFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_description_layout)
     protected void onEditDescriptionClicked() {
-        CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString());
+        CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString(), entourageType);
         descriptionFragment.setListener(this);
         descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
     }
@@ -329,51 +329,15 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     }
 
     private void initializeTitleEditText() {
-        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
-            titleHintTextView.setText(R.string.entourage_create_title_contribution_hint);
-            //titleEditText.setHint(R.string.entourage_create_title_contribution_hint);
-        } else {
-            titleHintTextView.setText(R.string.entourage_create_title_demand_hint);
-            //titleEditText.setHint(R.string.entourage_create_title_demand_hint_long);
-        }
-
         if (editedEntourage != null) {
             titleEditText.setText(editedEntourage.getTitle());
         }
     }
 
     private void initializeDescriptionEditText() {
-
-//        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
-//            descriptionEditText.setHint(R.string.entourage_create_description_contribution_hint);
-//        } else {
-//            descriptionEditText.setHint(R.string.entourage_create_description_demand_hint);
-//        }
-
         if (editedEntourage != null) {
             descriptionEditText.setText(editedEntourage.getDescription());
         }
-
-//        descriptionEditText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(final Editable s) {
-//                if (s.length() == 0) {
-//                    descriptionHintTextView.setVisibility(View.INVISIBLE);
-//                } else {
-//                    descriptionHintTextView.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
     }
 
     private boolean isValid() {

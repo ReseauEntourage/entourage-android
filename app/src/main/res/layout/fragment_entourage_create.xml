@@ -132,10 +132,10 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/create_entourage_title_hint"
+                    android:id="@+id/create_entourage_title_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/entourage_create_title_demand_hint"
+                    android:text="@string/entourage_create_title_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
                     android:textSize="18sp"
@@ -177,10 +177,10 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/create_entourage_description_hint"
+                    android:id="@+id/create_entourage_description_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/entourage_create_description_hint"
+                    android:text="@string/entourage_create_description_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
                     android:textSize="18sp"

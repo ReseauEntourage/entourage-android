@@ -4,13 +4,13 @@
     <string name="entourage_create_demand_title">DEMANDE</string>
     <string name="entourage_create_contribution_title">CONTRIBUTION</string>
     <string name="entourage_create_position_description">Ma position</string>
-    <string name="entourage_create_title_demand_hint_long">Paire de gants pour Gilles</string>
-    <string name="entourage_create_title_demand_hint">Titre</string>
-    <string name="entourage_create_title_contribution_hint">Titre</string>
+    <string name="entourage_create_title_label">Titre</string>
+    <string name="entourage_create_title_demand_hint">Qui veut aller au contact des personnes de la rue dans le quartier?</string>
+    <string name="entourage_create_title_contribution_hint">Exemple : Je suis disponible pour aide administrative pour l’accès au logement</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
-    <string name="entourage_create_description_hint">Description</string>
-    <string name="entourage_create_description_demand_hint">Gilles passe la journée dehors la main tendue. Avec ce froid, il a les doigts tout engourdis. Qui aurait une paire de gants à donner ?\n(Attention: n\'incluez pas de données permettant d\'identifier ou localiser des personnes)</string>
-    <string name="entourage_create_description_contribution_hint">Je suis ancien employé de mairie et je peux aider dans des démarches administratives.\n(Attention: n\'incluez pas de données permettant d\'identifier ou localiser des personnes.)</string>
+    <string name="entourage_create_description_label">Description</string>
+    <string name="entourage_create_description_demand_hint">J\'habite dans le quartier de République et je souhaiterais savoir si des voisins pourraient me faire faire connaissance avec des personnes de la rue du quartier qu\'ils connaissent déjà. Et si ce n\'est pas encore le cas, allons à leur rencontre ensemble pour leur offrir encore plus de chaleur humaine que n\'en donne la météo !</string>
+    <string name="entourage_create_description_contribution_hint">Exemple : Je suis ancien employé de mairie et disponible pour aide administrative pour l’accès au logement.\nSi vous pensez avoir besoin d’aide, nous pouvons nous retrouver dans un café le weekend.</string>
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
