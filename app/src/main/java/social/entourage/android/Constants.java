@@ -50,6 +50,7 @@ public class Constants {
     public static final String EVENT_PHONE_SUBMIT_ERROR = "TelephoneSubmitError";
     public static final String EVENT_SMS_CODE_REQUEST = "SMSCodeRequest";
     public static final String EVENT_EMAIL_SUBMIT = "EmailSubmit";
+    public static final String EVENT_EMAIL_SUBMIT_ERROR = "EmailSubmitError";
     public static final String EVENT_EMAIL_IGNORE = "IgnoreEmail";
     public static final String EVENT_NAME_SUBMIT = "NameSubmit";
     public static final String EVENT_NAME_SUBMIT_ERROR = "NameSubmitError";

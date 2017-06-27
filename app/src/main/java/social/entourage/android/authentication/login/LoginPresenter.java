@@ -177,7 +177,7 @@ public class LoginPresenter {
     }
 
     protected void updateUserToServer() {
-        User user = authenticationController.getUser();
+        final User user = authenticationController.getUser();
 
         if (activity != null) {
             activity.startLoader();
@@ -202,7 +202,7 @@ public class LoginPresenter {
                     }
                     else {
                         activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
-                        FlurryAgent.logEvent(Constants.EVENT_NAME_SUBMIT_ERROR);
+                        FlurryAgent.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                     }
                 }
 
@@ -210,7 +210,7 @@ public class LoginPresenter {
                 public void onFailure(final Call<UserResponse> call, final Throwable t) {
                     activity.stopLoader();
                     activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
-                    FlurryAgent.logEvent(Constants.EVENT_NAME_SUBMIT_ERROR);
+                    FlurryAgent.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                 }
             });
         }
