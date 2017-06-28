@@ -3,10 +3,14 @@ package social.entourage.android.base;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.OnMapReadyCallback;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.map.MapViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
 
 /**
@@ -24,22 +28,36 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     private boolean showBottomView = false;
     private int bottomViewContentType;
 
+    protected boolean needsTopView = false;
+    private MapViewHolder mapViewHolder;
+    private OnMapReadyCallback onMapReadyCallback;
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
 
         BaseCardViewHolder cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType);
         cardViewHolder.setViewHolderListener(viewHolderListener);
 
+        if (viewType == TimestampedObject.TOP_VIEW) {
+            mapViewHolder = (MapViewHolder)cardViewHolder;
+        }
+
         return cardViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if (position == 0 && needsTopView) {
+            MapViewHolder mapViewHolder = ((MapViewHolder)holder);
+            mapViewHolder.populate(null);
+            mapViewHolder.setMapReadyCallback(onMapReadyCallback);
+            return;
+        }
         if (position == getItemCount() - 1 && needsBottomView) {
             ((BottomViewHolder)holder).populate(showBottomView, bottomViewContentType);
             return;
         }
-        ((BaseCardViewHolder)holder).populate(items.get(position));
+        ((BaseCardViewHolder)holder).populate(items.get(position - (needsTopView ? 1 : 0)));
     }
 
     @Override
@@ -47,7 +65,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (items == null) {
             return 0;
         }
-        return items.size() + (needsBottomView ? 1 : 0); // +1 for the loader
+        return items.size() + (needsTopView ? 1 : 0) + (needsBottomView ? 1 : 0); // +1 for the loader
     }
 
     public int getDataItemCount() {
@@ -57,10 +75,13 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemViewType(final int position) {
+        if (position == 0 && needsTopView) {
+            return TimestampedObject.TOP_VIEW;
+        }
         if (position == getItemCount() - 1 && needsBottomView) {
             return TimestampedObject.BOTTOM_VIEW;
         }
-        return items.get(position).getType();
+        return items.get(position - (needsTopView ? 1 : 0)).getType();
     }
 
     public List<TimestampedObject> getItems() {
@@ -68,11 +89,11 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public void addItems(List<TimestampedObject> addItems) {
-        int positionStart = items.size()-1;
+        int positionStart = items.size()-1 + (needsTopView ? 1 : 0);
         for (int i = 0; i < addItems.size(); i++) {
             addCardInfo(addItems.get(i), false);
         }
-        int positionEnd = items.size()-1;
+        int positionEnd = items.size()-1 + (needsTopView ? 1 : 0);
         notifyItemRangeInserted(positionStart, positionEnd-positionStart);
     }
 
@@ -83,14 +104,14 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void addCardInfo(TimestampedObject cardInfo, boolean notifyView) {
         items.add(cardInfo);
         if (notifyView) {
-            notifyItemInserted(items.size()-1);
+            notifyItemInserted(items.size()-1 + (needsTopView ? 1 : 0));
         }
     }
 
     public void insertCardInfo(TimestampedObject cardInfo, int position) {
         //add the card
         items.add(position, cardInfo);
-        notifyItemInserted(position);
+        notifyItemInserted(position + (needsTopView ? 1 : 0));
     }
 
     public synchronized void addCardInfoAfterTimestamp(TimestampedObject cardInfo) {
@@ -163,7 +184,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
                 card.copyLocalFields(timestampedObject);
                 items.remove(i);
                 items.add(i, card);
-                notifyItemChanged(i);
+                notifyItemChanged(i + (needsTopView ? 1 : 0));
                 return;
             }
         }
@@ -177,7 +198,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
             TimestampedObject timestampedObject = items.get(i);
             if (timestampedObject.equals(card)) {
                 items.remove(i);
-                notifyItemRangeRemoved(i, 1);
+                notifyItemRangeRemoved(i + (needsTopView ? 1 : 0), 1);
                 return;
             }
         }
@@ -189,11 +210,25 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged();
     }
 
+    public MapViewHolder getMapViewHolder() {
+        return mapViewHolder;
+    }
+
+    public void setOnMapReadyCallback(final OnMapReadyCallback onMapReadyCallback) {
+        this.onMapReadyCallback = onMapReadyCallback;
+    }
+
+    public void setMapHeight(int height) {
+        if (mapViewHolder == null || !needsTopView) return;
+        mapViewHolder.setHeight(height);
+        //notifyItemChanged(0);
+    }
+
     public void showBottomView(final boolean showBottomView, int bottomViewContentType) {
         this.showBottomView = showBottomView;
         this.bottomViewContentType = bottomViewContentType;
         if (items != null && needsBottomView) {
-            notifyItemChanged(getItemCount()-1);
+            notifyItemChanged(items.size() + (needsTopView ? 1 : 0));
         }
     }
 

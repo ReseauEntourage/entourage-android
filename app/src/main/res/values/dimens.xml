@@ -13,6 +13,7 @@
 
     <dimen name="newsfeed_fab_bottowm_view_delta">90dp</dimen>
 
+    <dimen name="newsfeed_map_height">155dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
 
 </resources>

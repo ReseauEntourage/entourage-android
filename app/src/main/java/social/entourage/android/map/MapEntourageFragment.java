@@ -160,7 +160,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private View toReturn;
 
-    private SupportMapFragment mapFragment;
+    private OnMapReadyCallback onMapReadyCallback;
     private GoogleMap map;
 
     private LatLng previousCoordinates;
@@ -191,6 +191,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private BitmapDescriptor heatmapIcon;
 
     private int originalMapLayoutHeight;
+    private boolean isFullMapShown = false;
 
     private int isRequestingToJoin = 0;
 
@@ -221,9 +222,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     RecyclerView newsfeedListView;
 
     NewsfeedAdapter newsfeedAdapter;
-
-    @BindView(R.id.layout_map)
-    FrameLayout layoutMapMain;
 
     @BindView(R.id.fragment_map_main_layout)
     RelativeLayout layoutMain;
@@ -1594,9 +1592,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void initializeMap() {
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
-        if (map == null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
+        if (onMapReadyCallback == null) {
+            onMapReadyCallback = new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
                     map = googleMap;
@@ -1665,13 +1662,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                     hideToursList();
                                 }
                                 // EMA-341 Disabling the search tour feature
-                            /*
-                            else {
-                                loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
-                                loaderSearchTours.setCancelable(true);
-                                tourService.searchToursFromPoint(latLng, userHistory, userId, 1, 500);
-                            }
-                            */
+                        /*
+                        else {
+                            loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
+                            loaderSearchTours.setCancelable(true);
+                            tourService.searchToursFromPoint(latLng, userHistory, userId, 1, 500);
+                        }
+                        */
                             }
                         }
                     });
@@ -1694,10 +1691,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         }
                     });
                 }
-            });
+            };
 
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-            originalMapLayoutHeight = lp.height;
+            originalMapLayoutHeight = getResources().getDimensionPixelOffset(R.dimen.newsfeed_map_height);
         }
     }
 
@@ -1705,49 +1701,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (newsfeedAdapter == null) {
             newsfeedListView.setLayoutManager(new LinearLayoutManager(getContext()));
             newsfeedAdapter = new NewsfeedAdapter();
+            newsfeedAdapter.setOnMapReadyCallback(onMapReadyCallback);
             newsfeedListView.setAdapter(newsfeedAdapter);
-
-            newsfeedListView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-                @Override
-                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                    if (e.getAction() == MotionEvent.ACTION_MOVE) {
-                        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv.getLayoutManager();
-                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                            // beginning of the recycler
-                            if (e.getHistorySize() > 0) {
-                                float originalY = e.getHistoricalY(0, 0);
-                                float finalY = e.getY(0);
-                                float dY = finalY - originalY;
-                                if (dY > 0) {
-                                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                                    if (lp.topMargin < 0) {
-                                        lp.topMargin += dY;
-                                        if (lp.topMargin > 0) {
-                                            lp.topMargin = 0;
-                                        }
-                                        layoutMapMain.setLayoutParams(lp);
-
-                                        layoutMain.forceLayout();
-
-                                    }
-                                }
-                                //Log.d(null, "recyclerview: trying to scroll " + dY);
-                            }
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
-
-                }
-
-                @Override
-                public void onTouchEvent(final RecyclerView rv, final MotionEvent e) {
-
-                }
-            });
         }
     }
 
@@ -2239,28 +2194,27 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             showEmptyListPopup();
         }
 
-        if (newsfeedListView.getVisibility() == View.GONE) {
+        if (isFullMapShown) {
             return;
         }
-        newsfeedListView.setVisibility(View.GONE);
+        isFullMapShown = true;
         newEntouragesButton.setVisibility(View.GONE);
         mapDisplayToggle.setChecked(true);
         showGuideView.setVisibility(View.VISIBLE);
 
         moveFABDown();
 
-        ensureMapVisible();
+//        ensureMapVisible();
 
         final int targetHeight = layoutMain.getMeasuredHeight();
+        newsfeedAdapter.setMapHeight(targetHeight);
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int val = (Integer) valueAnimator.getAnimatedValue();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                layoutParams.height = val;
-                layoutMapMain.setLayoutParams(layoutParams);
-                layoutMain.forceLayout();
+                newsfeedAdapter.setMapHeight(val);
+                //layoutMain.forceLayout();
             }
 
         });
@@ -2269,28 +2223,26 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     protected void showToursList() {
-        if (layoutMapMain == null || newsfeedListView == null || mapDisplayToggle == null) {
+        if (newsfeedListView == null || mapDisplayToggle == null) {
             return;
         }
 
-        if (newsfeedListView.getVisibility() == View.VISIBLE) {
+        if (!isFullMapShown) {
             return;
         }
-        newsfeedListView.setVisibility(View.VISIBLE);
+        isFullMapShown = false;
         mapDisplayToggle.setChecked(false);
         showGuideView.setVisibility(View.GONE);
 
         hideEmptyListPopup();
 
-        ValueAnimator anim = ValueAnimator.ofInt(layoutMapMain.getMeasuredHeight(), originalMapLayoutHeight);
+        ValueAnimator anim = ValueAnimator.ofInt(layoutMain.getMeasuredHeight(), originalMapLayoutHeight);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int val = (Integer) valueAnimator.getAnimatedValue();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                layoutParams.height = val;
-                layoutMapMain.setLayoutParams(layoutParams);
-                layoutMain.forceLayout();
+                newsfeedAdapter.setMapHeight(val);
+                //layoutMain.forceLayout();
             }
 
         });
@@ -2298,10 +2250,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void toggleToursList() {
-        if (newsfeedListView == null) {
-            return;
-        }
-        if (newsfeedListView.getVisibility() == View.VISIBLE) {
+        if (!isFullMapShown) {
             hideToursList();
             FlurryAgent.logEvent(EVENT_SCREEN_06_2);
         } else {
@@ -2311,20 +2260,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public boolean isToursListVisible() {
-        return newsfeedListView != null && newsfeedListView.getVisibility() == View.VISIBLE;
+        return !isFullMapShown;
     }
 
     public void ensureMapVisible() {
-        if (layoutMapMain == null || newsfeedListView == null) {
-            return;
-        }
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-        if (lp.topMargin < 0) {
-            lp.topMargin = 0;
-            layoutMapMain.setLayoutParams(lp);
-
-            layoutMain.forceLayout();
-        }
+        //TODO Show map card
+//        if (layoutMapMain == null || newsfeedListView == null) {
+//            return;
+//        }
+//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
+//        if (lp.topMargin < 0) {
+//            lp.topMargin = 0;
+//            layoutMapMain.setLayoutParams(lp);
+//
+//            layoutMain.forceLayout();
+//        }
 
         newsfeedListView.scrollToPosition(0);
     }
@@ -2738,38 +2688,18 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             mapScrollDeltaY += dy;
             if (dy > 0) {
                 // Scrolling down
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                if (lp.topMargin > -lp.height) {
-                    if (mapScrollDeltaY < MIN_MAP_SCROLL_DELTA_Y) {
-                        return;
+                int visibleItemCount = recyclerView.getChildCount();
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
+                    FlurryAgent.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
+                    if (tourService != null) {
+                        tourService.updateNewsfeed(pagination);
                     }
-                    lp.topMargin -= mapScrollDeltaY;
-                    if (lp.topMargin < -lp.height) {
-                        lp.topMargin = -lp.height;
-                    }
-                    layoutMapMain.setLayoutParams(lp);
-                    recyclerView.scrollToPosition(0);
-
-                    //layoutMain.forceLayout();
-                    mapScrollDeltaY = 0;
-
-                    return;
                 }
 
-                //if (scrollDeltaY > MIN_SCROLL_DELTA_Y) {
-                    int visibleItemCount = recyclerView.getChildCount();
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
-                    int totalItemCount = linearLayoutManager.getItemCount();
-                    if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
-                        FlurryAgent.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
-                        if (tourService != null) {
-                            tourService.updateNewsfeed(pagination);
-                        }
-                    }
-
-                    scrollDeltaY = 0;
-                //}
+                scrollDeltaY = 0;
             } else {
                 // Scrolling up
                 if (newsfeedAdapter.isShowBottomView()) {

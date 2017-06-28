@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/newsfeed_map_height"
+              android:orientation="vertical">
+
+    <social.entourage.android.map.EntourageMapView
+        android:id="@+id/layout_feed_map_card_mapview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:longClickable="true"/>
+
+</LinearLayout>
