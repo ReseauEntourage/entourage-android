@@ -653,7 +653,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Subscribe
     public void onUserInfoUpdated(Events.OnUserInfoUpdatedEvent event) {
         User user = EntourageApplication.me(getContext());
-        if (user == null) return;
+        if (user == null || newsfeedAdapter == null) return;
         TourAuthor userAsAuthor = user.asTourAuthor();
         List<TimestampedObject> dirtyList = new ArrayList<>();
         // See which cards needs updating
