@@ -75,7 +75,7 @@ public class PushNotificationService extends IntentService {
                 RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.push_notification);
                 String notificationText = getString(R.string.tour_join_request_received_message, message.getAuthor());
                 if (content.isEntourageRelated()) {
-                    notificationText = getString(R.string.entourage_join_request_received, message.getAuthor());
+                    notificationText = getString(R.string.entourage_join_request_received, message.getAuthor(), content.getFeedItemName());
                 }
                 remoteViews.setTextViewText(R.id.push_notification_text, notificationText);
                 builder.setContent(remoteViews);

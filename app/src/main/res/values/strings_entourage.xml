@@ -48,7 +48,7 @@
 
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020a rejoint l\'entourage.</string>
-    <string name="entourage_join_request_received">%1$s souhaite rejoindre votre entourage</string>
+    <string name="entourage_join_request_received">%1$s souhaite rejoindre votre entourage: %2$s</string>
     <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre entourage]]></string>
     <string name="entourage_join_request_received_message_short">veut rejoindre votre entourage.</string>
 
