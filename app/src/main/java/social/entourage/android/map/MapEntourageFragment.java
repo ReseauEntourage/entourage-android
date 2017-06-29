@@ -1048,6 +1048,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             lp = (RelativeLayout.LayoutParams)filterButton.getLayoutParams();
                             lp.topMargin -= h;
                             filterButton.setLayoutParams(lp);
+
+                            lp = (RelativeLayout.LayoutParams)mapDisplayToggle.getLayoutParams();
+                            lp.topMargin -= h;
+                            mapDisplayToggle.setLayoutParams(lp);
                         }
                     });
                 }
@@ -1073,6 +1077,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             lp = (RelativeLayout.LayoutParams)filterButton.getLayoutParams();
                             lp.topMargin += h;
                             filterButton.setLayoutParams(lp);
+
+                            lp = (RelativeLayout.LayoutParams)mapDisplayToggle.getLayoutParams();
+                            lp.topMargin += h;
+                            mapDisplayToggle.setLayoutParams(lp);
                         }
                     });
                 }
