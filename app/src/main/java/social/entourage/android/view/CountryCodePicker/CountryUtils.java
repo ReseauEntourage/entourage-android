@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,18 +57,6 @@ class CountryUtils {
                 context.getString(R.string.country_angola_number),
                 context.getString(R.string.country_angola_name)));
 
-        countries.add(new Country(context.getString(R.string.country_anguilla_code),
-                context.getString(R.string.country_anguilla_number),
-                context.getString(R.string.country_anguilla_name)));
-
-        countries.add(new Country(context.getString(R.string.country_antarctica_code),
-                context.getString(R.string.country_antarctica_number),
-                context.getString(R.string.country_antarctica_name)));
-
-        countries.add(new Country(context.getString(R.string.country_antigua_and_barbuda_code),
-                context.getString(R.string.country_antigua_and_barbuda_number),
-                context.getString(R.string.country_antigua_and_barbuda_name)));
-
         countries.add(new Country(context.getString(R.string.country_argentina_code),
                 context.getString(R.string.country_argentina_number),
                 context.getString(R.string.country_argentina_name)));
@@ -76,10 +65,9 @@ class CountryUtils {
                 context.getString(R.string.country_armenia_number),
                 context.getString(R.string.country_armenia_name)));
 
-
-        countries.add(new Country(context.getString(R.string.country_aruba_code),
-                context.getString(R.string.country_aruba_number),
-                context.getString(R.string.country_aruba_name)));
+        countries.add(new Country(context.getString(R.string.country_austria_code),
+                context.getString(R.string.country_austria_number),
+                context.getString(R.string.country_austria_name)));
 
         countries.add(new Country(context.getString(R.string.country_australia_code),
                 context.getString(R.string.country_australia_number),
@@ -89,10 +77,6 @@ class CountryUtils {
                 context.getString(R.string.country_azerbaijan_number),
                 context.getString(R.string.country_azerbaijan_name)));
 
-        countries.add(new Country(context.getString(R.string.country_bahamas_code),
-                context.getString(R.string.country_bahamas_number),
-                context.getString(R.string.country_bahamas_name)));
-
         countries.add(new Country(context.getString(R.string.country_bahrain_code),
                 context.getString(R.string.country_bahrain_number),
                 context.getString(R.string.country_bahrain_name)));
@@ -100,10 +84,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_bangladesh_code),
                 context.getString(R.string.country_bangladesh_number),
                 context.getString(R.string.country_bangladesh_name)));
-
-        countries.add(new Country(context.getString(R.string.country_barbados_code),
-                context.getString(R.string.country_barbados_number),
-                context.getString(R.string.country_barbados_name)));
 
         countries.add(new Country(context.getString(R.string.country_belarus_code),
                 context.getString(R.string.country_belarus_number),
@@ -120,10 +100,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_benin_code),
                 context.getString(R.string.country_benin_number),
                 context.getString(R.string.country_benin_name)));
-
-        countries.add(new Country(context.getString(R.string.country_bermuda_code),
-                context.getString(R.string.country_bermuda_number),
-                context.getString(R.string.country_bermuda_name)));
 
         countries.add(new Country(context.getString(R.string.country_bhutan_code),
                 context.getString(R.string.country_bhutan_number),
@@ -145,10 +121,6 @@ class CountryUtils {
                 context.getString(R.string.country_brazil_number),
                 context.getString(R.string.country_brazil_name)));
 
-        countries.add(new Country(context.getString(R.string.country_british_virgin_islands_code),
-                context.getString(R.string.country_british_virgin_islands_number),
-                context.getString(R.string.country_british_virgin_islands_name)));
-
         countries.add(new Country(context.getString(R.string.country_brunei_darussalam_code),
                 context.getString(R.string.country_brunei_darussalam_number),
                 context.getString(R.string.country_brunei_darussalam_name)));
@@ -169,7 +141,6 @@ class CountryUtils {
                 context.getString(R.string.country_cambodia_number),
                 context.getString(R.string.country_cambodia_name)));
 
-
         countries.add(new Country(context.getString(R.string.country_cameroon_code),
                 context.getString(R.string.country_cameroon_number),
                 context.getString(R.string.country_cameroon_name)));
@@ -181,10 +152,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_cape_verde_code),
                 context.getString(R.string.country_cape_verde_number),
                 context.getString(R.string.country_cape_verde_name)));
-
-        countries.add(new Country(context.getString(R.string.country_cayman_islands_code),
-                context.getString(R.string.country_cayman_islands_number),
-                context.getString(R.string.country_cayman_islands_name)));
 
         countries.add(new Country(context.getString(R.string.country_central_african_republic_code),
                 context.getString(R.string.country_central_african_republic_number),
@@ -202,21 +169,9 @@ class CountryUtils {
                 context.getString(R.string.country_china_number),
                 context.getString(R.string.country_china_name)));
 
-        countries.add(new Country(context.getString(R.string.country_christmas_island_code),
-                context.getString(R.string.country_christmas_island_number),
-                context.getString(R.string.country_christmas_island_name)));
-
-        countries.add(new Country(context.getString(R.string.country_cocos_keeling_islands_code),
-                context.getString(R.string.country_cocos_keeling_islands_number),
-                context.getString(R.string.country_cocos_keeling_islands_name)));
-
         countries.add(new Country(context.getString(R.string.country_colombia_code),
                 context.getString(R.string.country_colombia_number),
                 context.getString(R.string.country_colombia_name)));
-
-        countries.add(new Country(context.getString(R.string.country_comoros_code),
-                context.getString(R.string.country_comoros_number),
-                context.getString(R.string.country_comoros_name)));
 
         countries.add(new Country(context.getString(R.string.country_congo_code),
                 context.getString(R.string.country_congo_number),
@@ -225,10 +180,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_the_democratic_republic_of_congo_code),
                 context.getString(R.string.country_the_democratic_republic_of_congo_number),
                 context.getString(R.string.country_the_democratic_republic_of_congo_name)));
-
-        countries.add(new Country(context.getString(R.string.country_cook_islands_code),
-                context.getString(R.string.country_cook_islands_number),
-                context.getString(R.string.country_cook_islands_name)));
 
         countries.add(new Country(context.getString(R.string.country_costa_rica_code),
                 context.getString(R.string.country_costa_rica_number),
@@ -298,14 +249,6 @@ class CountryUtils {
                 context.getString(R.string.country_ethiopia_number),
                 context.getString(R.string.country_ethiopia_name)));
 
-        countries.add(new Country(context.getString(R.string.country_falkland_islands_malvinas_code),
-                context.getString(R.string.country_falkland_islands_malvinas_number),
-                context.getString(R.string.country_falkland_islands_malvinas_name)));
-
-        countries.add(new Country(context.getString(R.string.country_faroe_islands_code),
-                context.getString(R.string.country_faroe_islands_number),
-                context.getString(R.string.country_faroe_islands_name)));
-
         countries.add(new Country(context.getString(R.string.country_fiji_code),
                 context.getString(R.string.country_fiji_number),
                 context.getString(R.string.country_fiji_name)));
@@ -353,14 +296,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_greece_code),
                 context.getString(R.string.country_greece_number),
                 context.getString(R.string.country_greece_name)));
-
-        countries.add(new Country(context.getString(R.string.country_greenland_code),
-                context.getString(R.string.country_greenland_number),
-                context.getString(R.string.country_greenland_name)));
-
-        countries.add(new Country(context.getString(R.string.country_grenada_code),
-                context.getString(R.string.country_grenada_number),
-                context.getString(R.string.country_grenada_name)));
 
         countries.add(new Country(context.getString(R.string.country_guadeloupe_code),
                 context.getString(R.string.country_guadeloupe_number),
@@ -422,10 +357,6 @@ class CountryUtils {
                 context.getString(R.string.country_iceland_number),
                 context.getString(R.string.country_iceland_name)));
 
-        countries.add(new Country(context.getString(R.string.country_isle_of_man_code),
-                context.getString(R.string.country_isle_of_man_number),
-                context.getString(R.string.country_isle_of_man_name)));
-
         countries.add(new Country(context.getString(R.string.country_israel_code),
                 context.getString(R.string.country_israel_number),
                 context.getString(R.string.country_israel_name)));
@@ -457,10 +388,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_kenya_code),
                 context.getString(R.string.country_kenya_number),
                 context.getString(R.string.country_kenya_name)));
-
-        countries.add(new Country(context.getString(R.string.country_kiribati_code),
-                context.getString(R.string.country_kiribati_number),
-                context.getString(R.string.country_kiribati_name)));
 
         countries.add(new Country(context.getString(R.string.country_kuwait_code),
                 context.getString(R.string.country_kuwait_number),
@@ -510,10 +437,6 @@ class CountryUtils {
                 context.getString(R.string.country_luxembourg_number),
                 context.getString(R.string.country_luxembourg_name)));
 
-        countries.add(new Country(context.getString(R.string.country_macao_code),
-                context.getString(R.string.country_macao_number),
-                context.getString(R.string.country_macao_name)));
-
         countries.add(new Country(context.getString(R.string.country_macedonia_code),
                 context.getString(R.string.country_macedonia_number),
                 context.getString(R.string.country_macedonia_name)));
@@ -542,10 +465,6 @@ class CountryUtils {
                 context.getString(R.string.country_malta_number),
                 context.getString(R.string.country_malta_name)));
 
-        countries.add(new Country(context.getString(R.string.country_marshall_islands_code),
-                context.getString(R.string.country_marshall_islands_number),
-                context.getString(R.string.country_marshall_islands_name)));
-
         countries.add(new Country(context.getString(R.string.country_martinique_code),
                 context.getString(R.string.country_martinique_number),
                 context.getString(R.string.country_martinique_name)));
@@ -566,10 +485,6 @@ class CountryUtils {
                 context.getString(R.string.country_mexico_number),
                 context.getString(R.string.country_mexico_name)));
 
-        countries.add(new Country(context.getString(R.string.country_micronesia_code),
-                context.getString(R.string.country_micronesia_number),
-                context.getString(R.string.country_micronesia_name)));
-
         countries.add(new Country(context.getString(R.string.country_moldova_code),
                 context.getString(R.string.country_moldova_number),
                 context.getString(R.string.country_moldova_name)));
@@ -581,10 +496,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_mongolia_code),
                 context.getString(R.string.country_mongolia_number),
                 context.getString(R.string.country_mongolia_name)));
-
-        countries.add(new Country(context.getString(R.string.country_montserrat_code),
-                context.getString(R.string.country_montserrat_number),
-                context.getString(R.string.country_montserrat_name)));
 
         countries.add(new Country(context.getString(R.string.country_montenegro_code),
                 context.getString(R.string.country_montenegro_number),
@@ -601,10 +512,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_namibia_code),
                 context.getString(R.string.country_namibia_number),
                 context.getString(R.string.country_namibia_name)));
-
-        countries.add(new Country(context.getString(R.string.country_nauru_code),
-                context.getString(R.string.country_nauru_number),
-                context.getString(R.string.country_nauru_name)));
 
         countries.add(new Country(context.getString(R.string.country_nepal_code),
                 context.getString(R.string.country_nepal_number),
@@ -634,14 +541,6 @@ class CountryUtils {
                 context.getString(R.string.country_nigeria_number),
                 context.getString(R.string.country_nigeria_name)));
 
-        countries.add(new Country(context.getString(R.string.country_niue_code),
-                context.getString(R.string.country_niue_number),
-                context.getString(R.string.country_niue_name)));
-
-        countries.add(new Country(context.getString(R.string.country_north_korea_code),
-                context.getString(R.string.country_north_korea_number),
-                context.getString(R.string.country_north_korea_name)));
-
         countries.add(new Country(context.getString(R.string.country_norway_code),
                 context.getString(R.string.country_norway_number),
                 context.getString(R.string.country_norway_name)));
@@ -653,10 +552,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_pakistan_code),
                 context.getString(R.string.country_pakistan_number),
                 context.getString(R.string.country_pakistan_name)));
-
-        countries.add(new Country(context.getString(R.string.country_palau_code),
-                context.getString(R.string.country_palau_number),
-                context.getString(R.string.country_palau_name)));
 
         countries.add(new Country(context.getString(R.string.country_panama_code),
                 context.getString(R.string.country_panama_number),
@@ -677,10 +572,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_philippines_code),
                 context.getString(R.string.country_philippines_number),
                 context.getString(R.string.country_philippines_name)));
-
-        countries.add(new Country(context.getString(R.string.country_pitcairn_code),
-                context.getString(R.string.country_pitcairn_number),
-                context.getString(R.string.country_pitcairn_name)));
 
         countries.add(new Country(context.getString(R.string.country_poland_code),
                 context.getString(R.string.country_poland_number),
@@ -714,34 +605,6 @@ class CountryUtils {
                 context.getString(R.string.country_rwanda_number),
                 context.getString(R.string.country_rwanda_name)));
 
-        countries.add(new Country(context.getString(R.string.country_saint_barthelemy_code),
-                context.getString(R.string.country_saint_barthelemy_number),
-                context.getString(R.string.country_saint_barthelemy_name)));
-
-        countries.add(new Country(context.getString(R.string.country_saint_kitts_and_nevis_code),
-                context.getString(R.string.country_saint_kitts_and_nevis_number),
-                context.getString(R.string.country_saint_kitts_and_nevis_name)));
-
-        countries.add(new Country(context.getString(R.string.country_saint_lucia_code),
-                context.getString(R.string.country_saint_lucia_number),
-                context.getString(R.string.country_saint_lucia_name)));
-
-        countries.add(new Country(context.getString(R.string.country_saint_vincent_the_grenadines_code),
-                context.getString(R.string.country_saint_vincent_the_grenadines_number),
-                context.getString(R.string.country_saint_vincent_the_grenadines_name)));
-
-        countries.add(new Country(context.getString(R.string.country_samoa_code),
-                context.getString(R.string.country_samoa_number),
-                context.getString(R.string.country_samoa_name)));
-
-        countries.add(new Country(context.getString(R.string.country_san_marino_code),
-                context.getString(R.string.country_san_marino_number),
-                context.getString(R.string.country_san_marino_name)));
-
-        countries.add(new Country(context.getString(R.string.country_sao_tome_and_principe_code),
-                context.getString(R.string.country_sao_tome_and_principe_number),
-                context.getString(R.string.country_sao_tome_and_principe_name)));
-
         countries.add(new Country(context.getString(R.string.country_saudi_arabia_code),
                 context.getString(R.string.country_saudi_arabia_number),
                 context.getString(R.string.country_saudi_arabia_name)));
@@ -766,10 +629,6 @@ class CountryUtils {
                 context.getString(R.string.country_singapore_number),
                 context.getString(R.string.country_singapore_name)));
 
-        countries.add(new Country(context.getString(R.string.country_sint_maarten_code),
-                context.getString(R.string.country_sint_maarten_number),
-                context.getString(R.string.country_sint_maarten_name)));
-
         countries.add(new Country(context.getString(R.string.country_slovakia_code),
                 context.getString(R.string.country_slovakia_number),
                 context.getString(R.string.country_slovakia_name)));
@@ -777,10 +636,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_slovenia_code),
                 context.getString(R.string.country_slovenia_number),
                 context.getString(R.string.country_slovenia_name)));
-
-        countries.add(new Country(context.getString(R.string.country_solomon_islands_code),
-                context.getString(R.string.country_solomon_islands_number),
-                context.getString(R.string.country_solomon_islands_name)));
 
         countries.add(new Country(context.getString(R.string.country_somalia_code),
                 context.getString(R.string.country_somalia_number),
@@ -801,14 +656,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_sri_lanka_code),
                 context.getString(R.string.country_sri_lanka_number),
                 context.getString(R.string.country_sri_lanka_name)));
-
-        countries.add(new Country(context.getString(R.string.country_saint_helena_code),
-                context.getString(R.string.country_saint_helena_number),
-                context.getString(R.string.country_saint_helena_name)));
-
-        countries.add(new Country(context.getString(R.string.country_saint_pierre_and_miquelon_code),
-                context.getString(R.string.country_saint_pierre_and_miquelon_number),
-                context.getString(R.string.country_saint_pierre_and_miquelon_name)));
 
         countries.add(new Country(context.getString(R.string.country_sudan_code),
                 context.getString(R.string.country_sudan_number),
@@ -854,18 +701,6 @@ class CountryUtils {
                 context.getString(R.string.country_togo_number),
                 context.getString(R.string.country_togo_name)));
 
-        countries.add(new Country(context.getString(R.string.country_tokelau_code),
-                context.getString(R.string.country_tokelau_number),
-                context.getString(R.string.country_tokelau_name)));
-
-        countries.add(new Country(context.getString(R.string.country_tonga_code),
-                context.getString(R.string.country_tonga_number),
-                context.getString(R.string.country_tonga_name)));
-
-        countries.add(new Country(context.getString(R.string.country_trinidad_tobago_code),
-                context.getString(R.string.country_trinidad_tobago_number),
-                context.getString(R.string.country_trinidad_tobago_name)));
-
         countries.add(new Country(context.getString(R.string.country_tunisia_code),
                 context.getString(R.string.country_tunisia_number),
                 context.getString(R.string.country_tunisia_name)));
@@ -877,14 +712,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_turkmenistan_code),
                 context.getString(R.string.country_turkmenistan_number),
                 context.getString(R.string.country_turkmenistan_name)));
-
-        countries.add(new Country(context.getString(R.string.country_turks_and_caicos_islands_code),
-                context.getString(R.string.country_turks_and_caicos_islands_number),
-                context.getString(R.string.country_turks_and_caicos_islands_name)));
-
-        countries.add(new Country(context.getString(R.string.country_tuvalu_code),
-                context.getString(R.string.country_tuvalu_number),
-                context.getString(R.string.country_tuvalu_name)));
 
         countries.add(new Country(context.getString(R.string.country_united_arab_emirates_code),
                 context.getString(R.string.country_united_arab_emirates_number),
@@ -910,22 +737,10 @@ class CountryUtils {
                 context.getString(R.string.country_united_states_number),
                 context.getString(R.string.country_united_states_name)));
 
-        countries.add(new Country(context.getString(R.string.country_us_virgin_islands_code),
-                context.getString(R.string.country_us_virgin_islands_number),
-                context.getString(R.string.country_us_virgin_islands_name)));
-
         countries.add(new Country(context.getString(R.string.country_uzbekistan_code),
                 context.getString(R.string.country_uzbekistan_number),
                 context.getString(R.string.country_uzbekistan_name)));
-
-        countries.add(new Country(context.getString(R.string.country_vanuatu_code),
-                context.getString(R.string.country_vanuatu_number),
-                context.getString(R.string.country_vanuatu_name)));
-
-        countries.add(new Country(context.getString(R.string.country_holy_see_vatican_city_state_code),
-                context.getString(R.string.country_holy_see_vatican_city_state_number),
-                context.getString(R.string.country_holy_see_vatican_city_state_name)));
-
+        
         countries.add(new Country(context.getString(R.string.country_venezuela_code),
                 context.getString(R.string.country_venezuela_number),
                 context.getString(R.string.country_venezuela_name)));
@@ -933,10 +748,6 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_viet_nam_code),
                 context.getString(R.string.country_viet_nam_number),
                 context.getString(R.string.country_viet_nam_name)));
-
-        countries.add(new Country(context.getString(R.string.country_wallis_and_futuna_code),
-                context.getString(R.string.country_wallis_and_futuna_number),
-                context.getString(R.string.country_wallis_and_futuna_name)));
 
         countries.add(new Country(context.getString(R.string.country_yemen_code),
                 context.getString(R.string.country_yemen_number),
@@ -949,6 +760,14 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_zimbabwe_code),
                 context.getString(R.string.country_zimbabwe_number),
                 context.getString(R.string.country_zimbabwe_name)));
+
+        Collections.sort(countries, new Comparator<Country>() {
+            @Override
+            public int compare(final Country o1, final Country o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
         return countries;
     }
 
