@@ -5,7 +5,7 @@
     <string name="entourage_create_contribution_title">CONTRIBUTION</string>
     <string name="entourage_create_position_description">Ma position</string>
     <string name="entourage_create_title_label">Titre</string>
-    <string name="entourage_create_title_demand_hint">Qui veut aller au contact des personnes de la rue dans le quartier?</string>
+    <string name="entourage_create_title_demand_hint">Exemple : Qui veut aller au contact des personnes de la rue dans le quartier?</string>
     <string name="entourage_create_title_contribution_hint">Exemple : Je suis disponible pour aide administrative pour l’accès au logement</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_label">Description</string>
