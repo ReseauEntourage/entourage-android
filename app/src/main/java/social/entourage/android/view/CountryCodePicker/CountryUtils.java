@@ -740,7 +740,7 @@ class CountryUtils {
         countries.add(new Country(context.getString(R.string.country_uzbekistan_code),
                 context.getString(R.string.country_uzbekistan_number),
                 context.getString(R.string.country_uzbekistan_name)));
-        
+
         countries.add(new Country(context.getString(R.string.country_venezuela_code),
                 context.getString(R.string.country_venezuela_number),
                 context.getString(R.string.country_venezuela_name)));
