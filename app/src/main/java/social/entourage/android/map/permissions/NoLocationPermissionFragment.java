@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.flurry.android.FlurryAgent;
 
@@ -38,6 +39,13 @@ public class NoLocationPermissionFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.requestFeature(Window.FEATURE_NO_TITLE);
+            }
+        }
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_no_location_permission, container, false);
 
