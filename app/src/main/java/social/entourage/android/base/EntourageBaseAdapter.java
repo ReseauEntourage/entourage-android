@@ -221,7 +221,6 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void setMapHeight(int height) {
         if (mapViewHolder == null || !needsTopView) return;
         mapViewHolder.setHeight(height);
-        //notifyItemChanged(0);
     }
 
     public void showBottomView(final boolean showBottomView, int bottomViewContentType) {
