@@ -23,6 +23,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.map.tour.join.received.TourJoinRequestReceivedActivity;
 import social.entourage.android.message.MessageActivity;
@@ -52,12 +53,33 @@ public class PushNotificationService extends IntentService {
         Log.d("notification", "" + notificationId);
         Message message = getMessageFromNotification(intent.getExtras());
         PushNotificationContent content = message.getContent();
+
+        handlePushNotification(message);
         // Display all notifications except the join_request_canceled
         if (content == null || !PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED.equals(content.getType())) {
             displayPushNotification(message);
         }
+
         BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
+
         GcmBroadcastReceiver.completeWakefulIntent(intent);
+    }
+
+    private void handlePushNotification(Message message) {
+        PushNotificationContent content = message.getContent();
+        EntourageApplication application = EntourageApplication.get(getApplicationContext());
+        if (content == null || application == null) return;
+        if (PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED.equals(content.getType())) {
+            // Remove the related join request push notification
+            if (content.isTourRelated()) {
+                application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
+            }
+            else if (content.isEntourageRelated()) {
+                application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
+            }
+        } else {
+            application.addPushNotification(message);
+        }
     }
 
     private void displayPushNotification(Message message) {
@@ -87,11 +109,6 @@ public class PushNotificationService extends IntentService {
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(notificationId, notification);
-
-        EntourageApplication application = EntourageApplication.get(getApplicationContext());
-        if (application != null) {
-            application.addPushNotification(message);
-        }
     }
 
     private PendingIntent createMessagePendingIntent(Message message) {
