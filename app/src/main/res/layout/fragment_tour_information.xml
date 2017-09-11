@@ -48,7 +48,7 @@
             android:layout_toStartOf="@+id/tour_info_more_button"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_share"
+            android:src="@drawable/ic_share_android"
             android:visibility="gone"/>
 
         <ImageButton

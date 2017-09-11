@@ -54,6 +54,7 @@
     <string name="tour_info_options_stop_tour">@string/tour_stop</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
     <string name="tour_info_options_report">Signaler l\'entourage</string>
+    <string name="tour_info_options_share">Partager</string>
     <string name="tour_info_options_join">Rejoindre</string>
     <string name="tour_info_options_close">Annuler</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>

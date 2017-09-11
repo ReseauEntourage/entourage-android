@@ -558,7 +558,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
-    @OnClick({R.id.tour_info_share_button, R.id.invite_source_share_button})
+    @OnClick({R.id.tour_info_share_button, R.id.invite_source_share_button, R.id.feeditem_option_share})
     public void onShareButton() {
         // close the invite source view
         inviteSourceLayout.setVisibility(View.GONE);
@@ -1012,11 +1012,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         Button stopTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_stop);
         Button quitTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_quit);
         Button editEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_edit);
+        Button shareEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_share);
         Button reportEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_report);
         Button joinEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_join);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
         editEntourageButton.setVisibility(View.GONE);
+        shareEntourageButton.setVisibility(View.GONE);
         reportEntourageButton.setVisibility(View.GONE);
         joinEntourageButton.setVisibility(View.GONE);
 
@@ -1031,6 +1033,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     }
                     if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                         reportEntourageButton.setVisibility(View.VISIBLE);
+                        // Share button available only for entourages and non-members
+                        shareEntourageButton.setVisibility( feedItem.isPrivate() ? View.GONE : View.VISIBLE );
                     }
                 } else {
                     stopTourButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);
