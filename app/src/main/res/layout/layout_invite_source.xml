@@ -49,9 +49,8 @@
             style="@style/WhiteButton.RoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_friends"
-            android:drawableStart="@drawable/ic_friends"
-            android:drawableTint="@color/accent"
+            android:drawableLeft="@drawable/ic_share_android"
+            android:drawableStart="@drawable/ic_share_android"
             android:text="@string/invite_source_share"/>
 
         <Button
