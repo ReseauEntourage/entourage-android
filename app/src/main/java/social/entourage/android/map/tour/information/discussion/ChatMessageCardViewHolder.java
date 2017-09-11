@@ -91,7 +91,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         mMessageView.setText(chatMessage.getContent());
 
         // chat timestamp
-        mTimestampView.setText(DateFormat.format("H'h'm", chatMessage.getTimestamp()));
+        mTimestampView.setText(DateFormat.format("H'h'mm", chatMessage.getTimestamp()));
 
         userId = chatMessage.getUserId();
     }
