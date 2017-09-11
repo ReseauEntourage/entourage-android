@@ -33,6 +33,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.MultipleInvitations;
 import social.entourage.android.invite.InviteBaseFragment;
+import social.entourage.android.tools.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -234,8 +235,10 @@ public class InviteContactsFragment extends InviteBaseFragment implements
             if (contactsList.isItemChecked(i)) {
                 String phone = mContactsAdapter.getPhoneAt(i);
                 if (phone != null) {
-                    phone = PhoneNumberUtils.stripSeparators(phone);
-                    invitations.addPhoneNumber(phone);
+                    phone = Utils.checkPhoneNumberFormat(PhoneNumberUtils.stripSeparators(phone));
+                    if (phone != null) {
+                        invitations.addPhoneNumber(phone);
+                    }
                 }
             }
         }
