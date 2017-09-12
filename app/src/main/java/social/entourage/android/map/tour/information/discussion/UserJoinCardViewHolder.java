@@ -1,7 +1,6 @@
 package social.entourage.android.map.tour.information.discussion;
 
 import android.net.Uri;
-import android.text.Html;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +21,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
+import social.entourage.android.tools.Utils;
 import social.entourage.android.view.PartnerLogoImageView;
 
 /**
@@ -236,7 +236,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
 
         String joinStatus = getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD);
 
-        mJoinStatusView.setText(Html.fromHtml(itemView.getContext().getString(R.string.tour_info_text_join_html, user.getDisplayName(), joinStatus)), TextView.BufferType.SPANNABLE);
+        mJoinStatusView.setText(Utils.fromHtml(itemView.getContext().getString(R.string.tour_info_text_join_html, user.getDisplayName(), joinStatus)), TextView.BufferType.SPANNABLE);
 
         String joinMessage = user.getMessage();
         String userStatus = user.getStatus();

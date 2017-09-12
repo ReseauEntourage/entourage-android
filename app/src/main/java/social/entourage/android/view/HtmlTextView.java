@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import social.entourage.android.R;
+import social.entourage.android.tools.Utils;
 
 public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
 
@@ -31,7 +32,7 @@ public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
         try {
             htmlString = typedArray.getString(R.styleable.HtmlTextView_htmlText);
             if (htmlString != null) {
-                setText(Html.fromHtml(htmlString), TextView.BufferType.SPANNABLE);
+                setText(Utils.fromHtml(htmlString), TextView.BufferType.SPANNABLE);
             }
         } finally {
             typedArray.recycle();
@@ -44,7 +45,7 @@ public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
 
     public void setHtmlString(String htmlString) {
         if (htmlString == null) htmlString = "";
-        setText(Html.fromHtml(htmlString), BufferType.SPANNABLE);
+        setText(Utils.fromHtml(htmlString), BufferType.SPANNABLE);
         this.htmlString = htmlString;
     }
 }

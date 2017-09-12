@@ -11,8 +11,6 @@ import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -21,14 +19,12 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Adapter;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -71,8 +67,8 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiActivity;
-import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.Utils;
 
 public class GuideMapEntourageFragment extends Fragment implements BackPressable {
 
@@ -472,7 +468,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     private void initializeEmptyListPopup() {
         emptyListTextView.setMovementMethod(LinkMovementMethod.getInstance());
-        emptyListTextView.setText(Html.fromHtml(getString(R.string.map_poi_empty_popup, Constants.POI_PROPOSE_URL)));
+        emptyListTextView.setText(Utils.fromHtml(getString(R.string.map_poi_empty_popup, Constants.POI_PROPOSE_URL)));
     }
 
     @OnClick(R.id.fragment_guide_empty_list_popup)
