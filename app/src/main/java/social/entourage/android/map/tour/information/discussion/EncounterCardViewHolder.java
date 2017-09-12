@@ -1,16 +1,11 @@
 package social.entourage.android.map.tour.information.discussion;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.AsyncTask;
-import android.text.format.DateFormat;
+import android.graphics.Paint;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
@@ -18,6 +13,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.Utils;
 
 /**
  * Encounter Card View
@@ -72,9 +68,13 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
     public void populate(Encounter encounter) {
 
         mAuthorView.setText(itemView.getContext().getString(R.string.encounter_author_format, encounter.getUserName()));
-        String encounterLocation = itemView.getResources().getString(R.string.tour_info_encounter_location,
+        mAuthorView.setPaintFlags(mAuthorView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        String encounterLocation = itemView.getResources().getString(
+                encounter.isMyEncounter() ? R.string.tour_info_encounter_location_mine : R.string.tour_info_encounter_location,
                 encounter.getStreetPersonName());
-        mStreetPersonNameView.setText(encounterLocation);
+        Spanned s = Utils.fromHtml(encounterLocation);
+        mStreetPersonNameView.setText(s);
         //mMessageView.setText(encounter.getMessage());
 
         this.encounter = encounter;

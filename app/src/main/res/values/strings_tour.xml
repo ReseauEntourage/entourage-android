@@ -58,7 +58,8 @@
     <string name="tour_info_options_join">Rejoindre</string>
     <string name="tour_info_options_close">Annuler</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>
-    <string name="tour_info_encounter_location">et %1$s se sont rencontrés ici.</string>
+    <string name="tour_info_encounter_location">&#160;et %1$s se sont rencontrés ici.</string>
+    <string name="tour_info_encounter_location_mine">&#160;&lt;u>et %1$s&lt;/u> se sont rencontrés ici.</string>
     <string name="tour_info_quit_tour_title">Quitter la maraude</string>
     <string name="tour_info_quit_tour_description">Voulez-vous vraiment quitter la maraude ?</string>
     <string name="tour_info_quit_tour_error">Echec d\'envoi de la requête</string>

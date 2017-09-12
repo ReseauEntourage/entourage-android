@@ -1,6 +1,8 @@
 package social.entourage.android.tools;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Patterns;
 
 import java.util.Calendar;
@@ -110,5 +112,17 @@ public class Utils {
                 break;
         }
         return context.getString(R.string.date_format, calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            //noinspection deprecation
+            result = Html.fromHtml(html);
+        }
+        return result;
     }
 }

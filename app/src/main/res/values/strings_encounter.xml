@@ -27,7 +27,7 @@
     <string name="encounter_empty_name">Vous devez donner un titre à votre rencontre</string>
     <string name="encounter_empty_fields">Veuillez remplir les champs</string>
     <string name="encounter_read_location">%1$s et %2$s se sont rencontrés à %3$s le %4$s.</string>
-    <string name="encounter_author_format">%1$s\u0020</string>
+    <string name="encounter_author_format">%1$s</string>
     <string name="encounter_count_format">%1$d</string>
 
     <string name="updating_encounter">Mise à jour de la rencontre …</string>
