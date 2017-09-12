@@ -148,6 +148,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private static final int GEOLOCATION_POPUP_TOUR = 0;
     private static final int GEOLOCATION_POPUP_RECENTER = 1;
 
+    // Radius of the circle where to search for entourages when user taps a heatzone
+    private static final int HEATZONE_SEARCH_RADIUS = 250; // meters
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -1179,6 +1182,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             drawnToursMap.clear();
             if (presenter != null) {
                 presenter.getOnClickListener().clear();
+                presenter.getOnGroundOverlayClickListener().clear();
             }
             displayedTourHeads = 0;
             //redraw the whole newsfeed
@@ -2170,6 +2174,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         drawnUserHistory.clear();
         if (presenter != null) {
             presenter.getOnClickListener().clear();
+            presenter.getOnGroundOverlayClickListener().clear();
         }
 
         displayedTourHeads = 0;
@@ -2623,6 +2628,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() == null) return;
         DrawerActivity drawerActivity = (DrawerActivity) getActivity();
         drawerActivity.onPOILauncherClicked();
+    }
+
+    // ----------------------------------
+    // Heatzone minicards
+    // ----------------------------------
+
+    protected void showHeatzoneMiniCardsAtLocation(LatLng location) {
+        // get the list of entourages closed to this location
+        ArrayList<Entourage> entourageArrayList = new ArrayList<>();
+        List<TimestampedObject> feedItemsList = new ArrayList<>();
+        feedItemsList.addAll(newsfeedAdapter.getItems());
+        for (TimestampedObject feedItem:feedItemsList
+             ) {
+            if (feedItem.getType() != TimestampedObject.ENTOURAGE_CARD) continue;
+            Entourage entourage = (Entourage)feedItem;
+            if (entourage.distanceToLocation(location) < HEATZONE_SEARCH_RADIUS) {
+                entourageArrayList.add(entourage);
+            }
+        }
+        if (entourageArrayList.size() == 0) {
+            return;
+        }
+        //show the minicards list
     }
 
     // ----------------------------------

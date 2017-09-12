@@ -3,6 +3,7 @@ package social.entourage.android.api.model.map;
 import android.content.Context;
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -143,6 +144,20 @@ public class Entourage extends FeedItem implements Serializable {
         }
         float distance = startPoint.distanceTo(new TourPoint(location.getLatitude(), location.getLongitude()));
         return (int)Math.floor(distance/1000.0f);
+    }
+
+    /**
+     * Returns the distance from the entourage starting point to the given location
+     * If the location or the starting point is null, it returns Integer.MAX_VALUE
+     * @return distance in meters
+     */
+    public int distanceToLocation(LatLng location) {
+        TourPoint startPoint = getStartPoint();
+        if (location == null || startPoint == null) {
+            return Integer.MAX_VALUE;
+        }
+        float distance = startPoint.distanceTo(new TourPoint(location.latitude, location.longitude));
+        return (int)Math.floor(distance);
     }
 
     // ----------------------------------

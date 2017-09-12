@@ -143,27 +143,34 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         }
 
         //Feed Item type
-        tourTypeTextView.setText(feedItem.getFeedTypeLong(context));
-
-        String distanceAsString = "";
-        TourPoint startPoint = feedItem.getStartPoint();
-        if (startPoint != null) {
-            distanceAsString = startPoint.distanceToCurrentLocation();
+        if (tourTypeTextView != null) {
+            tourTypeTextView.setText(feedItem.getFeedTypeLong(context));
         }
 
-        tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
+        if (tourLocation != null) {
+            String distanceAsString = "";
+            TourPoint startPoint = feedItem.getStartPoint();
+            if (startPoint != null) {
+                distanceAsString = startPoint.distanceToCurrentLocation();
+            }
+
+            tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
+        }
 
         //tour members
-        numberOfPeopleTextView.setText(res.getString(R.string.tour_cell_numberOfPeople, feedItem.getNumberOfPeople()));
+        if (numberOfPeopleTextView != null) {
+            numberOfPeopleTextView.setText(res.getString(R.string.tour_cell_numberOfPeople, feedItem.getNumberOfPeople()));
+        }
 
         //badge count
-        int badgeCount = feedItem.getBadgeCount();
-        if (badgeCount <= 0) {
-            badgeCountView.setVisibility(View.GONE);
-        }
-        else {
-            badgeCountView.setVisibility(View.VISIBLE);
-            badgeCountView.setText(res.getString(R.string.badge_count_format, feedItem.getBadgeCount()));
+        if (badgeCountView != null) {
+            int badgeCount = feedItem.getBadgeCount();
+            if (badgeCount <= 0) {
+                badgeCountView.setVisibility(View.GONE);
+            } else {
+                badgeCountView.setVisibility(View.VISIBLE);
+                badgeCountView.setText(res.getString(R.string.badge_count_format, feedItem.getBadgeCount()));
+            }
         }
 
         //act button

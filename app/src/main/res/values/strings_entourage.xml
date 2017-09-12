@@ -108,4 +108,7 @@
     <string name="entourage_share_text_author">J\'ai créé ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_member">J\'ai rejoint ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
 
+    <!-- Entourage Mini Card -->
+    <string name="entourage_mini_card_created">Créé par\u0020</string>
+
 </resources>

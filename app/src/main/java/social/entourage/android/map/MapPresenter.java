@@ -259,14 +259,19 @@ public class MapPresenter {
             entourageMarkerHashMap.put(markerPosition, entourage);
         }
 
+        public void clear() {
+            entourageMarkerHashMap.clear();
+        }
+
         @Override
         public void onGroundOverlayClick(final GroundOverlay groundOverlay) {
             LatLng markerPosition = groundOverlay.getPosition();
             if (entourageMarkerHashMap.get(markerPosition) != null) {
                 FlurryAgent.logEvent(Constants.EVENT_FEED_HEATZONECLICK);
                 if (fragment != null) {
-                    fragment.centerMapAndZoom(markerPosition);
-                    fragment.toggleToursList();
+                    //fragment.centerMapAndZoom(markerPosition);
+                    //fragment.toggleToursList();
+                    fragment.showHeatzoneMiniCardsAtLocation(markerPosition);
                 }
             }
         }
