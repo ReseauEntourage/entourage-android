@@ -78,7 +78,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
 
         itemView.setOnClickListener(onClickListener);
         //tourAuthor.setOnClickListener(onClickListener);
-        photoView.setOnClickListener(onClickListener);
+        if (photoView != null) photoView.setOnClickListener(onClickListener);
         if (actButton != null) actButton.setOnClickListener(onClickListener);
 
         context = itemView.getContext();
@@ -101,45 +101,56 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         Resources res = itemView.getResources();
 
         //title
-        tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
+        if (tourTitle != null) {
+            tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
+        }
 
         TourAuthor author = feedItem.getAuthor();
         if (author == null) {
             //author
-            tourAuthor.setText("--");
-            photoView.setImageResource(R.drawable.ic_user_photo_small);
-        } else {
-            //author photo
-            String avatarURLAsString = author.getAvatarURLAsString();
-            if (avatarURLAsString != null) {
-                Picasso.with(itemView.getContext())
-                        .load(Uri.parse(avatarURLAsString))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(photoView);
-            } else {
+            if (tourAuthor != null) {
+                tourAuthor.setText("--");
+            }
+            if (photoView != null) {
                 photoView.setImageResource(R.drawable.ic_user_photo_small);
             }
-            // Partner logo
-            Partner partner = author.getPartner();
-            if (partner != null) {
-                String partnerLogoURL = partner.getSmallLogoUrl();
-                if (partnerLogoURL != null) {
+        } else {
+            //author photo
+            if (photoView != null) {
+                String avatarURLAsString = author.getAvatarURLAsString();
+                if (avatarURLAsString != null) {
                     Picasso.with(itemView.getContext())
-                            .load(Uri.parse(partnerLogoURL))
-                            .placeholder(R.drawable.partner_placeholder)
+                            .load(Uri.parse(avatarURLAsString))
+                            .placeholder(R.drawable.ic_user_photo_small)
                             .transform(new CropCircleTransformation())
-                            .into(partnerLogoView);
+                            .into(photoView);
+                } else {
+                    photoView.setImageResource(R.drawable.ic_user_photo_small);
                 }
-                else {
+            }
+            // Partner logo
+            if (partnerLogoView != null) {
+                Partner partner = author.getPartner();
+                if (partner != null) {
+                    String partnerLogoURL = partner.getSmallLogoUrl();
+                    if (partnerLogoURL != null) {
+                        Picasso.with(itemView.getContext())
+                                .load(Uri.parse(partnerLogoURL))
+                                .placeholder(R.drawable.partner_placeholder)
+                                .transform(new CropCircleTransformation())
+                                .into(partnerLogoView);
+                    } else {
+                        partnerLogoView.setImageDrawable(null);
+                    }
+                } else {
                     partnerLogoView.setImageDrawable(null);
                 }
-            } else {
-                partnerLogoView.setImageDrawable(null);
             }
 
             //author
-            tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), feedItem.getAuthor().getUserName()));
+            if (tourAuthor != null) {
+                tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), feedItem.getAuthor().getUserName()));
+            }
         }
 
         //Feed Item type

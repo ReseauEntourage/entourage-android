@@ -36,7 +36,9 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
 
         BaseCardViewHolder cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType);
-        cardViewHolder.setViewHolderListener(viewHolderListener);
+        if (cardViewHolder != null) {
+            cardViewHolder.setViewHolderListener(viewHolderListener);
+        }
 
         if (viewType == TimestampedObject.TOP_VIEW) {
             mapViewHolder = (MapViewHolder)cardViewHolder;

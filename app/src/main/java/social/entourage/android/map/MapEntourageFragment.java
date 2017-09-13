@@ -112,6 +112,7 @@ import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
+import social.entourage.android.map.entourage.minicards.EntourageMiniCardsView;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.map.filter.MapFilterFragment;
@@ -254,6 +255,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @BindView(R.id.fragment_map_show_guide)
     View showGuideView;
+
+    @BindView(R.id.fragment_map_entourage_mini_cards)
+    EntourageMiniCardsView miniCardsView;
 
     Timer refreshToursTimer;
     TimerTask refreshToursTimerTask;
@@ -2636,7 +2640,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     protected void showHeatzoneMiniCardsAtLocation(LatLng location) {
         // get the list of entourages closed to this location
-        ArrayList<Entourage> entourageArrayList = new ArrayList<>();
+        ArrayList<TimestampedObject> entourageArrayList = new ArrayList<>();
         List<TimestampedObject> feedItemsList = new ArrayList<>();
         feedItemsList.addAll(newsfeedAdapter.getItems());
         for (TimestampedObject feedItem:feedItemsList
@@ -2651,6 +2655,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         //show the minicards list
+        miniCardsView.setEntourages(entourageArrayList);
     }
 
     // ----------------------------------
