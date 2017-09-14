@@ -8,7 +8,7 @@ Our goal is to create a local social network on smartphones to help the HOMELESS
 
 ...
 
-# Codestyle
+## Codestyle
 
 Pour installer le fichier XML de codestyle du projet, il suffit de copier le fichier xml qui se trouve dans le dossier
 `codestyle/` et de le coller dans le dossier `~/Library/Preferences/AndroidStudio/codestyles`.
@@ -26,4 +26,4 @@ See also the list of [contributors](https://github.com/ReseauEntourage/entourage
 
 ## Acknowledgments
 
-* Thanks to Jean-Marc and all the team @ Entourage## Entourage - Android
+* Thanks to Jean-Marc and all the team @ [Entourage](https://www.entourage.social)
