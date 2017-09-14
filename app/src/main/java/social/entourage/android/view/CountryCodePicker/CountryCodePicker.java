@@ -45,7 +45,7 @@ public class CountryCodePicker extends RelativeLayout {
 
     private int mBackgroundColor = DEFAULT_BACKGROUND_COLOR;
 
-    private int mDefaultCountryCode;
+    private int mDefaultCountryCode = DEFAULT_COUNTRY_CODE;
     private String mDefaultCountryNameCode;
 
     //Util
@@ -321,6 +321,7 @@ public class CountryCodePicker extends RelativeLayout {
         if (selectedCountry == null) {
             selectedCountry =
                     CountryUtils.getByCode(getContext(), mPreferredCountries, mDefaultCountryCode);
+            if (selectedCountry == null) return;
         }
 
         if (!mHideNameCode) {
