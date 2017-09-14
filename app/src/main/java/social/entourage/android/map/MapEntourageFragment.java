@@ -150,7 +150,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private static final int GEOLOCATION_POPUP_RECENTER = 1;
 
     // Radius of the circle where to search for entourages when user taps a heatzone
-    private static final int HEATZONE_SEARCH_RADIUS = 250; // meters
+    private static final int HEATZONE_SEARCH_RADIUS = (int)Entourage.HEATMAP_SIZE / 2; // meters
 
     // ----------------------------------
     // ATTRIBUTES
@@ -2635,11 +2635,20 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     // ----------------------------------
-    // Heatzone minicards
+    // Heatzone Tap Handling
     // ----------------------------------
 
+    protected void handleHeatzoneClick(LatLng location) {
+        if (isToursListVisible()) {
+            centerMapAndZoom(location);
+            toggleToursList();
+        } else {
+            showHeatzoneMiniCardsAtLocation(location);
+        }
+    }
+
     protected void showHeatzoneMiniCardsAtLocation(LatLng location) {
-        // get the list of entourages closed to this location
+        // get the list of entourages near this location
         ArrayList<TimestampedObject> entourageArrayList = new ArrayList<>();
         List<TimestampedObject> feedItemsList = new ArrayList<>();
         feedItemsList.addAll(newsfeedAdapter.getItems());
