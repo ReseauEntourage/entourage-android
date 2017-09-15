@@ -178,13 +178,6 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/user_view_profile"
-            android:id="@+id/tic_view_profile_button"
-            style="@style/WhiteButton.Straight"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/accept"
             android:id="@+id/tic_accept_button"
             style="@style/WhiteButton.Straight"/>
@@ -195,6 +188,13 @@
             android:text="@string/ignore"
             android:id="@+id/tic_refuse_button"
             style="@style/WhiteButton.Straight"/>
+
+        <Button
+            android:id="@+id/tic_view_profile_button"
+            style="@style/WhiteButton.Straight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_view_profile"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -11,9 +11,11 @@ import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
@@ -151,14 +153,14 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
 
         if (user.getDisplayName() == null || user.getStatus() == null) return;
 
+        userId = user.getUserId();
+        feedItem = user.getFeedItem();
+
         if (user.getStatus().equals(FeedItem.JOIN_STATUS_PENDING)) {
             populatePendingStatus(user);
         } else {
             populateJoinedStatus(user);
         }
-
-        userId = user.getUserId();
-        feedItem = user.getFeedItem();
     }
 
     private void populatePendingStatus(TourUser user) {
@@ -198,6 +200,16 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mJoinDescription.setText(getJoinStatus(user.getStatus(), user.getFeedItem().getType()==TimestampedObject.TOUR_CARD));
 
         mJoinMessage.setText(user.getMessage());
+
+        // If we are not the creators of the entourage, hide the Accept and Refuse buttons
+        User me = EntourageApplication.me(itemView.getContext());
+        boolean isMyEntourage = false;
+        if (me != null && feedItem != null && feedItem.getAuthor() != null) {
+            isMyEntourage = me.getId() == feedItem.getAuthor().getUserID();
+        }
+
+        mAcceptButton.setVisibility(isMyEntourage ? View.VISIBLE : View.GONE);
+        mRefuseButton.setVisibility(isMyEntourage ? View.VISIBLE : View.GONE);
     }
 
     private void populateJoinedStatus(TourUser user) {

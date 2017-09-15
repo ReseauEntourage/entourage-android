@@ -1651,12 +1651,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             membersList.clear();
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
             Iterator<TourUser> iterator = tourUsers.iterator();
-            // check if this is my entourage
-            User me = EntourageApplication.me(getActivity());
-            boolean isMyEntourage = false;
-            if (me != null) {
-                isMyEntourage = me.getId() == feedItem.getAuthor().getUserID();
-            }
             // iterate over the received users
             while (iterator.hasNext()) {
                 TourUser tourUser =  iterator.next();
@@ -1671,11 +1665,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 }
                 //show only the accepted users
                 if (!tourUser.getStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED)) {
-                    // if it's my entourage
-                    if (!isMyEntourage) {
-                        membersAdapter.removeCard(tourUser);
-                        continue;
-                    }
+                    // Remove the user from the members list, in case the user left the entourage
+                    membersAdapter.removeCard(tourUser);
                     //show the pending and cancelled requests too (by skipping the others)
                     if (!(tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING) || tourUser.getStatus().equals(FeedItem.JOIN_STATUS_CANCELLED))) {
                         continue;
