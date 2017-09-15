@@ -165,7 +165,11 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
                 distanceAsString = startPoint.distanceToCurrentLocation();
             }
 
-            tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
+            if (distanceAsString.equalsIgnoreCase("")) {
+                tourLocation.setText(String.format(res.getString(R.string.tour_cell_location_no_distance), Tour.getStringDiffToNow(feedItem.getStartTime())));
+            } else {
+                tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
+            }
         }
 
         //tour members
