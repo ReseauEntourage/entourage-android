@@ -63,8 +63,8 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/bg_edit_text"
-            android:inputType="text"
-            android:maxLines="4"/>
+            android:inputType="textMultiLine"
+            android:maxLines="3"/>
 
         <ImageButton
             android:id="@+id/tour_info_comment_record_button"
