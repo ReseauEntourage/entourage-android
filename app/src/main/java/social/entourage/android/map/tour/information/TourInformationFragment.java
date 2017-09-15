@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -991,6 +992,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // check if we are opening an invitation
         invitedLayout.setVisibility(invitationId == 0 ? View.GONE : View.VISIBLE);
 
+        // update the scroll list layout
+        updatePublicScrollViewLayout();
+
         // check if we need to display the carousel
         User me = EntourageApplication.me(getContext());
         if (me != null && me.isOnboardingUser()) {
@@ -1067,6 +1071,25 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (invitationId > 0) {
             shareButton.setVisibility(View.GONE);
             moreButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void updatePublicScrollViewLayout() {
+        ScrollView scrollView = (ScrollView)getView().findViewById(R.id.tour_info_public_scrollview);
+        if (scrollView == null) return;
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
+        int oldRule = lp.getRules()[RelativeLayout.ABOVE];
+        int newRule = actLayout.getId();
+        if (invitedLayout.getVisibility() == View.VISIBLE) {
+            newRule = invitedLayout.getId();
+        }
+        else if (requestJoinLayout.getVisibility() == View.VISIBLE) {
+            newRule = requestJoinLayout.getId();
+        }
+        if (oldRule != newRule) {
+            lp.addRule(RelativeLayout.ABOVE, newRule);
+            scrollView.setLayoutParams(lp);
+            scrollView.forceLayout();
         }
     }
 
@@ -1454,6 +1477,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     actLayout.setVisibility(View.INVISIBLE);
                     requestJoinLayout.setVisibility(View.VISIBLE);
                     requestJoinTitle.setText(feedItem.getType() == TimestampedObject.TOUR_CARD ? R.string.tour_info_request_join_title_tour : R.string.tour_info_request_join_title_entourage);
+                    updatePublicScrollViewLayout();
                     return;
             }
             actButton.setTextColor(getResources().getColor(textColor));
@@ -1461,6 +1485,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             actDividerLeft.setBackgroundResource(dividerColor);
             actDividerRight.setBackgroundResource(dividerColor);
         }
+
+        updatePublicScrollViewLayout();
     }
 
     private void updateDiscussionList() {
@@ -1884,6 +1910,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     //actLayout.setVisibility(View.GONE);
                 }
             }
+            updatePublicScrollViewLayout();
 
             // Post an event
             BusProvider.getInstance().post(new Events.OnInvitationStatusChanged(this.feedItem, status));
