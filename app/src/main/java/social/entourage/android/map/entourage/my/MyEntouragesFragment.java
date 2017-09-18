@@ -87,6 +87,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     @BindView(R.id.button_start_tour_launcher)
     FloatingActionButton startTourButton;
 
+    @BindView(R.id.button_add_tour_encounter)
+    FloatingActionButton addEncounterButton;
+
     @BindView(R.id.myentourages_invitations_view)
     RecyclerView invitationsView;
 
@@ -215,13 +218,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     private void initializeFabMenu() {
-        User me = EntourageApplication.me(getActivity());
-        boolean isPro = false;
-        if (me != null) {
-            isPro = me.isPro();
-        }
-        startTourButton.setVisibility( isPro ? View.VISIBLE : View.GONE );
-
+        updateFabMenu();
         fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
             public void onMenuToggle(final boolean opened) {
@@ -230,6 +227,17 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 }
             }
         });
+    }
+
+    private void updateFabMenu() {
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = false;
+        if (me != null) {
+            isPro = me.isPro();
+        }
+        boolean isTourRunning = isBound ? tourService.isRunning() : false;
+        startTourButton.setVisibility( isPro ? (isTourRunning ? View.GONE : View.VISIBLE) : View.GONE );
+        addEncounterButton.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
     }
 
     protected void showProgressBar() {
@@ -495,7 +503,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     @Override
     public void onTourCreated(final boolean created, final long tourId) {
-
+        if (created) {
+            updateFabMenu();
+        }
     }
 
     @Override
@@ -534,6 +544,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     @Override
     public void onFeedItemClosed(final boolean closed, final FeedItem feedItem) {
+        if (closed) {
+            updateFabMenu();
+        }
     }
 
     @Override
@@ -591,6 +604,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 tourService = ((TourService.LocalBinder) service).getService();
                 tourService.registerTourServiceListener(MyEntouragesFragment.this);
                 isBound = true;
+                updateFabMenu();
             }
         }
 
