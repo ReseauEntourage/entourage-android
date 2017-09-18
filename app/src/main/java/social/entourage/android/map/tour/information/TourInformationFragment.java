@@ -21,6 +21,7 @@ import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
@@ -579,7 +580,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (shareLink == null) {
             shareLink = getString(R.string.entourage_share_link);
         }
-        String shareText = isMyEntourage ? getString(R.string.entourage_share_text_author, shareLink) : getString(R.string.entourage_share_text_member, shareLink);
+        int entourageShareText = isMyEntourage ? R.string.entourage_share_text_author : (feedItem.isPrivate() ? R.string.entourage_share_text_member : R.string.entourage_share_text_non_member);
+        String shareText = getString(entourageShareText, shareLink);
 
         // start the share intent
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
