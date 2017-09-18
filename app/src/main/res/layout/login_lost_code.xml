@@ -112,13 +112,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <social.entourage.android.view.CountryCodePicker.CountryCodePicker
                     android:id="@+id/login_lost_code_ccp"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     app:ccp_backgroundColor="@color/accent"
                     app:ccp_countryPreference="FR,BE,CA,GP,GF,MQ,MU,YT,PF,RE"
                     app:ccp_defaultNameCode="FR"
@@ -144,7 +145,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <View
