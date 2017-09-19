@@ -19,6 +19,15 @@
         android:visibility="gone"/>
 
     <Button
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tour_info_options_contact"
+        android:id="@+id/feeditem_option_contact"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"/>
+
+    <Button
         android:id="@+id/feeditem_option_share"
         style="@style/WhiteButton"
         android:layout_width="match_parent"

@@ -262,6 +262,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @BindView(R.id.tour_info_request_join_title)
     TextView requestJoinTitle;
 
+    @BindView(R.id.tour_info_request_join_button)
+    Button requestJoinButton;
+
     MembersAdapter membersAdapter;
     List<TimestampedObject> membersList = new ArrayList<>();
 
@@ -702,7 +705,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         builder.create().show();
     }
 
-    @OnClick({R.id.feeditem_option_join, R.id.tour_info_request_join_button})
+    @OnClick({R.id.feeditem_option_join, R.id.feeditem_option_contact, R.id.tour_info_request_join_button})
     public void onJoinTourButton() {
         if (tourService != null) {
             showProgressBar();
@@ -1021,15 +1024,23 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         Button shareEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_share);
         Button reportEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_report);
         Button joinEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_join);
+        Button contactTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_contact);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
         editEntourageButton.setVisibility(View.GONE);
         shareEntourageButton.setVisibility(View.GONE);
         reportEntourageButton.setVisibility(View.GONE);
         joinEntourageButton.setVisibility(View.GONE);
+        contactTourButton.setVisibility(View.GONE);
 
         if (feedItem != null) {
-            joinEntourageButton.setVisibility(feedItem.isPrivate() ? View.GONE : (FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? View.GONE : View.VISIBLE) );
+            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                joinEntourageButton.setVisibility(View.GONE);
+                contactTourButton.setVisibility(feedItem.isPrivate() ? View.GONE : (FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? View.GONE : View.VISIBLE));
+            } else {
+                contactTourButton.setVisibility(View.GONE);
+                joinEntourageButton.setVisibility(feedItem.isPrivate() ? View.GONE : (FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? View.GONE : View.VISIBLE));
+            }
             if (me != null && feedItem.getAuthor() != null) {
                 int myId = me.getId();
                 if (feedItem.getAuthor().getUserID() != myId) {
@@ -1479,6 +1490,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     actLayout.setVisibility(View.INVISIBLE);
                     requestJoinLayout.setVisibility(View.VISIBLE);
                     requestJoinTitle.setText(feedItem.getType() == TimestampedObject.TOUR_CARD ? R.string.tour_info_request_join_title_tour : R.string.tour_info_request_join_title_entourage);
+                    requestJoinButton.setText(feedItem.getType() == TimestampedObject.TOUR_CARD ? R.string.tour_info_request_join_button_tour : R.string.tour_info_request_join_button_entourage);
                     updatePublicScrollViewLayout();
                     return;
             }
