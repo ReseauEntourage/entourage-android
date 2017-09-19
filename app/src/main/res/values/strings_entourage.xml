@@ -18,8 +18,7 @@
     <string name="entourage_create_error_title_too_long">Le titre est trop long</string>
     <string name="entourage_create_error_description_empty">La description ne peut pas être vide</string>
 
-    <string name="entourage_create_menu_demand">Créer une demande</string>
-    <string name="entourage_create_menu_contribution">Créer une contribution</string>
+    <string name="entourage_create_menu">Créer une action</string>
 
     <!-- Entourage Title Fragment -->
     <string name="entourage_title_fragment_title">TITRE</string>

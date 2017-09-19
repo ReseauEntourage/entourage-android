@@ -286,21 +286,12 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
     }
 
-    @OnClick(R.id.button_create_entourage_demand)
-    void onCreateEntourageDemandClicked() {
+    @OnClick(R.id.button_create_entourage)
+    void onCreateEntourageClicked() {
         if (getActivity() instanceof DrawerActivity) {
             fabMenu.close(false);
             DrawerActivity activity = (DrawerActivity)getActivity();
-            activity.onCreateEntouragDemandClicked();
-        }
-    }
-
-    @OnClick(R.id.button_create_entourage_contribution)
-    void onCreateEntourageContributionClicked() {
-        if (getActivity() instanceof DrawerActivity) {
-            fabMenu.close(false);
-            DrawerActivity activity = (DrawerActivity)getActivity();
-            activity.onCreateEntourageContributionClicked();
+            activity.onCreateEntourageClicked();
         }
     }
 

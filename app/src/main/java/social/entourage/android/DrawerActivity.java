@@ -1045,25 +1045,14 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    @OnClick(R.id.button_create_entourage_contribution)
-    public void onCreateEntourageContributionClicked() {
+    @OnClick(R.id.button_create_entourage)
+    public void onCreateEntourageClicked() {
         FlurryAgent.logEvent(Constants.EVENT_FEED_OFFER_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
         } else {
             onPOILauncherClicked();
             mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
-        }
-    }
-
-    @OnClick(R.id.button_create_entourage_demand)
-    public void onCreateEntouragDemandClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_FEED_ASK_CREATE_CLICK);
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_DEMAND);
-        } else {
-            onPOILauncherClicked();
-            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_DEMAND);
         }
     }
 

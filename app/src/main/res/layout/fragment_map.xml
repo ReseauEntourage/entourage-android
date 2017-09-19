@@ -106,7 +106,6 @@
         <view
             android:id="@+id/fragment_map_entourage_mini_cards"
             class="social.entourage.android.map.entourage.minicards.EntourageMiniCardsView"
-            id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/fragment_map_show_guide"
