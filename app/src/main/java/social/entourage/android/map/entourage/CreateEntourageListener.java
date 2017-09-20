@@ -8,5 +8,6 @@ public interface CreateEntourageListener {
 
     public void onTitleChanged(String title);
     public void onDescriptionChanged(String description);
+    public void onCategoryChosen(String entourageType, String category);
 
 }

@@ -31,6 +31,9 @@ import social.entourage.android.newsfeed.FeedItemsStorage;
  */
 public class EntourageApplication extends Application {
 
+    private static EntourageApplication instance;
+    public static EntourageApplication get() { return instance; }
+
     private EntourageComponent component;
 
     private ArrayList<EntourageActivity> activities;
@@ -44,6 +47,7 @@ public class EntourageApplication extends Application {
     public void onCreate() {
         activities = new ArrayList<>();
         super.onCreate();
+        instance = this;
 
         setupFabric();
         setupFlurry();

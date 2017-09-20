@@ -81,6 +81,7 @@ import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
+import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
@@ -214,6 +215,8 @@ public class DrawerActivity extends EntourageSecuredActivity
 
             Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
             Crashlytics.setUserName(user.getDisplayName());
+
+            EntourageCategoryManager manager = EntourageCategoryManager.getInstance();
         }
     }
 

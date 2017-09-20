@@ -278,7 +278,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     // EntourageLocationFragment.OnFragmentInteractionListener
     // ----------------------------------
 
-    public void onEntourageLocationChoosen(LatLng location, String address) {
+    public void onEntourageLocationChosen(LatLng location, String address) {
         if (location != null) {
             this.location = location;
             if (presenter != null) {

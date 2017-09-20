@@ -38,8 +38,8 @@ public class CreateEntouragePresenter {
     // Methods
     // ----------------------------------
 
-    protected void createEntourage(String type, String title, String description, TourPoint location) {
-        Entourage entourage = new Entourage(type, title, description, location);
+    protected void createEntourage(String type, String category, String title, String description, TourPoint location) {
+        Entourage entourage = new Entourage(type, category, title, description, location);
         Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
         entourageWrapper.setEntourage(entourage);
 

@@ -42,6 +42,11 @@ public class Entourage extends FeedItem implements Serializable {
     @SerializedName("entourage_type")
     private String entourageType;
 
+    @SerializedName("display_category")
+    private String displayCategory;
+
+    private String category;
+
     private String title;
 
     private String description;
@@ -57,9 +62,10 @@ public class Entourage extends FeedItem implements Serializable {
         super();
     }
 
-    public Entourage(String entourageType, String title, String description, TourPoint location) {
+    public Entourage(String entourageType, String category, String title, String description, TourPoint location) {
         super();
         this.entourageType = entourageType;
+        this.category = category;
         this.title = title;
         this.description = description;
         this.location = location;
@@ -107,6 +113,22 @@ public class Entourage extends FeedItem implements Serializable {
 
     public void setEntourageType(final String entourageType) {
         this.entourageType = entourageType;
+    }
+
+    public String getDisplayCategory() {
+        return displayCategory;
+    }
+
+    public void setDisplayCategory(final String displayCategory) {
+        this.displayCategory = displayCategory;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(final String category) {
+        this.category = category;
     }
 
     // ----------------------------------

@@ -3,6 +3,7 @@ package social.entourage.android.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
             htmlString = typedArray.getString(R.styleable.HtmlTextView_htmlText);
             if (htmlString != null) {
                 setText(Utils.fromHtml(htmlString), TextView.BufferType.SPANNABLE);
+                setMovementMethod(LinkMovementMethod.getInstance());
             }
         } finally {
             typedArray.recycle();
@@ -47,5 +49,6 @@ public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
         if (htmlString == null) htmlString = "";
         setText(Utils.fromHtml(htmlString), BufferType.SPANNABLE);
         this.htmlString = htmlString;
+        setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

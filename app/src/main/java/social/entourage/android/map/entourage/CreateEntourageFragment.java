@@ -10,20 +10,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,6 +37,7 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
 
 /**
  *
@@ -67,8 +63,8 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     @Inject
     CreateEntouragePresenter presenter;
 
-    @BindView(R.id.create_entourage_type)
-    TextView typeTextView;
+    @BindView(R.id.create_entourage_category_label)
+    TextView categoryTextView;
 
     @BindView(R.id.create_entourage_position)
     TextView positionTextView;
@@ -89,6 +85,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     TextView descriptionLabelTextView;
 
     private String entourageType;
+    private String entourageCategory;
     private LatLng location;
 
     private boolean isSaving = false;
@@ -207,6 +204,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
                 } else {
                     presenter.createEntourage(
                             entourageType,
+                            entourageCategory,
                             titleEditText.getText().toString(),
                             descriptionEditText.getText().toString(),
                             entourageLocation);
@@ -215,6 +213,13 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
                 Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @OnClick(R.id.create_entourage_category_layout)
+    protected void onEditTypeClicked() {
+        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance();
+        fragment.setListener(this);
+        fragment.show(getFragmentManager(), EntourageCategoryFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_position_layout)
@@ -295,6 +300,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
             editedEntourage = (Entourage)args.getSerializable(FeedItem.KEY_FEEDITEM);
             if (editedEntourage != null) {
                 entourageType = editedEntourage.getEntourageType();
+                entourageCategory = editedEntourage.getCategory();
             } else {
                 entourageType = args.getString(KEY_ENTOURAGE_TYPE, Entourage.TYPE_CONTRIBUTION);
             }
@@ -306,11 +312,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     }
 
     private void initializeTypeTextView() {
-        if (Entourage.TYPE_CONTRIBUTION.equals(entourageType)) {
-            typeTextView.setText(R.string.entourage_create_contribution_title);
-        } else {
-            typeTextView.setText(R.string.entourage_create_demand_title);
-        }
     }
 
     private void initializeLocation() {
@@ -341,6 +342,10 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     }
 
     private boolean isValid() {
+        if (entourageType == null || entourageType.length() == 0 || entourageCategory == null || entourageCategory.length() == 0) {
+            Toast.makeText(getActivity(), R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show();
+            return false;
+        }
         String title = titleEditText.getText().toString().trim();
         if (title.length() == 0) {
             Toast.makeText(getActivity(), R.string.entourage_create_error_title_empty, Toast.LENGTH_SHORT).show();
@@ -395,7 +400,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     // EntourageLocationFragment.OnFragmentInteractionListener
     // ----------------------------------
 
-    public void onEntourageLocationChoosen(LatLng location, String address) {
+    public void onEntourageLocationChosen(LatLng location, String address) {
         if (location != null) {
             this.location = location;
             if (address != null) {
@@ -416,5 +421,10 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     @Override
     public void onDescriptionChanged(final String description) {
         descriptionEditText.setText(description);
+    }
+
+    @Override
+    public void onCategoryChosen(final String entourageType, final String category) {
+
     }
 }
