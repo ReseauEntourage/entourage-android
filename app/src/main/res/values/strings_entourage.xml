@@ -26,6 +26,8 @@
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>
+    <string name="entourage_category_type_demand_label">JE CHERCHE…</string>
+    <string name="entourage_category_type_contribution_label">JE ME PROPOSE DE…</string>
 
     <!-- Entourage Title Fragment -->
     <string name="entourage_title_fragment_title">TITRE</string>

@@ -215,8 +215,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
             Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
             Crashlytics.setUserName(user.getDisplayName());
-
-            EntourageCategoryManager manager = EntourageCategoryManager.getInstance();
         }
     }
 

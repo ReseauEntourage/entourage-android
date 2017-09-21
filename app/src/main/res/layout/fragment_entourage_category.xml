@@ -1,15 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/pale_grey"
-              android:orientation="vertical"
               tools:context="social.entourage.android.map.entourage.category.EntourageCategoryFragment">
 
     <RelativeLayout
         android:id="@+id/entourage_category_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:background="@color/background"
         android:orientation="vertical">
 
@@ -44,6 +47,45 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="@string/validate"/>
+
+        <View
+            android:id="@+id/entourage_category_header_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignBottom="@+id/entourage_category_validate_button"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/greyish"/>
+
     </RelativeLayout>
 
-</LinearLayout>
+    <ExpandableListView
+        android:id="@+id/entourage_category_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/entourage_category_help_link"
+        android:layout_below="@+id/entourage_category_header_layout"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:groupIndicator="@null"/>
+
+    <view
+        android:id="@+id/entourage_category_help_link"
+        class="social.entourage.android.view.HtmlTextView"
+        layout_alignParentBottom="true"
+        layout_marginEnd="65dp"
+        layout_marginRight="65dp"
+        layout_toLeftOf="@+id/create_entourage_help_link"
+        layout_toStartOf="@+id/create_entourage_help_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:textSize="18sp"
+        app:htmlText="@string/entourage_create_help_text"/>
+
+</RelativeLayout>
