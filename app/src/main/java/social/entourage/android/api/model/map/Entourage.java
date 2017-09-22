@@ -43,8 +43,6 @@ public class Entourage extends FeedItem implements Serializable {
     private String entourageType;
 
     @SerializedName("display_category")
-    private String displayCategory;
-
     private String category;
 
     private String title;
@@ -113,14 +111,6 @@ public class Entourage extends FeedItem implements Serializable {
 
     public void setEntourageType(final String entourageType) {
         this.entourageType = entourageType;
-    }
-
-    public String getDisplayCategory() {
-        return displayCategory;
-    }
-
-    public void setDisplayCategory(final String displayCategory) {
-        this.displayCategory = displayCategory;
     }
 
     public String getCategory() {

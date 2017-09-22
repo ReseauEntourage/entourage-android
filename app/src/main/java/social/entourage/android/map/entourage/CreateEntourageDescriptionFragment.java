@@ -14,6 +14,8 @@ import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.map.entourage.category.EntourageCategory;
+import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
 
 /**
  * Dialog Fragment for editing an entourage entourageDescription
@@ -36,7 +38,7 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
     EditText descriptionEditText;
 
     private String entourageDescription;
-    private String entourageType;
+    private EntourageCategory entourageCategory;
 
     private CreateEntourageListener mListener;
 
@@ -48,11 +50,11 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
         // Required empty public constructor
     }
 
-    public static CreateEntourageDescriptionFragment newInstance(String description, String entourageType) {
+    public static CreateEntourageDescriptionFragment newInstance(String description, EntourageCategory entourageCategory) {
         CreateEntourageDescriptionFragment fragment = new CreateEntourageDescriptionFragment();
         Bundle args = new Bundle();
         args.putString(ENTOURAGE_DESCRIPTION, description);
-        args.putString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE, entourageType);
+        args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, entourageCategory);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,7 +64,7 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             entourageDescription = getArguments().getString(ENTOURAGE_DESCRIPTION);
-            entourageType = getArguments().getString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE);
+            entourageCategory = (EntourageCategory)getArguments().getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY);
         }
     }
 
@@ -122,7 +124,9 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
             descriptionEditText.setText(entourageDescription);
             descriptionEditText.setSelection(entourageDescription.length());
         }
-        descriptionEditText.setHint(Entourage.TYPE_CONTRIBUTION.equals(entourageType) ? R.string.entourage_create_description_contribution_hint : R.string.entourage_create_description_demand_hint);
+        if (entourageCategory != null) {
+            descriptionEditText.setHint(entourageCategory.getDescriptionExample());
+        }
     }
 
 }

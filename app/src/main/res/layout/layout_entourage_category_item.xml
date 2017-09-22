@@ -8,9 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp"
-        >
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/entourage_category_item_icon"
@@ -24,7 +24,6 @@
             android:id="@+id/entourage_category_item_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -32,6 +31,14 @@
             android:layout_weight="1"
             android:textColor="@color/greyish_brown"
             android:textSize="16sp"/>
+
+        <CheckBox
+            android:id="@+id/entourage_category_item_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/cb_contact"
+            android:checked="false"
+            android:visibility="visible"/>
     </LinearLayout>
 
     <View

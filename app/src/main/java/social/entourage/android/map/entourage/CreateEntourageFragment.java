@@ -37,7 +37,9 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
+import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 
 /**
  *
@@ -63,7 +65,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     @Inject
     CreateEntouragePresenter presenter;
 
-    @BindView(R.id.create_entourage_category_label)
+    @BindView(R.id.create_entourage_category)
     TextView categoryTextView;
 
     @BindView(R.id.create_entourage_position)
@@ -84,8 +86,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     @BindView(R.id.create_entourage_description_label)
     TextView descriptionLabelTextView;
 
-    private String entourageType;
-    private String entourageCategory;
+    private EntourageCategory entourageCategory;
     private LatLng location;
 
     private boolean isSaving = false;
@@ -176,6 +177,15 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     }
 
+    @Override
+    public void dismiss() {
+        if (entourageCategory != null) {
+            // Reset the flag so consequent fragment shows will not appear broken
+            entourageCategory.setDefault(false);
+        }
+        super.dismiss();
+    }
+
     // ----------------------------------
     // Interactions handling
     // ----------------------------------
@@ -200,11 +210,15 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
                     editedEntourage.setTitle(titleEditText.getText().toString());
                     editedEntourage.setDescription(descriptionEditText.getText().toString());
                     editedEntourage.setLocation(entourageLocation);
+                    if (entourageCategory != null) {
+                        editedEntourage.setEntourageType(entourageCategory.getEntourageType());
+                        editedEntourage.setCategory(entourageCategory.getCategory());
+                    }
                     presenter.editEntourage(editedEntourage);
                 } else {
                     presenter.createEntourage(
-                            entourageType,
-                            entourageCategory,
+                            entourageCategory.getEntourageType(),
+                            entourageCategory.getCategory(),
                             titleEditText.getText().toString(),
                             descriptionEditText.getText().toString(),
                             entourageLocation);
@@ -217,7 +231,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.create_entourage_category_layout)
     protected void onEditTypeClicked() {
-        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance();
+        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory);
         fragment.setListener(this);
         fragment.show(getFragmentManager(), EntourageCategoryFragment.TAG);
     }
@@ -231,14 +245,14 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.create_entourage_title_layout)
     protected void onEditTitleClicked() {
-        CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString(), entourageType);
+        CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString(), entourageCategory);
         entourageTitleFragment.setListener(this);
         entourageTitleFragment.show(getFragmentManager(), CreateEntourageTitleFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_description_layout)
     protected void onEditDescriptionClicked() {
-        CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString(), entourageType);
+        CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString(), entourageCategory);
         descriptionFragment.setListener(this);
         descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
     }
@@ -298,20 +312,38 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         Bundle args = getArguments();
         if (args != null) {
             editedEntourage = (Entourage)args.getSerializable(FeedItem.KEY_FEEDITEM);
-            if (editedEntourage != null) {
-                entourageType = editedEntourage.getEntourageType();
-                entourageCategory = editedEntourage.getCategory();
-            } else {
-                entourageType = args.getString(KEY_ENTOURAGE_TYPE, Entourage.TYPE_CONTRIBUTION);
-            }
         }
-        initializeTypeTextView();
+        initializeCategory();
         initializeLocation();
         initializeTitleEditText();
         initializeDescriptionEditText();
     }
 
-    private void initializeTypeTextView() {
+    private void initializeCategory() {
+        if (editedEntourage != null) {
+            String entourageType = editedEntourage.getEntourageType();
+            String category = editedEntourage.getCategory();
+            entourageCategory = EntourageCategoryManager.getInstance().findCategory(entourageType, category);
+            if (entourageCategory != null) {
+                entourageCategory.setDefault(true);
+            }
+        } else {
+            entourageCategory = null;
+        }
+        updateCategoryTextView();
+    }
+
+    private void updateCategoryTextView() {
+        if (entourageCategory == null) {
+            categoryTextView.setText("");
+        } else {
+            categoryTextView.setText(
+                    getString(
+                            Entourage.TYPE_DEMAND.equalsIgnoreCase(entourageCategory.getEntourageType()) ? R.string.entourage_create_type_demand : R.string.entourage_create_type_contribution,
+                            entourageCategory.getTitle()
+                    )
+            );
+        }
     }
 
     private void initializeLocation() {
@@ -342,7 +374,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     }
 
     private boolean isValid() {
-        if (entourageType == null || entourageType.length() == 0 || entourageCategory == null || entourageCategory.length() == 0) {
+        if (entourageCategory == null) {
             Toast.makeText(getActivity(), R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -351,13 +383,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
             Toast.makeText(getActivity(), R.string.entourage_create_error_title_empty, Toast.LENGTH_SHORT).show();
             return false;
         }
-        /*
-        String description = descriptionEditText.getText().toString().trim();
-        if (description.length() == 0) {
-            Toast.makeText(getActivity(), R.string.entourage_create_error_description_empty, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        */
         return true;
     }
 
@@ -424,7 +449,8 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     }
 
     @Override
-    public void onCategoryChosen(final String entourageType, final String category) {
-
+    public void onCategoryChosen(final EntourageCategory category) {
+        this.entourageCategory = category;
+        updateCategoryTextView();
     }
 }

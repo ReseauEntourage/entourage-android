@@ -15,7 +15,7 @@ import social.entourage.android.api.model.map.Entourage;
  * Created by Mihai Ionescu on 20/09/2017.
  */
 
-public class EntourageCategory {
+public class EntourageCategory implements Serializable{
 
     // ----------------------------------
     // Attributes
@@ -33,6 +33,8 @@ public class EntourageCategory {
 
     @SerializedName("description_example")
     private String descriptionExample;
+
+    private boolean isDefault = false;
 
     // ----------------------------------
     // GETTERS & SETTERS
@@ -76,6 +78,14 @@ public class EntourageCategory {
 
     public void setDescriptionExample(final String descriptionExample) {
         this.descriptionExample = descriptionExample;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(final boolean aDefault) {
+        isDefault = aDefault;
     }
 
     // ----------------------------------

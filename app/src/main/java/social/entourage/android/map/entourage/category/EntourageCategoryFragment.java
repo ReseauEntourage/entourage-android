@@ -1,17 +1,13 @@
 package social.entourage.android.map.entourage.category;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,26 +38,25 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     // Attributes
     // ----------------------------------
 
-    private static final String ENTOURAGE_TYPE = "ENTOURAGE_TYPE";
-    private static final String ENTOURAGE_CATEGORY = "ENTOURAGE_CATEGORY";
+    public static final String KEY_ENTOURAGE_CATEGORY = "ENTOURAGE_CATEGORY";
 
-    private String entourageType;
-    private String category;
+    private EntourageCategory category;
 
     private CreateEntourageListener mListener;
 
     @BindView(R.id.entourage_category_listview)
     ExpandableListView listView;
 
+    private EntourageCategoriesAdapter adapter;
+
     public EntourageCategoryFragment() {
         // Required empty public constructor
     }
 
-    public static EntourageCategoryFragment newInstance(String entourageType, String category) {
+    public static EntourageCategoryFragment newInstance(EntourageCategory category) {
         EntourageCategoryFragment fragment = new EntourageCategoryFragment();
         Bundle args = new Bundle();
-        args.putString(ENTOURAGE_TYPE, entourageType);
-        args.putString(ENTOURAGE_CATEGORY, category);
+        args.putSerializable(KEY_ENTOURAGE_CATEGORY, category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,10 +71,7 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            entourageType = getArguments().getString(ENTOURAGE_TYPE);
-            category = getArguments().getString(ENTOURAGE_CATEGORY);
-        }
+
     }
 
     @Override
@@ -96,6 +88,10 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getArguments() != null) {
+            category = (EntourageCategory)getArguments().getSerializable(KEY_ENTOURAGE_CATEGORY);
+        }
+
         initialiseView();
     }
 
@@ -111,7 +107,7 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     private void initialiseView() {
         HashMap<String, List<EntourageCategory>> entourageCategoryHashMap = EntourageCategoryManager.getInstance().getEntourageCategories();
         List<String> entourageTypeList = EntourageCategoryManager.getInstance().getEntourageTypes();
-        EntourageCategoriesAdapter adapter = new EntourageCategoriesAdapter(getContext(), entourageTypeList, entourageCategoryHashMap);
+        adapter = new EntourageCategoriesAdapter(getContext(), entourageTypeList, entourageCategoryHashMap, category);
         listView.setAdapter(adapter);
     }
 
@@ -128,7 +124,7 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     @OnClick(R.id.entourage_category_validate_button)
     void onValidateClicked() {
         if (mListener != null) {
-            mListener.onCategoryChosen(entourageType, category);
+            mListener.onCategoryChosen(adapter.selectedCategory);
         }
         mListener = null;
         dismiss();

@@ -18,6 +18,8 @@ import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.map.entourage.category.EntourageCategory;
+import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
 
 /**
  * Dialog Fragment for editing the entourage title
@@ -51,7 +53,7 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
     View errorView;
 
     private String entourageTitle;
-    private String entourageType;
+    private EntourageCategory entourageCategory;
 
     private CreateEntourageListener mListener;
 
@@ -63,11 +65,11 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    public static CreateEntourageTitleFragment newInstance(String title, String entourageType) {
+    public static CreateEntourageTitleFragment newInstance(String title, EntourageCategory entourageCategory) {
         CreateEntourageTitleFragment fragment = new CreateEntourageTitleFragment();
         Bundle args = new Bundle();
         args.putString(KEY_ENTOURAGE_TITLE, title);
-        args.putString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE, entourageType);
+        args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, entourageCategory);
         fragment.setArguments(args);
 
         return fragment;
@@ -78,7 +80,7 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             entourageTitle = getArguments().getString(KEY_ENTOURAGE_TITLE);
-            entourageType = getArguments().getString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE);
+            entourageCategory = (EntourageCategory)getArguments().getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY);
         }
     }
 
@@ -170,7 +172,9 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
         String charCountString = getContext().getString(R.string.entourage_create_title_char_count_format, titleEditText.length(), TITLE_MAX_CHAR_COUNT);
         titleCharCountTextView.setText(charCountString);
 
-        titleEditText.setHint(Entourage.TYPE_CONTRIBUTION.equals(entourageType) ? R.string.entourage_create_title_contribution_hint : R.string.entourage_create_title_demand_hint);
+        if (entourageCategory != null) {
+            titleEditText.setHint(getString(R.string.entourage_create_title_hint, entourageCategory.getTitleExample()));
+        }
 
     }
 }

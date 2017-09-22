@@ -76,4 +76,23 @@ public class EntourageCategoryManager {
         return entourageCategoriesHashMap;
     }
 
+    // ----------------------------------
+    // Public methods
+    // ----------------------------------
+
+    public EntourageCategory findCategory(String entouragetype, String entourageCategory) {
+        if (entourageCategory == null) entourageCategory = "other";
+        List<EntourageCategory> list = entourageCategoriesHashMap.get(entouragetype);
+        if (list != null) {
+            for (EntourageCategory category:list) {
+                if (category.getCategory() != null) {
+                    if (category.getCategory().equalsIgnoreCase(entourageCategory)) {
+                        return category;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 }
