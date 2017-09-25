@@ -2,9 +2,14 @@ package social.entourage.android.newsfeed;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +23,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
@@ -25,6 +31,8 @@ import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
+import social.entourage.android.map.entourage.category.EntourageCategory;
+import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
@@ -103,6 +111,16 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         //title
         if (tourTitle != null) {
             tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
+            // add the icon for entourages
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory((Entourage)feedItem);
+                Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes());
+                categoryIcon.clearColorFilter();
+                categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
+                tourTitle.setCompoundDrawablesWithIntrinsicBounds(categoryIcon, null, null, null);
+            } else {
+                tourTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            }
         }
 
         TourAuthor author = feedItem.getAuthor();
