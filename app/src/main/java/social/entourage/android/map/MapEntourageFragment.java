@@ -27,6 +27,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -1447,6 +1448,30 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
             }
         });
+        mapOptionsMenu.setOnMenuButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (getActivity() == null) {
+                    return;
+                }
+                DrawerActivity drawerActivity = (DrawerActivity)getActivity();
+                if (drawerActivity.isGuideShown()) {
+                    // Let the FAB do it's normal thing
+                    mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
+                } else {
+                    User me = EntourageApplication.me(getContext());
+                    boolean isPro = (me != null) ? me.isPro() : false;
+                    if (!isPro) {
+                        // Show directly the create entourage disclaimer
+                        drawerActivity.onCreateEntourageClicked();
+                    } else {
+                        // Let the FAB do it's normal thing
+                        mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
+                    }
+                }
+            }
+        });
+
         mapOptionsMenuPaddingBottom = mapOptionsMenu.getPaddingBottom();
         FAB_BOTTOM_DELTA = getResources().getDimensionPixelOffset(R.dimen.newsfeed_fab_bottowm_view_delta);
 
