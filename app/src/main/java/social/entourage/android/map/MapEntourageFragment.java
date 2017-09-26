@@ -1604,6 +1604,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             onMapReadyCallback = new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
+                    if (map != null) return;
                     map = googleMap;
                     if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                         googleMap.setMyLocationEnabled(true);
