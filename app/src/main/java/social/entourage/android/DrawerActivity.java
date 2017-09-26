@@ -81,7 +81,6 @@ import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
 import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
-import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
@@ -496,8 +495,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                 loadFragmentWithExtras();
                 break;
             case R.id.action_guide:
-                loadSolidarityGuide();
-                FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
+                if (mainFragment instanceof MapEntourageFragment) {
+                    showSolidarityGuide();
+                    FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
+                }
                 break;
             case R.id.action_user:
                 FlurryAgent.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
@@ -620,12 +621,41 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void loadSolidarityGuide() {
+    private void showSolidarityGuide() {
+        // Change the Guide Option text
+        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
+        button.setLabelText(getString(R.string.map_poi_close_button));
+        // Make the 'Propose POI' button visible
+        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
+        if (proposePOIButton != null) {
+            proposePOIButton.setVisibility(View.VISIBLE);
+        }
+        // Hide the overlay
+        if (mapOptionsMenu.isOpened()) {
+            mapOptionsMenu.close(false);
+        }
+        // Show the fragment
         guideMapEntourageFragment = (GuideMapEntourageFragment) getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
         if (guideMapEntourageFragment == null) {
             guideMapEntourageFragment = new GuideMapEntourageFragment();
         }
         loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
+    }
+
+    private void hideSolidarityGuide() {
+        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
+        button.setLabelText(getString(R.string.map_poi_launcher_button));
+        // Make the 'Propose POI' button gone
+        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
+        if (proposePOIButton != null) {
+            proposePOIButton.setVisibility(View.GONE);
+        }
+        // Hide the overlay
+        if (mapOptionsMenu.isOpened()) {
+            mapOptionsMenu.close(false);
+        }
+        // Show the map screen
+        selectItem(R.id.action_tours);
     }
 
     private void initializePushNotifications() {
@@ -1069,36 +1099,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
-            // Change the Guide Option text
-            FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
-            button.setLabelText(getString(R.string.map_poi_close_button));
-            // Make the 'Propose POI' button visible
-            FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
-            if (proposePOIButton != null) {
-                proposePOIButton.setVisibility(View.VISIBLE);
-            }
-            // Hide the overlay
-            if (mapOptionsMenu.isOpened()) {
-                mapOptionsMenu.toggle(false);
-            }
             // Show the guide screen
-            loadSolidarityGuide();
+            showSolidarityGuide();
         } else {
             FlurryAgent.logEvent(Constants.EVENT_SCREEN_06_1);
             // Change the Guide Option text
-            FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
-            button.setLabelText(getString(R.string.map_poi_launcher_button));
-            // Make the 'Propose POI' button gone
-            FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
-            if (proposePOIButton != null) {
-                proposePOIButton.setVisibility(View.GONE);
-            }
-            // Hide the overlay
-            if (mapOptionsMenu.isOpened()) {
-                mapOptionsMenu.toggle(false);
-            }
-            // Show the map screen
-            selectItem(R.id.action_tours);
+            hideSolidarityGuide();
         }
     }
 
