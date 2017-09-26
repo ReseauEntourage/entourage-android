@@ -930,30 +930,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             tourAuthorName.setText("--");
         }
 
-        // MI: for v2.1 we display the distance to starting point
-        /*
-        String location = "";
-        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            Address tourAddress = feedItem.getStartAddress();
-            if (tourAddress != null) {
-                location = tourAddress.getAddressLine(0);
-                if (tourLocation == null) {
-                    location = "";
-                }
-            }
-        }
-        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            TourPoint entourageLocation = ((Entourage)feedItem).getLocation();
-            if (entourageLocation != null) {
-                Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-                if (currentLocation != null) {
-                    float distance = entourageLocation.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
-                    location = String.format("%.2f km", distance/1000.0f);
-                }
-            }
-        }
-        */
-
         String distanceAsString = "";
         TourPoint startPoint = null;
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
@@ -1636,8 +1612,21 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // Update the UI
         feedItem = updatedEntourage;
 
+        if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            if (feedItem.getFeedType().equals(Entourage.TYPE_DEMAND)) {
+                fragmentTitle.setText(R.string.entourage_type_demand);
+            } else {
+                fragmentTitle.setText(R.string.entourage_type_contribution);
+            }
+        }
         tourOrganization.setText(feedItem.getTitle());
         tourDescription.setText(feedItem.getDescription());
+        String displayType = feedItem.getFeedTypeLong(this.getActivity());
+        if (displayType != null) {
+            tourType.setText(displayType);
+        } else {
+            tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_info_unknown)));
+        }
 
         String distanceAsString = "";
         TourPoint entourageLocation = ((Entourage)feedItem).getLocation();

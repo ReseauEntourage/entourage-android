@@ -42,6 +42,7 @@ import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
@@ -318,6 +319,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     @Subscribe
     public void onEntourageCreated(Events.OnEntourageCreated event) {
         refreshMyFeeds();
+    }
+
+    @Subscribe
+    public void onEntourageUpdated(Events.OnEntourageUpdated event) {
+        if (event == null || event.getEntourage() == null) return;
+        Entourage entourage = event.getEntourage();
+        entouragesAdapter.updateCard(entourage);
     }
 
     @Subscribe
