@@ -8,9 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.guide.PoiRenderer;
 import social.entourage.android.tools.BusProvider;
 
@@ -20,7 +22,7 @@ import social.entourage.android.tools.BusProvider;
  * Created by mihaiionescu on 26/04/2017.
  */
 
-public class PoiViewHolder extends RecyclerView.ViewHolder {
+public class PoiViewHolder extends BaseCardViewHolder {
 
     private TextView poiTitle;
     private TextView poiType;
@@ -33,10 +35,9 @@ public class PoiViewHolder extends RecyclerView.ViewHolder {
 
     public PoiViewHolder(final View itemView) {
         super(itemView);
-        bindFields();
     }
 
-    private void bindFields() {
+    protected void bindFields() {
         poiTitle = (TextView) itemView.findViewById(R.id.poi_card_title);
         poiType = (TextView) itemView.findViewById(R.id.poi_card_type);
         poiAddress = (TextView) itemView.findViewById(R.id.poi_card_address);
@@ -65,6 +66,11 @@ public class PoiViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
+    @Override
+    public void populate(final TimestampedObject data) {
+        populate((Poi)data);
+    }
+
     public void populate(Poi poi) {
         if (poi == null) return;
 
@@ -82,5 +88,9 @@ public class PoiViewHolder extends RecyclerView.ViewHolder {
         poiDistance.setText(distanceAsString);
         phone = poi.getPhone();
         poiCallButton.setVisibility( (phone == null || phone.length() == 0) ? View.GONE : View.VISIBLE);
+    }
+
+    public static int getLayoutResource() {
+        return R.layout.layout_poi_card;
     }
 }

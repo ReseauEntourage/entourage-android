@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -43,6 +44,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -61,6 +63,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
@@ -92,14 +95,15 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     private View toReturn;
 
-    private SupportMapFragment mapFragment;
+    private OnMapReadyCallback onMapReadyCallback;
     private GoogleMap map;
+    private boolean isFullMapShown = true;
     private Location previousCameraLocation;
     private float previousCameraZoom = 1.0f;
     private ClusterManager<Poi> clusterManager;
     private Map<Long, Poi> poisMap;
     private PoiRenderer poiRenderer;
-    private boolean isMapLoaded = false;
+
     private int originalMapLayoutHeight;
 
     private Location previousEmptyListPopupLocation = null;
@@ -127,9 +131,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @BindView(R.id.fragment_guide_main_layout)
     RelativeLayout layoutMain;
 
-    @BindView(R.id.fragment_guide_map_layout)
-    FrameLayout layoutMapMain;
-
     @BindView(R.id.fragment_guide_pois_view)
     RecyclerView poisListView;
 
@@ -155,35 +156,35 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         super.onViewCreated(view, savedInstanceState);
 
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+
         mapOptionsMenu = ((DrawerActivity)getActivity()).mapOptionsMenu;
         poisMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         initializeEmptyListPopup();
-        initializePOIList();
 
         originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
 
-        if (!isMapLoaded) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
+        if (onMapReadyCallback == null) {
+            onMapReadyCallback = new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(final GoogleMap googleMap) {
-                    isMapLoaded = true;
+                    if (map != null) return;
                     map = googleMap;
-                    clusterManager = new ClusterManager<>(getActivity(), googleMap);
-                    poiRenderer = new PoiRenderer(getActivity(), googleMap, clusterManager);
+                    clusterManager = new ClusterManager<>(getActivity(), map);
+                    poiRenderer = new PoiRenderer(getActivity(), map, clusterManager);
                     clusterManager.setRenderer(poiRenderer);
                     clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
                     googleMap.setOnMarkerClickListener(clusterManager);
                     if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                        googleMap.setMyLocationEnabled(true);
+                        map.setMyLocationEnabled(true);
                     }
-                    googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                    googleMap.getUiSettings().setMapToolbarEnabled(false);
-                    googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                    map.getUiSettings().setMyLocationButtonEnabled(false);
+                    map.getUiSettings().setMapToolbarEnabled(false);
+                    initializeMapZoom();
+                    googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                         @Override
-                        public void onCameraMove() {
-                            CameraPosition position = googleMap.getCameraPosition();
+                        public void onCameraIdle() {
+                            CameraPosition position = map.getCameraPosition();
                             EntourageLocation.getInstance().saveCurrentCameraPosition(position);
                             Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
                             float newZoom = position.zoom;
@@ -208,13 +209,14 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     });
                     */
 
-                    initializeMapZoom();
                     if (presenter != null) {
                         presenter.updatePoisNearby();
                     }
                 }
-            });
+            };
         }
+
+        initializePOIList();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -342,13 +344,13 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void putPoiOnMap(List<Category> categories, Collection<Poi> pois) {
+    public void putPoiOnMap(List<Category> categories, List<Poi> pois) {
         if (getActivity() != null) {
             if (categories != null) {
                 poiRenderer.setCategories(categories);
             }
             if (pois != null && pois.size() > 0) {
-                Collection<Poi> poiCollection = removeRedundantPois(pois);
+                List<Poi> poiCollection = removeRedundantPois(pois);
                 if (map != null) {
                     clusterManager.addItems(poiCollection);
                     clusterManager.cluster();
@@ -356,12 +358,18 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     showInfoPopup();
                 }
                 if (poisAdapter != null) {
-                    poisAdapter.addItems(poiCollection);
+                    List<TimestampedObject> timestampedObjectList = new ArrayList<>();
+                    timestampedObjectList.addAll(poiCollection);
+                    int previousPoiCount = poisAdapter.getDataItemCount();
+                    poisAdapter.addItems(timestampedObjectList);
+                    if (previousPoiCount == 0) {
+                        poisListView.scrollToPosition(0);
+                    }
                 }
             } else {
                 showEmptyListPopup();
-                if (poisAdapter != null && poisAdapter.getItemCount() == 0) {
-                    hidePOIList();
+                if (poisAdapter != null && poisAdapter.getDataItemCount() == 0) {
+                    hidePOIList(false);
                 }
             }
         }
@@ -372,14 +380,14 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     }
 
     private void centerMap(CameraPosition cameraPosition) {
-        if(mapFragment!= null && map != null) {
+        if(map != null) {
             map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             saveCameraPosition();
         }
     }
 
     public void saveCameraPosition() {
-        if(mapFragment!= null && map != null) {
+        if(map != null) {
             EntourageLocation.getInstance().saveLastCameraPosition(map.getCameraPosition());
         }
     }
@@ -401,7 +409,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // PRIVATE METHODS
     // ----------------------------------
 
-    private Collection<Poi> removeRedundantPois(Collection<Poi> pois) {
+    private List<Poi> removeRedundantPois(List<Poi> pois) {
         Iterator iterator = pois.iterator();
         while (iterator.hasNext()) {
             Poi poi = (Poi) iterator.next();
@@ -571,6 +579,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         if (poisAdapter == null) {
             poisListView.setLayoutManager(new LinearLayoutManager(getContext()));
             poisAdapter = new PoisAdapter();
+            poisAdapter.setOnMapReadyCallback(onMapReadyCallback);
             poisListView.setAdapter(poisAdapter);
         }
     }
@@ -579,84 +588,76 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         if (poisListView == null) {
             return;
         }
-        if (poisListView.getVisibility() == View.VISIBLE) {
-            hidePOIList();
+        if (isFullMapShown) {
+            showPOIList(true);
         } else {
-            showPOIList();
+            hidePOIList(true);
         }
     }
 
-    private void hidePOIList() {
-
-        if (poisListView.getVisibility() == View.GONE) {
+    private void hidePOIList(boolean animated) {
+        if (isFullMapShown) {
             return;
         }
-        poisListView.setVisibility(View.GONE);
+        isFullMapShown = true;
 
         guideDisplayToggle.setChecked(true);
 
         ensureMapVisible();
 
         final int targetHeight = layoutMain.getMeasuredHeight();
-        ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                layoutParams.height = val;
-                layoutMapMain.setLayoutParams(layoutParams);
-                layoutMain.forceLayout();
-            }
+        if (animated) {
+            ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int val = (Integer) valueAnimator.getAnimatedValue();
+                    poisAdapter.setMapHeight(val);
+                    poisListView.getLayoutManager().requestLayout();
+                }
 
-        });
-        anim.start();
+            });
+            anim.start();
+        } else {
+            poisAdapter.setMapHeight(targetHeight);
+            poisListView.getLayoutManager().requestLayout();
+        }
 
     }
 
-    private void showPOIList() {
-        if (layoutMapMain == null || poisListView == null || guideDisplayToggle == null) {
+    private void showPOIList(boolean animated) {
+        if (layoutMain == null || poisListView == null || guideDisplayToggle == null) {
             return;
         }
 
-        if (poisListView.getVisibility() == View.VISIBLE) {
+        if (!isFullMapShown) {
             return;
         }
-        poisListView.setVisibility(View.VISIBLE);
+        isFullMapShown = false;
 
         guideDisplayToggle.setChecked(false);
 
         hideEmptyListPopup();
 
-        ValueAnimator anim = ValueAnimator.ofInt(layoutMapMain.getMeasuredHeight(), originalMapLayoutHeight);
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-                layoutParams.height = val;
-                layoutMapMain.setLayoutParams(layoutParams);
-                layoutMain.forceLayout();
-            }
+        if (animated) {
+            ValueAnimator anim = ValueAnimator.ofInt(layoutMain.getMeasuredHeight(), originalMapLayoutHeight);
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int val = (Integer) valueAnimator.getAnimatedValue();
+                    poisAdapter.setMapHeight(val);
+                    poisListView.getLayoutManager().requestLayout();
+                }
 
-        });
-        anim.start();
+            });
+            anim.start();
+        } else {
+            poisAdapter.setMapHeight(originalMapLayoutHeight);
+            poisListView.getLayoutManager().requestLayout();
+        }
     }
 
     public void ensureMapVisible() {
-        if (layoutMapMain == null || poisListView == null) {
-            return;
-        }
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMapMain.getLayoutParams();
-        originalMapLayoutHeight = lp.height;
-
-        if (lp.topMargin < 0) {
-            lp.topMargin = 0;
-            layoutMapMain.setLayoutParams(lp);
-
-            layoutMain.forceLayout();
-        }
-
         poisListView.scrollToPosition(0);
     }
 

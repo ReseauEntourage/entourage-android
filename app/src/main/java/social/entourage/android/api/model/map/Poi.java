@@ -5,11 +5,16 @@ import com.google.gson.annotations.SerializedName;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import social.entourage.android.api.model.TimestampedObject;
 
 @SuppressWarnings("unused")
-public class Poi implements Serializable, ClusterItem {
+public class Poi extends TimestampedObject implements Serializable, ClusterItem {
 
     private static final long serialVersionUID = 7508582427596761716L;
+
+    private final static String HASH_STRING_HEAD = "Poi-";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -134,4 +139,25 @@ public class Poi implements Serializable, ClusterItem {
     public LatLng getPosition() {
         return new LatLng(latitude, longitude);
     }
+
+    // ----------------------------------
+    // Timestamp methods
+    // ----------------------------------
+
+
+    @Override
+    public Date getTimestamp() {
+        return null;
+    }
+
+    @Override
+    public int getType() {
+        return TimestampedObject.GUIDE_POI;
+    }
+
+    @Override
+    public String hashString() {
+        return HASH_STRING_HEAD + id;
+    }
+
 }

@@ -10,8 +10,12 @@ import java.util.Collection;
 import java.util.List;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.guide.poi.PoiViewHolder;
+import social.entourage.android.map.MapViewHolder;
+import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
 
 /**
  * Point of interest adapter
@@ -19,33 +23,21 @@ import social.entourage.android.guide.poi.PoiViewHolder;
  * Created by mihaiionescu on 26/04/2017.
  */
 
-public class PoisAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PoisAdapter extends EntourageBaseAdapter {
 
-    protected List<Poi> items = new ArrayList<>();
+    public PoisAdapter() {
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_poi_card, parent, false);
-        return new PoiViewHolder(view);
-    }
+        viewHolderFactory.registerViewHolder(
+                TimestampedObject.TOP_VIEW,
+                new ViewHolderFactory.ViewHolderType(MapViewHolder.class, R.layout.layout_feed_map_full_card)
+        );
 
-    @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        ((PoiViewHolder)holder).populate(items.get(position));
-    }
+        viewHolderFactory.registerViewHolder(
+                TimestampedObject.GUIDE_POI,
+                new ViewHolderFactory.ViewHolderType(PoiViewHolder.class, PoiViewHolder.getLayoutResource())
+        );
 
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-
-    public void addItems(Collection<Poi> poiList) {
-        items.addAll(poiList);
-        notifyDataSetChanged();
-    }
-
-    public void removeAll() {
-        items.clear();
-        notifyDataSetChanged();
+        setHasStableIds(false);
+        needsTopView = true;
     }
 }

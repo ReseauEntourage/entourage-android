@@ -91,7 +91,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public void addItems(List<TimestampedObject> addItems) {
-        int positionStart = items.size()-1 + (needsTopView ? 1 : 0);
+        int positionStart = items.size() == 0 ? (needsTopView ? 1 : 0 ) : items.size()-1 + (needsTopView ? 1 : 0);
         for (int i = 0; i < addItems.size(); i++) {
             addCardInfo(addItems.get(i), false);
         }
