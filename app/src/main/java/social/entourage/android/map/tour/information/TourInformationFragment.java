@@ -1296,23 +1296,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     private int getTrackColor(String type, Date date) {
         int color = Color.GRAY;
-        if (TourType.MEDICAL.getName().equals(type)) {
-            //color = Color.RED;
-            color = ContextCompat.getColor(getContext(), R.color.tour_type_medical);
-        }
-        else if (TourType.ALIMENTARY.getName().equals(type)) {
-            //color = Color.BLUE;
-            color = ContextCompat.getColor(getContext(), R.color.tour_type_distributive);
-        }
-        else if (TourType.BARE_HANDS.getName().equals(type)) {
-            //color = Color.GREEN;
-            color = ContextCompat.getColor(getContext(), R.color.tour_type_social);
-        }
+        if (getContext() == null) return color;
+        color = ContextCompat.getColor(getContext(), Tour.getTypeColorRes(type));
         if (!MapEntourageFragment.isToday(date)) {
             return MapEntourageFragment.getTransparentColor(color);
         }
 
-        //return Color.argb(0, Color.red(color), Color.green(color), Color.blue(color));
         return color;
     }
 

@@ -1956,13 +1956,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getContext() == null) {
             return color;
         }
-        if (TourType.MEDICAL.getName().equals(type)) {
-            color = ContextCompat.getColor(getContext(), R.color.tour_type_medical);
-        } else if (TourType.ALIMENTARY.getName().equals(type)) {
-            color = ContextCompat.getColor(getContext(), R.color.tour_type_distributive);
-        } else if (TourType.BARE_HANDS.getName().equals(type)) {
-            color = ContextCompat.getColor(getContext(), R.color.tour_type_social);
-        }
+        color = ContextCompat.getColor(getContext(), Tour.getTypeColorRes(type));
         if (!isToday(date)) {
             color = getTransparentColor(color);
         }

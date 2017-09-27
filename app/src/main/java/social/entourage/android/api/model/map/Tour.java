@@ -1,6 +1,8 @@
 package social.entourage.android.api.model.map;
 
 import android.content.Context;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -231,7 +233,36 @@ public class Tour extends FeedItem implements Serializable {
             if (!getAuthor().isSame(tour.getAuthor())) return false;
         }
         return joinStatus.equals(tour.joinStatus);
+    }
 
+    public @DrawableRes int getIconRes() {
+        if (TourType.MEDICAL.getName().equals(tourType)) {
+            return R.drawable.ic_tour_medical;
+        }
+        else if (TourType.ALIMENTARY.getName().equals(tourType)) {
+            return R.drawable.ic_tour_distributive;
+        }
+        else if (TourType.BARE_HANDS.getName().equals(tourType)) {
+            return R.drawable.ic_tour_social;
+        }
+        return 0;
+    }
+
+    public static @ColorRes int getTypeColorRes(String type) {
+        if (TourType.MEDICAL.getName().equals(type)) {
+            return R.color.tour_type_medical;
+        }
+        else if (TourType.ALIMENTARY.getName().equals(type)) {
+            return R.color.tour_type_distributive;
+        }
+        else if (TourType.BARE_HANDS.getName().equals(type)) {
+            return R.color.tour_type_social;
+        }
+        return R.color.accent;
+    }
+
+    public @ColorRes int getTypeColorRes() {
+        return Tour.getTypeColorRes(tourType);
     }
 
     // ----------------------------------

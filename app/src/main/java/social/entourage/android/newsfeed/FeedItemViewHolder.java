@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +18,6 @@ import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import social.entourage.android.Constants;
-import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
@@ -114,12 +112,13 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
             // add the icon for entourages
             if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory((Entourage)feedItem);
-                Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes());
+                Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes()).mutate();
                 categoryIcon.clearColorFilter();
                 categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
                 tourTitle.setCompoundDrawablesWithIntrinsicBounds(categoryIcon, null, null, null);
             } else {
-                tourTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                Drawable categoryIcon = AppCompatResources.getDrawable(context, ((Tour)feedItem).getIconRes());
+                tourTitle.setCompoundDrawablesWithIntrinsicBounds(categoryIcon, null, null, null);
             }
         }
 
