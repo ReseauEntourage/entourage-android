@@ -110,6 +110,10 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
         List<String> entourageTypeList = EntourageCategoryManager.getInstance().getEntourageTypes();
         adapter = new EntourageCategoriesAdapter(getContext(), entourageTypeList, entourageCategoryHashMap, category);
         listView.setAdapter(adapter);
+        int count = adapter.getGroupCount();
+        for (int position = 0; position < count; position++) {
+            listView.expandGroup(position);
+        }
     }
 
     // ----------------------------------

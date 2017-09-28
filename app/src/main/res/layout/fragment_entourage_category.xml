@@ -68,6 +68,7 @@
         android:layout_below="@+id/entourage_category_header_layout"
         android:layout_marginTop="16dp"
         android:background="@color/white"
+        android:divider="@android:color/transparent"
         android:groupIndicator="@null"/>
 
     <view

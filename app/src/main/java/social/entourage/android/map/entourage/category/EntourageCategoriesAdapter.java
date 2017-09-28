@@ -34,12 +34,21 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
         TextView mLabel;
         CheckBox mCheckbox;
 
-        public EntourageCategoryViewHolder(View v, OnCheckedChangeListener checkboxListener) {
+        public EntourageCategoryViewHolder(View v, final OnCheckedChangeListener checkboxListener) {
             mIcon = (ImageView)v.findViewById(R.id.entourage_category_item_icon);
             mLabel = (TextView)v.findViewById(R.id.entourage_category_item_label);
             mCheckbox = (CheckBox) v.findViewById(R.id.entourage_category_item_checkbox);
 
             mCheckbox.setOnCheckedChangeListener(checkboxListener);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    if (checkboxListener != null) {
+                        mCheckbox.setChecked(!mCheckbox.isChecked());
+                        checkboxListener.onCheckedChanged(mCheckbox, mCheckbox.isChecked());
+                    }
+                }
+            });
 
         }
 
@@ -130,7 +139,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             viewHolder.mIcon.setColorFilter(ContextCompat.getColor(context, category.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
             viewHolder.mLabel.setText(category.getTitle());
 
-            // set the tag to null so that oncheckedchangelistener exits when populating the view
+            // set the tag to null so that oncheckedchangelistener isn't fired when populating the view
             viewHolder.mCheckbox.setTag(null);
             // set the check state
             viewHolder.mCheckbox.setChecked(category.isDefault());
@@ -164,16 +173,13 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.layout_entourage_category_group, null);
-            // expand it
-            ((ExpandableListView)parent).expandGroup(groupPosition);
-            _isExpanded = true;
         }
         // populate the group
         TextView label = (TextView)convertView.findViewById(R.id.entourage_category_group_label);
         ImageView arrow = (ImageView)convertView.findViewById(R.id.entourage_category_group_arrow);
         label.setText( EntourageCategory.getEntourageTypeDescription((String)getGroup(groupPosition)) );
         if (_isExpanded) {
-            arrow.setRotation(-90.0f);
+            arrow.setRotation(-180.0f);
         } else {
             arrow.setRotation(0.0f);
         }
