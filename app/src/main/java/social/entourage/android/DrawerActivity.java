@@ -634,6 +634,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mapOptionsMenu.isOpened()) {
             mapOptionsMenu.close(false);
         }
+        // Inform the map that the guide will be shown
+        if (mapEntourageFragment != null) {
+            mapEntourageFragment.onGuideWillShow();
+        }
         // Show the fragment
         guideMapEntourageFragment = (GuideMapEntourageFragment) getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
         if (guideMapEntourageFragment == null) {

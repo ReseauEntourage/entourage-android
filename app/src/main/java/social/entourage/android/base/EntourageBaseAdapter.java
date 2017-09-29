@@ -42,6 +42,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         if (viewType == TimestampedObject.TOP_VIEW) {
             mapViewHolder = (MapViewHolder)cardViewHolder;
+            mapViewHolder.setMapReadyCallback(onMapReadyCallback);
         }
 
         return cardViewHolder;
@@ -52,7 +53,6 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (position == 0 && needsTopView) {
             MapViewHolder mapViewHolder = ((MapViewHolder)holder);
             mapViewHolder.populate(null);
-            mapViewHolder.setMapReadyCallback(onMapReadyCallback);
             return;
         }
         if (position == getItemCount() - 1 && needsBottomView) {

@@ -312,8 +312,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-        presenter.start();
+        if (presenter == null) {
+            setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+            presenter.start();
+        }
     }
 
     @Override
@@ -389,6 +391,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             getActivity().setTitle(R.string.activity_tours_title);
             if (isMapLoaded) {
                 BusProvider.getInstance().post(new OnCheckIntentActionEvent());
+//                if (newsfeedAdapter != null) {
+//                    newsfeedAdapter.notifyItemChanged(0);
+//                }
             }
         }
         timerStart();
@@ -1629,7 +1634,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             onMapReadyCallback = new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
-                    if (map != null) return;
                     map = googleMap;
                     if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                         googleMap.setMyLocationEnabled(true);
@@ -2652,6 +2656,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() == null) return;
         DrawerActivity drawerActivity = (DrawerActivity) getActivity();
         drawerActivity.onPOILauncherClicked();
+    }
+
+    public void onGuideWillShow() {
+        if (miniCardsView != null) {
+            miniCardsView.setVisibility(View.GONE);
+        }
     }
 
     // ----------------------------------
