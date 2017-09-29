@@ -177,15 +177,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     }
 
-    @Override
-    public void dismiss() {
-        if (entourageCategory != null) {
-            // Reset the flag so consequent fragment shows will not appear broken
-            entourageCategory.setDefault(false);
-        }
-        super.dismiss();
-    }
-
     // ----------------------------------
     // Interactions handling
     // ----------------------------------
