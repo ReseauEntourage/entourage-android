@@ -24,8 +24,10 @@ public class EntourageCategory implements Serializable{
     @SerializedName("entourage_type")
     private String entourageType;
 
+    @SerializedName("display_category")
     private String category;
 
+    @SerializedName("display_category_title")
     private String title;
 
     @SerializedName("title_example")

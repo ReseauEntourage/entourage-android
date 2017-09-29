@@ -173,7 +173,10 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
         titleCharCountTextView.setText(charCountString);
 
         if (entourageCategory != null) {
-            titleEditText.setHint(getString(R.string.entourage_create_title_hint, entourageCategory.getTitleExample()));
+            String titleExample = entourageCategory.getTitleExample();
+            if (titleExample != null && titleExample.length() > 0) {
+                titleEditText.setHint(getString(R.string.entourage_create_title_hint, titleExample));
+            }
         }
 
     }

@@ -125,7 +125,10 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
             descriptionEditText.setSelection(entourageDescription.length());
         }
         if (entourageCategory != null) {
-            descriptionEditText.setHint(entourageCategory.getDescriptionExample());
+            String descriptionExample = entourageCategory.getDescriptionExample();
+            if (descriptionExample != null && descriptionExample.length() > 0) {
+                descriptionEditText.setHint(descriptionExample);
+            }
         }
     }
 
