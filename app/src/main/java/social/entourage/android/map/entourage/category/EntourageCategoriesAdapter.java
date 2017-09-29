@@ -181,9 +181,9 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
         ImageView arrow = (ImageView)convertView.findViewById(R.id.entourage_category_group_arrow);
         label.setText( EntourageCategory.getEntourageTypeDescription((String)getGroup(groupPosition)) );
         if (_isExpanded) {
-            arrow.setRotation(-180.0f);
+            arrow.setRotation(-90.0f);
         } else {
-            arrow.setRotation(0.0f);
+            arrow.setRotation(90.0f);
         }
 
         return convertView;
