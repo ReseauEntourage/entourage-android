@@ -2,6 +2,7 @@ package social.entourage.android.map.entourage.category;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,15 +62,12 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             if (compoundButton.getTag() == null) {
                 return;
             }
-            // flag to check if we need to refresh the list view
-            boolean needsRefresh = false;
             // get the category
             EntourageCategory category = (EntourageCategory) compoundButton.getTag();
             // unset the previously selected partner, if different than the current
             if (EntourageCategoriesAdapter.this.selectedCategory != category) {
                 if (EntourageCategoriesAdapter.this.selectedCategory != null) {
                     EntourageCategoriesAdapter.this.selectedCategory.setDefault(false);
-                    needsRefresh = true;
                 }
             }
 
@@ -81,10 +79,8 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
                 EntourageCategoriesAdapter.this.selectedCategory = category.isDefault() ? category : null;
             }
 
-            // refresh the listview, if needed
-            if (needsRefresh) {
-                EntourageCategoriesAdapter.this.notifyDataSetChanged();
-            }
+            // refresh the list view
+            EntourageCategoriesAdapter.this.notifyDataSetChanged();
         }
     }
 
@@ -137,7 +133,13 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             viewHolder.mIcon.setImageResource(category.getIconRes());
             viewHolder.mIcon.clearColorFilter();
             viewHolder.mIcon.setColorFilter(ContextCompat.getColor(context, category.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
+
             viewHolder.mLabel.setText(category.getTitle());
+            if (category.isDefault()) {
+                viewHolder.mLabel.setTypeface(viewHolder.mLabel.getTypeface(), Typeface.BOLD);
+            } else {
+                viewHolder.mLabel.setTypeface(Typeface.create(viewHolder.mLabel.getTypeface(), Typeface.NORMAL));
+            }
 
             // set the tag to null so that oncheckedchangelistener isn't fired when populating the view
             viewHolder.mCheckbox.setTag(null);
