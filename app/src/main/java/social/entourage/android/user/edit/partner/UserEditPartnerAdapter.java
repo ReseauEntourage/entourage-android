@@ -35,12 +35,22 @@ public class UserEditPartnerAdapter extends BaseAdapter {
 
         public long partnerId = 0;
 
-        public PartnerViewHolder(View v, OnCheckedChangeListener checkboxListener) {
+        public PartnerViewHolder(View v, final OnCheckedChangeListener checkboxListener) {
             mPartnerName = (TextView) v.findViewById(R.id.partner_name);
             mPartnerLogo = (ImageView) v.findViewById(R.id.partner_logo);
             mCheckbox = (CheckBox) v.findViewById(R.id.partner_checkbox);
 
             mCheckbox.setOnCheckedChangeListener(checkboxListener);
+
+            mPartnerName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    if (checkboxListener != null) {
+                        mCheckbox.setChecked(!mCheckbox.isChecked());
+                        checkboxListener.onCheckedChanged(mCheckbox, mCheckbox.isChecked());
+                    }
+                }
+            });
 
             mPartnerLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,7 +100,11 @@ public class UserEditPartnerAdapter extends BaseAdapter {
         Partner partner = getItem(position);
         if (partner != null) {
             viewHolder.mPartnerName.setText(partner.getName());
-            viewHolder.mPartnerName.setTypeface(null, partner.isDefault() ? Typeface.BOLD : Typeface.NORMAL);
+            if (partner.isDefault()) {
+                viewHolder.mPartnerName.setTypeface(viewHolder.mPartnerName.getTypeface(), Typeface.BOLD);
+            } else {
+                viewHolder.mPartnerName.setTypeface(Typeface.create(viewHolder.mPartnerName.getTypeface(), Typeface.NORMAL));
+            }
 
             String partnerLogo = partner.getLargeLogoUrl();
             if (partnerLogo != null) {
@@ -136,8 +150,6 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             if (compoundButton.getTag() == null) {
                 return;
             }
-            // flag to check if we need to refresh the list view
-            boolean needsRefresh = false;
             // get the position
             int position = (Integer) compoundButton.getTag();
             // unset the previously selected partner, if different than the current
@@ -145,7 +157,6 @@ public class UserEditPartnerAdapter extends BaseAdapter {
                 Partner oldPartner = UserEditPartnerAdapter.this.getItem(UserEditPartnerAdapter.this.selectedPartnerPosition);
                 if (oldPartner != null) {
                     oldPartner.setDefault(false);
-                    needsRefresh = true;
                 }
             }
 
@@ -160,10 +171,8 @@ public class UserEditPartnerAdapter extends BaseAdapter {
                 }
             }
 
-            // refresh the listview, if needed
-            if (needsRefresh) {
-                UserEditPartnerAdapter.this.notifyDataSetChanged();
-            }
+            // refresh the list view
+            UserEditPartnerAdapter.this.notifyDataSetChanged();
         }
     }
 }
