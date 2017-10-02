@@ -150,6 +150,11 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
         mListener = null;
     }
 
+    @Override
+    protected int getSlideStyle() {
+        return R.style.CustomDialogFragmentFromRight;
+    }
+
     // ----------------------------------
     // INTERFACE CALLBACKS
     // ----------------------------------

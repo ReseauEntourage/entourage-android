@@ -108,6 +108,11 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
         showKeyboard();
     }
 
+    @Override
+    protected int getSlideStyle() {
+        return R.style.CustomDialogFragmentFromRight;
+    }
+
     public void setListener(final CreateEntourageListener mListener) {
         this.mListener = mListener;
     }
