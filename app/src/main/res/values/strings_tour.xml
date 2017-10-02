@@ -60,7 +60,7 @@
     <string name="tour_info_options_contact">Contacter</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>
     <string name="tour_info_encounter_location">&#160;et %1$s se sont rencontrés ici.</string>
-    <string name="tour_info_encounter_location_mine">&#160;&lt;u>et %1$s&lt;/u> se sont rencontrés ici.</string>
+    <string name="tour_info_encounter_location_mine">&lt;u> et %1$s se sont rencontrés ici.&lt;/u></string>
     <string name="tour_info_quit_tour_title">Quitter la maraude</string>
     <string name="tour_info_quit_tour_description">Voulez-vous vraiment quitter la maraude ?</string>
     <string name="tour_info_quit_tour_error">Echec d\'envoi de la requête</string>

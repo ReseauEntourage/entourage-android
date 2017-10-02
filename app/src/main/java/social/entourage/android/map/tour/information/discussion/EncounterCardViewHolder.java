@@ -43,13 +43,12 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
         mMessageView = (TextView) itemView.findViewById(R.id.tic_encounter_message);
 
         mAuthorView.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(final View v) {
-                     if (encounter.getUserId() == 0) return;
-                     BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(encounter.getUserId()));
-                 }
+             @Override
+             public void onClick(final View v) {
+                 if (!encounter.isMyEncounter()) return;
+                 BusProvider.getInstance().post(new Events.OnTourEncounterViewRequestedEvent(encounter));
              }
-        );
+         });
 
         mStreetPersonNameView.setOnClickListener(new View.OnClickListener() {
             @Override
