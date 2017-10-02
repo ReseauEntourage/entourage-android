@@ -1,9 +1,13 @@
 package social.entourage.android.guide;
 
+import android.location.Location;
 import android.util.Log;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.VisibleRegion;
 
 import javax.inject.Inject;
 
@@ -47,20 +51,25 @@ public class GuideMapPresenter {
         //updatePoisNearby();
     }
 
-    public void updatePoisNearby() {
-        retrievePoisNearby();
+    public void updatePoisNearby(GoogleMap map) {
+        float distance = 0;
+        if (map != null) {
+            VisibleRegion region = map.getProjection().getVisibleRegion();
+            float[] result = {0};
+            Location.distanceBetween(region.farLeft.latitude, region.farLeft.longitude, region.nearLeft.latitude, region.nearLeft.longitude, result);
+            distance = result[0] / 1000.0f;
+        }
+        retrievePoisNearby(distance);
     }
 
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
 
-    private void retrievePoisNearby() {
+    private void retrievePoisNearby(float distance) {
         CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
-            float zoom = currentPosition.zoom;
-            float distance = 40000f / (float) Math.pow(2f, zoom) / 2.5f;
             distance = Math.max(1, distance);
             GuideFilter filter = GuideFilter.getInstance();
             Call<MapResponse> call = mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance, filter.getRequestedCategories());

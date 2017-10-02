@@ -41,6 +41,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.otto.Subscribe;
 
@@ -191,7 +192,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                             if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
                                 previousCameraZoom = newZoom;
                                 previousCameraLocation = newLocation;
-                                presenter.updatePoisNearby();
+                                presenter.updatePoisNearby(map);
                             }
                         }
                     });
@@ -210,7 +211,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     */
 
                     if (presenter != null) {
-                        presenter.updatePoisNearby();
+                        presenter.updatePoisNearby(map);
                     }
                 }
             };
@@ -329,7 +330,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             clusterManager.clearItems();
             poisMap.clear();
             poisAdapter.removeAll();
-            presenter.updatePoisNearby();
+            presenter.updatePoisNearby(map);
         }
     }
 
