@@ -208,8 +208,10 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public void removeAll() {
+        int oldCount = getDataItemCount();
+        if (oldCount == 0) return;
         items.clear();
-        notifyDataSetChanged();
+        notifyItemRangeRemoved(needsTopView ? 1 : 0, oldCount);
     }
 
     public MapViewHolder getMapViewHolder() {

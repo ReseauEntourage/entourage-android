@@ -349,6 +349,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             if (categories != null) {
                 poiRenderer.setCategories(categories);
             }
+            clearOldPois();
             if (pois != null && pois.size() > 0) {
                 List<Poi> poiCollection = removeRedundantPois(pois);
                 if (map != null) {
@@ -372,6 +373,16 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     hidePOIList(false);
                 }
             }
+        }
+    }
+
+    private void clearOldPois() {
+        poisMap.clear();
+        if (map != null && clusterManager != null) {
+            clusterManager.clearItems();
+        }
+        if (poisAdapter != null) {
+            poisAdapter.removeAll();
         }
     }
 
