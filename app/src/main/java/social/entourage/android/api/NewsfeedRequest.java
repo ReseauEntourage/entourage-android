@@ -22,7 +22,8 @@ public interface NewsfeedRequest {
             @Query("show_tours") boolean showTours,
             @Query("show_my_entourages_only") boolean onlyMyEntourages,
             @Query("entourage_types") String entourageTypes,
-            @Query("time_range") int timeFrame
+            @Query("time_range") int timeFrame,
+            @Query("atd") boolean onlyMyOrganisationEntourages
     );
 
     @GET("feeds")

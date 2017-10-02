@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 
 import com.flurry.android.FlurryAgent;
@@ -51,6 +52,10 @@ public class MapFilterFragment extends EntourageDialogFragment {
     Switch showToursSwitch;
     @BindView(R.id.map_filter_entourage_user_only_switch)
     Switch onlyMyEntouragesSwitch;
+    @BindView(R.id.map_filter_entourage_organisation)
+    RelativeLayout onlyMyOrganisationEntouragesLayout;
+    @BindView(R.id.map_filter_entourage_organisation_switch)
+    Switch onlyMyOrganisationEntouragesSwitch;
     @BindView(R.id.map_filter_time_days_1)
     RadioButton days1RB;
     @BindView(R.id.map_filter_time_days_2)
@@ -120,6 +125,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
         mapFilter.entourageTypeContribution = entourageContributionSwitch.isChecked();
         mapFilter.showTours = showToursSwitch.isChecked();
         mapFilter.onlyMyEntourages = onlyMyEntouragesSwitch.isChecked();
+        mapFilter.onlyMyOrganisationEntourages = onlyMyOrganisationEntouragesSwitch.isChecked();
 
         if (days1RB.isChecked()) {
             mapFilter.timeframe = MapFilter.DAYS_1;
@@ -207,6 +213,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
         entourageContributionSwitch.setChecked(mapFilter.entourageTypeContribution);
         showToursSwitch.setChecked(mapFilter.showTours);
         onlyMyEntouragesSwitch.setChecked(mapFilter.onlyMyEntourages);
+        onlyMyOrganisationEntouragesSwitch.setChecked(mapFilter.onlyMyOrganisationEntourages);
 
         switch (mapFilter.timeframe) {
             case MapFilter.DAYS_1:

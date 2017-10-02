@@ -580,7 +580,8 @@ public class TourServiceManager {
                 mapFilter.showTours,
                 mapFilter.onlyMyEntourages,
                 mapFilter.getEntourageTypes(),
-                mapFilter.timeframe
+                mapFilter.timeframe,
+                mapFilter.onlyMyOrganisationEntourages
         );
     }
 

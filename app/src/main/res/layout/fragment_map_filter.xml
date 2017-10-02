@@ -353,12 +353,23 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginStart="0dp"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@+id/map_filter_entourage_tours_text"
-                        android:background="@color/greyish"/>
                 </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/map_filter_personal_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/map_filter_personal_title"
+                    style="@style/EntourageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map_filter_personal_title"/>
 
                 <RelativeLayout
                     android:id="@+id/map_filter_entourage_user_only"
@@ -393,7 +404,51 @@
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginStart="0dp"/>
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/map_filter_entourage_user_only_text"
+                        android:background="@color/greyish"/>
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/map_filter_entourage_organisation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:id="@+id/map_filter_entourage_organisation_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_organisation_switch"
+                        android:layout_toStartOf="@+id/map_filter_entourage_organisation_switch"
+                        android:text="@string/map_filter_organisation_only_text"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="18sp"/>
+
+                    <Switch
+                        android:id="@+id/map_filter_entourage_organisation_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
+
+                </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout

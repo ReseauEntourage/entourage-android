@@ -30,6 +30,7 @@ public class MapFilter implements Serializable {
     public boolean showTours = true;
 
     public boolean onlyMyEntourages = false;
+    public boolean onlyMyOrganisationEntourages = false;
 
     public int timeframe = DAYS_2;
 
