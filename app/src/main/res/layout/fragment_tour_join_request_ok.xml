@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@drawable/rounded_dialog"
-              android:orientation="vertical"
-              android:paddingBottom="10dp"
-              android:paddingLeft="20dp"
-              android:paddingRight="20dp"
-              android:paddingTop="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_dialog"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingEnd="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp">
 
     <RelativeLayout
         android:id="@+id/haxor"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingEnd="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingStart="5dp">
 
         <ImageButton
             android:id="@+id/tour_join_request_ok_x_button"
@@ -20,7 +26,10 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            android:padding="5dp"
+            android:paddingEnd="5dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="5dp"
+            android:paddingStart="0dp"
             android:src="@drawable/ic_close_white"/>
 
     </RelativeLayout>
@@ -44,6 +53,11 @@
             android:id="@+id/tour_join_request_ok_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:text="@string/tour_join_request_ok_title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
@@ -53,6 +67,10 @@
             android:id="@+id/tour_join_request_ok_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
             android:text="@string/tour_join_request_ok_description_entourage"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
@@ -71,7 +89,7 @@
             android:inputType="textMultiLine"
             android:maxLines="4"
             android:minLines="4"
-            android:padding="3dp"
+            android:padding="5dp"
             android:textColorHint="@color/greyish"
             android:textSize="16sp"/>
 
@@ -86,10 +104,10 @@
     </LinearLayout>
 
     <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_above="@+id/tour_join_request_ok_message_button"-->
-        <!--android:layout_below="@+id/haxor">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/tour_join_request_ok_message_button"-->
+    <!--android:layout_below="@+id/haxor">-->
 
     <!--</ScrollView>-->
 
