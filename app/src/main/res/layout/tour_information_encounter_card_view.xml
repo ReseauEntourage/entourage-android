@@ -11,20 +11,20 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tic_encounter_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/tic_encounter_author"
-            android:textSize="18sp"
-            android:textColor="@color/accent"/>
+            android:textColor="@color/accent"
+            android:textSize="@dimen/entourage_info_font_large"/>
 
         <TextView
+            android:id="@+id/tic_encounter_street_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/tic_encounter_street_name"
             android:textColor="@color/greyish"
-            android:textSize="18sp"/>
+            android:textSize="@dimen/entourage_info_font_large"/>
     </LinearLayout>
 
     <TextView

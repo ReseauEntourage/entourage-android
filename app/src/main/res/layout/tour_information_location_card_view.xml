@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -44,7 +45,7 @@
             android:layout_toRightOf="@+id/tic_location_image"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/entourage_info_font_large"/>
 
         <TextView
             android:id="@+id/tic_location_duration"
@@ -56,7 +57,7 @@
             android:layout_toRightOf="@+id/tic_location_image"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/entourage_info_font_large"/>
 
         <TextView
             android:id="@+id/tic_location_distance"
@@ -68,6 +69,6 @@
             android:layout_toRightOf="@+id/tic_location_image"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/entourage_info_font_large"/>
     </RelativeLayout>
 </LinearLayout>
