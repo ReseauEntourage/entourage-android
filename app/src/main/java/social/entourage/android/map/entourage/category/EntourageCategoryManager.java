@@ -1,8 +1,5 @@
 package social.entourage.android.map.entourage.category;
 
-import android.app.Application;
-import android.util.Log;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;

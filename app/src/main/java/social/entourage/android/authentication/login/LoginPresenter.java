@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
 
-import com.flurry.android.FlurryAgent;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.LoginResponse;
@@ -202,7 +201,7 @@ public class LoginPresenter {
                     }
                     else {
                         activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
-                        FlurryAgent.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
+                        EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                     }
                 }
 
@@ -210,7 +209,7 @@ public class LoginPresenter {
                 public void onFailure(final Call<UserResponse> call, final Throwable t) {
                     activity.stopLoader();
                     activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
-                    FlurryAgent.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
+                    EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                 }
             });
         }
@@ -295,7 +294,7 @@ public class LoginPresenter {
                             String errorString = response.errorBody().string();
                             if (errorString.contains("PHONE_ALREADY_EXIST")) {
                                 // Phone number already registered
-                                FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_2_E);
+                                EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_2_E);
                                 activity.registerPhoneNumberSent(phoneNumber, false);
                                 activity.displayToast(R.string.registration_number_error_already_registered);
                             } else if (errorString.contains("INVALID_PHONE_FORMAT")) {
@@ -309,14 +308,14 @@ public class LoginPresenter {
                     } else {
                         activity.displayToast(R.string.login_error);
                     }
-                    FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
+                    EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
                 }
             }
 
             @Override
             public void onFailure(final Call<UserResponse> call, final Throwable t) {
                 activity.displayToast(R.string.login_error_network);
-                FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT_ERROR);
+                EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT_ERROR);
             }
         });
     }

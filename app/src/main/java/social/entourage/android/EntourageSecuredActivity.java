@@ -1,11 +1,7 @@
 package social.entourage.android;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import java.util.HashSet;
 
 import javax.inject.Inject;
 
@@ -43,7 +39,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
         if (application != null) {
             application.removeAllPushNotifications();
         }
-        //FlurryAgent.logEvent(Constants.EVENT_LOGOUT);
+        //EntourageEvents.logEvent(Constants.EVENT_LOGOUT);
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

@@ -12,8 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -22,6 +20,7 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.guide.PoiRenderer;
@@ -76,7 +75,7 @@ public class ReadPoiActivity extends EntourageActivity {
         setContentView(R.layout.activity_poi_read);
         ButterKnife.bind(this);
 
-        FlurryAgent.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);
+        EntourageEvents.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);
         Bundle extras = getIntent().getExtras();
         poi = (Poi) extras.get(BUNDLE_KEY_POI);
     }

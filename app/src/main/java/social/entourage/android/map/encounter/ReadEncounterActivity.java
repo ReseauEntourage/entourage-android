@@ -8,8 +8,6 @@ import android.text.format.DateFormat;
 import android.view.Menu;
 import android.widget.EditText;
 
-import com.flurry.android.FlurryAgent;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +20,7 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 
@@ -60,7 +59,7 @@ public class ReadEncounterActivity extends EntourageActivity {
         setContentView(R.layout.activity_encounter_read);
         ButterKnife.bind(this);
 
-        FlurryAgent.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
+        EntourageEvents.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
         Bundle args = getIntent().getExtras();
         encounter = (Encounter)args.get(BUNDLE_KEY_ENCOUNTER);
     }

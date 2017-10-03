@@ -7,7 +7,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.map.MapViewHolder;

@@ -7,13 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 
-import com.flurry.android.FlurryAgent;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
@@ -86,7 +85,7 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.myentourages_filter_back_button)
     void onBackClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_EXIT);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_EXIT);
         dismiss();
     }
 
@@ -106,7 +105,7 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         BusProvider.getInstance().post(new Events.OnMyEntouragesFilterChanged());
 
         // flurry event
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_SAVE);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_SAVE);
 
         // dismiss the dialog
         dismiss();
@@ -114,27 +113,27 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.myentourages_filter_unread_switch)
     protected void onOrganizerSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_UNREAD);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_UNREAD);
     }
 
     @OnClick(R.id.myentourages_filter_closed_switch)
     protected void onClosedSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_PAST);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_PAST);
     }
 
     @OnClick(R.id.myentourages_filter_demand_switch)
     protected void onDemandSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_ASK);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_ASK);
     }
 
     @OnClick(R.id.myentourages_filter_contribution_switch)
     protected void onContributionSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_OFFER);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_OFFER);
     }
 
     @OnClick(R.id.myentourages_filter_tours_switch)
     protected void onToursSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_TOUR);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_TOUR);
     }
 
     // ----------------------------------

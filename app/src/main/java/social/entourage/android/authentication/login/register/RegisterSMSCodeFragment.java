@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 
@@ -50,7 +49,7 @@ public class RegisterSMSCodeFragment extends EntourageDialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register_smscode, container, false);
         ButterKnife.bind(this, view);
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_3);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_3);
 
         return view;
     }

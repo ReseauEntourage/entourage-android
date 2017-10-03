@@ -2,7 +2,6 @@ package social.entourage.android.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.widget.TextView;

@@ -1,17 +1,14 @@
 package social.entourage.android.user.edit;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,12 +20,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,17 +32,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
@@ -126,7 +120,7 @@ public class UserEditFragment extends EntourageDialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_user_edit, container, false);
         ButterKnife.bind(this, v);
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_2);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_2);
         return v;
     }
 
@@ -269,7 +263,7 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.user_save_button)
     protected void onSaveButtonClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_USER_SAVE);
+        EntourageEvents.logEvent(Constants.EVENT_USER_SAVE);
         // If we have an user fragment in the stack, let it handle the update
         UserFragment fragment = (UserFragment)getFragmentManager().findFragmentByTag(UserFragment.TAG);
         if (fragment != null) {
@@ -288,7 +282,7 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.user_add_association_button)
     protected void onAddAssociationClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_USER_TOBADGE);
+        EntourageEvents.logEvent(Constants.EVENT_USER_TOBADGE);
         UserEditPartnerFragment userEditPartnerFragment = new UserEditPartnerFragment();
         userEditPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);
     }
@@ -296,7 +290,7 @@ public class UserEditFragment extends EntourageDialogFragment {
     @OnClick(R.id.user_notifications_layout)
     protected void onShowNotificationsSettingsClicked() {
         try {
-            FlurryAgent.logEvent(Constants.EVENT_USER_TONOTIFICATIONS);
+            EntourageEvents.logEvent(Constants.EVENT_USER_TONOTIFICATIONS);
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Intent intent = new Intent();
                 intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");

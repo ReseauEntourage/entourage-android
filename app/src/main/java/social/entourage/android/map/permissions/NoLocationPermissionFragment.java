@@ -13,11 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.flurry.android.FlurryAgent;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.authentication.login.LoginActivity;
 
@@ -94,7 +93,7 @@ public class NoLocationPermissionFragment extends DialogFragment {
 
     @OnClick(R.id.no_location_activate_button)
     protected void onActivateButton() {
-        FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_ACTIVATE_04_4A);
+        EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_ACTIVATE_04_4A);
         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         showingGeolocationSettings = true;
     }

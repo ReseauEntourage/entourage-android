@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,6 +34,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
@@ -224,7 +224,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             @Override
             public void onMenuToggle(final boolean opened) {
                 if (opened) {
-                    FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_PLUS_CLICK);
+                    EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_PLUS_CLICK);
                 }
             }
         });
@@ -276,13 +276,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     @OnClick(R.id.myentourages_back_button)
     void onBackClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_BACK_CLICK);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_BACK_CLICK);
         dismiss();
     }
 
     @OnClick(R.id.myentourages_filter_button)
     void onFilterClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_CLICK);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_CLICK);
         MyEntouragesFilterFragment fragment = new MyEntouragesFilterFragment();
         fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
     }
@@ -569,7 +569,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     @Override
     public void onViewHolderDetailsClicked(final int detailType) {
-        FlurryAgent.logEvent(Constants.EVENT_MYENTOURAGES_MESSAGE_OPEN);
+        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_MESSAGE_OPEN);
     }
 
     // ----------------------------------

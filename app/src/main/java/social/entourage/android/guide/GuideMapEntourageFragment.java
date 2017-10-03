@@ -11,7 +11,6 @@ import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -26,27 +25,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +56,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
@@ -303,7 +298,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     @OnClick(R.id.fragment_guide_hide_button)
     void onHideClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_GUIDE_X_CLICK);
+        EntourageEvents.logEvent(Constants.EVENT_GUIDE_X_CLICK);
         DrawerActivity activity = (DrawerActivity) getActivity();
         if (activity == null) return;
         activity.onPOILauncherClicked();
@@ -312,10 +307,10 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @OnClick(R.id.fragment_guide_display_toggle)
     public void onDisplayToggle() {
         if (guideDisplayToggle.isChecked()) {
-            FlurryAgent.logEvent(Constants.EVENT_GUIDE_MAP_VIEW);
+            EntourageEvents.logEvent(Constants.EVENT_GUIDE_MAP_VIEW);
         }
         else {
-            FlurryAgent.logEvent(Constants.EVENT_GUIDE_LIST_VIEW);
+            EntourageEvents.logEvent(Constants.EVENT_GUIDE_LIST_VIEW);
         }
         togglePOIList();
     }
@@ -337,7 +332,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @Subscribe
     public void onPoiViewRequested(Events.OnPoiViewRequestedEvent event) {
         if (event == null || event.getPoi() == null) return;
-        FlurryAgent.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
+        EntourageEvents.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
         showPoiDetails(event.getPoi());
     }
 
@@ -458,7 +453,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
+                        EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
 
                         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
@@ -680,7 +675,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     public class OnEntourageMarkerClickListener implements ClusterManager.OnClusterItemClickListener<Poi> {
         @Override
         public boolean onClusterItemClick(Poi poi) {
-            FlurryAgent.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
+            EntourageEvents.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
             saveCameraPosition();
             showPoiDetails(poi);
             return false;

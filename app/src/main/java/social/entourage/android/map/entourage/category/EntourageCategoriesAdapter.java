@@ -7,11 +7,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,9 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.R;
-import social.entourage.android.api.tape.Events;
-import social.entourage.android.tools.BusProvider;
-import social.entourage.android.user.edit.partner.UserEditPartnerAdapter;
 
 /**
  * Created by Mihai Ionescu on 21/09/2017.

@@ -14,11 +14,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
@@ -98,7 +97,7 @@ public class EntourageCloseFragment extends DialogFragment {
 
     @OnClick({R.id.entourage_close_close_button, R.id.entourage_close_cancel_button})
     protected void onCloseClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL);
+        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL);
         dismiss();
     }
 
@@ -106,7 +105,7 @@ public class EntourageCloseFragment extends DialogFragment {
     protected void onSuccessClicked() {
         BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
         showEmail(R.string.entourage_close_email_title_success);
-        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS);
+        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS);
         dismiss();
     }
 
@@ -114,14 +113,14 @@ public class EntourageCloseFragment extends DialogFragment {
     protected void onFailedClicked() {
         BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
         showEmail(R.string.entourage_close_email_title_failed);
-        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE);
+        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE);
         dismiss();
     }
 
     @OnClick(R.id.entourage_close_help_button)
     protected void onHelpClicked() {
         showEmail(R.string.entourage_close_email_title_help);
-        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_HELP);
+        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_HELP);
         dismiss();
     }
 

@@ -1,11 +1,8 @@
 package social.entourage.android.map;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
 
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import social.entourage.android.R;

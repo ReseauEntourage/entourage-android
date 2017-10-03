@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 
 import butterknife.BindView;
@@ -56,7 +56,7 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register_number, container, false);
         ButterKnife.bind(this, view);
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_2);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_2);
 
         return view;
     }

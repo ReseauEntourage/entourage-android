@@ -17,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -32,6 +31,7 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -229,7 +229,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.create_entourage_position_layout)
     protected void onPositionClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
+        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
         EntourageLocationFragment fragment = EntourageLocationFragment.newInstance(location, positionTextView.getText().toString(), this);
         fragment.show(getFragmentManager(), EntourageLocationFragment.TAG);
     }
@@ -259,7 +259,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message));
         try {
-            FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SPEECH);
+            EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SPEECH);
             startActivityForResult(intent, callbackCode);
         } catch (ActivityNotFoundException e) {
             return false;

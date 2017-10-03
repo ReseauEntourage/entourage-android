@@ -2,7 +2,6 @@ package social.entourage.android.newsfeed;
 
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.base.BottomViewHolder;
 import social.entourage.android.map.MapViewHolder;
 import social.entourage.android.map.entourage.EntourageViewHolder;
 import social.entourage.android.map.tour.TourViewHolder;

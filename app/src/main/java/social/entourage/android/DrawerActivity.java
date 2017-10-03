@@ -35,7 +35,6 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.crashlytics.android.Crashlytics;
-import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
@@ -230,7 +229,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                FlurryAgent.logEvent(Constants.EVENT_FEED_MENU);
+                EntourageEvents.logEvent(Constants.EVENT_FEED_MENU);
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -409,7 +408,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             discussionBadgeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    FlurryAgent.logEvent(Constants.EVENT_SCREEN_17_2);
+                    EntourageEvents.logEvent(Constants.EVENT_SCREEN_17_2);
                     presenter.displayMyEntourages();
                 }
             });
@@ -497,11 +496,11 @@ public class DrawerActivity extends EntourageSecuredActivity
             case R.id.action_guide:
                 if (mainFragment instanceof MapEntourageFragment) {
                     showSolidarityGuide();
-                    FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
+                    EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
                 }
                 break;
             case R.id.action_user:
-                FlurryAgent.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
+                EntourageEvents.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
                 userFragment = (UserFragment) getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
                 if (userFragment == null) {
                     userFragment = UserFragment.newInstance(getAuthenticationController().getUser().getId());
@@ -514,7 +513,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 fragment.show(getSupportFragmentManager(), UserEditFragment.TAG);
                 break;
             case R.id.action_logout:
-                FlurryAgent.logEvent(Constants.EVENT_MENU_LOGOUT);
+                EntourageEvents.logEvent(Constants.EVENT_MENU_LOGOUT);
                 if (mapEntourageFragment != null) {
                     mapEntourageFragment.saveOngoingTour();
                 }
@@ -524,12 +523,12 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
-                FlurryAgent.logEvent(Constants.EVENT_MENU_ABOUT);
+                EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;
             case R.id.action_blog:
-                FlurryAgent.logEvent(Constants.EVENT_MENU_BLOG);
+                EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
                 Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.BLOG_URL));
                 try {
                     startActivity(blogIntent);
@@ -538,7 +537,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
                 break;
             case R.id.action_charte:
-                FlurryAgent.logEvent(Constants.EVENT_MENU_CHART);
+                EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
                 boolean isPro = false;
                 User me = getAuthenticationController().getUser();
                 if (me != null) {
@@ -557,7 +556,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
                 break;
             case R.id.action_goal:
-                FlurryAgent.logEvent(Constants.EVENT_MENU_GOAL);
+                EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
                 Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GOAL_URL));
                 try {
                     startActivity(goalIntent);
@@ -567,7 +566,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
                 break;
             case R.id.action_faq:
-                FlurryAgent.logEvent(Constants.EVENT_MENU_FAQ);
+                EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
                 Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_URL));
                 try {
                     startActivity(userGuideIntent);
@@ -576,7 +575,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
                 break;
             case R.id.action_atd:
-                FlurryAgent.logEvent(Constants.EVENT_MENU_ATD);
+                EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
                 Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.ATD_URL));
                 try {
                     startActivity(atdIntent);
@@ -785,7 +784,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void userViewRequested(OnUserViewRequestedEvent event) {
-        FlurryAgent.logEvent(Constants.EVENT_FEED_USERPROFILE);
+        EntourageEvents.logEvent(Constants.EVENT_FEED_USERPROFILE);
         UserFragment fragment = UserFragment.newInstance(event.getUserId());
         fragment.show(getSupportFragmentManager(), UserFragment.TAG);
     }
@@ -846,7 +845,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                             } else {
                                 FeedItem item = event.getFeedItem();
                                 if (item != null && FeedItem.JOIN_STATUS_PENDING.equals(item.getJoinStatus())) {
-                                    FlurryAgent.logEvent(Constants.EVENT_FEED_CANCEL_JOIN_REQUEST);
+                                    EntourageEvents.logEvent(Constants.EVENT_FEED_CANCEL_JOIN_REQUEST);
                                 }
                                 mapEntourageFragment.removeUserFromNewsfeedCard(item, me.getId());
                             }
@@ -887,7 +886,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         if (mapEntourageFragment != null) {
             if (event.isShowUI()) {
-                FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
+                EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
                 FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
                 feedItemOptionsFragment.show(getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
                 return;
@@ -1000,7 +999,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onPhotoChosen(final Uri photoUri, int photoSource) {
 
         if (photoSource == PhotoChooseSourceFragment.TAKE_PHOTO_REQUEST) {
-            FlurryAgent.logEvent(Constants.EVENT_PHOTO_SUBMIT);
+            EntourageEvents.logEvent(Constants.EVENT_PHOTO_SUBMIT);
         }
 
         //Upload the photo to Amazon S3
@@ -1060,7 +1059,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_start_tour_launcher)
     public void onStartTourClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
+        EntourageEvents.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onStartTourLauncher();
         } else {
@@ -1071,7 +1070,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_add_tour_encounter)
     public void onAddTourEncounterClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_CLICK);
+        EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onAddEncounter();
         } else {
@@ -1082,7 +1081,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_create_entourage)
     public void onCreateEntourageClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_FEED_OFFER_CREATE_CLICK);
+        EntourageEvents.logEvent(Constants.EVENT_FEED_OFFER_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
         } else {
@@ -1102,11 +1101,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     @OnClick(R.id.button_poi_launcher)
     public void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
-            FlurryAgent.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
+            EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
             // Show the guide screen
             showSolidarityGuide();
         } else {
-            FlurryAgent.logEvent(Constants.EVENT_SCREEN_06_1);
+            EntourageEvents.logEvent(Constants.EVENT_SCREEN_06_1);
             // Change the Guide Option text
             hideSolidarityGuide();
         }

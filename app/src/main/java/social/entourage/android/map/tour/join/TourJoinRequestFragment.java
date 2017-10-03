@@ -16,8 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -26,6 +24,7 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
@@ -132,7 +131,7 @@ public class TourJoinRequestFragment extends DialogFragment {
             @Override
             public void afterTextChanged(final Editable s) {
                 if (s.length() > 0 && !startedTyping) {
-                    FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_START);
+                    EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_START);
                     startedTyping = true;
                 }
             }
@@ -143,7 +142,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     protected void onMessageSend() {
         if (presenter != null && messageView != null) {
             if ( feedItem != null && (feedItem.getType() == FeedItem.TOUR_CARD || feedItem.getType() == FeedItem.ENTOURAGE_CARD) ) {
-                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_SUBMIT);
+                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_SUBMIT);
                 presenter.sendMessage(messageView.getText().toString(), feedItem);
             }
             else {

@@ -33,7 +33,6 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 
 import java.io.File;
@@ -49,6 +48,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
@@ -252,7 +252,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_01);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_01);
 
         loginSignin.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.GONE);
@@ -275,7 +275,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
             @Override
             public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-                FlurryAgent.logEvent(Constants.EVENT_NAME_TYPE);
+                EntourageEvents.logEvent(Constants.EVENT_NAME_TYPE);
             }
 
             @Override
@@ -291,7 +291,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
             @Override
             public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-                FlurryAgent.logEvent(Constants.EVENT_NAME_TYPE);
+                EntourageEvents.logEvent(Constants.EVENT_NAME_TYPE);
             }
 
             @Override
@@ -406,7 +406,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void startMapActivity() {
         stopLoader();
         hideKeyboard();
-        FlurryAgent.logEvent(Constants.EVENT_LOGIN_OK);
+        EntourageEvents.logEvent(Constants.EVENT_LOGIN_OK);
         startActivity(new Intent(this, DrawerActivity.class));
         finish();
     }
@@ -417,19 +417,19 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         switch (errorCode) {
             case LOGIN_ERROR_INVALID_PHONE_FORMAT:
                 errorMessage = R.string.login_error_invalid_phone_format;
-                FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
+                EntourageEvents.logEvent(Constants.EVENT_LOGIN_FAILED);
                 break;
             case LOGIN_ERROR_UNAUTHORIZED:
                 errorMessage = R.string.login_error_invalid_credentials;
-                FlurryAgent.logEvent(Constants.EVENT_LOGIN_FAILED);
+                EntourageEvents.logEvent(Constants.EVENT_LOGIN_FAILED);
                 break;
             case LOGIN_ERROR_NETWORK:
                 errorMessage = R.string.login_error_network;
-                FlurryAgent.logEvent(Constants.EVENT_LOGIN_ERROR);
+                EntourageEvents.logEvent(Constants.EVENT_LOGIN_ERROR);
                 break;
             default:
                 errorMessage = R.string.login_error;
-                FlurryAgent.logEvent(Constants.EVENT_LOGIN_ERROR);
+                EntourageEvents.logEvent(Constants.EVENT_LOGIN_ERROR);
                 break;
         }
         new AlertDialog.Builder(this)
@@ -530,13 +530,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @Override
     public void onPhotoBack() {
-        FlurryAgent.logEvent(Constants.EVENT_PHOTO_BACK);
+        EntourageEvents.logEvent(Constants.EVENT_PHOTO_BACK);
         showGeolocationView();
     }
 
     @Override
     public void onPhotoIgnore() {
-        FlurryAgent.logEvent(Constants.EVENT_PHOTO_IGNORE);
+        EntourageEvents.logEvent(Constants.EVENT_PHOTO_IGNORE);
         showGeolocationView();
     }
 
@@ -544,7 +544,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void onPhotoChosen(final Uri photoUri, int photoSource) {
 
         if (photoSource == PhotoChooseSourceFragment.TAKE_PHOTO_REQUEST) {
-            FlurryAgent.logEvent(Constants.EVENT_PHOTO_SUBMIT);
+            EntourageEvents.logEvent(Constants.EVENT_PHOTO_SUBMIT);
         }
 
         if (loginPresenter == null || loginPresenter.authenticationController == null || loginPresenter.authenticationController.getUser() == null) {
@@ -641,7 +641,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_text_lost_code)
     void onLostCodeClick() {
-        FlurryAgent.logEvent(Constants.EVENT_SMS_CODE_REQUEST);
+        EntourageEvents.logEvent(Constants.EVENT_SMS_CODE_REQUEST);
         hideKeyboard();
         loginSignin.setVisibility(View.GONE);
         enterCodeBlock.setVisibility(View.VISIBLE);
@@ -683,7 +683,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (loginPresenter != null) {
             startLoader();
             loginPresenter.sendNewCode(phoneNumber);
-            FlurryAgent.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
+            EntourageEvents.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
         }
@@ -715,7 +715,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             }
         } else {
             if (isOnboarding) {
-                FlurryAgent.logEvent(Constants.EVENT_SCREEN_03_2);
+                EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_2);
                 displayToast(getString(R.string.login_text_lost_code_ko));
             } else {
                 if (loginLostCode.getVisibility() == View.VISIBLE) {
@@ -733,7 +733,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     private void showEmailView() {
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_4);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_4);
         loginEmail.setVisibility(View.VISIBLE);
         profileEmail.requestFocus();
     }
@@ -746,7 +746,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_button_go)
     void saveEmail() {
         if (loginPresenter != null) {
-            FlurryAgent.logEvent(Constants.EVENT_EMAIL_SUBMIT);
+            EntourageEvents.logEvent(Constants.EVENT_EMAIL_SUBMIT);
             loginPresenter.updateUserEmail(profileEmail.getText().toString());
 
             loginPresenter.updateUserToServer();
@@ -757,7 +757,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_email_ignore_button)
     void ignoreEmail() {
-        FlurryAgent.logEvent(Constants.EVENT_EMAIL_IGNORE);
+        EntourageEvents.logEvent(Constants.EVENT_EMAIL_IGNORE);
         if (loginPresenter != null) {
             loginPresenter.updateUserToServer();
         } else {
@@ -770,7 +770,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     void showNameView() {
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_5);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_5);
         loginNameView.setVisibility(View.VISIBLE);
 
         if (loginPresenter != null && loginPresenter.authenticationController != null) {
@@ -796,7 +796,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_name_go_button)
     void onNameGoClicked() {
         if (loginPresenter != null) {
-            FlurryAgent.logEvent(Constants.EVENT_NAME_SUBMIT);
+            EntourageEvents.logEvent(Constants.EVENT_NAME_SUBMIT);
             String firstname = firstnameEditText.getText().toString().trim();
             String lastname = lastnameEditText.getText().toString().trim();
             if (firstname.length() == 0) {
@@ -886,7 +886,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     TODO: put this back when the tutorial content is ready
     @OnClick(R.id.login_button_go)
     void startTutorial() {
-        FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_START);
+        EntourageEvents.logEvent(Constants.EVENT_TUTORIAL_START);
         loginPresenter.updateUserEmail(profileEmail.getText().toString());
         loginEmail.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.VISIBLE);
@@ -901,7 +901,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     TODO: put this back when the tutorial content is ready
     @OnClick(R.id.login_button_finish_tutorial)
     void finishTutorial() {
-        FlurryAgent.logEvent(Constants.EVENT_TUTORIAL_END);
+        EntourageEvents.logEvent(Constants.EVENT_TUTORIAL_END);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
         startActivity(new Intent(this, DrawerActivity.class));
@@ -914,12 +914,12 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_login)
     void onStartupLoginClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_SPLASH_LOGIN);
+        EntourageEvents.logEvent(Constants.EVENT_SPLASH_LOGIN);
         showLoginScreen();
     }
 
     void showLoginScreen() {
-        FlurryAgent.logEvent(Constants.EVENT_LOGIN_START);
+        EntourageEvents.logEvent(Constants.EVENT_LOGIN_START);
         loginStartup.setVisibility(View.GONE);
         loginSignin.setVisibility(View.VISIBLE);
         showKeyboard(phoneEditText);
@@ -928,7 +928,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_button_register)
     void showRegisterScreen() {
-        FlurryAgent.logEvent(Constants.EVENT_SPLASH_SIGNUP);
+        EntourageEvents.logEvent(Constants.EVENT_SPLASH_SIGNUP);
         this.onboardingUser = new User();
         RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
         registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
@@ -994,7 +994,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_verify_code_back)
     void showLostCodeScreen() {
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_03_1);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_1);
         hideKeyboard();
         receivedCode.setText("");
         loginVerifyCode.setVisibility(View.GONE);
@@ -1009,14 +1009,14 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // OnRegisterUserListener
     @Override
     public void registerShowSignIn() {
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_02_1);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_02_1);
         showLoginScreen();
     }
 
     @Override
     public void registerSavePhoneNumber(String phoneNumber) {
         if (loginPresenter != null) {
-            FlurryAgent.logEvent(Constants.EVENT_PHONE_SUBMIT);
+            EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT);
             loginPresenter.registerUserPhone(phoneNumber);
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
@@ -1035,7 +1035,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     public void registerResendCode() {
         if (loginPresenter != null && onboardingUser != null) {
-            FlurryAgent.logEvent(Constants.EVENT_SCREEN_03_1);
+            EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_1);
             loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
         } else {
             Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
@@ -1059,7 +1059,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     public void showNotificationPermissionView() {
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_04_3);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_04_3);
         loginNotificationsView.setVisibility(View.VISIBLE);
     }
 
@@ -1072,7 +1072,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_notifications_accept)
     protected void onNotificationsAccept() {
-        FlurryAgent.logEvent(Constants.EVENT_NOTIFICATIONS_ACCEPT);
+        EntourageEvents.logEvent(Constants.EVENT_NOTIFICATIONS_ACCEPT);
         saveNotifications(true);
         //loginNotificationsView.setVisibility(View.GONE);
         finishTutorial();
@@ -1083,7 +1083,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     private void showGeolocationView() {
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_04_2);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_04_2);
         loginGeolocationView.setVisibility(View.VISIBLE);
     }
 
@@ -1095,7 +1095,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_geolocation_accept_button)
     protected void onGeolocationAccepted() {
-        FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_ACCEPT);
+        EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_ACCEPT);
         loginGeolocationView.setVisibility(View.GONE);
         showNotificationPermissionView();
     }

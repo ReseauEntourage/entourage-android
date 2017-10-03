@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -29,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
@@ -107,7 +107,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             }
         }
         initialiseFields();
-        FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_START);
+        EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_START);
 
     }
 
@@ -152,7 +152,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
                         messageEditText.setText(messageEditText.getText() + " " + textMatchList.get(0));
                     }
                     messageEditText.setSelection(messageEditText.getText().length());
-                    FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK);
+                    EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK);
                 }
             }
         }
@@ -222,11 +222,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message));
         try {
-            FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED);
+            EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED);
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), getString(R.string.encounter_voice_message_not_supported), Toast.LENGTH_SHORT).show();
-            FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED);
+            EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED);
         }
     }
 
@@ -245,11 +245,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             BusProvider.getInstance().post(new Events.OnEncounterCreated(encounterResponse));
 
             finish();
-            FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
+            EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
         } else {
             message = getString(R.string.create_encounter_failure);
             Log.e(logTag, message);
-            FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
+            EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
@@ -264,11 +264,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             BusProvider.getInstance().post(new Events.OnEncounterUpdated(editedEncounter));
 
             finish();
-            //FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
+            //EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
         } else {
             message = getString(R.string.update_encounter_failure);
             Log.e(logTag, message);
-            //FlurryAgent.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
+            //EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();

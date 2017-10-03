@@ -10,12 +10,11 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 
-import com.flurry.android.FlurryAgent;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -108,7 +107,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.map_filter_close_button)
     protected void onCloseClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_CLOSE);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_CLOSE);
         dismiss();
     }
 
@@ -139,7 +138,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
         BusProvider.getInstance().post(new Events.OnMapFilterChanged());
 
         // flurry event
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_SUBMIT);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_SUBMIT);
 
         // dismiss the dialog
         dismiss();
@@ -147,52 +146,52 @@ public class MapFilterFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.map_filter_tour_medical_switch)
     protected void onMedicalSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS);
     }
 
     @OnClick(R.id.map_filter_tour_social_switch)
     protected void onSocialSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS);
     }
 
     @OnClick(R.id.map_filter_tour_distributive_switch)
     protected void onDistributiveSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS);
     }
 
     @OnClick(R.id.map_filter_entourage_demand_switch)
     protected void onDemandSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_ASK);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_ASK);
     }
 
     @OnClick(R.id.map_filter_entourage_contribution_switch)
     protected void onContributionSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_OFFERS);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_OFFERS);
     }
 
     @OnClick(R.id.map_filter_entourage_tours_switch)
     protected void onOnlyToursSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_TOURS);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_TOURS);
     }
 
     @OnClick(R.id.map_filter_entourage_user_only_switch)
     protected void onOnlyMineSwitch() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MINE);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MINE);
     }
 
     @OnClick(R.id.map_filter_time_days_1)
     protected void onDays1Click() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_FILTER1);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_FILTER1);
     }
 
     @OnClick(R.id.map_filter_time_days_2)
     protected void onDays2Click() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_FILTER2);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_FILTER2);
     }
 
     @OnClick(R.id.map_filter_time_days_3)
     protected void onDays3Click() {
-        FlurryAgent.logEvent(Constants.EVENT_MAP_FILTER_FILTER3);
+        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_FILTER3);
     }
 
     // ----------------------------------

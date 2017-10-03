@@ -1,17 +1,7 @@
 package social.entourage.android.guide;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.guide.poi.PoiViewHolder;
 import social.entourage.android.map.MapViewHolder;

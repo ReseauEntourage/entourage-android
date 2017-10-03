@@ -7,11 +7,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
@@ -109,7 +109,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (userId == 0 || feedItem == null) return;
-                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
+                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
                 BusProvider.getInstance().post(
                         new Events.OnUserJoinRequestUpdateEvent(
                                 userId,
@@ -123,7 +123,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (userId == 0 || feedItem == null) return;
-                FlurryAgent.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
+                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
                 BusProvider.getInstance().post(
                         new Events.OnUserJoinRequestUpdateEvent(
                                 userId,

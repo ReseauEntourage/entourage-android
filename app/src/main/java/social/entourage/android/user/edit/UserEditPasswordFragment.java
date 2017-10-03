@@ -12,12 +12,11 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -61,7 +60,7 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
 
         View toReturn = inflater.inflate(R.layout.fragment_user_edit_password, container, false);
         ButterKnife.bind(this, toReturn);
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_4);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_4);
         configureView();
 
         return toReturn;
@@ -88,7 +87,7 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
     @OnClick(R.id.user_edit_password_save_button)
     protected void onSaveButton() {
         if (validatePassword()) {
-            FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_4_SUBMIT);
+            EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_4_SUBMIT);
             UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
             if (userEditFragment != null) {
                 userEditFragment.saveNewPassword(newPasswordEditText.getText().toString().trim());

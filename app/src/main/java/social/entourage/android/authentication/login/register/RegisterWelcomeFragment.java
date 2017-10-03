@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 
@@ -53,7 +52,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
         View view = inflater.inflate(R.layout.fragment_register_welcome, container, false);
         ButterKnife.bind(this, view);
 
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_30_1);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_1);
 
         return view;
     }
@@ -99,7 +98,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.register_welcome_start_button)
     protected void onStartClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_WELCOME_CONTINUE);
+        EntourageEvents.logEvent(Constants.EVENT_WELCOME_CONTINUE);
         RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
         registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);
     }

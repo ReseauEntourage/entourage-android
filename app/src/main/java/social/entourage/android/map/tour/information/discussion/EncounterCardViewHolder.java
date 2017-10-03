@@ -2,7 +2,6 @@ package social.entourage.android.map.tour.information.discussion;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.TextView;

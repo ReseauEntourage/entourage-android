@@ -17,7 +17,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +32,7 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.Partner;
@@ -137,7 +137,7 @@ public class UserFragment extends EntourageDialogFragment {
             toReturn = inflater.inflate(R.layout.fragment_user, container, false);
         }
         ButterKnife.bind(this, toReturn);
-        FlurryAgent.logEvent(Constants.EVENT_PROFILE_FROM_MENU);
+        EntourageEvents.logEvent(Constants.EVENT_PROFILE_FROM_MENU);
         return toReturn;
     }
 
@@ -195,7 +195,7 @@ public class UserFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private void configureView() {
-        FlurryAgent.logEvent(isMyProfile ? Constants.EVENT_SCREEN_09_1_ME : Constants.EVENT_SCREEN_09_1_OTHER);
+        EntourageEvents.logEvent(isMyProfile ? Constants.EVENT_SCREEN_09_1_ME : Constants.EVENT_SCREEN_09_1_OTHER);
         if (getActivity() != null && !getActivity().isFinishing()) {
             Stats stats = user.getStats();
             int entourageCount = 0;
@@ -350,13 +350,13 @@ public class UserFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.user_profile_edit_button)
     protected void onEditButtonClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_USER_EDIT_PROFILE);
+        EntourageEvents.logEvent(Constants.EVENT_USER_EDIT_PROFILE);
         showUserEditFragment();
     }
 
     @OnClick(R.id.user_photo)
     protected void onUserPhotoClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_USER_EDIT_PHOTO);
+        EntourageEvents.logEvent(Constants.EVENT_USER_EDIT_PHOTO);
         showUserEditFragment();
     }
 

@@ -1,7 +1,5 @@
 package social.entourage.android.map.tour.information;
 
-import com.flurry.android.FlurryAgent;
-
 import java.util.Date;
 import java.util.HashMap;
 
@@ -13,6 +11,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageError;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.TourRequest;
@@ -208,7 +207,7 @@ public class TourInformationPresenter {
             fragment.onFeedItemMessageSent(null);
             return;
         }
-        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_VIEW_ADD_MESSAGE);
+        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_ADD_MESSAGE);
         ChatMessage chatMessage = new ChatMessage(message);
         ChatMessage.ChatMessageWrapper chatMessageWrapper = new ChatMessage.ChatMessageWrapper();
         chatMessageWrapper.setChatMessage(chatMessage);

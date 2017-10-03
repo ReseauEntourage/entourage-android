@@ -27,16 +27,13 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -46,13 +43,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -86,6 +81,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
@@ -108,7 +104,6 @@ import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
-import social.entourage.android.base.BottomViewHolder;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
@@ -296,7 +291,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         markersMap = new TreeMap<>();
         retrievedHistory = new TreeMap<>();
 
-        FlurryAgent.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
+        EntourageEvents.logEvent(Constants.EVENT_OPEN_TOURS_FROM_MENU);
     }
 
     @Override
@@ -352,10 +347,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             for (int index = 0; index < permissions.length; index++) {
                 if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
                     //checkPermission();
-                    FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_POPUP_REFUSE);
+                    EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_POPUP_REFUSE);
                     BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
                 } else {
-                    FlurryAgent.logEvent(Constants.EVENT_GEOLOCATION_POPUP_ACCEPT);
+                    EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_POPUP_ACCEPT);
                     BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
                 }
             }
@@ -489,7 +484,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             displayChosenFeedItem(feedItem, invitationId);
         } else {
             if (presenter != null) {
-                FlurryAgent.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
+                EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
                 presenter.openFeedItem(feedItemId, feedItemType, invitationId);
             }
         }
@@ -517,14 +512,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         if (presenter != null) {
-            FlurryAgent.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
+            EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
             presenter.openFeedItem(feedItem, invitationId, feedRank);
         }
     }
 
     public void act(TimestampedObject timestampedObject) {
         if (tourService != null) {
-            FlurryAgent.logEvent(Constants.EVENT_FEED_OPEN_CONTACT);
+            EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_CONTACT);
             isRequestingToJoin++;
             if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
                 tourService.requestToJoinTour((Tour) timestampedObject);
@@ -541,7 +536,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void displayEntouragePopupWhileTour(final String entourageType) {
         // if we have an ongoing tour
         if (isBound && tourService != null && tourService.isRunning()) {
-            FlurryAgent.logEvent(Constants.EVENT_ENCOUNTER_POPUP_SHOW);
+            EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_SHOW);
             // Show the dialog that asks the user if he really wants to create an entourage instead of encounter
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder
@@ -550,14 +545,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     .setPositiveButton(R.string.entourage_tour_ongoing_proceed, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
-                            FlurryAgent.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENCOUNTER);
+                            EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENCOUNTER);
                             onAddEncounter();
                         }
                     })
                     .setNegativeButton(R.string.next, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
-                            FlurryAgent.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENTOURAGE);
+                            EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENTOURAGE);
                             displayEntourageDisclaimer(entourageType);
                         }
                     });
@@ -1298,7 +1293,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_follow_button)
     void onFollowGeolocation() {
-        FlurryAgent.logEvent(Constants.EVENT_FEED_RECENTERCLICK);
+        EntourageEvents.logEvent(Constants.EVENT_FEED_RECENTERCLICK);
         // Check if geolocation is enabled
         if (!isGeolocationGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER);
@@ -1318,18 +1313,18 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         TourType tourType = TourType.findByRessourceId(radioGroupType.getCheckedRadioButtonId());
         startTour(tourType.getName());
         if (tourType == TourType.MEDICAL) {
-            FlurryAgent.logEvent(Constants.EVENT_TOUR_MEDICAL);
+            EntourageEvents.logEvent(Constants.EVENT_TOUR_MEDICAL);
         } else if (tourType == TourType.BARE_HANDS) {
-            FlurryAgent.logEvent(Constants.EVENT_TOUR_SOCIAL);
+            EntourageEvents.logEvent(Constants.EVENT_TOUR_SOCIAL);
         } else if (tourType == TourType.ALIMENTARY) {
-            FlurryAgent.logEvent(Constants.EVENT_TOUR_DISTRIBUTION);
+            EntourageEvents.logEvent(Constants.EVENT_TOUR_DISTRIBUTION);
         }
-        FlurryAgent.logEvent(Constants.EVENT_START_TOUR);
+        EntourageEvents.logEvent(Constants.EVENT_START_TOUR);
     }
 
     @OnClick(R.id.tour_stop_button)
     public void onStartStopConfirmation() {
-        FlurryAgent.logEvent(Constants.EVENT_TOUR_SUSPEND);
+        EntourageEvents.logEvent(Constants.EVENT_TOUR_SUSPEND);
         pauseTour();
         if (getActivity() != null) {
             launchConfirmationActivity();
@@ -1390,10 +1385,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @OnClick(R.id.fragment_map_display_toggle)
     public void onDisplayToggle() {
         if (mapDisplayToggle.isChecked()) {
-            FlurryAgent.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
+            EntourageEvents.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
         }
         else {
-            FlurryAgent.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
+            EntourageEvents.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
         }
         toggleToursList();
     }
@@ -1410,7 +1405,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_filter_button)
     protected void onShowFilter() {
-        FlurryAgent.logEvent(Constants.EVENT_FEED_FILTERSCLICK);
+        EntourageEvents.logEvent(Constants.EVENT_FEED_FILTERSCLICK);
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());
         MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(isPro);
@@ -1438,14 +1433,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         if (getActivity() instanceof DrawerActivity) {
                             DrawerActivity activity = (DrawerActivity) getActivity();
                             if (tourService.isRunning()) {
-                                FlurryAgent.logEvent(Constants.EVENT_TOUR_PLUS_CLICK);
+                                EntourageEvents.logEvent(Constants.EVENT_TOUR_PLUS_CLICK);
                             } else if (activity.isGuideShown()) {
-                                FlurryAgent.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
+                                EntourageEvents.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
                             } else {
                                 if (isToursListVisible()) {
-                                    FlurryAgent.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
+                                    EntourageEvents.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
                                 } else {
-                                    FlurryAgent.logEvent(Constants.EVENT_MAP_PLUS_CLICK);
+                                    EntourageEvents.logEvent(Constants.EVENT_MAP_PLUS_CLICK);
                                 }
                             }
                         }
@@ -1601,10 +1596,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 public void onClick(DialogInterface dialogInterface, int i) {
                     switch (source) {
                         case GEOLOCATION_POPUP_RECENTER:
-                            FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
+                            EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
                             break;
                         case GEOLOCATION_POPUP_TOUR:
-                            FlurryAgent.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
+                            EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
                             break;
                         default:
                             break;
@@ -1657,9 +1652,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
                                 if (previousCameraZoom != newZoom) {
                                     if (previousCameraZoom > newZoom) {
-                                        FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_IN);
+                                        EntourageEvents.logEvent(Constants.EVENT_MAP_ZOOM_IN);
                                     } else {
-                                        FlurryAgent.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
+                                        EntourageEvents.logEvent(Constants.EVENT_MAP_ZOOM_OUT);
                                     }
                                 }
                                 previousCameraZoom = newZoom;
@@ -1695,7 +1690,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         @Override
                         public void onMapClick(LatLng latLng) {
                             if (getActivity() != null) {
-                                FlurryAgent.logEvent(Constants.EVENT_FEED_MAPCLICK);
+                                EntourageEvents.logEvent(Constants.EVENT_FEED_MAPCLICK);
                                 if (newsfeedListView.getVisibility() == View.VISIBLE) {
                                     hideToursList();
                                 }
@@ -1715,7 +1710,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         @Override
                         public void onMapLongClick(final LatLng latLng) {
                             if (getActivity() != null) {
-                                FlurryAgent.logEvent(Constants.EVENT_MAP_LONGPRESS);
+                                EntourageEvents.logEvent(Constants.EVENT_MAP_LONGPRESS);
                                 showLongClickOnMapOptions(latLng);
                             }
                         }
@@ -1789,7 +1784,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private void resumeTour(Tour tour) {
         if (tourService != null) {
             if (tour != null && tourService.getCurrentTourId() == tour.getId() && tourService.isRunning()) {
-                FlurryAgent.logEvent(Constants.EVENT_RESTART_TOUR);
+                EntourageEvents.logEvent(Constants.EVENT_RESTART_TOUR);
                 tourService.resumeTreatment();
             }
         }
@@ -1803,7 +1798,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         // Not ongoing tour, just stop the feed item
                         loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                         loaderStop.setCancelable(true);
-                        FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+                        EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
                         tourService.stopFeedItem(feedItem);
                     } else {
                         if (feedItem.getType() == TimestampedObject.TOUR_CARD && tourService.getCurrentTourId() == feedItem.getId()) {
@@ -1811,12 +1806,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                             loaderStop.setCancelable(true);
                             tourService.endTreatment();
-                            FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+                            EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
                         } else {
                             // Not ongoing tour, just stop the feed item
                             loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                             loaderStop.setCancelable(true);
-                            FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+                            EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
                             tourService.stopFeedItem(feedItem);
                         }
                     }
@@ -1825,7 +1820,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                         loaderStop.setCancelable(true);
                         tourService.endTreatment();
-                        FlurryAgent.logEvent(Constants.EVENT_STOP_TOUR);
+                        EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
                     }
                 }
             }
@@ -2285,10 +2280,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void toggleToursList() {
         if (!isFullMapShown) {
             hideToursList();
-            FlurryAgent.logEvent(EVENT_SCREEN_06_2);
+            EntourageEvents.logEvent(EVENT_SCREEN_06_2);
         } else {
             showToursList();
-            FlurryAgent.logEvent(EVENT_SCREEN_06_1);
+            EntourageEvents.logEvent(EVENT_SCREEN_06_1);
         }
     }
 
@@ -2523,7 +2518,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
                 } catch (Exception e) {
                     // This is just to see if we still get the Illegal state exception
-                    FlurryAgent.logEvent("CAROUSEL_EXCEPTION");
+                    EntourageEvents.logEvent("CAROUSEL_EXCEPTION");
                 }
             }
         }, Constants.CAROUSEL_DELAY_MILLIS);
@@ -2753,7 +2748,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
-                    FlurryAgent.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
+                    EntourageEvents.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
                     if (tourService != null) {
                         tourService.updateNewsfeed(pagination);
                     }

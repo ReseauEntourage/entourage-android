@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.github.clans.fab.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -24,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 
@@ -90,7 +90,7 @@ public class PhotoEditFragment extends EntourageDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        FlurryAgent.logEvent(Constants.EVENT_SCREEN_09_9);
+        EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_9);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_edit, container, false);
         ButterKnife.bind(this, view);

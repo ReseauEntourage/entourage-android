@@ -16,12 +16,11 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -98,7 +97,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
             disclaimerTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_LINK);
+                    EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_LINK);
                     String disclaimerURL = isPro ? getString(R.string.disclaimer_link_pro) : getString(R.string.disclaimer_link_public);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(disclaimerURL));
                     try {
@@ -113,7 +112,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
                 @Override
                 public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
                     if (isChecked) {
-                        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_ACCEPT);
+                        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_ACCEPT);
                         // trigger the accept after a delay
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.postDelayed(new Runnable() {
@@ -151,7 +150,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.entourage_disclaimer_close_button)
     protected void onCloseClicked() {
-        FlurryAgent.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_CLOSE);
+        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_CLOSE);
         dismiss();
     }
 
