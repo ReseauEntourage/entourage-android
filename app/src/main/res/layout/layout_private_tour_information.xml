@@ -19,7 +19,7 @@
         android:text="@string/tour_info_discussion"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/greyish_brown"
-        android:textSize="14sp"
+        android:textSize="@dimen/entourage_font_small"
         android:visibility="gone"/>
 
     <View
@@ -64,7 +64,8 @@
             android:layout_weight="1"
             android:background="@drawable/bg_edit_text"
             android:inputType="textMultiLine"
-            android:maxLines="3"/>
+            android:maxLines="3"
+            android:textSize="@dimen/entourage_font_large"/>
 
         <ImageButton
             android:id="@+id/tour_info_comment_record_button"
@@ -83,8 +84,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/send"
             android:textColor="@color/accent"
-            android:visibility="gone"
-            />
+            android:textSize="@dimen/entourage_font_medium"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

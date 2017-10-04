@@ -57,17 +57,17 @@
                 app:srcCompat="@drawable/ic_handshake"/>
 
             <TextView
-                android:text="@string/carousel_p1_handshake"
+                android:id="@+id/carousel_p1_handshake_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/carousel_p1_handshake_text"
-                android:layout_weight="1"
                 android:layout_gravity="center_vertical"
-                android:textStyle="normal|bold"
-                android:textColor="@color/accent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:textSize="16sp"/>
+                android:layout_weight="1"
+                android:text="@string/carousel_p1_handshake"
+                android:textColor="@color/accent"
+                android:textSize="@dimen/carousel_content"
+                android:textStyle="normal|bold"/>
 
         </LinearLayout>
 

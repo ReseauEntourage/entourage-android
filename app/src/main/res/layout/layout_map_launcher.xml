@@ -15,13 +15,13 @@
         android:visibility="visible"/>
 
     <TextView
+        android:id="@+id/launcher_tour_type_choose_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="@string/tour_create_choose_type"
-        android:id="@+id/launcher_tour_type_choose_text"
         android:textColor="@color/greyish_brown"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp"/>
+        android:textSize="@dimen/entourage_font_large"/>
 
     <RadioGroup
         android:id="@+id/launcher_tour_type"
@@ -37,14 +37,14 @@
             android:id="@+id/launcher_tour_type_medical"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:text="@string/tour_type_medical"
-            android:button="@null"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:textColor="@drawable/textcolor_radio_tab_medical"
-            android:drawableTop="@drawable/rb_tour_medical"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:button="@null"
+            android:drawableTop="@drawable/rb_tour_medical"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/tour_type_medical"
+            android:textColor="@drawable/textcolor_radio_tab_medical"
+            android:textSize="@dimen/entourage_font_large"/>
 
         <View
             android:layout_width="2dp"
@@ -58,15 +58,15 @@
             android:id="@+id/launcher_tour_type_bare_hands"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:text="@string/tour_type_bare_hands"
-            android:button="@null"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:textColor="@drawable/textcolor_radio_tab_social"
             android:layout_weight="1"
-            android:gravity="center"
+            android:button="@null"
+            android:checked="false"
             android:drawableTop="@drawable/rb_tour_social"
-            android:checked="false"/>
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/tour_type_bare_hands"
+            android:textColor="@drawable/textcolor_radio_tab_social"
+            android:textSize="@dimen/entourage_font_large"/>
 
         <View
             android:layout_width="2dp"
@@ -80,15 +80,15 @@
             android:id="@+id/launcher_tour_type_alimentary"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:text="@string/tour_type_alimentary"
-            android:button="@null"
-            android:textSize="18sp"
-            android:textColor="@drawable/textcolor_radio_tab_distributive"
-            android:gravity="center"
             android:layout_weight="1"
-            android:drawableTop="@drawable/rb_tour_distributive"
+            android:button="@null"
             android:checked="false"
-            android:padding="10dp"/>
+            android:drawableTop="@drawable/rb_tour_distributive"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/tour_type_alimentary"
+            android:textColor="@drawable/textcolor_radio_tab_distributive"
+            android:textSize="@dimen/entourage_font_large"/>
 
     </RadioGroup>
 
@@ -98,15 +98,15 @@
         android:background="@color/background_light">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/tour_start"
-            android:id="@+id/textView"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="@string/tour_start"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
-            android:textSize="20sp"
-            android:layout_marginTop="40dp"/>
+            android:textSize="@dimen/entourage_font_big"/>
 
         <ImageView
             android:id="@+id/launcher_tour_go"

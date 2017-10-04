@@ -114,12 +114,12 @@
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/greyish_brown"
-                    android:textSize="24sp"
                     android:layout_below="@+id/user_photo"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_big"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -159,18 +159,18 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/user_associations_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/user_associations_title"
-                android:id="@+id/user_associations_title"
+                android:background="@color/pale_grey"
                 android:gravity="center"
-                android:textColor="@color/greyish_brown"
-                android:textStyle="bold"
-                android:paddingTop="20dp"
                 android:paddingBottom="10dp"
-                android:textSize="17sp"
-                android:background="@color/pale_grey"/>
+                android:paddingTop="20dp"
+                android:text="@string/user_associations_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/greyish_brown"
+                android:textSize="@dimen/entourage_font_medium"
+                android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -183,55 +183,55 @@
                 android:id="@+id/user_number_of_entourages_layout">
 
                 <TextView
-                    android:text="@string/user_number_entourages_title"
+                    android:id="@+id/user_number_entourages_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/user_number_entourages_title"
-                    android:background="@color/pale_grey"
-                    android:gravity="center_horizontal"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:paddingTop="20dp"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/pale_grey"
+                    android:gravity="center_horizontal"
                     android:paddingBottom="10dp"
-                    android:textStyle="bold"
-                    android:textSize="17sp"
-                    android:textColor="@color/greyish_brown"/>
+                    android:paddingTop="20dp"
+                    android:text="@string/user_number_entourages_title"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
 
                 <TextView
+                    android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/user_number_entourages_label"
-                    android:id="@+id/textView3"
-                    android:textColor="@color/greyish_brown"
-                    android:textSize="17sp"
                     android:layout_below="@+id/user_number_entourages_title"
-                    android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingStart="20dp"
                     android:paddingEnd="20dp"
-                    android:paddingRight="20dp"/>
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/user_number_entourages_label"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <TextView
+                    android:id="@+id/user_tours_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/user_tours_count"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/greyish"
-                    android:textStyle="bold"
-                    android:textSize="17sp"
+                    android:layout_alignParentRight="true"
                     android:layout_below="@+id/user_number_entourages_title"
+                    android:layout_centerVertical="true"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
                     android:paddingEnd="20dp"
-                    android:paddingRight="20dp"
                     android:paddingLeft="20dp"
-                    android:paddingStart="20dp"/>
+                    android:paddingRight="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/greyish"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -242,19 +242,19 @@
                 android:id="@+id/user_profile_identification_layout">
 
                 <TextView
+                    android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/user_profile_verified_information_label"
-                    android:id="@+id/textView2"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@color/greyish_brown"
-                    android:textStyle="bold"
-                    android:textSize="17sp"
                     android:background="@color/pale_grey"
-                    android:paddingTop="20dp"
                     android:gravity="center_horizontal"
-                    android:paddingBottom="10dp"/>
+                    android:paddingBottom="10dp"
+                    android:paddingTop="20dp"
+                    android:text="@string/user_profile_verified_information_label"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -269,14 +269,14 @@
                     android:layout_marginBottom="10dp">
 
                     <TextView
+                        android:id="@+id/user_identification_email_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/user_information_email_label"
-                        android:id="@+id/user_identification_email_label"
-                        android:textColor="@color/greyish_brown"
                         android:layout_gravity="center_horizontal"
-                        android:textSize="17sp"/>
+                        android:text="@string/user_information_email_label"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <ImageView
                         android:id="@+id/user_identification_email_check"
@@ -311,14 +311,14 @@
                     android:layout_marginStart="20dp">
 
                     <TextView
+                        android:id="@+id/user_identification_phone_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/user_information_phone_label"
-                        android:id="@+id/user_identification_phone_label"
-                        android:textColor="@color/greyish_brown"
                         android:layout_gravity="center_horizontal"
-                        android:textSize="17sp"/>
+                        android:text="@string/user_information_phone_label"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <ImageView
                         android:id="@+id/user_identification_phone_check"

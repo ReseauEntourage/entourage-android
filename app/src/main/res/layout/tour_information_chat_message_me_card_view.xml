@@ -31,7 +31,7 @@
             android:autoLink="all"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_info_font_large"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
             android:id="@+id/tic_chat_timestamp"
@@ -40,7 +40,7 @@
             android:layout_gravity="end"
             android:layout_marginTop="5dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_info_font_small"/>
+            android:textSize="@dimen/entourage_font_small"/>
     </LinearLayout>
 
     <ImageView

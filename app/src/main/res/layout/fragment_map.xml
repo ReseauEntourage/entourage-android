@@ -54,6 +54,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/map_empty_newsfeed"
                 android:textColor="@color/black"
+                android:textSize="@dimen/entourage_font_medium"
                 android:visibility="gone"/>
 
             <ImageButton
@@ -131,7 +132,8 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="@string/map_gps_unavailable"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/entourage_font_small"/>
 
         </LinearLayout>
 
@@ -177,7 +179,7 @@
                 android:text="@string/map_empty_newsfeed_popup"
                 android:textColor="@color/white"
                 android:textColorLink="@color/white"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/entourage_font_medium"/>
         </LinearLayout>
 
         <LinearLayout
@@ -214,7 +216,7 @@
                 android:layout_weight="1"
                 android:text="@string/map_show_guide_description"
                 android:textColor="@color/white"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/entourage_font_medium"/>
 
             <ImageView
                 android:id="@+id/fragment_map_show_guide_arrow"

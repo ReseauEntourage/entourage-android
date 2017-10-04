@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textColor="@color/greyish"
-            android:textSize="@dimen/entourage_info_font_small"/>
+            android:textSize="@dimen/entourage_font_small"/>
 
         <LinearLayout
             android:id="@+id/tic_public_info_message_layout"
@@ -69,7 +69,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:textColor="@color/greyish"
-                    android:textSize="@dimen/entourage_info_font_small"/>
+                    android:textSize="@dimen/entourage_font_small"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
                         android:gravity="start|end"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/entourage_info_font_large"/>
+                        android:textSize="@dimen/entourage_font_large"/>
 
                     <TextView
                         android:id="@+id/tic_public_info_timestamp"
@@ -98,7 +98,7 @@
                         android:layout_gravity="end"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/warm_grey"
-                        android:textSize="@dimen/entourage_info_font_small"/>
+                        android:textSize="@dimen/entourage_font_small"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -150,7 +150,7 @@
             android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_info_font_large"
+            android:textSize="@dimen/entourage_font_large"
             android:textStyle="bold"/>
 
         <TextView
@@ -161,7 +161,7 @@
             android:text="@string/tour_join_request_received_message_short"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_info_font_large"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
             android:id="@+id/tic_join_message"
@@ -173,7 +173,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_info_font_large"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <Button
             android:layout_width="match_parent"

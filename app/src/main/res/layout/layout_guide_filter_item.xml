@@ -36,7 +36,7 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:textColor="@color/greyish_brown"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <Switch
             android:id="@+id/guide_filter_item_switch"

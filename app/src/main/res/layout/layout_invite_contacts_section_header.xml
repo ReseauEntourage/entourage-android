@@ -8,12 +8,12 @@
               android:paddingRight="20dp">
 
     <TextView
+        android:id="@+id/contact_section_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/contact_section_name"
-        android:textSize="18sp"
-        android:textColor="@color/greyish"
+        android:layout_marginBottom="6dp"
         android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/greyish"
+        android:textSize="@dimen/entourage_font_medium"/>
 </LinearLayout>

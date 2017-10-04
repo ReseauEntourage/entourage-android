@@ -43,7 +43,7 @@
         android:paddingRight="10dp"
         android:paddingStart="10dp"
         android:textColor="@color/greyish_brown"
-        android:textSize="@dimen/entourage_info_font_medium"/>
+        android:textSize="@dimen/entourage_font_medium"/>
 
     <View
         android:layout_width="match_parent"

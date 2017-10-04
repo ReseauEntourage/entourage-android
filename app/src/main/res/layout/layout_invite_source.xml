@@ -24,25 +24,26 @@
             android:src="@drawable/ic_close_white"/>
 
         <TextView
+            android:id="@+id/invite_source_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/invite_source_title"
-            android:id="@+id/invite_source_title"
-            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textSize="22sp"
-            android:layout_marginBottom="10dp"/>
+            android:text="@string/invite_source_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="@dimen/entourage_font_xtra_large"
+            android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/invite_source_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginBottom="20dp"
             android:text="@string/invite_source_description"
-            android:id="@+id/invite_source_description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:layout_marginBottom="20dp"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <Button
             android:id="@+id/invite_source_share_button"

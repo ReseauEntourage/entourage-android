@@ -21,7 +21,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/greyish_brown"
-            android:textSize="18sp"
+            android:textSize="@dimen/entourage_font_medium"
             android:textStyle="bold"/>
 
         <ImageView

@@ -36,7 +36,7 @@
 
         <Button
             android:id="@+id/map_filter_validate_button"
-            style="@style/TransparentAccentButton"
+            style="@style/TransparentButton.Accent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/map_filter_tour_type_title"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
                     android:id="@+id/map_filter_tour_medical"
@@ -103,7 +103,7 @@
                         android:layout_toStartOf="@+id/map_filter_tour_medical_switch"
                         android:text="@string/tour_type_medical"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/map_filter_tour_medical_switch"
@@ -155,7 +155,7 @@
                         android:layout_toStartOf="@+id/map_filter_tour_social_switch"
                         android:text="@string/tour_type_bare_hands"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/map_filter_tour_social_switch"
@@ -207,7 +207,7 @@
                         android:layout_toStartOf="@+id/map_filter_tour_distributive_switch"
                         android:text="@string/tour_type_alimentary"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/map_filter_tour_distributive_switch"
@@ -235,7 +235,8 @@
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/map_filter_entourage_type_title"/>
+                    android:text="@string/map_filter_entourage_type_title"
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
                     android:id="@+id/map_filter_entourage_demand"
@@ -257,7 +258,7 @@
                         android:layout_toStartOf="@+id/map_filter_entourage_demand_switch"
                         android:text="@string/entourage_type_demand"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/map_filter_entourage_demand_switch"
@@ -298,7 +299,7 @@
                         android:layout_toStartOf="@+id/map_filter_entourage_contribution_switch"
                         android:text="@string/entourage_type_contribution"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/map_filter_entourage_contribution_switch"
@@ -339,7 +340,7 @@
                         android:layout_toStartOf="@+id/map_filter_entourage_tours_switch"
                         android:text="@string/map_filter_tours_text"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/map_filter_entourage_tours_switch"
@@ -369,7 +370,8 @@
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/map_filter_personal_title"/>
+                    android:text="@string/map_filter_personal_title"
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
                     android:id="@+id/map_filter_entourage_user_only"
@@ -391,7 +393,7 @@
                         android:layout_toStartOf="@+id/map_filter_entourage_user_only_switch"
                         android:text="@string/map_filter_user_only_text"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/map_filter_entourage_user_only_switch"
@@ -433,7 +435,7 @@
                         android:layout_toStartOf="@+id/map_filter_entourage_organisation_switch"
                         android:text="@string/map_filter_organisation_only_text"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/map_filter_entourage_organisation_switch"
@@ -462,7 +464,8 @@
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/map_filter_time_title"/>
+                    android:text="@string/map_filter_time_title"
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <RadioGroup
                     android:layout_width="match_parent"

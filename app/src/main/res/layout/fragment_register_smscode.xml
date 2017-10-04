@@ -27,16 +27,17 @@
 
         <Button
             android:id="@+id/register_smscode_lost_code"
+            style="@style/TransparentButton.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:background="?android:attr/selectableItemBackground"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:text="@string/login_text_lost_code"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"/>
+            />
     </RelativeLayout>
 
     <ScrollView
@@ -62,26 +63,26 @@
                 android:src="@drawable/code"/>
 
             <TextView
+                android:id="@+id/register_smscode_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/registration_smscode_title"
-                android:id="@+id/register_smscode_title"
-                android:textColor="@color/white"
                 android:layout_below="@+id/register_smscode_image"
-                android:textSize="28sp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:text="@string/registration_smscode_title"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_xtra_large"/>
 
             <TextView
+                android:id="@+id/register_smscode_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/registration_smscode_description"
-                android:id="@+id/register_smscode_description"
-                android:textColor="@color/white"
-                android:textSize="16sp"
                 android:layout_below="@+id/register_smscode_title"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:text="@string/registration_smscode_description"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_medium"/>
         </RelativeLayout>
     </ScrollView>
 
@@ -95,16 +96,16 @@
         android:paddingRight="20dp">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
             android:id="@+id/register_smscode_code"
             style="@style/CustomEditTextThemeAccent"
-            android:textSize="22sp"
-            android:hint="@string/registration_smscode_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:maxLength="6"/>
+            android:ems="10"
+            android:hint="@string/registration_smscode_hint"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:textSize="@dimen/entourage_font_large"/>
 
         <View
             android:layout_width="match_parent"

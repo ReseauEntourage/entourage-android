@@ -65,7 +65,7 @@
             android:layout_marginStart="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="17sp"/>
+            android:textSize="@dimen/entourage_font_large"/>
     </LinearLayout>
 
     <ScrollView
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/greyish_brown"
-                android:textSize="20sp"
+                android:textSize="@dimen/entourage_font_large"
                 android:textStyle="bold"/>
 
             <View
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/greyish_brown"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/entourage_font_medium"/>
 
             <Button
                 android:id="@+id/button_poi_address"
@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             android:text="@string/poi_report_description"
             android:textColor="@color/white"
-            android:textSize="14sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <Button
             android:id="@+id/poi_report_button"
@@ -170,7 +170,7 @@
             android:layout_height="38dp"
             android:layout_marginTop="10dp"
             android:text="@string/poi_report_button"
-            android:textSize="14sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
     </LinearLayout>
 
 </RelativeLayout>

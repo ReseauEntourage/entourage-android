@@ -10,5 +10,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/greyish"
-        android:textSize="@dimen/entourage_info_font_small"/>
+        android:textSize="@dimen/entourage_font_small"/>
 </LinearLayout>

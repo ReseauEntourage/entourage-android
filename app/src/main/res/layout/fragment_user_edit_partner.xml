@@ -47,7 +47,8 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:text="@string/user_save_button"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/accent"/>
+            android:textColor="@color/accent"
+            android:textSize="@dimen/entourage_font_large"/>
     </RelativeLayout>
 
     <EditText
@@ -63,7 +64,8 @@
         android:gravity="center"
         android:hint="@string/user_edit_asso_search_hint"
         android:imeOptions="actionSearch"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:textSize="@dimen/entourage_font_large"/>
 
     <ListView
         android:layout_width="match_parent"
@@ -80,21 +82,21 @@
         android:descendantFocusability="blocksDescendants"/>
 
     <TextView
-        android:text="@string/user_edit_no_association"
+        android:id="@+id/user_partner_public"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/user_partner_public"
+        android:layout_alignParentBottom="true"
+        android:autoLink="email"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingEnd="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingEnd="20dp"
         android:paddingStart="20dp"
-        android:gravity="center"
-        android:autoLink="email"
-        android:textColor="@color/greyish_brown"
-        android:textSize="17sp"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:layout_alignParentBottom="true"/>
+        android:text="@string/user_edit_no_association"
+        android:textColor="@color/greyish_brown"
+        android:textSize="@dimen/entourage_font_medium"/>
 
     <ProgressBar
         android:layout_width="wrap_content"

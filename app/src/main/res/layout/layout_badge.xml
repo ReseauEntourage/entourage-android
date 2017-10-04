@@ -20,6 +20,6 @@
         android:background="@drawable/bg_badge"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="10sp"
+        android:textSize="@dimen/badge_size"
         android:visibility="gone"/>
 </merge>

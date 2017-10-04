@@ -33,7 +33,7 @@
             android:text="@string/invitation_card_description"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="@dimen/entourage_font_medium"
             android:textStyle="bold"/>
 
         <TextView
@@ -46,6 +46,6 @@
             android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="14sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
     </RelativeLayout>
 </FrameLayout>

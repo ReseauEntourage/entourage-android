@@ -26,5 +26,6 @@
         android:layout_toRightOf="@+id/push_notification_logo"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#FFFFFFFF"/>
+        android:textColor="#FFFFFFFF"
+        android:textSize="@dimen/entourage_font_medium"/>
 </RelativeLayout>

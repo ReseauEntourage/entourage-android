@@ -33,8 +33,8 @@
         android:layout_marginTop="5dp"
         android:text="@string/entourage_close_title"
         android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"/>
+        android:textSize="@dimen/entourage_font_xtra_large"
+        />
 
     <TextView
         android:id="@+id/entourage_close_description"
@@ -43,7 +43,7 @@
         android:layout_marginTop="5dp"
         android:text="@string/entourage_close_description"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/entourage_font_medium"/>
 
     <Button
         android:id="@+id/entourage_close_success_button"
@@ -54,7 +54,7 @@
         android:drawableLeft="@drawable/ec_award"
         android:drawableStart="@drawable/ec_award"
         android:text="@string/entourage_close_success_button"
-        android:textSize="16sp"/>
+        />
 
     <Button
         android:id="@+id/entourage_close_failed_button"
@@ -65,7 +65,7 @@
         android:drawableLeft="@drawable/ec_no_entry"
         android:drawableStart="@drawable/ec_no_entry"
         android:text="@string/entourage_close_failed_button"
-        android:textSize="16sp"/>
+        />
 
     <TextView
         android:id="@+id/entourage_close_help_text"
@@ -74,7 +74,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/entourage_close_help_text"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/entourage_font_medium"/>
 
     <Button
         android:id="@+id/entourage_close_help_button"
@@ -85,7 +85,7 @@
         android:drawableLeft="@drawable/ec_rescue"
         android:drawableStart="@drawable/ec_rescue"
         android:text="@string/entourage_close_help_button"
-        android:textSize="16sp"/>
+        />
 
     <Button
         android:id="@+id/entourage_close_cancel_button"
@@ -96,7 +96,6 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:text="@string/cancel"
-        android:textSize="16sp"
         android:textStyle="normal"/>
 
 </LinearLayout>

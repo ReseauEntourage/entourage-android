@@ -35,7 +35,7 @@
                 android:autoLink="all"
                 android:padding="10dp"
                 android:textColor="@color/greyish_brown"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/entourage_font_medium"/>
 
             <LinearLayout
                 android:id="@+id/tour_info_members_layout"
@@ -52,7 +52,7 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
 
                 <View
@@ -140,7 +140,7 @@
             android:layout_height="wrap_content"
             android:text="@string/tour_info_request_join_title_entourage"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <Button
             android:id="@+id/tour_info_request_join_button"
@@ -150,7 +150,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:text="@string/tour_info_request_join_button_entourage"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
     </LinearLayout>
 
     <LinearLayout
@@ -175,7 +175,7 @@
             android:gravity="center"
             android:text="@string/invited_description"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/entourage_font_medium"
             />
 
         <LinearLayout
@@ -198,7 +198,8 @@
                 android:layout_height="35dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
-                android:text="@string/ignore"/>
+                android:text="@string/ignore"
+                android:textSize="@dimen/entourage_font_medium"/>
 
             <Button
                 android:id="@+id/tour_info_invited_accept_button"
@@ -207,7 +208,8 @@
                 android:layout_height="35dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
-                android:text="@string/accept"/>
+                android:text="@string/accept"
+                android:textSize="@dimen/entourage_font_medium"/>
 
             <Space
                 android:layout_width="0dp"

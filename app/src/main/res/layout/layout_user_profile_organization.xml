@@ -20,20 +20,20 @@
         android:layout_toStartOf="@+id/organization_logo">
 
         <TextView
+            android:id="@+id/organization_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/organization_name"
             android:textColor="@color/greyish_brown"
-            android:textSize="17sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <TextView
+            android:id="@+id/organization_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/organization_type"
+            android:paddingTop="3dp"
             android:textColor="@color/greyish"
-            android:textSize="13sp"
-            android:paddingTop="3dp"/>
+            android:textSize="@dimen/entourage_font_small"/>
     </LinearLayout>
 
     <ImageView

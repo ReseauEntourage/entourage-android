@@ -20,9 +20,9 @@
         android:id="@+id/notification_tour_infos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"
         android:layout_toEndOf="@+id/notification_tour_image"
         android:layout_toRightOf="@+id/notification_tour_image"
         android:gravity="center_vertical"
@@ -33,13 +33,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/local_service_running"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/entourage_font_small"
+            android:textStyle="bold"/>
 
         <Chronometer
             android:id="@+id/notification_tour_chronometer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/entourage_font_small"/>
 
     </LinearLayout>
 

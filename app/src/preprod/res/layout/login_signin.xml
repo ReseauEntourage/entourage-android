@@ -54,7 +54,7 @@
             android:text="@string/login_title_welcome"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
-            android:textSize="32sp"/>
+            android:textSize="@dimen/entourage_font_xtra_large"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -99,7 +99,7 @@
                 android:inputType="phone"
                 android:maxLength="12"
                 android:textColor="@color/white"
-                android:textSize="22sp"/>
+                android:textSize="@dimen/entourage_font_large"/>
 
         </LinearLayout>
 
@@ -138,7 +138,7 @@
             android:inputType="numberPassword"
             android:maxLength="6"
             android:textColor="@color/white"
-            android:textSize="22sp"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <View
             android:layout_width="match_parent"
@@ -168,7 +168,7 @@
             android:text="@string/login_text_lost_code"
             android:textAllCaps="false"
             android:textColor="@color/custom_clickable_text_white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/entourage_font_small"/>
 
     </LinearLayout>
 

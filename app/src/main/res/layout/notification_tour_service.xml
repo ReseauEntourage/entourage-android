@@ -32,12 +32,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/local_service_running"
-            android:textStyle="bold" />
+            android:textSize="@dimen/entourage_font_medium"
+            android:textStyle="bold"/>
 
         <Chronometer
             android:id="@+id/notification_tour_chronometer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/entourage_font_small"/>
 
     </LinearLayout>
 

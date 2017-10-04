@@ -37,7 +37,7 @@
 
         <Button
             android:id="@+id/guide_filter_validate_button"
-            style="@style/TransparentAccentButton"
+            style="@style/TransparentButton.Accent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

@@ -30,7 +30,7 @@
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:textColor="@color/greyish_brown"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <CheckBox
             android:id="@+id/entourage_category_item_checkbox"

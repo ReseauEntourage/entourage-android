@@ -123,7 +123,7 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textColorLink="@color/white"
-            android:textSize="14sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
     </LinearLayout>
 
     <LinearLayout
@@ -156,7 +156,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/map_poi_info_popup"
             android:textColor="@color/white"
-            android:textSize="14sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
     </LinearLayout>
 
     <include

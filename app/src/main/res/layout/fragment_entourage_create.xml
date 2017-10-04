@@ -39,7 +39,7 @@
 
         <Button
             android:id="@+id/create_entourage_validate_button"
-            style="@style/TransparentAccentButton"
+            style="@style/TransparentButton.Accent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -73,7 +73,7 @@
                     android:text="@string/entourage_create_type_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     />
 
                 <TextView
@@ -89,7 +89,7 @@
                     android:paddingRight="5dp"
                     android:paddingStart="5dp"
                     android:textColor="@color/accent"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <ImageView
                     android:id="@+id/create_entourage_category_arrow"
@@ -134,7 +134,7 @@
                     android:text="@string/entourage_create_position_description"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <ImageView
                     android:id="@+id/create_entourage_position_arrow"
@@ -162,7 +162,7 @@
                     android:paddingStart="5dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/accent"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -183,7 +183,7 @@
                     android:text="@string/entourage_create_title_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     />
 
                 <TextView
@@ -199,7 +199,7 @@
                     android:paddingRight="5dp"
                     android:paddingStart="5dp"
                     android:textColor="@color/accent"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <ImageView
                     android:id="@+id/create_entourage_title_arrow"
@@ -228,7 +228,7 @@
                     android:text="@string/entourage_create_description_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     />
 
                 <TextView
@@ -244,7 +244,7 @@
                     android:paddingRight="5dp"
                     android:paddingStart="5dp"
                     android:textColor="@color/accent"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <ImageView
                     android:id="@+id/create_entourage_description_arrow"
@@ -269,7 +269,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
                 android:clickable="true"
-                android:textSize="18sp"
+                android:textSize="@dimen/entourage_font_medium"
                 app:htmlText="@string/entourage_create_help_text"/>
 
         </RelativeLayout>

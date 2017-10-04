@@ -8,28 +8,31 @@
               android:padding="10dp">
 
     <EditText
+        android:id="@+id/user_edit_profile_firstname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/user_edit_profile_firstname"
-        android:hint="@string/user_edit_firstname_label"/>
+        android:hint="@string/user_edit_firstname_label"
+        android:inputType="textPersonName"
+        android:textSize="@dimen/entourage_font_large"/>
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
         android:id="@+id/user_edit_profile_lastname"
-        android:hint="@string/user_edit_lastname_label"/>
-
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
         android:ems="10"
+        android:hint="@string/user_edit_lastname_label"
+        android:inputType="textPersonName"
+        android:textSize="@dimen/entourage_font_large"/>
+
+    <EditText
         android:id="@+id/user_edit_profile_email"
-        android:hint="@string/user_edit_email_label"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/user_edit_email_label"
+        android:inputType="textEmailAddress"
+        android:textSize="@dimen/entourage_font_large"/>
 
     <Button
         android:layout_width="match_parent"

@@ -45,7 +45,7 @@
             android:layout_toRightOf="@+id/tic_location_image"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_info_font_large"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
             android:id="@+id/tic_location_duration"
@@ -57,7 +57,7 @@
             android:layout_toRightOf="@+id/tic_location_image"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_info_font_large"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
             android:id="@+id/tic_location_distance"
@@ -69,6 +69,6 @@
             android:layout_toRightOf="@+id/tic_location_image"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_info_font_large"/>
+            android:textSize="@dimen/entourage_font_large"/>
     </RelativeLayout>
 </LinearLayout>

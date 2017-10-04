@@ -54,28 +54,27 @@
                 android:contentDescription="@string/empty_description"
                 android:src="@drawable/phone"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/registration_number_title"
-                    android:id="@+id/register_number_title"
-                    android:textSize="28sp"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@+id/register_number_phone_image"
-                    android:lineSpacingMultiplier="0.8"/>
+            <TextView
+                android:id="@+id/register_number_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/register_number_phone_image"
+                android:layout_marginTop="10dp"
+                android:text="@string/registration_number_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_xtra_large"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/registration_number_description"
-                    android:id="@+id/register_number_description"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@+id/register_number_title"/>
+            <TextView
+                android:id="@+id/register_number_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/register_number_title"
+                android:layout_marginTop="10dp"
+                android:text="@string/registration_number_description"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_medium"/>
 
             </RelativeLayout>
     </ScrollView>
@@ -118,7 +117,7 @@
                 android:ems="10"
                 android:hint="@string/registration_number_hint"
                 android:inputType="phone"
-                android:textSize="22sp"/>
+                android:textSize="@dimen/entourage_font_large"/>
 
         </LinearLayout>
 

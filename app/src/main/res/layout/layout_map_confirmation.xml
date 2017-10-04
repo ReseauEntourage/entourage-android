@@ -22,11 +22,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:gravity="center"
-            android:textSize="17sp"
             android:text="@string/tour_end_confirmation"
             android:textColor="@color/greyish_brown"
-            android:layout_marginTop="5dp"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
             android:id="@+id/confirmation_duration"
@@ -39,13 +39,13 @@
             />
 
         <TextView
+            android:id="@+id/confirmation_duration_explanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tour_end_duration"
-            android:id="@+id/confirmation_duration_explanation"
-            android:textSize="17sp"
-            android:textColor="@color/greyish"
             android:gravity="center_horizontal"
+            android:text="@string/tour_end_duration"
+            android:textColor="@color/greyish"
+            android:textSize="@dimen/entourage_font_large"
             />
 
         <View
@@ -87,7 +87,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/tour_end_encounters"
                     android:textColor="@color/greyish"
-                    android:textSize="15sp"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
             </LinearLayout>
 
             <View
@@ -118,7 +118,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/tour_end_distance"
                     android:textColor="@color/greyish"
-                    android:textSize="15sp"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
             </LinearLayout>
 
         </LinearLayout>

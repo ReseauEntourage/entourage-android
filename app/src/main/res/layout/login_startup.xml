@@ -32,16 +32,16 @@
         android:src="@drawable/entourage_logo"/>
 
     <TextView
+        android:id="@+id/login_startup_slogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/entourage_slogan"
-        android:id="@+id/login_startup_slogan"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:textSize="21sp"
-        android:gravity="center_horizontal"
         android:layout_below="@+id/login_startup_logo"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/entourage_slogan"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/white"
+        android:textSize="@dimen/entourage_font_big"
         />
 
     <LinearLayout

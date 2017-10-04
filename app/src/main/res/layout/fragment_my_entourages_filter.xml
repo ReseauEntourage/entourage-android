@@ -35,7 +35,7 @@
 
         <Button
             android:id="@+id/myentourages_filter_validate_button"
-            style="@style/TransparentAccentButton"
+            style="@style/TransparentButton.Accent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -64,11 +64,12 @@
                 android:id="@+id/myentourages_filter_entourages_layout">
 
                 <TextView
+                    android:id="@+id/myentourages_filter_entourages_title"
+                    style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/myentourages_filter_entourages_title"
-                    android:id="@+id/myentourages_filter_entourages_title"
-                    style="@style/EntourageTitle"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
                     android:id="@+id/myentourages_filter_unread_layout"
@@ -93,7 +94,7 @@
                         android:layout_toStartOf="@+id/myentourages_filter_unread_switch"
                         android:text="@string/myentourages_filter_unread"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/myentourages_filter_unread_switch"
@@ -125,8 +126,8 @@
                         android:id="@+id/myentourages_filter_closed_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
@@ -134,7 +135,7 @@
                         android:layout_toStartOf="@+id/myentourages_filter_closed_switch"
                         android:text="@string/myentourages_filter_closed"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/myentourages_filter_closed_switch"
@@ -154,11 +155,12 @@
                 android:id="@+id/my_entourages_filter_types_layout">
 
                 <TextView
+                    android:id="@+id/myentourages_filter_types_title"
+                    style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/myentourages_filter_types_title"
-                    android:id="@+id/myentourages_filter_types_title"
-                    style="@style/EntourageTitle"/>
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
                     android:id="@+id/myentourages_filter_demand_layout"
@@ -183,7 +185,7 @@
                         android:layout_toStartOf="@+id/myentourages_filter_demand_switch"
                         android:text="@string/myentourages_filter_demand"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/myentourages_filter_demand_switch"
@@ -216,9 +218,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
@@ -226,7 +228,7 @@
                         android:layout_toStartOf="@+id/myentourages_filter_contribution_switch"
                         android:text="@string/myentourages_filter_contribution"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/myentourages_filter_contribution_switch"
@@ -258,8 +260,8 @@
                         android:id="@+id/myentourages_filter_tours_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
@@ -267,7 +269,7 @@
                         android:layout_toStartOf="@+id/myentourages_filter_tours_switch"
                         android:text="@string/myentourages_filter_tours"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
                         android:id="@+id/myentourages_filter_tours_switch"

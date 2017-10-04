@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/accent"
-            android:textSize="@dimen/entourage_info_font_large"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
             android:id="@+id/tic_encounter_street_name"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish"
-            android:textSize="@dimen/entourage_info_font_large"/>
+            android:textSize="@dimen/entourage_font_large"/>
     </LinearLayout>
 
     <TextView

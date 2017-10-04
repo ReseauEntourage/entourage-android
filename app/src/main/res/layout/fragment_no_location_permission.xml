@@ -50,7 +50,7 @@
         android:text="@string/map_permission_explanation"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/entourage_font_large"/>
 
     <Button
         android:id="@+id/no_location_activate_button"
@@ -76,6 +76,6 @@
         android:gravity="center"
         android:text="@string/map_permission_extra"
         android:textColor="@color/white"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/entourage_font_large"/>
 
 </RelativeLayout>

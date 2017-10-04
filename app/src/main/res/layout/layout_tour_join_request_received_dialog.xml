@@ -7,9 +7,9 @@
               android:padding="20dp">
 
     <social.entourage.android.view.HtmlTextView
+        android:id="@+id/tour_join_request_received_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tour_join_request_received_text"
         android:gravity="center_vertical|center_horizontal"
-        />
+        android:textSize="@dimen/entourage_font_medium"/>
 </LinearLayout>

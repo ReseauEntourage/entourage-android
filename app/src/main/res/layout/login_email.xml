@@ -33,15 +33,14 @@
 
         <Button
             android:id="@+id/login_email_ignore_button"
+            style="@style/TransparentButton.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="?android:attr/selectableItemBackground"
             android:text="@string/ignore"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="22sp"/>
+            />
     </RelativeLayout>
 
     <ScrollView
@@ -78,18 +77,18 @@
                 android:text="@string/login_text_email_title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white"
-                android:textSize="28sp"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/entourage_font_xtra_large"
+                />
 
             <TextView
                 android:id="@+id/login_email_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/login_email_title"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/login_text_email_details"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="@dimen/entourage_font_medium"/>
         </RelativeLayout>
     </ScrollView>
 
@@ -105,14 +104,14 @@
         android:paddingBottom="20dp">
 
         <EditText
-            style="@style/CustomEditTextThemeAccent"
             android:id="@+id/login_edit_email_profile"
+            style="@style/CustomEditTextThemeAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textWebEmailAddress"
-            android:hint="@string/login_hint_email"
             android:focusable="true"
-            android:textSize="22sp"/>
+            android:hint="@string/login_hint_email"
+            android:inputType="textWebEmailAddress"
+            android:textSize="@dimen/entourage_font_large"/>
 
         <View
             android:layout_width="match_parent"

@@ -27,16 +27,15 @@
 
         <Button
             android:id="@+id/photo_choose_ignore_button"
+            style="@style/TransparentButton.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:background="?android:attr/selectableItemBackground"
             android:text="@string/ignore"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="22sp"/>
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -54,26 +53,26 @@
             android:src="@drawable/camera_square"/>
 
         <TextView
+            android:id="@+id/photo_choose_description_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/user_photo_choose_description_title"
-            android:id="@+id/photo_choose_description_title"
             android:layout_below="@+id/photo_choose_photo_img"
+            android:layout_marginTop="20dp"
+            android:text="@string/user_photo_choose_description_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
-            android:textSize="32sp"
-            android:layout_marginTop="30dp"/>
+            android:textSize="@dimen/entourage_font_xtra_large"/>
 
         <TextView
+            android:id="@+id/photo_choose_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/user_photo_choose_description"
-            android:id="@+id/photo_choose_description"
             android:layout_below="@+id/photo_choose_description_title"
+            android:layout_marginTop="10dp"
+            android:text="@string/user_photo_choose_description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <Button
             style="@style/WhiteButton.RoundedCorners"

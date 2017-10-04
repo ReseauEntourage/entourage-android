@@ -51,7 +51,7 @@
             android:padding="10dp"
             android:textColor="@color/greyish_brown"
             android:textCursorDrawable="@drawable/bg_cursor_yellow"
-            android:textSize="17sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <EditText
             android:id="@+id/edittext_message"
@@ -66,7 +66,7 @@
             android:padding="10dp"
             android:textColor="@color/greyish_brown"
             android:textCursorDrawable="@drawable/bg_cursor_yellow"
-            android:textSize="17sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
     </RelativeLayout>
 

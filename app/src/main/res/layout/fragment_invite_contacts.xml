@@ -38,7 +38,7 @@
 
         <Button
             android:id="@+id/invite_contacts_send_button"
-            style="@style/TransparentAccentButton"
+            style="@style/TransparentButton.Accent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -68,7 +68,8 @@
             android:gravity="center"
             android:hint="@string/invite_contacts_search_hint"
             android:imeOptions="actionSearch"
-            android:inputType="textPersonName"/>
+            android:inputType="textPersonName"
+            android:textSize="@dimen/entourage_font_large"/>
     </LinearLayout>
 
     <ListView

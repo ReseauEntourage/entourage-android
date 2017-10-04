@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/carousel_close_button"
         android:text="@string/carousel_close_button"
-        style="@style/TransparentAccentButton"
+        style="@style/TransparentButton.Accent"
         android:minHeight="28dp"
         android:padding="5dp"
         android:layout_marginRight="20dp"

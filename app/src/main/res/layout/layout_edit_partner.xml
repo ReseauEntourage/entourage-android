@@ -16,22 +16,22 @@
         android:scaleType="centerInside"/>
 
     <TextView
+        android:id="@+id/partner_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/partner_name"
         android:layout_centerVertical="true"
-        android:textColor="@color/greyish_brown"
-        android:textSize="17sp"
-        android:layout_toRightOf="@+id/partner_logo"
-        android:layout_toLeftOf="@+id/partner_checkbox"
         android:layout_toEndOf="@+id/partner_logo"
+        android:layout_toLeftOf="@+id/partner_checkbox"
+        android:layout_toRightOf="@+id/partner_logo"
         android:layout_toStartOf="@+id/partner_checkbox"
+        android:focusable="false"
         android:paddingEnd="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingStart="20dp"
-        android:focusable="false"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/greyish_brown"
+        android:textSize="@dimen/entourage_font_medium"/>
 
     <CheckBox
         android:id="@+id/partner_checkbox"

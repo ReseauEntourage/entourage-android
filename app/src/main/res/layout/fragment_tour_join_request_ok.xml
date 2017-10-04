@@ -61,7 +61,7 @@
             android:text="@string/tour_join_request_ok_title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
-            android:textSize="28sp"/>
+            android:textSize="@dimen/entourage_font_xtra_large"/>
 
         <TextView
             android:id="@+id/tour_join_request_ok_description"
@@ -71,10 +71,11 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:text="@string/tour_join_request_ok_description_entourage"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <EditText
             android:id="@+id/tour_join_request_ok_message"
@@ -91,7 +92,7 @@
             android:minLines="4"
             android:padding="5dp"
             android:textColorHint="@color/greyish"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <Button
             android:id="@+id/tour_join_request_ok_message_button"

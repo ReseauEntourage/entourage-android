@@ -6,7 +6,7 @@
     <dimen name="google_1x">8dp</dimen>
 
     <dimen name="carousel_title">24sp</dimen>
-    <dimen name="carousel_content">16sp</dimen>
+    <dimen name="carousel_content">17sp</dimen>
     <dimen name="carousel_bullets_bottom">100dp</dimen>
 
     <dimen name="act_button_right_padding">10dp</dimen>
@@ -17,9 +17,13 @@
     <dimen name="newsfeed_map_height">155dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
 
-    <!-- Entourage info screen font sizes -->
-    <dimen name="entourage_info_font_large">17sp</dimen>
-    <dimen name="entourage_info_font_medium">15sp</dimen>
-    <dimen name="entourage_info_font_small">13sp</dimen>
+    <!-- Entourage font sizes -->
+    <dimen name="entourage_font_xtra_large">30sp</dimen>
+    <dimen name="entourage_font_big">22sp</dimen>
+    <dimen name="entourage_font_large">17sp</dimen>
+    <dimen name="entourage_font_medium">15sp</dimen>
+    <dimen name="entourage_font_small">13sp</dimen>
+
+    <dimen name="badge_size">10sp</dimen>
 
 </resources>

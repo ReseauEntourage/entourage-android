@@ -24,7 +24,7 @@
             android:text="@string/sidemenu_title"
             android:textAllCaps="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="17sp"/>
+            android:textSize="@dimen/entourage_font_large"/>
 
         <ImageView
             android:id="@+id/drawer_header_back"

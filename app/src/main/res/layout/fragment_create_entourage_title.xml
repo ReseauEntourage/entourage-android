@@ -37,7 +37,7 @@
 
         <Button
             android:id="@+id/title_entourage_validate_button"
-            style="@style/TransparentAccentButton"
+            style="@style/TransparentButton.Accent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -74,7 +74,7 @@
             android:minLines="3"
             android:textColor="@color/greyish_brown"
             android:textColorHint="@color/greyish"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <View
             style="@style/SeparatorAlpha"
@@ -85,7 +85,8 @@
             android:id="@+id/title_entourage_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/entourage_ok"/>
+            android:textColor="@color/entourage_ok"
+            android:textSize="@dimen/entourage_font_small"/>
     </LinearLayout>
 
     <LinearLayout
@@ -113,7 +114,7 @@
             android:layout_weight="1"
             android:text="@string/entourage_title_fragment_info"
             android:textColor="@color/greyish_brown"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/entourage_font_medium"/>
     </LinearLayout>
 
     <TextView
@@ -127,7 +128,7 @@
         android:paddingStart="20dp"
         android:text="@string/entourage_title_fragment_error"
         android:textColor="@color/entourage_error"
-        android:textSize="16sp"
+        android:textSize="@dimen/entourage_font_medium"
         android:visibility="gone"/>
 
 </LinearLayout>

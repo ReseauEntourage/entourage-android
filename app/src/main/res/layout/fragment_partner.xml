@@ -58,17 +58,17 @@
         app:srcCompat="@drawable/partner_badge_atd"/>
 
     <TextView
+        android:id="@+id/partner_view_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/partner_view_name"
+        android:layout_below="@+id/partner_view_logo"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
         android:gravity="center_horizontal"
         android:text="@string/atd_name"
-        android:layout_below="@+id/partner_view_logo"
-        android:layout_marginTop="10dp"
-        android:textSize="28sp"
         android:textColor="@color/greyish_brown"
-        android:ellipsize="end"
-        android:layout_marginBottom="10dp"/>
+        android:textSize="22sp"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -81,40 +81,40 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="@string/partner_view_details_title"
+                android:id="@+id/partner_view_details_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/partner_view_details_title"
-                android:gravity="center_horizontal"
                 android:background="@color/pale_grey"
-                android:textColor="@color/greyish_brown"
+                android:gravity="center_horizontal"
                 android:paddingBottom="10dp"
                 android:paddingTop="20dp"
-                android:textSize="17sp"
+                android:text="@string/partner_view_details_title"
+                android:textColor="@color/greyish_brown"
+                android:textSize="@dimen/entourage_font_medium"
                 android:textStyle="normal|bold"/>
 
             <TextView
-                android:text="@string/atd_details"
+                android:id="@+id/partner_view_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/partner_view_details"
                 android:padding="20dp"
+                android:text="@string/atd_details"
                 android:textColor="@color/greyish_brown"
-                android:textSize="17sp"/>
+                android:textSize="@dimen/entourage_font_medium"/>
 
             <TextView
-                android:text="@string/partner_view_information_title"
+                android:id="@+id/partner_view_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/partner_view_information_title"
-                android:gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
                 android:background="@color/pale_grey"
-                android:textColor="@color/greyish_brown"
+                android:gravity="center_horizontal"
                 android:paddingBottom="10dp"
                 android:paddingTop="20dp"
-                android:textSize="17sp"
-                android:textStyle="normal|bold"
-                android:layout_marginBottom="10dp"/>
+                android:text="@string/partner_view_information_title"
+                android:textColor="@color/greyish_brown"
+                android:textSize="@dimen/entourage_font_medium"
+                android:textStyle="normal|bold"/>
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -128,58 +128,26 @@
                 android:paddingBottom="10dp">
 
                 <TextView
-                    android:text="@string/partner_view_phone_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/partner_view_phone_description"
-                    android:textSize="14sp"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/partner_view_phone_description"
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <TextView
-                    android:text="@string/atd_phone_number"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:id="@+id/partner_view_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    android:gravity="end"
-                    android:textStyle="bold"
-                    android:textColor="@color/greyish_brown"
                     android:autoLink="phone"
-                    android:textColorLink="@color/greyish_brown"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingEnd="20dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingStart="20dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
-
-                <TextView
-                    android:text="@string/partner_view_address_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/partner_view_address_description"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:text="@string/atd_address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/partner_view_address"
-                    android:layout_weight="1"
                     android:gravity="end"
-                    android:textStyle="bold"
+                    android:text="@string/atd_phone_number"
                     android:textColor="@color/greyish_brown"
-                    android:autoLink="map"
                     android:textColorLink="@color/greyish_brown"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp"/>
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout
@@ -194,25 +162,60 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:text="@string/partner_view_website_description"
+                    android:id="@+id/partner_view_address_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/partner_view_website_description"
-                    android:textSize="14sp"/>
+                    android:text="@string/partner_view_address_description"
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <TextView
-                    android:text="@string/atd_website"
+                    android:id="@+id/partner_view_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/partner_view_website"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
+                    android:autoLink="map"
                     android:gravity="end"
-                    android:textStyle="bold"
+                    android:text="@string/atd_address"
+                    android:textColor="@color/greyish_brown"
+                    android:textColorLink="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingStart="20dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/partner_view_website_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/partner_view_website_description"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/partner_view_website"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:autoLink="web"
+                    android:gravity="end"
+                    android:text="@string/atd_website"
                     android:textColor="@color/greyish_brown"
                     android:textColorLink="@color/accent"
-                    android:autoLink="web"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp"/>
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
         </LinearLayout>

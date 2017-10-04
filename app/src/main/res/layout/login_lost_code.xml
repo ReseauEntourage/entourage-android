@@ -85,7 +85,7 @@
                 android:text="@string/login_title_lost_code_long"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textSize="@dimen/entourage_font_xtra_large"
                 />
 
             <TextView
@@ -97,7 +97,7 @@
                 android:text="@string/login_text_lost_code_description"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/entourage_font_medium"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -139,7 +139,7 @@
                     android:hint="@string/login_hint_phone_long"
                     android:inputType="phone"
                     android:maxLength="12"
-                    android:textSize="22sp"/>
+                    android:textSize="@dimen/entourage_font_large"/>
 
             </LinearLayout>
 
