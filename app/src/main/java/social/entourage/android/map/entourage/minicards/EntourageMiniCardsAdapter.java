@@ -11,7 +11,7 @@ import social.entourage.android.map.entourage.EntourageViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
 
 /**
- * Adapter to be used with Entourage Mini Cards RecyclerView
+ * Adapter to be used with Entourage Mini Cards RecyclerView<br/>
  * It handles only Entourage Mini Cards
  * Created by Mihai Ionescu on 13/09/2017.
  */
@@ -24,7 +24,7 @@ public class EntourageMiniCardsAdapter extends EntourageBaseAdapter {
 
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENTOURAGE_CARD,
-                new ViewHolderFactory.ViewHolderType(EntourageViewHolder.class, R.layout.layout_entourage_mini_card)
+                new ViewHolderFactory.ViewHolderType(EntourageMiniCardViewHolder.class, R.layout.layout_entourage_mini_card)
         );
 
     }
