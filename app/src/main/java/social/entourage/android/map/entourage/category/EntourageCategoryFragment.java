@@ -100,11 +100,6 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     }
 
     @Override
-    protected int getSlideStyle() {
-        return R.style.CustomDialogFragmentFromRight;
-    }
-
-    @Override
     public void dismiss() {
         if (adapter != null && adapter.selectedCategory != null) {
             // Reset the flag so consequent fragment shows will not appear broken

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/accent"
-                android:weightSum="8"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+                android:orientation="vertical"
+                android:weightSum="8">
 
     <RelativeLayout
         android:id="@+id/login_verify_code_navigation"
@@ -16,7 +15,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <ImageButton
             android:id="@+id/login_code_sent_close"
@@ -25,8 +26,7 @@
             android:layout_centerVertical="true"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_close_white"/>
+            app:srcCompat="@drawable/ic_action_back"/>
 
         <TextView
             android:id="@+id/login_verify_code_back"
@@ -50,7 +50,9 @@
         android:layout_above="@+id/login_verify_code_form"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/login_verify_code_navigation">
+        android:layout_below="@+id/login_verify_code_navigation"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <ImageView
             android:id="@+id/login_verify_code_image"
@@ -59,7 +61,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/code"/>
 
@@ -94,7 +96,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <EditText
             android:id="@+id/login_verify_code_code"
@@ -128,6 +132,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:visibility="gone"
         android:weightSum="1">
 

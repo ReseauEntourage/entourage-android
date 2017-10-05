@@ -190,11 +190,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 .inject(this);
     }
 
-    @Override
-    protected int getSlideStyle() {
-        return R.style.CustomDialogFragmentFromRight;
-    }
-
     // ----------------------------------
     // Private methods
     // ----------------------------------

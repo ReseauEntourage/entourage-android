@@ -74,7 +74,7 @@ public class EntourageDialogFragment extends DialogFragment {
     }
 
     protected @StyleRes int getSlideStyle() {
-        return R.style.CustomDialogFragmentSlide;
+        return R.style.CustomDialogFragmentFromRight;
     }
 
     protected ColorDrawable getBackgroundDrawable() {

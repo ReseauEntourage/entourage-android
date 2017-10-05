@@ -144,6 +144,11 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
         mListener = null;
     }
 
+    @Override
+    protected int getSlideStyle() {
+        return R.style.CustomDialogFragmentSlide;
+    }
+
     // ----------------------------------
     // Button handling
     // ----------------------------------

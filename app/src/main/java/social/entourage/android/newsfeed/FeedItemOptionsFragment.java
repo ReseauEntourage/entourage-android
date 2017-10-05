@@ -127,6 +127,11 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
         }
     }
 
+    @Override
+    protected int getSlideStyle() {
+        return R.style.CustomDialogFragmentSlide;
+    }
+
     // ----------------------------------
     // BUTTON HANDLING
     // ----------------------------------

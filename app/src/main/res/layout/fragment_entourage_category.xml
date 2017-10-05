@@ -21,8 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
@@ -69,7 +67,8 @@
         android:layout_marginTop="16dp"
         android:background="@color/white"
         android:divider="@android:color/transparent"
-        android:groupIndicator="@null"/>
+        android:groupIndicator="@null"
+        />
 
     <view
         android:id="@+id/entourage_category_help_link"
