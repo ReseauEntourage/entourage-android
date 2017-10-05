@@ -111,7 +111,7 @@ public class Utils {
                 month = context.getString(R.string.date_month_12);
                 break;
         }
-        return context.getString(R.string.date_format, calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR));
+        return context.getString(R.string.date_format, calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR)).toUpperCase();
     }
 
     @SuppressWarnings("deprecation")
