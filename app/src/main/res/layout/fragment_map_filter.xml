@@ -411,7 +411,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_below="@+id/map_filter_entourage_user_only_text"
-                        android:background="@color/greyish"/>
+                        android:background="@color/greyish"
+                        android:visibility="gone"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -422,7 +423,8 @@
                     android:paddingEnd="0dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
-                    android:paddingStart="10dp">
+                    android:paddingStart="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/map_filter_entourage_organisation_text"
