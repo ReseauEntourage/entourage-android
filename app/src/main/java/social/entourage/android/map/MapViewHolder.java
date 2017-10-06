@@ -1,10 +1,15 @@
 package social.entourage.android.map;
 
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import social.entourage.android.EntourageActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.base.BaseCardViewHolder;
@@ -24,6 +29,11 @@ public class MapViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
         mMapView = (EntourageMapView) itemView.findViewById(R.id.layout_feed_map_card_mapview);
+        LinearLayout.LayoutParams layout = (LinearLayout.LayoutParams)mMapView.getLayoutParams();
+        DisplayMetrics displayMetrics = itemView.getContext().getResources().getDisplayMetrics();
+        layout.height = displayMetrics.heightPixels;
+        layout.topMargin = (itemView.getLayoutParams().height - layout.height)/2;
+        mMapView.setLayoutParams(layout);
         mapViewOnCreate(null);
     }
 
@@ -55,6 +65,11 @@ public class MapViewHolder extends BaseCardViewHolder {
 
     public void setHeight(int height) {
         itemView.getLayoutParams().height = height;
+
+        LinearLayout.LayoutParams layout = (LinearLayout.LayoutParams)mMapView.getLayoutParams();
+        layout.topMargin = (height - layout.height)/2;
+        mMapView.setLayoutParams(layout);
+
         itemView.forceLayout();
     }
 
