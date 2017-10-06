@@ -54,7 +54,7 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
 
         SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
         if (!isStartCard) {
-            mLocationDate.setText(locationDateFormat.format(tour.getEndTime()));
+            mLocationDate.setText(locationDateFormat.format(tour.getEndTime()).toUpperCase());
             mLocationTitle.setText(R.string.tour_info_text_closed);
             if (tour.isClosed()) {
                 if (tour.getStartTime() != null && tour.getEndTime() != null) {
@@ -73,7 +73,7 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
                 mLocationDistance.setText(String.format("%.2f km", distance/1000.0f));
             }
         } else {
-            mLocationDate.setText(locationDateFormat.format(tour.getStartTime()));
+            mLocationDate.setText(locationDateFormat.format(tour.getStartTime()).toUpperCase());
             mLocationTitle.setText(R.string.tour_info_text_ongoing);
             if (!tour.isClosed() && tour.getStartTime() != null) {
                 Date duration = new Date((new Date()).getTime() - tour.getStartTime().getTime());
@@ -89,7 +89,7 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
     public void populate(TourTimestamp tourTimestamp) {
         if (tourTimestamp.getDate() != null) {
             SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
-            mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()));
+            mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()).toUpperCase());
         }
 
         if (FeedItem.STATUS_ON_GOING.equals(tourTimestamp.getStatus()) || FeedItem.STATUS_OPEN.equals(tourTimestamp.getStatus())) {
