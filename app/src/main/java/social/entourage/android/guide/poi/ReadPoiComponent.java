@@ -5,9 +5,9 @@ import social.entourage.android.ActivityScope;
 import social.entourage.android.EntourageComponent;
 
 /**
- * Component linked to ReadPoiActivity lifecycle
+ * Component linked to ReadPoiFragment lifecycle
  * Provide a ReadPoiPresenter
- * @see ReadPoiActivity
+ * @see ReadPoiFragment
  * @see ReadPoiPresenter
  */
 @ActivityScope
@@ -17,7 +17,7 @@ import social.entourage.android.EntourageComponent;
 )
 @SuppressWarnings("unused")
 public interface ReadPoiComponent {
-    void inject(ReadPoiActivity activity);
+    void inject(ReadPoiFragment activity);
 
     ReadPoiPresenter getReadPoiPresenter();
 }

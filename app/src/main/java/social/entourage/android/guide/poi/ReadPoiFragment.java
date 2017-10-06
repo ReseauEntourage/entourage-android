@@ -3,9 +3,11 @@ package social.entourage.android.guide.poi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,21 +20,24 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
-import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.guide.PoiRenderer;
 
 /**
  * Activity showing the detail of a POI
  */
-public class ReadPoiActivity extends EntourageActivity {
+public class ReadPoiFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
+
+    public static final String TAG = ReadPoiFragment.class.getSimpleName();
 
     public static final String BUNDLE_KEY_POI = "BUNDLE_KEY_POI";
 
@@ -68,39 +73,41 @@ public class ReadPoiActivity extends EntourageActivity {
     // LIFECYCLE
     // ----------------------------------
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static ReadPoiFragment newInstance(Poi poi) {
+        ReadPoiFragment readPoiFragment = new ReadPoiFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(BUNDLE_KEY_POI, poi);
+        readPoiFragment.setArguments(args);
 
-        setContentView(R.layout.activity_poi_read);
-        ButterKnife.bind(this);
-
-        EntourageEvents.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);
-        Bundle extras = getIntent().getExtras();
-        poi = (Poi) extras.get(BUNDLE_KEY_POI);
+        return readPoiFragment;
     }
 
     @Override
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View toReturn = inflater.inflate(R.layout.fragment_guide_poi_read, container, false);
+        ButterKnife.bind(this, toReturn);
+        EntourageEvents.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);
+
+        return toReturn;
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getArguments() != null) {
+            poi = (Poi)getArguments().getSerializable(BUNDLE_KEY_POI);
+        }
+        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        presenter.displayPoi(poi);
+    }
+
     protected void setupComponent(EntourageComponent entourageComponent) {
         DaggerReadPoiComponent.builder()
                 .entourageComponent(entourageComponent)
                 .readPoiModule(new ReadPoiModule(this))
                 .build()
                 .inject(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.drawer, menu);
-        return true;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        presenter.displayPoi(poi);
-        //getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        //getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -114,7 +121,7 @@ public class ReadPoiActivity extends EntourageActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void displayPoi(Poi poi, final ReadPoiPresenter.OnAddressClickListener onAddressClickListener) {
+    public void displayPoi(Poi poi, final ReadPoiPresenter.OnAddressClickListener onAddressClickListener, final ReadPoiPresenter.OnPhoneClickListener onPhoneClickListener) {
         txtPoiName.setText(poi.getName());
         txtPoiDesc.setText(poi.getDescription());
         setActionButton(btnPoiPhone, poi.getPhone());
@@ -122,6 +129,7 @@ public class ReadPoiActivity extends EntourageActivity {
         setActionButton(btnPoiWeb, poi.getWebsite());
         setActionButton(btnPoiAddress, poi.getAdress());
         btnPoiAddress.setOnClickListener(onAddressClickListener);
+        btnPoiPhone.setOnClickListener(onPhoneClickListener);
         PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.findCategoryTypeById(poi.getCategoryId());
         poiTypeLayout.setBackgroundColor(categoryType.getColor());
         poiTypeLabel.setText(categoryType.getName());
@@ -138,7 +146,7 @@ public class ReadPoiActivity extends EntourageActivity {
 
     @OnClick(R.id.poi_close_button)
     protected void onCloseButtonClicked() {
-        finish();
+        dismiss();
     }
 
     @OnClick(R.id.poi_report_button)
@@ -157,12 +165,12 @@ public class ReadPoiActivity extends EntourageActivity {
         if (title == null) title = "";
         String emailSubject = getString(R.string.poi_report_email_subject_format, title);
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
-        if (intent.resolveActivity(this.getPackageManager()) != null) {
+        if (intent.resolveActivity(this.getActivity().getPackageManager()) != null) {
             // Start the intent
             startActivity(intent);
         } else {
             // No Email clients
-            Toast.makeText(this, R.string.error_no_email, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
         }
     }
 

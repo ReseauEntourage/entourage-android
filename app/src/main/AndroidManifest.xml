@@ -62,11 +62,6 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".guide.poi.ReadPoiActivity"
-            android:label="@string/activity_read_poi_title"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".map.confirmation.ConfirmationActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
@@ -95,10 +90,6 @@
         </activity>
         <activity
             android:name=".map.tour.join.received.TourJoinRequestReceivedActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".about.AboutActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity

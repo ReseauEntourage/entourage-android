@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".guide.poi.ReadPoiActivity">
+    tools:context=".guide.poi.ReadPoiFragment">
 
     <RelativeLayout
         android:id="@+id/poi_read_toolbar"
@@ -24,19 +24,18 @@
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="false"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:src="@drawable/ic_close"/>
+            android:src="@drawable/ic_action_back"
+            android:tint="@color/accent"/>
 
         <TextView
             android:id="@+id/textView4"
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
             android:text="@string/activity_read_poi_title"/>
 
@@ -73,13 +72,18 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/poi_report_layout"
         android:layout_below="@+id/poi_type_layout"
-        android:layout_margin="20dp">
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+            android:paddingEnd="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingStart="20dp">
 
             <TextView
                 android:id="@+id/textview_poi_name"

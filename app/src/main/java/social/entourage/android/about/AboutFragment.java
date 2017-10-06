@@ -4,7 +4,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,12 +18,15 @@ import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
+import social.entourage.android.base.EntourageDialogFragment;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
+
+    public static final String TAG = AboutFragment.class.getSimpleName();
 
     private static final String RATE_URL = "market://details?id=";
     private static final String FACEBOOK_URL = "https://www.facebook.com/EntourageReseauCivique";
@@ -39,11 +45,17 @@ public class AboutActivity extends AppCompatActivity {
     // ----------------------------------
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-        ButterKnife.bind(this);
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View toReturn = inflater.inflate(R.layout.fragment_about, container, false);
+        ButterKnife.bind(this, toReturn);
 
+        return toReturn;
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         populate();
     }
 
@@ -57,14 +69,14 @@ public class AboutActivity extends AppCompatActivity {
 
     @OnClick(R.id.about_close_button)
     protected void onCloseButton() {
-        finish();
+        dismiss();
     }
 
     @OnClick(R.id.about_rate_us_layout)
     protected void onRateUsClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ABOUT_RATING);
 
-        Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
+        Uri uri = Uri.parse("market://details?id=" + this.getActivity().getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         // To count with Play market backstack, After pressing back button,
         // to taken back to our application, we need to add following flags to intent.
@@ -75,7 +87,7 @@ public class AboutActivity extends AppCompatActivity {
             startActivity(goToMarket);
         } catch (ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + this.getActivity().getPackageName())));
         }
     }
 
@@ -87,7 +99,7 @@ public class AboutActivity extends AppCompatActivity {
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
-            Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -99,7 +111,7 @@ public class AboutActivity extends AppCompatActivity {
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
-            Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -111,7 +123,7 @@ public class AboutActivity extends AppCompatActivity {
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
-            Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -121,10 +133,10 @@ public class AboutActivity extends AppCompatActivity {
         intent.setData(Uri.parse("mailto:"));
         String[] addresses = {Constants.EMAIL_CONTACT};
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         } else {
-            Toast.makeText(this, R.string.error_no_email, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
         }
     }
 }

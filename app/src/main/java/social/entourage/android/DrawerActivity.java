@@ -48,7 +48,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.about.AboutActivity;
+import social.entourage.android.about.AboutFragment;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.PushNotificationContent;
@@ -524,8 +524,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_about:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
-                Intent intent = new Intent(this, AboutActivity.class);
-                startActivity(intent);
+                AboutFragment aboutFragment = new AboutFragment();
+                aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
