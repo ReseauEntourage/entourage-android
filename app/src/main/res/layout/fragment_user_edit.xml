@@ -217,8 +217,9 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
+                android:maxLines="1"
                 android:text="@string/user_edit_add_association_button"
-                android:textSize="@dimen/entourage_font_medium"
+                android:textSize="@dimen/entourage_font_small"
                 android:textStyle="normal"/>
 
             <TextView
