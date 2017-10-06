@@ -8,7 +8,7 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.flurry.android.FlurryAgent;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
+import com.flurry.android.FlurryAgentListener;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -30,9 +30,7 @@ import social.entourage.android.authentication.ComplexPreferences;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.newsfeed.FeedItemsStorage;
 
-import static social.entourage.android.BuildConfig.BUILD_TYPE;
 import static social.entourage.android.BuildConfig.FLAVOR;
-import static social.entourage.android.BuildConfig.MIXPANEL_TOKEN;
 
 /**
  * Application setup for Flurry, JodaTime and Dagger
@@ -82,11 +80,22 @@ public class EntourageApplication extends Application {
         component.inject(this);
     }
 
+    class myFlurryAgentListener implements FlurryAgentListener {
+
+        @Override
+        public void onSessionStarted() {
+
+        }
+    }
+
     private void setupFlurry() {
-        FlurryAgent.setLogEnabled(true);
-        FlurryAgent.setLogLevel(Log.VERBOSE);
-        FlurryAgent.setLogEvents(true);
-        FlurryAgent.init(this, BuildConfig.FLURRY_API_KEY);
+        new FlurryAgent.Builder()
+                .withLogEnabled(true)
+                .withCaptureUncaughtExceptions(true)
+                .withLogEnabled(true)
+                .withLogLevel(Log.VERBOSE)
+                .withListener(new myFlurryAgentListener())
+                .build(this, BuildConfig.FLURRY_API_KEY);
     }
 
     private void setupMixpanel() {

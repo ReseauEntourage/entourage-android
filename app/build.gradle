@@ -7,15 +7,14 @@ def versionMinor = 0
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
-
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
     def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug;
 
     defaultConfig {
         applicationId 'social.entourage.android'
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode versionMajor * 100000 + versionMinor * 10000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -98,15 +97,15 @@ android {
 
 dependencies {
     def supportVersion = "25.3.1"
-    def playServicesVersion = "10.0.1"
+    def playServicesVersion = "11.0.4"
     def daggerVersion = "2.8"
     def okHttpVersion = "3.5.0"
     def retrofitVersion = "2.1.0"
-    def butterKnifeVersion = "8.4.0"
-    def awsVersion = "2.3.6"
+    def butterKnifeVersion = "8.5.1"
+    def awsVersion = "2.6.3"
 
     compile(
-            files('libs/flurryAnalytics_6.8.0.jar'),
+            "com.flurry.android:analytics:7.2.3@aar",
             "com.android.support:support-v4:${supportVersion}",
             "com.android.support:support-annotations:${supportVersion}",
             "com.android.support:cardview-v7:${supportVersion}",
