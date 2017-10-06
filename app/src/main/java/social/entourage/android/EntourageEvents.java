@@ -11,6 +11,9 @@ public class EntourageEvents {
 
     public static void logEvent(String event) {
         FlurryAgent.logEvent(event);
+        if(EntourageApplication.get().getMixpanel()!= null) {
+            EntourageApplication.get().getMixpanel().track(event, null);
+        }
     }
 
 }

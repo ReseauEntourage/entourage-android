@@ -21,10 +21,13 @@ android {
         def AWS_KEY = System.env.AWS_KEY ? '"' + System.env.AWS_KEY + '"' : entourageAWSKey;
         def AWS_SECRET = System.env.AWS_SECRET ? '"' + System.env.AWS_SECRET + '"' : entourageAWSSecret;
 
+        def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken;
+
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
         buildConfigField 'String', 'FLURRY_API_KEY', "\"${System.env.FLURRY_API_KEY}\""
         buildConfigField 'String', 'AWS_KEY', AWS_KEY
         buildConfigField 'String', 'AWS_SECRET', AWS_SECRET
+        buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN
     }
 
     signingConfigs {
@@ -126,10 +129,11 @@ dependencies {
             "com.github.clans:fab:1.6.4",
             "net.danlew:android.joda:2.9.5.1",
             "com.theartofdev.edmodo:android-image-cropper:2.3.1",
-            "me.leolin:ShortcutBadger:1.1.13@aar"
+            "me.leolin:ShortcutBadger:1.1.13@aar",
+            "com.mixpanel.android:mixpanel-android:5.1.1"
     )
 
-    compile("com.crashlytics.sdk.android:crashlytics:2.6.5@aar") {
+    compile("com.crashlytics.sdk.android:crashlytics:2.6.8@aar") {
         transitive = true;
     }
 

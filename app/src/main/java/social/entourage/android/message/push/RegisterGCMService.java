@@ -20,7 +20,7 @@ import social.entourage.android.tools.BusProvider;
  */
 public class RegisterGCMService extends IntentService {
 
-    private final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences ?
+    public static final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences ?
     private final String GCM_SCOPE = "GCM";
     public static final String SHARED_PREFERENCES_FILE_GCM = "ENTOURAGE_GCM_DATA";
     private static final String KEY_APPLICATION_VERSION = "ENTOURAGE_APPLICATION_VERSION";

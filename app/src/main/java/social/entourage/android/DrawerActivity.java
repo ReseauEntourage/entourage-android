@@ -37,11 +37,13 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.crashlytics.android.Crashlytics;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -209,7 +211,19 @@ public class DrawerActivity extends EntourageSecuredActivity
             Location location = EntourageLocation.getInstance().getCurrentLocation();
             presenter.updateUser(null, null, null, (location != null ? location : null));
             //initialize the push notifications
-            initializePushNotifications();
+            MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
+            mixpanel.identify(String.valueOf(user.getId()));
+            mixpanel.getPeople().identify(String.valueOf(user.getId()));
+
+            mixpanel.getPeople().setOnce("EntourageEmail", user.getEmail());
+            mixpanel.getPeople().setOnce("EntouragePartner", user.getPartner());
+            mixpanel.getPeople().setOnce("EntourageUserType", user.isPro()?"Pro":"Public");
+            mixpanel.getPeople().setOnce("EntourageLanguage", Locale.getDefault().getDisplayLanguage());
+            /*mixpanel.getPeople().setOnce("EntourageGeolocEnable", user.getPartner());
+            mixpanel.getPeople().setOnce("EntourageNotifEnable", user.getPartner());*/
+
+            mixpanel.getPeople().initPushHandling(RegisterGCMService.GCM_SENDER_ID);
+            //initializePushNotifications();
 
             Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
             Crashlytics.setUserName(user.getDisplayName());
