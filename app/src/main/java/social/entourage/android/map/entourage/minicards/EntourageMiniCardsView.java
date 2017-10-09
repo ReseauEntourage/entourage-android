@@ -45,7 +45,9 @@ public class EntourageMiniCardsView extends RelativeLayout {
         mainLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
-                EntourageMiniCardsView.this.setVisibility(GONE);
+                miniCardsRecyclerView.scrollToPosition(0);
+                miniCardsAdapter.removeAll();
+                EntourageMiniCardsView.this.setVisibility(INVISIBLE);
             }
         });
 
@@ -63,8 +65,6 @@ public class EntourageMiniCardsView extends RelativeLayout {
         if (miniCardsAdapter == null) {
             return;
         }
-        miniCardsRecyclerView.scrollToPosition(0);
-        miniCardsAdapter.removeAll();
         miniCardsAdapter.addItems(entourageList);
         this.setVisibility(VISIBLE);
     }
