@@ -675,7 +675,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             EntourageEvents.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
             saveCameraPosition();
             showPoiDetails(poi);
-            return false;
+            return true;
         }
     }
 }
