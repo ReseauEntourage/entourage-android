@@ -34,7 +34,10 @@ public class MapViewHolder extends BaseCardViewHolder {
         DisplayMetrics displayMetrics = itemView.getContext().getResources().getDisplayMetrics();
         layout.height = displayMetrics.heightPixels;
         //Move the map up, so that the center of the map is visible
-        layout.topMargin = (itemView.getLayoutParams().height - layout.height)/2;
+        int itemViewHeight = itemView.getLayoutParams().height;
+        if (itemViewHeight > 0) {
+            layout.topMargin = (itemViewHeight - layout.height) / 2;
+        }
         mMapView.setLayoutParams(layout);
         //Inform the map that it needs to start
         mapViewOnCreate(null);
