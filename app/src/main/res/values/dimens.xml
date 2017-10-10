@@ -12,7 +12,7 @@
     <dimen name="act_button_right_padding">10dp</dimen>
     <dimen name="entourage_category_icon_padding">6dp</dimen>
 
-    <dimen name="newsfeed_fab_bottowm_view_delta">90dp</dimen>
+    <dimen name="newsfeed_fab_bottowm_view_delta">80dp</dimen>
 
     <dimen name="newsfeed_map_height">155dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
