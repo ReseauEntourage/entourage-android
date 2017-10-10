@@ -37,11 +37,13 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.crashlytics.android.Crashlytics;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -297,6 +299,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
         }
+        EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
 
         refreshBadgeCount();
     }
@@ -668,6 +671,24 @@ public class DrawerActivity extends EntourageSecuredActivity
             startService(new Intent(this, RegisterGCMService.class));
         } else {
             presenter.updateApplicationInfo("");
+        }
+
+        User user = getAuthenticationController().getUser();
+        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
+        mixpanel.identify(String.valueOf(user.getId()));
+        MixpanelAPI.People people = mixpanel.getPeople();
+        people.identify(String.valueOf(user.getId()));
+
+        people.setOnce("$email", user.getEmail());
+        people.setOnce("EntouragePartner", user.getPartner());
+        people.setOnce("EntourageUserType", user.isPro()?"Pro":"Public");
+        people.setOnce("EntourageLanguage", Locale.getDefault().getISO3Country());
+            /*people.setOnce("EntourageGeolocEnable", user.getPartner());*/
+        people.setOnce("EntourageNotifEnable", notificationsEnabled ?"YES":"NO");
+
+        //mixpanel.getPeople().initPushHandling(RegisterGCMService.GCM_SENDER_ID);
+        if(notificationsEnabled) {
+            people.setPushRegistrationId(sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null));
         }
     }
 

@@ -8,8 +8,12 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.flurry.android.FlurryAgent;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,10 @@ import social.entourage.android.authentication.AuthenticationModule;
 import social.entourage.android.authentication.ComplexPreferences;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.newsfeed.FeedItemsStorage;
+
+import static social.entourage.android.BuildConfig.BUILD_TYPE;
+import static social.entourage.android.BuildConfig.FLAVOR;
+import static social.entourage.android.BuildConfig.MIXPANEL_TOKEN;
 
 /**
  * Application setup for Flurry, JodaTime and Dagger
@@ -43,6 +51,8 @@ public class EntourageApplication extends Application {
 
     private FeedItemsStorage feedItemsStorage;
 
+    private MixpanelAPI mixpanel;
+
     @Override
     public void onCreate() {
         activities = new ArrayList<>();
@@ -51,6 +61,7 @@ public class EntourageApplication extends Application {
 
         setupFabric();
         setupFlurry();
+        setupMixpanel();
         JodaTimeAndroid.init(this);
         setupDagger();
         setupBadgeCount();
@@ -78,12 +89,27 @@ public class EntourageApplication extends Application {
         FlurryAgent.init(this, BuildConfig.FLURRY_API_KEY);
     }
 
+    private void setupMixpanel() {
+        mixpanel = MixpanelAPI.getInstance(this, MIXPANEL_TOKEN);
+        JSONObject props = new JSONObject();
+        try {
+            props.put("Flavor", FLAVOR);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mixpanel.registerSuperProperties(props);
+    }
+
     private void setupBadgeCount() {
         decreaseBadgeCount(0);
     }
 
     public EntourageComponent getEntourageComponent() {
         return component;
+    }
+
+    public MixpanelAPI getMixpanel() {
+        return mixpanel;
     }
 
     public static EntourageApplication get(Context context) {
@@ -106,6 +132,9 @@ public class EntourageApplication extends Application {
     public void onActivityDestroyed(EntourageActivity activity) {
         activities.remove(activity);
         saveFeedItemsStorage();
+        if (mixpanel != null) {
+            mixpanel.flush();
+        }
     }
 
     public LoginActivity getLoginActivity() {

@@ -12,6 +12,7 @@ import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.tools.BusProvider;
 
@@ -20,7 +21,7 @@ import social.entourage.android.tools.BusProvider;
  */
 public class RegisterGCMService extends IntentService {
 
-    private final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences ?
+    public static final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences ?
     private final String GCM_SCOPE = "GCM";
     public static final String SHARED_PREFERENCES_FILE_GCM = "ENTOURAGE_GCM_DATA";
     private static final String KEY_APPLICATION_VERSION = "ENTOURAGE_APPLICATION_VERSION";
@@ -52,6 +53,9 @@ public class RegisterGCMService extends IntentService {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(KEY_REGISTRATION_ID, registrationId);
             editor.commit();
+            EntourageApplication.get().getMixpanel().getPeople().setPushRegistrationId(registrationId);
+        }else if (intent.getStringExtra("unregistered") != null) {
+            EntourageApplication.get().getMixpanel().getPeople().clearPushRegistrationId();
         }
         BusProvider.getInstance().register(this);
         BusProvider.getInstance().post(new OnGCMTokenObtainedEvent(registrationId));
