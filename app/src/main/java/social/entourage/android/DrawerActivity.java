@@ -211,19 +211,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             Location location = EntourageLocation.getInstance().getCurrentLocation();
             presenter.updateUser(null, null, null, (location != null ? location : null));
             //initialize the push notifications
-            MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
-            mixpanel.identify(String.valueOf(user.getId()));
-            mixpanel.getPeople().identify(String.valueOf(user.getId()));
-
-            mixpanel.getPeople().setOnce("EntourageEmail", user.getEmail());
-            mixpanel.getPeople().setOnce("EntouragePartner", user.getPartner());
-            mixpanel.getPeople().setOnce("EntourageUserType", user.isPro()?"Pro":"Public");
-            mixpanel.getPeople().setOnce("EntourageLanguage", Locale.getDefault().getDisplayLanguage());
-            /*mixpanel.getPeople().setOnce("EntourageGeolocEnable", user.getPartner());
-            mixpanel.getPeople().setOnce("EntourageNotifEnable", user.getPartner());*/
-
-            mixpanel.getPeople().initPushHandling(RegisterGCMService.GCM_SENDER_ID);
-            //initializePushNotifications();
+            initializePushNotifications();
 
             Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
             Crashlytics.setUserName(user.getDisplayName());
@@ -311,6 +299,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
         }
+        EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
 
         refreshBadgeCount();
     }
@@ -682,6 +671,24 @@ public class DrawerActivity extends EntourageSecuredActivity
             startService(new Intent(this, RegisterGCMService.class));
         } else {
             presenter.updateApplicationInfo("");
+        }
+
+        User user = getAuthenticationController().getUser();
+        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
+        mixpanel.identify(String.valueOf(user.getId()));
+        MixpanelAPI.People people = mixpanel.getPeople();
+        people.identify(String.valueOf(user.getId()));
+
+        people.setOnce("$email", user.getEmail());
+        people.setOnce("EntouragePartner", user.getPartner());
+        people.setOnce("EntourageUserType", user.isPro()?"Pro":"Public");
+        people.setOnce("EntourageLanguage", Locale.getDefault().getISO3Country());
+            /*people.setOnce("EntourageGeolocEnable", user.getPartner());*/
+        people.setOnce("EntourageNotifEnable", notificationsEnabled ?"YES":"NO");
+
+        //mixpanel.getPeople().initPushHandling(RegisterGCMService.GCM_SENDER_ID);
+        if(notificationsEnabled) {
+            people.setPushRegistrationId(sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null));
         }
     }
 

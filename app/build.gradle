@@ -8,7 +8,9 @@ def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
+
+    def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug;
 
     defaultConfig {
         applicationId 'social.entourage.android'
@@ -22,9 +24,10 @@ android {
         def AWS_SECRET = System.env.AWS_SECRET ? '"' + System.env.AWS_SECRET + '"' : entourageAWSSecret;
 
         def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken;
+        def FLURRY_API_KEY = System.env.FLURRY_API_KEY ? '"' + System.env.FLURRY_API_KEY + '"' : entourageFlurryAPIKey ;
 
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
-        buildConfigField 'String', 'FLURRY_API_KEY', "\"${System.env.FLURRY_API_KEY}\""
+        buildConfigField 'String', 'FLURRY_API_KEY', FLURRY_API_KEY
         buildConfigField 'String', 'AWS_KEY', AWS_KEY
         buildConfigField 'String', 'AWS_SECRET', AWS_SECRET
         buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN
@@ -62,6 +65,7 @@ android {
             applicationId 'social.entourage.android.preprod'
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
+            buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
         }
 
         prod {

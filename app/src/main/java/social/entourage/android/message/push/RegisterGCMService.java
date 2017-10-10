@@ -12,6 +12,7 @@ import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.tools.BusProvider;
 
@@ -52,6 +53,9 @@ public class RegisterGCMService extends IntentService {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(KEY_REGISTRATION_ID, registrationId);
             editor.commit();
+            EntourageApplication.get().getMixpanel().getPeople().setPushRegistrationId(registrationId);
+        }else if (intent.getStringExtra("unregistered") != null) {
+            EntourageApplication.get().getMixpanel().getPeople().clearPushRegistrationId();
         }
         BusProvider.getInstance().register(this);
         BusProvider.getInstance().post(new OnGCMTokenObtainedEvent(registrationId));

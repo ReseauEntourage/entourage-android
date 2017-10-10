@@ -16,10 +16,16 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
         Bundle extras = intent.getExtras();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
         if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(gcm.getMessageType(intent)) && !extras.isEmpty()) {
-            ComponentName componentName = new ComponentName(context, PushNotificationService.class);
-            intent.setComponent(componentName);
-            startWakefulService(context, intent);
-            setResultCode(Activity.RESULT_OK);
+            if (intent.getExtras().containsKey("mp_message")) {
+                String mp_message = intent.getExtras().getString("mp_message");
+                //mp_message now contains the notification's text
+                //TODO implement MP Notifs here
+            } else {
+                ComponentName componentName = new ComponentName(context, PushNotificationService.class);
+                intent.setComponent(componentName);
+                startWakefulService(context, intent);
+                setResultCode(Activity.RESULT_OK);
+            }
         }
     }
 
