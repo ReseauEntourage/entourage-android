@@ -316,13 +316,13 @@ public class CountryCodePicker extends RelativeLayout {
     }
 
     protected void setSelectedCountry(Country selectedCountry) {
-        this.mSelectedCountry = selectedCountry;
         //as soon as country is selected, textView should be updated
         if (selectedCountry == null) {
             selectedCountry =
                     CountryUtils.getByCode(getContext(), mPreferredCountries, mDefaultCountryCode);
             if (selectedCountry == null) return;
         }
+        this.mSelectedCountry = selectedCountry;
 
         if (!mHideNameCode) {
             if (mShowFullName) {

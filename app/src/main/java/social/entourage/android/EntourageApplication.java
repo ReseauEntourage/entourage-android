@@ -90,7 +90,7 @@ public class EntourageApplication extends Application {
     }
 
     private void setupMixpanel() {
-        mixpanel = MixpanelAPI.getInstance(this, MIXPANEL_TOKEN);
+        mixpanel = MixpanelAPI.getInstance(this, BuildConfig.MIXPANEL_TOKEN);
         JSONObject props = new JSONObject();
         try {
             props.put("Flavor", FLAVOR);

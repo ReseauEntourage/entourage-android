@@ -128,7 +128,8 @@
         <!-- Receivers -->
 
         <!-- Previous push notification receiver -->
-        <receiver android:name=".message.push.GcmBroadcastReceiver">
+        <receiver android:name=".message.push.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
@@ -146,11 +147,12 @@
             </intent-filter>
         </receiver-->
 
+        <!-- TODO reactivate this
         <receiver android:name=".api.tape.EncounterTapeService$ConnectionChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
-        </receiver>
+        </receiver-->
 
         <!-- [START instanceId_listener] -->
         <service
