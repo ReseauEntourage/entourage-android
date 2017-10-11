@@ -2194,7 +2194,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         displayedTourHeads = 0;
 
         newsfeedAdapter.removeAll();
-        moveFABDown();
 
         // check if we need to cancel the current request
         if (pagination.isLoading && tourService != null) {
@@ -2220,8 +2219,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         newEntouragesButton.setVisibility(View.GONE);
         mapDisplayToggle.setChecked(true);
         showGuideView.setVisibility(View.VISIBLE);
-
-        moveFABDown();
 
         ensureMapVisible();
 
@@ -2531,104 +2528,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_MORE_ITEMS);
             }
         }
-        if (newsfeedAdapter.getDataItemCount() > 0) {
-            moveFABUp();
-        }
-    }
-
-    /**
-     * Moves the FAB buttons up, if the bottom view is displayed and visible
-     **/
-    private void moveFABUp() {
-        if (newsfeedListView == null) return;
-        if (!isToursListVisible()) return;
-        int visibleItemCount = newsfeedListView.getChildCount();
-        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) newsfeedListView.getLayoutManager();
-        int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
-        int totalItemCount = linearLayoutManager.getItemCount();
-        if ( (totalItemCount - visibleItemCount <= firstVisibleItem) && newsfeedAdapter.isShowBottomView() ) {
-            int paddingBottom = mapOptionsMenu.getPaddingBottom();
-            if (paddingBottom <= mapOptionsMenuPaddingBottom) {
-                if (fabAnimatorDown != null && fabAnimatorDown.isRunning()) {
-                    fabAnimatorDown.end();
-                }
-                RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-                if (fabAnimatorUp == null) {
-                    fabAnimatorUp = ValueAnimator.ofPropertyValuesHolder(
-                            PropertyValuesHolder.ofInt("fabMenu", mapOptionsMenuPaddingBottom, mapOptionsMenuPaddingBottom + FAB_BOTTOM_DELTA),
-                            PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin + FAB_BOTTOM_DELTA)
-                            );
-                    fabAnimatorUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(final ValueAnimator animation) {
-                            int fabMenu = (Integer) animation.getAnimatedValue("fabMenu");
-                            mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), fabMenu);
-                            int fabStop = (Integer) animation.getAnimatedValue("fabStop");
-                            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-                            lp.bottomMargin = fabStop;
-                            tourStopButton.setLayoutParams(lp);
-                        }
-                    });
-                } else {
-                    if (fabAnimatorUp.isRunning()) {
-                        fabAnimatorUp.end();
-                    }
-                    fabAnimatorUp.setValues(
-                            PropertyValuesHolder.ofInt("fabMenu", mapOptionsMenuPaddingBottom, mapOptionsMenuPaddingBottom + FAB_BOTTOM_DELTA),
-                            PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin + FAB_BOTTOM_DELTA)
-                    );
-                }
-                fabAnimatorUp.start();
-//                mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), mapOptionsMenu.getPaddingBottom() + FAB_BOTTOM_DELTA);
-//                RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-//                lp.bottomMargin += FAB_BOTTOM_DELTA;
-//                tourStopButton.setLayoutParams(lp);
-            }
-        }
-    }
-
-    /**
-     * Moves the FAB buttons to their original positions, if necessary
-     */
-    private void moveFABDown() {
-        int paddingBottom = mapOptionsMenu.getPaddingBottom();
-        if (paddingBottom > mapOptionsMenuPaddingBottom) {
-            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-            if (fabAnimatorUp != null && fabAnimatorUp.isRunning()) {
-                fabAnimatorUp.end();
-            }
-            paddingBottom = mapOptionsMenu.getPaddingBottom();
-            if (fabAnimatorDown == null) {
-                fabAnimatorDown = ValueAnimator.ofPropertyValuesHolder(
-                        PropertyValuesHolder.ofInt("fabMenu", paddingBottom, mapOptionsMenuPaddingBottom),
-                        PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin - FAB_BOTTOM_DELTA)
-                );
-                fabAnimatorDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(final ValueAnimator animation) {
-                        int fabMenu = (Integer) animation.getAnimatedValue("fabMenu");
-                        mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), fabMenu);
-                        int fabStop = (Integer) animation.getAnimatedValue("fabStop");
-                        RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-                        lp.bottomMargin = fabStop;
-                        tourStopButton.setLayoutParams(lp);
-                    }
-                });
-            } else {
-                if (fabAnimatorDown.isRunning()) {
-                    return;
-                }
-                fabAnimatorDown.setValues(
-                        PropertyValuesHolder.ofInt("fabMenu", paddingBottom, mapOptionsMenuPaddingBottom),
-                        PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin - FAB_BOTTOM_DELTA)
-                );
-            }
-            fabAnimatorDown.start();
-//            mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), mapOptionsMenu.getPaddingBottom() - FAB_BOTTOM_DELTA);
-//            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-//            lp.bottomMargin -= FAB_BOTTOM_DELTA;
-//            tourStopButton.setLayoutParams(lp);
-        }
     }
 
     // ----------------------------------
@@ -2736,15 +2635,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
             } else {
                 // Scrolling up
-                if (newsfeedAdapter.isShowBottomView()) {
-                    int visibleItemCount = recyclerView.getChildCount();
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
-                    int totalItemCount = linearLayoutManager.getItemCount();
-                    if ((totalItemCount - visibleItemCount > firstVisibleItem)) {
-                        moveFABDown();
-                    }
-                }
              }
         }
 

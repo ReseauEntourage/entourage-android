@@ -11,7 +11,12 @@
         android:background="@color/pale_grey"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingBottom="10dp"
+        android:paddingEnd="85dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="85dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:id="@+id/newsfeed_load_more_layout"
@@ -45,11 +50,12 @@
             android:id="@+id/newsfeed_no_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:text="@string/map_empty_newsfeed"
             android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/entourage_font_medium"
-            />
+            android:textSize="@dimen/entourage_font_medium"/>
 
     </LinearLayout>
 </FrameLayout>
