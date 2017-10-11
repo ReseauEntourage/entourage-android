@@ -561,17 +561,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
                             EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENTOURAGE);
-                            displayEntourageDisclaimer(entourageType);
+                            displayEntourageDisclaimer();
                         }
                     });
 
             builder.show();
         } else {
-            displayEntourageDisclaimer(entourageType);
+            displayEntourageDisclaimer();
         }
     }
 
-    public void displayEntourageDisclaimer(final String entourageType) {
+    public void displayEntourageDisclaimer() {
         if (mapLongClickView == null) {
             // Binder haven't kicked in yet
             return;
@@ -606,19 +606,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         // MI: EMA-920 Show the disclaimer ever time
         // Show the disclaimer fragment
         if (presenter != null) {
-            presenter.displayEntourageDisclaimer(entourageType, me.isPro());
+            presenter.displayEntourageDisclaimer(me.isPro());
         }
 
     }
 
-    public void createEntourage(String entourageType) {
+    public void createEntourage() {
         LatLng location = EntourageLocation.getInstance().getLastCameraPosition().target;
         if (longTapCoordinates != null) {
             location = longTapCoordinates;
             longTapCoordinates = null;
         }
         if (presenter != null) {
-            presenter.createEntourage(entourageType, location);
+            presenter.createEntourage(location);
         }
     }
 
@@ -1401,13 +1401,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         toggleToursList();
     }
 
-    @OnClick(R.id.map_longclick_button_entourage_demand)
-    protected void onCreateEntourageDemand() {
-        displayEntouragePopupWhileTour(Entourage.TYPE_DEMAND);
-    }
-
-    @OnClick(R.id.map_longclick_button_entourage_contribution)
-    protected void onCreateEntourageContribution() {
+    @OnClick(R.id.map_longclick_button_entourage_action)
+    protected void onCreateEntourageAction() {
         displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
     }
 
@@ -1524,7 +1519,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void showLongClickOnMapOptions(LatLng latLng) {
         //only show when map is in full screen and not visible
-        if (newsfeedListView.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
+        if (!isFullMapShown || mapLongClickView.getVisibility() == View.VISIBLE) {
             return;
         }
         //save the tap coordinates
@@ -1532,20 +1527,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //hide the FAB menu
         mapOptionsMenu.setVisibility(View.GONE);
         tourStopButton.setVisibility(View.GONE);
+        //for public user, start the create entourage funnel directly
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = (me != null && me.isPro());
+        if (!isPro) {
+            displayEntourageDisclaimer();
+            return;
+        }
         //get the click point
         Point clickPoint = map.getProjection().toScreenLocation(latLng);
         //update the visible buttons
         boolean isTourRunning = tourService != null && tourService.isRunning();
-        User me = EntourageApplication.me(getActivity());
-        boolean isPro = (me != null && me.isPro());
         mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : (isPro ? View.VISIBLE : View.GONE));
         mapLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
-        if (!isPro) {
-            ImageView entourageContribution = (ImageView) mapLongClickButtonsView.findViewById(R.id.map_longclick_button_entourage_contribution);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) entourageContribution.getLayoutParams();
-            layoutParams.setMargins(10, 0, 0, 0);
-            entourageContribution.setLayoutParams(layoutParams);
-        }
         mapLongClickButtonsView.requestLayout();
         //adjust the buttons holder layout
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -1563,7 +1557,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (marginLeft < 0) {
             marginLeft = 0;
         }
-        int marginTop = clickPoint.y - bH;
+        int marginTop = clickPoint.y - bH * 3/2;
         if (marginTop < 0) {
             marginTop = clickPoint.y;
         }

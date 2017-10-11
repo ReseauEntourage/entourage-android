@@ -52,7 +52,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     public static final String TAG = "social.entourage.android.createentourage";
 
-    protected static final String KEY_ENTOURAGE_TYPE = "social.entourage.android.KEY_ENTOURAGE_TYPE";
     private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
 
     private static final int VOICE_RECOGNITION_TITLE_CODE = 1;
@@ -101,10 +100,9 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         // Required empty public constructor
     }
 
-    public static CreateEntourageFragment newInstance(String entourageType, LatLng location) {
+    public static CreateEntourageFragment newInstance(LatLng location) {
         CreateEntourageFragment fragment = new CreateEntourageFragment();
         Bundle args = new Bundle();
-        args.putString(KEY_ENTOURAGE_TYPE, entourageType);
         args.putParcelable(KEY_ENTOURAGE_LOCATION, location);
         fragment.setArguments(args);
 

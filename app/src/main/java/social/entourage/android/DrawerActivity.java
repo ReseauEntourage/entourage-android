@@ -975,7 +975,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment, final String entourageType) {
+    public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
         User me = EntourageApplication.me(this);
         me.setEntourageDisclaimerShown(true);
@@ -986,7 +986,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         // Show the create entourage fragment
         if (mainFragment instanceof MapEntourageFragment) {
-            ((MapEntourageFragment) mainFragment).createEntourage(entourageType);
+            ((MapEntourageFragment) mainFragment).createEntourage();
         }
     }
 

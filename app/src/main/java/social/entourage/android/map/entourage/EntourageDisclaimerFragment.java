@@ -45,8 +45,6 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     @BindView(R.id.entourage_disclaimer_switch)
     SwitchCompat disclaimerSwitch;
 
-    private String entourageType;
-
     private boolean isPro;
 
     // ----------------------------------
@@ -59,10 +57,9 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    public static EntourageDisclaimerFragment newInstance(String entourageType, boolean isPro) {
+    public static EntourageDisclaimerFragment newInstance(boolean isPro) {
         EntourageDisclaimerFragment fragment = new EntourageDisclaimerFragment();
         Bundle args = new Bundle();
-        args.putString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE, entourageType);
         args.putBoolean(EntourageDisclaimerFragment.KEY_IS_PRO, isPro);
         fragment.setArguments(args);
 
@@ -91,7 +88,6 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            entourageType = args.getString(CreateEntourageFragment.KEY_ENTOURAGE_TYPE, Entourage.TYPE_CONTRIBUTION);
             isPro = args.getBoolean(EntourageDisclaimerFragment.KEY_IS_PRO, false);
 
             disclaimerTextView.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +160,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
         if (disclaimerSwitch.isChecked()) {
             //inform the listener that the user accepted the CGU
             if (mListener != null) {
-                mListener.onEntourageDisclaimerAccepted(this, entourageType);
+                mListener.onEntourageDisclaimerAccepted(this);
             }
         } else {
             Toast.makeText(getActivity(), R.string.entourage_disclaimer_error_notaccepted, Toast.LENGTH_SHORT).show();
@@ -177,6 +173,6 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
 
     public interface OnFragmentInteractionListener {
 
-        void onEntourageDisclaimerAccepted(EntourageDisclaimerFragment fragment, String entourageType);
+        void onEntourageDisclaimerAccepted(EntourageDisclaimerFragment fragment);
     }
 }

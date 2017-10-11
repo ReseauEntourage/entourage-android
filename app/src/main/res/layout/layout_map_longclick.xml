@@ -6,9 +6,10 @@
                 android:alpha="0.88">
 
     <RelativeLayout
+        android:id="@+id/map_longclick_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/map_longclick_buttons">
+        >
 
         <ImageView
             android:id="@+id/map_longclick_button_start_tour_launcher"
@@ -16,7 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="25dp"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_button_create_maraude"
             android:visibility="visible"/>
@@ -27,28 +27,18 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/map_longclick_button_start_tour_launcher"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_encounter"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <ImageView
-            android:id="@+id/map_longclick_button_entourage_demand"
+            android:id="@+id/map_longclick_button_entourage_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_toEndOf="@+id/map_longclick_button_start_tour_launcher"
             android:layout_toRightOf="@+id/map_longclick_button_start_tour_launcher"
-            android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_entourage_demand"/>
-
-        <ImageView
-            android:id="@+id/map_longclick_button_entourage_contribution"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_toEndOf="@+id/map_longclick_button_entourage_demand"
-            android:layout_toRightOf="@+id/map_longclick_button_entourage_demand"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_entourage_contribution"/>
 

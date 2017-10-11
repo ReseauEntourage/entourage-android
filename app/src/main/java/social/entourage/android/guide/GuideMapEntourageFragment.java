@@ -60,12 +60,14 @@ import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
+import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 
@@ -88,6 +90,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     @Inject
     GuideMapPresenter presenter;
+
+    TourService tourService;
 
     private View toReturn;
 
@@ -118,7 +122,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @BindView(R.id.fragment_guide_longclick)
     RelativeLayout guideLongClickView;
 
-    @BindView(R.id.guide_longclicks_buttons)
+    @BindView(R.id.map_longclick_buttons)
     RelativeLayout guideLongClickButtonsView;
 
     @BindView(R.id.fragment_guide_display_toggle)
@@ -192,9 +196,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                         }
                     });
 
-                    // MI: We need to wait for a better solution for long press options on guide map
-                    // So I'll just comment out the code
-                    /*
                     googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                         @Override
                         public void onMapLongClick(final LatLng latLng) {
@@ -203,7 +204,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                             }
                         }
                     });
-                    */
 
                     if (presenter != null) {
                         presenter.updatePoisNearby(map);
@@ -399,7 +399,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
     }
 
-    @OnClick(R.id.guide_longclick_button_poi_propose)
+    //@OnClick(R.id.guide_longclick_button_poi_propose)
     public void proposePOI() {
         // Close the overlays
         onBackPressed();
@@ -546,8 +546,20 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     private void showLongClickOnMapOptions(LatLng latLng) {
         //save the tap coordinates
         longTapCoordinates = latLng;
+        //for public user, start the create entourage funnel directly
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = (me != null && me.isPro());
+        if (!isPro) {
+            //displayEntourageDisclaimer();
+            return;
+        }
         //get the click point
         Point clickPoint = map.getProjection().toScreenLocation(latLng);
+        //update the visible buttons
+        boolean isTourRunning = tourService != null && tourService.isRunning();
+        guideLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : (isPro ? View.VISIBLE : View.GONE));
+        guideLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
+        guideLongClickButtonsView.requestLayout();
         //adjust the buttons holder layout
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -562,7 +574,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             marginLeft -= bW/2;
         }
         if (marginLeft < 0) marginLeft = 0;
-        int marginTop = clickPoint.y - bH;
+        int marginTop = clickPoint.y - bH /2;
         if (marginTop < 0) marginTop = clickPoint.y;
         lp.setMargins(marginLeft, marginTop, 0, 0);
         guideLongClickButtonsView.setLayoutParams(lp);
