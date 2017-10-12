@@ -94,7 +94,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
                 @Override
                 public void onClick(final View v) {
                     EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_LINK);
-                    String disclaimerURL = isPro ? getString(R.string.disclaimer_link_pro) : getString(R.string.disclaimer_link_public);
+                    String disclaimerURL = getString(R.string.disclaimer_link_public);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(disclaimerURL));
                     try {
                         startActivity(browserIntent);
