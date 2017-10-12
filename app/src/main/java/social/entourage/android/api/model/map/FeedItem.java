@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.User;
 
 /**
  * Created by mihaiionescu on 18/05/16.
@@ -207,6 +209,16 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public boolean isFreezed() {
         return STATUS_FREEZED.equals(status);
+    }
+
+    public boolean isMine() {
+        if (author != null) {
+            User me = EntourageApplication.me();
+            if (me != null) {
+                return author.getUserID() == me.getId();
+            }
+        }
+        return false;
     }
 
     @Override

@@ -1403,7 +1403,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (presenter != null) {
             presenter.getFeedItemUsers();
             presenter.getFeedItemMessages();
-            presenter.getFeedItemEncounters();
+            if (feedItem != null && feedItem.isMine()) {
+                presenter.getFeedItemEncounters();
+            }
         }
     }
 
