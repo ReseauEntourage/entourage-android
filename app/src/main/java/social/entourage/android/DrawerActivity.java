@@ -1000,8 +1000,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         // Dismiss the disclaimer fragment
         fragment.dismiss();
 
-        // Show the create encounter fragment
         if (mainFragment instanceof MapEntourageFragment) {
+            ((MapEntourageFragment) mainFragment).addEncounter();
+        } else {
+            onPOILauncherClicked();
             ((MapEntourageFragment) mainFragment).addEncounter();
         }
     }
