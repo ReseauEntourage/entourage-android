@@ -19,6 +19,7 @@ public class Constants {
 
     // Links
     public static final String BLOG_URL = "https://blog.entourage.social/2016/10/28/franchir-le-pas/";
+    public static final String SCB_URL = "http://www.simplecommebonjour.org/";
     public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
     public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";
     public static final String GOAL_URL= "https://blog.entourage.social/quelles-actions-faire-avec-entourage";

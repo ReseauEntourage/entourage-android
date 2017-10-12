@@ -532,7 +532,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
-                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.BLOG_URL));
+                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.SCB_URL));
                 try {
                     startActivity(blogIntent);
                 } catch (Exception ex) {
