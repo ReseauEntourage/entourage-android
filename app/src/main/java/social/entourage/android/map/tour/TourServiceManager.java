@@ -798,7 +798,11 @@ public class TourServiceManager {
         @NonNull
         private String getErrorBody(Response<Newsfeed.NewsfeedWrapper> response) {
             try {
-                return response.errorBody().string();
+                if (response.errorBody() != null) {
+                    return response.errorBody().string();
+                } else {
+                    return EMPTY_STRING;
+                }
             } catch (IOException ignored) {
                 return EMPTY_STRING;
             }

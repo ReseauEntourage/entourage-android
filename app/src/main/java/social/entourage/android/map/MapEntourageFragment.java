@@ -105,6 +105,7 @@ import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
+import social.entourage.android.base.EntourageToast;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
@@ -1149,7 +1150,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onServerException(Throwable throwable) {
         if (getActivity() != null) {
-            Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
+            EntourageToast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;
@@ -1160,7 +1161,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onTechnicalException(Throwable throwable) {
         if (getActivity() != null) {
-            Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
+            EntourageToast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;

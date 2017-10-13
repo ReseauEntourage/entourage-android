@@ -74,6 +74,7 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
+import social.entourage.android.base.EntourageToast;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -307,6 +308,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Override
     protected void onStop() {
         BusProvider.getInstance().unregister(this);
+
+        EntourageToast entourageToast = EntourageToast.getGlobalEntourageToast();
+        if (entourageToast != null) {
+            entourageToast.cancel();
+        }
+
         super.onStop();
     }
 
