@@ -187,57 +187,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         poisMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         initializeEmptyListPopup();
-
-        originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
-
-        if (onMapReadyCallback == null) {
-            onMapReadyCallback = new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(final GoogleMap googleMap) {
-                    if (map != null) return;
-                    map = googleMap;
-                    clusterManager = new ClusterManager<>(getActivity(), map);
-                    poiRenderer = new PoiRenderer(getActivity(), map, clusterManager);
-                    clusterManager.setRenderer(poiRenderer);
-                    clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
-                    googleMap.setOnMarkerClickListener(clusterManager);
-                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                        map.setMyLocationEnabled(true);
-                    }
-                    map.getUiSettings().setMyLocationButtonEnabled(false);
-                    map.getUiSettings().setMapToolbarEnabled(false);
-                    initializeMapZoom();
-                    googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-                        @Override
-                        public void onCameraIdle() {
-                            CameraPosition position = map.getCameraPosition();
-                            EntourageLocation.getInstance().saveCurrentCameraPosition(position);
-                            Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
-                            float newZoom = position.zoom;
-                            if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
-                                previousCameraZoom = newZoom;
-                                previousCameraLocation = newLocation;
-                                presenter.updatePoisNearby(map);
-                            }
-                        }
-                    });
-
-                    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                        @Override
-                        public void onMapLongClick(final LatLng latLng) {
-                            if (getActivity() != null) {
-                                showLongClickOnMapOptions(latLng);
-                            }
-                        }
-                    });
-
-                    if (presenter != null) {
-                        presenter.updatePoisNearby(map);
-                    }
-                }
-            };
-        }
-
+        initializeMap();
         initializePOIList();
     }
 
@@ -260,7 +210,13 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @Override
     public void onStart() {
         super.onStart();
-        presenter.start();
+        if (presenter != null) {
+            presenter.start();
+            if (map != null) {
+                presenter.updatePoisNearby(map);
+            }
+        }
+        showInfoPopup();
 
         BusProvider.getInstance().register(this);
     }
@@ -403,7 +359,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     clusterManager.addItems(poiCollection);
                     clusterManager.cluster();
                     hideEmptyListPopup();
-                    showInfoPopup();
                 }
                 if (poisAdapter != null) {
                     List<TimestampedObject> timestampedObjectList = new ArrayList<>();
@@ -415,7 +370,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     }
                 }
             } else {
-                showEmptyListPopup();
+                if (!isInfoPopupVisible()) {
+                    showEmptyListPopup();
+                }
                 if (poisAdapter != null && poisAdapter.getDataItemCount() == 0) {
                     hidePOIList(false);
                 }
@@ -430,6 +387,58 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
         if (poisAdapter != null) {
             poisAdapter.removeAll();
+        }
+    }
+
+    private void initializeMap() {
+        originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
+
+        if (onMapReadyCallback == null) {
+            onMapReadyCallback = new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final GoogleMap googleMap) {
+                    if (map != null) return;
+                    map = googleMap;
+                    clusterManager = new ClusterManager<>(getActivity(), map);
+                    poiRenderer = new PoiRenderer(getActivity(), map, clusterManager);
+                    clusterManager.setRenderer(poiRenderer);
+                    clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
+                    googleMap.setOnMarkerClickListener(clusterManager);
+                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                        map.setMyLocationEnabled(true);
+                    }
+                    map.getUiSettings().setMyLocationButtonEnabled(false);
+                    map.getUiSettings().setMapToolbarEnabled(false);
+                    initializeMapZoom();
+                    googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                        @Override
+                        public void onCameraIdle() {
+                            CameraPosition position = map.getCameraPosition();
+                            EntourageLocation.getInstance().saveCurrentCameraPosition(position);
+                            Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
+                            float newZoom = position.zoom;
+                            if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                                previousCameraZoom = newZoom;
+                                previousCameraLocation = newLocation;
+                                presenter.updatePoisNearby(map);
+                            }
+                        }
+                    });
+
+                    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                        @Override
+                        public void onMapLongClick(final LatLng latLng) {
+                            if (getActivity() != null) {
+                                showLongClickOnMapOptions(latLng);
+                            }
+                        }
+                    });
+
+                    if (presenter != null) {
+                        presenter.updatePoisNearby(map);
+                    }
+                }
+            };
         }
     }
 
@@ -569,7 +578,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // INFO POPUP
     // ----------------------------------
 
-    @OnClick(R.id.fragment_guide_info_popup_close)
+    @OnClick({R.id.fragment_guide_info_popup_close, R.id.fragment_guide_info_popup})
     protected void onInfoPopupClose() {
         AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
         if (authenticationController != null) {
@@ -588,6 +597,10 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     private void hideInfoPopup() {
         infoPopup.setVisibility(View.GONE);
+    }
+
+    private boolean isInfoPopupVisible() {
+        return infoPopup.getVisibility() == View.VISIBLE;
     }
 
     // ----------------------------------
@@ -748,6 +761,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
         guideDisplayToggle.setChecked(false);
 
+        hideInfoPopup();
         hideEmptyListPopup();
 
         if (animated) {
