@@ -23,6 +23,9 @@
     <string name="user_number_tours_label">Nombre de maraudes</string>
     <string name="user_associations_title">Association(s)</string>
     <string name="user_entourage_count_format">%1$d</string>
+    <string name="user_about_title">À propos de moi</string>
+    <string name="user_about_hint">Présentez-vous à la communauté en quelques mots !</string>
+    <string name="user_about_edit_button">Écrire ma présentation</string>
 
     <string name="user_report_email_subject">Signalement d\'un utilisateur - %1$s</string>
 
@@ -78,5 +81,10 @@
     <string name="user_photo_error_camera_permission">Annulation: l’app n’a pas les permissions requises</string>
     <string name="user_photo_error_read_permission">Annulation: l’app n’a pas les permissions requises</string>
     <string name="user_photo_uploading">Envoi de la photo</string>
+
+    <!-- User Edit About -->
+    <string name="user_edit_about_description">@string/user_about_hint</string>
+    <string name="user_edit_about_hint">Ecrivez quelque chose…</string>
+    <string name="user_edit_about_save_button">@string/user_save_button</string>
 
 </resources>

@@ -77,16 +77,7 @@ public class UserPresenter {
 
     public void updateUser(final User user) {
         if (fragment != null) {
-            ArrayMap<String, Object> userMap = new ArrayMap<>();
-            userMap.put("first_name", user.getFirstName());
-            userMap.put("last_name", user.getLastName());
-            if (user.getEmail() != null) {
-                userMap.put("email", user.getEmail());
-            }
-            if (user.getSmsCode() != null) {
-                userMap.put("sms_code", user.getSmsCode());
-            }
-            Call<UserResponse> call = userRequest.updateUser(userMap);
+            Call<UserResponse> call = userRequest.updateUser(user.getArrayMapForUpdate());
             call.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {

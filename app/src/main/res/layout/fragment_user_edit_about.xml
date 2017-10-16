@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/user_about_edit_background"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                tools:context="social.entourage.android.user.edit.UserEditAboutFragment">
+
+    <RelativeLayout
+        android:id="@+id/haxor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingStart="5dp">
+
+        <ImageButton
+            android:id="@+id/user_edit_about_close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:paddingEnd="5dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="5dp"
+            android:paddingStart="0dp"
+            android:src="@drawable/ic_close_white"
+            android:tint="@color/accent"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/haxor"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/user_edit_about_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/user_edit_about_description"
+            android:textSize="@dimen/entourage_font_large"/>
+
+        <EditText
+            android:id="@+id/user_edit_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="@string/user_edit_about_hint"
+            android:inputType="textMultiLine"
+            android:maxLines="6"
+            android:minLines="6"
+            android:padding="5dp"
+            android:textColor="@color/greyish_brown"
+            android:textColorHint="@color/greyish"
+            android:textSize="@dimen/entourage_font_medium"/>
+
+        <Button
+            android:id="@+id/user_edit_about_save_button"
+            style="@style/AccentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_edit_about_save_button"/>
+    </LinearLayout>
+
+</RelativeLayout>

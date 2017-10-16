@@ -93,6 +93,12 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_address)
     TextView userAddress;
 
+    @BindView(R.id.user_profile_about_layout)
+    View userAboutLayout;
+
+    @BindView(R.id.user_profile_about)
+    TextView userAboutTextView;
+
     @BindView(R.id.user_identification_email_check)
     ImageView userEmailVerifiedImage;
 
@@ -235,6 +241,10 @@ public class UserFragment extends EntourageDialogFragment {
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
             userTourCount.setText(getString(R.string.user_entourage_count_format, entourageCount));
+
+            String userAbout = user.getAbout();
+            userAboutLayout.setVisibility( (userAbout == null || userAbout.trim().length() == 0) ? View.GONE : View.VISIBLE);
+            userAboutTextView.setText(userAbout);
 
             boolean userEmailVerified = user.getEmail() != null;
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);

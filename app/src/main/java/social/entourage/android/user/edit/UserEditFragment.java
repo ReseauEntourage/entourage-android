@@ -83,6 +83,9 @@ public class UserEditFragment extends EntourageDialogFragment {
     @BindView(R.id.user_address)
     TextView userAddress;
 
+    @BindView(R.id.user_about)
+    TextView userAbout;
+
     @BindView(R.id.user_notifications_image)
     ImageView userNotificationsStatusImage;
 
@@ -179,6 +182,7 @@ public class UserEditFragment extends EntourageDialogFragment {
             userEmail.setText(editedUser.getEmail());
             userPhone.setText(editedUser.getPhone());
             userAddress.setText("");
+            userAbout.setText(editedUser.getAbout());
 
             List<BaseOrganization> organizationList = new ArrayList<>();
             if (editedUser.getPartner() != null) {
@@ -240,6 +244,12 @@ public class UserEditFragment extends EntourageDialogFragment {
     protected void onEditPassword() {
         UserEditPasswordFragment fragment = new UserEditPasswordFragment();
         fragment.show(getFragmentManager(), UserEditPasswordFragment.TAG);
+    }
+
+    @OnClick(R.id.user_about_edit_button)
+    protected void onEditAboutClicked() {
+        UserEditAboutFragment editAboutFragment = new UserEditAboutFragment();
+        editAboutFragment.show(getFragmentManager(), UserEditAboutFragment.TAG);
     }
 
     @OnClick(R.id.user_delete_account_button)

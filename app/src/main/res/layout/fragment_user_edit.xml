@@ -47,6 +47,16 @@
             android:text="@string/user_save_button"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/accent"/>
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/user_edit_close_button"
+            android:background="@color/greyish"/>
     </RelativeLayout>
 
     <ScrollView
@@ -162,6 +172,58 @@
                     android:gravity="end"
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_about_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_about_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background_light"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="20dp"
+                    android:text="@string/user_about_title"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/user_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:hint="@string/user_about_hint"
+                    android:paddingEnd="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/greyish_brown"
+                    android:textColorHint="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <Button
+                    android:id="@+id/user_about_edit_button"
+                    style="@style/AccentButton.RoundedCorners"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/user_about_edit_button"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="normal"/>
             </LinearLayout>
 
             <TextView

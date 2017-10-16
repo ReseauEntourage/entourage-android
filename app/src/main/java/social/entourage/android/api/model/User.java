@@ -1,5 +1,7 @@
 package social.entourage.android.api.model;
 
+import android.support.v4.util.ArrayMap;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -65,6 +67,8 @@ public class User implements Serializable {
 
     @SerializedName("user_type")
     private String type = TYPE_PRO;
+
+    private String about;
 
     @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
@@ -197,6 +201,14 @@ public class User implements Serializable {
         this.smsCode = smsCode;
     }
 
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(final String about) {
+        this.about = about;
+    }
+
     public boolean isEntourageDisclaimerShown() {
         return entourageDisclaimerShown;
     }
@@ -246,6 +258,22 @@ public class User implements Serializable {
 
     public TourAuthor asTourAuthor() {
         return new TourAuthor(avatarURL, id, displayName, partner);
+    }
+
+    public ArrayMap<String, Object> getArrayMapForUpdate() {
+        ArrayMap<String, Object> userMap = new ArrayMap<>();
+        userMap.put("first_name", firstName);
+        userMap.put("last_name", lastName);
+        if (email != null) {
+            userMap.put("email", email);
+        }
+        if (smsCode != null) {
+            userMap.put("sms_code", smsCode);
+        }
+        if (about != null) {
+            userMap.put("about", about);
+        }
+        return userMap;
     }
 
     // ----------------------------------
