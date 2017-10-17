@@ -35,7 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/haxor"
-        android:focusable="true"
         android:orientation="vertical"
         android:paddingTop="10dp">
 
@@ -67,6 +66,23 @@
             android:textColor="@color/greyish_brown"
             android:textColorHint="@color/greyish"
             android:textSize="@dimen/entourage_font_medium"/>
+
+        <View
+            style="@style/SeparatorAlpha"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/user_edit_about_char_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textColor="@color/entourage_ok"
+            android:textSize="@dimen/entourage_font_small"/>
 
         <Button
             android:id="@+id/user_edit_about_save_button"

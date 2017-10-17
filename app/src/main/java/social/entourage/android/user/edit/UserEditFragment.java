@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,11 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @Inject
     UserEditPresenter presenter;
+
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
+
+    int scrollViewY = 0;
 
     @BindView(R.id.user_photo)
     ImageView userPhoto;
@@ -248,6 +254,7 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.user_about_edit_button)
     protected void onEditAboutClicked() {
+        scrollViewY = scrollView.getScrollY();
         UserEditAboutFragment editAboutFragment = new UserEditAboutFragment();
         editAboutFragment.show(getFragmentManager(), UserEditAboutFragment.TAG);
     }
@@ -318,6 +325,14 @@ public class UserEditFragment extends EntourageDialogFragment {
         } catch (Exception ex) {
 
         }
+    }
+
+    // ----------------------------------
+    // Protected methods
+    // ----------------------------------
+
+    protected void scrollToOriginalPosition() {
+        scrollView.scrollTo(0, scrollViewY);
     }
 
     // ----------------------------------
