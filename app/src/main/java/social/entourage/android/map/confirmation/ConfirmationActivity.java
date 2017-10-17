@@ -71,7 +71,13 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        tour = (Tour) getIntent().getExtras().getSerializable(Tour.KEY_TOUR);
+        Intent intent = getIntent();
+        if (intent != null) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                tour = (Tour) bundle.getSerializable(Tour.KEY_TOUR);
+            }
+        }
         initializeView();
     }
 
