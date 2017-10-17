@@ -141,8 +141,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private static final long REFRESH_TOURS_INTERVAL = 60000; //1 minute in ms
 
-    private static final int MAX_SCROLL_DELTA_Y = 20;
-
     // Constants used to track the source call of the geolocation popup
     private static final int GEOLOCATION_POPUP_TOUR = 0;
     private static final int GEOLOCATION_POPUP_RECENTER = 1;
@@ -1694,17 +1692,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         public void onMapClick(LatLng latLng) {
                             if (getActivity() != null) {
                                 EntourageEvents.logEvent(Constants.EVENT_FEED_MAPCLICK);
-                                if (newsfeedListView.getVisibility() == View.VISIBLE) {
+                                if (isFullMapShown) {
+                                    // Hide the minicards if visible
+                                    if (miniCardsView.getVisibility() == View.VISIBLE) {
+                                        miniCardsView.setVisibility(View.INVISIBLE);
+                                    }
+                                } else {
                                     hideToursList();
                                 }
-                                // EMA-341 Disabling the search tour feature
-                        /*
-                        else {
-                            loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
-                            loaderSearchTours.setCancelable(true);
-                            tourService.searchToursFromPoint(latLng, userHistory, userId, 1, 500);
-                        }
-                        */
                             }
                         }
                     });
@@ -2244,6 +2239,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         isFullMapShown = false;
         mapDisplayToggle.setChecked(false);
         showGuideView.setVisibility(View.GONE);
+        miniCardsView.setVisibility(View.INVISIBLE);
 
         hideEmptyListPopup();
 

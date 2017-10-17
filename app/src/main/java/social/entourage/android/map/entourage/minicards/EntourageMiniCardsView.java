@@ -1,6 +1,7 @@
 package social.entourage.android.map.entourage.minicards;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -42,14 +43,14 @@ public class EntourageMiniCardsView extends RelativeLayout {
         mainLayout = (RelativeLayout) this.findViewById(R.id.mini_cards_view_rl);
         miniCardsRecyclerView = (RecyclerView) this.findViewById(R.id.mini_cards_view_recycler_view);
 
-        mainLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                miniCardsRecyclerView.scrollToPosition(0);
-                miniCardsAdapter.removeAll();
-                EntourageMiniCardsView.this.setVisibility(INVISIBLE);
-            }
-        });
+//        mainLayout.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(final View v) {
+//                miniCardsRecyclerView.scrollToPosition(0);
+//                miniCardsAdapter.removeAll();
+//                EntourageMiniCardsView.this.setVisibility(INVISIBLE);
+//            }
+//        });
 
         initMiniCardsRecyclerView();
     }
@@ -65,6 +66,7 @@ public class EntourageMiniCardsView extends RelativeLayout {
         if (miniCardsAdapter == null) {
             return;
         }
+        miniCardsRecyclerView.scrollToPosition(0);
         miniCardsAdapter.addItems(entourageList);
         this.setVisibility(VISIBLE);
     }
