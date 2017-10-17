@@ -3,8 +3,8 @@ package social.entourage.android;
 public class Constants {
 
     //TODO: should be changed after each release
-    // v3.6 API Key
-    public static final String API_KEY = "fbe5ec205f074b7533c2dbd6";
+    // v4.0 API Key
+    public static final String API_KEY = "cf52de007ca906bc2b25a6cf";
 
     // Filenames
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
