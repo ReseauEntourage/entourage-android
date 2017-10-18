@@ -1021,17 +1021,18 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         contactTourButton.setVisibility(View.GONE);
 
         if (feedItem != null) {
+            boolean hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || feedItem.isFreezed();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 joinEntourageButton.setVisibility(View.GONE);
-                contactTourButton.setVisibility(feedItem.isPrivate() ? View.GONE : (FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? View.GONE : View.VISIBLE));
+                contactTourButton.setVisibility(hideJoinButton ? View.GONE : View.VISIBLE);
             } else {
                 contactTourButton.setVisibility(View.GONE);
-                joinEntourageButton.setVisibility(feedItem.isPrivate() ? View.GONE : (FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? View.GONE : View.VISIBLE));
+                joinEntourageButton.setVisibility(hideJoinButton ? View.GONE : View.VISIBLE);
             }
             if (me != null && feedItem.getAuthor() != null) {
                 int myId = me.getId();
                 if (feedItem.getAuthor().getUserID() != myId) {
-                    if (FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || FeedItem.JOIN_STATUS_ACCEPTED.equals(feedItem.getJoinStatus())) {
+                    if ((FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || FeedItem.JOIN_STATUS_ACCEPTED.equals(feedItem.getJoinStatus())) && !feedItem.isFreezed()) {
                         quitTourButton.setVisibility(View.VISIBLE);
                         quitTourButton.setText(FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? R.string.tour_info_options_cancel_request : R.string.tour_info_options_quit_tour);
                     }
