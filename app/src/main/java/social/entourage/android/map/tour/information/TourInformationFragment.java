@@ -278,6 +278,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     long requestedFeedItemId;
     int requestedFeedItemType;
     long invitationId;
+    boolean acceptInvitationSilently = false;
 
     Date oldestChatMessageDate = null;
     boolean needsMoreChatMessaged = true;
@@ -352,6 +353,16 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         invitationId = getArguments().getLong(KEY_INVITATION_ID);
         if (feedItem != null) {
             if (feedItem.isPrivate()) {
+                if (invitationId > 0) {
+                    // already a member
+                    // send a silent accept
+                    if (presenter != null) {
+                        acceptInvitationSilently = true;
+                        presenter.acceptInvitation(invitationId);
+                    }
+                    // ignore the invitation
+                    invitationId = 0;
+                }
                 initializeView();
             } else {
                 // public entourage
@@ -1891,26 +1902,32 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         rejectInvitationButton.setEnabled(true);
         if (success) {
             invitationId = 0;
-            // Update UI
-            invitedLayout.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), R.string.invited_updated_ok, Toast.LENGTH_SHORT).show();
-            if (Invitation.STATUS_ACCEPTED.equals(status)) {
-                // Invitation accepted, refresh the lists and status
-                if (feedItem != null) {
-                    feedItem.setJoinStatus(FeedItem.JOIN_STATUS_ACCEPTED);
-                    switchToPrivateSection();
-                    loadPrivateCards();
-                    updateHeaderButtons();
-                    //actLayout.setVisibility(View.GONE);
+            if (acceptInvitationSilently) {
+                acceptInvitationSilently = false;
+            } else {
+                // Update UI
+                invitedLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), R.string.invited_updated_ok, Toast.LENGTH_SHORT).show();
+                if (Invitation.STATUS_ACCEPTED.equals(status)) {
+                    // Invitation accepted, refresh the lists and status
+                    if (feedItem != null) {
+                        feedItem.setJoinStatus(FeedItem.JOIN_STATUS_ACCEPTED);
+                        switchToPrivateSection();
+                        loadPrivateCards();
+                        updateHeaderButtons();
+                        //actLayout.setVisibility(View.GONE);
+                    }
                 }
+                updatePublicScrollViewLayout();
             }
-            updatePublicScrollViewLayout();
 
             // Post an event
             BusProvider.getInstance().post(new Events.OnInvitationStatusChanged(this.feedItem, status));
 
         } else {
-            Toast.makeText(getActivity(), R.string.invited_updated_error, Toast.LENGTH_SHORT).show();
+            if (!acceptInvitationSilently) {
+                Toast.makeText(getActivity(), R.string.invited_updated_error, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
