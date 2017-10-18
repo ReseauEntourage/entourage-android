@@ -1363,16 +1363,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Bundle args = new Bundle();
             args.putLong(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourId);
             if (longTapCoordinates != null) {
-                //if ongoing tour, show only if the point is in the current tour
-                if (tourService != null && tourService.isRunning()) {
-                    if (!tourService.isLocationInTour(longTapCoordinates)) {
-                        longTapCoordinates = null;
-                        mapOptionsMenu.setVisibility(View.VISIBLE);
-                        tourStopButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity().getApplicationContext(), R.string.tour_encounter_too_far, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude);
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates.longitude);
                 longTapCoordinates = null;
