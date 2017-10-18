@@ -8,7 +8,7 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.flurry.android.FlurryAgent;
-import com.flurry.android.FlurryAgentListener;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -80,21 +80,13 @@ public class EntourageApplication extends Application {
         component.inject(this);
     }
 
-    class myFlurryAgentListener implements FlurryAgentListener {
-
-        @Override
-        public void onSessionStarted() {
-
-        }
-    }
-
     private void setupFlurry() {
         new FlurryAgent.Builder()
                 .withLogEnabled(true)
                 .withCaptureUncaughtExceptions(true)
                 .withLogEnabled(true)
                 .withLogLevel(Log.VERBOSE)
-                .withListener(new myFlurryAgentListener())
+                .withListener(new EntourageEvents())
                 .build(this, BuildConfig.FLURRY_API_KEY);
     }
 

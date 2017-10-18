@@ -96,13 +96,13 @@ android {
 }
 
 dependencies {
-    def supportVersion = "25.3.1"
-    def playServicesVersion = "11.0.4"
-    def daggerVersion = "2.8"
-    def okHttpVersion = "3.5.0"
-    def retrofitVersion = "2.1.0"
-    def butterKnifeVersion = "8.5.1"
-    def awsVersion = "2.6.3"
+    def supportVersion = "26.1.0"
+    def playServicesVersion = "11.4.2"
+    def daggerVersion = "2.12"
+    def okHttpVersion = "3.9.0"
+    def retrofitVersion = "2.3.0"
+    def butterKnifeVersion = "8.8.1"
+    def awsVersion = "2.6.5"
 
     compile(
             "com.flurry.android:analytics:7.2.3@aar",
@@ -133,10 +133,10 @@ dependencies {
             "net.danlew:android.joda:2.9.5.1",
             "com.theartofdev.edmodo:android-image-cropper:2.3.1",
             "me.leolin:ShortcutBadger:1.1.13@aar",
-            "com.mixpanel.android:mixpanel-android:5.1.1"
+            "com.mixpanel.android:mixpanel-android:5.2.1"
     )
 
-    compile("com.crashlytics.sdk.android:crashlytics:2.6.8@aar") {
+    compile("com.crashlytics.sdk.android:crashlytics:2.7.0@aar") {
         transitive = true;
     }
 
