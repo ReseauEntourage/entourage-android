@@ -580,7 +580,7 @@ public class TourServiceManager {
                 mapFilter.onlyMyEntourages,
                 mapFilter.getEntourageTypes(),
                 mapFilter.timeframe,
-                mapFilter.onlyMyOrganisationEntourages
+                mapFilter.onlyMyPartnerEntourages
         );
     }
 

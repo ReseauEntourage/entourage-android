@@ -32,7 +32,7 @@
     <string name="map_filter_tours_text">Maraudes</string>
     <string name="map_filter_personal_title">Montrer uniquement</string>
     <string name="map_filter_user_only_text">Mes entourages</string>
-    <string name="map_filter_organisation_only_text">Crées par les sympathisants de l’association que je soutiens</string>
+    <string name="map_filter_partner_only_text">Crées par les sympathisants de l’association que je soutiens</string>
     <string name="map_filter_time_title">Affichage des entourages</string>
     <string name="map_filter_time_option1">24H</string>
     <string name="map_filter_time_option2">8J</string>

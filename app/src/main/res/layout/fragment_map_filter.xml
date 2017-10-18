@@ -416,7 +416,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_entourage_organisation"
+                    android:id="@+id/map_filter_entourage_partner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -432,14 +432,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_toLeftOf="@+id/map_filter_entourage_organisation_switch"
-                        android:layout_toStartOf="@+id/map_filter_entourage_organisation_switch"
-                        android:text="@string/map_filter_organisation_only_text"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_partner_switch"
+                        android:layout_toStartOf="@+id/map_filter_entourage_partner_switch"
+                        android:text="@string/map_filter_partner_only_text"
                         android:textColor="@color/greyish_brown"
                         android:textSize="@dimen/entourage_font_medium"/>
 
                     <Switch
-                        android:id="@+id/map_filter_entourage_organisation_switch"
+                        android:id="@+id/map_filter_entourage_partner_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

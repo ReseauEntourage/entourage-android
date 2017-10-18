@@ -51,9 +51,9 @@ public class MapFilterFragment extends EntourageDialogFragment {
     Switch showToursSwitch;
     @BindView(R.id.map_filter_entourage_user_only_switch)
     Switch onlyMyEntouragesSwitch;
-    @BindView(R.id.map_filter_entourage_organisation)
+    @BindView(R.id.map_filter_entourage_partner)
     RelativeLayout onlyMyOrganisationEntouragesLayout;
-    @BindView(R.id.map_filter_entourage_organisation_switch)
+    @BindView(R.id.map_filter_entourage_partner_switch)
     Switch onlyMyOrganisationEntouragesSwitch;
     @BindView(R.id.map_filter_time_days_1)
     RadioButton days1RB;
@@ -124,7 +124,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
         mapFilter.entourageTypeContribution = entourageContributionSwitch.isChecked();
         mapFilter.showTours = showToursSwitch.isChecked();
         mapFilter.onlyMyEntourages = onlyMyEntouragesSwitch.isChecked();
-        mapFilter.onlyMyOrganisationEntourages = onlyMyOrganisationEntouragesSwitch.isChecked();
+        mapFilter.onlyMyPartnerEntourages = onlyMyOrganisationEntouragesSwitch.isChecked();
 
         if (days1RB.isChecked()) {
             mapFilter.timeframe = MapFilter.DAYS_1;
@@ -212,7 +212,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
         entourageContributionSwitch.setChecked(mapFilter.entourageTypeContribution);
         showToursSwitch.setChecked(mapFilter.showTours);
         onlyMyEntouragesSwitch.setChecked(mapFilter.onlyMyEntourages);
-        onlyMyOrganisationEntouragesSwitch.setChecked(mapFilter.onlyMyOrganisationEntourages);
+        onlyMyOrganisationEntouragesSwitch.setChecked(mapFilter.onlyMyPartnerEntourages);
 
         switch (mapFilter.timeframe) {
             case MapFilter.DAYS_1:
