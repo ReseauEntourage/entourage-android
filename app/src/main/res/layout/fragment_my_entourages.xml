@@ -34,26 +34,23 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:text="@string/mytours_title"/>
+
+        <View
+            style="@style/SeparatorAlpha"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/myentourages_back_button"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/myentourages_invitations_view"
-        android:layout_below="@+id/myentourages_navigation_layout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
-
-    <android.support.v7.widget.RecyclerView
+        android:id="@+id/myentourages_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/myentourages_list_view"
+        android:layout_above="@+id/myentourages_filter_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/myentourages_invitations_view"
-        android:layout_above="@+id/myentourages_filter_layout"/>
+        android:layout_below="@+id/myentourages_navigation_layout"
+        />
 
     <RelativeLayout
         android:id="@+id/myentourages_filter_layout"

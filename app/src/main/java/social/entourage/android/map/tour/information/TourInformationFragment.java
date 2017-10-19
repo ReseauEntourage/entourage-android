@@ -353,16 +353,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         invitationId = getArguments().getLong(KEY_INVITATION_ID);
         if (feedItem != null) {
             if (feedItem.isPrivate()) {
-                if (invitationId > 0) {
-                    // already a member
-                    // send a silent accept
-                    if (presenter != null) {
-                        acceptInvitationSilently = true;
-                        presenter.acceptInvitation(invitationId);
-                    }
-                    // ignore the invitation
-                    invitationId = 0;
-                }
                 initializeView();
             } else {
                 // public entourage
@@ -961,6 +951,17 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         // update description
         tourDescription.setText(feedItem.getDescription());
+
+        if (invitationId > 0) {
+            // already a member
+            // send a silent accept
+            if (presenter != null) {
+                acceptInvitationSilently = true;
+                presenter.acceptInvitation(invitationId);
+            }
+            // ignore the invitation
+            invitationId = 0;
+        }
 
         // switch to appropiate section
         if (feedItem.isPrivate()) {
