@@ -14,8 +14,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.BusProvider;
@@ -52,9 +54,9 @@ public class MapFilterFragment extends EntourageDialogFragment {
     @BindView(R.id.map_filter_entourage_user_only_switch)
     Switch onlyMyEntouragesSwitch;
     @BindView(R.id.map_filter_entourage_partner)
-    RelativeLayout onlyMyOrganisationEntouragesLayout;
+    RelativeLayout onlyMyPartnerEntouragesLayout;
     @BindView(R.id.map_filter_entourage_partner_switch)
-    Switch onlyMyOrganisationEntouragesSwitch;
+    Switch onlyMyPartnerEntouragesSwitch;
     @BindView(R.id.map_filter_time_days_1)
     RadioButton days1RB;
     @BindView(R.id.map_filter_time_days_2)
@@ -124,7 +126,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
         mapFilter.entourageTypeContribution = entourageContributionSwitch.isChecked();
         mapFilter.showTours = showToursSwitch.isChecked();
         mapFilter.onlyMyEntourages = onlyMyEntouragesSwitch.isChecked();
-        mapFilter.onlyMyPartnerEntourages = onlyMyOrganisationEntouragesSwitch.isChecked();
+        mapFilter.onlyMyPartnerEntourages = onlyMyPartnerEntouragesSwitch.isChecked();
 
         if (days1RB.isChecked()) {
             mapFilter.timeframe = MapFilter.DAYS_1;
@@ -199,10 +201,17 @@ public class MapFilterFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private void initializeView() {
-        tourTypeLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
-        showToursLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
 
         MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
+
+        User me = EntourageApplication.me();
+
+        boolean showPartnerFilter = me != null && me.getPartner() != null;
+        if (!showPartnerFilter) mapFilter.onlyMyPartnerEntourages = false;
+
+        tourTypeLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
+        showToursLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
+        onlyMyPartnerEntouragesLayout.setVisibility(showPartnerFilter ? View.VISIBLE : View.GONE);
 
         tourMedicalSwitch.setChecked(mapFilter.tourTypeMedical);
         tourSocialSwitch.setChecked(mapFilter.tourTypeSocial);
@@ -212,7 +221,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
         entourageContributionSwitch.setChecked(mapFilter.entourageTypeContribution);
         showToursSwitch.setChecked(mapFilter.showTours);
         onlyMyEntouragesSwitch.setChecked(mapFilter.onlyMyEntourages);
-        onlyMyOrganisationEntouragesSwitch.setChecked(mapFilter.onlyMyPartnerEntourages);
+        onlyMyPartnerEntouragesSwitch.setChecked(mapFilter.onlyMyPartnerEntourages);
 
         switch (mapFilter.timeframe) {
             case MapFilter.DAYS_1:
