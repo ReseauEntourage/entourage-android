@@ -1111,7 +1111,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_create_entourage)
     public void onCreateEntourageClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_FEED_OFFER_CREATE_CLICK);
+        EntourageEvents.logEvent(Constants.EVENT_FEED_ACTION_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
         } else {
