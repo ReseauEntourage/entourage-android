@@ -16,6 +16,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -30,6 +33,7 @@ public class FusedLocationProvider {
     private final Context context;
     private final GoogleApiClient apiClient;
     private final UserType userType;
+    private UserType locationUpdateUserType;
     private LocationListener locationListener;
     private ProviderStatusListener statusListener;
 
@@ -38,6 +42,7 @@ public class FusedLocationProvider {
         this.context = context.getApplicationContext();
         this.apiClient = initializeGoogleApiClient(context.getApplicationContext());
         this.userType = userType;
+        this.locationUpdateUserType = UserType.PUBLIC;
     }
 
     public void start() {
@@ -64,6 +69,13 @@ public class FusedLocationProvider {
         registerListener(statusListener);
     }
 
+    public void setLocationUpdateUserType(final UserType locationUpdateUserType) {
+        if (this.locationUpdateUserType != locationUpdateUserType) {
+            this.locationUpdateUserType = locationUpdateUserType;
+            requestLocationUpdates();
+        }
+    }
+
     private void registerListener(final ProviderStatusListener statusListener) {
         if (!apiClient.isConnected()) {
             return;
@@ -72,7 +84,7 @@ public class FusedLocationProvider {
         SettingsApi
             .checkLocationSettings(apiClient,
                 new LocationSettingsRequest.Builder()
-                    .addLocationRequest(getLocationRequest())
+                    .addAllLocationRequests(getAllLocationRequests())
                     .build())
             .setResultCallback(new ResultCallback<LocationSettingsResult>() {
                 @Override
@@ -144,8 +156,21 @@ public class FusedLocationProvider {
         FusedLocationApi.requestLocationUpdates(apiClient, getLocationRequest(), locationListener);
     }
 
-    private LocationRequest getLocationRequest() {
+    private List<LocationRequest> getAllLocationRequests() {
+        List<LocationRequest> locationRequestList = new ArrayList<>();
+
         if (UserType.PRO.equals(userType)) {
+            locationRequestList.add(createLocationRequestForProUsage());
+            locationRequestList.add(createLocationRequestForPublicUsage());
+        } else {
+            locationRequestList.add(createLocationRequestForPublicUsage());
+        }
+
+        return locationRequestList;
+    }
+
+    private LocationRequest getLocationRequest() {
+        if (UserType.PRO.equals(locationUpdateUserType)) {
             return createLocationRequestForProUsage();
         } else {
             return createLocationRequestForPublicUsage();

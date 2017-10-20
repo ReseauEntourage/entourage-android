@@ -635,6 +635,7 @@ public class TourServiceManager {
                     } else {
                         Log.e(this.getClass().getSimpleName(), "no location provided");
                     }
+                    provider.setLocationUpdateUserType(UserType.PRO);
 
                 } else {
                     tour = null;
@@ -667,6 +668,7 @@ public class TourServiceManager {
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
+                    provider.setLocationUpdateUserType(UserType.PUBLIC);
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);
                 }
@@ -818,6 +820,7 @@ public class TourServiceManager {
 
         @Override
         public void onLocationChanged(Location location) {
+            Log.d("LOCATION", "onLocationChanged");
             if (manager.entourageLocation.getCurrentLocation() == null) {
                 manager.entourageLocation.setInitialLocation(location);
             }
