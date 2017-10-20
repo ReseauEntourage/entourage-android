@@ -34,7 +34,7 @@
     <string name="update_encounter_success">Rencontre modifiée</string>
 
     <!-- Encounter disclaimer -->
-    <string name="encounter_disclaimer_text">Bonjour,\nnous vous rappelons qu\'en vertu de la charte d\'Entourage (http://entourage.social/cgu), vous devez vous assurer que les personnes que vous rencontrerez consentent à ce que des données sur vos échanges soient stockées et échangées au sein de votre association.</string>
+    <string name="encounter_disclaimer_text"><![CDATA[Bonjour,<br/>nous vous rappelons qu\'en vertu de la <a href="https://blog.entourage.social/charte-ethique-maraudeur">charte d\'Entourage</a>, vous devez vous assurer que les personnes que vous rencontrerez consentent à ce que des données sur vos échanges soient stockées et échangées au sein de votre association.]]></string>
     <string name="encounter_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
     <string name="encounter_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
 
