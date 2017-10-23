@@ -30,7 +30,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
 
     public static final String TAG = "social.entourage_android.MapFilterFragment";
 
-    private static final String KEY_PRO_USER = "social,entourage.android.KEY_PRO_USER";
+    private static final String KEY_PRO_USER = "social.entourage.android.KEY_PRO_USER";
 
     // ----------------------------------
     // Attributes

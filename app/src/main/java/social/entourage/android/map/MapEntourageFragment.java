@@ -590,18 +590,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
 
-        /*
-        if (me.isEntourageDisclaimerShown()) {
-            // Already shown, display the create entourage fragment
-            createEntourage(entourageType);
-        } else {
-            // Show the disclaimer fragment
-            if (presenter != null) {
-                presenter.displayEntourageDisclaimer(entourageType, me.isPro());
-            }
-        }
-        */
-
         // MI: EMA-920 Show the disclaimer ever time
         // Show the disclaimer fragment
         if (presenter != null) {
@@ -1527,7 +1515,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         Point clickPoint = map.getProjection().toScreenLocation(latLng);
         //update the visible buttons
         boolean isTourRunning = tourService != null && tourService.isRunning();
-        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : (isPro ? View.VISIBLE : View.GONE));
+        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : View.VISIBLE);
         mapLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
         mapLongClickButtonsView.requestLayout();
         //adjust the buttons holder layout
@@ -1621,7 +1609,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
                     map = googleMap;
-                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                            || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                         googleMap.setMyLocationEnabled(true);
                     }
                     googleMap.getUiSettings().setMyLocationButtonEnabled(false);

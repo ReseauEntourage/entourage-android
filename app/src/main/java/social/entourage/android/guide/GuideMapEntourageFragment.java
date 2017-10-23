@@ -623,7 +623,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         Point clickPoint = map.getProjection().toScreenLocation(latLng);
         //update the visible buttons
         boolean isTourRunning = tourService != null && tourService.isRunning();
-        guideLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : (isPro ? View.VISIBLE : View.GONE));
+        guideLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : View.VISIBLE);
         guideLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
         guideLongClickButtonsView.requestLayout();
         //adjust the buttons holder layout

@@ -104,7 +104,7 @@ public class FusedLocationProvider {
             return null;
         }
         Location lastLocation = FusedLocationApi.getLastLocation(apiClient);
-        System.out.println("LAST LOCATION = " + lastLocation);
+        //System.out.println("LAST LOCATION = " + lastLocation);
         return lastLocation;
     }
 
