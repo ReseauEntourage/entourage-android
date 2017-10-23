@@ -1149,13 +1149,14 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void initializeMap() {
+        if (!isVisible()) return;
         if (mapFragment == null) {
             GoogleMapOptions googleMapOptions = new GoogleMapOptions();
             googleMapOptions.zOrderOnTop(true);
             mapFragment = SupportMapFragment.newInstance(googleMapOptions);
         }
         FragmentManager fragmentManager = getChildFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commitAllowingStateLoss();
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -1212,13 +1213,14 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void initializeHiddenMap() {
+        if (!isVisible()) return;
         if (hiddenMapFragment == null) {
             GoogleMapOptions googleMapOptions = new GoogleMapOptions();
             googleMapOptions.zOrderOnTop(true);
             hiddenMapFragment = SupportMapFragment.newInstance(googleMapOptions);
         }
         FragmentManager fragmentManager = getChildFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, hiddenMapFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, hiddenMapFragment).commitAllowingStateLoss();
         hiddenMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final GoogleMap googleMap) {
