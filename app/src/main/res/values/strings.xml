@@ -27,7 +27,7 @@
     <string name="activate">Activer</string>
 
     <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
-    <string name="disclaimer_link_pro">http://www.entourage.social/chartes/pro.html</string>
+    <string name="disclaimer_link_pro">https://blog.entourage.social/charte-ethique/</string>
 
     <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
     <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
