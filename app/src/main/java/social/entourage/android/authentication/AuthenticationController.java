@@ -61,9 +61,11 @@ public class AuthenticationController {
         Map<Integer, MapFilter> mapFilterHashMap = appSharedPref.getObject(PREF_KEY_MAP_FILTER_HASHMAP, typeMapFilterHashMap);
         if (mapFilterHashMap != null) {
             // save it to user preferences
-            MapFilter mapFilter = mapFilterHashMap.get(loggedUser.getId());
-            userPreferences.setMapFilter(mapFilter);
-            saveUserPreferences();
+            if (loggedUser != null) {
+                MapFilter mapFilter = mapFilterHashMap.get(loggedUser.getId());
+                userPreferences.setMapFilter(mapFilter);
+                saveUserPreferences();
+            }
             // delete it
             appSharedPref.putObject(PREF_KEY_MAP_FILTER_HASHMAP, null);
         }
