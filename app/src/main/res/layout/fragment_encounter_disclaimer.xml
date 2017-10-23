@@ -41,6 +41,7 @@
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:textColorLink="@color/accent"
             android:textSize="@dimen/entourage_font_medium"
             app:htmlText="@string/encounter_disclaimer_text"/>
     </ScrollView>
