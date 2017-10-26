@@ -87,6 +87,7 @@ import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
+import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
@@ -360,6 +361,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                 intentAction = ConfirmationActivity.KEY_END_TOUR;
             } else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
+            } else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_NEW_JOIN_REQUEST;
             } else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
             } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
@@ -375,14 +378,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 intentAction = TourService.KEY_NOTIFICATION_PAUSE_TOUR;
             } else if (TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                 intentAction = TourService.KEY_NOTIFICATION_STOP_TOUR;
-            } else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
-            } else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
-            } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
-            } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
             }
         }
     }
@@ -533,6 +528,15 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
+                /*
+                Intent intent = new Intent(this, PushNotificationService.class);
+                Bundle pushExtra = new Bundle();
+                pushExtra.putString(PushNotificationManager.KEY_SENDER, "Mihai I");
+                pushExtra.putString(PushNotificationManager.KEY_OBJECT, "New chat message");
+                pushExtra.putString(PushNotificationManager.KEY_CONTENT, "{'message'=''; 'extra'={'type'='NEW_CHAT_MESSAGE'; 'feed_id'=1; 'feed_type'='Entourage'}}");
+                intent.putExtras(pushExtra);
+                startService(intent);
+                */
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
@@ -745,11 +749,16 @@ public class DrawerActivity extends EntourageSecuredActivity
             return;
         }
         mapEntourageFragment.checkAction(intentAction, intentTour);
-        Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+        Message message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         if (message != null) {
             PushNotificationContent content = message.getContent();
             if (content != null) {
-                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
+                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
+                    if (presenter != null) {
+                        presenter.displayMyEntourages();
+                    }
+                }
+                else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
                     if (content.isTourRelated()) {
                         mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.TOUR_CARD);
                     } else if (content.isEntourageRelated()) {

@@ -20,6 +20,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.view.HtmlTextView;
@@ -38,7 +39,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tour_join_request_received);
 
-        message = (Message)getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+        message = (Message)getIntent().getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         if (message != null) {
             displayMessage();
         }

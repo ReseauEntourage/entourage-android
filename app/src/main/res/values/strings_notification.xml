@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_title_chat_message">!!New Chat Messages</string>
+    <string name="notification_text_chat_message">!!You have %1$d new messages</string>
+
+    <string name="notification_text_join_request_tour_single">@string/tour_join_request_received_message</string>
+    <string name="notification_text_join_request_entourage_single">@string/entourage_join_request_received</string>
+    <string name="notification_text_join_request_tour_multiple">!!%1$d people want to join your tour.</string>
+    <string name="notification_text_join_request_entourage_multiple">!!%1$d people want to join your entourage %2$s</string>
+</resources>

@@ -1,8 +1,12 @@
 package social.entourage.android.api.model;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+
+import social.entourage.android.R;
 
 public class Message implements Serializable {
 
@@ -19,6 +23,8 @@ public class Message implements Serializable {
     private PushNotificationContent content;
 
     private int pushNotificationId;
+
+    private String pushNotificationTag;
 
     private boolean visible;
 
@@ -72,6 +78,14 @@ public class Message implements Serializable {
         this.pushNotificationId = pushNotificationId;
     }
 
+    public String getPushNotificationTag() {
+        return pushNotificationTag;
+    }
+
+    public void setPushNotificationTag(final String pushNotificationTag) {
+        this.pushNotificationTag = pushNotificationTag;
+    }
+
     public boolean isVisible() {
         return visible;
     }
@@ -79,4 +93,64 @@ public class Message implements Serializable {
     public void setVisible(final boolean visible) {
         this.visible = visible;
     }
+
+    public String getHash() {
+        if (pushNotificationTag == null) return String.valueOf(pushNotificationId);
+        return pushNotificationTag + "-" + String.valueOf(pushNotificationId);
+    }
+
+    public String getContentTitleForCount(int count, Context context) {
+        if (count > 1) {
+            if (content != null) {
+                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(content.getType())) {
+                    return context.getString(R.string.notification_title_chat_message);
+                }
+                return author;
+            } else {
+                return author;
+            }
+        } else {
+            return author;
+        }
+    }
+
+    public String getContentTextForCount(int count, Context context) {
+        if (count > 1) {
+            if (content != null) {
+                String contentType = content.getType();
+                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(contentType)) {
+                    return context.getString(R.string.notification_text_chat_message, count);
+                }
+                if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(contentType)) {
+                    String notificationText = "";
+                    if (content.isEntourageRelated()) {
+                        notificationText = context.getString(R.string.notification_text_join_request_entourage_multiple, count, content.getFeedItemName());
+                    } else {
+                        notificationText = context.getString(R.string.notification_text_join_request_tour_multiple, count);
+                    }
+                    return notificationText;
+                }
+                return object;
+            } else {
+                return object;
+            }
+        } else {
+            if (content != null) {
+                String contentType = content.getType();
+                if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(contentType)) {
+                    String notificationText = "";
+                    if (content.isEntourageRelated()) {
+                        notificationText = context.getString(R.string.notification_text_join_request_entourage_single, author, content.getFeedItemName());
+                    } else {
+                        notificationText = context.getString(R.string.notification_text_join_request_tour_single, author);
+                    }
+                    return notificationText;
+                }
+                return object;
+            } else {
+                return object;
+            }
+        }
+    }
+
 }

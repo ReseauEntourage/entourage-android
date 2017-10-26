@@ -17,6 +17,7 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.message.push.PushNotificationService;
 
 public class MessageActivity extends EntourageSecuredActivity {
@@ -47,7 +48,7 @@ public class MessageActivity extends EntourageSecuredActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+        Message message = (Message) getIntent().getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         if (message != null) {
             displayMessage(message);
         }
@@ -70,7 +71,7 @@ public class MessageActivity extends EntourageSecuredActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+        Message message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         if (message != null) {
             Log.d("notification:", message.getAuthor());
             displayMessage(message);
