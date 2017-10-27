@@ -6,5 +6,5 @@
     <string name="notification_text_join_request_tour_single">@string/tour_join_request_received_message</string>
     <string name="notification_text_join_request_entourage_single">@string/entourage_join_request_received</string>
     <string name="notification_text_join_request_tour_multiple">!!%1$d people want to join your tour.</string>
-    <string name="notification_text_join_request_entourage_multiple">!!%1$d people want to join your entourage %2$s</string>
+    <string name="notification_text_join_request_entourage_multiple">!!%1$d people want to join your entourage: %2$s</string>
 </resources>
