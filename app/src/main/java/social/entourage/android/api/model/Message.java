@@ -12,6 +12,8 @@ public class Message implements Serializable {
 
     private static final long serialVersionUID = 929859042482137137L;
 
+    public static final char HASH_SEPARATOR = ';';
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -96,7 +98,7 @@ public class Message implements Serializable {
 
     public String getHash() {
         if (pushNotificationTag == null) return String.valueOf(pushNotificationId);
-        return pushNotificationTag + "-" + String.valueOf(pushNotificationId);
+        return pushNotificationTag + HASH_SEPARATOR + String.valueOf(pushNotificationId);
     }
 
     public String getContentTitleForCount(int count, Context context) {

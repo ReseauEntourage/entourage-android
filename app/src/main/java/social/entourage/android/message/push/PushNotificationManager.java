@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
@@ -80,6 +82,11 @@ public class PushNotificationManager {
     // INTERNAL PUSH NOTIFICATIONS HANDLING
     // ------------------------------------
 
+    /**
+     * Handle a push notification received from the server
+     * @param message The message that we use to build the push notification
+     * @param context The context into which to add the push notification
+     */
     public void handlePushNotification(Message message, Context context) {
         PushNotificationContent content = message.getContent();
         EntourageApplication application = EntourageApplication.get();
@@ -102,6 +109,10 @@ public class PushNotificationManager {
         }
     }
 
+    /**
+     * Adds a message to our internal list, creating the group if necessary
+     * @param message the message to add
+     */
     public synchronized void addPushNotification(Message message) {
         List<Message> messageList = pushNotifications.get(message.getHash());
         if (messageList == null) {
@@ -111,11 +122,18 @@ public class PushNotificationManager {
         messageList.add(message);
     }
 
+    /**
+     * Removes the notifications for a feed item, updating the groups if necessary
+     * @param feedItem the feed item from which to remove the notifications
+     * @return the number of push notifications that were removed
+     */
     public synchronized int removePushNotificationsForFeedItem(FeedItem feedItem) {
         long feedItemId = feedItem.getId();
         int feedType = feedItem.getType();
         int count = 0;
-        for (String key : pushNotifications.keySet()) {
+        Iterator<String> keySetIterator = pushNotifications.keySet().iterator();
+        while (keySetIterator.hasNext()) {
+            String key = keySetIterator.next();
             List<Message> messageList = pushNotifications.get(key);
             boolean messageListChanged = false;
             if (messageList != null) {
@@ -153,12 +171,20 @@ public class PushNotificationManager {
             }
             if (messageListChanged) {
                 // refresh the android notifications
-                updateNotificationGroup(key, messageList);
+                if (!updateNotificationGroup(key, messageList)) {
+                    // no more notifications in the group, remove the key
+                    keySetIterator.remove();
+                }
             }
         }
         return count;
     }
 
+    /**
+     * Removes a notification from our internal list
+     * @param message The message to remove
+     * @return the number of push notifications that were removed
+     */
     public synchronized int removePushNotification(Message message) {
         if (message == null) {
             return 0;
@@ -180,6 +206,13 @@ public class PushNotificationManager {
         return count;
     }
 
+    /**
+     * Removes notifications from a feed that matches the required type (see {@link PushNotificationContent})
+     * @param feedItem the feed item
+     * @param userId not used
+     * @param pushType the required type
+     * @return the number of push notifications that were removed
+     */
     public synchronized int removePushNotification(FeedItem feedItem, int userId, String pushType) {
         if (feedItem == null) {
             return 0;
@@ -190,6 +223,14 @@ public class PushNotificationManager {
         return removePushNotification(feedId, feedType, userId, pushType);
     }
 
+    /**
+     * Removes notifications from a feed that matches the required type (see {@link PushNotificationContent})
+     * @param feedId feed id
+     * @param feedType feed type (see {@link FeedItem})
+     * @param userId not used
+     * @param pushType the required type
+     * @returnthe number of push notifications that were removed
+     */
     public synchronized int removePushNotification(long feedId, int feedType, int userId, String pushType) {
         // Sanity checks
         if (pushType == null) {
@@ -206,10 +247,11 @@ public class PushNotificationManager {
         if (notificationManager == null) {
             return 0;
         }
-
         int count = 0;
         // search for a push notification that matches our parameters
-        for (String key : pushNotifications.keySet()) {
+        Iterator<String> keySetIterator = pushNotifications.keySet().iterator();
+        while (keySetIterator.hasNext()) {
+            String key = keySetIterator.next();
             List<Message> messageList = pushNotifications.get(key);
             boolean messageListChanged = false;
             if (messageList != null) {
@@ -245,12 +287,18 @@ public class PushNotificationManager {
             }
             if (messageListChanged) {
                 // refresh the android notifications
-                updateNotificationGroup(key, messageList);
+                if (!updateNotificationGroup(key, messageList)) {
+                    // no more notifications in the group, remove the key
+                    keySetIterator.remove();
+                }
             }
         }
         return count;
     }
 
+    /**
+     * Removes all the notifications, both from OS and our internal list
+     */
     public synchronized void removeAllPushNotifications() {
         // get the notification manager
         NotificationManager notificationManager = (NotificationManager) EntourageApplication.get().getSystemService(NOTIFICATION_SERVICE);
@@ -275,6 +323,11 @@ public class PushNotificationManager {
     // PUSH NOTIFICATION UI HANDLING
     // ----------------------------------
 
+    /**
+     * Creates and displays a OS notification, using tag and id
+     * @param message the message received
+     * @param context the context
+     */
     private void displayPushNotification(Message message, Context context) {
         List<Message> messageList = pushNotifications.get(message.getHash());
         int count = messageList.size();
@@ -300,16 +353,28 @@ public class PushNotificationManager {
         notification.defaults = Notification.DEFAULT_LIGHTS;
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        Log.d("NOTIFICATION", "TAG = " + message.getPushNotificationTag() + " , ID = " + message.getPushNotificationId());
         notificationManager.notify(message.getPushNotificationTag(), message.getPushNotificationId(), notification);
     }
 
-    private void updateNotificationGroup(String key, List<Message> messageList) {
-        if (key == null || messageList == null) return;
-        if (messageList.size() == 0) {
+    /**
+     * Updates a group of notifications. If the group is empty, it removes the notification
+     * @param key the key of the group
+     * @param messageList the message list
+     * @return true if the group was updated, false if it was removed
+     */
+    private boolean updateNotificationGroup(String key, List<Message> messageList) {
+        if (key == null || messageList == null) return true;
+        // get the visible messages count
+        int count = 0;
+        for (Message message:messageList) {
+            if (message.isVisible()) count++;
+        }
+        if (count == 0) {
             // no more messages, cancel the notification
             String notificationTag = null;
             int notificationId = 0;
-            int separator = key.indexOf('-');
+            int separator = key.indexOf(Message.HASH_SEPARATOR);
             if (separator > 0) {
                 notificationTag = key.substring(0, separator);
                 notificationId = Integer.parseInt(key.substring(separator+1));
@@ -318,22 +383,33 @@ public class PushNotificationManager {
             }
             NotificationManager notificationManager = (NotificationManager) EntourageApplication.get().getSystemService(NOTIFICATION_SERVICE);
             notificationManager.cancel(notificationTag, notificationId);
+            return false;
         } else {
             Message message = messageList.get(messageList.size()-1);
             displayPushNotification(message, EntourageApplication.get());
         }
+        return true;
     }
 
+    /**
+     * Creates the pending intent to be used when creating the OS notification
+     * @param message the message
+     * @param context the content
+     * @return the {@link PendingIntent}
+     */
     private PendingIntent createMessagePendingIntent(Message message, Context context) {
         Bundle args = new Bundle();
         args.putSerializable(PUSH_MESSAGE, message);
         Intent messageIntent;
         String messageType = "";
+        int intentCode = message.getPushNotificationId();
         if (message.getContent() != null) {
             messageType = message.getContent().getType();
         }
         if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(messageType)) {
             messageIntent = new Intent(context, DrawerActivity.class);
+            // because of the grouping, we need an intent that is specific for each entourage
+            messageIntent.setData(Uri.parse("entourage-notif://" + message.getPushNotificationTag()));
         }
         else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(messageType)) {
             messageIntent = new Intent(context, DrawerActivity.class);
@@ -348,13 +424,19 @@ public class PushNotificationManager {
             messageIntent.setAction(messageType);
         }
         messageIntent.putExtras(args);
-        return PendingIntent.getActivity(context, message.getPushNotificationId(), messageIntent, 0);
+        return PendingIntent.getActivity(context, intentCode, messageIntent, 0);
     }
 
     // ----------------------------------
     // STATIC METHODS
     // ----------------------------------
 
+    /**
+     * Creates a {@link Message} from the Intent received from the server
+     * @param intent the intent with the json from the server
+     * @param context the context
+     * @return the message
+     */
     @Nullable
     public static Message getMessageFromIntent(Intent intent, Context context) {
         Bundle args = intent.getExtras();
@@ -366,6 +448,13 @@ public class PushNotificationManager {
         return message;
     }
 
+    /**
+     * Returns the notification id for the message.<br/>
+     * The NEW_CHAT_MESSAGE and TYPE_NEW_JOIN_REQUEST messages use a hardcoded id, for grouping purposes. The others use an incremental id
+     * @param context the context
+     * @param message the message
+     * @return the notification id
+     */
     private static int getNotificationId(Context context, Message message) {
         if (message != null) {
             PushNotificationContent content = message.getContent();
@@ -384,6 +473,11 @@ public class PushNotificationManager {
         return getNextNotificationId(context);
     }
 
+    /**
+     * Returns the next notification id
+     * @param context the context
+     * @return the notification id
+     */
     private static int getNextNotificationId(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int id = sharedPreferences.getInt(PREFERENCE_LAST_NOTIFICATION_ID, MIN_NOTIFICATION_ID - 1) + 1;
@@ -394,6 +488,12 @@ public class PushNotificationManager {
         return id;
     }
 
+    /**
+     * Returns the tag used by the notification (it can be null)
+     * @param message the message
+     * @return the tag
+     */
+    @Nullable
     private static String getNotificationTag(Message message) {
         if (message != null) {
             PushNotificationContent content = message.getContent();
