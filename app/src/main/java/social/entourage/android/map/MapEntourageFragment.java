@@ -148,6 +148,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // Radius of the circle where to search for entourages when user taps a heatzone
     private static final int HEATZONE_SEARCH_RADIUS = (int)Entourage.HEATMAP_SIZE / 2; // meters
 
+    // Zoom in level when taping a heatzone
+    private static final float ZOOM_HEATZONE = 16.5f;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -2548,6 +2551,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         //show the minicards list
         miniCardsView.setEntourages(entourageArrayList);
+        //zoom in the heatzone, if necessary
+        if (map != null) {
+            CameraPosition lastCameraPosition = EntourageLocation.getInstance().getLastCameraPosition();
+            if (lastCameraPosition != null) {
+                if (lastCameraPosition.zoom < ZOOM_HEATZONE) {
+                    CameraPosition cameraPosition = new CameraPosition(location, ZOOM_HEATZONE, 0, 0);
+                    map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    saveCameraPosition();
+                }
+            }
+        }
     }
 
     // ----------------------------------
