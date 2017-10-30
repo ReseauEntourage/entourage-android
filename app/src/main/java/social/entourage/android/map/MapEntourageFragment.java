@@ -543,14 +543,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void displayEntouragePopupWhileTour(final String entourageType) {
+    public void displayEntouragePopupWhileTour() {
         // if we have an ongoing tour
         if (isBound && tourService != null && tourService.isRunning()) {
             EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_SHOW);
             // Show the dialog that asks the user if he really wants to create an entourage instead of encounter
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder
-                    .setMessage(Entourage.TYPE_CONTRIBUTION.equals(entourageType) ? R.string.entourage_tour_ongoing_contribution : R.string.entourage_tour_ongoing_demand)
+                    .setMessage(R.string.entourage_tour_ongoing_description)
                     .setTitle(R.string.entourage_tour_ongoing_title)
                     .setPositiveButton(R.string.entourage_tour_ongoing_proceed, new DialogInterface.OnClickListener() {
                         @Override
@@ -559,7 +559,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             onAddEncounter();
                         }
                     })
-                    .setNegativeButton(R.string.next, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.entourage_tour_ongoing_action, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
                             EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENTOURAGE);
@@ -1383,7 +1383,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.map_longclick_button_entourage_action)
     protected void onCreateEntourageAction() {
-        displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
+        displayEntouragePopupWhileTour();
     }
 
     @OnClick(R.id.fragment_map_filter_button)

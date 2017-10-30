@@ -1122,10 +1122,10 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onCreateEntourageClicked() {
         EntourageEvents.logEvent(Constants.EVENT_FEED_ACTION_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
+            mapEntourageFragment.displayEntouragePopupWhileTour();
         } else {
             onPOILauncherClicked();
-            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
+            mapEntourageFragment.displayEntouragePopupWhileTour();
         }
     }
 
