@@ -625,7 +625,7 @@ public class TourServiceManager {
 
                     Location location = provider.getLastKnownLocation();
                     if (location != null) {
-                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
+                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), location.getAccuracy());
                         tour.addCoordinate(point);
                         pointsToDraw.add(point);
                         pointsToSend.add(point);
@@ -829,7 +829,7 @@ public class TourServiceManager {
             manager.tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
 
             if (manager.tour != null && !manager.tourService.isPaused()) {
-                TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
+                TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), location.getAccuracy());
                 manager.onLocationChanged(location, point);
             }
         }
