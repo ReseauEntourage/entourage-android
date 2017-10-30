@@ -25,6 +25,7 @@ public class Constants {
     public static final String GOAL_URL= "https://blog.entourage.social/quelles-actions-faire-avec-entourage";
     public static final String FAQ_URL = "https://blog.entourage.social/comment-utiliser-l-application-entourage/";
     public static final String ATD_URL = "https://www.atd-quartmonde.fr/entourage/";
+    public static final String DONATE_URL = "https://blog.entourage.social";
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";
@@ -112,6 +113,7 @@ public class Constants {
     public static final String EVENT_MENU_BLOG = "SimpleCommeBonjourClick";
     public static final String EVENT_MENU_CHART = "ViewEthicsChartClick";
     public static final String EVENT_MENU_ATD = "ATDPartnershipView";
+    public static final String EVENT_MENU_DONATION = "DonationView";
 
     //FEED Events
     public static final String EVENT_FEED_MESSAGES = "GoToMessages"; // No longer used

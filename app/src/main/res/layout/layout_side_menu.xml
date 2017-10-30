@@ -88,14 +88,6 @@
                 android:layout_height="50dp"
                 android:visibility="gone"/>
 
-            <!--social.entourage.android.sidemenu.SideMenuItemView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:icon="@drawable/ic_settings"
-        android:background="@color/white"/-->
-
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_blog"
                 android:layout_width="match_parent"
@@ -115,12 +107,13 @@
                 app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
-                android:id="@+id/action_atd"
+                android:id="@+id/action_donation"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
-                android:icon="@drawable/partner_badge_atd"
-                android:title="@string/action_atd"
+                android:background="@color/accent"
+                android:icon="@drawable/ic_heart"
+                android:textColor="@color/white"
+                android:title="@string/action_donation"
                 app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
@@ -133,21 +126,21 @@
                 app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_atd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/partner_badge_atd"
+                android:title="@string/action_atd"
+                app:showDivider="true"/>
+
+            <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_charte"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/white"
                 android:icon="@drawable/ic_charte"
                 android:title="@string/action_charte"
-                app:showDivider="true"/>
-
-            <social.entourage.android.sidemenu.SideMenuItemView
-                android:id="@+id/action_faq"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:icon="@drawable/ic_phone_grey"
-                android:title="@string/action_faq"
                 app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView

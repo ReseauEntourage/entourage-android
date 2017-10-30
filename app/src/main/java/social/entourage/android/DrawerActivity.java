@@ -579,20 +579,20 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
 
                 break;
-            case R.id.action_faq:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
-                Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_URL));
-                try {
-                    startActivity(userGuideIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                break;
             case R.id.action_atd:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
                 Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.ATD_URL));
                 try {
                     startActivity(atdIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.action_donation:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_DONATION);
+                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.DONATE_URL));
+                try {
+                    startActivity(donationIntent);
                 } catch (Exception ex) {
                     Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }

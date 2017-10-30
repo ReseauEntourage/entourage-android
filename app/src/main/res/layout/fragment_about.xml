@@ -233,10 +233,52 @@
         android:background="@color/greyish"/>
 
     <LinearLayout
-        android:id="@+id/about_email_layout"
+        android:id="@+id/faq_website_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/about_separator_website"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/about_items_padding"
+        android:paddingEnd="0dp"
+        android:paddingLeft="@dimen/about_items_padding"
+        android:paddingRight="0dp"
+        android:paddingStart="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding">
+
+        <TextView
+            android:id="@+id/faq_website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/action_faq"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/entourage_font_medium"/>
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/empty_description"
+            android:scaleType="fitEnd"
+            android:src="@drawable/arrow_grey"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/faq_website_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/faq_website_layout"
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_marginStart="@dimen/about_items_padding"
+        android:background="@color/greyish"/>
+
+    <LinearLayout
+        android:id="@+id/about_email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/faq_website_separator"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"

@@ -139,4 +139,15 @@ public class AboutFragment extends EntourageDialogFragment {
             Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
         }
     }
+
+    @OnClick(R.id.faq_website_layout)
+    protected void onFAQClicked() {
+        EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
+        Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_URL));
+        try {
+            startActivity(userGuideIntent);
+        } catch (Exception ex) {
+            Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
