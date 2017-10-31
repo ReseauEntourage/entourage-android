@@ -29,6 +29,8 @@
     <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
     <string name="disclaimer_link_pro">https://blog.entourage.social/charte-ethique/</string>
 
+    <string name="deeplinks_label">!!Open with Entourage</string>
+
     <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
     <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>
     <string name="network_error">Vérifiez votre connexion\net réessayez plus tard</string>

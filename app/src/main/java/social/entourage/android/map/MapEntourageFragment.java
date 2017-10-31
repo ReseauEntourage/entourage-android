@@ -527,6 +527,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    public void displayChosenFeedItem(String feedItemShareURL, int feedItemType) {
+        //display the feed item
+        if (presenter != null) {
+            EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
+            presenter.openFeedItem(feedItemShareURL, feedItemType);
+        }
+    }
+
     public void act(TimestampedObject timestampedObject) {
         if (tourService != null) {
             EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_CONTACT);

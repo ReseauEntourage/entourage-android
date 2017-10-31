@@ -140,6 +140,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     private static final String KEY_INVITATION_ID = "social.entourage.android_KEY_INVITATION_ID";
     private static final String KEY_FEED_POSITION = "social.entourage.android.KEY_FEED_POSITION";
+    private static final String KEY_FEED_SHARE_URL = "social.entourage.android.KEY_FEED_SHARE_URL";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -277,6 +278,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     FeedItem feedItem;
     long requestedFeedItemId;
     int requestedFeedItemType;
+    String requestedFeedItemShareURL;
     long invitationId;
     boolean acceptInvitationSilently = false;
 
@@ -332,6 +334,15 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         return fragment;
     }
 
+    public static TourInformationFragment newInstance(String shareURL, int feedItemType) {
+        TourInformationFragment fragment = new TourInformationFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_FEED_SHARE_URL, shareURL);
+        args.putInt(FeedItem.KEY_FEEDITEM_TYPE, feedItemType);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -349,32 +360,39 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
-        feedItem = (FeedItem) getArguments().getSerializable(FeedItem.KEY_FEEDITEM);
-        invitationId = getArguments().getLong(KEY_INVITATION_ID);
-        if (feedItem != null) {
-            if (feedItem.isPrivate()) {
-                initializeView();
+        Bundle args = getArguments();
+        if (args != null) {
+            feedItem = (FeedItem) args.getSerializable(FeedItem.KEY_FEEDITEM);
+            invitationId = args.getLong(KEY_INVITATION_ID);
+            if (feedItem != null) {
+                if (feedItem.isPrivate()) {
+                    initializeView();
+                } else {
+                    // public entourage
+                    // we need to retrieve the whole entourage again, just to send the distance and feed position
+                    int feedRank = args.getInt(KEY_FEED_POSITION);
+                    int distance = 0;
+                    TourPoint startPoint = feedItem.getStartPoint();
+                    if (startPoint != null) {
+                        Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                        if (currentLocation != null) {
+                            distance = (int) Math.ceil(startPoint.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude())) / 1000); // in kilometers
+                        }
+                    }
+                    presenter.getFeedItem(feedItem.getId(), feedItem.getType(), feedRank, distance);
+                    feedItem = null;
+                }
             } else {
-                // public entourage
-                // we need to retrieve the whole entourage again, just to send the distance and feed position
-                int feedRank = getArguments().getInt(KEY_FEED_POSITION);
-                int distance = 0;
-                TourPoint startPoint = feedItem.getStartPoint();
-                if (startPoint != null) {
-                    Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-                    if (currentLocation != null) {
-                        distance = (int) Math.ceil(startPoint.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()))/1000); // in kilometers
+                requestedFeedItemShareURL = args.getString(KEY_FEED_SHARE_URL);
+                requestedFeedItemId = args.getLong(FeedItem.KEY_FEEDITEM_ID);
+                requestedFeedItemType = args.getInt(FeedItem.KEY_FEEDITEM_TYPE);
+                if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
+                    if (requestedFeedItemShareURL != null && requestedFeedItemShareURL.length() > 0) {
+                        presenter.getFeedItem(requestedFeedItemShareURL, requestedFeedItemType);
+                    } else {
+                        presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType, 0, 0);
                     }
                 }
-                presenter.getFeedItem(feedItem.getId(), feedItem.getType(), feedRank, distance);
-                feedItem = null;
-            }
-        }
-        else {
-            requestedFeedItemId = getArguments().getLong(FeedItem.KEY_FEEDITEM_ID);
-            requestedFeedItemType = getArguments().getInt(FeedItem.KEY_FEEDITEM_TYPE);
-            if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
-                presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType, 0, 0);
             }
         }
         if (feedItem != null && feedItem.isPrivate()) {

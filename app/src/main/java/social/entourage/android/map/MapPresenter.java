@@ -115,6 +115,14 @@ public class MapPresenter {
         }
     }
 
+    public void openFeedItem(String feedItemShareURL, int feedItemType) {
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemShareURL, feedItemType);
+            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
+        }
+    }
+
     public void createEntourage(LatLng location) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();

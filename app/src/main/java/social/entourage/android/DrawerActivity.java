@@ -75,6 +75,7 @@ import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
+import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -186,10 +187,10 @@ public class DrawerActivity extends EntourageSecuredActivity
             String avatarURL = user.getAvatarURL();
             if (avatarURL != null) {
                 Picasso.with(this)
-                    .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(new CropCircleTransformation())
-                    .into(userPhoto);
+                        .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(userPhoto);
             } else {
                 userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
@@ -743,13 +744,16 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         switchToMapFragment();
         Intent intent = getIntent();
-        if (intent == null || intent.getExtras() == null) {
+        if (intent == null) {
             intentAction = null;
             intentTour = null;
             return;
         }
         mapEntourageFragment.checkAction(intentAction, intentTour);
-        Message message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
+        Message message = null;
+        if (intent.getExtras() != null) {
+            message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
+        }
         if (message != null) {
             PushNotificationContent content = message.getContent();
             if (content != null) {
@@ -781,6 +785,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                 application.removePushNotification(message);
             }
             refreshBadgeCount();
+        } else if (Intent.ACTION_VIEW.equals(intentAction)){
+            // Handle the deep link
+            Uri appLinkData = intent.getData();
+            DeepLinksManager.handleUri(appLinkData);
         }
         intentAction = null;
         intentTour = null;
@@ -845,10 +853,15 @@ public class DrawerActivity extends EntourageSecuredActivity
                 //check if we are receiving feed type and id
                 int feedItemType = event.getFeedItemType();
                 long feedItemId = event.getFeedItemId();
-                if (feedItemType == 0 || feedItemId == 0) {
+                if (feedItemType == 0) {
                     return;
                 }
-                mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
+                if (feedItemId == 0) {
+                    String shareURL = event.getFeedItemShareURL();
+                    mapEntourageFragment.displayChosenFeedItem(shareURL, feedItemType);
+                } else {
+                    mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
+                }
             }
         }
     }

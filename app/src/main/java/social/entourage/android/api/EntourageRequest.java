@@ -38,6 +38,11 @@ public interface EntourageRequest {
             @Query("feed_rank") Integer feedRank
     );
 
+    @GET("entourages/{entourage_id}")
+    Call<Entourage.EntourageWrapper> retrieveEntourageByShareURL(
+            @Path("entourage_id") String entourageShareURL
+    );
+
     @PUT("entourages/{id}.json")
     Call<Entourage.EntourageWrapper> closeEntourage(
             @Path("id") long entourageId,

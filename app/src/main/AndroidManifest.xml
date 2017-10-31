@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="social.entourage.android"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -15,31 +14,31 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false"/>
-
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.location.gps"/>
 
     <permission
         android:name="${applicationId}.permission.MAPS_RECEIVE"
         android:protectionLevel="signature"/>
+
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission
-        android:name="${applicationId}.permission.C2D_MESSAGE" />
+        android:protectionLevel="signature"/>
+
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE"/>
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 
     <application
         android:name=".EntourageApplication"
@@ -60,6 +59,28 @@
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="${deepLinksHostName}"
+                    android:pathPrefix="/entourages/"
+                    android:scheme="https"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="${deepLinksHostName}"
+                    android:pathPrefix="/entourages/"
+                    android:scheme="http"/>
             </intent-filter>
         </activity>
         <activity
@@ -99,11 +120,9 @@
             android:name=".map.tour.join.received.TourJoinRequestReceivedActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity
-            android:name=".user.edit.photo.ChoosePhotoActivity">
+        <activity android:name=".user.edit.photo.ChoosePhotoActivity">
         </activity>
-        <activity
-            android:name=".user.edit.photo.TakePhotoActivity">
+        <activity android:name=".user.edit.photo.TakePhotoActivity">
         </activity>
 
         <service
@@ -122,20 +141,24 @@
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true"/>
 
-        <activity android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
+        <activity
+            android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
             android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
 
         <!-- Receivers -->
 
+
         <!-- Previous push notification receiver -->
-        <receiver android:name=".message.push.GcmBroadcastReceiver"
+        <receiver
+            android:name=".message.push.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
         </receiver>
 
-        <!--receiver
+        <!--
+        receiver
             android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
@@ -145,14 +168,19 @@
                     android:name="com.google.android.c2dm.intent.REGISTRATION" />
                 <category android:name="social.entourage.android" />
             </intent-filter>
-        </receiver-->
+        </receiver
+        -->
 
-        <!-- TODO reactivate this
+
+        <!--
+        TODO reactivate this
         <receiver android:name=".api.tape.EncounterTapeService$ConnectionChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
-        </receiver-->
+        </receiver
+        -->
+
 
         <!-- [START instanceId_listener] -->
         <service
@@ -176,11 +204,10 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="2eca3faf46139913c216b9ee9cf8bee49e70fe20" />
-
-        <meta-data android:name="com.mixpanel.android.MPConfig.AutoShowMixpanelUpdates"
-            android:value="false" />
-
+            android:value="2eca3faf46139913c216b9ee9cf8bee49e70fe20"/>
+        <meta-data
+            android:name="com.mixpanel.android.MPConfig.AutoShowMixpanelUpdates"
+            android:value="false"/>
     </application>
 
 </manifest>
