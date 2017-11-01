@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -142,12 +143,15 @@ public class AboutFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.faq_website_layout)
     protected void onFAQClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
-        Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_URL));
-        try {
-            startActivity(userGuideIntent);
-        } catch (Exception ex) {
-            Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
+            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+            Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(drawerActivity.getLink(Constants.FAQ_LINK_ID)));
+            try {
+                startActivity(userGuideIntent);
+            } catch (Exception ex) {
+                Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -17,15 +17,17 @@ public class Constants {
     public static final int REQUEST_CREATE_ENCOUNTER = 1;
     public static final int RESULT_CREATE_ENCOUNTER_OK = 2;
 
+    // Link IDs
+    public static final String SCB_LINK_ID = "pedagogic-content";
+    public static final String GOAL_LINK_ID= "action-examples";
+    public static final String DONATE_LINK_ID = "donation";
+    public static final String ATD_LINK_ID = "atd-partnership";
+    public static final String CHARTE_LINK_ID = "ethics-charter";
+    public static final String FAQ_LINK_ID = "faq";
     // Links
-    public static final String BLOG_URL = "https://blog.entourage.social/2016/10/28/franchir-le-pas/";
-    public static final String SCB_URL = "http://www.simplecommebonjour.org/";
     public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
     public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";
-    public static final String GOAL_URL= "https://blog.entourage.social/quelles-actions-faire-avec-entourage";
-    public static final String FAQ_URL = "https://blog.entourage.social/comment-utiliser-l-application-entourage/";
-    public static final String ATD_URL = "https://www.atd-quartmonde.fr/entourage/";
-    public static final String DONATE_URL = "https://blog.entourage.social";
+
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";

@@ -548,7 +548,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
-                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.SCB_URL));
+                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.SCB_LINK_ID)));
                 try {
                     startActivity(blogIntent);
                 } catch (Exception ex) {
@@ -562,12 +562,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 if (me != null) {
                     isPro = me.isPro();
                 }
-                Intent charteIntent;
-                if (isPro) {
-                    charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_pro)));
-                } else {
-                    charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_public)));
-                }
+                Intent charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.CHARTE_LINK_ID)));
                 try {
                     startActivity(charteIntent);
                 } catch (Exception ex) {
@@ -576,7 +571,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_goal:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
-                Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GOAL_URL));
+                Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.GOAL_LINK_ID)));
                 try {
                     startActivity(goalIntent);
                 } catch (Exception ex) {
@@ -586,7 +581,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_atd:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
-                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.ATD_URL));
+                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.ATD_LINK_ID)));
                 try {
                     startActivity(atdIntent);
                 } catch (Exception ex) {
@@ -595,7 +590,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_donation:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_DONATION);
-                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.DONATE_URL));
+                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.DONATE_LINK_ID)));
                 try {
                     startActivity(donationIntent);
                 } catch (Exception ex) {
@@ -1269,12 +1264,15 @@ public class DrawerActivity extends EntourageSecuredActivity
         discussionBadgeView.setBadgeCount(application.badgeCount);
     }
 
-    // ----------------------------------
-    // Helper functions
-    // ----------------------------------
-
     public boolean isGuideShown() {
         return !(mainFragment instanceof MapEntourageFragment);
+    }
+
+    public String getLink(String linkId) {
+        if (authenticationController != null && authenticationController.getUser() != null) {
+            return getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
+        }
+        return "";
     }
 
 }
