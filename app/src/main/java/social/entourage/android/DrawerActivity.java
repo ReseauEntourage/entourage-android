@@ -180,6 +180,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         gcmSharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
         intentAction = getIntent().getAction();
+        if (Intent.ACTION_VIEW.equals(intentAction)){
+            // Save the deep link intent
+            DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
+        }
 
         User user = getAuthenticationController().getUser();
         if (user != null) {
@@ -785,10 +789,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                 application.removePushNotification(message);
             }
             refreshBadgeCount();
-        } else if (Intent.ACTION_VIEW.equals(intentAction)){
+        } else {
             // Handle the deep link
-            Uri appLinkData = intent.getData();
-            DeepLinksManager.handleUri(appLinkData);
+            DeepLinksManager.getInstance().handleCurrentDeepLink();
         }
         intentAction = null;
         intentTour = null;
