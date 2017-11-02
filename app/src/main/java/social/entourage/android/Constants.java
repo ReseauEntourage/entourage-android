@@ -6,6 +6,9 @@ public class Constants {
     // v4.0 API Key
     public static final String API_KEY = "cf52de007ca906bc2b25a6cf";
 
+    // Announcements version
+    public static final String ANNOUNCEMENTS_VERSION = "v1";
+
     // Filenames
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
     public static final String FILENAME_TAPE_QUEUE = "encounters_queue";

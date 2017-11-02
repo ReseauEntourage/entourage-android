@@ -24,6 +24,7 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
@@ -580,7 +581,8 @@ public class TourServiceManager {
                 mapFilter.onlyMyEntourages,
                 mapFilter.getEntourageTypes(),
                 mapFilter.timeframe,
-                mapFilter.onlyMyPartnerEntourages
+                mapFilter.onlyMyPartnerEntourages,
+                Constants.ANNOUNCEMENTS_VERSION
         );
     }
 

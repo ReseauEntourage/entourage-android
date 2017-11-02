@@ -92,6 +92,7 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Announcement;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -1906,6 +1907,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         if (((Entourage) retrievedCard).isSame((Entourage) card)) {
                             iteratorNewsfeed.remove();
                         }
+                    } else if (Announcement.NEWSFEED_TYPE.equals(newsfeed.getType())) {
+                        iteratorNewsfeed.remove();
                     }
                 }
             } else {

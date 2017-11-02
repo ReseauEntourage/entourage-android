@@ -1,5 +1,6 @@
 package social.entourage.android.newsfeed;
 
+import social.entourage.android.announcement.AnnouncementViewHolder;
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.map.MapViewHolder;
@@ -22,6 +23,11 @@ public class NewsfeedAdapter extends EntourageBaseAdapter {
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENTOURAGE_CARD,
                 new ViewHolderFactory.ViewHolderType(EntourageViewHolder.class, EntourageViewHolder.getLayoutResource())
+        );
+
+        viewHolderFactory.registerViewHolder(
+                TimestampedObject.ANNOUNCEMENT_CARD,
+                new ViewHolderFactory.ViewHolderType(AnnouncementViewHolder.class, AnnouncementViewHolder.getLayoutResource())
         );
 
         viewHolderFactory.registerViewHolder(
