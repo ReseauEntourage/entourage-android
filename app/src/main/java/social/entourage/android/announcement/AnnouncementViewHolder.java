@@ -108,6 +108,9 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
             if (photoView != null) {
                 photoView.setImageResource(R.drawable.ic_user_photo_small);
             }
+            if (partnerLogoView != null) {
+                partnerLogoView.setImageDrawable(null);
+            }
         } else {
             //author photo
             if (photoView != null) {

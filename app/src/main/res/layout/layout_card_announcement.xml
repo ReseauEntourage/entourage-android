@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,61 +7,67 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:background="@color/accent"
+    android:clipChildren="false"
+    android:orientation="vertical"
     android:paddingEnd="12dp"
     android:paddingLeft="16dp"
     android:paddingRight="12dp"
     android:paddingStart="16dp"
     android:paddingTop="8dp">
 
-    <TextView
-        android:id="@+id/announcement_card_title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/announcement_card_photo"
-        android:layout_toStartOf="@+id/announcement_card_photo"
-        android:drawablePadding="@dimen/entourage_category_icon_padding"
-        android:gravity="center_vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/white"
-        android:textSize="@dimen/entourage_font_large"
-        android:textStyle="bold"/>
+        >
 
-    <ImageView
-        android:id="@+id/announcement_card_photo"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="end"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:contentDescription="@string/empty_description"
-        android:paddingTop="3dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_user_photo_small"/>
+        <TextView
+            android:id="@+id/announcement_card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/announcement_card_photo"
+            android:layout_toStartOf="@+id/announcement_card_photo"
+            android:drawablePadding="@dimen/entourage_category_icon_padding"
+            android:gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textSize="@dimen/entourage_font_large"
+            android:textStyle="bold"/>
 
-    <social.entourage.android.view.PartnerLogoImageView
-        android:id="@+id/announcement_card_partner_logo"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignBottom="@+id/announcement_card_photo"
-        android:layout_alignEnd="@+id/announcement_card_photo"
-        android:layout_alignRight="@+id/announcement_card_photo"
-        android:layout_marginBottom="-4dp"
-        android:layout_marginEnd="-4dp"
-        android:layout_marginRight="-4dp"/>
+        <ImageView
+            android:id="@+id/announcement_card_photo"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="end"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:contentDescription="@string/empty_description"
+            android:paddingTop="3dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_user_photo_small"/>
+
+        <social.entourage.android.view.PartnerLogoImageView
+            android:id="@+id/announcement_card_partner_logo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/announcement_card_photo"
+            android:layout_alignEnd="@+id/announcement_card_photo"
+            android:layout_alignRight="@+id/announcement_card_photo"
+            android:layout_marginBottom="-4dp"
+            android:layout_marginEnd="-4dp"
+            android:layout_marginRight="-4dp"
+            app:srcCompat="@drawable/partner_placeholder"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/announcement_card_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/announcement_card_partner_logo"
         android:layout_marginTop="5dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white"
@@ -71,9 +77,6 @@
         android:id="@+id/announcement_card_act_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/announcement_card_body"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="1dp"
@@ -116,4 +119,4 @@
             android:contentDescription="@string/empty_description"/>
 
     </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>
