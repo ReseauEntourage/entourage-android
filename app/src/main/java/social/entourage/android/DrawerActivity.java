@@ -168,6 +168,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("DEEPLINK", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
@@ -247,7 +248,12 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Log.d("DEEPLINK", "onNewIntent");
         this.setIntent(intent);
+        if (Intent.ACTION_VIEW.equals(intent.getAction())){
+            // Save the deep link intent
+            DeepLinksManager.getInstance().setDeepLinkIntent(intent);
+        }
         getIntentAction(intent);
         if (mainFragment != null) {
             switchToMapFragment();
@@ -286,6 +292,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStart() {
+        Log.d("DEEPLINK", "onStart");
         BusProvider.getInstance().register(this);
         presenter.checkForUpdate();
 
@@ -294,6 +301,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onResume() {
+        Log.d("DEEPLINK", "onResume");
         super.onResume();
         highlightCurrentMenuItem();
 
@@ -313,6 +321,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStop() {
+        Log.d("DEEPLINK", "onStop");
         BusProvider.getInstance().unregister(this);
 
         EntourageToast entourageToast = EntourageToast.getGlobalEntourageToast();
@@ -533,18 +542,18 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://entourage-landingpages-preprod.herokuapp.com/entourages/eeHQIxsrLeFU?utm_source=facebook&utm_medium=organic"));
+                try {
+                    startActivity(intent);
+                } catch (Exception ex) {
+                    Log.d("DEEPLINK", ex.toString());
+                }
+
                 /*
-                Intent intent = new Intent(this, PushNotificationService.class);
-                Bundle pushExtra = new Bundle();
-                pushExtra.putString(PushNotificationManager.KEY_SENDER, "Mihai I");
-                pushExtra.putString(PushNotificationManager.KEY_OBJECT, "New chat message");
-                pushExtra.putString(PushNotificationManager.KEY_CONTENT, "{'message'=''; 'extra'={'type'='NEW_CHAT_MESSAGE'; 'feed_id'=1; 'feed_type'='Entourage'}}");
-                intent.putExtras(pushExtra);
-                startService(intent);
-                */
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
+                */
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
@@ -741,6 +750,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
+        Log.d("DEEPLINK", "checkIntentAction");
         switchToMapFragment();
         Intent intent = getIntent();
         if (intent == null) {
