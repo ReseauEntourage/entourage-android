@@ -168,7 +168,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("DEEPLINK", "onCreate");
+        //Log.d("DEEPLINK", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
@@ -181,7 +181,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         gcmSharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
         intentAction = getIntent().getAction();
-        if (Intent.ACTION_VIEW.equals(intentAction)){
+        if (Intent.ACTION_VIEW.equals(intentAction)) {
             // Save the deep link intent
             DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
         }
@@ -248,7 +248,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d("DEEPLINK", "onNewIntent");
+        //Log.d("DEEPLINK", "onNewIntent " + intent.getAction());
         this.setIntent(intent);
         if (Intent.ACTION_VIEW.equals(intent.getAction())){
             // Save the deep link intent
@@ -292,7 +292,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStart() {
-        Log.d("DEEPLINK", "onStart");
+        //Log.d("DEEPLINK", "onStart");
         BusProvider.getInstance().register(this);
         presenter.checkForUpdate();
 
@@ -301,7 +301,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onResume() {
-        Log.d("DEEPLINK", "onResume");
+        //Log.d("DEEPLINK", "onResume");
         super.onResume();
         highlightCurrentMenuItem();
 
@@ -321,7 +321,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStop() {
-        Log.d("DEEPLINK", "onStop");
+        //Log.d("DEEPLINK", "onStop");
         BusProvider.getInstance().unregister(this);
 
         EntourageToast entourageToast = EntourageToast.getGlobalEntourageToast();
@@ -542,18 +542,18 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
+                /*
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://entourage-landingpages-preprod.herokuapp.com/entourages/eeHQIxsrLeFU?utm_source=facebook&utm_medium=organic"));
                 try {
                     startActivity(intent);
                 } catch (Exception ex) {
                     Log.d("DEEPLINK", ex.toString());
                 }
+                */
 
-                /*
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
-                */
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
