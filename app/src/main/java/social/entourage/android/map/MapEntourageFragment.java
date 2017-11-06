@@ -1546,7 +1546,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (marginLeft < 0) {
             marginLeft = 0;
         }
-        int marginTop = clickPoint.y - bH * 3/2;
+        bH += getResources().getDimensionPixelOffset(R.dimen.newsfeed_longpress_delta_y);
+        int marginTop = clickPoint.y - bH;
         if (marginTop < 0) {
             marginTop = clickPoint.y;
         }
