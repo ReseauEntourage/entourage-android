@@ -17,6 +17,9 @@
     <dimen name="newsfeed_map_height">155dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
 
+    <dimen name="announcement_icon_width">29dp</dimen>
+    <dimen name="announcement_icon_height">29dp</dimen>
+
     <!-- Entourage font sizes -->
     <dimen name="entourage_font_xtra_large">30sp</dimen>
     <dimen name="entourage_font_big">22sp</dimen>

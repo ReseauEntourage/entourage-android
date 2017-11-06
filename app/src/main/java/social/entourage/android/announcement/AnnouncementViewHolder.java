@@ -165,7 +165,9 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
 
     @Override
     public void onBitmapLoaded(final Bitmap bitmap, final Picasso.LoadedFrom from) {
-        BitmapDrawable bitmapDrawable = new BitmapDrawable(Resources.getSystem(), bitmap);
+        int targetWidth = itemView.getResources().getDimensionPixelOffset(R.dimen.announcement_icon_width);
+        int targetHeight = itemView.getResources().getDimensionPixelOffset(R.dimen.announcement_icon_height);
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(Resources.getSystem(), Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false));
         title.setCompoundDrawablesWithIntrinsicBounds(bitmapDrawable, null, null, null);
     }
 
