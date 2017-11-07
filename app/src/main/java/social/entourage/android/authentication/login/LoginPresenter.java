@@ -2,7 +2,11 @@ package social.entourage.android.authentication.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
+
+import com.facebook.appevents.AppEventsConstants;
+import com.facebook.appevents.AppEventsLogger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -287,7 +291,15 @@ public class LoginPresenter {
             @Override
             public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
                 if (response.isSuccessful()) {
-                    activity.registerPhoneNumberSent(phoneNumber, true);
+                    if (activity != null) {
+                        activity.registerPhoneNumberSent(phoneNumber, true);
+
+                        // send the facebook event
+                        AppEventsLogger logger = AppEventsLogger.newLogger(activity);
+                        Bundle params = new Bundle();
+                        params.putString(AppEventsConstants.EVENT_PARAM_REGISTRATION_METHOD, "entourage");
+                        logger.logEvent(AppEventsConstants.EVENT_NAME_COMPLETED_REGISTRATION, params);
+                    }
                 } else {
                     if (response.errorBody() != null) {
                         try {
