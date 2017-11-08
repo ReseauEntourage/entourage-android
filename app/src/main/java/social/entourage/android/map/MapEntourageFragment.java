@@ -1474,12 +1474,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService != null && tourService.isRunning()) {
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.INVISIBLE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(View.GONE);
+            tourStopButton.setVisibility(View.VISIBLE);
         } else {
             User me = EntourageApplication.me(getActivity());
             boolean isPro = (me != null && me.isPro());
 
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.INVISIBLE : View.GONE);
+            tourStopButton.setVisibility(View.GONE);
         }
     }
 
