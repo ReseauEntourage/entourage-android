@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.mixpanel.android.mpmetrics.GCMReceiver;
 
 public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
@@ -19,7 +21,8 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
             if (intent.getExtras().containsKey("mp_message")) {
                 String mp_message = intent.getExtras().getString("mp_message");
                 //mp_message now contains the notification's text
-                //TODO implement MP Notifs here
+                GCMReceiver mixpanelGCMReceiver = new GCMReceiver();
+                mixpanelGCMReceiver.onReceive(context, intent);
             } else {
                 ComponentName componentName = new ComponentName(context, PushNotificationService.class);
                 intent.setComponent(componentName);
