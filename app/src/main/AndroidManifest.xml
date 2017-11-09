@@ -205,13 +205,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2eca3faf46139913c216b9ee9cf8bee49e70fe20"/>
-        <meta-data
-            android:name="com.mixpanel.android.MPConfig.AutoShowMixpanelUpdates"
-            android:value="false"/>
-        <meta-data
-            android:name="com.mixpanel.android.MPConfig.ResourcePackageName"
-            android:value="social.entourage.android" />
-            android:value="2eca3faf46139913c216b9ee9cf8bee49e70fe20" />
 
         <meta-data android:name="com.mixpanel.android.MPConfig.AutoShowMixpanelUpdates"
             android:value="false" />
