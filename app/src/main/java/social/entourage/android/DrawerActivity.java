@@ -247,7 +247,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d("DEEPLINK", "onNewIntent " + intent.toString());
+        //Log.d("DEEPLINK", "onNewIntent " + intent.toString());
         this.setIntent(intent);
         if (Intent.ACTION_VIEW.equals(intent.getAction())){
             // Save the deep link intent
@@ -538,17 +538,17 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
+                /*
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://badge"));
                 try {
                     startActivity(intent);
                 } catch (Exception ex) {
                     Log.d("DEEPLINK", ex.toString());
                 }
-                /*
+                */
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
-                */
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
@@ -745,7 +745,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
-        Log.d("DEEPLINK", "checkIntentAction");
+        //Log.d("DEEPLINK", "checkIntentAction");
         switchToMapFragment();
         Intent intent = getIntent();
         if (intent == null) {

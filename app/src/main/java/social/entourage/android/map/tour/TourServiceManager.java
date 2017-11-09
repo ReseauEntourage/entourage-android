@@ -199,11 +199,15 @@ public class TourServiceManager {
     }
 
     public void addEncounter(Encounter encounter) {
-        tour.addEncounter(encounter);
+        if (tour != null) {
+            tour.addEncounter(encounter);
+        }
     }
 
     public void updateEncounter(Encounter encounter) {
-        tour.updateEncounter(encounter);
+        if (tour != null) {
+            tour.updateEncounter(encounter);
+        }
     }
 
     public void unregisterFromBus() {
