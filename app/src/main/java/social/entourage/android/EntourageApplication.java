@@ -3,6 +3,7 @@ package social.entourage.android;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -38,7 +39,7 @@ import static social.entourage.android.BuildConfig.FLAVOR;
 /**
  * Application setup for Flurry, JodaTime and Dagger
  */
-public class EntourageApplication extends Application {
+public class EntourageApplication extends MultiDexApplication {
 
     private static EntourageApplication instance;
     public static EntourageApplication get() { return instance; }
