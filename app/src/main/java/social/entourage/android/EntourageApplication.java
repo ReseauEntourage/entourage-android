@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
+import com.facebook.FacebookSdk;
+import com.facebook.LoggingBehavior;
 import com.flurry.android.FlurryAgent;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -60,6 +62,7 @@ public class EntourageApplication extends Application {
         setupFabric();
         setupFlurry();
         setupMixpanel();
+        setupFacebookSDK();
         JodaTimeAndroid.init(this);
         setupDagger();
         setupBadgeCount();
@@ -99,6 +102,14 @@ public class EntourageApplication extends Application {
             e.printStackTrace();
         }
         mixpanel.registerSuperProperties(props);
+    }
+
+    private void setupFacebookSDK() {
+        if (BuildConfig.DEBUG) {
+            Log.d("Facebook", "version " + FacebookSdk.getSdkVersion());
+            FacebookSdk.setIsDebugEnabled(true);
+            FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS);
+        }
     }
 
     private void setupBadgeCount() {
