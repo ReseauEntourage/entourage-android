@@ -298,7 +298,7 @@ public class UserEditFragment extends EntourageDialogFragment {
     }
 
     @OnClick(R.id.user_add_association_button)
-    protected void onAddAssociationClicked() {
+    public void onAddAssociationClicked() {
         EntourageEvents.logEvent(Constants.EVENT_USER_TOBADGE);
         UserEditPartnerFragment userEditPartnerFragment = new UserEditPartnerFragment();
         userEditPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);

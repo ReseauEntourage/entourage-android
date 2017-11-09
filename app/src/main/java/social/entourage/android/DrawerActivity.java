@@ -168,7 +168,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Log.d("DEEPLINK", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
@@ -248,7 +247,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        //Log.d("DEEPLINK", "onNewIntent " + intent.getAction());
+        Log.d("DEEPLINK", "onNewIntent " + intent.toString());
         this.setIntent(intent);
         if (Intent.ACTION_VIEW.equals(intent.getAction())){
             // Save the deep link intent
@@ -292,7 +291,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStart() {
-        //Log.d("DEEPLINK", "onStart");
         BusProvider.getInstance().register(this);
         presenter.checkForUpdate();
 
@@ -301,7 +299,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onResume() {
-        //Log.d("DEEPLINK", "onResume");
         super.onResume();
         highlightCurrentMenuItem();
 
@@ -321,7 +318,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStop() {
-        //Log.d("DEEPLINK", "onStop");
         BusProvider.getInstance().unregister(this);
 
         EntourageToast entourageToast = EntourageToast.getGlobalEntourageToast();
@@ -396,7 +392,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void switchToMapFragment() {
+    public void switchToMapFragment() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment = (MapEntourageFragment) mainFragment;
         } else {
@@ -542,18 +538,17 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
-                /*
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://entourage-landingpages-preprod.herokuapp.com/entourages/eeHQIxsrLeFU?utm_source=facebook&utm_medium=organic"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://badge"));
                 try {
                     startActivity(intent);
                 } catch (Exception ex) {
                     Log.d("DEEPLINK", ex.toString());
                 }
-                */
-
+                /*
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
+                */
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
@@ -796,7 +791,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             refreshBadgeCount();
         } else {
             // Handle the deep link
-            DeepLinksManager.getInstance().handleCurrentDeepLink();
+            DeepLinksManager.getInstance().handleCurrentDeepLink(this);
         }
         intentAction = null;
         intentTour = null;

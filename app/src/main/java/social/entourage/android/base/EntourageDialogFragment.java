@@ -1,6 +1,7 @@
 package social.entourage.android.base;
 
 import android.app.Dialog;
+import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import social.entourage.android.R;
+import social.entourage.android.deeplinks.DeepLinksManager;
 
 /**
  * Base DialogFragment with no title and full screen
@@ -34,6 +36,12 @@ public class EntourageDialogFragment extends DialogFragment {
         }
 
         return null;
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        DeepLinksManager.getInstance().handleCurrentDeepLink(this.getActivity());
     }
 
     @Override
