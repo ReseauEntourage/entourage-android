@@ -3,7 +3,7 @@ apply plugin: 'io.fabric'
 apply plugin: 'appaloosa-deploy'
 
 def versionMajor = 3
-def versionMinor = 8
+def versionMinor = 9
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
