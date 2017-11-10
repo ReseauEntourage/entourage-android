@@ -150,7 +150,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private static final int HEATZONE_SEARCH_RADIUS = (int)Entourage.HEATMAP_SIZE / 2; // meters
 
     // Zoom in level when taping a heatzone
-    private static final float ZOOM_HEATZONE = 16.5f;
+    private static final float ZOOM_HEATZONE = 16.2f;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -1993,7 +1993,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     protected void centerMapAndZoom(LatLng latLng) {
-        CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom, 0, 0);
+        CameraPosition cameraPosition = EntourageLocation.getInstance().getLastCameraPosition();
+        if (cameraPosition != null) {
+            centerMapAndZoom(latLng, cameraPosition.zoom);
+        }
+    }
+
+    protected void centerMapAndZoom(LatLng latLng, float zoom) {
+        CameraPosition cameraPosition = new CameraPosition(latLng, zoom, 0, 0);
         if (map != null) {
             map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             saveCameraPosition();
@@ -2540,7 +2547,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     protected void handleHeatzoneClick(LatLng location) {
         if (isToursListVisible()) {
-            centerMapAndZoom(location);
+            centerMapAndZoom(location, ZOOM_HEATZONE);
             toggleToursList();
         } else {
             showHeatzoneMiniCardsAtLocation(location);
@@ -2565,16 +2572,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         //show the minicards list
         miniCardsView.setEntourages(entourageArrayList);
-        //zoom in the heatzone, if necessary
+        //zoom in the heatzone
         if (map != null) {
-            CameraPosition lastCameraPosition = EntourageLocation.getInstance().getLastCameraPosition();
-            if (lastCameraPosition != null) {
-                if (lastCameraPosition.zoom < ZOOM_HEATZONE) {
-                    CameraPosition cameraPosition = new CameraPosition(location, ZOOM_HEATZONE, 0, 0);
-                    map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                    saveCameraPosition();
-                }
-            }
+            CameraPosition cameraPosition = new CameraPosition(location, ZOOM_HEATZONE, 0, 0);
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            saveCameraPosition();
         }
     }
 
