@@ -22,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -400,6 +401,12 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
+    public void popToMapFragment() {
+        if (mapEntourageFragment != null) {
+            mapEntourageFragment.dismissAllDialogs();
+        }
+    }
+
     private void highlightCurrentMenuItem() {
         if (mainFragment instanceof MapEntourageFragment) {
             navigationView.setCheckedItem(R.id.action_tours);
@@ -539,13 +546,20 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_about:
                 /*
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://badge"));
-                try {
-                    startActivity(intent);
-                } catch (Exception ex) {
-                    Log.d("DEEPLINK", ex.toString());
-                }
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://feed"));
+                        try {
+                            startActivity(intent);
+                        } catch (Exception ex) {
+                            Log.d("DEEPLINK", ex.toString());
+                        }
+                    }
+                }, 8*1000);
                 */
+
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);

@@ -1,8 +1,10 @@
 package social.entourage.android.map;
 
 import android.content.Context;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,17 @@ public class MapEntourageFragmentLifecycleCallbacks extends FragmentManager.Frag
             return fragmentList.get(fragmentList.size() - 1);
         }
         return null;
+    }
+
+    public void dismissAllDialogs() {
+        int count = fragmentList.size() - 1;
+        while (count >= 0) {
+            Fragment fragment = fragmentList.get(count);
+            if (fragment instanceof DialogFragment) {
+                ((DialogFragment) fragment).dismissAllowingStateLoss();
+            }
+            count--;
+        }
     }
 
 }

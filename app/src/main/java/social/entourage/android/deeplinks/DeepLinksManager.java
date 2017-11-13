@@ -46,6 +46,10 @@ public class DeepLinksManager {
 
     private static final DeepLinksManager ourInstance = new DeepLinksManager();
 
+    /**
+     * Singleton accessor
+     * @return the singleton
+     */
     public static DeepLinksManager getInstance() {
         return ourInstance;
     }
@@ -58,11 +62,18 @@ public class DeepLinksManager {
     // DEEP LINK HANDLING
     // ----------------------------------
 
-
+    /**
+     * Saves the receieved deep link intent
+     * @param deepLinkIntent
+     */
     public void setDeepLinkIntent(final Intent deepLinkIntent) {
         this.deepLinkIntent = deepLinkIntent;
     }
 
+    /**
+     * Handles the current deep link, and sets it to null if successfully
+     * @param activity
+     */
     public void handleCurrentDeepLink(Activity activity) {
         if (deepLinkIntent == null || activity == null) return;
         Uri deepLinkUri = deepLinkIntent.getData();
@@ -96,7 +107,11 @@ public class DeepLinksManager {
         host = host.toLowerCase();
         if (host.equals(DeepLinksView.FEED.getView())) {
             if (activity instanceof DrawerActivity) {
-                ((DrawerActivity)activity).switchToMapFragment();
+                DrawerActivity drawerActivity = (DrawerActivity)activity;
+                drawerActivity.switchToMapFragment();
+                drawerActivity.popToMapFragment();
+            } else {
+                return;
             }
         }
         else if (host.equals(DeepLinksView.BADGE.getView())) {

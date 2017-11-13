@@ -1,9 +1,7 @@
 package social.entourage.android.map;
 
 import android.Manifest;
-import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -455,6 +453,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onNotificationExtras(int id, boolean choice) {
         userId = id;
         userHistory = choice;
+    }
+
+    public void dismissAllDialogs() {
+        if (fragmentLifecycleCallbacks != null) {
+            fragmentLifecycleCallbacks.dismissAllDialogs();
+        }
     }
 
     public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
