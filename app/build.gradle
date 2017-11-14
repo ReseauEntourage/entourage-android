@@ -110,7 +110,7 @@ dependencies {
     def butterKnifeVersion = "8.8.1"
     def awsVersion = "2.6.5"
 
-    compile(
+    implementation(
             "com.android.support:multidex:1.0.1",
             "com.flurry.android:analytics:7.2.3@aar",
             "com.android.support:support-v4:${supportVersion}",
@@ -143,7 +143,7 @@ dependencies {
             "com.facebook.android:facebook-core:[4,5)"
     )
 
-    compile("com.crashlytics.sdk.android:crashlytics:2.7.1@aar") {
+    api("com.crashlytics.sdk.android:crashlytics:2.7.1@aar") {
         transitive = true;
     }
 
@@ -167,7 +167,7 @@ dependencies {
         exclude group: 'com.squareup.okhttp3'
     }
 
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 }
 
 
