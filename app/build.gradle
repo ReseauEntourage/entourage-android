@@ -62,6 +62,8 @@ android {
         }
     }
 
+    flavorDimensions "entourage"
+
     productFlavors {
         preprod {
             applicationId 'social.entourage.android.preprod'
@@ -100,9 +102,9 @@ android {
 }
 
 dependencies {
-    def supportVersion = "26.1.0"
+    def supportVersion = "27.0.1"
     def playServicesVersion = "11.4.2"
-    def daggerVersion = "2.12"
+    def daggerVersion = "2.13"
     def okHttpVersion = "3.9.0"
     def retrofitVersion = "2.3.0"
     def butterKnifeVersion = "8.8.1"
@@ -141,7 +143,7 @@ dependencies {
             "com.facebook.android:facebook-core:[4,5)"
     )
 
-    compile("com.crashlytics.sdk.android:crashlytics:2.7.0@aar") {
+    compile("com.crashlytics.sdk.android:crashlytics:2.7.1@aar") {
         transitive = true;
     }
 
