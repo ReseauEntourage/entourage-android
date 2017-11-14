@@ -61,7 +61,9 @@ public class ReadEncounterActivity extends EntourageActivity {
 
         EntourageEvents.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
         Bundle args = getIntent().getExtras();
-        encounter = (Encounter)args.get(BUNDLE_KEY_ENCOUNTER);
+        if (args != null) {
+            encounter = (Encounter) args.get(BUNDLE_KEY_ENCOUNTER);
+        }
     }
 
     @Override
@@ -87,7 +89,9 @@ public class ReadEncounterActivity extends EntourageActivity {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         */
         displayEncounter();
-        new GeocoderTask().execute(encounter);
+        if (encounter != null) {
+            new GeocoderTask().execute(encounter);
+        }
     }
 
     // ----------------------------------
@@ -100,6 +104,7 @@ public class ReadEncounterActivity extends EntourageActivity {
     }
 
     public void displayEncounter() {
+        if (encounter == null || isFinishing()) return;
         String location = "";
         Address address = encounter.getAddress();
         if (address != null) {

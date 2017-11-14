@@ -12,10 +12,14 @@
     <dimen name="act_button_right_padding">10dp</dimen>
     <dimen name="entourage_category_icon_padding">6dp</dimen>
 
-    <dimen name="newsfeed_fab_bottowm_view_delta">90dp</dimen>
+    <dimen name="newsfeed_fab_bottowm_view_delta">80dp</dimen>
+    <dimen name="newsfeed_longpress_delta_y">20dp</dimen>
 
     <dimen name="newsfeed_map_height">155dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
+
+    <dimen name="announcement_icon_width">29dp</dimen>
+    <dimen name="announcement_icon_height">29dp</dimen>
 
     <!-- Entourage font sizes -->
     <dimen name="entourage_font_xtra_large">30sp</dimen>

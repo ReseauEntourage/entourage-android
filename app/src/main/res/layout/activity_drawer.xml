@@ -43,7 +43,10 @@
             app:menu_colorPressed="@color/accent"
             app:menu_colorRipple="@color/accent"
             app:menu_labels_singleLine="true"
-            app:menu_labels_style="@style/MapActionLabelStyle">
+            app:menu_labels_style="@style/MapActionLabelStyle"
+            app:menu_shadowRadius="2dp"
+            app:menu_shadowXOffset="0dp"
+            app:menu_shadowYOffset="0dp">
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_poi_launcher"

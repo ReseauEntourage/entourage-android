@@ -55,8 +55,6 @@ public class UserFragment extends EntourageDialogFragment {
 
     public static final String TAG = "fragment_user";
 
-    private final String TERMS_AND_CONDITIONS_URL= "http://www.entourage.social/cgu";
-
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -93,6 +91,12 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_address)
     TextView userAddress;
 
+    @BindView(R.id.user_profile_about_layout)
+    View userAboutLayout;
+
+    @BindView(R.id.user_profile_about)
+    TextView userAboutTextView;
+
     @BindView(R.id.user_identification_email_check)
     ImageView userEmailVerifiedImage;
 
@@ -113,7 +117,6 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_profile_progressBar)
     ProgressBar progressBar;
 
-    private int requestedUserId;
     private User user;
     private boolean isMyProfile = false;
 
@@ -145,7 +148,7 @@ public class UserFragment extends EntourageDialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
-        requestedUserId = getArguments().getInt(User.KEY_USER_ID);
+        int requestedUserId = getArguments().getInt(User.KEY_USER_ID);
         if (presenter != null) {
             User authenticatedUser = presenter.getAuthenticatedUser();
             if (authenticatedUser != null && requestedUserId == authenticatedUser.getId()) {
@@ -236,6 +239,10 @@ public class UserFragment extends EntourageDialogFragment {
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
             userTourCount.setText(getString(R.string.user_entourage_count_format, entourageCount));
 
+            String userAbout = user.getAbout();
+            userAboutLayout.setVisibility( (userAbout == null || userAbout.trim().length() == 0) ? View.GONE : View.VISIBLE);
+            userAboutTextView.setText(userAbout);
+
             boolean userEmailVerified = user.getEmail() != null;
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);
             userEmailVerifiedImage.setImageResource(userEmailVerified ? R.drawable.verified : R.drawable.not_verified);
@@ -264,7 +271,6 @@ public class UserFragment extends EntourageDialogFragment {
                 organizationsAdapter.setOrganizationList(organizationList);
             }
 
-            //boolean isPro = user.isPro();
             userAssociationsTitle.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
             userAssociationsView.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
         }

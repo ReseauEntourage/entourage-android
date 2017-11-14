@@ -27,42 +27,57 @@ public class AuthenticationController {
     private static final String PREF_KEY_USER_TOURS_ONLY = "user_tours_only";
     private static final String PREF_KEY_MAP_FILTER = "map_filter";
     private static final String PREF_KEY_MAP_FILTER_HASHMAP = "map_filter_hashmap";
+    private static final String PREF_KEY_USER_PREFERENCES = "user_preferences";
 
-    private final ComplexPreferences userSharedPref;
+    private final ComplexPreferences appSharedPref;
     private User loggedUser;
-    private boolean userToursOnly;
-    private boolean showNoEntouragesPopup = true;
-    private boolean showNoPOIsPopup = true;
-    private boolean showInfoPOIsPopup = true;
+    private UserPreferences userPreferences;
 
-    private Map<Integer, MapFilter> mapFilterHashMap = new HashMap<>();
-    private MapFilter mapFilter = null;
+    private Map<Integer, UserPreferences> userPreferencesHashMap = new HashMap<>();
 
-    public AuthenticationController(ComplexPreferences userSharedPref) {
-        this.userSharedPref = userSharedPref;
+    public AuthenticationController(ComplexPreferences appSharedPref) {
+        this.appSharedPref = appSharedPref;
         loggedUser = null;
     }
 
     public AuthenticationController init() {
-        loggedUser = userSharedPref.getObject(PREF_KEY_USER, User.class);
+        loggedUser = appSharedPref.getObject(PREF_KEY_USER, User.class);
         if (loggedUser != null && loggedUser.getToken() == null) {
             loggedUser = null;
         }
-        //userSharedPref.putObject(PREF_KEY_MAP_FILTER_HASHMAP, null);
-        //userSharedPref.commit();
-        Type type = new TypeToken<Map<Integer, MapFilter>>(){}.getType();
-        mapFilterHashMap = userSharedPref.getObject(PREF_KEY_MAP_FILTER_HASHMAP, type);
-        if (mapFilterHashMap == null) {
-            mapFilterHashMap = new HashMap<>();
+        Type type = new TypeToken<Map<Integer, UserPreferences>>(){}.getType();
+        userPreferencesHashMap = appSharedPref.getObject(PREF_KEY_USER_PREFERENCES, type);
+        if (userPreferencesHashMap == null) {
+            userPreferencesHashMap = new HashMap<>();
+        }
+        if (loggedUser != null) {
+            userPreferences = userPreferencesHashMap.get(loggedUser.getId());
+        }
+        if (userPreferences == null) {
+            userPreferences = new UserPreferences();
+        }
+        // Check if we have an old version of saving the map filter with hashmap
+        Type typeMapFilterHashMap = new TypeToken<Map<Integer, MapFilter>>(){}.getType();
+        Map<Integer, MapFilter> mapFilterHashMap = appSharedPref.getObject(PREF_KEY_MAP_FILTER_HASHMAP, typeMapFilterHashMap);
+        if (mapFilterHashMap != null) {
+            // save it to user preferences
+            if (loggedUser != null) {
+                MapFilter mapFilter = mapFilterHashMap.get(loggedUser.getId());
+                userPreferences.setMapFilter(mapFilter);
+                saveUserPreferences();
+            }
+            // delete it
+            appSharedPref.putObject(PREF_KEY_MAP_FILTER_HASHMAP, null);
         }
         if (loggedUser != null) {
             // Check if we have the old version of saving map filter
-            mapFilter = userSharedPref.getObject(PREF_KEY_MAP_FILTER, MapFilter.class);
+            MapFilter mapFilter = appSharedPref.getObject(PREF_KEY_MAP_FILTER, MapFilter.class);
             if (mapFilter != null) {
                 // Found old version, save it to the new structure
-                saveMapFilter();
+                userPreferences.setMapFilter(mapFilter);
+                saveUserPreferences();
                 // Delete it
-                userSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
+                appSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
             }
         }
         return this;
@@ -79,41 +94,36 @@ public class AuthenticationController {
             }
         }
         loggedUser = user;
-        userSharedPref.putObject(PREF_KEY_USER, user);
-        userSharedPref.commit();
+        appSharedPref.putObject(PREF_KEY_USER, user);
+        appSharedPref.commit();
         BusProvider.getInstance().post(new Events.OnUserInfoUpdatedEvent());
     }
 
     public void saveUserPhoneAndCode(String phone, String smsCode) {
         loggedUser.setPhone(phone);
         loggedUser.setSmsCode(smsCode);
-        userSharedPref.putObject(PREF_KEY_USER, loggedUser);
-        userSharedPref.commit();
+        appSharedPref.putObject(PREF_KEY_USER, loggedUser);
+        appSharedPref.commit();
     }
 
     public void incrementUserToursCount() {
         loggedUser.incrementTours();
-        userSharedPref.putObject(PREF_KEY_USER, loggedUser);
-        userSharedPref.commit();
+        appSharedPref.putObject(PREF_KEY_USER, loggedUser);
+        appSharedPref.commit();
     }
 
     public void incrementUserEncountersCount() {
         loggedUser.incrementEncouters();
-        userSharedPref.putObject(PREF_KEY_USER, loggedUser);
-        userSharedPref.commit();
+        appSharedPref.putObject(PREF_KEY_USER, loggedUser);
+        appSharedPref.commit();
     }
 
     public void logOutUser() {
         if(loggedUser != null) {
-            userSharedPref.putObject(PREF_KEY_USER, null);
-            userSharedPref.commit();
-        }
-        if (mapFilter != null) {
-            userSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
-            userSharedPref.commit();
+            appSharedPref.putObject(PREF_KEY_USER, null);
+            appSharedPref.commit();
         }
         loggedUser = null;
-        mapFilter = null;
     }
 
     public boolean isAuthenticated() {
@@ -132,58 +142,72 @@ public class AuthenticationController {
     }
 
     public void saveUserToursOnly(boolean choice) {
-        this.userToursOnly = choice;
-        userSharedPref.putObject(PREF_KEY_USER_TOURS_ONLY, userToursOnly);
+        if (userPreferences != null) {
+            userPreferences.setUserToursOnly(choice);
+            saveUserPreferences();
+        }
     }
 
     public boolean isUserToursOnly() {
-        return userToursOnly;
+        return userPreferences != null && userPreferences.isUserToursOnly();
     }
 
     public boolean isShowNoEntouragesPopup() {
-        return showNoEntouragesPopup;
+        return userPreferences == null || userPreferences.isShowNoEntouragesPopup();
     }
 
-    public void setShowNoEntouragesPopup(final boolean showNoEntouragesPopup) {
-        this.showNoEntouragesPopup = showNoEntouragesPopup;
+    public void setShowNoEntouragesPopup(boolean showNoEntouragesPopup) {
+        if (userPreferences != null) {
+            userPreferences.setShowNoEntouragesPopup(showNoEntouragesPopup);
+            saveUserPreferences();
+        }
     }
 
     public boolean isShowNoPOIsPopup() {
-        return showNoPOIsPopup;
+        return userPreferences == null || userPreferences.isShowNoPOIsPopup();
     }
 
-    public void setShowNoPOIsPopup(final boolean showNoPOIsPopup) {
-        this.showNoPOIsPopup = showNoPOIsPopup;
+    public void setShowNoPOIsPopup(boolean showNoPOIsPopup) {
+        if (userPreferences != null) {
+            userPreferences.setShowNoPOIsPopup(showNoPOIsPopup);
+            saveUserPreferences();
+        }
     }
 
     public boolean isShowInfoPOIsPopup() {
-        return showInfoPOIsPopup;
+        return userPreferences == null || userPreferences.isShowInfoPOIsPopup();
     }
 
     public void setShowInfoPOIsPopup(final boolean showInfoPOIsPopup) {
-        this.showInfoPOIsPopup = showInfoPOIsPopup;
+        if (userPreferences != null) {
+            userPreferences.setShowInfoPOIsPopup(showInfoPOIsPopup);
+            saveUserPreferences();
+        }
     }
 
     public MapFilter getMapFilter() {
-        if (mapFilter == null && loggedUser != null && mapFilterHashMap != null) {
-            mapFilter = mapFilterHashMap.get(loggedUser.getId());
+        MapFilter mapFilter = null;
+        if (loggedUser != null && userPreferences != null) {
+            mapFilter = userPreferences.getMapFilter();
             if (mapFilter == null) {
-                // create the default map filter
                 mapFilter = MapFilterFactory.getMapFilter(loggedUser.isPro());
-                // save it
-                saveMapFilter();
+                userPreferences.setMapFilter(mapFilter);
+                saveUserPreferences();
             }
         }
         return mapFilter;
     }
 
-
     public void saveMapFilter() {
+        saveUserPreferences();
+    }
+
+    public void saveUserPreferences() {
         if (loggedUser == null) {
             return;
         }
-        mapFilterHashMap.put(loggedUser.getId(), mapFilter);
-        userSharedPref.putObject(PREF_KEY_MAP_FILTER_HASHMAP, this.mapFilterHashMap);
-        userSharedPref.commit();
+        userPreferencesHashMap.put(loggedUser.getId(), userPreferences);
+        appSharedPref.putObject(PREF_KEY_USER_PREFERENCES, userPreferencesHashMap);
+        appSharedPref.commit();
     }
 }

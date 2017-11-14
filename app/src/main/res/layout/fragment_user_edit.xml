@@ -47,26 +47,37 @@
             android:text="@string/user_save_button"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/accent"/>
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/user_edit_close_button"
+            android:background="@color/greyish"/>
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/user_edit_title_layout">
+        android:layout_below="@+id/user_edit_title_layout"
+        >
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/user_profile_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:id="@+id/user_profile_details">
+                android:layout_marginBottom="20dp">
 
                 <View
                     android:layout_width="match_parent"
@@ -77,11 +88,11 @@
                     android:id="@+id/user_photo"
                     android:layout_width="136dp"
                     android:layout_height="136dp"
-                    android:src="@drawable/bg_user_image_button"
-                    android:contentDescription="@string/user_image_add_photo"
-                    android:layout_centerHorizontal="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/user_image_add_photo"
+                    android:src="@drawable/bg_user_image_button"/>
 
                 <ImageButton
                     android:id="@+id/user_photo_button"
@@ -98,14 +109,14 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/user_firstname_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:layout_marginBottom="5dp"
-                android:id="@+id/user_firstname_layout"
-                android:clickable="true">
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
                 <TextView
                     android:id="@+id/textView6"
@@ -126,25 +137,25 @@
             </LinearLayout>
 
             <View
+                style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginStart="20dp"
-                style="@style/SeparatorAlpha"/>
+                android:layout_marginStart="20dp"/>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/user_lastname_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/user_lastname_layout"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:paddingEnd="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp">
+                android:paddingStart="20dp">
 
                 <TextView
                     android:id="@+id/textView13"
@@ -164,6 +175,58 @@
                     android:textSize="@dimen/entourage_font_medium"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/user_about_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_about_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background_light"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="20dp"
+                    android:text="@string/user_about_title"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/user_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:hint="@string/user_about_hint"
+                    android:paddingEnd="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/greyish_brown"
+                    android:textColorHint="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <Button
+                    android:id="@+id/user_about_edit_button"
+                    style="@style/AccentButton.RoundedCorners"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/user_about_edit_button"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="normal"/>
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/user_associations_title"
                 android:layout_width="match_parent"
@@ -179,19 +242,19 @@
                 android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/user_associations_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/user_associations_view">
+                android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
 
             <View
+                android:id="@+id/user_add_association_separator"
+                style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:id="@+id/user_add_association_separator"
-                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                style="@style/SeparatorAlpha"/>
+                android:layout_marginStart="20dp"/>
 
             <TextView
                 android:id="@+id/user_add_association_label"
@@ -254,21 +317,21 @@
                 android:textStyle="bold"/>
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/user_private_informations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:id="@+id/user_private_informations">
+                android:paddingRight="20dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
+                    android:id="@+id/user_email_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:clickable="true"
-                    android:id="@+id/user_email_layout">
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:id="@+id/textView8"
@@ -289,17 +352,17 @@
                 </LinearLayout>
 
                 <View
+                    style="@style/SeparatorAlpha"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    style="@style/SeparatorAlpha"/>
+                    android:layout_height="1dp"/>
 
                 <RelativeLayout
+                    android:id="@+id/user_password_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:clickable="true"
-                    android:id="@+id/user_password_layout">
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:id="@+id/textView9"
@@ -335,9 +398,9 @@
                 </RelativeLayout>
 
                 <View
+                    style="@style/SeparatorAlpha"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    style="@style/SeparatorAlpha"/>
+                    android:layout_height="1dp"/>
 
                 <LinearLayout
                     android:id="@+id/user_phone_layout"
@@ -406,13 +469,13 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/user_public_informations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/user_public_informations"
+                android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:visibility="gone">
 
                 <TextView

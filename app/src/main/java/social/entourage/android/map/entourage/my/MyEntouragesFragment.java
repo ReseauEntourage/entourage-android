@@ -91,11 +91,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     @BindView(R.id.button_add_tour_encounter)
     FloatingActionButton addEncounterButton;
 
-    @BindView(R.id.myentourages_invitations_view)
-    RecyclerView invitationsView;
-
-    InvitationsAdapter invitationsAdapter;
-
     @BindView(R.id.myentourages_list_view)
     RecyclerView entouragesView;
 
@@ -195,15 +190,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     private void initializeView() {
-        initializeInvitationsView();
         initializeEntouragesView();
         initializeFabMenu();
-    }
-
-    private void initializeInvitationsView() {
-        invitationsView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        invitationsAdapter = new InvitationsAdapter();
-        invitationsView.setAdapter(invitationsAdapter);
     }
 
     private void initializeEntouragesView() {
@@ -465,11 +453,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         if (invitationList == null) {
             return;
         }
-        invitationsAdapter.removeAll();
-        // add the invitations
-        for (final Invitation invitation : invitationList) {
-            invitationsAdapter.addCardInfoBeforeTimestamp(invitation);
-        }
+        entouragesAdapter.setInvitations(invitationList);
     }
 
     // ----------------------------------

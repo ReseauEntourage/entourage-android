@@ -1,7 +1,6 @@
 package social.entourage.android.map;
 
 import android.Manifest;
-import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -91,6 +90,7 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Announcement;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -104,6 +104,7 @@ import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
+import social.entourage.android.base.EntourageToast;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
@@ -139,14 +140,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private static final long REFRESH_TOURS_INTERVAL = 60000; //1 minute in ms
 
-    private static final int MAX_SCROLL_DELTA_Y = 20;
-
     // Constants used to track the source call of the geolocation popup
     private static final int GEOLOCATION_POPUP_TOUR = 0;
     private static final int GEOLOCATION_POPUP_RECENTER = 1;
 
     // Radius of the circle where to search for entourages when user taps a heatzone
     private static final int HEATZONE_SEARCH_RADIUS = (int)Entourage.HEATMAP_SIZE / 2; // meters
+
+    // Zoom in level when taping a heatzone
+    private static final float ZOOM_HEATZONE = 16.2f;
 
     // ----------------------------------
     // ATTRIBUTES
@@ -261,7 +263,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     //pagination
     private NewsfeedPagination pagination = new NewsfeedPagination();
-    private int scrollDeltaY = 0;
+
     private OnScrollListener scrollListener = new OnScrollListener();
 
     //original fab bottom paddings
@@ -271,6 +273,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // FAB Animator
     ValueAnimator fabAnimatorUp;
     ValueAnimator fabAnimatorDown;
+
+    // keeps tracks of the attached fragments
+    MapEntourageFragmentLifecycleCallbacks fragmentLifecycleCallbacks;
 
     // ----------------------------------
     // LIFECYCLE
@@ -310,6 +315,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (presenter == null) {
             setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
             presenter.start();
+        }
+        if (fragmentLifecycleCallbacks == null) {
+            fragmentLifecycleCallbacks = new MapEntourageFragmentLifecycleCallbacks();
+            getFragmentManager().registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false);
         }
     }
 
@@ -446,6 +455,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         userHistory = choice;
     }
 
+    public void dismissAllDialogs() {
+        if (fragmentLifecycleCallbacks != null) {
+            fragmentLifecycleCallbacks.dismissAllDialogs();
+        }
+    }
+
     public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
         if (map != null) {
             map.setOnMarkerClickListener(onMarkerClickListener);
@@ -517,6 +532,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    public void displayChosenFeedItem(String feedItemShareURL, int feedItemType) {
+        //display the feed item
+        if (presenter != null) {
+            EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
+            presenter.openFeedItem(feedItemShareURL, feedItemType);
+        }
+    }
+
     public void act(TimestampedObject timestampedObject) {
         if (tourService != null) {
             EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_CONTACT);
@@ -533,14 +556,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void displayEntouragePopupWhileTour(final String entourageType) {
+    public void displayEntouragePopupWhileTour() {
         // if we have an ongoing tour
         if (isBound && tourService != null && tourService.isRunning()) {
             EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_SHOW);
             // Show the dialog that asks the user if he really wants to create an entourage instead of encounter
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder
-                    .setMessage(Entourage.TYPE_CONTRIBUTION.equals(entourageType) ? R.string.entourage_tour_ongoing_contribution : R.string.entourage_tour_ongoing_demand)
+                    .setMessage(R.string.entourage_tour_ongoing_description)
                     .setTitle(R.string.entourage_tour_ongoing_title)
                     .setPositiveButton(R.string.entourage_tour_ongoing_proceed, new DialogInterface.OnClickListener() {
                         @Override
@@ -549,21 +572,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             onAddEncounter();
                         }
                     })
-                    .setNegativeButton(R.string.next, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.entourage_tour_ongoing_action, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int which) {
                             EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_ENTOURAGE);
-                            displayEntourageDisclaimer(entourageType);
+                            displayEntourageDisclaimer();
                         }
                     });
 
             builder.show();
         } else {
-            displayEntourageDisclaimer(entourageType);
+            displayEntourageDisclaimer();
         }
     }
 
-    public void displayEntourageDisclaimer(final String entourageType) {
+    public void displayEntourageDisclaimer() {
         if (mapLongClickView == null) {
             // Binder haven't kicked in yet
             return;
@@ -583,34 +606,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
 
-        /*
-        if (me.isEntourageDisclaimerShown()) {
-            // Already shown, display the create entourage fragment
-            createEntourage(entourageType);
-        } else {
-            // Show the disclaimer fragment
-            if (presenter != null) {
-                presenter.displayEntourageDisclaimer(entourageType, me.isPro());
-            }
-        }
-        */
-
         // MI: EMA-920 Show the disclaimer ever time
         // Show the disclaimer fragment
         if (presenter != null) {
-            presenter.displayEntourageDisclaimer(entourageType, me.isPro());
+            presenter.displayEntourageDisclaimer(me.isPro());
         }
 
     }
 
-    public void createEntourage(String entourageType) {
+    public void createEntourage() {
         LatLng location = EntourageLocation.getInstance().getLastCameraPosition().target;
         if (longTapCoordinates != null) {
             location = longTapCoordinates;
             longTapCoordinates = null;
         }
         if (presenter != null) {
-            presenter.createEntourage(entourageType, location);
+            presenter.createEntourage(location);
         }
     }
 
@@ -1141,7 +1152,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onServerException(Throwable throwable) {
         if (getActivity() != null) {
-            Toast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
+            EntourageToast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;
@@ -1152,7 +1163,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onTechnicalException(Throwable throwable) {
         if (getActivity() != null) {
-            Toast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
+            EntourageToast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;
@@ -1199,7 +1210,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                     drawNearbyTour(tour, false);
                 } else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                    drawNearbyEntourage((Entourage) timestampedObject, false);
+                    drawNearbyEntourage((Entourage) timestampedObject);
                 }
             }
             //redraw the current ongoing tour, if any
@@ -1356,16 +1367,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Bundle args = new Bundle();
             args.putLong(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourId);
             if (longTapCoordinates != null) {
-                //if ongoing tour, show only if the point is in the current tour
-                if (tourService != null && tourService.isRunning()) {
-                    if (!tourService.isLocationInTour(longTapCoordinates)) {
-                        longTapCoordinates = null;
-                        mapOptionsMenu.setVisibility(View.VISIBLE);
-                        tourStopButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity().getApplicationContext(), R.string.tour_encounter_too_far, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude);
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates.longitude);
                 longTapCoordinates = null;
@@ -1393,14 +1394,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         toggleToursList();
     }
 
-    @OnClick(R.id.map_longclick_button_entourage_demand)
-    protected void onCreateEntourageDemand() {
-        displayEntouragePopupWhileTour(Entourage.TYPE_DEMAND);
-    }
-
-    @OnClick(R.id.map_longclick_button_entourage_contribution)
-    protected void onCreateEntourageContribution() {
-        displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
+    @OnClick(R.id.map_longclick_button_entourage_action)
+    protected void onCreateEntourageAction() {
+        displayEntouragePopupWhileTour();
     }
 
     @OnClick(R.id.fragment_map_filter_button)
@@ -1460,7 +1456,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
                 } else {
                     User me = EntourageApplication.me(getContext());
-                    boolean isPro = (me != null) ? me.isPro() : false;
+                    boolean isPro = (me != null) && me.isPro();
                     if (!isPro) {
                         // Show directly the create entourage disclaimer
                         drawerActivity.onCreateEntourageClicked();
@@ -1482,12 +1478,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService != null && tourService.isRunning()) {
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.INVISIBLE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(View.GONE);
+            tourStopButton.setVisibility(View.VISIBLE);
         } else {
             User me = EntourageApplication.me(getActivity());
             boolean isPro = (me != null && me.isPro());
 
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.INVISIBLE : View.GONE);
+            tourStopButton.setVisibility(View.GONE);
         }
     }
 
@@ -1516,7 +1514,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void showLongClickOnMapOptions(LatLng latLng) {
         //only show when map is in full screen and not visible
-        if (newsfeedListView.getVisibility() == View.VISIBLE || mapLongClickView.getVisibility() == View.VISIBLE) {
+        if (!isFullMapShown || mapLongClickView.getVisibility() == View.VISIBLE) {
             return;
         }
         //save the tap coordinates
@@ -1524,20 +1522,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //hide the FAB menu
         mapOptionsMenu.setVisibility(View.GONE);
         tourStopButton.setVisibility(View.GONE);
+        //for public user, start the create entourage funnel directly
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = (me != null && me.isPro());
+        if (!isPro) {
+            displayEntourageDisclaimer();
+            return;
+        }
         //get the click point
         Point clickPoint = map.getProjection().toScreenLocation(latLng);
         //update the visible buttons
         boolean isTourRunning = tourService != null && tourService.isRunning();
-        User me = EntourageApplication.me(getActivity());
-        boolean isPro = (me != null && me.isPro());
-        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : (isPro ? View.VISIBLE : View.GONE));
+        mapLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : View.VISIBLE);
         mapLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
-        if (!isPro) {
-            ImageView entourageContribution = (ImageView) mapLongClickButtonsView.findViewById(R.id.map_longclick_button_entourage_contribution);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) entourageContribution.getLayoutParams();
-            layoutParams.setMargins(10, 0, 0, 0);
-            entourageContribution.setLayoutParams(layoutParams);
-        }
         mapLongClickButtonsView.requestLayout();
         //adjust the buttons holder layout
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -1555,6 +1552,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (marginLeft < 0) {
             marginLeft = 0;
         }
+        bH += getResources().getDimensionPixelOffset(R.dimen.newsfeed_longpress_delta_y);
         int marginTop = clickPoint.y - bH;
         if (marginTop < 0) {
             marginTop = clickPoint.y;
@@ -1630,7 +1628,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
                     map = googleMap;
-                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                            || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                         googleMap.setMyLocationEnabled(true);
                     }
                     googleMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -1691,17 +1690,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         public void onMapClick(LatLng latLng) {
                             if (getActivity() != null) {
                                 EntourageEvents.logEvent(Constants.EVENT_FEED_MAPCLICK);
-                                if (newsfeedListView.getVisibility() == View.VISIBLE) {
+                                if (isFullMapShown) {
+                                    // Hide the minicards if visible
+                                    if (miniCardsView.getVisibility() == View.VISIBLE) {
+                                        miniCardsView.setVisibility(View.INVISIBLE);
+                                    }
+                                } else {
                                     hideToursList();
                                 }
-                                // EMA-341 Disabling the search tour feature
-                        /*
-                        else {
-                            loaderSearchTours = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_search), getActivity().getString(R.string.button_loading), true);
-                            loaderSearchTours.setCancelable(true);
-                            tourService.searchToursFromPoint(latLng, userHistory, userId, 1, 500);
-                        }
-                        */
                             }
                         }
                     });
@@ -1771,13 +1767,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void saveOngoingTour() {
         if (tourService != null) {
             tourService.updateOngoingTour();
-        }
-    }
-
-    private void resumeTour() {
-        if (tourService.isRunning()) {
-            tourService.resumeTreatment();
-            //buttonStartLauncher.setVisibility(View.GONE);
         }
     }
 
@@ -1925,6 +1914,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         if (((Entourage) retrievedCard).isSame((Entourage) card)) {
                             iteratorNewsfeed.remove();
                         }
+                    } else if (Announcement.NEWSFEED_TYPE.equals(newsfeed.getType())) {
+                        iteratorNewsfeed.remove();
                     }
                 }
             } else {
@@ -2006,7 +1997,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     protected void centerMapAndZoom(LatLng latLng) {
-        CameraPosition cameraPosition = new CameraPosition(latLng, EntourageLocation.getInstance().getLastCameraPosition().zoom, 0, 0);
+        CameraPosition cameraPosition = EntourageLocation.getInstance().getLastCameraPosition();
+        if (cameraPosition != null) {
+            centerMapAndZoom(latLng, cameraPosition.zoom);
+        }
+    }
+
+    protected void centerMapAndZoom(LatLng latLng, float zoom) {
+        CameraPosition cameraPosition = new CameraPosition(latLng, zoom, 0, 0);
         if (map != null) {
             map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             saveCameraPosition();
@@ -2096,7 +2094,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private void drawNearbyEntourage(Entourage entourage, boolean isHistory) {
+    private void drawNearbyEntourage(Entourage entourage) {
         if (map != null && markersMap != null && entourage != null) {
             if (entourage.getLocation() != null) {
                 if (markersMap.get(entourage.hashString()) == null) {
@@ -2116,16 +2114,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
             }
-        }
-    }
-
-    private void drawNearbyNewsfeed(Newsfeed newsfeed, boolean isHistory) {
-        if (Tour.NEWSFEED_TYPE.equals(newsfeed.getType())) {
-            if (currentTourId != newsfeed.getId()) {
-                drawNearbyTour((Tour) newsfeed.getData(), isHistory);
-            }
-        } else if (Entourage.NEWSFEED_TYPE.equals(newsfeed.getType())) {
-            drawNearbyEntourage((Entourage) newsfeed.getData(), isHistory);
         }
     }
 
@@ -2203,7 +2191,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         displayedTourHeads = 0;
 
         newsfeedAdapter.removeAll();
-        moveFABDown();
 
         // check if we need to cancel the current request
         if (pagination.isLoading && tourService != null) {
@@ -2229,8 +2216,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         newEntouragesButton.setVisibility(View.GONE);
         mapDisplayToggle.setChecked(true);
         showGuideView.setVisibility(View.VISIBLE);
-
-        moveFABDown();
 
         ensureMapVisible();
 
@@ -2261,6 +2246,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         isFullMapShown = false;
         mapDisplayToggle.setChecked(false);
         showGuideView.setVisibility(View.GONE);
+        miniCardsView.setVisibility(View.INVISIBLE);
 
         hideEmptyListPopup();
 
@@ -2506,12 +2492,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     return;
                 }
                 // Check if the map fragment is still on top
-                List<Fragment> fragmentList = getFragmentManager().getFragments();
-                if (fragmentList != null && fragmentList.size() > 0) {
-                    Fragment topFragment = fragmentList.get(fragmentList.size()-1);
-                    if ( !(topFragment instanceof MapEntourageFragment) ) {
-                        return;
-                    }
+                if (fragmentLifecycleCallbacks == null) return;
+                Fragment topFragment = fragmentLifecycleCallbacks.getTopFragment();
+                if (topFragment != null &&  !(topFragment instanceof MapEntourageFragment) ) {
+                    return;
                 }
                 CarouselFragment carouselFragment = new CarouselFragment();
                 try {
@@ -2542,104 +2526,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_MORE_ITEMS);
             }
         }
-        if (newsfeedAdapter.getDataItemCount() > 0) {
-            moveFABUp();
-        }
-    }
-
-    /**
-     * Moves the FAB buttons up, if the bottom view is displayed and visible
-     **/
-    private void moveFABUp() {
-        if (newsfeedListView == null) return;
-        if (!isToursListVisible()) return;
-        int visibleItemCount = newsfeedListView.getChildCount();
-        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) newsfeedListView.getLayoutManager();
-        int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
-        int totalItemCount = linearLayoutManager.getItemCount();
-        if ( (totalItemCount - visibleItemCount <= firstVisibleItem) && newsfeedAdapter.isShowBottomView() ) {
-            int paddingBottom = mapOptionsMenu.getPaddingBottom();
-            if (paddingBottom <= mapOptionsMenuPaddingBottom) {
-                if (fabAnimatorDown != null && fabAnimatorDown.isRunning()) {
-                    fabAnimatorDown.end();
-                }
-                RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-                if (fabAnimatorUp == null) {
-                    fabAnimatorUp = ValueAnimator.ofPropertyValuesHolder(
-                            PropertyValuesHolder.ofInt("fabMenu", mapOptionsMenuPaddingBottom, mapOptionsMenuPaddingBottom + FAB_BOTTOM_DELTA),
-                            PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin + FAB_BOTTOM_DELTA)
-                            );
-                    fabAnimatorUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(final ValueAnimator animation) {
-                            int fabMenu = (Integer) animation.getAnimatedValue("fabMenu");
-                            mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), fabMenu);
-                            int fabStop = (Integer) animation.getAnimatedValue("fabStop");
-                            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-                            lp.bottomMargin = fabStop;
-                            tourStopButton.setLayoutParams(lp);
-                        }
-                    });
-                } else {
-                    if (fabAnimatorUp.isRunning()) {
-                        fabAnimatorUp.end();
-                    }
-                    fabAnimatorUp.setValues(
-                            PropertyValuesHolder.ofInt("fabMenu", mapOptionsMenuPaddingBottom, mapOptionsMenuPaddingBottom + FAB_BOTTOM_DELTA),
-                            PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin + FAB_BOTTOM_DELTA)
-                    );
-                }
-                fabAnimatorUp.start();
-//                mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), mapOptionsMenu.getPaddingBottom() + FAB_BOTTOM_DELTA);
-//                RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-//                lp.bottomMargin += FAB_BOTTOM_DELTA;
-//                tourStopButton.setLayoutParams(lp);
-            }
-        }
-    }
-
-    /**
-     * Moves the FAB buttons to their original positions, if necessary
-     */
-    private void moveFABDown() {
-        int paddingBottom = mapOptionsMenu.getPaddingBottom();
-        if (paddingBottom > mapOptionsMenuPaddingBottom) {
-            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-            if (fabAnimatorUp != null && fabAnimatorUp.isRunning()) {
-                fabAnimatorUp.end();
-            }
-            paddingBottom = mapOptionsMenu.getPaddingBottom();
-            if (fabAnimatorDown == null) {
-                fabAnimatorDown = ValueAnimator.ofPropertyValuesHolder(
-                        PropertyValuesHolder.ofInt("fabMenu", paddingBottom, mapOptionsMenuPaddingBottom),
-                        PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin - FAB_BOTTOM_DELTA)
-                );
-                fabAnimatorDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(final ValueAnimator animation) {
-                        int fabMenu = (Integer) animation.getAnimatedValue("fabMenu");
-                        mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), fabMenu);
-                        int fabStop = (Integer) animation.getAnimatedValue("fabStop");
-                        RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-                        lp.bottomMargin = fabStop;
-                        tourStopButton.setLayoutParams(lp);
-                    }
-                });
-            } else {
-                if (fabAnimatorDown.isRunning()) {
-                    return;
-                }
-                fabAnimatorDown.setValues(
-                        PropertyValuesHolder.ofInt("fabMenu", paddingBottom, mapOptionsMenuPaddingBottom),
-                        PropertyValuesHolder.ofInt("fabStop", lp.bottomMargin, lp.bottomMargin - FAB_BOTTOM_DELTA)
-                );
-            }
-            fabAnimatorDown.start();
-//            mapOptionsMenu.setPadding(mapOptionsMenu.getPaddingLeft(), mapOptionsMenu.getPaddingTop(), mapOptionsMenu.getPaddingRight(), mapOptionsMenu.getPaddingBottom() - FAB_BOTTOM_DELTA);
-//            RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)tourStopButton.getLayoutParams();
-//            lp.bottomMargin -= FAB_BOTTOM_DELTA;
-//            tourStopButton.setLayoutParams(lp);
-        }
     }
 
     // ----------------------------------
@@ -2665,7 +2551,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     protected void handleHeatzoneClick(LatLng location) {
         if (isToursListVisible()) {
-            centerMapAndZoom(location);
+            centerMapAndZoom(location, ZOOM_HEATZONE);
             toggleToursList();
         } else {
             showHeatzoneMiniCardsAtLocation(location);
@@ -2690,6 +2576,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         //show the minicards list
         miniCardsView.setEntourages(entourageArrayList);
+        //zoom in the heatzone
+        if (map != null) {
+            CameraPosition cameraPosition = new CameraPosition(location, ZOOM_HEATZONE, 0, 0);
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            saveCameraPosition();
+        }
     }
 
     // ----------------------------------
@@ -2731,16 +2623,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
-        private static final int MIN_SCROLL_DELTA_Y = 20;
-        private static final int MIN_MAP_SCROLL_DELTA_Y = 10;
-
-        private int mapScrollDeltaY = 0;
-
         @Override
         public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
-
-            scrollDeltaY += dy;
-            mapScrollDeltaY += dy;
             if (dy > 0) {
                 // Scrolling down
                 int visibleItemCount = recyclerView.getChildCount();
@@ -2753,20 +2637,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         tourService.updateNewsfeed(pagination);
                     }
                 }
-
-                scrollDeltaY = 0;
             } else {
                 // Scrolling up
-                if (newsfeedAdapter.isShowBottomView()) {
-                    int visibleItemCount = recyclerView.getChildCount();
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
-                    int totalItemCount = linearLayoutManager.getItemCount();
-                    if ((totalItemCount - visibleItemCount > firstVisibleItem)) {
-                        moveFABDown();
-                    }
-                }
-                mapScrollDeltaY = 0;
              }
         }
 

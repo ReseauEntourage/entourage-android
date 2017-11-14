@@ -22,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -74,6 +75,8 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
+import social.entourage.android.base.EntourageToast;
+import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -86,6 +89,7 @@ import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
+import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
@@ -177,6 +181,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         gcmSharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
         intentAction = getIntent().getAction();
+        if (Intent.ACTION_VIEW.equals(intentAction)) {
+            // Save the deep link intent
+            DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
+        }
 
         User user = getAuthenticationController().getUser();
         if (user != null) {
@@ -184,10 +192,10 @@ public class DrawerActivity extends EntourageSecuredActivity
             String avatarURL = user.getAvatarURL();
             if (avatarURL != null) {
                 Picasso.with(this)
-                    .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(new CropCircleTransformation())
-                    .into(userPhoto);
+                        .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(userPhoto);
             } else {
                 userPhoto.setImageResource(R.drawable.ic_user_photo_small);
             }
@@ -240,7 +248,12 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
+        //Log.d("DEEPLINK", "onNewIntent " + intent.toString());
         this.setIntent(intent);
+        if (Intent.ACTION_VIEW.equals(intent.getAction())){
+            // Save the deep link intent
+            DeepLinksManager.getInstance().setDeepLinkIntent(intent);
+        }
         getIntentAction(intent);
         if (mainFragment != null) {
             switchToMapFragment();
@@ -307,6 +320,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Override
     protected void onStop() {
         BusProvider.getInstance().unregister(this);
+
+        EntourageToast entourageToast = EntourageToast.getGlobalEntourageToast();
+        if (entourageToast != null) {
+            entourageToast.cancel();
+        }
+
         super.onStop();
     }
 
@@ -353,6 +372,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                 intentAction = ConfirmationActivity.KEY_END_TOUR;
             } else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
+            } else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(action)) {
+                intentAction = PushNotificationContent.TYPE_NEW_JOIN_REQUEST;
             } else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
             } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
@@ -368,23 +389,21 @@ public class DrawerActivity extends EntourageSecuredActivity
                 intentAction = TourService.KEY_NOTIFICATION_PAUSE_TOUR;
             } else if (TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                 intentAction = TourService.KEY_NOTIFICATION_STOP_TOUR;
-            } else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
-            } else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
-            } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
-            } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
             }
         }
     }
 
-    private void switchToMapFragment() {
+    public void switchToMapFragment() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment = (MapEntourageFragment) mainFragment;
         } else {
             loadFragmentWithExtras();
+        }
+    }
+
+    public void popToMapFragment() {
+        if (mapEntourageFragment != null) {
+            mapEntourageFragment.dismissAllDialogs();
         }
     }
 
@@ -526,13 +545,28 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
+                /*
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://feed"));
+                        try {
+                            startActivity(intent);
+                        } catch (Exception ex) {
+                            Log.d("DEEPLINK", ex.toString());
+                        }
+                    }
+                }, 8*1000);
+                */
+
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
-                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.SCB_URL));
+                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.SCB_LINK_ID)));
                 try {
                     startActivity(blogIntent);
                 } catch (Exception ex) {
@@ -546,12 +580,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 if (me != null) {
                     isPro = me.isPro();
                 }
-                Intent charteIntent;
-                if (isPro) {
-                    charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_pro)));
-                } else {
-                    charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.disclaimer_link_public)));
-                }
+                Intent charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.CHARTE_LINK_ID)));
                 try {
                     startActivity(charteIntent);
                 } catch (Exception ex) {
@@ -560,7 +589,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_goal:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
-                Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GOAL_URL));
+                Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.GOAL_LINK_ID)));
                 try {
                     startActivity(goalIntent);
                 } catch (Exception ex) {
@@ -568,20 +597,20 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
 
                 break;
-            case R.id.action_faq:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
-                Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_URL));
+            case R.id.action_atd:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
+                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.ATD_LINK_ID)));
                 try {
-                    startActivity(userGuideIntent);
+                    startActivity(atdIntent);
                 } catch (Exception ex) {
                     Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.action_atd:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
-                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.ATD_URL));
+            case R.id.action_donation:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_DONATION);
+                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.DONATE_LINK_ID)));
                 try {
-                    startActivity(atdIntent);
+                    startActivity(donationIntent);
                 } catch (Exception ex) {
                     Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
@@ -730,19 +759,28 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
+        //Log.d("DEEPLINK", "checkIntentAction");
         switchToMapFragment();
         Intent intent = getIntent();
-        if (intent == null || intent.getExtras() == null) {
+        if (intent == null) {
             intentAction = null;
             intentTour = null;
             return;
         }
         mapEntourageFragment.checkAction(intentAction, intentTour);
-        Message message = (Message) intent.getExtras().getSerializable(PushNotificationService.PUSH_MESSAGE);
+        Message message = null;
+        if (intent.getExtras() != null) {
+            message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
+        }
         if (message != null) {
             PushNotificationContent content = message.getContent();
             if (content != null) {
-                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
+                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
+                    if (presenter != null) {
+                        presenter.displayMyEntourages();
+                    }
+                }
+                else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
                     if (content.isTourRelated()) {
                         mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.TOUR_CARD);
                     } else if (content.isEntourageRelated()) {
@@ -765,6 +803,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                 application.removePushNotification(message);
             }
             refreshBadgeCount();
+        } else {
+            // Handle the deep link
+            DeepLinksManager.getInstance().handleCurrentDeepLink(this);
         }
         intentAction = null;
         intentTour = null;
@@ -829,10 +870,15 @@ public class DrawerActivity extends EntourageSecuredActivity
                 //check if we are receiving feed type and id
                 int feedItemType = event.getFeedItemType();
                 long feedItemId = event.getFeedItemId();
-                if (feedItemType == 0 || feedItemId == 0) {
+                if (feedItemType == 0) {
                     return;
                 }
-                mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
+                if (feedItemId == 0) {
+                    String shareURL = event.getFeedItemShareURL();
+                    mapEntourageFragment.displayChosenFeedItem(shareURL, feedItemType);
+                } else {
+                    mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
+                }
             }
         }
     }
@@ -975,7 +1021,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment, final String entourageType) {
+    public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
         User me = EntourageApplication.me(this);
         me.setEntourageDisclaimerShown(true);
@@ -986,7 +1032,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         // Show the create entourage fragment
         if (mainFragment instanceof MapEntourageFragment) {
-            ((MapEntourageFragment) mainFragment).createEntourage(entourageType);
+            ((MapEntourageFragment) mainFragment).createEntourage();
         }
     }
 
@@ -1000,8 +1046,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         // Dismiss the disclaimer fragment
         fragment.dismiss();
 
-        // Show the create encounter fragment
         if (mainFragment instanceof MapEntourageFragment) {
+            ((MapEntourageFragment) mainFragment).addEncounter();
+        } else {
+            onPOILauncherClicked();
             ((MapEntourageFragment) mainFragment).addEncounter();
         }
     }
@@ -1102,12 +1150,12 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.button_create_entourage)
     public void onCreateEntourageClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_FEED_OFFER_CREATE_CLICK);
+        EntourageEvents.logEvent(Constants.EVENT_FEED_ACTION_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
+            mapEntourageFragment.displayEntouragePopupWhileTour();
         } else {
             onPOILauncherClicked();
-            mapEntourageFragment.displayEntouragePopupWhileTour(Entourage.TYPE_CONTRIBUTION);
+            mapEntourageFragment.displayEntouragePopupWhileTour();
         }
     }
 
@@ -1235,12 +1283,15 @@ public class DrawerActivity extends EntourageSecuredActivity
         discussionBadgeView.setBadgeCount(application.badgeCount);
     }
 
-    // ----------------------------------
-    // Helper functions
-    // ----------------------------------
-
     public boolean isGuideShown() {
         return !(mainFragment instanceof MapEntourageFragment);
+    }
+
+    public String getLink(String linkId) {
+        if (authenticationController != null && authenticationController.getUser() != null) {
+            return getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
+        }
+        return "";
     }
 
 }

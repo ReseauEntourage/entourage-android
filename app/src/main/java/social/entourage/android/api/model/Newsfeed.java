@@ -14,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import social.entourage.android.api.model.map.Announcement;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 
@@ -114,6 +115,9 @@ public class Newsfeed {
                     }
                     else if (type.equals(Entourage.NEWSFEED_TYPE)) {
                         newsfeed.data = gson.fromJson(jsonObject.get(DATA), Entourage.class);
+                    }
+                    else if (type.equals(Announcement.NEWSFEED_TYPE)) {
+                        newsfeed.data = gson.fromJson(jsonObject.get(DATA), Announcement.class);
                     }
 
                 }

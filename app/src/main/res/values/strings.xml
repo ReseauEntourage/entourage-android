@@ -26,8 +26,12 @@
     <string name="edit">Editer</string>
     <string name="activate">Activer</string>
 
-    <string name="disclaimer_link_public">http://www.entourage.social/chartes/grand-public.html</string>
-    <string name="disclaimer_link_pro">http://www.entourage.social/chartes/pro.html</string>
+    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_pro">https://blog.entourage.social/charte-ethique/</string>
+
+    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
+
+    <string name="deeplinks_label">!!Open with Entourage</string>
 
     <string name="drawer_error">Le menu %1$s n\'est pas encore disponible</string>
     <string name="unsubscribe_error">La désinscription n\'est pas encore disponible</string>

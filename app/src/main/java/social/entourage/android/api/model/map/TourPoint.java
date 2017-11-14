@@ -24,6 +24,8 @@ public class TourPoint implements Serializable {
 
     private double longitude;
 
+    private float accuracy;
+
     @SerializedName("passing_time")
     private Date passingTime;
 
@@ -34,6 +36,14 @@ public class TourPoint implements Serializable {
     public TourPoint(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+        this.accuracy = 0.0f;
+        passingTime = new Date();
+    }
+
+    public TourPoint(double latitude, double longitude, float accuracy) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.accuracy = accuracy;
         passingTime = new Date();
     }
 
@@ -49,12 +59,20 @@ public class TourPoint implements Serializable {
         return longitude;
     }
 
+    public float getAccuracy() {
+        return accuracy;
+    }
+
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public void setAccuracy(final float accuracy) {
+        this.accuracy = accuracy;
     }
 
     public LatLng getLocation() {

@@ -161,7 +161,7 @@
 
     <include
         android:id="@+id/fragment_guide_longclick"
-        layout="@layout/layout_guide_longclick"
+        layout="@layout/layout_map_longclick"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>

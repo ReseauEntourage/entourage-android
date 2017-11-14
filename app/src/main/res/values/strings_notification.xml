@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_title_chat_message">Nouveaux messages</string>
+    <string name="notification_text_chat_message">Vous avez %1$d nouveaux messages</string>
+
+    <string name="notification_text_join_request_tour_single">@string/tour_join_request_received_message</string>
+    <string name="notification_text_join_request_entourage_single">@string/entourage_join_request_received</string>
+    <string name="notification_text_join_request_tour_multiple">%1$d personnes souhaitent rejoindre votre maraude.</string>
+    <string name="notification_text_join_request_entourage_multiple">%1$d personnes souhaitent rejoindre votre action: %2$s</string>
+</resources>

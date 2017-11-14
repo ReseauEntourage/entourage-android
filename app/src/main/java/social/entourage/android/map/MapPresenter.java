@@ -115,18 +115,26 @@ public class MapPresenter {
         }
     }
 
-    public void createEntourage(String entourageType, LatLng location) {
+    public void openFeedItem(String feedItemShareURL, int feedItemType) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(entourageType, location);
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemShareURL, feedItemType);
+            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
+        }
+    }
+
+    public void createEntourage(LatLng location) {
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location);
             entourageFragment.show(fragmentManager, CreateEntourageFragment.TAG);
         }
     }
 
-    public void displayEntourageDisclaimer(String entourageType, boolean isPro) {
+    public void displayEntourageDisclaimer(boolean isPro) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(entourageType, isPro);
+            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(isPro);
             fragment.show(fragmentManager, EntourageDisclaimerFragment.TAG);
         }
     }

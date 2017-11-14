@@ -24,6 +24,7 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
@@ -198,11 +199,15 @@ public class TourServiceManager {
     }
 
     public void addEncounter(Encounter encounter) {
-        tour.addEncounter(encounter);
+        if (tour != null) {
+            tour.addEncounter(encounter);
+        }
     }
 
     public void updateEncounter(Encounter encounter) {
-        tour.updateEncounter(encounter);
+        if (tour != null) {
+            tour.updateEncounter(encounter);
+        }
     }
 
     public void unregisterFromBus() {
@@ -580,7 +585,8 @@ public class TourServiceManager {
                 mapFilter.onlyMyEntourages,
                 mapFilter.getEntourageTypes(),
                 mapFilter.timeframe,
-                mapFilter.onlyMyOrganisationEntourages
+                mapFilter.onlyMyPartnerEntourages,
+                Constants.ANNOUNCEMENTS_VERSION
         );
     }
 
@@ -625,7 +631,7 @@ public class TourServiceManager {
 
                     Location location = provider.getLastKnownLocation();
                     if (location != null) {
-                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
+                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), location.getAccuracy());
                         tour.addCoordinate(point);
                         pointsToDraw.add(point);
                         pointsToSend.add(point);
@@ -635,6 +641,7 @@ public class TourServiceManager {
                     } else {
                         Log.e(this.getClass().getSimpleName(), "no location provided");
                     }
+                    provider.setLocationUpdateUserType(UserType.PRO);
 
                 } else {
                     tour = null;
@@ -667,6 +674,7 @@ public class TourServiceManager {
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
+                    provider.setLocationUpdateUserType(UserType.PUBLIC);
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);
                 }
@@ -798,7 +806,11 @@ public class TourServiceManager {
         @NonNull
         private String getErrorBody(Response<Newsfeed.NewsfeedWrapper> response) {
             try {
-                return response.errorBody().string();
+                if (response.errorBody() != null) {
+                    return response.errorBody().string();
+                } else {
+                    return EMPTY_STRING;
+                }
             } catch (IOException ignored) {
                 return EMPTY_STRING;
             }
@@ -814,6 +826,7 @@ public class TourServiceManager {
 
         @Override
         public void onLocationChanged(Location location) {
+            Log.d("LOCATION", "onLocationChanged");
             if (manager.entourageLocation.getCurrentLocation() == null) {
                 manager.entourageLocation.setInitialLocation(location);
             }
@@ -822,7 +835,7 @@ public class TourServiceManager {
             manager.tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
 
             if (manager.tour != null && !manager.tourService.isPaused()) {
-                TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude());
+                TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), location.getAccuracy());
                 manager.onLocationChanged(location, point);
             }
         }

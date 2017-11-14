@@ -22,6 +22,8 @@ public abstract class TimestampedObject {
     public static final int INVITATION_CARD = 9;
     public static final int DATE_SEPARATOR = 10;
     public static final int GUIDE_POI = 11;
+    public static final int INVITATION_LIST = 12;
+    public static final int ANNOUNCEMENT_CARD = 13;
     public static final int TOP_VIEW = 998;
     public static final int BOTTOM_VIEW = 999;
 

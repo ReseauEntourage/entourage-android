@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -30,8 +31,8 @@ public class AboutFragment extends EntourageDialogFragment {
 
     private static final String RATE_URL = "market://details?id=";
     private static final String FACEBOOK_URL = "https://www.facebook.com/EntourageReseauCivique";
-    private static final String TERMS_URL = "http://www.entourage.social/cgu/index.html";
-    private static final String WEBSITE_URL = "http://www.entourage.social";
+    private static final String TERMS_URL = "https://www.entourage.social/cgu/index.html";
+    private static final String WEBSITE_URL = "https://www.entourage.social";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -137,6 +138,20 @@ public class AboutFragment extends EntourageDialogFragment {
             startActivity(intent);
         } else {
             Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick(R.id.faq_website_layout)
+    protected void onFAQClicked() {
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
+            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+            Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(drawerActivity.getLink(Constants.FAQ_LINK_ID)));
+            try {
+                startActivity(userGuideIntent);
+            } catch (Exception ex) {
+                Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

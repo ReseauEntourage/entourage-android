@@ -3,6 +3,7 @@ package social.entourage.android.guide;
 import android.Manifest;
 import android.animation.ValueAnimator;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,10 +12,13 @@ import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -60,12 +64,17 @@ import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Category;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
+import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
+import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
+import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 
@@ -88,6 +97,10 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     @Inject
     GuideMapPresenter presenter;
+
+    TourService tourService;
+    private ServiceConnection connection = new ServiceConnection();
+    boolean isBound = false;
 
     private View toReturn;
 
@@ -118,7 +131,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @BindView(R.id.fragment_guide_longclick)
     RelativeLayout guideLongClickView;
 
-    @BindView(R.id.guide_longclicks_buttons)
+    @BindView(R.id.map_longclick_buttons)
     RelativeLayout guideLongClickButtonsView;
 
     @BindView(R.id.fragment_guide_display_toggle)
@@ -137,6 +150,23 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
+
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!isBound) {
+            doBindService();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (isBound && tourService != null) {
+            doUnbindService();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -157,61 +187,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         poisMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         initializeEmptyListPopup();
-
-        originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
-
-        if (onMapReadyCallback == null) {
-            onMapReadyCallback = new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(final GoogleMap googleMap) {
-                    if (map != null) return;
-                    map = googleMap;
-                    clusterManager = new ClusterManager<>(getActivity(), map);
-                    poiRenderer = new PoiRenderer(getActivity(), map, clusterManager);
-                    clusterManager.setRenderer(poiRenderer);
-                    clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
-                    googleMap.setOnMarkerClickListener(clusterManager);
-                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                        map.setMyLocationEnabled(true);
-                    }
-                    map.getUiSettings().setMyLocationButtonEnabled(false);
-                    map.getUiSettings().setMapToolbarEnabled(false);
-                    initializeMapZoom();
-                    googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-                        @Override
-                        public void onCameraIdle() {
-                            CameraPosition position = map.getCameraPosition();
-                            EntourageLocation.getInstance().saveCurrentCameraPosition(position);
-                            Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
-                            float newZoom = position.zoom;
-                            if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
-                                previousCameraZoom = newZoom;
-                                previousCameraLocation = newLocation;
-                                presenter.updatePoisNearby(map);
-                            }
-                        }
-                    });
-
-                    // MI: We need to wait for a better solution for long press options on guide map
-                    // So I'll just comment out the code
-                    /*
-                    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                        @Override
-                        public void onMapLongClick(final LatLng latLng) {
-                            if (getActivity() != null) {
-                                showLongClickOnMapOptions(latLng);
-                            }
-                        }
-                    });
-                    */
-
-                    if (presenter != null) {
-                        presenter.updatePoisNearby(map);
-                    }
-                }
-            };
-        }
-
+        initializeMap();
         initializePOIList();
     }
 
@@ -234,7 +210,13 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @Override
     public void onStart() {
         super.onStart();
-        presenter.start();
+        if (presenter != null) {
+            presenter.start();
+            if (map != null) {
+                presenter.updatePoisNearby(map);
+            }
+        }
+        showInfoPopup();
 
         BusProvider.getInstance().register(this);
     }
@@ -254,6 +236,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
         if (guideLongClickView.getVisibility() == View.VISIBLE) {
             guideLongClickView.setVisibility(View.GONE);
+            mapOptionsMenu.setVisibility(View.VISIBLE);
             return true;
         }
         // Switch to map view
@@ -316,6 +299,30 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     }
 
     // ----------------------------------
+    // SERVICE BINDING METHODS
+    // ----------------------------------
+
+    void doBindService() {
+        if (getActivity() != null) {
+            User me = EntourageApplication.me(getActivity());
+            if (me == null) {
+                // Don't start the service
+                return;
+            }
+            Intent intent = new Intent(getActivity(), TourService.class);
+            getActivity().startService(intent);
+            getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    void doUnbindService() {
+        if (getActivity() != null && isBound) {
+            getActivity().unbindService(connection);
+            isBound = false;
+        }
+    }
+
+    // ----------------------------------
     // BUS EVENTS
     // ----------------------------------
 
@@ -352,7 +359,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     clusterManager.addItems(poiCollection);
                     clusterManager.cluster();
                     hideEmptyListPopup();
-                    showInfoPopup();
                 }
                 if (poisAdapter != null) {
                     List<TimestampedObject> timestampedObjectList = new ArrayList<>();
@@ -364,7 +370,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     }
                 }
             } else {
-                showEmptyListPopup();
+                if (!isInfoPopupVisible()) {
+                    showEmptyListPopup();
+                }
                 if (poisAdapter != null && poisAdapter.getDataItemCount() == 0) {
                     hidePOIList(false);
                 }
@@ -379,6 +387,58 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
         if (poisAdapter != null) {
             poisAdapter.removeAll();
+        }
+    }
+
+    private void initializeMap() {
+        originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
+
+        if (onMapReadyCallback == null) {
+            onMapReadyCallback = new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final GoogleMap googleMap) {
+                    if (map != null) return;
+                    map = googleMap;
+                    clusterManager = new ClusterManager<>(getActivity(), map);
+                    poiRenderer = new PoiRenderer(getActivity(), map, clusterManager);
+                    clusterManager.setRenderer(poiRenderer);
+                    clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
+                    googleMap.setOnMarkerClickListener(clusterManager);
+                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                        map.setMyLocationEnabled(true);
+                    }
+                    map.getUiSettings().setMyLocationButtonEnabled(false);
+                    map.getUiSettings().setMapToolbarEnabled(false);
+                    initializeMapZoom();
+                    googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                        @Override
+                        public void onCameraIdle() {
+                            CameraPosition position = map.getCameraPosition();
+                            EntourageLocation.getInstance().saveCurrentCameraPosition(position);
+                            Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
+                            float newZoom = position.zoom;
+                            if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                                previousCameraZoom = newZoom;
+                                previousCameraLocation = newLocation;
+                                presenter.updatePoisNearby(map);
+                            }
+                        }
+                    });
+
+                    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                        @Override
+                        public void onMapLongClick(final LatLng latLng) {
+                            if (getActivity() != null) {
+                                showLongClickOnMapOptions(latLng);
+                            }
+                        }
+                    });
+
+                    if (presenter != null) {
+                        presenter.updatePoisNearby(map);
+                    }
+                }
+            };
         }
     }
 
@@ -399,7 +459,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
     }
 
-    @OnClick(R.id.guide_longclick_button_poi_propose)
+    //@OnClick(R.id.guide_longclick_button_poi_propose)
     public void proposePOI() {
         // Close the overlays
         onBackPressed();
@@ -518,7 +578,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // INFO POPUP
     // ----------------------------------
 
-    @OnClick(R.id.fragment_guide_info_popup_close)
+    @OnClick({R.id.fragment_guide_info_popup_close, R.id.fragment_guide_info_popup})
     protected void onInfoPopupClose() {
         AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
         if (authenticationController != null) {
@@ -539,6 +599,10 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         infoPopup.setVisibility(View.GONE);
     }
 
+    private boolean isInfoPopupVisible() {
+        return infoPopup.getVisibility() == View.VISIBLE;
+    }
+
     // ----------------------------------
     // LONG PRESS OVERLAY
     // ----------------------------------
@@ -546,8 +610,22 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     private void showLongClickOnMapOptions(LatLng latLng) {
         //save the tap coordinates
         longTapCoordinates = latLng;
+        //for public user, start the create entourage funnel directly
+        User me = EntourageApplication.me(getActivity());
+        boolean isPro = (me != null && me.isPro());
+        if (!isPro) {
+            onCreateEntourageActionClicked();
+            return;
+        }
+        //hide the FAB menu
+        mapOptionsMenu.setVisibility(View.GONE);
         //get the click point
         Point clickPoint = map.getProjection().toScreenLocation(latLng);
+        //update the visible buttons
+        boolean isTourRunning = tourService != null && tourService.isRunning();
+        guideLongClickButtonsView.findViewById(R.id.map_longclick_button_start_tour_launcher).setVisibility(isTourRunning ? View.INVISIBLE : View.VISIBLE);
+        guideLongClickButtonsView.findViewById(R.id.map_longclick_button_create_encounter).setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
+        guideLongClickButtonsView.requestLayout();
         //adjust the buttons holder layout
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -562,7 +640,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             marginLeft -= bW/2;
         }
         if (marginLeft < 0) marginLeft = 0;
-        int marginTop = clickPoint.y - bH;
+        int marginTop = clickPoint.y - bH /2;
         if (marginTop < 0) marginTop = clickPoint.y;
         lp.setMargins(marginLeft, marginTop, 0, 0);
         guideLongClickButtonsView.setLayoutParams(lp);
@@ -573,6 +651,48 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @OnClick(R.id.fragment_guide_longclick)
     protected void hideLongClickView() {
         onBackPressed();
+    }
+
+    @OnClick(R.id.map_longclick_button_entourage_action)
+    protected void onCreateEntourageActionClicked() {
+        if (getActivity() == null) {
+            return;
+        }
+        guideLongClickView.setVisibility(View.GONE);
+        mapOptionsMenu.setVisibility(View.VISIBLE);
+        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+        drawerActivity.onCreateEntourageClicked();
+    }
+
+    @OnClick(R.id.map_longclick_button_start_tour_launcher)
+    protected void onStartTourLauncherClicked() {
+        if (getActivity() == null) {
+            return;
+        }
+        guideLongClickView.setVisibility(View.GONE);
+        mapOptionsMenu.setVisibility(View.VISIBLE);
+        if (mapOptionsMenu.isOpened()) {
+            mapOptionsMenu.toggle(false);
+        }
+        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+        drawerActivity.onStartTourClicked();
+    }
+
+    @OnClick(R.id.map_longclick_button_create_encounter)
+    protected void onCreateEncounterClicked() {
+        if (getActivity() == null) {
+            return;
+        }
+        // Hide the create entourage menu ui
+        guideLongClickView.setVisibility(View.GONE);
+        mapOptionsMenu.setVisibility(View.VISIBLE);
+        if (mapOptionsMenu.isOpened()) {
+            mapOptionsMenu.toggle(false);
+        }
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        EncounterDisclaimerFragment fragment = EncounterDisclaimerFragment.newInstance();
+        fragment.show(fragmentManager, EncounterDisclaimerFragment.TAG);
     }
 
     // ----------------------------------
@@ -641,6 +761,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
         guideDisplayToggle.setChecked(false);
 
+        hideInfoPopup();
         hideEmptyListPopup();
 
         if (animated) {
@@ -666,7 +787,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     }
 
     // ----------------------------------
-    // INNER CLASS
+    // INNER CLASSES
     // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements ClusterManager.OnClusterItemClickListener<Poi> {
@@ -676,6 +797,21 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             saveCameraPosition();
             showPoiDetails(poi);
             return true;
+        }
+    }
+
+    private class ServiceConnection implements android.content.ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            if (getActivity() != null) {
+                tourService = ((TourService.LocalBinder) service).getService();
+            }
+            isBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            tourService = null;
         }
     }
 }

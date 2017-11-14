@@ -55,7 +55,7 @@
 
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020a rejoint l\'entourage.</string>
-    <string name="entourage_join_request_received">%1$s souhaite rejoindre votre entourage: %2$s</string>
+    <string name="entourage_join_request_received">%1$s souhaite rejoindre votre action: %2$s</string>
     <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre entourage]]></string>
     <string name="entourage_join_request_received_message_short">veut rejoindre votre entourage.</string>
 
@@ -65,7 +65,7 @@
     <string name="entourage_info_text_close">Entourage fermé</string>
 
     <!-- Entourage disclaimer -->
-    <string name="entourage_disclaimer_text_chart1">En vertu de la</string>
+    <string name="entourage_disclaimer_text_chart1">Je respecte la</string>
     <string name="entourage_disclaimer_text_chart2">Charte d\'Entourage</string>
     <string name="entourage_disclaimer_accord_title">Recueillir l’accord</string>
     <string name="entourage_disclaimer_accord_details">Je dois recueillir le consentement des personnes concernées avant de créer un entourage</string>
@@ -93,9 +93,9 @@
     
     <!-- Create entourage dialog while tour is ongoing -->
     <string name="entourage_tour_ongoing_title">@string/tour_info_text_ongoing</string>
-    <string name="entourage_tour_ongoing_demand">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une demande visible de tous?</string>
-    <string name="entourage_tour_ongoing_contribution">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une contribution visible de tous?</string>
+    <string name="entourage_tour_ongoing_description">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une action visible de tous?</string>
     <string name="entourage_tour_ongoing_proceed">Rencontre</string>
+    <string name="entourage_tour_ongoing_action">Action</string>
 
     <!-- Close Entourage Popup -->
     <string name="entourage_close_title">Comment cela s’est passé?</string>
@@ -111,7 +111,7 @@
 
     <!-- Share Entourage -->
     <string name="entourage_share_intent_title">Partager via</string>
-    <string name="entourage_share_link">http://entourage.social</string>
+    <string name="entourage_share_link">https://entourage.social</string>
     <string name="entourage_share_text_author">J\'ai créé ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_member">J\'ai rejoint ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_non_member">Ce projet solidaire sur Entourage a besoin de toi. Rejoins-le en téléchargeant l\'app ici %1$s</string>

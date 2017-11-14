@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,11 @@ public class UserEditFragment extends EntourageDialogFragment {
     @Inject
     UserEditPresenter presenter;
 
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
+
+    int scrollViewY = 0;
+
     @BindView(R.id.user_photo)
     ImageView userPhoto;
 
@@ -82,6 +88,9 @@ public class UserEditFragment extends EntourageDialogFragment {
 
     @BindView(R.id.user_address)
     TextView userAddress;
+
+    @BindView(R.id.user_about)
+    TextView userAbout;
 
     @BindView(R.id.user_notifications_image)
     ImageView userNotificationsStatusImage;
@@ -179,6 +188,7 @@ public class UserEditFragment extends EntourageDialogFragment {
             userEmail.setText(editedUser.getEmail());
             userPhone.setText(editedUser.getPhone());
             userAddress.setText("");
+            userAbout.setText(editedUser.getAbout());
 
             List<BaseOrganization> organizationList = new ArrayList<>();
             if (editedUser.getPartner() != null) {
@@ -242,6 +252,13 @@ public class UserEditFragment extends EntourageDialogFragment {
         fragment.show(getFragmentManager(), UserEditPasswordFragment.TAG);
     }
 
+    @OnClick(R.id.user_about_edit_button)
+    protected void onEditAboutClicked() {
+        scrollViewY = scrollView.getScrollY();
+        UserEditAboutFragment editAboutFragment = new UserEditAboutFragment();
+        editAboutFragment.show(getFragmentManager(), UserEditAboutFragment.TAG);
+    }
+
     @OnClick(R.id.user_delete_account_button)
     protected void onDeleteAccountClicked() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -281,7 +298,7 @@ public class UserEditFragment extends EntourageDialogFragment {
     }
 
     @OnClick(R.id.user_add_association_button)
-    protected void onAddAssociationClicked() {
+    public void onAddAssociationClicked() {
         EntourageEvents.logEvent(Constants.EVENT_USER_TOBADGE);
         UserEditPartnerFragment userEditPartnerFragment = new UserEditPartnerFragment();
         userEditPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);
@@ -308,6 +325,14 @@ public class UserEditFragment extends EntourageDialogFragment {
         } catch (Exception ex) {
 
         }
+    }
+
+    // ----------------------------------
+    // Protected methods
+    // ----------------------------------
+
+    protected void scrollToOriginalPosition() {
+        scrollView.scrollTo(0, scrollViewY);
     }
 
     // ----------------------------------

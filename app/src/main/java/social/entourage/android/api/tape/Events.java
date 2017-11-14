@@ -179,6 +179,7 @@ public class Events {
         private FeedItem feedItem;
         private int feedItemType = 0;
         private long feedItemId = 0;
+        private String feedItemShareURL;
         private long invitationId = 0;
         private int feedRank = 0;
 
@@ -194,6 +195,11 @@ public class Events {
         public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId) {
             this.feedItemType = feedItemType;
             this.feedItemId = feedItemId;
+        }
+
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemShareURL) {
+            this.feedItemType = feedItemType;
+            this.feedItemShareURL = feedItemShareURL;
         }
 
         public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId, long invitationId) {
@@ -220,6 +226,10 @@ public class Events {
 
         public int getfeedRank() {
             return feedRank;
+        }
+
+        public String getFeedItemShareURL() {
+            return feedItemShareURL;
         }
     }
 

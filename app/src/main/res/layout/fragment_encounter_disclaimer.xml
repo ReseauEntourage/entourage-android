@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -32,17 +33,17 @@
         android:id="@+id/encounter_disclaimer_scrollview"
         android:layout_marginTop="10dp">
 
-        <TextView
+        <social.entourage.android.view.HtmlTextView
             android:id="@+id/encounter_disclaimer_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoLink="web"
             android:linksClickable="true"
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/encounter_disclaimer_text"
-            android:textSize="@dimen/entourage_font_medium"/>
+            android:textColorLink="@color/accent"
+            android:textSize="@dimen/entourage_font_medium"
+            app:htmlText="@string/encounter_disclaimer_text"/>
     </ScrollView>
 
     <CheckBox

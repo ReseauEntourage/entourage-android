@@ -3,6 +3,8 @@ package social.entourage.android.map.entourage.minicards;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.base.BaseCardViewHolder;
@@ -43,6 +45,12 @@ public class EntourageMiniCardsAdapter extends EntourageBaseAdapter {
         }
 
         return cardViewHolder;
+    }
+
+    public void addItems(List<TimestampedObject> addItems) {
+        items.clear();
+        items.addAll(addItems);
+        notifyDataSetChanged();
     }
 
 }

@@ -3,8 +3,11 @@ package social.entourage.android;
 public class Constants {
 
     //TODO: should be changed after each release
-    // v3.6 API Key
-    public static final String API_KEY = "fbe5ec205f074b7533c2dbd6";
+    // v4.0 API Key
+    public static final String API_KEY = "cf52de007ca906bc2b25a6cf";
+
+    // Announcements version
+    public static final String ANNOUNCEMENTS_VERSION = "v1";
 
     // Filenames
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
@@ -17,14 +20,17 @@ public class Constants {
     public static final int REQUEST_CREATE_ENCOUNTER = 1;
     public static final int RESULT_CREATE_ENCOUNTER_OK = 2;
 
+    // Link IDs
+    public static final String SCB_LINK_ID = "pedagogic-content";
+    public static final String GOAL_LINK_ID= "action-examples";
+    public static final String DONATE_LINK_ID = "donation";
+    public static final String ATD_LINK_ID = "atd-partnership";
+    public static final String CHARTE_LINK_ID = "ethics-charter";
+    public static final String FAQ_LINK_ID = "faq";
     // Links
-    public static final String BLOG_URL = "https://blog.entourage.social/2016/10/28/franchir-le-pas/";
-    public static final String SCB_URL = "http://www.simplecommebonjour.org/";
     public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
     public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";
-    public static final String GOAL_URL= "https://blog.entourage.social/quelles-actions-faire-avec-entourage";
-    public static final String FAQ_URL = "https://blog.entourage.social/comment-utiliser-l-application-entourage/";
-    public static final String ATD_URL = "https://www.atd-quartmonde.fr/entourage/";
+
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";
@@ -112,6 +118,7 @@ public class Constants {
     public static final String EVENT_MENU_BLOG = "SimpleCommeBonjourClick";
     public static final String EVENT_MENU_CHART = "ViewEthicsChartClick";
     public static final String EVENT_MENU_ATD = "ATDPartnershipView";
+    public static final String EVENT_MENU_DONATION = "DonationView";
 
     //FEED Events
     public static final String EVENT_FEED_MESSAGES = "GoToMessages"; // No longer used
@@ -129,8 +136,7 @@ public class Constants {
     public static final String EVENT_FEED_SCROLL_LIST = "ScrollListPage";
     public static final String EVENT_FEED_PLUS_CLICK = "PlusFromFeedClick";
     public static final String EVENT_FEED_TOUR_CREATE_CLICK = "TourCreateClick";
-    public static final String EVENT_FEED_ASK_CREATE_CLICK = "AskCreateClick";
-    public static final String EVENT_FEED_OFFER_CREATE_CLICK = "OfferCreateClick";
+    public static final String EVENT_FEED_ACTION_CREATE_CLICK = "CreateActionClick";
     public static final String EVENT_FEED_GUIDE_SHOW_CLICK = "GDSViewClick";
     public static final String EVENT_FEED_PENDING_OVERLAY = "PendingRequestOverlay";
     public static final String EVENT_FEED_CANCEL_JOIN_REQUEST = "CancelJoinRequest";

@@ -3,6 +3,7 @@ package social.entourage.android;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -30,16 +31,15 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
 import social.entourage.android.authentication.ComplexPreferences;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.newsfeed.FeedItemsStorage;
 
-import static social.entourage.android.BuildConfig.BUILD_TYPE;
 import static social.entourage.android.BuildConfig.FLAVOR;
-import static social.entourage.android.BuildConfig.MIXPANEL_TOKEN;
 
 /**
  * Application setup for Flurry, JodaTime and Dagger
  */
-public class EntourageApplication extends Application {
+public class EntourageApplication extends MultiDexApplication {
 
     private static EntourageApplication instance;
     public static EntourageApplication get() { return instance; }
@@ -49,7 +49,6 @@ public class EntourageApplication extends Application {
     private ArrayList<EntourageActivity> activities;
 
     public int badgeCount = 0;
-    public ArrayList<Message> pushNotifications = new ArrayList<>();
 
     private FeedItemsStorage feedItemsStorage;
 
@@ -86,10 +85,13 @@ public class EntourageApplication extends Application {
     }
 
     private void setupFlurry() {
-        FlurryAgent.setLogEnabled(true);
-        FlurryAgent.setLogLevel(Log.VERBOSE);
-        FlurryAgent.setLogEvents(true);
-        FlurryAgent.init(this, BuildConfig.FLURRY_API_KEY);
+        new FlurryAgent.Builder()
+                .withLogEnabled(true)
+                .withCaptureUncaughtExceptions(true)
+                .withLogEnabled(true)
+                .withLogLevel(Log.VERBOSE)
+                .withListener(new EntourageEvents())
+                .build(this, BuildConfig.FLURRY_API_KEY);
     }
 
     private void setupMixpanel() {
@@ -125,6 +127,14 @@ public class EntourageApplication extends Application {
 
     public static EntourageApplication get(Context context) {
         return (EntourageApplication) context.getApplicationContext();
+    }
+
+    public static User me() {
+        EntourageApplication application = EntourageApplication.get();
+        if (application == null || application.component == null) return null;
+        AuthenticationController authenticationController = application.component.getAuthenticationController();
+        if (authenticationController == null) return null;
+        return authenticationController.getUser();
     }
 
     public static User me(Context context) {
@@ -183,48 +193,14 @@ public class EntourageApplication extends Application {
     }
 
     public void addPushNotification(Message message) {
-        pushNotifications.add(message);
+        PushNotificationManager.getInstance().addPushNotification(message);
         updateFeedItemsStorage(message, true);
         badgeCount++;
         ShortcutBadger.applyCount(this, badgeCount);
     }
 
     public void removePushNotificationsForFeedItem(FeedItem feedItem) {
-        long feedItemId = feedItem.getId();
-        int feedType = feedItem.getType();
-        int count = 0;
-        for (int i = 0; i < pushNotifications.size(); i++) {
-            Message message = pushNotifications.get(i);
-            if (message == null) {
-                continue;
-            }
-            PushNotificationContent content = message.getContent();
-            if (content != null && content.getJoinableId() == feedItemId) {
-                if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
-                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
-                        // Don't delete the join requests push, just hide them
-                        message.setVisible(false);
-                    }
-                    else {
-                        pushNotifications.remove(i);
-                        i--;
-                    }
-                    count++;
-                    continue;
-                }
-                if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
-                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
-                        // Don't delete the join requests push, just hide them
-                        message.setVisible(false);
-                    }
-                    else {
-                        pushNotifications.remove(i);
-                        i--;
-                    }
-                    count++;
-                }
-            }
-        }
+        int count = PushNotificationManager.getInstance().removePushNotificationsForFeedItem(feedItem);
         feedItem.setBadgeCount(0);
         updateFeedItemsStorage(feedItem);
 
@@ -235,14 +211,10 @@ public class EntourageApplication extends Application {
         if (message == null) {
             return;
         }
-        for (Message msg : pushNotifications) {
-            if (msg.getPushNotificationId() == message.getPushNotificationId()) {
-                if (pushNotifications.remove(msg)) {
-                    updateFeedItemsStorage(message, false);
-                    decreaseBadgeCount(1);
-                    break;
-                }
-            }
+        int count = PushNotificationManager.getInstance().removePushNotification(message);
+        if (count > 0) {
+            updateFeedItemsStorage(message, false);
+            decreaseBadgeCount(count);
         }
     }
 
@@ -268,52 +240,12 @@ public class EntourageApplication extends Application {
             return;
         }
 
-        int count = 0;
-        // search for a push notification that matches our parameters
-        for (int i = 0; i < pushNotifications.size(); i++) {
-            Message message = pushNotifications.get(i);
-            if (message == null) {
-                continue;
-            }
-            PushNotificationContent content = message.getContent();
-            if (content != null && content.getJoinableId() == feedId && content.getType() != null && content.getType().equals(pushType)) {
-                if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
-                    // remove the notification from the system
-                    notificationManager.cancel(message.getPushNotificationId());
-                    // remove the notification from our internal list
-                    pushNotifications.remove(i);
-                    if (message.isVisible()) {
-                        updateFeedItemsStorage(message, false);
-                        count++;
-                    }
-                    break;
-                }
-                if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
-                    notificationManager.cancel(message.getPushNotificationId());
-                    pushNotifications.remove(i);
-                    if (message.isVisible()) {
-                        updateFeedItemsStorage(message, false);
-                        count++;
-                    }
-                    break;
-                }
-            }
-        }
+        int count = PushNotificationManager.getInstance().removePushNotification(feedId, feedType, userId, pushType);
         decreaseBadgeCount(count);
     }
 
     public void removeAllPushNotifications() {
-        // get the notification manager
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (notificationManager == null) {
-            return;
-        }
-        // cancel all the notifications
-        for (Message msg : pushNotifications) {
-            notificationManager.cancel(msg.getPushNotificationId());
-        }
-        // remove all the notifications from our internal list
-        pushNotifications.clear();
+        PushNotificationManager.getInstance().removeAllPushNotifications();
         // reset the badge count
         decreaseBadgeCount(badgeCount);
     }
