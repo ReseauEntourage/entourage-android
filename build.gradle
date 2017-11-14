@@ -7,6 +7,7 @@ buildscript {
         maven { url "https://jcenter.bintray.com" }
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://github.com/joel1di1/joel1di1-mvn-repo/raw/master/releases/' }
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
