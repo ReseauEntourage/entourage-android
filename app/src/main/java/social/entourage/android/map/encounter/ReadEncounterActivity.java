@@ -98,7 +98,7 @@ public class ReadEncounterActivity extends EntourageActivity {
     // PUBLIC METHODS
     // ----------------------------------
 
-    @OnClick(R.id.encounter_read_close)
+    @OnClick(R.id.title_close_button)
     public void onCloseButton() {
         finish();
     }
