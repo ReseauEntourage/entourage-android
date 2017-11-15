@@ -186,13 +186,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     // PUBLIC METHODS
     // ----------------------------------
 
-    @OnClick(R.id.create_encounter_close)
+    @OnClick(R.id.title_close_button)
     public void onCloseButton() {
         BusProvider.getInstance().post(new Events.OnEncounterCreated(null));
         finish();
     }
 
-    @OnClick(R.id.button_create_encounter)
+    @OnClick(R.id.title_action_button)
     public void createEncounter() {
         String personName = streetPersonNameEditText.getText().toString().trim();
         String message = messageEditText.getText().toString().trim();

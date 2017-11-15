@@ -6,58 +6,12 @@
              tools:context="social.entourage.android.user.edit.UserEditFragment"
                 android:background="@color/background">
 
-    <RelativeLayout
+    <social.entourage.android.view.EntourageTitleView
         android:id="@+id/user_edit_title_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/background"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/user_edit_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
-
-        <TextView
-            android:id="@+id/textView5"
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/activity_display_user_title"/>
-
-        <TextView
-            android:id="@+id/user_save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:text="@string/user_save_button"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/accent"/>
-
-        <View
-            android:id="@+id/view5"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/user_edit_close_button"
-            android:background="@color/greyish"/>
-    </RelativeLayout>
+        app:entourageTitle="@string/activity_display_user_title"
+        app:entourageTitleAction="@string/user_save_button"/>
 
     <ScrollView
         android:id="@+id/scrollView"

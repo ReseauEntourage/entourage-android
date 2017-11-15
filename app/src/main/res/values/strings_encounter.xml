@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="activity_read_encounter_title">COMPTE-RENDU DE RENCONTRE</string>
+    <string name="activity_read_encounter_title">\u0020\u0020\u0020\u0020COMPTE-RENDU DE RENCONTRE</string>
     <string name="activity_create_encounter_title">RENCONTRE</string>
     <string name="encounter_hint_person_name">Nom de la personne</string>
     <string name="encounter_hint_notes">Détaillez votre rencontre</string>
