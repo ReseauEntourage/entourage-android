@@ -248,7 +248,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        //Log.d("DEEPLINK", "onNewIntent " + intent.toString());
+        Log.d("DEEPLINK", "onNewIntent " + intent.toString());
         this.setIntent(intent);
         if (Intent.ACTION_VIEW.equals(intent.getAction())){
             // Save the deep link intent

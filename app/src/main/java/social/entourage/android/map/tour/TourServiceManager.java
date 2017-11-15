@@ -25,6 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
@@ -80,6 +81,7 @@ public class TourServiceManager {
 
     private final TourService tourService;
     private final TourRequest tourRequest;
+    private final AuthenticationController authenticationController;
     private final EncounterRequest encounterRequest;
     private final NewsfeedRequest newsfeedRequest;
     private final EntourageRequest entourageRequest;
@@ -100,6 +102,7 @@ public class TourServiceManager {
     private boolean isBetterLocationUpdated;
 
     TourServiceManager(final TourService tourService,
+                       final AuthenticationController authenticationController,
                        final TourRequest tourRequest,
                        final EncounterRequest encounterRequest,
                        final NewsfeedRequest newsfeedRequest,
@@ -108,6 +111,7 @@ public class TourServiceManager {
                        final EntourageLocation entourageLocation,
                        final FusedLocationProvider provider) {
         this.tourService = tourService;
+        this.authenticationController = authenticationController;
         this.tourRequest = tourRequest;
         this.encounterRequest = encounterRequest;
         this.newsfeedRequest = newsfeedRequest;
@@ -135,6 +139,7 @@ public class TourServiceManager {
         FusedLocationProvider provider = new FusedLocationProvider(tourService, type);
         TourServiceManager tourServiceManager = new TourServiceManager(
             tourService,
+            controller,
             tourRequest,
             encounterRequest,
             newsfeedRequest,
@@ -145,6 +150,13 @@ public class TourServiceManager {
         provider.setLocationListener(new FusedLocationListener(tourServiceManager));
         provider.setStatusListener(new FusedLocationStatusListener(tourService));
         provider.start();
+        Tour savedTour = controller.getSavedTour();
+        if (savedTour != null) {
+            tourServiceManager.tour = savedTour;
+            tourServiceManager.tourId = savedTour.getId();
+            tourService.notifyListenersTourCreated(true, savedTour.getId());
+            provider.setLocationUpdateUserType(UserType.PRO);
+        }
         BusProvider.getInstance().register(tourServiceManager);
         return tourServiceManager;
     }
@@ -643,6 +655,8 @@ public class TourServiceManager {
                     }
                     provider.setLocationUpdateUserType(UserType.PRO);
 
+                    authenticationController.saveTour(tour);
+
                 } else {
                     tour = null;
                     tourService.notifyListenersTourCreated(false, -1);
@@ -675,6 +689,7 @@ public class TourServiceManager {
                     cancelFinishTimer();
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                     provider.setLocationUpdateUserType(UserType.PUBLIC);
+                    authenticationController.saveTour(tour);
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);
                 }
@@ -700,6 +715,9 @@ public class TourServiceManager {
                 if (response.isSuccessful()) {
                     Log.d("Success", response.body().getTour().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
+                    if (tour.getId() == TourServiceManager.this.tourId) {
+                        authenticationController.saveTour(null);
+                    }
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);
                 }
@@ -737,6 +755,8 @@ public class TourServiceManager {
             updateTourCoordinates();
         }
         tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+
+        authenticationController.saveTour(tour);
     }
 
     // ----------------------------------
