@@ -6,45 +6,12 @@
               android:layout_height="match_parent"
               android:background="@color/background_light">
 
-    <RelativeLayout
-        android:orientation="vertical"
+    <social.entourage.android.view.EntourageTitleView
+        android:id="@+id/myentourages_filter_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:id="@+id/myentourages_filter_navigation_layout">
-
-        <ImageButton
-            android:id="@+id/myentourages_filter_back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:tint="@color/accent"
-            app:srcCompat="@drawable/ic_action_back"/>
-
-        <TextView
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/map_filter_title"
-            android:id="@+id/myentourages_filter_title"
-            android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"/>
-
-        <Button
-            android:id="@+id/myentourages_filter_validate_button"
-            style="@style/TransparentButton.Accent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:text="@string/register"/>
-    </RelativeLayout>
+        app:entourageTitle="@string/map_filter_title"
+        app:entourageTitleAction="@string/register"/>
 
     <ScrollView
         android:layout_width="match_parent"

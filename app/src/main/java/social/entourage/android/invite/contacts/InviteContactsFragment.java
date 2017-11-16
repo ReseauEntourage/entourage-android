@@ -134,8 +134,8 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     @BindView(R.id.invite_contacts_search)
     EditText searchEditText;
 
-    @BindView(R.id.invite_contacts_send_button)
-    Button sendButton;
+    @BindView(R.id.title_action_button)
+    TextView sendButton;
 
     // ----------------------------------
     // LIFECYCLE
@@ -220,12 +220,12 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     // ONCLICK CALLBACKS
     // ----------------------------------
 
-    @OnClick(R.id.invite_contacts_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.invite_contacts_send_button)
+    @OnClick(R.id.title_action_button)
     protected void onSendClicked() {
         // Disable the send button
         sendButton.setEnabled(false);

@@ -7,43 +7,11 @@
               android:orientation="vertical"
               tools:context="social.entourage.android.map.entourage.CreateEntourageDescriptionFragment">
 
-    <RelativeLayout
-        android:id="@+id/description_entourage_header_layout"
+    <social.entourage.android.view.EntourageTitleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/description_entourage_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
-
-        <TextView
-            android:id="@+id/description_entourage_type"
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/entourage_description_fragment_title"/>
-
-        <Button
-            android:id="@+id/description_entourage_validate_button"
-            style="@style/TransparentButton.Accent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/validate"/>
-    </RelativeLayout>
+        app:entourageTitle="@string/entourage_description_fragment_title"
+        app:entourageTitleAction="@string/validate"/>
 
     <EditText
         android:id="@+id/description_entourage_edittext"

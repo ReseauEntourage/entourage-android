@@ -6,38 +6,12 @@
                 tools:context="social.entourage.android.partner.PartnerFragment"
                 android:background="@color/background">
 
-    <RelativeLayout
-        android:orientation="vertical"
+    <social.entourage.android.view.EntourageTitleView
+        android:id="@+id/user_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/user_title_layout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        app:entourageTitle="@string/activity_display_user_title"/>
 
-        <ImageButton
-            android:id="@+id/partner_view_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
-
-        <TextView
-            android:id="@+id/partner_view_title"
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/activity_display_user_title"/>
-
-    </RelativeLayout>
-    
     <View
         android:layout_width="match_parent"
         android:background="@color/accent"

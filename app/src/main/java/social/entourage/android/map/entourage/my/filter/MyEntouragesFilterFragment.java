@@ -83,13 +83,13 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
     // Buttons handling
     // ----------------------------------
 
-    @OnClick(R.id.myentourages_filter_back_button)
+    @OnClick(R.id.title_close_button)
     void onBackClicked() {
         EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_EXIT);
         dismiss();
     }
 
-    @OnClick(R.id.myentourages_filter_validate_button)
+    @OnClick(R.id.title_action_button)
     void onValidateClicked() {
         // save the values to the filter
         MyEntouragesFilter filter = MyEntouragesFilter.getInstance();

@@ -120,13 +120,13 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
     // Interactions handling
     // ----------------------------------
 
-    @OnClick(R.id.title_entourage_close)
+    @OnClick(R.id.title_close_button)
     void onCloseClicked() {
         mListener = null;
         dismiss();
     }
 
-    @OnClick(R.id.title_entourage_validate_button)
+    @OnClick(R.id.title_action_button)
     void onValidateClicked() {
         if (mListener != null) {
             mListener.onTitleChanged(titleEditText.getText().toString());

@@ -141,12 +141,12 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
     // Buttons Handling
     // ----------------------------------
 
-    @OnClick(R.id.user_edit_partner_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseButtonClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.user_edit_partner_save_button)
+    @OnClick(R.id.title_action_button)
     protected void onSaveButtonClicked() {
         Partner oldPartner = user.getPartner();
         int position = adapter.selectedPartnerPosition;

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -6,46 +7,12 @@
                 android:orientation="vertical"
                 android:background="@color/background_light">
 
-    <RelativeLayout
+    <social.entourage.android.view.EntourageTitleView
         android:id="@+id/invite_phone_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/white">
-
-        <ImageButton
-            android:id="@+id/invite_phone_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
-
-        <TextView
-            android:id="@+id/invite_phone_title"
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/invite_phone_title"/>
-
-        <Button
-            android:id="@+id/invite_phone_send_button"
-            style="@style/TransparentButton.Accent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:enabled="false"
-            android:text="@string/send"/>
-    </RelativeLayout>
+        app:entourageTitle="@string/invite_phone_title"
+        app:entourageTitleAction="@string/send"/>
 
     <RelativeLayout
         android:id="@+id/invite_phone_description_layout"

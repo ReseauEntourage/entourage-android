@@ -179,12 +179,12 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     // Interactions handling
     // ----------------------------------
 
-    @OnClick(R.id.create_entourage_close)
+    @OnClick(R.id.title_close_button)
     protected void onCloseClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.create_entourage_validate_button)
+    @OnClick(R.id.title_action_button)
     protected void onValidateClicked() {
         if (isSaving) return;
         if (isValid()) {

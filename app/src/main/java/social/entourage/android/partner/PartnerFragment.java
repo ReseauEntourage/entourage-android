@@ -85,7 +85,7 @@ public class PartnerFragment extends EntourageDialogFragment {
         configureView();
     }
 
-    @OnClick(R.id.partner_view_close_button)
+    @OnClick(R.id.title_close_button)
     void onCloseClicked() {
         dismiss();
     }

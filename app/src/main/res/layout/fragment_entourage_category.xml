@@ -6,57 +6,12 @@
               android:background="@color/pale_grey"
               tools:context="social.entourage.android.map.entourage.category.EntourageCategoryFragment">
 
-    <RelativeLayout
+    <social.entourage.android.view.EntourageTitleView
         android:id="@+id/entourage_category_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/background"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/entourage_category_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
-
-        <TextView
-            android:id="@+id/entourage_category_title"
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/entourage_category_fragment_title"/>
-
-        <Button
-            android:id="@+id/entourage_category_validate_button"
-            style="@style/TransparentButton.Accent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/validate"/>
-
-        <View
-            android:id="@+id/entourage_category_header_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignBottom="@+id/entourage_category_validate_button"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/greyish"/>
-
-    </RelativeLayout>
+        app:entourageTitle="@string/entourage_category_fragment_title"
+        app:entourageTitleAction="@string/validate"/>
 
     <ExpandableListView
         android:id="@+id/entourage_category_listview"
@@ -64,7 +19,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/entourage_category_help_link"
         android:layout_below="@+id/entourage_category_header_layout"
-        android:layout_marginTop="16dp"
         android:background="@color/white"
         android:divider="@android:color/transparent"
         android:groupIndicator="@null"

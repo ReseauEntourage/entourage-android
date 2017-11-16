@@ -107,13 +107,13 @@ public class MapFilterFragment extends EntourageDialogFragment {
     // Buttons handling
     // ----------------------------------
 
-    @OnClick(R.id.map_filter_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseClicked() {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_CLOSE);
         dismiss();
     }
 
-    @OnClick(R.id.map_filter_validate_button)
+    @OnClick(R.id.title_action_button)
     protected void onValidateClicked() {
         // save the values to the filter
         MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());

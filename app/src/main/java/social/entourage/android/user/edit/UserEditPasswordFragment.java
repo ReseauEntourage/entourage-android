@@ -79,7 +79,7 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
     // BUTTONS HANDLING
     // ----------------------------------
 
-    @OnClick(R.id.user_edit_password_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseButton() {
         dismiss();
     }

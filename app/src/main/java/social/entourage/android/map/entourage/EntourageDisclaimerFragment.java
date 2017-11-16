@@ -149,7 +149,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     // Button handling
     // ----------------------------------
 
-    @OnClick(R.id.entourage_disclaimer_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_DISCLAIMER_CLOSE);
         dismiss();

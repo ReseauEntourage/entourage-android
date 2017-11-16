@@ -67,12 +67,12 @@ public class GuideFilterFragment extends EntourageDialogFragment {
     // Buttons handling
     // ----------------------------------
 
-    @OnClick(R.id.guide_filter_back_button)
+    @OnClick(R.id.title_close_button)
     protected void onBackClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.guide_filter_validate_button)
+    @OnClick(R.id.title_action_button)
     protected void onValidateClicked() {
         // Save the filter
         GuideFilter guideFilter = GuideFilter.getInstance();

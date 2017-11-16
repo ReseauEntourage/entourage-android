@@ -154,12 +154,12 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
     // INTERFACE CALLBACKS
     // ----------------------------------
 
-    @OnClick(R.id.entourage_location_back_button)
+    @OnClick(R.id.title_close_button)
     protected void onBackClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.entourage_location_validate_button)
+    @OnClick(R.id.title_action_button)
     protected void onValidateClicked() {
         if (mListener != null) {
             mListener.onEntourageLocationChosen(location, addressTextView.getText().toString());
