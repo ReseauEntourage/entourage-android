@@ -102,6 +102,7 @@ import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.PartnerLogoImageView;
+import social.entourage.android.webview.WebViewFragment;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -565,6 +566,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
                 break;
             case R.id.action_blog:
+                /*
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
                 Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.SCB_LINK_ID)));
                 try {
@@ -572,6 +574,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                 } catch (Exception ex) {
                     Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
+                */
+                WebViewFragment webViewFragment = WebViewFragment.newInstance(getLink(Constants.SCB_LINK_ID));
+                webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
                 break;
             case R.id.action_charte:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
