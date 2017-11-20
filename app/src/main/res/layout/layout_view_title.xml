@@ -42,7 +42,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:textColor="@color/accent"
             android:textSize="@dimen/entourage_font_large"
-            />
+            android:textStyle="bold"/>
 
     </RelativeLayout>
 
