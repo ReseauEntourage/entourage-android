@@ -1,17 +1,28 @@
 package social.entourage.android.webview;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +34,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
  *
@@ -53,6 +67,12 @@ public class WebViewFragment extends EntourageDialogFragment {
 
     @BindView(R.id.webview_title)
     TextView titleTextView;
+
+    @BindView(R.id.webview_navigation_bar_menu)
+    View menuView;
+
+    @BindView(R.id.webview_navigation_bar_menu_background)
+    View menuBackgroundView;
 
     @BindView(R.id.webview)
     WebView webView;
@@ -93,6 +113,7 @@ public class WebViewFragment extends EntourageDialogFragment {
         if (getArguments() != null) {
             requestedUrl = getArguments().getString(REQUESTED_URL);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -151,12 +172,47 @@ public class WebViewFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.webview_more_button)
     protected void onMoreClicked() {
-        //TODO Toggle the menu view
+        toggleMenu();
     }
 
     @OnClick(R.id.webview_background)
     protected void onBackgroundClicked() {
         dismiss();
+    }
+
+    @OnClick(R.id.webview_menu_browser)
+    protected void onMenuBrowserClicked() {
+        Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getUrl()));
+        try {
+            startActivity(browseIntent);
+        } catch (Exception ex) {
+            Toast.makeText(this.getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        }
+        toggleMenu();
+    }
+
+    @OnClick(R.id.webview_menu_copy)
+    protected void onMenuCopyClicked() {
+        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(webView.getUrl(), webView.getUrl());
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(getContext(), R.string.webview_copy_ok, Toast.LENGTH_SHORT).show();
+        toggleMenu();
+    }
+
+    @OnClick(R.id.webview_menu_share)
+    protected void onMenuShareClicked() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, webView.getUrl());
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)));
+        toggleMenu();
+    }
+
+    @OnClick(R.id.webview_navigation_bar_menu_background)
+    protected void toggleMenu() {
+        menuView.setVisibility(menuView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        menuBackgroundView.setVisibility(menuBackgroundView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     // ----------------------------------

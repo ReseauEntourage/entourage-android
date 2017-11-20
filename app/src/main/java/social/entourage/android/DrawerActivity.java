@@ -551,7 +551,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://feed"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://webview?url=www.google.ro"));
                         try {
                             startActivity(intent);
                         } catch (Exception ex) {
@@ -566,17 +566,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
                 break;
             case R.id.action_blog:
-                /*
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
-                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.SCB_LINK_ID)));
-                try {
-                    startActivity(blogIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                */
-                WebViewFragment webViewFragment = WebViewFragment.newInstance(getLink(Constants.SCB_LINK_ID));
-                webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
+                showWebView(getLink(Constants.SCB_LINK_ID));
                 break;
             case R.id.action_charte:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
@@ -696,6 +687,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         // Show the map screen
         selectItem(R.id.action_tours);
+    }
+
+    public void showWebView(String url) {
+        WebViewFragment webViewFragment = WebViewFragment.newInstance(url);
+        webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
     }
 
     private void initializePushNotifications() {

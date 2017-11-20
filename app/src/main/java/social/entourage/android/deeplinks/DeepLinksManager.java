@@ -132,6 +132,24 @@ public class DeepLinksManager {
                 return;
             }
         }
+        else if (host.equals(DeepLinksView.WEBVIEW.getView())) {
+            try {
+                String urlToOpen = deepLinkUri.getQueryParameter("url");
+                if (urlToOpen != null) {
+                    if (!urlToOpen.toLowerCase().startsWith("http")) {
+                        urlToOpen = "https://"+urlToOpen;
+                    }
+                    if (activity instanceof DrawerActivity) {
+                        DrawerActivity drawerActivity = (DrawerActivity) activity;
+                        drawerActivity.switchToMapFragment();
+                        drawerActivity.popToMapFragment();
+                        drawerActivity.showWebView(urlToOpen);
+                    } else {
+                        return;
+                    }
+                }
+            } catch (Exception ex) {}
+        }
         deepLinkIntent = null;
     }
 
@@ -159,8 +177,8 @@ public class DeepLinksManager {
 
         ENTOURAGE("entourages"),
         FEED("feed"),
-        BADGE("badge");
-
+        BADGE("badge"),
+        WEBVIEW("webview");
 
         private final String view;
 
