@@ -39,6 +39,10 @@ public class MapFilterFragment extends EntourageDialogFragment {
     LinearLayout tourTypeLayout;
     @BindView(R.id.map_filter_entourage_tours)
     View showToursLayout;
+    @BindView(R.id.map_filter_tour_all_switch)
+    Switch tourAllSwitch;
+    @BindView(R.id.map_filter_tour_type_details_layout)
+    View tourDetailsLayout;
     @BindView(R.id.map_filter_tour_medical_switch)
     Switch tourMedicalSwitch;
     @BindView(R.id.map_filter_tour_social_switch)
@@ -146,19 +150,34 @@ public class MapFilterFragment extends EntourageDialogFragment {
         dismiss();
     }
 
+    @OnClick(R.id.map_filter_tour_all_switch)
+    protected void onAllToursSwitch() {
+        boolean checked = tourAllSwitch.isChecked();
+        tourMedicalSwitch.setChecked(checked);
+        tourSocialSwitch.setChecked(checked);
+        tourDistributiveSwitch.setChecked(checked);
+        tourDetailsLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
+    }
+
     @OnClick(R.id.map_filter_tour_medical_switch)
     protected void onMedicalSwitch() {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS);
+        tourAllSwitch.setChecked(!allToursDisabled());
+        tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
     }
 
     @OnClick(R.id.map_filter_tour_social_switch)
     protected void onSocialSwitch() {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS);
+        tourAllSwitch.setChecked(!allToursDisabled());
+        tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
     }
 
     @OnClick(R.id.map_filter_tour_distributive_switch)
     protected void onDistributiveSwitch() {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS);
+        tourAllSwitch.setChecked(!allToursDisabled());
+        tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
     }
 
     @OnClick(R.id.map_filter_entourage_demand_switch)
@@ -216,6 +235,8 @@ public class MapFilterFragment extends EntourageDialogFragment {
         tourMedicalSwitch.setChecked(mapFilter.tourTypeMedical);
         tourSocialSwitch.setChecked(mapFilter.tourTypeSocial);
         tourDistributiveSwitch.setChecked(mapFilter.tourTypeDistributive);
+        tourAllSwitch.setChecked(!allToursDisabled());
+        tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
 
         entourageDemandSwitch.setChecked(mapFilter.entourageTypeDemand);
         entourageContributionSwitch.setChecked(mapFilter.entourageTypeContribution);
@@ -235,6 +256,10 @@ public class MapFilterFragment extends EntourageDialogFragment {
                 days2RB.setChecked(true);
                 break;
         }
+    }
+
+    private boolean allToursDisabled() {
+        return !tourMedicalSwitch.isChecked() & !tourSocialSwitch.isChecked() & !tourDistributiveSwitch.isChecked();
     }
 
 }

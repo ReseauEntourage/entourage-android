@@ -41,7 +41,7 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_tour_medical"
+                    android:id="@+id/map_filter_tour_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -50,30 +50,24 @@
                     android:paddingRight="0dp"
                     android:paddingStart="10dp">
 
-                    <ImageView
-                        android:id="@+id/map_filter_tour_medical_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/empty_description"
-                        android:src="@drawable/ic_medical_active"/>
-
                     <TextView
-                        android:id="@+id/map_filter_tour_medical_text"
+                        android:id="@+id/map_filter_tour_all_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:layout_toEndOf="@+id/map_filter_tour_medical_image"
-                        android:layout_toLeftOf="@+id/map_filter_tour_medical_switch"
-                        android:layout_toRightOf="@+id/map_filter_tour_medical_image"
-                        android:layout_toStartOf="@+id/map_filter_tour_medical_switch"
-                        android:text="@string/tour_type_medical"
+                        android:layout_toLeftOf="@+id/map_filter_tour_all_switch"
+                        android:layout_toStartOf="@+id/map_filter_tour_all_switch"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="@string/map_filter_tours_text"
                         android:textColor="@color/greyish_brown"
-                        android:textSize="@dimen/entourage_font_medium"/>
+                        android:textSize="@dimen/entourage_font_medium"
+                        android:textStyle="bold"/>
 
                     <Switch
-                        android:id="@+id/map_filter_tour_medical_switch"
+                        android:id="@+id/map_filter_tour_all_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -83,111 +77,173 @@
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginStart="0dp"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/map_filter_tour_type_details_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_alignParentBottom="false"
-                        android:layout_below="@+id/map_filter_tour_medical_image"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:background="@color/greyish"/>
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/map_filter_tour_social"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/background"
-                    android:paddingEnd="0dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="0dp"
-                    android:paddingStart="10dp">
-
-                    <ImageView
-                        android:id="@+id/map_filter_tour_social_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/empty_description"
-                        android:src="@drawable/ic_social_active"/>
-
-                    <TextView
-                        android:id="@+id/map_filter_tour_social_text"
+                    <RelativeLayout
+                        android:id="@+id/map_filter_tour_medical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_toEndOf="@+id/map_filter_tour_social_image"
-                        android:layout_toLeftOf="@+id/map_filter_tour_social_switch"
-                        android:layout_toRightOf="@+id/map_filter_tour_social_image"
-                        android:layout_toStartOf="@+id/map_filter_tour_social_switch"
-                        android:text="@string/tour_type_bare_hands"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="@dimen/entourage_font_medium"/>
+                        android:background="@color/background"
+                        android:paddingEnd="0dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="0dp"
+                        android:paddingStart="10dp">
 
-                    <Switch
-                        android:id="@+id/map_filter_tour_social_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginStart="0dp"/>
+                        <ImageView
+                            android:id="@+id/map_filter_tour_medical_image"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:contentDescription="@string/empty_description"
+                            android:src="@drawable/ic_medical_active"/>
 
-                    <View
+                        <TextView
+                            android:id="@+id/map_filter_tour_medical_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_toEndOf="@+id/map_filter_tour_medical_image"
+                            android:layout_toLeftOf="@+id/map_filter_tour_medical_switch"
+                            android:layout_toRightOf="@+id/map_filter_tour_medical_image"
+                            android:layout_toStartOf="@+id/map_filter_tour_medical_switch"
+                            android:text="@string/tour_type_medical"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/entourage_font_medium"/>
+
+                        <Switch
+                            android:id="@+id/map_filter_tour_medical_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginStart="0dp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="false"
+                            android:layout_below="@+id/map_filter_tour_medical_image"
+                            android:background="@color/greyish"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/map_filter_tour_social"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="false"
-                        android:layout_below="@+id/map_filter_tour_social_image"
-                        android:background="@color/greyish"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/map_filter_tour_distributive"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/background"
-                    android:paddingEnd="0dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="0dp"
-                    android:paddingStart="10dp">
-
-                    <ImageView
-                        android:id="@+id/map_filter_tour_distributive_image"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/empty_description"
-                        android:src="@drawable/ic_distributive_active"/>
+                        android:background="@color/background"
+                        android:paddingEnd="0dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="0dp"
+                        android:paddingStart="10dp">
 
-                    <TextView
-                        android:id="@+id/map_filter_tour_distributive_text"
+                        <ImageView
+                            android:id="@+id/map_filter_tour_social_image"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:contentDescription="@string/empty_description"
+                            android:src="@drawable/ic_social_active"/>
+
+                        <TextView
+                            android:id="@+id/map_filter_tour_social_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_toEndOf="@+id/map_filter_tour_social_image"
+                            android:layout_toLeftOf="@+id/map_filter_tour_social_switch"
+                            android:layout_toRightOf="@+id/map_filter_tour_social_image"
+                            android:layout_toStartOf="@+id/map_filter_tour_social_switch"
+                            android:text="@string/tour_type_bare_hands"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/entourage_font_medium"/>
+
+                        <Switch
+                            android:id="@+id/map_filter_tour_social_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginStart="0dp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="false"
+                            android:layout_below="@+id/map_filter_tour_social_image"
+                            android:background="@color/greyish"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/map_filter_tour_distributive"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_toEndOf="@+id/map_filter_tour_distributive_image"
-                        android:layout_toLeftOf="@+id/map_filter_tour_distributive_switch"
-                        android:layout_toRightOf="@+id/map_filter_tour_distributive_image"
-                        android:layout_toStartOf="@+id/map_filter_tour_distributive_switch"
-                        android:text="@string/tour_type_alimentary"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="@dimen/entourage_font_medium"/>
+                        android:background="@color/background"
+                        android:paddingEnd="0dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="0dp"
+                        android:paddingStart="10dp">
 
-                    <Switch
-                        android:id="@+id/map_filter_tour_distributive_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginStart="0dp"/>
-                </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/map_filter_tour_distributive_image"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:contentDescription="@string/empty_description"
+                            android:src="@drawable/ic_distributive_active"/>
+
+                        <TextView
+                            android:id="@+id/map_filter_tour_distributive_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_toEndOf="@+id/map_filter_tour_distributive_image"
+                            android:layout_toLeftOf="@+id/map_filter_tour_distributive_switch"
+                            android:layout_toRightOf="@+id/map_filter_tour_distributive_image"
+                            android:layout_toStartOf="@+id/map_filter_tour_distributive_switch"
+                            android:text="@string/tour_type_alimentary"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/entourage_font_medium"/>
+
+                        <Switch
+                            android:id="@+id/map_filter_tour_distributive_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginStart="0dp"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
