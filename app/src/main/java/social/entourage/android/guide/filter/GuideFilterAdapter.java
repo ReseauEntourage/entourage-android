@@ -63,7 +63,7 @@ public class GuideFilterAdapter extends BaseAdapter {
     public View getView(final int position, View view, final ViewGroup viewGroup) {
         GuideFilterViewHolder viewHolder;
         if (view == null) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_guide_filter_item, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_filter_item, viewGroup, false);
             viewHolder = new GuideFilterViewHolder(view, onCheckedChangeListener);
             view.setTag(viewHolder);
         } else {
@@ -106,10 +106,10 @@ public class GuideFilterAdapter extends BaseAdapter {
         public long categoryId = 0;
 
         public GuideFilterViewHolder(View v, OnCheckedChangeListener onCheckedChangeListener) {
-            mFilterName = (TextView) v.findViewById(R.id.guide_filter_item_text);
-            mFilterImage = (ImageView) v.findViewById(R.id.guide_filter_item_image);
-            mFilterSwitch = (Switch) v.findViewById(R.id.guide_filter_item_switch);
-            mSeparatorView = v.findViewById(R.id.guide_filter_item_separator);
+            mFilterName = (TextView) v.findViewById(R.id.filter_item_text);
+            mFilterImage = (ImageView) v.findViewById(R.id.filter_item_image);
+            mFilterSwitch = (Switch) v.findViewById(R.id.filter_item_switch);
+            mSeparatorView = v.findViewById(R.id.filter_item_separator);
 
             mFilterSwitch.setOnCheckedChangeListener(onCheckedChangeListener);
         }

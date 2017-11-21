@@ -1,14 +1,21 @@
 package social.entourage.android.map.filter;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
+
+import java.util.Iterator;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,8 +25,11 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.map.entourage.category.EntourageCategory;
+import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 import social.entourage.android.tools.BusProvider;
 
 public class MapFilterFragment extends EntourageDialogFragment {
@@ -37,8 +47,6 @@ public class MapFilterFragment extends EntourageDialogFragment {
     // ----------------------------------
     @BindView(R.id.map_filter_tour_type_layout)
     LinearLayout tourTypeLayout;
-    @BindView(R.id.map_filter_entourage_tours)
-    View showToursLayout;
     @BindView(R.id.map_filter_tour_all_switch)
     Switch tourAllSwitch;
     @BindView(R.id.map_filter_tour_type_details_layout)
@@ -49,24 +57,30 @@ public class MapFilterFragment extends EntourageDialogFragment {
     Switch tourSocialSwitch;
     @BindView(R.id.map_filter_tour_distributive_switch)
     Switch tourDistributiveSwitch;
+
     @BindView(R.id.map_filter_entourage_demand_switch)
     Switch entourageDemandSwitch;
+    @BindView(R.id.map_filter_entourage_demand_details_layout)
+    LinearLayout entourageDemandDetailsLayout;
     @BindView(R.id.map_filter_entourage_contribution_switch)
     Switch entourageContributionSwitch;
-    @BindView(R.id.map_filter_entourage_tours_switch)
-    Switch showToursSwitch;
+    @BindView(R.id.map_filter_entourage_contribution_details_layout)
+    LinearLayout entourageContributionDetailsLayout;
+
     @BindView(R.id.map_filter_entourage_user_only_switch)
     Switch onlyMyEntouragesSwitch;
     @BindView(R.id.map_filter_entourage_partner)
     RelativeLayout onlyMyPartnerEntouragesLayout;
     @BindView(R.id.map_filter_entourage_partner_switch)
     Switch onlyMyPartnerEntouragesSwitch;
+
     @BindView(R.id.map_filter_time_days_1)
     RadioButton days1RB;
     @BindView(R.id.map_filter_time_days_2)
     RadioButton days2RB;
     @BindView(R.id.map_filter_time_days_3)
     RadioButton days3RB;
+
     private boolean isProUser = false;
 
     // ----------------------------------
@@ -128,7 +142,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
 
         mapFilter.entourageTypeDemand = entourageDemandSwitch.isChecked();
         mapFilter.entourageTypeContribution = entourageContributionSwitch.isChecked();
-        mapFilter.showTours = showToursSwitch.isChecked();
+        mapFilter.showTours = tourAllSwitch.isChecked();
         mapFilter.onlyMyEntourages = onlyMyEntouragesSwitch.isChecked();
         mapFilter.onlyMyPartnerEntourages = onlyMyPartnerEntouragesSwitch.isChecked();
 
@@ -183,17 +197,19 @@ public class MapFilterFragment extends EntourageDialogFragment {
     @OnClick(R.id.map_filter_entourage_demand_switch)
     protected void onDemandSwitch() {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_ASK);
+        entourageDemandDetailsLayout.setVisibility(entourageDemandSwitch.isChecked() ? View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.map_filter_entourage_contribution_switch)
     protected void onContributionSwitch() {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_OFFERS);
+        entourageContributionDetailsLayout.setVisibility(entourageContributionSwitch.isChecked() ? View.VISIBLE : View.GONE);
     }
 
-    @OnClick(R.id.map_filter_entourage_tours_switch)
-    protected void onOnlyToursSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_TOURS);
-    }
+//    @OnClick(R.id.map_filter_entourage_tours_switch)
+//    protected void onOnlyToursSwitch() {
+//        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_TOURS);
+//    }
 
     @OnClick(R.id.map_filter_entourage_user_only_switch)
     protected void onOnlyMineSwitch() {
@@ -229,7 +245,6 @@ public class MapFilterFragment extends EntourageDialogFragment {
         if (!showPartnerFilter) mapFilter.onlyMyPartnerEntourages = false;
 
         tourTypeLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
-        showToursLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
         onlyMyPartnerEntouragesLayout.setVisibility(showPartnerFilter ? View.VISIBLE : View.GONE);
 
         tourMedicalSwitch.setChecked(mapFilter.tourTypeMedical);
@@ -239,8 +254,13 @@ public class MapFilterFragment extends EntourageDialogFragment {
         tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
 
         entourageDemandSwitch.setChecked(mapFilter.entourageTypeDemand);
+        entourageDemandDetailsLayout.setVisibility(mapFilter.entourageTypeDemand ? View.VISIBLE : View.GONE);
+        addEntourageCategories(Entourage.TYPE_DEMAND, entourageDemandDetailsLayout);
+
         entourageContributionSwitch.setChecked(mapFilter.entourageTypeContribution);
-        showToursSwitch.setChecked(mapFilter.showTours);
+        entourageContributionDetailsLayout.setVisibility(mapFilter.entourageTypeContribution ? View.VISIBLE : View.GONE);
+        addEntourageCategories(Entourage.TYPE_CONTRIBUTION, entourageContributionDetailsLayout);
+
         onlyMyEntouragesSwitch.setChecked(mapFilter.onlyMyEntourages);
         onlyMyPartnerEntouragesSwitch.setChecked(mapFilter.onlyMyPartnerEntourages);
 
@@ -260,6 +280,36 @@ public class MapFilterFragment extends EntourageDialogFragment {
 
     private boolean allToursDisabled() {
         return !tourMedicalSwitch.isChecked() & !tourSocialSwitch.isChecked() & !tourDistributiveSwitch.isChecked();
+    }
+
+    private void addEntourageCategories(String entourageType, LinearLayout layout) {
+        // get the list of categories
+        EntourageCategoryManager categoryManager = EntourageCategoryManager.getInstance();
+        List<EntourageCategory> entourageCategoryList = categoryManager.getEntourageCategoriesForType(entourageType);
+        if (entourageCategoryList == null) return;
+        Iterator<EntourageCategory> iterator = entourageCategoryList.iterator();
+        while (iterator.hasNext()) {
+            // inflate and add the view to the layout
+            EntourageCategory entourageCategory = iterator.next();
+            View view = getLayoutInflater().inflate(R.layout.layout_filter_item_map, layout, false);
+            view.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            layout.addView(view);
+
+            // populate the view
+            TextView mFilterName = view.findViewById(R.id.filter_item_text);
+            ImageView mFilterImage = view.findViewById(R.id.filter_item_image);
+            Switch mFilterSwitch = view.findViewById(R.id.filter_item_switch);
+            View mSeparatorView = view.findViewById(R.id.filter_item_separator);
+
+            mFilterName.setText(entourageCategory.getTitle());
+            mFilterImage.setImageResource(entourageCategory.getIconRes());
+            mFilterImage.clearColorFilter();
+            if (getContext() != null) {
+                mFilterImage.setColorFilter(ContextCompat.getColor(getContext(), entourageCategory.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
+            }
+        }
     }
 
 }
