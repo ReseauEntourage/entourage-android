@@ -52,6 +52,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:gravity="center"
+                android:maxLines="1"
                 android:paddingEnd="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

@@ -148,7 +148,7 @@ public class WebViewFragment extends EntourageDialogFragment {
 
     @Override
     protected @StyleRes int getSlideStyle() {
-        return R.style.CustomDialogFragmentSlide;
+        return 0;
     }
 
     @Override
