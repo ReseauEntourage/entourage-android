@@ -1,8 +1,10 @@
 package social.entourage.android.webview;
 
 
+import android.animation.Animator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -26,6 +28,9 @@ import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -62,6 +67,9 @@ public class WebViewFragment extends EntourageDialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
+    @BindView(R.id.webview_animated_layout)
+    View animatedView;
+
     @BindView(R.id.webview_navigation_bar)
     View navigationView;
 
@@ -83,6 +91,8 @@ public class WebViewFragment extends EntourageDialogFragment {
     private String requestedUrl;
 
     private GestureDetectorCompat gestureDetectorCompat;
+
+    Animation bottomUpJumpAnimation;
 
     // ----------------------------------
     // LIFECYCLE
@@ -131,19 +141,7 @@ public class WebViewFragment extends EntourageDialogFragment {
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new MyBrowser());
-        webView.loadUrl(requestedUrl);
-
-        // add a gesture detector to the navigation bar
-        gestureDetectorCompat = new GestureDetectorCompat(this.getContext(), new NavigationViewGestureListener());
-        navigationView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(final View v, final MotionEvent event) {
-                gestureDetectorCompat.onTouchEvent(event);
-                return true;
-            }
-        });
+        showAnimation();
     }
 
     @Override
@@ -154,7 +152,69 @@ public class WebViewFragment extends EntourageDialogFragment {
     @Override
     public void dismiss() {
         webView.stopLoading();
-        super.dismiss();
+        hideAnimation();
+    }
+
+    // ----------------------------------
+    // Private methods
+    // ----------------------------------
+
+    private void showAnimation() {
+        bottomUpJumpAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.bottom_up);
+        bottomUpJumpAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(final Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(final Animation animation) {
+                initialiseView();
+            }
+
+            @Override
+            public void onAnimationRepeat(final Animation animation) {}
+        });
+        animatedView.startAnimation(bottomUpJumpAnimation);
+    }
+
+    private void hideAnimation() {
+        Animation bottomDownJumpAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.bottom_down);
+        bottomDownJumpAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(final Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(final Animation animation) {
+                WebViewFragment.super.dismiss();
+            }
+
+            @Override
+            public void onAnimationRepeat(final Animation animation) {}
+        });
+        animatedView.startAnimation(bottomDownJumpAnimation);
+    }
+
+    private void initialiseView() {
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new MyBrowser());
+        webView.loadUrl(requestedUrl);
+
+        // add a gesture detector to the navigation bar
+        gestureDetectorCompat = new GestureDetectorCompat(this.getContext(), new NavigationViewGestureListener());
+        navigationView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                boolean detectedUp = event.getAction() == MotionEvent.ACTION_UP;
+                if (!gestureDetectorCompat.onTouchEvent(event) && detectedUp) {
+                    return onUp(event);
+                }
+                return true;
+            }
+        });
+    }
+
+    private boolean onUp(final MotionEvent event) {
+        animatedView.setTranslationY(0);
+        return true;
     }
 
     // ----------------------------------
@@ -291,6 +351,14 @@ public class WebViewFragment extends EntourageDialogFragment {
                 dismiss();
             }
             return true;
+        }
+
+        @Override
+        public boolean onScroll(final MotionEvent e1, final MotionEvent e2, final float distanceX, final float distanceY) {
+            if (distanceY < 0) {
+                animatedView.setTranslationY(-distanceY + animatedView.getTranslationY());
+            }
+            return super.onScroll(e1, e2, distanceX, distanceY);
         }
     }
 

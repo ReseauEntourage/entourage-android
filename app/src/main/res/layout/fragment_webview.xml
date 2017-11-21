@@ -12,147 +12,155 @@
         android:layout_height="match_parent"
         android:background="@color/white_88"/>
 
-    <include
-        android:id="@+id/webview_invisible_toolbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"/>
-
-    <LinearLayout
-        android:id="@+id/webview_navigation_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/webview_invisible_toolbar"
-        android:background="@drawable/webview_navigation_background"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/webview_back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="@string/empty_description"
-                android:padding="5dp"
-                android:src="@drawable/ic_action_back"
-                android:tint="@color/accent"/>
-
-            <TextView
-                android:id="@+id/webview_title"
-                style="@style/EntourageTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:paddingEnd="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingStart="10dp"/>
-
-            <ImageButton
-                android:id="@+id/webview_more_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="@string/empty_description"
-                app:srcCompat="@drawable/ic_more"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/navigation_separator"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_weight="1"
-            android:background="@color/greyish"/>
-
-    </LinearLayout>
-
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/webview_navigation_bar">
-
-    </WebView>
-
-    <View
-        android:id="@+id/webview_navigation_bar_menu_background"
+    <RelativeLayout
+        android:id="@+id/webview_animated_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:visibility="gone"/>
+        android:visibility="visible">
 
-    <LinearLayout
-        android:id="@+id/webview_navigation_bar_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/webview_navigation_bar"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="1dp"
-        android:background="@drawable/bg_view_menu"
-        android:elevation="4dp"
-        android:orientation="vertical"
-        android:paddingBottom="5dp"
-        android:paddingEnd="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/webview_menu_browser"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/webview_invisible_toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/webview_menu_browser"
-            android:textColor="@color/black"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:id="@+id/webview_navigation_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/webview_invisible_toolbar"
+            android:background="@drawable/webview_navigation_background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/webview_back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/empty_description"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_action_back"
+                    android:tint="@color/accent"/>
+
+                <TextView
+                    android:id="@+id/webview_title"
+                    style="@style/EntourageTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingEnd="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"/>
+
+                <ImageButton
+                    android:id="@+id/webview_more_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/empty_description"
+                    app:srcCompat="@drawable/ic_more"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/navigation_separator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/greyish"/>
+
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/webview_navigation_bar">
+
+        </WebView>
 
         <View
+            android:id="@+id/webview_navigation_bar_menu_background"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/pale_grey"/>
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/webview_menu_copy"
+        <LinearLayout
+            android:id="@+id/webview_navigation_bar_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/webview_menu_copy"
-            android:textColor="@color/black"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/webview_navigation_bar"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/bg_view_menu"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:visibility="gone">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/pale_grey"/>
+            <TextView
+                android:id="@+id/webview_menu_browser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/webview_menu_browser"
+                android:textColor="@color/black"
+                android:textSize="@dimen/entourage_font_large"/>
 
-        <TextView
-            android:id="@+id/webview_menu_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/webview_menu_share"
-            android:textColor="@color/black"
-            android:textSize="@dimen/entourage_font_large"/>
-    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/pale_grey"/>
+
+            <TextView
+                android:id="@+id/webview_menu_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/webview_menu_copy"
+                android:textColor="@color/black"
+                android:textSize="@dimen/entourage_font_large"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/pale_grey"/>
+
+            <TextView
+                android:id="@+id/webview_menu_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/webview_menu_share"
+                android:textColor="@color/black"
+                android:textSize="@dimen/entourage_font_large"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/webview_progressbar"
