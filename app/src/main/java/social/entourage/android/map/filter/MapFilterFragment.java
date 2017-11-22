@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -83,6 +86,9 @@ public class MapFilterFragment extends EntourageDialogFragment {
 
     private boolean isProUser = false;
 
+    HashMap<String, List<Switch>> actionSwitches = new HashMap<>();
+    private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener();
+
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -146,6 +152,19 @@ public class MapFilterFragment extends EntourageDialogFragment {
         mapFilter.onlyMyEntourages = onlyMyEntouragesSwitch.isChecked();
         mapFilter.onlyMyPartnerEntourages = onlyMyPartnerEntouragesSwitch.isChecked();
 
+        Iterator<List<Switch>> listIterator =  actionSwitches.values().iterator();
+        while (listIterator.hasNext()) {
+            List<Switch> switchList = listIterator.next();
+            Iterator<Switch> switchIterator = switchList.iterator();
+            while (switchIterator.hasNext()) {
+                Switch categorySwitch = switchIterator.next();
+                if (categorySwitch.getTag() != null) {
+                    String category = (String) categorySwitch.getTag();
+                    mapFilter.setCategoryChecked(category, categorySwitch.isChecked());
+                }
+            }
+        }
+
         if (days1RB.isChecked()) {
             mapFilter.timeframe = MapFilter.DAYS_1;
         } else if (days2RB.isChecked()) {
@@ -197,13 +216,23 @@ public class MapFilterFragment extends EntourageDialogFragment {
     @OnClick(R.id.map_filter_entourage_demand_switch)
     protected void onDemandSwitch() {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_ASK);
-        entourageDemandDetailsLayout.setVisibility(entourageDemandSwitch.isChecked() ? View.VISIBLE : View.GONE);
+        boolean checked = entourageDemandSwitch.isChecked();
+        entourageDemandDetailsLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
+        List<Switch> switchList = actionSwitches.get(Entourage.TYPE_DEMAND);
+        for (Switch categorySwitch: switchList) {
+            categorySwitch.setChecked(checked);
+        }
     }
 
     @OnClick(R.id.map_filter_entourage_contribution_switch)
     protected void onContributionSwitch() {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_OFFERS);
-        entourageContributionDetailsLayout.setVisibility(entourageContributionSwitch.isChecked() ? View.VISIBLE : View.GONE);
+        boolean checked = entourageContributionSwitch.isChecked();
+        entourageContributionDetailsLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
+        List<Switch> switchList = actionSwitches.get(Entourage.TYPE_CONTRIBUTION);
+        for (Switch categorySwitch: switchList) {
+            categorySwitch.setChecked(checked);
+        }
     }
 
 //    @OnClick(R.id.map_filter_entourage_tours_switch)
@@ -255,11 +284,11 @@ public class MapFilterFragment extends EntourageDialogFragment {
 
         entourageDemandSwitch.setChecked(mapFilter.entourageTypeDemand);
         entourageDemandDetailsLayout.setVisibility(mapFilter.entourageTypeDemand ? View.VISIBLE : View.GONE);
-        addEntourageCategories(Entourage.TYPE_DEMAND, entourageDemandDetailsLayout);
+        addEntourageCategories(Entourage.TYPE_DEMAND, entourageDemandDetailsLayout, mapFilter);
 
         entourageContributionSwitch.setChecked(mapFilter.entourageTypeContribution);
         entourageContributionDetailsLayout.setVisibility(mapFilter.entourageTypeContribution ? View.VISIBLE : View.GONE);
-        addEntourageCategories(Entourage.TYPE_CONTRIBUTION, entourageContributionDetailsLayout);
+        addEntourageCategories(Entourage.TYPE_CONTRIBUTION, entourageContributionDetailsLayout, mapFilter);
 
         onlyMyEntouragesSwitch.setChecked(mapFilter.onlyMyEntourages);
         onlyMyPartnerEntouragesSwitch.setChecked(mapFilter.onlyMyPartnerEntourages);
@@ -282,7 +311,10 @@ public class MapFilterFragment extends EntourageDialogFragment {
         return !tourMedicalSwitch.isChecked() & !tourSocialSwitch.isChecked() & !tourDistributiveSwitch.isChecked();
     }
 
-    private void addEntourageCategories(String entourageType, LinearLayout layout) {
+    private void addEntourageCategories(String entourageType, LinearLayout layout, MapFilter mapFilter) {
+        // create the hashmap entrance
+        List<Switch> switchList = new ArrayList<Switch>();
+        actionSwitches.put(entourageType, switchList);
         // get the list of categories
         EntourageCategoryManager categoryManager = EntourageCategoryManager.getInstance();
         List<EntourageCategory> entourageCategoryList = categoryManager.getEntourageCategoriesForType(entourageType);
@@ -309,6 +341,24 @@ public class MapFilterFragment extends EntourageDialogFragment {
             if (getContext() != null) {
                 mFilterImage.setColorFilter(ContextCompat.getColor(getContext(), entourageCategory.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
             }
+            mFilterSwitch.setChecked(mapFilter.isCategoryChecked(entourageCategory));
+            mFilterSwitch.setTag(entourageCategory.getKey());
+            mFilterSwitch.setOnCheckedChangeListener(onCheckedChangeListener);
+
+            switchList.add(mFilterSwitch);
+        }
+    }
+
+    private class OnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
+            // if no tag, exit
+            if (compoundButton.getTag() == null) {
+                return;
+            }
+            EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ACTION_CATEGORY);
+            // get the category
+            String category = (String) compoundButton.getTag();
         }
     }
 

@@ -249,6 +249,7 @@ public class Constants {
     public static final String EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS = "ShowOnlyMedicalToursClick";
     public static final String EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS = "ShowOnlySocialToursClick";
     public static final String EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS = "ShowOnlyDistributionToursClick";
+    public static final String EVENT_MAP_FILTER_ACTION_CATEGORY = "FilterActionSubtypeClick";
     public static final String EVENT_MAP_FILTER_SUBMIT = "SubmitFilterPreferences";
     public static final String EVENT_MAP_FILTER_CLOSE = "CloseFilter";
 

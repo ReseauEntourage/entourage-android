@@ -134,7 +134,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         //search for the insert point
         for (int i = 0; i < items.size(); i++) {
             TimestampedObject timestampedObject = items.get(i);
-            if (timestampedObject.getTimestamp() != null) {
+            if (timestampedObject.getTimestamp() != null && cardInfo.getTimestamp() != null) {
                 if (timestampedObject.getTimestamp().before(cardInfo.getTimestamp())) {
                     //we found the insert point
                     insertCardInfo(cardInfo, i);
