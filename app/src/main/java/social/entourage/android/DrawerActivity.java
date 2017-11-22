@@ -709,12 +709,12 @@ public class DrawerActivity extends EntourageSecuredActivity
         MixpanelAPI.People people = mixpanel.getPeople();
         people.identify(String.valueOf(user.getId()));
 
-        people.setOnce("$email", user.getEmail());
-        people.setOnce("EntouragePartner", user.getPartner());
-        people.setOnce("EntourageUserType", user.isPro()?"Pro":"Public");
-        people.setOnce("EntourageLanguage", Locale.getDefault().getISO3Country());
-            /*people.setOnce("EntourageGeolocEnable", user.getPartner());*/
-        people.setOnce("EntourageNotifEnable", notificationsEnabled ?"YES":"NO");
+        people.set("$email", user.getEmail());
+        people.set("EntouragePartner", user.getPartner());
+        people.set("EntourageUserType", user.isPro()?"Pro":"Public");
+        people.set("Language", Locale.getDefault().getLanguage());
+            /*people.set("EntourageGeolocEnable", user.getPartner());*/
+        people.set("EntourageNotifEnable", notificationsEnabled ?"YES":"NO");
 
         //mixpanel.getPeople().initPushHandling(RegisterGCMService.GCM_SENDER_ID);
         if(notificationsEnabled) {
