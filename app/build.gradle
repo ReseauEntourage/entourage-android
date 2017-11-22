@@ -80,6 +80,15 @@ android {
         }
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            if (variant.buildType.name != "debug") {
+                output.outputFileName = output.outputFileName
+                        .replace(".apk",  "-${variant.versionName}.apk")
+            }
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/NOTICE.txt'
