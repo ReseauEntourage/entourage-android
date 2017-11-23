@@ -90,7 +90,7 @@
             android:id="@+id/entourage_location_search_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="android:?attr/selectableItemBackground"
+            android:background="?android:attr/selectableItemBackground"
             android:text="@string/cancel"
             android:textColor="@color/accent"
             android:textSize="@dimen/entourage_font_small"
