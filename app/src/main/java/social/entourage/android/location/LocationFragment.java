@@ -1,4 +1,4 @@
-package social.entourage.android.map.entourage;
+package social.entourage.android.location;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -10,12 +10,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +37,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,13 +51,13 @@ import social.entourage.android.base.EntourageDialogFragment;
 /**
  * Fragment to choose the location of an entourage
  * Activities that contain this fragment must implement the
- * {@link EntourageLocationFragment.OnFragmentInteractionListener} interface
+ * {@link LocationFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EntourageLocationFragment#newInstance} factory method to
+ * Use the {@link LocationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 
-public class EntourageLocationFragment extends EntourageDialogFragment {
+public class LocationFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // Constants
@@ -78,8 +84,16 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
     @BindView(R.id.entourage_location_search)
     EditText searchEditText;
 
+    @BindView(R.id.entourage_location_search_cancel_button)
+    Button searchCancelButton;
+
     @BindView(R.id.entourage_location_address)
     TextView addressTextView;
+
+    @BindView(R.id.entourage_location_search_result)
+    ListView  searchResultListView;
+
+    LocationSearchAdapter locationSearchAdapter;
 
     SupportMapFragment mapFragment;
     GoogleMap map;
@@ -92,7 +106,7 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
     // Lifecycle
     // ----------------------------------
 
-    public EntourageLocationFragment() {
+    public LocationFragment() {
         // Required empty public constructor
     }
 
@@ -101,11 +115,11 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
      * this fragment using the provided parameters.
      *
      * @param location The initial location.
-     * @return A new instance of fragment EntourageLocationFragment.
+     * @return A new instance of fragment LocationFragment.
      */
 
-    public static EntourageLocationFragment newInstance(LatLng location, String address, OnFragmentInteractionListener listener) {
-        EntourageLocationFragment fragment = new EntourageLocationFragment();
+    public static LocationFragment newInstance(LatLng location, String address, OnFragmentInteractionListener listener) {
+        LocationFragment fragment = new LocationFragment();
         fragment.mListener = listener;
         Bundle args = new Bundle();
         args.putParcelable(KEY_ENTOURAGE_LOCATION, location);
@@ -190,12 +204,30 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
         }
     }
 
+    @OnClick(R.id.entourage_location_search_cancel_button)
+    protected void onSearchCancelClicked() {
+        searchEditText.setText("");
+        locationSearchAdapter.setAddressList(new ArrayList<Address>());
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
 
     private void initializeView() {
         // Initialize map
+        initializeMap();
+
+        // Initialize address
+        if (originalAddress != null) {
+            addressTextView.setText(originalAddress);
+        }
+
+        // Initialize the search field
+        initializeSearch();
+    }
+
+    private void initializeMap() {
         if (mapFragment == null) {
             GoogleMapOptions googleMapOptions = new GoogleMapOptions();
             googleMapOptions.zOrderOnTop(true);
@@ -262,13 +294,9 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
                 map = googleMap;
             }
         });
+    }
 
-        // Initialize address
-        if (originalAddress != null) {
-            addressTextView.setText(originalAddress);
-        }
-
-        // Initialize the search field
+    private void initializeSearch() {
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
@@ -285,6 +313,33 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
                 return false;
             }
         });
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                searchCancelButton.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+
+            }
+        });
+
+        // initialize the search result list
+        locationSearchAdapter = new LocationSearchAdapter();
+        searchResultListView.setAdapter(locationSearchAdapter);
+        searchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                Address address = locationSearchAdapter.getItem(position);
+                onAddressFound(address);
+            }
+        });
     }
 
     private void doSearchAddress(String search) {
@@ -295,27 +350,50 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
             }
             geocoderAddressTask = new GeocoderLocationTask();
             geocoderAddressTask.execute(search);
+        } else {
+            locationSearchAdapter.setAddressList(new ArrayList<Address>());
         }
     }
 
-    private void onAddressFound(Address address, AsyncTask asyncTask) {
+    private void onAddressesFound(List<Address> addresses, AsyncTask asyncTask) {
         if (geocoderAddressTask != asyncTask) return;
+        if (addresses == null) {
+            if (getActivity() != null) {
+                Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
+            }
+            locationSearchAdapter.setAddressList(new ArrayList<Address>());
+            return;
+        }
+        if (addresses.size() == 1) {
+            Address address = addresses.get(0);
+            onAddressFound(address);
+        } else {
+            searchResultListView.setVisibility(View.VISIBLE);
+            locationSearchAdapter.setAddressList(addresses);
+        }
+    }
+
+    private void onAddressFound(Address address) {
         if (address == null) {
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
             }
+            locationSearchAdapter.setAddressList(new ArrayList<Address>());
             return;
         }
         if (address.hasLatitude() && address.hasLongitude()) {
+            location = new LatLng(address.getLatitude(), address.getLongitude());
             if (map != null) {
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(address.getLatitude(), address.getLongitude()));
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(location);
                 map.moveCamera(cameraUpdate);
+                pin.setPosition(location);
             }
             if (address.getMaxAddressLineIndex() > 0) {
                 String addressLine = address.getAddressLine(0);
                 addressTextView.setText(addressLine);
             }
         }
+        locationSearchAdapter.setAddressList(new ArrayList<Address>());
     }
 
     // ----------------------------------
@@ -351,25 +429,22 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
         @Override
         protected void onPostExecute(final String address) {
             if (address == null) return;
-            EntourageLocationFragment.this.addressTextView.setText(address);
+            LocationFragment.this.addressTextView.setText(address);
         }
     }
 
-    private class GeocoderLocationTask extends AsyncTask<String, Void, Address> {
+    private class GeocoderLocationTask extends AsyncTask<String, Void, List<Address>> {
 
         @Override
-        protected Address doInBackground(final String... params) {
+        protected List<Address> doInBackground(final String... params) {
             try {
                 if (getActivity() == null) {
                     return null;
                 }
                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                 String address = params[0];
-                List<Address> addresses = geoCoder.getFromLocationName(address, 1);
-                if (addresses.size() > 0) {
-                    return addresses.get(0);
-                }
-                return null;
+                List<Address> addresses = geoCoder.getFromLocationName(address, 5);
+                return addresses;
             }
             catch (IOException ignored) {
 
@@ -378,8 +453,8 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
         }
 
         @Override
-        protected void onPostExecute(final Address address) {
-            onAddressFound(address, this);
+        protected void onPostExecute(final List<Address> addresses) {
+            onAddressesFound(addresses, this);
         }
     }
 
