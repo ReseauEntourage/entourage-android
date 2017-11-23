@@ -27,6 +27,8 @@ public class EntourageCategory implements Serializable{
     @SerializedName("display_category")
     private String category;
 
+    private String key;
+
     @SerializedName("display_category_title")
     private String title;
 
@@ -90,6 +92,10 @@ public class EntourageCategory implements Serializable{
         isDefault = aDefault;
     }
 
+    public String getKey() {
+        return key;
+    }
+
     // ----------------------------------
     // Helper methods
     // ----------------------------------
@@ -140,15 +146,5 @@ public class EntourageCategory implements Serializable{
             return R.string.entourage_category_type_demand_label;
         }
         return R.string.entourage_category_type_demand_label;
-    }
-
-    public String getKey() {
-        String fullCategory = "";
-        if (entourageType != null) fullCategory = entourageType;
-        if (category != null) {
-            if (fullCategory.length() > 0) fullCategory = fullCategory + "_";
-            fullCategory = fullCategory + category;
-        }
-        return fullCategory;
     }
 }

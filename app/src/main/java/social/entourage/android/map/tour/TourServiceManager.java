@@ -592,10 +592,8 @@ public class TourServiceManager {
                 location.latitude,
                 distance,
                 itemsPerPage,
-                mapFilter.getTourTypes(),
-                mapFilter.showTours,
+                mapFilter.getTypes(),
                 mapFilter.onlyMyEntourages,
-                mapFilter.getEntourageTypes(),
                 mapFilter.timeframe,
                 mapFilter.onlyMyPartnerEntourages,
                 Constants.ANNOUNCEMENTS_VERSION

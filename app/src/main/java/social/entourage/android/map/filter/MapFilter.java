@@ -56,32 +56,23 @@ public class MapFilter implements Serializable {
     // Methods
     // ----------------------------------
 
-    public String getTourTypes() {
-        StringBuilder tourTypes = new StringBuilder("");
-        if (tourTypeMedical) {
-            tourTypes.append(TourType.MEDICAL.getName());
-        }
-        if (tourTypeSocial) {
-            if (tourTypes.length() > 0) tourTypes.append(",");
-            tourTypes.append(TourType.BARE_HANDS.getName());
-        }
-        if (tourTypeDistributive) {
-            if (tourTypes.length() > 0) tourTypes.append(",");
-            tourTypes.append(TourType.ALIMENTARY.getName());
-        }
-
-        return tourTypes.toString();
-    }
-
-    public String getEntourageTypes() {
+    public String getTypes() {
         StringBuilder entourageTypes = new StringBuilder("");
 
-        if (entourageTypeDemand) {
-            entourageTypes.append(Entourage.TYPE_DEMAND);
+        if (tourTypeMedical) {
+            entourageTypes.append(TourType.MEDICAL.getKey());
         }
-        if (entourageTypeContribution) {
+        if (tourTypeSocial) {
             if (entourageTypes.length() > 0) entourageTypes.append(",");
-            entourageTypes.append(Entourage.TYPE_CONTRIBUTION);
+            entourageTypes.append(TourType.BARE_HANDS.getKey());
+        }
+        if (tourTypeDistributive) {
+            if (entourageTypes.length() > 0) entourageTypes.append(",");
+            entourageTypes.append(TourType.ALIMENTARY.getKey());
+        }
+        for (String categoryKey: entourageCategories) {
+            if (entourageTypes.length() > 0) entourageTypes.append(",");
+            entourageTypes.append(categoryKey);
         }
 
         return entourageTypes.toString();
