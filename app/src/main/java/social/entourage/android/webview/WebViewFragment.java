@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -347,18 +348,21 @@ public class WebViewFragment extends EntourageDialogFragment {
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
             // On fling down, dismiss the fragment
-            if (event2.getAxisValue(MotionEvent.AXIS_Y) - event1.getAxisValue(MotionEvent.AXIS_Y) > 0) {
+            if (event2.getRawY() - event1.getRawY() > 0 && velocityY < 0) {
                 dismiss();
+                return true;
             }
-            return true;
+            return false;
         }
 
         @Override
         public boolean onScroll(final MotionEvent e1, final MotionEvent e2, final float distanceX, final float distanceY) {
-            if (distanceY < 0) {
-                animatedView.setTranslationY(-distanceY + animatedView.getTranslationY());
+            float translationY = animatedView.getTranslationY();
+            float deltaY = e2.getRawY() - e1.getRawY();
+            if (deltaY > 0) {
+                animatedView.setTranslationY(deltaY);
             }
-            return super.onScroll(e1, e2, distanceX, distanceY);
+            return translationY > deltaY;
         }
     }
 
