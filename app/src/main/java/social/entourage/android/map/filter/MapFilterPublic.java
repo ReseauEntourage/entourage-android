@@ -1,10 +1,14 @@
 package social.entourage.android.map.filter;
 
+import java.io.Serializable;
+
+import social.entourage.android.api.model.map.Entourage;
+
 /**
  * Created by mihaiionescu on 27/10/16.
  */
 
-public class MapFilterPublic extends MapFilter {
+public class MapFilterPublic extends MapFilter implements Serializable {
 
     private static final long serialVersionUID = 4224570539967770078L;
 
@@ -21,6 +25,8 @@ public class MapFilterPublic extends MapFilter {
 
         entourageTypeDemand = true;
         entourageTypeContribution = true;
+
+        validateCategories();
 
         showTours = false;
     }

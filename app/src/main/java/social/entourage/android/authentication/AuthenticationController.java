@@ -81,6 +81,12 @@ public class AuthenticationController {
                 appSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
             }
         }
+        // MapFilter validation
+        MapFilter mapFilter = getMapFilter();
+        if (mapFilter != null) {
+            mapFilter.validateCategories();
+        }
+
         return this;
     }
 
