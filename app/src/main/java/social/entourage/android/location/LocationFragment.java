@@ -1,13 +1,16 @@
 package social.entourage.android.location;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.text.Editable;
@@ -16,6 +19,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -207,6 +212,7 @@ public class LocationFragment extends EntourageDialogFragment {
     @OnClick(R.id.entourage_location_search_cancel_button)
     protected void onSearchCancelClicked() {
         searchEditText.setText("");
+        searchResultListView.setVisibility(View.GONE);
         locationSearchAdapter.setAddressList(new ArrayList<Address>());
     }
 
@@ -378,6 +384,7 @@ public class LocationFragment extends EntourageDialogFragment {
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
             }
+            searchResultListView.setVisibility(View.GONE);
             locationSearchAdapter.setAddressList(new ArrayList<Address>());
             return;
         }
@@ -393,6 +400,7 @@ public class LocationFragment extends EntourageDialogFragment {
                 addressTextView.setText(addressLine);
             }
         }
+        searchResultListView.setVisibility(View.GONE);
         locationSearchAdapter.setAddressList(new ArrayList<Address>());
     }
 
