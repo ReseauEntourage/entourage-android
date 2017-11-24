@@ -339,8 +339,11 @@ public class WebViewFragment extends EntourageDialogFragment {
 
     private class NavigationViewGestureListener extends GestureDetector.SimpleOnGestureListener {
 
+        private boolean handleFling = true;
+
         @Override
         public boolean onDown(MotionEvent event) {
+            handleFling = true;
             return true;
         }
 
@@ -348,7 +351,7 @@ public class WebViewFragment extends EntourageDialogFragment {
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
             // On fling down, dismiss the fragment
-            if (event2.getRawY() - event1.getRawY() > 0 && velocityY < 0) {
+            if (event2.getRawY() - event1.getRawY() > 0 && velocityY < 0 && handleFling) {
                 dismiss();
                 return true;
             }
@@ -362,6 +365,7 @@ public class WebViewFragment extends EntourageDialogFragment {
             if (deltaY > 0) {
                 animatedView.setTranslationY(deltaY);
             }
+            if (translationY > deltaY) handleFling = false;
             return translationY > deltaY;
         }
     }
