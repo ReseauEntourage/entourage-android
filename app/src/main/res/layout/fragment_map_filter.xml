@@ -89,8 +89,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/greyish"/>
 
                     <RelativeLayout
@@ -137,13 +137,14 @@
                             android:layout_marginRight="16dp"
                             android:layout_marginStart="0dp"/>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_alignParentBottom="false"
-                            android:layout_below="@+id/map_filter_tour_medical_image"
-                            android:background="@color/greyish"/>
                     </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginStart="60dp"
+                        android:background="@color/greyish"/>
 
                     <RelativeLayout
                         android:id="@+id/map_filter_tour_social"
@@ -189,13 +190,14 @@
                             android:layout_marginRight="16dp"
                             android:layout_marginStart="0dp"/>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_alignParentBottom="false"
-                            android:layout_below="@+id/map_filter_tour_social_image"
-                            android:background="@color/greyish"/>
                     </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginStart="60dp"
+                        android:background="@color/greyish"/>
 
                     <RelativeLayout
                         android:id="@+id/map_filter_tour_distributive"
@@ -295,12 +297,6 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginStart="0dp"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_below="@+id/map_filter_entourage_demand_title"
-                        android:background="@color/greyish"/>
-
                 </RelativeLayout>
 
                 <LinearLayout
@@ -308,6 +304,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                 </LinearLayout>
 
                 <RelativeLayout
@@ -319,6 +316,11 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
                     android:paddingStart="10dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/greyish"/>
 
                     <TextView
                         android:id="@+id/map_filter_entourage_contribution_title"
@@ -351,13 +353,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@color/greyish"/>
 
                 </LinearLayout>
 
