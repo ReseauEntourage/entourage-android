@@ -2007,7 +2007,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         CameraPosition cameraPosition = new CameraPosition(latLng, zoom, 0, 0);
         if (map != null) {
             if (animated) {
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 300, null);
             } else {
                 map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
