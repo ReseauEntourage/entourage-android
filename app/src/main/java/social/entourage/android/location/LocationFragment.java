@@ -75,6 +75,8 @@ public class LocationFragment extends EntourageDialogFragment {
 
     private static final float LOCATION_MOVE_DELTA = 50; //meters
 
+    private static final float LOCATION_SEARCH_RADIUS = 0.18f; // 20 kilometers in lat/long degrees
+
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -190,13 +192,15 @@ public class LocationFragment extends EntourageDialogFragment {
     protected void onCurrentLocationClicked() {
         if (map != null) {
             boolean cameraMoved = false;
-            Location location = EntourageLocation.getInstance().getCurrentLocation();
-            if (location != null) {
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+            if (currentLocation != null) {
+                location = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(location);
                 map.moveCamera(cameraUpdate);
                 cameraMoved = true;
             }
             else if (originalLocation != null) {
+                location = originalLocation;
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(originalLocation);
                 map.moveCamera(cameraUpdate);
                 cameraMoved = true;
@@ -267,17 +271,17 @@ public class LocationFragment extends EntourageDialogFragment {
                     pin = googleMap.addMarker(markerOptions);
                 }
 
-                googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                     @Override
-                    public void onCameraChange(final CameraPosition cameraPosition) {
+                    public void onCameraIdle() {
+                        CameraPosition cameraPosition = map.getCameraPosition();
                         float[] results = new float[1];
                         Location.distanceBetween(location.latitude, location.longitude, cameraPosition.target.latitude, cameraPosition.target.longitude, results);
+                        location = cameraPosition.target;
+                        pin.setPosition(location);
                         if (results[0] >= LOCATION_MOVE_DELTA) {
-                            location = cameraPosition.target;
                             GeocoderAddressTask geocoderAddressTask = new GeocoderAddressTask();
                             geocoderAddressTask.execute(location);
-
-                            pin.setPosition(location);
                         }
                     }
                 });
@@ -451,7 +455,12 @@ public class LocationFragment extends EntourageDialogFragment {
                 }
                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                 String address = params[0];
-                List<Address> addresses = geoCoder.getFromLocationName(address, 5);
+                List<Address> addresses = geoCoder.getFromLocationName(address,
+                        5,
+                        location.latitude - LOCATION_SEARCH_RADIUS,
+                        location.longitude - LOCATION_SEARCH_RADIUS,
+                        location.latitude + LOCATION_SEARCH_RADIUS,
+                        location.longitude + LOCATION_SEARCH_RADIUS);
                 return addresses;
             }
             catch (IOException ignored) {
