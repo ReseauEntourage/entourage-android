@@ -1,4 +1,4 @@
-package social.entourage.android.map.entourage;
+package social.entourage.android.location;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -8,17 +8,31 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,10 +42,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,13 +61,13 @@ import social.entourage.android.base.EntourageDialogFragment;
 /**
  * Fragment to choose the location of an entourage
  * Activities that contain this fragment must implement the
- * {@link EntourageLocationFragment.OnFragmentInteractionListener} interface
+ * {@link LocationFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EntourageLocationFragment#newInstance} factory method to
+ * Use the {@link LocationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 
-public class EntourageLocationFragment extends EntourageDialogFragment {
+public class LocationFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // Constants
@@ -63,6 +79,8 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
     private static final String KEY_ENTOURAGE_ADDRESS = "social.entourage.android.KEY_ENTOURAGE_ADDRESS";
 
     private static final float LOCATION_MOVE_DELTA = 50; //meters
+
+    private static final float LOCATION_SEARCH_RADIUS = 0.18f; // 20 kilometers in lat/long degrees
 
     // ----------------------------------
     // Attributes
@@ -78,21 +96,36 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
     @BindView(R.id.entourage_location_search)
     EditText searchEditText;
 
+    @BindView(R.id.entourage_location_search_cancel_button)
+    Button searchCancelButton;
+
     @BindView(R.id.entourage_location_address)
     TextView addressTextView;
+
+    @BindView(R.id.entourage_location_search_result)
+    ListView  searchResultListView;
+
+    LocationSearchAdapter locationSearchAdapter;
 
     SupportMapFragment mapFragment;
     GoogleMap map;
 
-    private GeocoderLocationTask geocoderAddressTask = null;
+    SupportPlaceAutocompleteFragment autocompleteFragment = null;
+
+    private GeocoderLocationTask geocoderLocationTask = null;
+    private GeocoderAddressTask geocoderAddressTask = null;
+
+    private boolean moveToLocationFound = false;
 
     private Marker pin;
+
+    PlaceDetectionClient mPlaceDetectionClient;
 
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
 
-    public EntourageLocationFragment() {
+    public LocationFragment() {
         // Required empty public constructor
     }
 
@@ -101,11 +134,11 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
      * this fragment using the provided parameters.
      *
      * @param location The initial location.
-     * @return A new instance of fragment EntourageLocationFragment.
+     * @return A new instance of fragment LocationFragment.
      */
 
-    public static EntourageLocationFragment newInstance(LatLng location, String address, OnFragmentInteractionListener listener) {
-        EntourageLocationFragment fragment = new EntourageLocationFragment();
+    public static LocationFragment newInstance(LatLng location, String address, OnFragmentInteractionListener listener) {
+        LocationFragment fragment = new LocationFragment();
         fragment.mListener = listener;
         Bundle args = new Bundle();
         args.putParcelable(KEY_ENTOURAGE_LOCATION, location);
@@ -150,16 +183,31 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
         mListener = null;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (autocompleteFragment != null) {
+            FragmentActivity fragmentActivity = getActivity();
+            if (fragmentActivity != null) {
+                FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction().remove(autocompleteFragment).commitAllowingStateLoss();
+                }
+            }
+        }
+    }
+
     // ----------------------------------
     // INTERFACE CALLBACKS
     // ----------------------------------
 
-    @OnClick(R.id.entourage_location_back_button)
+    @OnClick(R.id.title_close_button)
     protected void onBackClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.entourage_location_validate_button)
+    @OnClick(R.id.title_action_button)
     protected void onValidateClicked() {
         if (mListener != null) {
             mListener.onEntourageLocationChosen(location, addressTextView.getText().toString());
@@ -171,13 +219,15 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
     protected void onCurrentLocationClicked() {
         if (map != null) {
             boolean cameraMoved = false;
-            Location location = EntourageLocation.getInstance().getCurrentLocation();
-            if (location != null) {
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+            if (currentLocation != null) {
+                location = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(location);
                 map.moveCamera(cameraUpdate);
                 cameraMoved = true;
             }
             else if (originalLocation != null) {
+                location = originalLocation;
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(originalLocation);
                 map.moveCamera(cameraUpdate);
                 cameraMoved = true;
@@ -190,12 +240,35 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
         }
     }
 
+    @OnClick(R.id.entourage_location_search_cancel_button)
+    protected void onSearchCancelClicked() {
+        searchEditText.setText("");
+        searchResultListView.setVisibility(View.GONE);
+        locationSearchAdapter.setAddressList(new ArrayList<Address>());
+        hideKeyboard();
+        moveToLocationFound = false;
+    }
+
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
 
     private void initializeView() {
         // Initialize map
+        initializeMap();
+
+        // Initialize address
+        if (originalAddress != null) {
+            addressTextView.setText(originalAddress);
+        }
+
+        // Initialize the search field
+        //initializeSearch();
+
+        initializePlaces();
+    }
+
+    private void initializeMap() {
         if (mapFragment == null) {
             GoogleMapOptions googleMapOptions = new GoogleMapOptions();
             googleMapOptions.zOrderOnTop(true);
@@ -229,17 +302,23 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
                     pin = googleMap.addMarker(markerOptions);
                 }
 
-                googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                     @Override
-                    public void onCameraChange(final CameraPosition cameraPosition) {
+                    public void onCameraIdle() {
+                        CameraPosition cameraPosition = map.getCameraPosition();
                         float[] results = new float[1];
                         Location.distanceBetween(location.latitude, location.longitude, cameraPosition.target.latitude, cameraPosition.target.longitude, results);
-                        if (results[0] >= LOCATION_MOVE_DELTA) {
-                            location = cameraPosition.target;
-                            GeocoderAddressTask geocoderAddressTask = new GeocoderAddressTask();
-                            geocoderAddressTask.execute(location);
+                        location = cameraPosition.target;
+                        pin.setPosition(location);
 
-                            pin.setPosition(location);
+                        if (geocoderAddressTask != null) {
+                            geocoderAddressTask.cancel(true);
+                        }
+                        geocoderAddressTask = new GeocoderAddressTask();
+                        geocoderAddressTask.execute(location);
+
+                        if (autocompleteFragment != null) {
+                            autocompleteFragment.setBoundsBias(LatLngBounds.builder().include(location).build());
                         }
                     }
                 });
@@ -252,23 +331,18 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
                         map.moveCamera(cameraUpdate);
 
-                        GeocoderAddressTask geocoderAddressTask = new GeocoderAddressTask();
-                        geocoderAddressTask.execute(location);
-
                         pin.setPosition(location);
+
+                        hideKeyboard();
                     }
                 });
 
                 map = googleMap;
             }
         });
+    }
 
-        // Initialize address
-        if (originalAddress != null) {
-            addressTextView.setText(originalAddress);
-        }
-
-        // Initialize the search field
+    private void initializeSearch() {
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
@@ -276,46 +350,145 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         String search = v.getText().toString().trim();
                         doSearchAddress(search);
+                        moveToLocationFound = true;
                     }
                 }
                 else if (event.getKeyCode() == KeyEvent.ACTION_DOWN) {
                     String search = v.getText().toString().trim();
                     doSearchAddress(search);
+                    moveToLocationFound = true;
                 }
                 return false;
+            }
+        });
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                searchCancelButton.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (s.length() > 2) {
+                    moveToLocationFound = false;
+                    doSearchAddress(s.toString());
+                }
+            }
+        });
+
+        // initialize the search result list
+        locationSearchAdapter = new LocationSearchAdapter();
+        searchResultListView.setAdapter(locationSearchAdapter);
+        searchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                Address address = locationSearchAdapter.getItem(position);
+                onAddressFound(address);
+            }
+        });
+    }
+
+    private void initializePlaces() {
+
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(this.getActivity(), null);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        autocompleteFragment = (SupportPlaceAutocompleteFragment) fragmentManager.findFragmentById(R.id.entourage_location_places);
+
+        if (autocompleteFragment == null) return;
+
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+//                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
+//                .build();
+//        autocompleteFragment.setFilter(typeFilter);
+
+        if (originalLocation != null) {
+            autocompleteFragment.setBoundsBias(LatLngBounds.builder().include(originalLocation).build());
+        }
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                if (place.getLatLng() != null) {
+                    if (map != null) {
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(place.getLatLng());
+                        map.moveCamera(cameraUpdate);
+                        pin.setPosition(place.getLatLng());
+                    }
+                    addressTextView.setText(place.getAddress());
+                }
+            }
+
+            @Override
+            public void onError(Status status) {
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     private void doSearchAddress(String search) {
         if (search != null && search.length() > 0) {
-            if (geocoderAddressTask != null) {
-                geocoderAddressTask.cancel(true);
-                geocoderAddressTask = null;
+            if (geocoderLocationTask != null) {
+                geocoderLocationTask.cancel(true);
+                geocoderLocationTask = null;
             }
-            geocoderAddressTask = new GeocoderLocationTask();
-            geocoderAddressTask.execute(search);
+            geocoderLocationTask = new GeocoderLocationTask();
+            geocoderLocationTask.execute(search);
+        } else {
+            locationSearchAdapter.setAddressList(new ArrayList<Address>());
         }
     }
 
-    private void onAddressFound(Address address, AsyncTask asyncTask) {
-        if (geocoderAddressTask != asyncTask) return;
+    private void onAddressesFound(List<Address> addresses, AsyncTask asyncTask) {
+        if (geocoderLocationTask != asyncTask) return;
+        if (addresses == null) {
+            if (getActivity() != null) {
+                Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
+            }
+            locationSearchAdapter.setAddressList(new ArrayList<Address>());
+            return;
+        }
+        if (addresses.size() == 1 && moveToLocationFound) {
+            Address address = addresses.get(0);
+            onAddressFound(address);
+        } else {
+            searchResultListView.setVisibility(View.VISIBLE);
+            locationSearchAdapter.setAddressList(addresses);
+        }
+    }
+
+    private void onAddressFound(Address address) {
         if (address == null) {
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
             }
+            searchResultListView.setVisibility(View.GONE);
+            locationSearchAdapter.setAddressList(new ArrayList<Address>());
             return;
         }
         if (address.hasLatitude() && address.hasLongitude()) {
+            location = new LatLng(address.getLatitude(), address.getLongitude());
             if (map != null) {
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(address.getLatitude(), address.getLongitude()));
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(location);
                 map.moveCamera(cameraUpdate);
+                pin.setPosition(location);
             }
             if (address.getMaxAddressLineIndex() > 0) {
                 String addressLine = address.getAddressLine(0);
                 addressTextView.setText(addressLine);
             }
+            hideKeyboard();
         }
+        searchResultListView.setVisibility(View.GONE);
+        locationSearchAdapter.setAddressList(new ArrayList<Address>());
     }
 
     // ----------------------------------
@@ -350,26 +523,29 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
 
         @Override
         protected void onPostExecute(final String address) {
-            if (address == null) return;
-            EntourageLocationFragment.this.addressTextView.setText(address);
+            if (address == null || geocoderAddressTask != this) return;
+            LocationFragment.this.addressTextView.setText(address);
+            geocoderAddressTask = null;
         }
     }
 
-    private class GeocoderLocationTask extends AsyncTask<String, Void, Address> {
+    private class GeocoderLocationTask extends AsyncTask<String, Void, List<Address>> {
 
         @Override
-        protected Address doInBackground(final String... params) {
+        protected List<Address> doInBackground(final String... params) {
             try {
                 if (getActivity() == null) {
                     return null;
                 }
                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                 String address = params[0];
-                List<Address> addresses = geoCoder.getFromLocationName(address, 1);
-                if (addresses.size() > 0) {
-                    return addresses.get(0);
-                }
-                return null;
+                List<Address> addresses = geoCoder.getFromLocationName(address,
+                        5,
+                        location.latitude - LOCATION_SEARCH_RADIUS,
+                        location.longitude - LOCATION_SEARCH_RADIUS,
+                        location.latitude + LOCATION_SEARCH_RADIUS,
+                        location.longitude + LOCATION_SEARCH_RADIUS);
+                return addresses;
             }
             catch (IOException ignored) {
 
@@ -378,8 +554,8 @@ public class EntourageLocationFragment extends EntourageDialogFragment {
         }
 
         @Override
-        protected void onPostExecute(final Address address) {
-            onAddressFound(address, this);
+        protected void onPostExecute(final List<Address> addresses) {
+            onAddressesFound(addresses, this);
         }
     }
 

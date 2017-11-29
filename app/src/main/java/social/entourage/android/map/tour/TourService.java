@@ -147,6 +147,8 @@ public class TourService extends Service {
         super.onCreate();
         EntourageApplication.get(this).getEntourageComponent().inject(this);
 
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
         tourServiceManager = TourServiceManager.newInstance(
             this,
             tourRequest,
@@ -163,8 +165,6 @@ public class TourService extends Service {
         filter.addAction(KEY_LOCATION_PROVIDER_DISABLED);
         filter.addAction(KEY_LOCATION_PROVIDER_ENABLED);
         registerReceiver(receiver, filter);
-
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         registerNewsFeedListener(crashlyticsListener);
         registerNewsFeedListener(loggerListener);
@@ -219,7 +219,9 @@ public class TourService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             configureRemoteView(action);
         }
-        notificationManager.notify(NOTIFICATION_ID, notification);
+        if (notificationManager != null) {
+            notificationManager.notify(NOTIFICATION_ID, notification);
+        }
     }
 
     private void createNotification() {

@@ -7,52 +7,55 @@
               android:orientation="vertical"
     >
 
+    <View
+        android:id="@+id/filter_item_separator"
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginStart="45dp"
+        android:background="@color/greyish"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="2dp"
-        android:paddingEnd="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingStart="20dp"
-        android:paddingTop="2dp">
+        android:paddingEnd="0dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="0dp"
+        android:paddingStart="10dp"
+        >
 
         <ImageView
-            android:id="@+id/guide_filter_item_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/filter_item_image"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/poi_category_1"/>
+            />
 
         <TextView
-            android:id="@+id/guide_filter_item_text"
+            android:id="@+id/filter_item_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <Switch
-            android:id="@+id/guide_filter_item_switch"
+            android:id="@+id/filter_item_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:paddingEnd="16dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="16dp"
+            android:paddingStart="0dp"/>
 
     </LinearLayout>
-
-    <View
-        android:id="@+id/guide_filter_item_separator"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:alpha="0.5"
-        android:background="@color/greyish"/>
 
 </LinearLayout>

@@ -68,7 +68,7 @@ public class AboutFragment extends EntourageDialogFragment {
     // BUTTON HANDLING
     // ----------------------------------
 
-    @OnClick(R.id.about_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseButton() {
         dismiss();
     }

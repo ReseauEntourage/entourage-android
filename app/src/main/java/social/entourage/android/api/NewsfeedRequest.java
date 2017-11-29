@@ -18,10 +18,8 @@ public interface NewsfeedRequest {
             @Query("latitude") double latitude,
             @Query("distance") int distance,
             @Query("per") int itemsPerPage,
-            @Query("tour_types") String tourTypes,
-            @Query("show_tours") boolean showTours,
+            @Query("types") String types,
             @Query("show_my_entourages_only") boolean onlyMyEntourages,
-            @Query("entourage_types") String entourageTypes,
             @Query("time_range") int timeFrame,
             @Query("show_my_partner_only") boolean onlyMyPartnerEntourages,
             @Query("announcements") String announcementsVersion

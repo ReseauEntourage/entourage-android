@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="webview_menu_browser">Ouvrir dans le navigateur</string>
+    <string name="webview_menu_copy">Copier le lien</string>
+    <string name="webview_menu_share">Partager</string>
+
+    <string name="webview_copy_ok">Lien copié!</string>
+</resources>

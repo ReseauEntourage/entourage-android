@@ -349,7 +349,7 @@ public class UserFragment extends EntourageDialogFragment {
     // ONCLICK CALLBACKS
     // ----------------------------------
 
-    @OnClick(R.id.user_profile_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseButtonClicked() {
         dismiss();
     }

@@ -1,14 +1,23 @@
 package social.entourage.android.map.filter;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.map.entourage.category.EntourageCategory;
+import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 
 /**
  * Created by mihaiionescu on 17/05/16.
  */
-public class MapFilter implements Serializable {
+public class MapFilter {
 
     private static final long serialVersionUID = -2822136342813499636L;
 
@@ -26,6 +35,8 @@ public class MapFilter implements Serializable {
 
     public boolean entourageTypeDemand = true;
     public boolean entourageTypeContribution = true;
+
+    List<String> entourageCategories = new ArrayList<>();
 
     public boolean showTours = true;
 
@@ -45,41 +56,85 @@ public class MapFilter implements Serializable {
     }
 
     protected MapFilter() {
+        validateCategories();
     }
 
     // ----------------------------------
     // Methods
     // ----------------------------------
 
-    public String getTourTypes() {
-        StringBuilder tourTypes = new StringBuilder("");
-        if (tourTypeMedical) {
-            tourTypes.append(TourType.MEDICAL.getName());
-        }
-        if (tourTypeSocial) {
-            if (tourTypes.length() > 0) tourTypes.append(",");
-            tourTypes.append(TourType.BARE_HANDS.getName());
-        }
-        if (tourTypeDistributive) {
-            if (tourTypes.length() > 0) tourTypes.append(",");
-            tourTypes.append(TourType.ALIMENTARY.getName());
-        }
-
-        return tourTypes.toString();
-    }
-
-    public String getEntourageTypes() {
+    public String getTypes() {
         StringBuilder entourageTypes = new StringBuilder("");
 
-        if (entourageTypeDemand) {
-            entourageTypes.append(Entourage.TYPE_DEMAND);
+        if (tourTypeMedical) {
+            entourageTypes.append(TourType.MEDICAL.getKey());
         }
-        if (entourageTypeContribution) {
+        if (tourTypeSocial) {
             if (entourageTypes.length() > 0) entourageTypes.append(",");
-            entourageTypes.append(Entourage.TYPE_CONTRIBUTION);
+            entourageTypes.append(TourType.BARE_HANDS.getKey());
+        }
+        if (tourTypeDistributive) {
+            if (entourageTypes.length() > 0) entourageTypes.append(",");
+            entourageTypes.append(TourType.ALIMENTARY.getKey());
+        }
+        for (String categoryKey: entourageCategories) {
+            if (entourageTypes.length() > 0) entourageTypes.append(",");
+            entourageTypes.append(categoryKey);
         }
 
         return entourageTypes.toString();
+    }
+
+    public boolean isCategoryChecked(EntourageCategory entourageCategory) {
+        if (Entourage.TYPE_DEMAND.equals(entourageCategory.getEntourageType())) return entourageTypeDemand && entourageCategories.contains(entourageCategory.getKey());
+        if (Entourage.TYPE_CONTRIBUTION.equals(entourageCategory.getEntourageType())) return entourageTypeContribution && entourageCategories.contains(entourageCategory.getKey());
+        return false;
+    }
+
+    public void setCategoryChecked(String actionCategory, boolean checked) {
+        if (checked) {
+            if (!entourageCategories.contains(actionCategory)) {
+                entourageCategories.add(actionCategory);
+            }
+        } else {
+            entourageCategories.remove(actionCategory);
+        }
+    }
+
+    // ----------------------------------
+    // Serialization
+    // ----------------------------------
+
+    public void validateCategories() {
+        if (entourageTypeDemand) validateCategoriesForType(Entourage.TYPE_DEMAND);
+        if (entourageTypeContribution) validateCategoriesForType(Entourage.TYPE_CONTRIBUTION);
+    }
+
+    protected void validateCategoriesForType(String actionType) {
+        //get the list of categories for this type
+        EntourageCategoryManager categoryManager = EntourageCategoryManager.getInstance();
+        List<EntourageCategory> categoryList = categoryManager.getEntourageCategoriesForType(actionType);
+        if (categoryList != null) {
+            Iterator<EntourageCategory> iterator = categoryList.iterator();
+            boolean allKeysFalse = true;
+            //search for the keys
+            while (iterator.hasNext()) {
+                EntourageCategory category = iterator.next();
+                if (entourageCategories.contains(category.getKey())) {
+                    allKeysFalse = false;
+                    break;
+                }
+            }
+            if (allKeysFalse) {
+                //set all keys to true
+                Iterator<EntourageCategory> iteratorAdd = categoryList.iterator();
+                //search for the keys
+                while (iteratorAdd.hasNext()) {
+                    EntourageCategory category = iteratorAdd.next();
+                    entourageCategories.add(category.getKey());
+                }
+            }
+        }
     }
 
 }

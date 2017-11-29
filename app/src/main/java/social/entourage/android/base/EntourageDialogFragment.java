@@ -1,6 +1,7 @@
 package social.entourage.android.base;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import social.entourage.android.R;
 import social.entourage.android.deeplinks.DeepLinksManager;
@@ -96,6 +98,14 @@ public class EntourageDialogFragment extends DialogFragment {
             if (window != null) {
                 window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             }
+        }
+    }
+
+    protected void hideKeyboard() {
+        View view = getDialog().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 

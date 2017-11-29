@@ -69,6 +69,19 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
         actLayout = itemView.findViewById(R.id.announcement_card_act_layout);
         actButton = (Button)itemView.findViewById(R.id.announcement_card_button_act);
 
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (actUrl == null) return;
+                Intent actIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(actUrl));
+                try {
+                    itemView.getContext().startActivity(actIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(itemView.getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         actButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {

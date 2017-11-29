@@ -127,13 +127,13 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     // Interactions handling
     // ----------------------------------
 
-    @OnClick(R.id.entourage_category_close)
+    @OnClick(R.id.title_close_button)
     void onCloseClicked() {
         mListener = null;
         dismiss();
     }
 
-    @OnClick(R.id.entourage_category_validate_button)
+    @OnClick(R.id.title_action_button)
     void onValidateClicked() {
         if (mListener != null) {
             mListener.onCategoryChosen(adapter.selectedCategory);

@@ -37,6 +37,7 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.location.LocationFragment;
 import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
 import social.entourage.android.map.entourage.category.EntourageCategoryManager;
@@ -44,7 +45,7 @@ import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 /**
  *
  */
-public class CreateEntourageFragment extends EntourageDialogFragment implements EntourageLocationFragment.OnFragmentInteractionListener, CreateEntourageListener {
+public class CreateEntourageFragment extends EntourageDialogFragment implements LocationFragment.OnFragmentInteractionListener, CreateEntourageListener {
 
     // ----------------------------------
     // Constants
@@ -179,12 +180,12 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     // Interactions handling
     // ----------------------------------
 
-    @OnClick(R.id.create_entourage_close)
+    @OnClick(R.id.title_close_button)
     protected void onCloseClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.create_entourage_validate_button)
+    @OnClick(R.id.title_action_button)
     protected void onValidateClicked() {
         if (isSaving) return;
         if (isValid()) {
@@ -228,8 +229,8 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     @OnClick(R.id.create_entourage_position_layout)
     protected void onPositionClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
-        EntourageLocationFragment fragment = EntourageLocationFragment.newInstance(location, positionTextView.getText().toString(), this);
-        fragment.show(getFragmentManager(), EntourageLocationFragment.TAG);
+        LocationFragment fragment = LocationFragment.newInstance(location, positionTextView.getText().toString(), this);
+        fragment.show(getFragmentManager(), LocationFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_title_layout)
@@ -411,7 +412,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     }
 
     // ----------------------------------
-    // EntourageLocationFragment.OnFragmentInteractionListener
+    // LocationFragment.OnFragmentInteractionListener
     // ----------------------------------
 
     public void onEntourageLocationChosen(LatLng location, String address) {

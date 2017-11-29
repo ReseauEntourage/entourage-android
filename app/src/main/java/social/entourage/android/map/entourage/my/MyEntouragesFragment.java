@@ -257,7 +257,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // BUTTONS HANDLING
     // ----------------------------------
 
-    @OnClick(R.id.myentourages_back_button)
+    @OnClick(R.id.title_close_button)
     void onBackClicked() {
         EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_BACK_CLICK);
         dismiss();

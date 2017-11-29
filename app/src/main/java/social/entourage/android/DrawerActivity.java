@@ -102,6 +102,7 @@ import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.PartnerLogoImageView;
+import social.entourage.android.webview.WebViewFragment;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -248,7 +249,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        //Log.d("DEEPLINK", "onNewIntent " + intent.toString());
+        Log.d("DEEPLINK", "onNewIntent " + intent.toString());
         this.setIntent(intent);
         if (Intent.ACTION_VIEW.equals(intent.getAction())){
             // Save the deep link intent
@@ -550,7 +551,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://feed"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://webview?url=www.google.ro"));
                         try {
                             startActivity(intent);
                         } catch (Exception ex) {
@@ -566,12 +567,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
-                Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.SCB_LINK_ID)));
-                try {
-                    startActivity(blogIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
+                showWebView(getLink(Constants.SCB_LINK_ID));
                 break;
             case R.id.action_charte:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
@@ -693,6 +689,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         selectItem(R.id.action_tours);
     }
 
+    public void showWebView(String url) {
+        WebViewFragment webViewFragment = WebViewFragment.newInstance(url);
+        webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
+    }
+
     private void initializePushNotifications() {
         final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
         boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
@@ -708,12 +709,12 @@ public class DrawerActivity extends EntourageSecuredActivity
         MixpanelAPI.People people = mixpanel.getPeople();
         people.identify(String.valueOf(user.getId()));
 
-        people.setOnce("$email", user.getEmail());
-        people.setOnce("EntouragePartner", user.getPartner());
-        people.setOnce("EntourageUserType", user.isPro()?"Pro":"Public");
-        people.setOnce("EntourageLanguage", Locale.getDefault().getISO3Country());
-            /*people.setOnce("EntourageGeolocEnable", user.getPartner());*/
-        people.setOnce("EntourageNotifEnable", notificationsEnabled ?"YES":"NO");
+        people.set("$email", user.getEmail());
+        people.set("EntouragePartner", user.getPartner());
+        people.set("EntourageUserType", user.isPro()?"Pro":"Public");
+        people.set("Language", Locale.getDefault().getLanguage());
+            /*people.set("EntourageGeolocEnable", user.getPartner());*/
+        people.set("EntourageNotifEnable", notificationsEnabled ?"YES":"NO");
 
         //mixpanel.getPeople().initPushHandling(RegisterGCMService.GCM_SENDER_ID);
         if(notificationsEnabled) {

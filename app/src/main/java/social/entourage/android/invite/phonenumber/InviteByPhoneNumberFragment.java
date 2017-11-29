@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -39,8 +40,8 @@ public class InviteByPhoneNumberFragment extends InviteBaseFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    @BindView(R.id.invite_phone_send_button)
-    Button sendButton;
+    @BindView(R.id.title_action_button)
+    TextView sendButton;
 
     @BindView(R.id.invite_phone_number)
     EditText phoneNumberEditText;
@@ -81,12 +82,12 @@ public class InviteByPhoneNumberFragment extends InviteBaseFragment {
     // ONCLICK CALLBACKS
     // ----------------------------------
 
-    @OnClick(R.id.invite_phone_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseClicked() {
         dismiss();
     }
 
-    @OnClick(R.id.invite_phone_send_button)
+    @OnClick(R.id.title_action_button)
     protected void onSendClicked() {
 
         // Check phone number

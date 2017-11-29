@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -7,45 +8,11 @@
               tools:context="social.entourage.android.guide.filter.GuideFilterFragment">
 
 
-    <RelativeLayout
-        android:id="@+id/guide_filter_navigation_layout"
+    <social.entourage.android.view.EntourageTitleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/guide_filter_back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
-
-        <TextView
-            android:id="@+id/guide_filter_title"
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/guide_filter_title"/>
-
-        <Button
-            android:id="@+id/guide_filter_validate_button"
-            style="@style/TransparentButton.Accent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:text="@string/register"/>
-    </RelativeLayout>
+        app:entourageTitle="@string/guide_filter_title"
+        app:entourageTitleAction="@string/register"/>
 
     <TextView
         android:id="@+id/guide_filter_categories_title"

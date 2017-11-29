@@ -144,7 +144,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         }
     }
 
-    @OnClick(R.id.poi_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseButtonClicked() {
         dismiss();
     }

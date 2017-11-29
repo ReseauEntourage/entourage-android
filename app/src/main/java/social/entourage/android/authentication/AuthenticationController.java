@@ -12,6 +12,7 @@ import java.util.Map;
 
 import social.entourage.android.Constants;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.map.filter.MapFilter;
@@ -80,6 +81,12 @@ public class AuthenticationController {
                 appSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
             }
         }
+        // MapFilter validation
+        MapFilter mapFilter = getMapFilter();
+        if (mapFilter != null) {
+            mapFilter.validateCategories();
+        }
+
         return this;
     }
 
@@ -200,6 +207,17 @@ public class AuthenticationController {
 
     public void saveMapFilter() {
         saveUserPreferences();
+    }
+
+    public Tour getSavedTour() {
+        return userPreferences.getOngoingTour();
+    }
+
+    public void saveTour(Tour tour) {
+        if (loggedUser != null && userPreferences != null) {
+            userPreferences.setOngoingTour(tour);
+            saveUserPreferences();
+        }
     }
 
     public void saveUserPreferences() {

@@ -231,7 +231,7 @@ public class UserEditFragment extends EntourageDialogFragment {
     // Buttons Handling
     // ----------------------------------
 
-    @OnClick(R.id.user_edit_close_button)
+    @OnClick(R.id.title_close_button)
     protected void onCloseButtonClicked() {
         dismiss();
     }
@@ -278,7 +278,7 @@ public class UserEditFragment extends EntourageDialogFragment {
         builder.show();
     }
 
-    @OnClick(R.id.user_save_button)
+    @OnClick(R.id.title_action_button)
     protected void onSaveButtonClicked() {
         EntourageEvents.logEvent(Constants.EVENT_USER_SAVE);
         // If we have an user fragment in the stack, let it handle the update

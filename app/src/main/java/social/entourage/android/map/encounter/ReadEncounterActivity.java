@@ -98,7 +98,7 @@ public class ReadEncounterActivity extends EntourageActivity {
     // PUBLIC METHODS
     // ----------------------------------
 
-    @OnClick(R.id.encounter_read_close)
+    @OnClick(R.id.title_close_button)
     public void onCloseButton() {
         finish();
     }
@@ -116,11 +116,19 @@ public class ReadEncounterActivity extends EntourageActivity {
         if (encounter.getCreationDate() != null) {
             encounterDate = DateFormat.getDateFormat(getApplicationContext()).format(encounter.getCreationDate());
         }
-        String encounterLocation = getResources().getString(R.string.encounter_read_location,
-                encounter.getUserName(),
-                encounter.getStreetPersonName(),
-                location,
-                encounterDate);
+        String encounterLocation = "";
+        if (location.length() == 0) {
+            encounterLocation = getResources().getString(R.string.encounter_read_location_no_address,
+                    encounter.getUserName(),
+                    encounter.getStreetPersonName(),
+                    encounterDate);
+        } else {
+            encounterLocation = getResources().getString(R.string.encounter_read_location,
+                    encounter.getUserName(),
+                    encounter.getStreetPersonName(),
+                    location,
+                    encounterDate);
+        }
         streetPersonNameEditText.setText(encounterLocation);
         messageEditText.setText(encounter.getMessage());
     }

@@ -1167,7 +1167,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void initializeMap() {
-        if (!isVisible()) return;
+        if (!isAdded()) return;
         if (mapFragment == null) {
             GoogleMapOptions googleMapOptions = new GoogleMapOptions();
             googleMapOptions.zOrderOnTop(true);
@@ -1231,7 +1231,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void initializeHiddenMap() {
-        if (!isVisible()) return;
+        if (!isAdded()) return;
         if (hiddenMapFragment == null) {
             GoogleMapOptions googleMapOptions = new GoogleMapOptions();
             googleMapOptions.zOrderOnTop(true);

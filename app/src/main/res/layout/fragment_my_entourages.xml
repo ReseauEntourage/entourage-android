@@ -5,42 +5,11 @@
                 android:background="@color/background_light"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <social.entourage.android.view.EntourageTitleView
         android:id="@+id/myentourages_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/background"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/myentourages_back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
-
-        <TextView
-            android:id="@+id/myentourages_title"
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/mytours_title"/>
-
-        <View
-            style="@style/SeparatorAlpha"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/myentourages_back_button"/>
-    </RelativeLayout>
+        app:entourageTitle="@string/mytours_title"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/myentourages_list_view"

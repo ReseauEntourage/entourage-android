@@ -22,7 +22,7 @@
     <color name="background_dark">@color/primary_dark</color>
     <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
-    <color name="background_transparent">#ccefeff4</color>
+    <color name="background_transparent">#cbefeff4</color>
 
     <!-- Login -->
     <color name="background_login_light">#FFFFFF</color>
@@ -83,5 +83,6 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="badge_background">#ee3e3a</color>
+    <color name="white_88">#ccffffff</color>
 
 </resources>

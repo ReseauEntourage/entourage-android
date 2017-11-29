@@ -27,6 +27,8 @@ public class EntourageCategory implements Serializable{
     @SerializedName("display_category")
     private String category;
 
+    private String key;
+
     @SerializedName("display_category_title")
     private String title;
 
@@ -88,6 +90,10 @@ public class EntourageCategory implements Serializable{
 
     public void setDefault(final boolean aDefault) {
         isDefault = aDefault;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     // ----------------------------------

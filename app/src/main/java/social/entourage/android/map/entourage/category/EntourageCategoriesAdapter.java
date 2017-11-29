@@ -19,6 +19,7 @@ import java.util.List;
 import social.entourage.android.R;
 
 /**
+ * Entourage categories adapter, with the group at index zero acting as an empty header.<br/>
  * Created by Mihai Ionescu on 21/09/2017.
  */
 
@@ -95,12 +96,14 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(final int groupPosition) {
-        return this.entourageCategoryHashMap.get(this.entourageTypeList.get(groupPosition)).size();
+        if (groupPosition == 0) return 0;
+        return this.entourageCategoryHashMap.get(this.entourageTypeList.get(groupPosition - 1)).size();
     }
 
     @Override
     public Object getChild(final int groupPosition, final int childPosition) {
-        return this.entourageCategoryHashMap.get(this.entourageTypeList.get(groupPosition))
+        if (groupPosition == 0) return null;
+        return this.entourageCategoryHashMap.get(this.entourageTypeList.get(groupPosition - 1))
                 .get(childPosition);
     }
 
@@ -149,12 +152,13 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return this.entourageTypeList.size();
+        return this.entourageTypeList.size() + 1;
     }
 
     @Override
     public Object getGroup(final int groupPosition) {
-        return this.entourageTypeList.get(groupPosition);
+        if (groupPosition == 0) return null;
+        return this.entourageTypeList.get(groupPosition - 1);
     }
 
     @Override
@@ -169,16 +173,22 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             // create the group view
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.layout_entourage_category_group, null);
+            if (groupPosition == 0) {
+                convertView = layoutInflater.inflate(R.layout.layout_entourage_category_header, null);
+            } else {
+                convertView = layoutInflater.inflate(R.layout.layout_entourage_category_group, null);
+            }
         }
         // populate the group
-        TextView label = (TextView)convertView.findViewById(R.id.entourage_category_group_label);
-        ImageView arrow = (ImageView)convertView.findViewById(R.id.entourage_category_group_arrow);
-        label.setText( EntourageCategory.getEntourageTypeDescription((String)getGroup(groupPosition)) );
-        if (_isExpanded) {
-            arrow.setRotation(-90.0f);
-        } else {
-            arrow.setRotation(90.0f);
+        if (groupPosition != 0) {
+            TextView label = (TextView) convertView.findViewById(R.id.entourage_category_group_label);
+            ImageView arrow = (ImageView) convertView.findViewById(R.id.entourage_category_group_arrow);
+            label.setText(EntourageCategory.getEntourageTypeDescription((String) getGroup(groupPosition - 1)));
+            if (_isExpanded) {
+                arrow.setRotation(-90.0f);
+            } else {
+                arrow.setRotation(90.0f);
+            }
         }
 
         return convertView;

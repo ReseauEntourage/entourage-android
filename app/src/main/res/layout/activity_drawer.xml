@@ -38,7 +38,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingStart="10dp"
-            app:menu_backgroundColor="#ccffffff"
+            app:menu_backgroundColor="@color/white_88"
             app:menu_colorNormal="@color/accent"
             app:menu_colorPressed="@color/accent"
             app:menu_colorRipple="@color/accent"

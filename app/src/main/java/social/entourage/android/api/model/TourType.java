@@ -8,23 +8,25 @@ public enum TourType {
     // CONSTANTS
     // ----------------------------------
 
-    MEDICAL("medical", R.id.launcher_tour_type_medical),
-    BARE_HANDS("barehands", R.id.launcher_tour_type_bare_hands),
-    ALIMENTARY("alimentary", R.id.launcher_tour_type_alimentary);
+    MEDICAL("medical", "tm", R.id.launcher_tour_type_medical),
+    BARE_HANDS("barehands", "tb", R.id.launcher_tour_type_bare_hands),
+    ALIMENTARY("alimentary", "ta", R.id.launcher_tour_type_alimentary);
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
     private final String name;
+    private final String key;
     private final int ressourceId;
 
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
-    TourType(String name, int ressourceId) {
+    TourType(String name, String key, int ressourceId) {
         this.name = name;
+        this.key = key;
         this.ressourceId = ressourceId;
     }
 
@@ -34,6 +36,10 @@ public enum TourType {
 
     private int getRessourceId() {
         return ressourceId;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     // ----------------------------------

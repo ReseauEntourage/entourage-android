@@ -33,10 +33,10 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.map.entourage.EntourageLocationFragment;
+import social.entourage.android.location.LocationFragment;
 import social.entourage.android.tools.BusProvider;
 
-public class CreateEncounterActivity extends EntourageSecuredActivity implements EntourageLocationFragment.OnFragmentInteractionListener {
+public class CreateEncounterActivity extends EntourageSecuredActivity implements LocationFragment.OnFragmentInteractionListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -186,13 +186,13 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     // PUBLIC METHODS
     // ----------------------------------
 
-    @OnClick(R.id.create_encounter_close)
+    @OnClick(R.id.title_close_button)
     public void onCloseButton() {
         BusProvider.getInstance().post(new Events.OnEncounterCreated(null));
         finish();
     }
 
-    @OnClick(R.id.button_create_encounter)
+    @OnClick(R.id.title_action_button)
     public void createEncounter() {
         String personName = streetPersonNameEditText.getText().toString().trim();
         String message = messageEditText.getText().toString().trim();
@@ -232,8 +232,8 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
 
     @OnClick(R.id.create_encounter_position_layout)
     protected void onPositionClicked() {
-        EntourageLocationFragment fragment = EntourageLocationFragment.newInstance(location, positionTextView.getText().toString(), this);
-        fragment.show(getSupportFragmentManager(), EntourageLocationFragment.TAG);
+        LocationFragment fragment = LocationFragment.newInstance(location, positionTextView.getText().toString(), this);
+        fragment.show(getSupportFragmentManager(), LocationFragment.TAG);
     }
 
     public void onCreateEncounterFinished(String errorMessage, Encounter encounterResponse) {
@@ -275,7 +275,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     }
 
     // ----------------------------------
-    // EntourageLocationFragment.OnFragmentInteractionListener
+    // LocationFragment.OnFragmentInteractionListener
     // ----------------------------------
 
     public void onEntourageLocationChosen(LatLng location, String address) {

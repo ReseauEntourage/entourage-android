@@ -3,7 +3,7 @@ apply plugin: 'io.fabric'
 apply plugin: 'appaloosa-deploy'
 
 def versionMajor = 4
-def versionMinor = 0
+def versionMinor = 1
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
@@ -24,7 +24,7 @@ android {
         def AWS_SECRET = System.env.AWS_SECRET ? '"' + System.env.AWS_SECRET + '"' : entourageAWSSecret;
 
         def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken;
-        def FLURRY_API_KEY = System.env.FLURRY_API_KEY ? '"' + System.env.FLURRY_API_KEY + '"' : entourageFlurryAPIKey ;
+        def FLURRY_API_KEY = System.env.FLURRY_API_KEY ? '"' + System.env.FLURRY_API_KEY + '"' : entourageFlurryAPIKey;
 
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
         buildConfigField 'String', 'FLURRY_API_KEY', FLURRY_API_KEY
@@ -32,7 +32,7 @@ android {
         buildConfigField 'String', 'AWS_SECRET', AWS_SECRET
         buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN
 
-        manifestPlaceholders = [deepLinksHostName:"www.entourage.social"]
+        manifestPlaceholders = [deepLinksHostName: "www.entourage.social"]
     }
 
     signingConfigs {
@@ -70,13 +70,22 @@ android {
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
-            manifestPlaceholders = [deepLinksHostName:"entourage-landingpages-preprod.herokuapp.com"]
+            manifestPlaceholders = [deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com"]
         }
 
         prod {
             applicationId 'social.entourage.android'
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
             buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            if (variant.buildType.name != "debug") {
+                output.outputFileName = output.outputFileName
+                        .replace(".apk",  "-${variant.versionName}.apk")
+            }
         }
     }
 
@@ -122,6 +131,7 @@ dependencies {
             "com.google.android.gms:play-services-maps:${playServicesVersion}",
             "com.google.android.gms:play-services-location:${playServicesVersion}",
             "com.google.android.gms:play-services-gcm:${playServicesVersion}",
+            "com.google.android.gms:play-services-places:${playServicesVersion}",
             'com.google.maps.android:android-maps-utils:0.4.4',
             "com.google.dagger:dagger:${daggerVersion}",
             "com.jakewharton:butterknife:${butterKnifeVersion}",

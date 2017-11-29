@@ -7,36 +7,11 @@
               android:background="@color/pale_grey"
     >
 
-    <RelativeLayout
+    <social.entourage.android.view.EntourageTitleView
+        android:id="@+id/entourage_disclaimer_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:id="@+id/entourage_disclaimer_title_layout"
-        android:background="@color/white"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <ImageButton
-            android:id="@+id/entourage_disclaimer_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_close"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/separator"
-            android:layout_alignParentBottom="false"
-            android:layout_below="@+id/entourage_disclaimer_close_button"/>
-
-    </RelativeLayout>
+        app:entourageTitleCloseDrawable="@drawable/ic_close"/>
 
     <ScrollView
         android:id="@+id/entourage_disclaimer_scrollview"
@@ -206,7 +181,7 @@
             style="@style/WhiteButtonTransparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
+            android:background="?android:attr/selectableItemBackground"
             android:paddingEnd="5dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"

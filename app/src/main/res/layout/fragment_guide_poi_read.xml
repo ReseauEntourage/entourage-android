@@ -1,45 +1,17 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".guide.poi.ReadPoiFragment">
 
-    <RelativeLayout
+    <social.entourage.android.view.EntourageTitleView
         android:id="@+id/poi_read_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/background"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/poi_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="false"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
-
-        <TextView
-            android:id="@+id/textView4"
-            style="@style/EntourageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/activity_read_poi_title"/>
-
-    </RelativeLayout>
+        app:entourageTitle="@string/activity_read_poi_title"/>
 
     <LinearLayout
         android:id="@+id/poi_type_layout"
