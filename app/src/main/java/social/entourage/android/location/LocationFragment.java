@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +42,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -100,12 +110,16 @@ public class LocationFragment extends EntourageDialogFragment {
     SupportMapFragment mapFragment;
     GoogleMap map;
 
+    SupportPlaceAutocompleteFragment autocompleteFragment = null;
+
     private GeocoderLocationTask geocoderLocationTask = null;
     private GeocoderAddressTask geocoderAddressTask = null;
 
     private boolean moveToLocationFound = false;
 
     private Marker pin;
+
+    PlaceDetectionClient mPlaceDetectionClient;
 
     // ----------------------------------
     // Lifecycle
@@ -234,7 +248,9 @@ public class LocationFragment extends EntourageDialogFragment {
         }
 
         // Initialize the search field
-        initializeSearch();
+        //initializeSearch();
+
+        initializePlaces();
     }
 
     private void initializeMap() {
@@ -285,6 +301,10 @@ public class LocationFragment extends EntourageDialogFragment {
                         }
                         geocoderAddressTask = new GeocoderAddressTask();
                         geocoderAddressTask.execute(location);
+
+                        if (autocompleteFragment != null) {
+                            autocompleteFragment.setBoundsBias(LatLngBounds.builder().include(location).build());
+                        }
                     }
                 });
 
@@ -354,6 +374,46 @@ public class LocationFragment extends EntourageDialogFragment {
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 Address address = locationSearchAdapter.getItem(position);
                 onAddressFound(address);
+            }
+        });
+    }
+
+    private void initializePlaces() {
+
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(this.getActivity(), null);
+
+        autocompleteFragment = (SupportPlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.entourage_location_places);
+
+        if (autocompleteFragment == null) return;
+
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+//                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
+//                .build();
+//        autocompleteFragment.setFilter(typeFilter);
+
+        if (originalLocation != null) {
+            autocompleteFragment.setBoundsBias(LatLngBounds.builder().include(originalLocation).build());
+        }
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                if (place.getLatLng() != null) {
+                    if (map != null) {
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(place.getLatLng());
+                        map.moveCamera(cameraUpdate);
+                        pin.setPosition(place.getLatLng());
+                    }
+                    addressTextView.setText(place.getAddress());
+                }
+            }
+
+            @Override
+            public void onError(Status status) {
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -66,7 +66,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/entourage_location_search"
@@ -107,6 +108,21 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginStart="20dp"
-        android:visibility="gone"/>
+        android:visibility="gone">
+    </ListView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entourage_location_title_layout"
+        android:background="@color/white">
+
+        <fragment
+            android:id="@+id/entourage_location_places"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/entourage_location_title_layout"/>
+    </RelativeLayout>
 
 </RelativeLayout>

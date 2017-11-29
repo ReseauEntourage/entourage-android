@@ -131,6 +131,7 @@ dependencies {
             "com.google.android.gms:play-services-maps:${playServicesVersion}",
             "com.google.android.gms:play-services-location:${playServicesVersion}",
             "com.google.android.gms:play-services-gcm:${playServicesVersion}",
+            "com.google.android.gms:play-services-places:${playServicesVersion}",
             'com.google.maps.android:android-maps-utils:0.4.4',
             "com.google.dagger:dagger:${daggerVersion}",
             "com.jakewharton:butterknife:${butterKnifeVersion}",
