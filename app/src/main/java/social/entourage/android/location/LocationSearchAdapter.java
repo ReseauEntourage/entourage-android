@@ -58,7 +58,9 @@ public class LocationSearchAdapter extends BaseAdapter {
                         addressString.append("\n");
                     }
                 }
-                addressString.deleteCharAt(addressString.length()-1);
+                if (addressString.length() > 0) {
+                    addressString.deleteCharAt(addressString.length() - 1);
+                }
             }
         }
         viewHolder.addressView.setText(addressString.toString());

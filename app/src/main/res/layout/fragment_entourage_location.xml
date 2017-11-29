@@ -112,17 +112,22 @@
     </ListView>
 
     <RelativeLayout
+        android:id="@+id/entourage_location_places_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/entourage_location_title_layout"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:background="@color/white">
 
         <fragment
             android:id="@+id/entourage_location_places"
             android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/entourage_location_title_layout"/>
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
 
 </RelativeLayout>

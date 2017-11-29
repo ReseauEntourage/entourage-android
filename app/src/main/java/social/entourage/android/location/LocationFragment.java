@@ -8,6 +8,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.text.Editable;
@@ -30,7 +31,6 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
@@ -181,6 +181,21 @@ public class LocationFragment extends EntourageDialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (autocompleteFragment != null) {
+            FragmentActivity fragmentActivity = getActivity();
+            if (fragmentActivity != null) {
+                FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction().remove(autocompleteFragment).commitAllowingStateLoss();
+                }
+            }
+        }
     }
 
     // ----------------------------------
@@ -382,8 +397,9 @@ public class LocationFragment extends EntourageDialogFragment {
 
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this.getActivity(), null);
 
-        autocompleteFragment = (SupportPlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.entourage_location_places);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        autocompleteFragment = (SupportPlaceAutocompleteFragment) fragmentManager.findFragmentById(R.id.entourage_location_places);
 
         if (autocompleteFragment == null) return;
 
