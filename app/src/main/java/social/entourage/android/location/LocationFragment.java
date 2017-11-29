@@ -1,16 +1,13 @@
 package social.entourage.android.location;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.text.Editable;
@@ -19,8 +16,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -105,7 +100,10 @@ public class LocationFragment extends EntourageDialogFragment {
     SupportMapFragment mapFragment;
     GoogleMap map;
 
-    private GeocoderLocationTask geocoderAddressTask = null;
+    private GeocoderLocationTask geocoderLocationTask = null;
+    private GeocoderAddressTask geocoderAddressTask = null;
+
+    private boolean moveToLocationFound = false;
 
     private Marker pin;
 
@@ -218,6 +216,8 @@ public class LocationFragment extends EntourageDialogFragment {
         searchEditText.setText("");
         searchResultListView.setVisibility(View.GONE);
         locationSearchAdapter.setAddressList(new ArrayList<Address>());
+        hideKeyboard();
+        moveToLocationFound = false;
     }
 
     // ----------------------------------
@@ -279,10 +279,12 @@ public class LocationFragment extends EntourageDialogFragment {
                         Location.distanceBetween(location.latitude, location.longitude, cameraPosition.target.latitude, cameraPosition.target.longitude, results);
                         location = cameraPosition.target;
                         pin.setPosition(location);
-                        if (results[0] >= LOCATION_MOVE_DELTA) {
-                            GeocoderAddressTask geocoderAddressTask = new GeocoderAddressTask();
-                            geocoderAddressTask.execute(location);
+
+                        if (geocoderAddressTask != null) {
+                            geocoderAddressTask.cancel(true);
                         }
+                        geocoderAddressTask = new GeocoderAddressTask();
+                        geocoderAddressTask.execute(location);
                     }
                 });
 
@@ -294,10 +296,9 @@ public class LocationFragment extends EntourageDialogFragment {
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
                         map.moveCamera(cameraUpdate);
 
-                        GeocoderAddressTask geocoderAddressTask = new GeocoderAddressTask();
-                        geocoderAddressTask.execute(location);
-
                         pin.setPosition(location);
+
+                        hideKeyboard();
                     }
                 });
 
@@ -314,11 +315,13 @@ public class LocationFragment extends EntourageDialogFragment {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         String search = v.getText().toString().trim();
                         doSearchAddress(search);
+                        moveToLocationFound = true;
                     }
                 }
                 else if (event.getKeyCode() == KeyEvent.ACTION_DOWN) {
                     String search = v.getText().toString().trim();
                     doSearchAddress(search);
+                    moveToLocationFound = true;
                 }
                 return false;
             }
@@ -336,7 +339,10 @@ public class LocationFragment extends EntourageDialogFragment {
 
             @Override
             public void afterTextChanged(final Editable s) {
-
+                if (s.length() > 2) {
+                    moveToLocationFound = false;
+                    doSearchAddress(s.toString());
+                }
             }
         });
 
@@ -354,19 +360,19 @@ public class LocationFragment extends EntourageDialogFragment {
 
     private void doSearchAddress(String search) {
         if (search != null && search.length() > 0) {
-            if (geocoderAddressTask != null) {
-                geocoderAddressTask.cancel(true);
-                geocoderAddressTask = null;
+            if (geocoderLocationTask != null) {
+                geocoderLocationTask.cancel(true);
+                geocoderLocationTask = null;
             }
-            geocoderAddressTask = new GeocoderLocationTask();
-            geocoderAddressTask.execute(search);
+            geocoderLocationTask = new GeocoderLocationTask();
+            geocoderLocationTask.execute(search);
         } else {
             locationSearchAdapter.setAddressList(new ArrayList<Address>());
         }
     }
 
     private void onAddressesFound(List<Address> addresses, AsyncTask asyncTask) {
-        if (geocoderAddressTask != asyncTask) return;
+        if (geocoderLocationTask != asyncTask) return;
         if (addresses == null) {
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
@@ -374,7 +380,7 @@ public class LocationFragment extends EntourageDialogFragment {
             locationSearchAdapter.setAddressList(new ArrayList<Address>());
             return;
         }
-        if (addresses.size() == 1) {
+        if (addresses.size() == 1 && moveToLocationFound) {
             Address address = addresses.get(0);
             onAddressFound(address);
         } else {
@@ -403,6 +409,7 @@ public class LocationFragment extends EntourageDialogFragment {
                 String addressLine = address.getAddressLine(0);
                 addressTextView.setText(addressLine);
             }
+            hideKeyboard();
         }
         searchResultListView.setVisibility(View.GONE);
         locationSearchAdapter.setAddressList(new ArrayList<Address>());
@@ -440,8 +447,9 @@ public class LocationFragment extends EntourageDialogFragment {
 
         @Override
         protected void onPostExecute(final String address) {
-            if (address == null) return;
+            if (address == null || geocoderAddressTask != this) return;
             LocationFragment.this.addressTextView.setText(address);
+            geocoderAddressTask = null;
         }
     }
 

@@ -50,10 +50,13 @@ public class LocationSearchAdapter extends BaseAdapter {
         Address address = getItem(position);
         StringBuilder addressString = new StringBuilder();
         if (address != null) {
-            if (address.getMaxAddressLineIndex() > 0) {
+            if (address.getMaxAddressLineIndex() >= 0) {
                 for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                    addressString.append(address.getAddressLine(i));
-                    addressString.append("\n");
+                    String addressLine = address.getAddressLine(i);
+                    if (addressLine != null && addressLine.length() > 0) {
+                        addressString.append(addressLine);
+                        addressString.append("\n");
+                    }
                 }
                 addressString.deleteCharAt(addressString.length()-1);
             }
