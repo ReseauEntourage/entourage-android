@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'appaloosa-deploy'
 
 def versionMajor = 4
 def versionMinor = 1
@@ -80,12 +79,9 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            if (variant.buildType.name != "debug") {
-                output.outputFileName = output.outputFileName
-                        .replace(".apk",  "-${variant.versionName}.apk")
-            }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "EntourageApp-${variant.name}-${variant.versionName}.apk"
         }
     }
 
@@ -153,7 +149,7 @@ dependencies {
             "com.facebook.android:facebook-core:[4,5)"
     )
 
-    api("com.crashlytics.sdk.android:crashlytics:2.7.1@aar") {
+    api("com.crashlytics.sdk.android:crashlytics:2.8.0@aar") {
         transitive = true;
     }
 
@@ -178,26 +174,4 @@ dependencies {
     }
 
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
-}
-
-
-appaloosaDeploy {
-    def buildVariant = 'release'
-    def groupName = 'CoreTeam'
-    def description = "${System.env.BITRISE_GIT_MESSAGE}"
-    storeToken 'ypt4d26acetzxivf5ynjeeqfisr9p7dr'
-    apks {
-        preprodRelease {
-            flavorName 'preprod'
-            buildName buildVariant
-            descriptionVersion description
-            groupsName groupName
-        }
-        prodRelease {
-            flavorName 'prod'
-            buildName buildVariant
-            descriptionVersion description
-            groupsName groupName
-        }
-    }
 }
