@@ -79,12 +79,9 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            if (variant.buildType.name != "debug") {
-                output.outputFileName = output.outputFileName
-                        .replace(".apk",  "-${variant.versionName}.apk")
-            }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "EntourageApp-${variant.name}-${variant.versionName}.apk"
         }
     }
 
