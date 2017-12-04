@@ -89,6 +89,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     @Expose(serialize = false, deserialize = false)
     transient List<TimestampedObject> addedCardInfoList;
 
+    //Flag to indicate a newly created feed item
+    @Expose(serialize = false, deserialize = false)
+    private boolean isNewlyCreated = false;
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -193,6 +197,14 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public List<TimestampedObject> getAddedCardInfoList() {
         return addedCardInfoList;
+    }
+
+    public boolean isNewlyCreated() {
+        return isNewlyCreated;
+    }
+
+    public void setNewlyCreated(final boolean newlyCreated) {
+        isNewlyCreated = newlyCreated;
     }
 
     public boolean isClosed() {

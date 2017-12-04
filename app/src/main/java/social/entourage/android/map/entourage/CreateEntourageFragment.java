@@ -36,11 +36,13 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.location.LocationFragment;
 import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
 import social.entourage.android.map.entourage.category.EntourageCategoryManager;
+import social.entourage.android.tools.BusProvider;
 
 /**
  *
@@ -278,6 +280,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
             } else {
                 Toast.makeText(getActivity(), R.string.entourage_create_ok, Toast.LENGTH_SHORT).show();
                 dismiss();
+                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
             }
         }
     }

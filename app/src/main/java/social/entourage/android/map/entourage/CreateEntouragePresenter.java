@@ -49,6 +49,7 @@ public class CreateEntouragePresenter {
             public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccessful()) {
                     Entourage receivedEntourage = response.body().getEntourage();
+                    receivedEntourage.setNewlyCreated(true);
                     if (fragment != null) {
                         fragment.onEntourageCreated(receivedEntourage);
                     }
