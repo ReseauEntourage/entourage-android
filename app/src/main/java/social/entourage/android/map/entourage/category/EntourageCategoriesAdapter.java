@@ -183,11 +183,15 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
         if (groupPosition != 0) {
             TextView label = (TextView) convertView.findViewById(R.id.entourage_category_group_label);
             ImageView arrow = (ImageView) convertView.findViewById(R.id.entourage_category_group_arrow);
-            label.setText(EntourageCategory.getEntourageTypeDescription((String) getGroup(groupPosition - 1)));
-            if (_isExpanded) {
-                arrow.setRotation(-90.0f);
-            } else {
-                arrow.setRotation(90.0f);
+            if (label != null) {
+                label.setText(EntourageCategory.getEntourageTypeDescription((String) getGroup(groupPosition - 1)));
+            }
+            if (arrow != null) {
+                if (_isExpanded) {
+                    arrow.setRotation(-90.0f);
+                } else {
+                    arrow.setRotation(90.0f);
+                }
             }
         }
 
