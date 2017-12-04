@@ -119,8 +119,6 @@ public class LocationFragment extends EntourageDialogFragment {
 
     private Marker pin;
 
-    PlaceDetectionClient mPlaceDetectionClient;
-
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -394,8 +392,6 @@ public class LocationFragment extends EntourageDialogFragment {
     }
 
     private void initializePlaces() {
-
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this.getActivity(), null);
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
