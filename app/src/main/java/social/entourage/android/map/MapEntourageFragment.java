@@ -423,8 +423,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public boolean onBackPressed() {
         if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
-            mapLauncherLayout.setVisibility(View.GONE);
-            mapOptionsMenu.setVisibility(View.VISIBLE);
+            hideTourLauncher();
             return true;
         }
         if (mapOptionsMenu.isOpened()) {
@@ -482,10 +481,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             .icon(encounterIcon);
         Marker marker = map.addMarker(markerOptions);
         onClickListener.addEncounterMarker(marker, encounter);
-    }
-
-    public void initializeMapZoom() {
-        centerMap(EntourageLocation.getInstance().getLastCameraPosition());
     }
 
     public void displayChosenFeedItem(long feedItemId, int feedItemType) {
@@ -1317,6 +1312,25 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
+    @OnClick(R.id.map_longclick_button_start_tour_launcher)
+    public void onStartTourLauncher() {
+        if (tourService != null) {
+            if (!tourService.isRunning()) {
+                // Check if the geolocation is permitted
+                if (!isGeolocationGranted()) {
+                    showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR);
+                    return;
+                }
+                if (mapOptionsMenu.isOpened()) {
+                    mapOptionsMenu.toggle(false);
+                }
+                mapOptionsMenu.setVisibility(View.GONE);
+                mapLongClickView.setVisibility(View.GONE);
+                mapLauncherLayout.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     @OnClick(R.id.launcher_tour_go)
     void onStartNewTour() {
         buttonLaunchTour.setEnabled(false);
@@ -1414,6 +1428,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         newEntouragesButton.setVisibility(View.GONE);
     }
 
+    @OnClick(R.id.launcher_tour_outer_view)
+    protected void hideTourLauncher() {
+        if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
+            mapLauncherLayout.setVisibility(View.GONE);
+            mapOptionsMenu.setVisibility(View.VISIBLE);
+        }
+    }
+
     // ----------------------------------
     // Map Options handler
     // ----------------------------------
@@ -1486,25 +1508,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
             mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.INVISIBLE : View.GONE);
             tourStopButton.setVisibility(View.GONE);
-        }
-    }
-
-    @OnClick(R.id.map_longclick_button_start_tour_launcher)
-    public void onStartTourLauncher() {
-        if (tourService != null) {
-            if (!tourService.isRunning()) {
-                // Check if the geolocation is permitted
-                if (!isGeolocationGranted()) {
-                    showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR);
-                    return;
-                }
-                if (mapOptionsMenu.isOpened()) {
-                    mapOptionsMenu.toggle(false);
-                }
-                mapOptionsMenu.setVisibility(View.GONE);
-                mapLongClickView.setVisibility(View.GONE);
-                mapLauncherLayout.setVisibility(View.VISIBLE);
-            }
         }
     }
 
@@ -1690,6 +1693,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         public void onMapClick(LatLng latLng) {
                             if (getActivity() != null) {
                                 EntourageEvents.logEvent(Constants.EVENT_FEED_MAPCLICK);
+                                hideTourLauncher();
                                 if (isFullMapShown) {
                                     // Hide the minicards if visible
                                     if (miniCardsView.getVisibility() == View.VISIBLE) {
@@ -1724,6 +1728,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
             originalMapLayoutHeight = getResources().getDimensionPixelOffset(R.dimen.newsfeed_map_height);
         }
+    }
+
+    public void initializeMapZoom() {
+        centerMap(EntourageLocation.getInstance().getLastCameraPosition());
     }
 
     private void initializeToursListView() {
@@ -2554,6 +2562,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     protected void handleHeatzoneClick(LatLng location) {
+        hideTourLauncher();
         if (isToursListVisible()) {
             centerMapAndZoom(location, ZOOM_HEATZONE, true);
             toggleToursList();
