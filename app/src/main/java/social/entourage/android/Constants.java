@@ -3,8 +3,8 @@ package social.entourage.android;
 public class Constants {
 
     //TODO: should be changed after each release
-    // v4.1 API Key
-    public static final String API_KEY = "54dd058c4240096ef1cb51c2";
+    // v4.2 API Key
+    public static final String API_KEY = "946478b0f527ef016f03c4b3";
 
     // Announcements version
     public static final String ANNOUNCEMENTS_VERSION = "v1";
