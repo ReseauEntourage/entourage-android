@@ -1,12 +1,14 @@
 package social.entourage.android.message.push;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -331,7 +333,21 @@ public class PushNotificationManager {
     private void displayPushNotification(Message message, Context context) {
         List<Message> messageList = pushNotifications.get(message.getHash());
         int count = messageList.size();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+
+        String channelId = context.getString(R.string.app_name);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
+
+            // Configure the notification channel.
+            notificationChannel.setDescription(context.getString(R.string.app_name));
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
         builder.setSmallIcon(R.drawable.ic_notification_small);
         builder.setContentIntent(createMessagePendingIntent(message, context));
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage));
@@ -352,7 +368,6 @@ public class PushNotificationManager {
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         Log.d("NOTIFICATION", "TAG = " + message.getPushNotificationTag() + " , ID = " + message.getPushNotificationId());
         notificationManager.notify(message.getPushNotificationTag(), message.getPushNotificationId(), notification);
     }
