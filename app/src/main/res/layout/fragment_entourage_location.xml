@@ -55,62 +55,6 @@
 
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/entourage_location_search_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/entourage_location_title_layout"
-        android:layout_marginEnd="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <EditText
-            android:id="@+id/entourage_location_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:drawableLeft="@android:drawable/ic_menu_search"
-            android:drawablePadding="5dp"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:ems="10"
-            android:hint="@string/entourage_location_search_hint"
-            android:imeOptions="actionSearch"
-            android:inputType="textPostalAddress"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/greyish"
-            android:textSize="@dimen/entourage_font_medium"/>
-
-        <Button
-            android:id="@+id/entourage_location_search_cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/cancel"
-            android:textColor="@color/accent"
-            android:textSize="@dimen/entourage_font_small"
-            android:visibility="gone"/>
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/entourage_location_search_result"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/entourage_location_bar_layout"
-        android:layout_below="@+id/entourage_location_search_layout"
-        android:layout_marginEnd="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginStart="20dp"
-        android:visibility="gone">
-    </ListView>
-
     <RelativeLayout
         android:id="@+id/entourage_location_places_layout"
         android:layout_width="match_parent"
