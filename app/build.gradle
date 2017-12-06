@@ -7,7 +7,7 @@ def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '26.0.3'
     def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug;
 
     defaultConfig {
