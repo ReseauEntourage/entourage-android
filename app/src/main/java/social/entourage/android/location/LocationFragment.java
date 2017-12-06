@@ -6,31 +6,23 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
@@ -47,7 +39,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -93,19 +84,10 @@ public class LocationFragment extends EntourageDialogFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    @BindView(R.id.entourage_location_search)
-    EditText searchEditText;
-
-    @BindView(R.id.entourage_location_search_cancel_button)
-    Button searchCancelButton;
+    View toReturn;
 
     @BindView(R.id.entourage_location_address)
     TextView addressTextView;
-
-    @BindView(R.id.entourage_location_search_result)
-    ListView  searchResultListView;
-
-    LocationSearchAdapter locationSearchAdapter;
 
     SupportMapFragment mapFragment;
     GoogleMap map;
@@ -164,10 +146,30 @@ public class LocationFragment extends EntourageDialogFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_entourage_location, container, false);
-        ButterKnife.bind(this, view);
+        toReturn = inflater.inflate(R.layout.fragment_entourage_location, container, false);
+        ButterKnife.bind(this, toReturn);
 
-        return view;
+        toReturn.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    toReturn.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    toReturn.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+                int h = toReturn.getHeight();
+                if (getDialog() != null) {
+                    Window window = getDialog().getWindow();
+                    if (window != null) {
+                        WindowManager.LayoutParams layoutParams = window.getAttributes();
+                        layoutParams.height = h;
+                        window.setAttributes(layoutParams);
+                    }
+                }
+            }
+        });
+
+        return toReturn;
     }
 
     @Override
@@ -240,15 +242,6 @@ public class LocationFragment extends EntourageDialogFragment {
         }
     }
 
-    @OnClick(R.id.entourage_location_search_cancel_button)
-    protected void onSearchCancelClicked() {
-        searchEditText.setText("");
-        searchResultListView.setVisibility(View.GONE);
-        locationSearchAdapter.setAddressList(new ArrayList<Address>());
-        hideKeyboard();
-        moveToLocationFound = false;
-    }
-
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
@@ -261,9 +254,6 @@ public class LocationFragment extends EntourageDialogFragment {
         if (originalAddress != null) {
             addressTextView.setText(originalAddress);
         }
-
-        // Initialize the search field
-        //initializeSearch();
 
         initializePlaces();
     }
@@ -342,57 +332,6 @@ public class LocationFragment extends EntourageDialogFragment {
         });
     }
 
-    private void initializeSearch() {
-        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
-                if (event == null) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        String search = v.getText().toString().trim();
-                        doSearchAddress(search);
-                        moveToLocationFound = true;
-                    }
-                }
-                else if (event.getKeyCode() == KeyEvent.ACTION_DOWN) {
-                    String search = v.getText().toString().trim();
-                    doSearchAddress(search);
-                    moveToLocationFound = true;
-                }
-                return false;
-            }
-        });
-        searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-                searchCancelButton.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-                if (s.length() > 2) {
-                    moveToLocationFound = false;
-                    doSearchAddress(s.toString());
-                }
-            }
-        });
-
-        // initialize the search result list
-        locationSearchAdapter = new LocationSearchAdapter();
-        searchResultListView.setAdapter(locationSearchAdapter);
-        searchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-                Address address = locationSearchAdapter.getItem(position);
-                onAddressFound(address);
-            }
-        });
-    }
-
     private void initializePlaces() {
 
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this.getActivity(), null);
@@ -432,63 +371,6 @@ public class LocationFragment extends EntourageDialogFragment {
                 }
             }
         });
-    }
-
-    private void doSearchAddress(String search) {
-        if (search != null && search.length() > 0) {
-            if (geocoderLocationTask != null) {
-                geocoderLocationTask.cancel(true);
-                geocoderLocationTask = null;
-            }
-            geocoderLocationTask = new GeocoderLocationTask();
-            geocoderLocationTask.execute(search);
-        } else {
-            locationSearchAdapter.setAddressList(new ArrayList<Address>());
-        }
-    }
-
-    private void onAddressesFound(List<Address> addresses, AsyncTask asyncTask) {
-        if (geocoderLocationTask != asyncTask) return;
-        if (addresses == null) {
-            if (getActivity() != null) {
-                Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
-            }
-            locationSearchAdapter.setAddressList(new ArrayList<Address>());
-            return;
-        }
-        if (addresses.size() == 1 && moveToLocationFound) {
-            Address address = addresses.get(0);
-            onAddressFound(address);
-        } else {
-            searchResultListView.setVisibility(View.VISIBLE);
-            locationSearchAdapter.setAddressList(addresses);
-        }
-    }
-
-    private void onAddressFound(Address address) {
-        if (address == null) {
-            if (getActivity() != null) {
-                Toast.makeText(getActivity(), R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show();
-            }
-            searchResultListView.setVisibility(View.GONE);
-            locationSearchAdapter.setAddressList(new ArrayList<Address>());
-            return;
-        }
-        if (address.hasLatitude() && address.hasLongitude()) {
-            location = new LatLng(address.getLatitude(), address.getLongitude());
-            if (map != null) {
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(location);
-                map.moveCamera(cameraUpdate);
-                pin.setPosition(location);
-            }
-            if (address.getMaxAddressLineIndex() > 0) {
-                String addressLine = address.getAddressLine(0);
-                addressTextView.setText(addressLine);
-            }
-            hideKeyboard();
-        }
-        searchResultListView.setVisibility(View.GONE);
-        locationSearchAdapter.setAddressList(new ArrayList<Address>());
     }
 
     // ----------------------------------
@@ -555,7 +437,6 @@ public class LocationFragment extends EntourageDialogFragment {
 
         @Override
         protected void onPostExecute(final List<Address> addresses) {
-            onAddressesFound(addresses, this);
         }
     }
 
