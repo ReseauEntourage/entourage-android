@@ -86,7 +86,7 @@ public class DeepLinksManager {
             deepLinkIntent = null;
             return;
         }
-        if (SCHEME_ENTOURAGE.equalsIgnoreCase(scheme)) {
+        if (scheme.contains(SCHEME_ENTOURAGE)) {
             handleEntourageDeepLink(activity, deepLinkUri);
         } else {
             handleHttpDeepLink(activity, deepLinkUri);

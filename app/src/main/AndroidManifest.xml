@@ -90,7 +90,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:scheme="entourage"/>
+                    android:scheme="${deepLinksEntourageScheme}"/>
             </intent-filter>
         </activity>
         <activity

@@ -551,7 +551,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://webview?url=www.google.ro"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://webview?url=www.google.ro"));
                         try {
                             startActivity(intent);
                         } catch (Exception ex) {

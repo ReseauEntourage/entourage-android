@@ -31,7 +31,10 @@ android {
         buildConfigField 'String', 'AWS_SECRET', AWS_SECRET
         buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN
 
-        manifestPlaceholders = [deepLinksHostName: "www.entourage.social"]
+        manifestPlaceholders = [
+                deepLinksHostName: "www.entourage.social",
+                deepLinksEntourageScheme: "entourage"
+        ]
     }
 
     signingConfigs {
@@ -69,7 +72,10 @@ android {
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
-            manifestPlaceholders = [deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com"]
+            manifestPlaceholders = [
+                    deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
+                    deepLinksEntourageScheme: "entourage-staging"
+            ]
         }
 
         prod {
