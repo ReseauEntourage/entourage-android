@@ -181,10 +181,12 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         gcmSharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
-        intentAction = getIntent().getAction();
-        if (Intent.ACTION_VIEW.equals(intentAction)) {
-            // Save the deep link intent
-            DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
+        if (getIntent() != null) {
+            intentAction = getIntent().getAction();
+            if (Intent.ACTION_VIEW.equals(intentAction)) {
+                // Save the deep link intent
+                DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
+            }
         }
 
         User user = getAuthenticationController().getUser();
@@ -304,13 +306,15 @@ public class DrawerActivity extends EntourageSecuredActivity
         super.onResume();
         highlightCurrentMenuItem();
 
-        String action = getIntent().getAction();
-        if (action != null) {
-            if (TourService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
-                displayLocationProviderDisabledAlert();
-                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-            } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
-                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        if (getIntent() != null) {
+            String action = getIntent().getAction();
+            if (action != null) {
+                if (TourService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
+                    displayLocationProviderDisabledAlert();
+                    sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+                    sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                }
             }
         }
         EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
@@ -810,6 +814,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         intentAction = null;
         intentTour = null;
+        setIntent(null);
     }
 
     @Subscribe
