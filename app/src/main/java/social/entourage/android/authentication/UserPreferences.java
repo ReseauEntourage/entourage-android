@@ -21,6 +21,8 @@ public class UserPreferences implements Serializable {
     private boolean showNoPOIsPopup = true;
     private boolean showInfoPOIsPopup = true;
 
+    private boolean showEncounterDisclaimer = false;
+
     private MapFilter mapFilter = null;
 
     private Tour ongoingTour;
@@ -55,6 +57,14 @@ public class UserPreferences implements Serializable {
 
     public void setShowInfoPOIsPopup(final boolean showInfoPOIsPopup) {
         this.showInfoPOIsPopup = showInfoPOIsPopup;
+    }
+
+    public boolean isShowEncounterDisclaimer() {
+        return showEncounterDisclaimer;
+    }
+
+    public void setShowEncounterDisclaimer(final boolean showEncounterDisclaimer) {
+        this.showEncounterDisclaimer = showEncounterDisclaimer;
     }
 
     public MapFilter getMapFilter() {

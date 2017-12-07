@@ -192,6 +192,17 @@ public class AuthenticationController {
         }
     }
 
+    public boolean isShowEncounterDisclaimer() {
+        return userPreferences == null || userPreferences.isShowEncounterDisclaimer();
+    }
+
+    public void setShowEncounterDisclaimer(final boolean showEncounterDisclaimer) {
+        if (userPreferences != null) {
+            userPreferences.setShowEncounterDisclaimer(showEncounterDisclaimer);
+            saveUserPreferences();
+        }
+    }
+
     public MapFilter getMapFilter() {
         MapFilter mapFilter = null;
         if (loggedUser != null && userPreferences != null) {

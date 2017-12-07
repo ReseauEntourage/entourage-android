@@ -848,7 +848,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 updateFloatingMenuOptions();
                 tourStopButton.setVisibility(View.VISIBLE);
 
-                //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
+                if (presenter != null) {
+                    presenter.setDisplayEncounterDisclaimer(true);
+                }
             } else {
                 if (getActivity() != null) {
                     Toast.makeText(getActivity(), R.string.tour_creation_fail, Toast.LENGTH_SHORT).show();
@@ -1367,10 +1369,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             mapOptionsMenu.toggle(false);
         }
 
-        // MI: EMA-920 Show the disclaimer every time
+        // MI: EMA-1669 Show the disclaimer only the first time when a tour was started
         // Show the disclaimer fragment
         if (presenter != null) {
-            presenter.displayEncounterDisclaimer();
+            if (presenter.shouldDisplayEncounterDisclaimer()) {
+                presenter.displayEncounterDisclaimer();
+            } else {
+                addEncounter();
+            }
         }
     }
 
@@ -1394,6 +1400,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             intent.putExtras(args);
             //startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
             startActivity(intent);
+
+            // show the disclaimer only once per tour
+            if (presenter != null) {
+                presenter.setDisplayEncounterDisclaimer(false);
+            }
         }
     }
 
