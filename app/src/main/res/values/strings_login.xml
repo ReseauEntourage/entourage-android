@@ -60,8 +60,8 @@
     <string name="login_button_register">S’inscrire sur Entourage</string>
     <string name="login_button_login">Connexion</string>
 
-    <string name="login_permission_notification_title">Activer les notifications ?</string>
-    <string name="login_permission_notification_description">Nous pouvons vous avertir lors de la réception d’un message.</string>
+    <string name="login_permission_notification_title">Ne manquez rien !</string>
+    <string name="login_permission_notification_description">Des actions solidaires sont créées tous les jours et n’attendent que vous pour aboutir !\n\nActiver les notifications vous permet d’être informé(e) des nouveautés dans votre quartier.</string>
     <string name="login_permission_notification_refuse">Refuser</string>
     <string name="login_permission_notification_accept">OK</string>
 
