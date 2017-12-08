@@ -436,7 +436,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 @Override
                 public void onClick(final View v) {
                     EntourageEvents.logEvent(Constants.EVENT_SCREEN_17_2);
-                    presenter.displayMyEntourages();
+                    showMyEntourages();
                 }
             });
         }
@@ -550,12 +550,12 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
-                /*
+
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://webview?url=www.google.ro"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://entourage/ecHoCdmrbFdU"));
                         try {
                             startActivity(intent);
                         } catch (Exception ex) {
@@ -563,11 +563,12 @@ public class DrawerActivity extends EntourageSecuredActivity
                         }
                     }
                 }, 8*1000);
-                */
 
+                /*
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
+                */
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
@@ -696,6 +697,21 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void showWebView(String url) {
         WebViewFragment webViewFragment = WebViewFragment.newInstance(url);
         webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
+    }
+
+    public void showMapFilters() {
+        if (mapEntourageFragment != null) {
+            if (isGuideShown()) {
+                hideSolidarityGuide();
+            }
+            mapEntourageFragment.onShowFilter();
+        }
+    }
+
+    public void showMyEntourages() {
+        if (presenter != null) {
+            presenter.displayMyEntourages();
+        }
     }
 
     private void initializePushNotifications() {

@@ -1425,7 +1425,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @OnClick(R.id.fragment_map_filter_button)
-    protected void onShowFilter() {
+    public void onShowFilter() {
         EntourageEvents.logEvent(Constants.EVENT_FEED_FILTERSCLICK);
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());
