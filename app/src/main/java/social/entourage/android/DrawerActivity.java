@@ -550,7 +550,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
-
+                /*
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -563,12 +563,11 @@ public class DrawerActivity extends EntourageSecuredActivity
                         }
                     }
                 }, 8*1000);
+                */
 
-                /*
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
-                */
                 break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
