@@ -63,7 +63,7 @@
     <string name="login_permission_notification_title">Ne manquez rien !</string>
     <string name="login_permission_notification_description">Des actions solidaires sont créées tous les jours et n’attendent que vous pour aboutir !\n\nActiver les notifications vous permet d’être informé(e) des nouveautés dans votre quartier.</string>
     <string name="login_permission_notification_refuse">Refuser</string>
-    <string name="login_permission_notification_accept">OK</string>
+    <string name="login_permission_notification_accept">Activer les notifications</string>
 
     <string name="login_permission_geolocation_title">En direct de votre quartier !</string>
     <string name="login_permission_geolocation_description">Entourage, c’est utile parce que c’est local !\n\nParticipez à la solidarité de votre quartier : pour voir les actions de vos voisins, qu’ils soient avec ou sans-abri, activez la géolocalisation.</string>
