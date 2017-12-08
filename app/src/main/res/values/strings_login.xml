@@ -67,7 +67,7 @@
 
     <string name="login_permission_geolocation_title">En direct de votre quartier !</string>
     <string name="login_permission_geolocation_description">Entourage, c’est utile parce que c’est local !\n\nParticipez à la solidarité de votre quartier : pour voir les actions de vos voisins, qu’ils soient avec ou sans-abri, activez la géolocalisation.</string>
-    <string name="login_permission_geolocation_accept">Oui, je l’active</string>
+    <string name="login_permission_geolocation_accept">Activer la géolocalisation</string>
 
     <string name="login_error">Problème d\'authentification\nVeuillez réessayer</string>
     <string name="login_error_title">Veuillez réessayer</string>
