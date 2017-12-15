@@ -16,6 +16,8 @@ public abstract class EntourageActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
+    private boolean safeToCommit = true;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
 
@@ -24,6 +26,25 @@ public abstract class EntourageActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setupComponent(EntourageApplication.get(this).getEntourageComponent());
+    }
+
+    @Override
+    protected void onPostResume() {
+        safeToCommit = true;
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        safeToCommit = false;
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        safeToCommit = false;
     }
 
     @Override
@@ -74,4 +95,7 @@ public abstract class EntourageActivity extends AppCompatActivity {
         }
     }
 
+    public boolean isSafeToCommit() {
+        return safeToCommit;
+    }
 }
