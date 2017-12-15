@@ -779,6 +779,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
+        if (!isSafeToCommit()) return;
         //Log.d("DEEPLINK", "checkIntentAction");
         switchToMapFragment();
         Intent intent = getIntent();
