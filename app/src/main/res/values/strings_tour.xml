@@ -41,7 +41,7 @@
     <string name="tour_info_text_cancel">Annuler</string>
     <string name="tour_info_button_close">Fermer</string>
     <string name="tour_info_location_card_date_format">c HH:mm</string>
-    <string name="tour_info_text_join_accepted">\u0020a rejoint la maraude.</string>
+    <string name="tour_info_text_join_accepted">\u0020est entré en contact avec\u0020</string>
     <string name="tour_info_text_join_rejected">\u0020 rejeté</string>
     <string name="tour_info_text_join_pending">\u0020 en attente</string>
     <string name="tour_info_text_join_cancelled_tour">a annulé sa demande de rejoindre la maraude</string>
@@ -115,8 +115,8 @@
     <string name="tour_join_request_send">Envoyer</string>
     <string name="tour_join_request_message_sent">Message envoyé</string>
     <string name="tour_join_request_message_error">Erreur d\'envoi du message</string>
-    <string name="tour_join_request_received_message">%1$s veut rejoindre votre maraude.</string>
-    <string name="tour_join_request_received_message_short">veut rejoindre votre maraude.</string>
+    <string name="tour_join_request_received_message">%1$s veut entrer en contact avec vous.</string>
+    <string name="tour_join_request_received_message_short">veut entrer en contact avec vous.</string>
     <string name="tour_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre maraude]]></string>
     <string name="tour_join_request_ok_title">Votre demande est transmise</string>
     <string name="tour_join_request_ok_description_tour">Que souhaitez-vous coordonner avec cette maraude ? Ajoutez un petit mot !</string>

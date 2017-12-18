@@ -269,7 +269,11 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
     private String getJoinStatus(String joinStatus, boolean isTour) {
         switch (joinStatus) {
             case Tour.JOIN_STATUS_ACCEPTED:
-                return itemView.getContext().getString(isTour ? R.string.tour_info_text_join_accepted : R.string.entourage_info_text_join_accepted);
+                String joinString = itemView.getContext().getString(isTour ? R.string.tour_info_text_join_accepted : R.string.entourage_info_text_join_accepted);
+                if (isTour) {
+                    joinString = joinString+ (feedItem != null && feedItem.getAuthor() != null ? feedItem.getAuthor().getUserName() : "");
+                }
+                return joinString;
             case Tour.JOIN_STATUS_REJECTED:
                 return itemView.getContext().getString(R.string.tour_info_text_join_rejected);
             case Tour.JOIN_STATUS_PENDING:
