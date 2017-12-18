@@ -80,8 +80,7 @@
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="1dp"
-        android:orientation="horizontal"
-        android:weightSum="5">
+        >
 
         <ImageView
             android:id="@+id/announcement_card_divider_left"
@@ -101,9 +100,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:paddingEnd="@dimen/act_button_right_padding"
-            android:paddingLeft="0dp"
+            android:paddingLeft="@dimen/act_button_right_padding"
             android:paddingRight="@dimen/act_button_right_padding"
-            android:paddingStart="0dp"
+            android:paddingStart="@dimen/act_button_right_padding"
             android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_medium"/>
 
