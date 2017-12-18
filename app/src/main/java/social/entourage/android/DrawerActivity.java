@@ -78,6 +78,7 @@ import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.guide.GuideMapEntourageFragment;
+import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
@@ -614,6 +615,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                 } catch (Exception ex) {
                     Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.action_involvement:
+                GetInvolvedFragment getInvolvedFragment = GetInvolvedFragment.newInstance();
+                getInvolvedFragment.show(getSupportFragmentManager(), GetInvolvedFragment.TAG);
                 break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();

@@ -5,12 +5,13 @@
     <string name="action_guide">Carte des structures solidaires</string>
     <string name="action_tours">MARAUDES</string>
     <string name="action_profile">PROFIL</string>
-    <string name="action_about">À propos</string>
+    <string name="action_about">Aide &amp; à propos</string>
     <string name="action_edit_profile"><u>Modifier mon profil</u></string>
     <string name="action_blog">Conseils pour oser la recontre</string>
     <string name="action_charte">Charte éthique</string>
-    <string name="action_goal">Quelques idées d\'actions </string>
+    <string name="action_goal">Idées d\'actions dans l\'appli</string>
     <string name="action_faq">Utilisation de l\'appli</string>
     <string name="action_atd">Notre partenariat avec ATD</string>
     <string name="action_donation">Faire un don</string>
+    <string name="action_involvement">Agir avec Entourage</string>
 </resources>
