@@ -21,6 +21,9 @@
     <dimen name="announcement_icon_width">29dp</dimen>
     <dimen name="announcement_icon_height">29dp</dimen>
 
+    <!-- Entourage padding -->
+    <dimen name="entourage_padding_10">10dp</dimen>
+
     <!-- Entourage font sizes -->
     <dimen name="entourage_font_xtra_large">30sp</dimen>
     <dimen name="entourage_font_big">22sp</dimen>

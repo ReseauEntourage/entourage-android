@@ -1,36 +1,39 @@
 package social.entourage.android.map.entourage.my.filter;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Entourage;
 
 /**
  * Created by mihaiionescu on 10/08/16.
  */
-public class MyEntouragesFilter {
+public class MyEntouragesFilter implements Serializable {
+
+    private static final long serialVersionUID = 8192790767027490636L;
 
     public boolean closedEntourages = true;
-    public boolean showOwnEntourages = false;
+    public boolean showOwnEntouragesOnly = false;
     public boolean showJoinedEntourages= false;
     public boolean showUnreadOnly = false;
+    public boolean showPartnerEntourages = false;
 
     public boolean entourageTypeDemand = true;
     public boolean entourageTypeContribution = true;
 
     public boolean showTours = true;
 
+    @Expose(serialize = false, deserialize = false)
     private String allTourTypes;
 
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
 
-    private static MyEntouragesFilter ourInstance = new MyEntouragesFilter();
-
-    public static MyEntouragesFilter getInstance() {
-        return ourInstance;
-    }
-
-    private MyEntouragesFilter() {
+    public MyEntouragesFilter() {
     }
 
     // ----------------------------------

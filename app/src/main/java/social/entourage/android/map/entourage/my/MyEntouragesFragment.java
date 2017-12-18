@@ -53,6 +53,7 @@ import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.base.EntourageViewHolderListener;
 import social.entourage.android.invite.view.InvitationsAdapter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
+import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
@@ -408,7 +409,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         //ignore errors
         if (newsfeedList == null) return;
         //add the feed
-        MyEntouragesFilter filter = MyEntouragesFilter.getInstance();
+        MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
         boolean showUnreadOnly = filter.showUnreadOnly;
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
