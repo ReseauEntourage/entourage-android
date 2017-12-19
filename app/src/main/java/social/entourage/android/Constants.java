@@ -27,6 +27,8 @@ public class Constants {
     public static final String ATD_LINK_ID = "atd-partnership";
     public static final String CHARTE_LINK_ID = "ethics-charter";
     public static final String FAQ_LINK_ID = "faq";
+    public static final String FEEDBACK_ID = "feedback";
+    public static final String AMBASSADOR_ID = "volunteering";
     // Links
     public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
     public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";

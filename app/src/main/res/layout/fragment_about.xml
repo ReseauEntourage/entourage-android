@@ -22,112 +22,11 @@
         android:id="@+id/about_separator_top"
         android:layout_below="@+id/about_title_layout"/>
 
-    <RelativeLayout
-        android:id="@+id/about_rate_us_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_separator_top"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/about_items_padding"
-        android:paddingEnd="0dp"
-        android:paddingLeft="@dimen/about_items_padding"
-        android:paddingRight="0dp"
-        android:paddingStart="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding">
-
-        <TextView
-            android:id="@+id/about_rate_us"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:text="@string/about_rate_us"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/entourage_font_medium"/>
-
-        <TextView
-            android:id="@+id/about_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_toLeftOf="@+id/about_arrow_rate_us"
-            android:layout_toStartOf="@+id/about_arrow_rate_us"
-            android:gravity="end"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/accent"
-            android:textSize="@dimen/entourage_font_medium"/>
-
-        <ImageView
-            android:id="@+id/about_arrow_rate_us"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/empty_description"
-            android:src="@drawable/arrow_grey"/>
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/about_separator_about_us"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/about_rate_us_layout"
-        android:layout_marginLeft="@dimen/about_items_padding"
-        android:layout_marginStart="@dimen/about_items_padding"
-        android:background="@color/greyish"/>
-
-    <LinearLayout
-        android:id="@+id/about_facebook_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_separator_about_us"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/about_items_padding"
-        android:paddingEnd="0dp"
-        android:paddingLeft="@dimen/about_items_padding"
-        android:paddingRight="0dp"
-        android:paddingStart="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding">
-
-        <TextView
-            android:id="@+id/about_facebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/about_facebook"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/entourage_font_medium"/>
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/empty_description"
-            android:scaleType="fitEnd"
-            android:src="@drawable/arrow_grey"/>
-    </LinearLayout>
-
-    <View
-        android:id="@+id/about_separator_facebook"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/about_facebook_layout"
-        android:layout_marginLeft="@dimen/about_items_padding"
-        android:layout_marginStart="@dimen/about_items_padding"
-        android:background="@color/greyish"/>
-
     <LinearLayout
         android:id="@+id/about_conditions_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/about_separator_facebook"
+        android:layout_below="@+id/about_separator_top"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -158,12 +57,13 @@
 
     <View
         android:id="@+id/about_separator_conditions"
+        style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/about_conditions_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
-        android:background="@color/greyish"/>
+        />
 
     <LinearLayout
         android:id="@+id/about_website_layout"
@@ -200,12 +100,13 @@
 
     <View
         android:id="@+id/about_separator_website"
+        style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/about_website_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
-        android:background="@color/greyish"/>
+        />
 
     <LinearLayout
         android:id="@+id/faq_website_layout"
@@ -242,12 +143,13 @@
 
     <View
         android:id="@+id/faq_website_separator"
+        style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/faq_website_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
-        android:background="@color/greyish"/>
+        />
 
     <LinearLayout
         android:id="@+id/about_email_layout"
@@ -284,12 +186,13 @@
 
     <View
         android:id="@+id/about_separator_email"
+        style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/about_email_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
-        android:background="@color/greyish"/>
+        />
 
     <ImageView
         android:id="@+id/about_logo"
