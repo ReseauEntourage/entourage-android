@@ -51,6 +51,7 @@ public class MyEntouragesPresenter {
                 filter.getTourTypes(),
                 filter.getStatus(),
                 filter.showOwnEntouragesOnly,
+                filter.showPartnerEntourages,
                 filter.showJoinedEntourages
         );
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {

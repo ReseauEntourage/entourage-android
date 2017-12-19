@@ -46,6 +46,7 @@ public interface NewsfeedRequest {
             @Query("tour_types") String tourTypes,
             @Query("status") String status,
             @Query("created_by_me") boolean createdByMe,
+            @Query("show_my_partner_only") boolean showMyPartnerOnly,
             @Query("accepted_invitation") boolean acceptedInvitation
     );
 }
