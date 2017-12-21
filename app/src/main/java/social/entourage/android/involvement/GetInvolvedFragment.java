@@ -135,12 +135,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
     protected void onSuggestionClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
             DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(drawerActivity.getLink(Constants.FEEDBACK_ID)));
-            try {
-                startActivity(userGuideIntent);
-            } catch (Exception ex) {
-                Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-            }
+            drawerActivity.showWebView(drawerActivity.getLink(Constants.FEEDBACK_ID));
         }
     }
 
@@ -148,12 +143,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
     protected void onAmbassadorClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
             DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(drawerActivity.getLink(Constants.AMBASSADOR_ID)));
-            try {
-                startActivity(userGuideIntent);
-            } catch (Exception ex) {
-                Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-            }
+            drawerActivity.showWebView(drawerActivity.getLink(Constants.AMBASSADOR_ID));
         }
     }
 
