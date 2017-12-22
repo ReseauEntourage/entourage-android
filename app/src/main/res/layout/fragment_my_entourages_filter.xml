@@ -25,10 +25,157 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/my_entourages_filter_types_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/myentourages_filter_entourages_layout">
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/myentourages_filter_types_title"
+                    style="@style/EntourageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/myentourages_filter_types_title"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <RelativeLayout
+                    android:id="@+id/myentourages_filter_tours_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    >
+
+                    <TextView
+                        android:id="@+id/myentourages_filter_tours_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/myentourages_filter_tours_switch"
+                        android:layout_toStartOf="@+id/myentourages_filter_tours_switch"
+                        android:paddingEnd="@dimen/entourage_padding_10"
+                        android:paddingLeft="@dimen/entourage_padding_10"
+                        android:paddingRight="@dimen/entourage_padding_10"
+                        android:paddingStart="@dimen/entourage_padding_10"
+                        android:text="@string/myentourages_filter_tours"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
+
+                    <Switch
+                        android:id="@+id/myentourages_filter_tours_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/entourage_padding_10"
+                        android:layout_marginRight="@dimen/entourage_padding_10"/>
+
+                    <View
+                        style="@style/SeparatorAlpha"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="@dimen/entourage_padding_10"
+                        android:layout_marginStart="@dimen/entourage_padding_10"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/myentourages_filter_demand_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    >
+
+                    <TextView
+                        android:id="@+id/myentourages_filter_demand_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/myentourages_filter_demand_switch"
+                        android:layout_toStartOf="@+id/myentourages_filter_demand_switch"
+                        android:paddingEnd="@dimen/entourage_padding_10"
+                        android:paddingLeft="@dimen/entourage_padding_10"
+                        android:paddingRight="@dimen/entourage_padding_10"
+                        android:paddingStart="@dimen/entourage_padding_10"
+                        android:text="@string/myentourages_filter_demand"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
+
+                    <Switch
+                        android:id="@+id/myentourages_filter_demand_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/entourage_padding_10"
+                        android:layout_marginRight="@dimen/entourage_padding_10"/>
+
+                    <View
+                        style="@style/SeparatorAlpha"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="@dimen/entourage_padding_10"
+                        android:layout_marginStart="@dimen/entourage_padding_10"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/myentourages_filter_contribution_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    >
+
+                    <TextView
+                        android:id="@+id/myentourages_filter_contribution_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/myentourages_filter_contribution_switch"
+                        android:layout_toStartOf="@+id/myentourages_filter_contribution_switch"
+                        android:paddingEnd="@dimen/entourage_padding_10"
+                        android:paddingLeft="@dimen/entourage_padding_10"
+                        android:paddingRight="@dimen/entourage_padding_10"
+                        android:paddingStart="@dimen/entourage_padding_10"
+                        android:text="@string/myentourages_filter_contribution"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
+
+                    <Switch
+                        android:id="@+id/myentourages_filter_contribution_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/entourage_padding_10"
+                        android:layout_marginRight="@dimen/entourage_padding_10"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/myentourages_filter_entourages_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/myentourages_filter_entourages_title"
@@ -43,10 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/background"
-                    android:paddingEnd="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingStart="10dp">
+                    >
 
                     <TextView
                         android:id="@+id/myentourages_filter_unread_text"
@@ -59,6 +203,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_toLeftOf="@+id/myentourages_filter_unread_switch"
                         android:layout_toStartOf="@+id/myentourages_filter_unread_switch"
+                        android:paddingEnd="@dimen/entourage_padding_10"
+                        android:paddingLeft="@dimen/entourage_padding_10"
+                        android:paddingRight="@dimen/entourage_padding_10"
+                        android:paddingStart="@dimen/entourage_padding_10"
                         android:text="@string/myentourages_filter_unread"
                         android:textColor="@color/greyish_brown"
                         android:textSize="@dimen/entourage_font_medium"/>
@@ -69,14 +217,107 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/entourage_padding_10"
+                        android:layout_marginRight="@dimen/entourage_padding_10"/>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/greyish"
-                        />
+                        android:layout_marginLeft="@dimen/entourage_padding_10"
+                        android:layout_marginStart="@dimen/entourage_padding_10"
+                        android:background="@color/greyish"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/myentourages_filter_created_by_me_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/background"
+                    >
+
+                    <TextView
+                        android:id="@+id/myentourages_filter_created_by_me_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/myentourages_filter_created_by_me_switch"
+                        android:layout_toStartOf="@+id/myentourages_filter_created_by_me_switch"
+                        android:paddingEnd="@dimen/entourage_padding_10"
+                        android:paddingLeft="@dimen/entourage_padding_10"
+                        android:paddingRight="@dimen/entourage_padding_10"
+                        android:paddingStart="@dimen/entourage_padding_10"
+                        android:text="@string/myentourages_filter_created_by_me"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
+
+                    <Switch
+                        android:id="@+id/myentourages_filter_created_by_me_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/entourage_padding_10"
+                        android:layout_marginRight="@dimen/entourage_padding_10"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="@dimen/entourage_padding_10"
+                        android:layout_marginStart="@dimen/entourage_padding_10"
+                        android:background="@color/greyish"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/myentourages_filter_partner_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/background"
+                    >
+
+                    <TextView
+                        android:id="@+id/myentourages_filter_partner_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toLeftOf="@+id/myentourages_filter_partner_switch"
+                        android:layout_toStartOf="@+id/myentourages_filter_partner_switch"
+                        android:paddingEnd="@dimen/entourage_padding_10"
+                        android:paddingLeft="@dimen/entourage_padding_10"
+                        android:paddingRight="@dimen/entourage_padding_10"
+                        android:paddingStart="@dimen/entourage_padding_10"
+                        android:text="@string/myentourages_filter_partner"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
+
+                    <Switch
+                        android:id="@+id/myentourages_filter_partner_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/entourage_padding_10"
+                        android:layout_marginRight="@dimen/entourage_padding_10"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="@dimen/entourage_padding_10"
+                        android:layout_marginStart="@dimen/entourage_padding_10"
+                        android:background="@color/greyish"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -115,139 +356,6 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/my_entourages_filter_types_layout">
-
-                <TextView
-                    android:id="@+id/myentourages_filter_types_title"
-                    style="@style/EntourageTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/myentourages_filter_types_title"
-                    android:textSize="@dimen/entourage_font_medium"/>
-
-                <RelativeLayout
-                    android:id="@+id/myentourages_filter_demand_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/background"
-                    android:paddingEnd="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingStart="10dp">
-
-                    <TextView
-                        android:id="@+id/myentourages_filter_demand_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toLeftOf="@+id/myentourages_filter_demand_switch"
-                        android:layout_toStartOf="@+id/myentourages_filter_demand_switch"
-                        android:text="@string/myentourages_filter_demand"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="@dimen/entourage_font_medium"/>
-
-                    <Switch
-                        android:id="@+id/myentourages_filter_demand_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/greyish"
-                        />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/myentourages_filter_contribution_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/background"
-                    android:paddingEnd="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingStart="10dp">
-
-                    <TextView
-                        android:id="@+id/myentourages_filter_contribution_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toLeftOf="@+id/myentourages_filter_contribution_switch"
-                        android:layout_toStartOf="@+id/myentourages_filter_contribution_switch"
-                        android:text="@string/myentourages_filter_contribution"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="@dimen/entourage_font_medium"/>
-
-                    <Switch
-                        android:id="@+id/myentourages_filter_contribution_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/greyish"
-                        />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/myentourages_filter_tours_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/background"
-                    android:paddingEnd="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingStart="10dp">
-
-                    <TextView
-                        android:id="@+id/myentourages_filter_tours_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toLeftOf="@+id/myentourages_filter_tours_switch"
-                        android:layout_toStartOf="@+id/myentourages_filter_tours_switch"
-                        android:text="@string/myentourages_filter_tours"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="@dimen/entourage_font_medium"/>
-
-                    <Switch
-                        android:id="@+id/myentourages_filter_tours_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"/>
-
-                </RelativeLayout>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

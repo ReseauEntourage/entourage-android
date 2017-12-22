@@ -15,6 +15,7 @@ import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.tools.BusProvider;
@@ -192,6 +193,17 @@ public class AuthenticationController {
         }
     }
 
+    public boolean isShowEncounterDisclaimer() {
+        return userPreferences == null || userPreferences.isShowEncounterDisclaimer();
+    }
+
+    public void setShowEncounterDisclaimer(final boolean showEncounterDisclaimer) {
+        if (userPreferences != null) {
+            userPreferences.setShowEncounterDisclaimer(showEncounterDisclaimer);
+            saveUserPreferences();
+        }
+    }
+
     public MapFilter getMapFilter() {
         MapFilter mapFilter = null;
         if (loggedUser != null && userPreferences != null) {
@@ -206,6 +218,24 @@ public class AuthenticationController {
     }
 
     public void saveMapFilter() {
+        saveUserPreferences();
+    }
+
+    public MyEntouragesFilter getMyEntouragesFilter() {
+        MyEntouragesFilter myEntouragesFilter = null;
+        if (loggedUser != null && userPreferences != null) {
+            myEntouragesFilter = userPreferences.getMyEntouragesFilter();
+            if (myEntouragesFilter == null) {
+                myEntouragesFilter = new MyEntouragesFilter();
+                userPreferences.setMyEntouragesFilter(myEntouragesFilter);
+                saveUserPreferences();
+            }
+        }
+
+        return myEntouragesFilter;
+    }
+
+    public void saveMyEntouragesFilter() {
         saveUserPreferences();
     }
 

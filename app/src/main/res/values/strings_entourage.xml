@@ -80,12 +80,14 @@
     <string name="myentourages_title">MES ENTOURAGES</string>
 
     <!-- My Entourages Filter -->
-    <string name="myentourages_filter_entourages_title">Mes entourages</string>
+    <string name="myentourages_filter_entourages_title">Montrer</string>
     <string name="myentourages_filter_active">Actifs</string>
     <string name="myentourages_filter_invited">Invitations</string>
     <string name="myentourages_filter_own">Créés par moi uniquement</string>
-    <string name="myentourages_filter_closed">Inclure entourages clôturés</string>
-    <string name="myentourages_filter_unread">Uniquement non lus</string>
+    <string name="myentourages_filter_closed">Inclure les actions clôturées</string>
+    <string name="myentourages_filter_unread">Uniquement les messages non lus</string>
+    <string name="myentourages_filter_created_by_me">Uniquement les actions que j’ai créées</string>
+    <string name="myentourages_filter_partner">Uniquement les actions créées par des sympathisants d’assos que je soutiens</string>
     <string name="myentourages_filter_types_title">Types d’entourage</string>
     <string name="myentourages_filter_demand">Demandes</string>
     <string name="myentourages_filter_contribution">Contributions</string>

@@ -1006,6 +1006,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // update the scroll list layout
         updatePublicScrollViewLayout();
 
+        // for newly created entourages, open the invite friends screen automatically
+        if (feedItem.isNewlyCreated()) {
+            inviteSourceLayout.setVisibility(View.VISIBLE);
+        }
+
         // check if we need to display the carousel
         User me = EntourageApplication.me(getContext());
         if (me != null && me.isOnboardingUser()) {

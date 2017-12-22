@@ -37,6 +37,15 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
     @BindView(R.id.myentourages_filter_unread_switch)
     Switch unreadSwitch;
 
+    @BindView(R.id.myentourages_filter_created_by_me_switch)
+    Switch createdByMeOnlySwitch;
+
+    @BindView(R.id.myentourages_filter_partner_switch)
+    Switch partnerSwitch;
+
+    @BindView(R.id.myentourages_filter_partner_layout)
+    View partnerView;
+
     @BindView(R.id.myentourages_filter_closed_switch)
     Switch closedSwitch;
 
@@ -92,14 +101,18 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
     @OnClick(R.id.title_action_button)
     void onValidateClicked() {
         // save the values to the filter
-        MyEntouragesFilter filter = MyEntouragesFilter.getInstance();
-
-        filter.closedEntourages = closedSwitch.isChecked();
-        filter.showUnreadOnly = unreadSwitch.isChecked();
+        MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
 
         filter.entourageTypeDemand = entourageDemandSwitch.isChecked();
         filter.entourageTypeContribution = entourageContributionSwitch.isChecked();
         filter.showTours = toursSwitch.isChecked();
+
+        filter.showUnreadOnly = unreadSwitch.isChecked();
+        filter.showOwnEntouragesOnly = createdByMeOnlySwitch.isChecked();
+        filter.showPartnerEntourages = partnerSwitch.isChecked();
+        filter.closedEntourages = closedSwitch.isChecked();
+
+        MyEntouragesFilterFactory.saveMyEntouragesFilter(filter, this.getContext());
 
         // inform the app to refrehs the my entourages feed
         BusProvider.getInstance().post(new Events.OnMyEntouragesFilterChanged());
@@ -141,22 +154,28 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private void initializeView() {
-        MyEntouragesFilter filter = MyEntouragesFilter.getInstance();
-
-        unreadSwitch.setChecked(filter.showUnreadOnly);
-        closedSwitch.setChecked(filter.closedEntourages);
+        MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
 
         entourageDemandSwitch.setChecked(filter.entourageTypeDemand);
         entourageContributionSwitch.setChecked(filter.entourageTypeContribution);
         toursSwitch.setChecked(filter.showTours);
 
-        // Tours switch is displayed only for pro users
+        unreadSwitch.setChecked(filter.showUnreadOnly);
+        createdByMeOnlySwitch.setChecked(filter.showOwnEntouragesOnly);
+        partnerSwitch.setChecked(filter.showPartnerEntourages);
+        closedSwitch.setChecked(filter.closedEntourages);
+
         User me = EntourageApplication.me(getActivity());
         boolean isPro = false;
+        boolean hasPartner = false;
         if (me != null) {
             isPro = me.isPro();
+            hasPartner = me.getPartner() != null;
         }
+        // Tours switch is displayed only for pro users
         toursView.setVisibility( isPro ? View.VISIBLE : View.GONE );
+        // Partner switch is displayed only if the user has a partner organisation
+        partnerView.setVisibility( hasPartner ? View.VISIBLE : View.GONE );
     }
 
 }

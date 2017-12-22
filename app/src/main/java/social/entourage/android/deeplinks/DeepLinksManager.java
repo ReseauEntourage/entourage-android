@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import social.entourage.android.DrawerActivity;
@@ -39,6 +40,7 @@ public class DeepLinksManager {
     // ----------------------------------
 
     private Intent deepLinkIntent;
+    private Uri deepLinkUri;
 
     // ----------------------------------
     // SINGLETON
@@ -76,7 +78,7 @@ public class DeepLinksManager {
      */
     public void handleCurrentDeepLink(Activity activity) {
         if (deepLinkIntent == null || activity == null) return;
-        Uri deepLinkUri = deepLinkIntent.getData();
+        deepLinkUri = deepLinkIntent.getData();
         if (deepLinkUri == null) {
             deepLinkIntent = null;
             return;
@@ -86,35 +88,72 @@ public class DeepLinksManager {
             deepLinkIntent = null;
             return;
         }
-        if (SCHEME_ENTOURAGE.equalsIgnoreCase(scheme)) {
-            handleEntourageDeepLink(activity, deepLinkUri);
+        if (scheme.contains(SCHEME_ENTOURAGE)) {
+            handleEntourageDeepLink(activity);
         } else {
-            handleHttpDeepLink(activity, deepLinkUri);
+            handleHttpDeepLink(activity);
         }
     }
 
     /**
      * Handles deeplinks with format "entourage://*"
      * @param activity
-     * @param deepLinkUri
      */
-    private void handleEntourageDeepLink(Activity activity, Uri deepLinkUri) {
+    private void handleEntourageDeepLink(Activity activity) {
         String host = deepLinkUri.getHost();
         if (host == null) {
             deepLinkIntent = null;
             return;
         }
         host = host.toLowerCase();
-        if (host.equals(DeepLinksView.FEED.getView())) {
+        handleDeepLink(activity, host, deepLinkUri.getPathSegments());
+    }
+
+    /**
+     * Handles the deeplinks with format "http(s)://"
+     * @param activity
+     */
+    private void handleHttpDeepLink(Activity activity) {
+        List<String> pathSegments = new ArrayList<>(deepLinkUri.getPathSegments());
+        if (pathSegments != null && pathSegments.size() >= 2) {
+            String requestedView = pathSegments.get(0);
+            String key = pathSegments.get(1);
+            if (requestedView.equalsIgnoreCase(DeepLinksView.ENTOURAGES.getView())) {
+                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, key));
+                deepLinkIntent = null;
+            }
+            else if (requestedView.equalsIgnoreCase(DeepLinksView.DEEPLINK.getView())) {
+                //Remove the requestedview and the key from path segments
+                pathSegments.remove(0);
+                pathSegments.remove(0); // zero, because it was shifted when we removed requestedview
+                //Handle the deep link
+                handleDeepLink(activity, key, pathSegments);
+            }
+            else {
+                deepLinkIntent = null;
+            }
+        } else {
+            deepLinkIntent = null;
+        }
+    }
+
+    private void handleDeepLink(Activity activity, String key, List<String> pathSegments) {
+        if (key.equals(DeepLinksView.FEED.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
                 drawerActivity.switchToMapFragment();
                 drawerActivity.popToMapFragment();
+                if (pathSegments != null && pathSegments.size() >= 1) {
+                    String requestedView = pathSegments.get(0);
+                    if (requestedView.equalsIgnoreCase(DeepLinksView.FILTERS.getView())) {
+                        drawerActivity.showMapFilters();
+                    }
+                }
             } else {
                 return;
             }
         }
-        else if (host.equals(DeepLinksView.BADGE.getView())) {
+        else if (key.equals(DeepLinksView.BADGE.getView())) {
             if (activity instanceof AppCompatActivity) {
                 AppCompatActivity appCompatActivity = (AppCompatActivity) activity;
                 FragmentManager fragmentManager = appCompatActivity.getSupportFragmentManager();
@@ -132,7 +171,7 @@ public class DeepLinksManager {
                 return;
             }
         }
-        else if (host.equals(DeepLinksView.WEBVIEW.getView())) {
+        else if (key.equals(DeepLinksView.WEBVIEW.getView())) {
             try {
                 String urlToOpen = deepLinkUri.getQueryParameter("url");
                 if (urlToOpen != null) {
@@ -150,21 +189,53 @@ public class DeepLinksManager {
                 }
             } catch (Exception ex) {}
         }
-        deepLinkIntent = null;
-    }
-
-    /**
-     * Handles the deeplinks with format "http(s)://"
-     * @param activity
-     * @param deepLinkUri
-     */
-    private void handleHttpDeepLink(Activity activity, Uri deepLinkUri) {
-        List<String> pathSegments = deepLinkUri.getPathSegments();
-        if (pathSegments != null && pathSegments.size() >= 2) {
-            String requestedView = pathSegments.get(0);
-            String key = pathSegments.get(1);
-            if (requestedView.equalsIgnoreCase(DeepLinksView.ENTOURAGE.getView())) {
-                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, key));
+        else if (key.equals(DeepLinksView.PROFILE.getView())) {
+            if (activity instanceof DrawerActivity) {
+                ((DrawerActivity)activity).selectItem(action_edit_user);
+            } else {
+                return;
+            }
+        }
+        else if (key.equals(DeepLinksView.GUIDE.getView())) {
+            if (activity instanceof DrawerActivity) {
+                DrawerActivity drawerActivity = (DrawerActivity)activity;
+                if (!drawerActivity.isGuideShown()) {
+                    drawerActivity.switchToMapFragment();
+                    drawerActivity.popToMapFragment();
+                    drawerActivity.selectItem(R.id.action_guide);
+                }
+            } else {
+                return;
+            }
+        }
+        else if (key.equals(DeepLinksView.MY_CONVERSATIONS.getView())) {
+            if (activity instanceof DrawerActivity) {
+                DrawerActivity drawerActivity = (DrawerActivity)activity;
+                drawerActivity.switchToMapFragment();
+                drawerActivity.popToMapFragment();
+                drawerActivity.showMyEntourages();
+            } else {
+                return;
+            }
+        }
+        else if (key.equals(DeepLinksView.CREATE_ACTION.getView())) {
+            if (activity instanceof DrawerActivity) {
+                DrawerActivity drawerActivity = (DrawerActivity)activity;
+                drawerActivity.switchToMapFragment();
+                drawerActivity.popToMapFragment();
+                drawerActivity.onCreateEntourageClicked();
+            } else {
+                return;
+            }
+        }
+        else if (key.equals(DeepLinksView.ENTOURAGE.getView())) {
+            if (activity instanceof DrawerActivity) {
+                if (pathSegments != null && pathSegments.size() >= 1) {
+                    String entourage = pathSegments.get(0);
+                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, entourage));
+                }
+            } else {
+                return;
             }
         }
         deepLinkIntent = null;
@@ -175,10 +246,17 @@ public class DeepLinksManager {
      */
     private enum DeepLinksView {
 
-        ENTOURAGE("entourages"),
+        DEEPLINK("deeplink"),
+        ENTOURAGE("entourage"),
+        ENTOURAGES("entourages"),
         FEED("feed"),
         BADGE("badge"),
-        WEBVIEW("webview");
+        WEBVIEW("webview"),
+        PROFILE("profile"),
+        FILTERS("filters"),
+        GUIDE("guide"),
+        MY_CONVERSATIONS("messages"),
+        CREATE_ACTION("create-action");
 
         private final String view;
 

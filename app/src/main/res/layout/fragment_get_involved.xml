@@ -1,0 +1,263 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                tools:context="social.entourage.android.involvement.GetInvolvedFragment">
+
+
+
+    <social.entourage.android.view.EntourageTitleView
+        android:id="@+id/get_involved_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:entourageTitle="@string/get_involved_title"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/get_involved_logo"
+        android:layout_below="@+id/get_involved_title_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/get_involved_title_layout"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/get_involved_separator_top"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/background_light"/>
+
+            <RelativeLayout
+                android:id="@+id/get_involved_rate_us_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/about_items_padding"
+                android:paddingEnd="0dp"
+                android:paddingLeft="@dimen/about_items_padding"
+                android:paddingRight="0dp"
+                android:paddingStart="@dimen/about_items_padding"
+                android:paddingTop="@dimen/about_items_padding">
+
+                <TextView
+                    android:id="@+id/get_involved_rate_us"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/get_involved_rate_us"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/get_involved_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toLeftOf="@+id/get_involved_rate_us"
+                    android:layout_toStartOf="@+id/get_involved_arrow_rate_us"
+                    android:gravity="end"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <ImageView
+                    android:id="@+id/get_involved_arrow_rate_us"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/arrow_grey"/>
+            </RelativeLayout>
+
+            <View
+                style="@style/SeparatorAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/about_items_padding"
+                android:layout_marginStart="@dimen/about_items_padding"
+                />
+
+            <LinearLayout
+                android:id="@+id/get_involved_facebook_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/about_items_padding"
+                android:paddingEnd="0dp"
+                android:paddingLeft="@dimen/about_items_padding"
+                android:paddingRight="0dp"
+                android:paddingStart="@dimen/about_items_padding"
+                android:paddingTop="@dimen/about_items_padding">
+
+                <TextView
+                    android:id="@+id/get_involved_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/get_involved_facebook"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/empty_description"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/arrow_grey"/>
+            </LinearLayout>
+
+            <View
+                style="@style/SeparatorAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/about_items_padding"
+                android:layout_marginStart="@dimen/about_items_padding"
+                />
+
+            <LinearLayout
+                android:id="@+id/get_involved_twitter_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/about_items_padding"
+                android:paddingEnd="0dp"
+                android:paddingLeft="@dimen/about_items_padding"
+                android:paddingRight="0dp"
+                android:paddingStart="@dimen/about_items_padding"
+                android:paddingTop="@dimen/about_items_padding">
+
+                <TextView
+                    android:id="@+id/get_involved_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/get_involved_twitter"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/empty_description"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/arrow_grey"/>
+            </LinearLayout>
+
+            <View
+                style="@style/SeparatorAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/about_items_padding"
+                android:layout_marginStart="@dimen/about_items_padding"
+                />
+
+            <LinearLayout
+                android:id="@+id/get_involved_suggestion_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/about_items_padding"
+                android:paddingEnd="0dp"
+                android:paddingLeft="@dimen/about_items_padding"
+                android:paddingRight="0dp"
+                android:paddingStart="@dimen/about_items_padding"
+                android:paddingTop="@dimen/about_items_padding">
+
+                <TextView
+                    android:id="@+id/get_involved_suggestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/get_involved_suggestion"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/empty_description"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/arrow_grey"/>
+            </LinearLayout>
+
+            <View
+                style="@style/SeparatorAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/about_items_padding"
+                android:layout_marginStart="@dimen/about_items_padding"
+                />
+
+            <LinearLayout
+                android:id="@+id/get_involved_ambassador_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/about_items_padding"
+                android:paddingEnd="0dp"
+                android:paddingLeft="@dimen/about_items_padding"
+                android:paddingRight="0dp"
+                android:paddingStart="@dimen/about_items_padding"
+                android:paddingTop="@dimen/about_items_padding">
+
+                <TextView
+                    android:id="@+id/get_involved_ambassador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/get_involved_ambassador"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/empty_description"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/arrow_grey"/>
+            </LinearLayout>
+
+            <View
+                style="@style/SeparatorAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/about_items_padding"
+                android:layout_marginStart="@dimen/about_items_padding"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/get_involved_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/about_items_padding"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/entourage_logo_grey"/>
+
+</RelativeLayout>

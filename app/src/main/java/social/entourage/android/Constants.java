@@ -3,8 +3,8 @@ package social.entourage.android;
 public class Constants {
 
     //TODO: should be changed after each release
-    // v4.1 API Key
-    public static final String API_KEY = "54dd058c4240096ef1cb51c2";
+    // v4.2 API Key
+    public static final String API_KEY = "946478b0f527ef016f03c4b3";
 
     // Announcements version
     public static final String ANNOUNCEMENTS_VERSION = "v1";
@@ -27,6 +27,8 @@ public class Constants {
     public static final String ATD_LINK_ID = "atd-partnership";
     public static final String CHARTE_LINK_ID = "ethics-charter";
     public static final String FAQ_LINK_ID = "faq";
+    public static final String FEEDBACK_ID = "feedback";
+    public static final String AMBASSADOR_ID = "volunteering";
     // Links
     public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
     public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";

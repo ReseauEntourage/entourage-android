@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="get_involved_title">AGIR AVEC ENTOURAGE</string>
+    <string name="get_involved_rate_us">Notez-nous dans le Play Store </string>
+    <string name="get_involved_facebook">Aimez notre page Facebook</string>
+    <string name="get_involved_twitter">Suivez-nous sur Twitter</string>
+    <string name="get_involved_suggestion">Suggérer des améliorations</string>
+    <string name="get_involved_ambassador">Devenir bénévole - ambassadeur</string>
+</resources>

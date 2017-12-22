@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.filter.MapFilter;
 
 /**
@@ -21,7 +22,10 @@ public class UserPreferences implements Serializable {
     private boolean showNoPOIsPopup = true;
     private boolean showInfoPOIsPopup = true;
 
+    private boolean showEncounterDisclaimer = false;
+
     private MapFilter mapFilter = null;
+    private MyEntouragesFilter myEntouragesFilter = null;
 
     private Tour ongoingTour;
 
@@ -57,12 +61,28 @@ public class UserPreferences implements Serializable {
         this.showInfoPOIsPopup = showInfoPOIsPopup;
     }
 
+    public boolean isShowEncounterDisclaimer() {
+        return showEncounterDisclaimer;
+    }
+
+    public void setShowEncounterDisclaimer(final boolean showEncounterDisclaimer) {
+        this.showEncounterDisclaimer = showEncounterDisclaimer;
+    }
+
     public MapFilter getMapFilter() {
         return mapFilter;
     }
 
     public void setMapFilter(final MapFilter mapFilter) {
         this.mapFilter = mapFilter;
+    }
+
+    public MyEntouragesFilter getMyEntouragesFilter() {
+        return myEntouragesFilter;
+    }
+
+    public void setMyEntouragesFilter(final MyEntouragesFilter myEntouragesFilter) {
+        this.myEntouragesFilter = myEntouragesFilter;
     }
 
     public Tour getOngoingTour() {

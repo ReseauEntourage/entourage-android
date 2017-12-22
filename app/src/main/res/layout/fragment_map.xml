@@ -256,12 +256,12 @@
     </RelativeLayout>
 
     <include
-        layout="@layout/layout_map_launcher"
         android:id="@+id/layout_map_launcher"
-        android:layout_alignParentBottom="true"
+        layout="@layout/layout_map_launcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility = "gone"
-        android:layout_marginTop="155dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/newsfeed_map_height"
+        android:visibility="gone"/>
 
 </RelativeLayout>

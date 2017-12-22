@@ -232,6 +232,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
 
     @OnClick(R.id.create_encounter_position_layout)
     protected void onPositionClicked() {
+        hideKeyboard();
         LocationFragment fragment = LocationFragment.newInstance(location, positionTextView.getText().toString(), this);
         fragment.show(getSupportFragmentManager(), LocationFragment.TAG);
     }

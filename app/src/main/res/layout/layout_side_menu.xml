@@ -104,6 +104,15 @@
                 android:background="@color/white"
                 android:icon="@drawable/ic_goal"
                 android:title="@string/action_goal"
+                app:showDivider="true"/>
+
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_guide"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_map_pin_grey"
+                android:title="@string/action_guide"
                 app:showDivider="false"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
@@ -117,21 +126,22 @@
                 app:showDivider="false"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
-                android:id="@+id/action_guide"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:icon="@drawable/ic_map_pin_grey"
-                android:title="@string/action_guide"
-                app:showDivider="true"/>
-
-            <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_atd"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/white"
                 android:icon="@drawable/partner_badge_atd"
                 android:title="@string/action_atd"
+                app:showDivider="true"
+                android:visibility="gone"/>
+
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_involvement"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:icon="@drawable/ic_broadcast"
+                android:title="@string/action_involvement"
                 app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView

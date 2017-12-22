@@ -60,14 +60,14 @@
     <string name="login_button_register">S’inscrire sur Entourage</string>
     <string name="login_button_login">Connexion</string>
 
-    <string name="login_permission_notification_title">Activer les notifications ?</string>
-    <string name="login_permission_notification_description">Nous pouvons vous avertir lors de la réception d’un message.</string>
+    <string name="login_permission_notification_title">Ne manquez rien !</string>
+    <string name="login_permission_notification_description">Des actions solidaires sont créées tous les jours et n’attendent que vous pour aboutir !\n\nActiver les notifications vous permet d’être informé(e) des nouveautés dans votre quartier.</string>
     <string name="login_permission_notification_refuse">Refuser</string>
-    <string name="login_permission_notification_accept">OK</string>
+    <string name="login_permission_notification_accept">Activer les notifications</string>
 
-    <string name="login_permission_geolocation_title">Activer la géolocalisation ?</string>
-    <string name="login_permission_geolocation_description">Entourage est un réseau local.\n\nLa géolocalisation nous permettra d’afficher les actions les plus proches de vous.</string>
-    <string name="login_permission_geolocation_accept">Oui, je l’active</string>
+    <string name="login_permission_geolocation_title">En direct de votre quartier !</string>
+    <string name="login_permission_geolocation_description">Entourage, c’est utile parce que c’est local !\n\nParticipez à la solidarité de votre quartier : pour voir les actions de vos voisins, qu’ils soient avec ou sans-abri, activez la géolocalisation.</string>
+    <string name="login_permission_geolocation_accept">Activer la géolocalisation</string>
 
     <string name="login_error">Problème d\'authentification\nVeuillez réessayer</string>
     <string name="login_error_title">Veuillez réessayer</string>

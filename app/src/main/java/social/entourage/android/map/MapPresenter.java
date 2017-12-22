@@ -139,6 +139,16 @@ public class MapPresenter {
         }
     }
 
+    public boolean shouldDisplayEncounterDisclaimer() {
+        return authenticationController != null && authenticationController.isShowEncounterDisclaimer();
+    }
+
+    public void  setDisplayEncounterDisclaimer(boolean displayEncounterDisclaimer) {
+        if (authenticationController != null) {
+            authenticationController.setShowEncounterDisclaimer(displayEncounterDisclaimer);
+        }
+    }
+
     public void displayEncounterDisclaimer() {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();

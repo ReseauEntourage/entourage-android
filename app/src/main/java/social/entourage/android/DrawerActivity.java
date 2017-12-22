@@ -78,6 +78,7 @@ import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.guide.GuideMapEntourageFragment;
+import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationActivity;
@@ -181,10 +182,12 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         gcmSharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
 
-        intentAction = getIntent().getAction();
-        if (Intent.ACTION_VIEW.equals(intentAction)) {
-            // Save the deep link intent
-            DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
+        if (getIntent() != null) {
+            intentAction = getIntent().getAction();
+            if (Intent.ACTION_VIEW.equals(intentAction)) {
+                // Save the deep link intent
+                DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
+            }
         }
 
         User user = getAuthenticationController().getUser();
@@ -304,13 +307,15 @@ public class DrawerActivity extends EntourageSecuredActivity
         super.onResume();
         highlightCurrentMenuItem();
 
-        String action = getIntent().getAction();
-        if (action != null) {
-            if (TourService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
-                displayLocationProviderDisabledAlert();
-                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-            } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
-                sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        if (getIntent() != null) {
+            String action = getIntent().getAction();
+            if (action != null) {
+                if (TourService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
+                    displayLocationProviderDisabledAlert();
+                    sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+                    sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                }
             }
         }
         EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
@@ -432,7 +437,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 @Override
                 public void onClick(final View v) {
                     EntourageEvents.logEvent(Constants.EVENT_SCREEN_17_2);
-                    presenter.displayMyEntourages();
+                    showMyEntourages();
                 }
             });
         }
@@ -551,7 +556,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage://webview?url=www.google.ro"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://create-action"));
                         try {
                             startActivity(intent);
                         } catch (Exception ex) {
@@ -610,6 +615,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                 } catch (Exception ex) {
                     Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.action_involvement:
+                GetInvolvedFragment getInvolvedFragment = GetInvolvedFragment.newInstance();
+                getInvolvedFragment.show(getSupportFragmentManager(), GetInvolvedFragment.TAG);
                 break;
             default:
                 //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
@@ -694,6 +703,21 @@ public class DrawerActivity extends EntourageSecuredActivity
         webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
     }
 
+    public void showMapFilters() {
+        if (mapEntourageFragment != null) {
+            if (isGuideShown()) {
+                hideSolidarityGuide();
+            }
+            mapEntourageFragment.onShowFilter();
+        }
+    }
+
+    public void showMyEntourages() {
+        if (presenter != null) {
+            presenter.displayMyEntourages();
+        }
+    }
+
     private void initializePushNotifications() {
         final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
         boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
@@ -760,6 +784,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
+        if (!isSafeToCommit()) return;
         //Log.d("DEEPLINK", "checkIntentAction");
         switchToMapFragment();
         Intent intent = getIntent();
@@ -810,6 +835,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         intentAction = null;
         intentTour = null;
+        setIntent(null);
     }
 
     @Subscribe

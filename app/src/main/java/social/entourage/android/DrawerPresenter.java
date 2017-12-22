@@ -107,7 +107,7 @@ public class DrawerPresenter {
     }
 
     protected void displayMyEntourages() {
-        if (activity != null) {
+        if (activity != null && activity.isSafeToCommit()) {
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             MyEntouragesFragment fragment = new MyEntouragesFragment();
             fragment.show(fragmentManager, MyEntouragesFragment.TAG);

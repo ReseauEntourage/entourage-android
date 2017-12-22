@@ -4,5 +4,7 @@
     <string name="webview_menu_copy">Copier le lien</string>
     <string name="webview_menu_share">Partager</string>
 
+    <string name="webview_share_text">J\'ai découvert le guide Simple Comme Bonjour pour aller à la rencontre des personnes sans-abri. C\'est à découvrir ici :\n%1$s</string>
+
     <string name="webview_copy_ok">Lien copié!</string>
 </resources>
