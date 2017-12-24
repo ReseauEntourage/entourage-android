@@ -20,7 +20,7 @@ else
 
     previous_tag="Version_421463"
 
-    filename="GITCHANGELOG-$latest_tag.md"
+    filename="GITCHANGELOG-FROM-$previous_tag-TO-$latest_tag.md"
     echo "#Changelog" > $filename
     echo "##Latest tag: $latest_tag" >> $filename
     echo "##Previous tag: $previous_tag" >> $filename
