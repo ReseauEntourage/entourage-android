@@ -32,6 +32,17 @@ public class Partner extends BaseOrganization implements Serializable {
     @SerializedName("default")
     private boolean isDefault;
 
+    private String description;
+
+    private String phone;
+
+    private String address;
+
+    private String email;
+
+    @SerializedName("website_url")
+    private String websiteUrl;
+
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
@@ -75,6 +86,26 @@ public class Partner extends BaseOrganization implements Serializable {
 
     public void setSmallLogoUrl(final String smallLogoUrl) {
         this.smallLogoUrl = smallLogoUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
     }
 
     @Override

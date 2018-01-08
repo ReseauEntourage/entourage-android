@@ -406,16 +406,4 @@ public class UserFragment extends EntourageDialogFragment {
         configureView();
     }
 
-    @Subscribe
-    public void onPartnerViewRequested(Events.OnPartnerViewRequestedEvent event) {
-        if (getActivity() == null || getActivity().isFinishing()) {
-            return;
-        }
-        if (event == null) {
-            return;
-        }
-        PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartnerId());
-        partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
-    }
-
 }

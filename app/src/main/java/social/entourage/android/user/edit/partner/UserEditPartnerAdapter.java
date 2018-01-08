@@ -33,7 +33,7 @@ public class UserEditPartnerAdapter extends BaseAdapter {
         public ImageView mPartnerLogo;
         public CheckBox mCheckbox;
 
-        public long partnerId = 0;
+        public Partner partner;
 
         public PartnerViewHolder(View v, final OnCheckedChangeListener checkboxListener) {
             mPartnerName = (TextView) v.findViewById(R.id.partner_name);
@@ -55,8 +55,8 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             mPartnerLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    if (partnerId != 0) {
-                        BusProvider.getInstance().post(new Events.OnPartnerViewRequestedEvent(partnerId));
+                    if (partner != null) {
+                        BusProvider.getInstance().post(new Events.OnPartnerViewRequestedEvent(partner));
                     }
                 }
             });
@@ -124,7 +124,7 @@ public class UserEditPartnerAdapter extends BaseAdapter {
             viewHolder.mCheckbox.setTag(position);
 
             // set the partner id
-            viewHolder.partnerId = partner.getId();
+            viewHolder.partner = partner;
         }
 
         return view;

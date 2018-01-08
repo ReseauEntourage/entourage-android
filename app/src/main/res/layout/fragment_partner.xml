@@ -29,7 +29,7 @@
         android:contentDescription="@string/empty_description"
         android:padding="18dp"
         android:scaleType="centerInside"
-        app:srcCompat="@drawable/partner_badge_atd"/>
+        />
 
     <TextView
         android:id="@+id/partner_view_name"
@@ -40,7 +40,6 @@
         android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:gravity="center_horizontal"
-        android:text="@string/atd_name"
         android:textColor="@color/greyish_brown"
         android:textSize="22sp"/>
 
@@ -72,7 +71,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:text="@string/atd_details"
                 android:textColor="@color/greyish_brown"
                 android:textSize="@dimen/entourage_font_medium"/>
 
@@ -91,15 +89,16 @@
                 android:textStyle="normal|bold"/>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/partner_view_phone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
                 android:paddingEnd="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingStart="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:paddingTop="10dp">
 
                 <TextView
                     android:id="@+id/partner_view_phone_description"
@@ -117,7 +116,6 @@
                     android:layout_weight="1"
                     android:autoLink="phone"
                     android:gravity="end"
-                    android:text="@string/atd_phone_number"
                     android:textColor="@color/greyish_brown"
                     android:textColorLink="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"
@@ -125,14 +123,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/partner_view_address_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
                 android:paddingEnd="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingStart="20dp"
-                android:paddingBottom="10dp"
                 android:paddingTop="10dp">
 
                 <TextView
@@ -151,7 +150,6 @@
                     android:layout_weight="1"
                     android:autoLink="map"
                     android:gravity="end"
-                    android:text="@string/atd_address"
                     android:textColor="@color/greyish_brown"
                     android:textColorLink="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"
@@ -159,14 +157,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/partner_view_website_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
                 android:paddingEnd="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingStart="20dp"
-                android:paddingBottom="10dp"
                 android:paddingTop="10dp">
 
                 <TextView
@@ -185,7 +184,40 @@
                     android:layout_weight="1"
                     android:autoLink="web"
                     android:gravity="end"
-                    android:text="@string/atd_website"
+                    android:textColor="@color/greyish_brown"
+                    android:textColorLink="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/partner_view_email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingEnd="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/partner_view_email_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/partner_view_email_description"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/partner_view_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:autoLink="email"
+                    android:gravity="end"
                     android:textColor="@color/greyish_brown"
                     android:textColorLink="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"
