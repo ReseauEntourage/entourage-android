@@ -292,5 +292,5 @@ public class Constants {
     public static final int EMPTY_POPUP_DISPLAY_LIMIT = 300; //meters
 
     // Carousel delay time
-    public static final long CAROUSEL_DELAY_MILLIS = 2000; // 2 seconds
+    public static final long CAROUSEL_DELAY_MILLIS = 15000; // 15 seconds
 }

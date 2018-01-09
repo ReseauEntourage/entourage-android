@@ -20,6 +20,7 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.carousel.CarouselFragment;
 
 public class AboutFragment extends EntourageDialogFragment {
 
@@ -107,5 +108,11 @@ public class AboutFragment extends EntourageDialogFragment {
                 Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @OnClick(R.id.about_tutorial_layout)
+    protected void onTutorialClicked() {
+        CarouselFragment carouselFragment = new CarouselFragment();
+        carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
     }
 }
