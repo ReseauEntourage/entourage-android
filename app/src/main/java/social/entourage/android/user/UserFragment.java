@@ -406,4 +406,28 @@ public class UserFragment extends EntourageDialogFragment {
         configureView();
     }
 
+    @Subscribe
+    public void onPartnerViewRequested(Events.OnPartnerViewRequestedEvent event) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        if (event == null) {
+            return;
+        }
+        // Because we are handling this event in the user edit fragment too, we need to make sure that there is no active user edit fragment
+        if (getFragmentManager() != null) {
+            UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+            if (userEditFragment != null) {
+                return;
+            }
+        }
+        if (event.getPartner() != null) {
+            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartner());
+            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+        } else {
+            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartnerId());
+            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+        }
+    }
+
 }

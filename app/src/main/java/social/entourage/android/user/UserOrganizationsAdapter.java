@@ -30,7 +30,7 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
         public TextView mOrganizationType;
         public View mSeparator;
 
-        public long partnerId = 0;
+        public Partner partner;
 
         public OrganizationViewHolder(View v) {
             super(v);
@@ -43,8 +43,8 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
                 mOrganizationLogo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {
-                        if (partnerId != 0) {
-                            BusProvider.getInstance().post(new Events.OnPartnerViewRequestedEvent(partnerId));
+                        if (partner != null) {
+                            BusProvider.getInstance().post(new Events.OnPartnerViewRequestedEvent(partner));
                         }
                     }
                 });
@@ -86,10 +86,10 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
         }
 
         if (organization.getType() == BaseOrganization.TYPE_PARTNER) {
-            organizationViewHolder.partnerId = ((Partner)organization).getId();
+            organizationViewHolder.partner = (Partner)organization;
         }
         else {
-            organizationViewHolder.partnerId = 0;
+            organizationViewHolder.partner = null;
         }
 
         organizationViewHolder.mSeparator.setVisibility(position == organizationList.size() - 1 ? View.GONE : View.VISIBLE);
