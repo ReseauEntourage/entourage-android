@@ -25,7 +25,9 @@
         android:layout_below="@+id/user_title_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
+        android:background="@drawable/bg_partner_logo_bordered"
         android:contentDescription="@string/empty_description"
+        android:padding="5dp"
         android:scaleType="fitCenter"/>
 
     <TextView
