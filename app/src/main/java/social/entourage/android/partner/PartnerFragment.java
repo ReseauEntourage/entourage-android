@@ -162,7 +162,6 @@ public class PartnerFragment extends EntourageDialogFragment {
         Picasso.with(getContext())
                 .load(Uri.parse(partner.getLargeLogoUrl()))
                 .placeholder(R.drawable.partner_placeholder)
-                .transform(new CropCircleTransformation())
                 .into(partnerLogoImageView);
         // name
         partnerName.setText(partner.getName());
