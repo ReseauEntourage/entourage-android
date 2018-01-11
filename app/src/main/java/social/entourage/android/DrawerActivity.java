@@ -16,6 +16,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -232,6 +234,8 @@ public class DrawerActivity extends EntourageSecuredActivity
             //initialize the push notifications
             initializePushNotifications();
 
+            updateMixpanelInfo();
+
             Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
             Crashlytics.setUserName(user.getDisplayName());
         }
@@ -286,6 +290,11 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             }
             sendMapFragmentExtras();
+        }
+
+        if (intentAction == null) {
+            // user just returns to the app, update mixpanel
+            updateMixpanelInfo();
         }
     }
 
@@ -733,8 +742,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         } else {
             presenter.updateApplicationInfo("");
         }
+    }
 
+    private void updateMixpanelInfo() {
         User user = getAuthenticationController().getUser();
+        if (user == null) return;
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         mixpanel.identify(String.valueOf(user.getId()));
         MixpanelAPI.People people = mixpanel.getPeople();
@@ -744,7 +756,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         people.set("EntouragePartner", user.getPartner());
         people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         people.set("Language", Locale.getDefault().getLanguage());
-        people.set("EntourageNotifEnable", notificationsEnabled ?"YES":"NO");
 
         if (PermissionChecker.checkSelfPermission(this, user.isPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             people.set("EntourageGeolocEnable", "YES");
@@ -752,7 +763,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             people.set("EntourageGeolocEnable", "NO");
         }
 
-        //mixpanel.getPeople().initPushHandling(RegisterGCMService.GCM_SENDER_ID);
+        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+        people.set("EntourageNotifEnable", notificationsEnabled && NotificationManagerCompat.from(this).areNotificationsEnabled() ?"YES":"NO");
         if(notificationsEnabled) {
             people.setPushRegistrationId(sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null));
         }
