@@ -82,6 +82,7 @@ import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
+import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.involvement.GetInvolvedFragment;
@@ -572,7 +573,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://create-action"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://tutorial"));
                         try {
                             startActivity(intent);
                         } catch (Exception ex) {
@@ -732,6 +733,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (presenter != null) {
             presenter.displayMyEntourages();
         }
+    }
+
+    public void showTutorial() {
+        CarouselFragment carouselFragment = new CarouselFragment();
+        carouselFragment.show(getSupportFragmentManager(), CarouselFragment.TAG);
     }
 
     private void initializePushNotifications() {

@@ -112,7 +112,9 @@ public class AboutFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.about_tutorial_layout)
     protected void onTutorialClicked() {
-        CarouselFragment carouselFragment = new CarouselFragment();
-        carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+            drawerActivity.showTutorial();
+        }
     }
 }

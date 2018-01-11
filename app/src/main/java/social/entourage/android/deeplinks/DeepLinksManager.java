@@ -238,6 +238,14 @@ public class DeepLinksManager {
                 return;
             }
         }
+        else if (key.equals(DeepLinksView.TUTORIAL.getView())) {
+            if (activity instanceof DrawerActivity) {
+                DrawerActivity drawerActivity = (DrawerActivity)activity;
+                drawerActivity.showTutorial();
+            } else {
+                return;
+            }
+        }
         deepLinkIntent = null;
     }
 
@@ -256,7 +264,8 @@ public class DeepLinksManager {
         FILTERS("filters"),
         GUIDE("guide"),
         MY_CONVERSATIONS("messages"),
-        CREATE_ACTION("create-action");
+        CREATE_ACTION("create-action"),
+        TUTORIAL("tutorial");
 
         private final String view;
 
