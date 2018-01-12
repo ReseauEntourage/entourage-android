@@ -82,7 +82,7 @@
             android:id="@+id/carousel_p1_content1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:paddingEnd="@dimen/carousel_padding"
             android:paddingLeft="@dimen/carousel_padding"
@@ -94,11 +94,11 @@
 
         <ImageView
             android:id="@+id/imageView10"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"
-            app:srcCompat="@drawable/carousel_p1_button"/>
+            app:srcCompat="@drawable/carousel_p1_group"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -42,21 +42,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:gravity="center"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/carousel_content"
             app:htmlText="@string/carousel_p2_content"/>
 
-        <ToggleButton
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:button="@drawable/bg_map_type_tab"
-            android:checked="true"
-            android:enabled="false"
-            android:textOff=""
-            android:textOn=""/>
+            app:srcCompat="@drawable/carousel_p2_tabs"/>
 
     </LinearLayout>
 

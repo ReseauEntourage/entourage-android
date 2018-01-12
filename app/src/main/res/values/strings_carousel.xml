@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="carousel_close_button">Passer</string>
+    <string name="carousel_close_button">@string/close</string>
 
     <string name="carousel_p1_title">Présentez-vous aux membres du réseau</string>
     <string name="carousel_p1_about">Bonjour ! Je viens de rejoindre le réseau et je voudrais rencontrer des voisins bienveillants.</string>

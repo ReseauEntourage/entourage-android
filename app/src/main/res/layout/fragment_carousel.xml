@@ -52,15 +52,15 @@
 
         <ImageView
             android:id="@+id/carousel_b1"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:contentDescription="@string/empty_description"
             app:srcCompat="@drawable/carousel_bullet_filled"/>
 
         <ImageView
             android:id="@+id/carousel_b2"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:contentDescription="@string/empty_description"
@@ -68,8 +68,8 @@
 
         <ImageView
             android:id="@+id/carousel_b3"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:contentDescription="@string/empty_description"
@@ -77,8 +77,8 @@
 
         <ImageView
             android:id="@+id/carousel_b4"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:contentDescription="@string/empty_description"

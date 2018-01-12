@@ -57,7 +57,8 @@
             android:layout_marginLeft="@dimen/carousel_padding"
             android:layout_marginRight="@dimen/carousel_padding"
             android:layout_marginStart="@dimen/carousel_padding"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/carousel_content"
             app:htmlText="@string/carousel_p4_content"/>
