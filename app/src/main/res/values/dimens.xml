@@ -7,6 +7,7 @@
 
     <dimen name="carousel_title">24sp</dimen>
     <dimen name="carousel_content">17sp</dimen>
+    <dimen name="carousel_padding">20dp</dimen>
     <dimen name="carousel_bullets_bottom">100dp</dimen>
 
     <dimen name="act_button_right_padding">10dp</dimen>

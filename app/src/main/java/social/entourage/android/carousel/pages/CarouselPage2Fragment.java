@@ -28,11 +28,6 @@ public class CarouselPage2Fragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_carousel_page2, container, false);
 
-        TextView textView = (TextView)v.findViewById(R.id.carousel_p2_content);
-        if (textView != null) {
-            textView.setText( Utils.fromHtml(getString(R.string.carousel_p2_content)) );
-        }
-
         return v;
     }
 

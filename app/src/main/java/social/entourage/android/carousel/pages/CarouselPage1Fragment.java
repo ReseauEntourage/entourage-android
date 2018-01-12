@@ -38,14 +38,4 @@ public class CarouselPage1Fragment extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.carousel_p1_handshake)
-    void onHandshakeClicked() {
-        Intent blogIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.HELP_URL));
-        try {
-            startActivity(blogIntent);
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(getActivity(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-        }
-    }
-
 }

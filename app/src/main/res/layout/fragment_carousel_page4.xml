@@ -3,63 +3,73 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context="social.entourage.android.carousel.pages.CarouselPage4Fragment"
               android:orientation="vertical"
-              android:paddingEnd="40dp"
-              android:paddingLeft="40dp"
-              android:paddingRight="40dp"
-              android:paddingStart="40dp"
-              android:gravity="center_vertical">
+              tools:context="social.entourage.android.carousel.pages.CarouselPage4Fragment">
 
-    <ImageView
-        android:id="@+id/carousel_p4_user_image"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/empty_description"
-        app:srcCompat="@drawable/user_with_badge"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/accent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp">
 
-    <TextView
-        android:text="@string/carousel_p4_title"
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/carousel_p4_group"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/carousel_p4_title"
-        android:textStyle="bold"
-        android:textColor="@color/greyish_brown"
-        android:textSize="@dimen/carousel_title"
-        android:layout_marginTop="20dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
 
-    <TextView
-        android:text="@string/carousel_p4_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/carousel_p4_content"
-        android:textColor="@color/greyish_brown"
-        android:textSize="@dimen/carousel_content"
-        android:layout_marginTop="10dp"
-        />
+        <TextView
+            android:id="@+id/carousel_p4_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/carousel_padding"
+            android:layout_marginLeft="@dimen/carousel_padding"
+            android:layout_marginRight="@dimen/carousel_padding"
+            android:layout_marginStart="@dimen/carousel_padding"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/carousel_p4_title"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/carousel_title"
+            android:textStyle="bold"/>
 
-    <Button
-        android:text="@string/carousel_p4_partner_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/carousel_p4_partner_button"
-        style="@style/AccentButton.BigRoundedCorners"
-        android:layout_marginTop="20dp"
-        android:textSize="14sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"/>
+        <social.entourage.android.view.HtmlTextView
+            android:id="@+id/carousel_p4_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/carousel_padding"
+            android:layout_marginLeft="@dimen/carousel_padding"
+            android:layout_marginRight="@dimen/carousel_padding"
+            android:layout_marginStart="@dimen/carousel_padding"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/carousel_content"
+            app:htmlText="@string/carousel_p4_content"/>
 
-    <Button
-        android:text="@string/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/carousel_p4_close_button"
-        style="@style/WhiteButton.RoundedCorners"
-        android:layout_marginTop="40dp"
-        android:textColor="@color/greyish_brown"
-        android:layout_gravity="center_horizontal"
-        android:textSize="14sp"/>
+        <ImageView
+            android:id="@+id/imageView13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/carousel_p4_plus_with_circle"/>
+    </LinearLayout>
 
 </LinearLayout>

@@ -34,20 +34,4 @@ public class CarouselPage4Fragment extends Fragment {
 
         return view;
     }
-
-    @OnClick(R.id.carousel_p4_partner_button)
-    void onPartnerClicked() {
-        UserEditPartnerFragment editPartnerFragment = new UserEditPartnerFragment();
-        editPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);
-    }
-
-    @OnClick(R.id.carousel_p4_close_button)
-    void onCloseClicked() {
-        Fragment parentFragment = getParentFragment();
-        if (parentFragment != null && (parentFragment instanceof CarouselFragment)) {
-            CarouselFragment fragment = (CarouselFragment) parentFragment;
-            fragment.onCloseClicked();
-        }
-    }
-
 }

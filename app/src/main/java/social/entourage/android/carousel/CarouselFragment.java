@@ -88,8 +88,6 @@ public class CarouselFragment extends EntourageDialogFragment {
 
             @Override
             public void onPageSelected(final int position) {
-                closeButton.setVisibility(position == NUM_PAGES - 1 ? View.GONE : View.VISIBLE);
-                indicatorLayout.setVisibility(position == NUM_PAGES - 1 ? View.INVISIBLE : View.VISIBLE);
                 selectDot(position);
             }
 
