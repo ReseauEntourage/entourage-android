@@ -113,6 +113,7 @@ public class AboutFragment extends EntourageDialogFragment {
     @OnClick(R.id.about_tutorial_layout)
     protected void onTutorialClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            EntourageEvents.logEvent(Constants.EVENT_ABOUT_TUTORIAL);
             DrawerActivity drawerActivity = (DrawerActivity) getActivity();
             drawerActivity.showTutorial();
         }

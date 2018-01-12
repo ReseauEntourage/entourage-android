@@ -267,6 +267,7 @@ public class Constants {
     public static final String EVENT_ABOUT_FACEBOOK = "FacebookPageClick";
     public static final String EVENT_ABOUT_WEBSITE = "WebsiteVisitClick";
     public static final String EVENT_ABOUT_CGU = "CGUClick";
+    public static final String EVENT_ABOUT_TUTORIAL = "OpenTutorialFromMenu";
 
     // Encounter Popup While Tour Events
     public static final String EVENT_ENCOUNTER_POPUP_SHOW = "SwitchToEncounterPopupView";
