@@ -43,6 +43,7 @@
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginStart="14dp"
+                android:gravity="center"
                 android:text="@string/carousel_p1_about"
                 android:textColor="@color/white"
                 android:textSize="@dimen/entourage_font_small"/>
