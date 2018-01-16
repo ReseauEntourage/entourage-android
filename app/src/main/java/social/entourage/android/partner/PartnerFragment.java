@@ -1,17 +1,25 @@
 package social.entourage.android.partner;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.tools.CropCircleTransformation;
 
 /**
  * Fragment that displays the details of a partner organisation
@@ -25,15 +33,48 @@ public class PartnerFragment extends EntourageDialogFragment {
     public static final String TAG = "social.entourage.android.partner_fragment";
 
     private static final String KEY_PARTNER_ID = "social.entourage.android.partner_id";
+    private static final String KEY_PARTNER = "social.entourage.android.partner";
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
     @BindView(R.id.partner_view_logo)
-    ImageView logoImageView;
+    ImageView partnerLogoImageView;
+
+    @BindView(R.id.partner_view_name)
+    TextView partnerName;
+
+    @BindView(R.id.partner_view_details)
+    TextView partnerDescription;
+
+    @BindView(R.id.partner_view_phone_layout)
+    View partnerPhoneLayout;
+
+    @BindView(R.id.partner_view_phone)
+    TextView partnerPhone;
+
+    @BindView(R.id.partner_view_address_layout)
+    View partnerAddressLayout;
+
+    @BindView(R.id.partner_view_address)
+    TextView partnerAddress;
+
+    @BindView(R.id.partner_view_website_layout)
+    View partnerWebsiteLayout;
+
+    @BindView(R.id.partner_view_website)
+    TextView partnerWebsite;
+
+    @BindView(R.id.partner_view_email_layout)
+    View partnerEmailLayout;
+
+    @BindView(R.id.partner_view_email)
+    TextView partnerEmail;
 
     private long partnerId;
+
+    private Partner partner;
 
     // ----------------------------------
     // LIFECYCLE
@@ -58,10 +99,26 @@ public class PartnerFragment extends EntourageDialogFragment {
         return fragment;
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param partner Partner object.
+     * @return A new instance of fragment PartnerFragment.
+     */
+    public static PartnerFragment newInstance(Partner partner) {
+        PartnerFragment fragment = new PartnerFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(KEY_PARTNER, partner);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            partner = (Partner)getArguments().getSerializable(KEY_PARTNER);
             partnerId = getArguments().getLong(KEY_PARTNER_ID);
         }
     }
@@ -82,7 +139,9 @@ public class PartnerFragment extends EntourageDialogFragment {
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        configureView();
+        if (partner != null) {
+            configureView();
+        }
     }
 
     @OnClick(R.id.title_close_button)
@@ -99,14 +158,47 @@ public class PartnerFragment extends EntourageDialogFragment {
         if (getActivity() == null || getActivity().isFinishing()) {
         }
 
-        // For the moment populate with hardcoded values related to ATD
-        /*
+        // url
         Picasso.with(getContext())
-                .load(Uri.parse("https://s3-eu-west-1.amazonaws.com/entourage-ressources/atd-large.png"))
+                .load(Uri.parse(partner.getLargeLogoUrl()))
                 .placeholder(R.drawable.partner_placeholder)
-                .transform(new CropCircleTransformation())
-                .into(logoImageView);
-                */
+                .into(partnerLogoImageView);
+        // name
+        partnerName.setText(partner.getName());
+        // description
+        partnerDescription.setText(partner.getDescription());
+        // phone
+        String phone = partner.getPhone();
+        if (phone == null || phone.length() == 0) {
+            partnerPhoneLayout.setVisibility(View.GONE);
+        } else {
+            partnerPhoneLayout.setVisibility(View.VISIBLE);
+            partnerPhone.setText(phone);
+        }
+        // address
+        String address = partner.getAddress();
+        if (address == null || address.length() == 0) {
+            partnerAddressLayout.setVisibility(View.GONE);
+        } else {
+            partnerAddressLayout.setVisibility(View.VISIBLE);
+            partnerAddress.setText(address);
+        }
+        // website
+        String website = partner.getWebsiteUrl();
+        if (website == null || website.length() == 0) {
+            partnerWebsiteLayout.setVisibility(View.GONE);
+        } else {
+            partnerWebsiteLayout.setVisibility(View.VISIBLE);
+            partnerWebsite.setText(website);
+        }
+        // email
+        String email = partner.getEmail();
+        if (email == null || email.length() == 0) {
+            partnerEmailLayout.setVisibility(View.GONE);
+        } else {
+            partnerEmailLayout.setVisibility(View.VISIBLE);
+            partnerEmail.setText(email);
+        }
     }
 
 }

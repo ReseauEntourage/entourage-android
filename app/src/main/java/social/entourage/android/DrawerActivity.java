@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -43,6 +47,7 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.security.Permission;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -61,6 +66,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent;
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent;
@@ -76,6 +82,7 @@ import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
+import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.involvement.GetInvolvedFragment;
@@ -104,6 +111,9 @@ import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 import social.entourage.android.webview.WebViewFragment;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -225,6 +235,8 @@ public class DrawerActivity extends EntourageSecuredActivity
             //initialize the push notifications
             initializePushNotifications();
 
+            updateMixpanelInfo();
+
             Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
             Crashlytics.setUserName(user.getDisplayName());
         }
@@ -279,6 +291,11 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             }
             sendMapFragmentExtras();
+        }
+
+        if (intentAction == null) {
+            // user just returns to the app, update mixpanel
+            updateMixpanelInfo();
         }
     }
 
@@ -556,7 +573,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://create-action"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://tutorial"));
                         try {
                             startActivity(intent);
                         } catch (Exception ex) {
@@ -718,6 +735,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
+    public void showTutorial() {
+        CarouselFragment carouselFragment = new CarouselFragment();
+        carouselFragment.show(getSupportFragmentManager(), CarouselFragment.TAG);
+    }
+
     private void initializePushNotifications() {
         final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
         boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
@@ -726,8 +748,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         } else {
             presenter.updateApplicationInfo("");
         }
+    }
 
+    private void updateMixpanelInfo() {
         User user = getAuthenticationController().getUser();
+        if (user == null) return;
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         mixpanel.identify(String.valueOf(user.getId()));
         MixpanelAPI.People people = mixpanel.getPeople();
@@ -737,10 +762,16 @@ public class DrawerActivity extends EntourageSecuredActivity
         people.set("EntouragePartner", user.getPartner());
         people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         people.set("Language", Locale.getDefault().getLanguage());
-            /*people.set("EntourageGeolocEnable", user.getPartner());*/
-        people.set("EntourageNotifEnable", notificationsEnabled ?"YES":"NO");
 
-        //mixpanel.getPeople().initPushHandling(RegisterGCMService.GCM_SENDER_ID);
+        if (PermissionChecker.checkSelfPermission(this, user.isPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            people.set("EntourageGeolocEnable", "YES");
+        } else {
+            people.set("EntourageGeolocEnable", "NO");
+        }
+
+        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+        people.set("EntourageNotifEnable", notificationsEnabled && NotificationManagerCompat.from(this).areNotificationsEnabled() ?"YES":"NO");
         if(notificationsEnabled) {
             people.setPushRegistrationId(sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null));
         }
@@ -1011,6 +1042,18 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Subscribe
     public void onUnauthorized(OnUnauthorizedEvent event) {
         logout();
+    }
+
+    @Subscribe
+    public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
+        if (event == null) return;
+
+        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
+        if (mixpanel == null) return;
+        MixpanelAPI.People people = mixpanel.getPeople();
+        if (people == null) return;
+
+        people.set("EntourageGeolocEnable", event.isPermissionGranted() ? "YES" : "NO");
     }
 
     @Override

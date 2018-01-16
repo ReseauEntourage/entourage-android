@@ -40,6 +40,7 @@ public class AuthenticationController {
     public AuthenticationController(ComplexPreferences appSharedPref) {
         this.appSharedPref = appSharedPref;
         loggedUser = null;
+        userPreferences = null;
     }
 
     public AuthenticationController init() {
@@ -47,51 +48,13 @@ public class AuthenticationController {
         if (loggedUser != null && loggedUser.getToken() == null) {
             loggedUser = null;
         }
-        Type type = new TypeToken<Map<Integer, UserPreferences>>(){}.getType();
-        userPreferencesHashMap = appSharedPref.getObject(PREF_KEY_USER_PREFERENCES, type);
-        if (userPreferencesHashMap == null) {
-            userPreferencesHashMap = new HashMap<>();
-        }
-        if (loggedUser != null) {
-            userPreferences = userPreferencesHashMap.get(loggedUser.getId());
-        }
-        if (userPreferences == null) {
-            userPreferences = new UserPreferences();
-        }
-        // Check if we have an old version of saving the map filter with hashmap
-        Type typeMapFilterHashMap = new TypeToken<Map<Integer, MapFilter>>(){}.getType();
-        Map<Integer, MapFilter> mapFilterHashMap = appSharedPref.getObject(PREF_KEY_MAP_FILTER_HASHMAP, typeMapFilterHashMap);
-        if (mapFilterHashMap != null) {
-            // save it to user preferences
-            if (loggedUser != null) {
-                MapFilter mapFilter = mapFilterHashMap.get(loggedUser.getId());
-                userPreferences.setMapFilter(mapFilter);
-                saveUserPreferences();
-            }
-            // delete it
-            appSharedPref.putObject(PREF_KEY_MAP_FILTER_HASHMAP, null);
-        }
-        if (loggedUser != null) {
-            // Check if we have the old version of saving map filter
-            MapFilter mapFilter = appSharedPref.getObject(PREF_KEY_MAP_FILTER, MapFilter.class);
-            if (mapFilter != null) {
-                // Found old version, save it to the new structure
-                userPreferences.setMapFilter(mapFilter);
-                saveUserPreferences();
-                // Delete it
-                appSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
-            }
-        }
-        // MapFilter validation
-        MapFilter mapFilter = getMapFilter();
-        if (mapFilter != null) {
-            mapFilter.validateCategories();
-        }
+        loadUserPreferences();
 
         return this;
     }
 
     public void saveUser(User user) {
+        boolean shouldLoadUserPreferences = true;
         if (loggedUser != null && loggedUser.getId() == user.getId()) {
             user.setPhone(loggedUser.getPhone());
             user.setSmsCode(loggedUser.getSmsCode());
@@ -100,10 +63,14 @@ public class AuthenticationController {
                 user.setEncounterDisclaimerShown(loggedUser.isEncounterDisclaimerShown());
                 user.setOnboardingUser(loggedUser.isOnboardingUser());
             }
+            shouldLoadUserPreferences = false;
         }
         loggedUser = user;
         appSharedPref.putObject(PREF_KEY_USER, user);
         appSharedPref.commit();
+
+        if (shouldLoadUserPreferences) loadUserPreferences();
+
         BusProvider.getInstance().post(new Events.OnUserInfoUpdatedEvent());
     }
 
@@ -132,6 +99,7 @@ public class AuthenticationController {
             appSharedPref.commit();
         }
         loggedUser = null;
+        userPreferences = null;
     }
 
     public boolean isAuthenticated() {
@@ -240,13 +208,58 @@ public class AuthenticationController {
     }
 
     public Tour getSavedTour() {
-        return userPreferences.getOngoingTour();
+        return (userPreferences != null ? userPreferences.getOngoingTour() : null);
     }
 
     public void saveTour(Tour tour) {
         if (loggedUser != null && userPreferences != null) {
             userPreferences.setOngoingTour(tour);
             saveUserPreferences();
+        }
+    }
+
+    private void loadUserPreferences() {
+        if (userPreferencesHashMap == null) {
+            Type type = new TypeToken<Map<Integer, UserPreferences>>() {}.getType();
+            userPreferencesHashMap = appSharedPref.getObject(PREF_KEY_USER_PREFERENCES, type);
+        }
+        if (userPreferencesHashMap == null) {
+            userPreferencesHashMap = new HashMap<>();
+        }
+        if (loggedUser != null) {
+            userPreferences = userPreferencesHashMap.get(loggedUser.getId());
+        }
+        if (userPreferences == null) {
+            userPreferences = new UserPreferences();
+        }
+        // Check if we have an old version of saving the map filter with hashmap
+        Type typeMapFilterHashMap = new TypeToken<Map<Integer, MapFilter>>(){}.getType();
+        Map<Integer, MapFilter> mapFilterHashMap = appSharedPref.getObject(PREF_KEY_MAP_FILTER_HASHMAP, typeMapFilterHashMap);
+        if (mapFilterHashMap != null) {
+            // save it to user preferences
+            if (loggedUser != null) {
+                MapFilter mapFilter = mapFilterHashMap.get(loggedUser.getId());
+                userPreferences.setMapFilter(mapFilter);
+                saveUserPreferences();
+            }
+            // delete it
+            appSharedPref.putObject(PREF_KEY_MAP_FILTER_HASHMAP, null);
+        }
+        if (loggedUser != null) {
+            // Check if we have the old version of saving map filter
+            MapFilter mapFilter = appSharedPref.getObject(PREF_KEY_MAP_FILTER, MapFilter.class);
+            if (mapFilter != null) {
+                // Found old version, save it to the new structure
+                userPreferences.setMapFilter(mapFilter);
+                saveUserPreferences();
+                // Delete it
+                appSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
+            }
+        }
+        // MapFilter validation
+        MapFilter mapFilter = getMapFilter();
+        if (mapFilter != null) {
+            mapFilter.validateCategories();
         }
     }
 

@@ -16,6 +16,7 @@
     <string name="partner_view_phone_description">Numéro de téléphone</string>
     <string name="partner_view_address_description">Adresse</string>
     <string name="partner_view_website_description">Site web</string>
+    <string name="partner_view_email_description">@string/user_edit_email_label</string>
 
     <!-- ATD Hardcoded values !-->
     <string name="atd_name">ATD Quart Monde</string>

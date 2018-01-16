@@ -1,76 +1,105 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:paddingStart="40dp"
-                android:paddingEnd="40dp">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/accent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <TextView
-            android:text="@string/carousel_p1_title"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/carousel_p1_title"
-            android:textStyle="bold"
-            android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/carousel_title"/>
-
-        <TextView
-            android:text="@string/carousel_p1_content1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/carousel_p1_content1"
-            android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/carousel_content"
-            android:layout_marginTop="10dp"
-            />
-
-        <TextView
-            android:text="@string/carousel_p1_content2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/carousel_p1_content2"
-            android:textStyle="bold"
-            android:textSize="@dimen/carousel_content"
-            android:textColor="@color/greyish_brown"/>
+            app:srcCompat="@drawable/user_3"/>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:id="@+id/carousel_p1_handshake">
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp">
 
-            <ImageView
-                android:id="@+id/carousel_p1_handshake_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty_description"
-                app:srcCompat="@drawable/ic_handshake"/>
+            <View
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:background="@drawable/about_topleft_corner"/>
 
             <TextView
-                android:id="@+id/carousel_p1_handshake_text"
-                android:layout_width="0dp"
+                android:id="@+id/carousel_p1_about"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:text="@string/carousel_p1_handshake"
-                android:textColor="@color/accent"
-                android:textSize="@dimen/carousel_content"
-                android:textStyle="normal|bold"/>
+                android:layout_marginEnd="14dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginStart="14dp"
+                android:gravity="center"
+                android:text="@string/carousel_p1_about"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_small"/>
+
+            <View
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="end"
+                android:background="@drawable/about_bottomright_corner"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/carousel_p1_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingEnd="@dimen/carousel_padding"
+            android:paddingLeft="@dimen/carousel_padding"
+            android:paddingRight="@dimen/carousel_padding"
+            android:paddingStart="@dimen/carousel_padding"
+            android:paddingTop="20dp"
+            android:text="@string/carousel_p1_title"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/carousel_title"
+            android:textStyle="bold"/>
+
+        <social.entourage.android.view.HtmlTextView
+            android:id="@+id/carousel_p1_content1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingEnd="@dimen/carousel_padding"
+            android:paddingLeft="@dimen/carousel_padding"
+            android:paddingRight="@dimen/carousel_padding"
+            android:paddingStart="@dimen/carousel_padding"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/carousel_content"
+            app:htmlText="@string/carousel_p1_content"/>
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            app:srcCompat="@drawable/carousel_p1_group"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.google.android.gms.maps.model.LatLng;
 
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
@@ -451,13 +452,21 @@ public class Events {
     public static class OnPartnerViewRequestedEvent {
 
         private long partnerId;
+        private Partner partner;
 
         public OnPartnerViewRequestedEvent(long partnerId) {
             this.partnerId = partnerId;
         }
+        public OnPartnerViewRequestedEvent(Partner partner) {
+            this.partner = partner;
+        }
 
         public long getPartnerId() {
             return partnerId;
+        }
+
+        public Partner getPartner() {
+            return partner;
         }
     }
 

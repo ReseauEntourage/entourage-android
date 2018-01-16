@@ -184,7 +184,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             TextView label = (TextView) convertView.findViewById(R.id.entourage_category_group_label);
             ImageView arrow = (ImageView) convertView.findViewById(R.id.entourage_category_group_arrow);
             if (label != null) {
-                label.setText(EntourageCategory.getEntourageTypeDescription((String) getGroup(groupPosition - 1)));
+                label.setText(EntourageCategory.getEntourageTypeDescription((String) getGroup(groupPosition)));
             }
             if (arrow != null) {
                 if (_isExpanded) {

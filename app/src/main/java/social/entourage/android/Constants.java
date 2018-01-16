@@ -3,8 +3,8 @@ package social.entourage.android;
 public class Constants {
 
     //TODO: should be changed after each release
-    // v4.2 API Key
-    public static final String API_KEY = "946478b0f527ef016f03c4b3";
+    // v4.3 API Key
+    public static final String API_KEY = "4d684bad4f06e5366e5c9bdf";
 
     // Announcements version
     public static final String ANNOUNCEMENTS_VERSION = "v1";
@@ -267,6 +267,7 @@ public class Constants {
     public static final String EVENT_ABOUT_FACEBOOK = "FacebookPageClick";
     public static final String EVENT_ABOUT_WEBSITE = "WebsiteVisitClick";
     public static final String EVENT_ABOUT_CGU = "CGUClick";
+    public static final String EVENT_ABOUT_TUTORIAL = "OpenTutorialFromMenu";
 
     // Encounter Popup While Tour Events
     public static final String EVENT_ENCOUNTER_POPUP_SHOW = "SwitchToEncounterPopupView";
@@ -292,5 +293,5 @@ public class Constants {
     public static final int EMPTY_POPUP_DISPLAY_LIMIT = 300; //meters
 
     // Carousel delay time
-    public static final long CAROUSEL_DELAY_MILLIS = 2000; // 2 seconds
+    public static final long CAROUSEL_DELAY_MILLIS = 15000; // 15 seconds
 }

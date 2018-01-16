@@ -44,6 +44,7 @@ import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.UserFragment;
@@ -364,6 +365,23 @@ public class UserEditFragment extends EntourageDialogFragment {
         editedUser.setPartner(user.getPartner());
 
         configureView();
+    }
+
+    @Subscribe
+    public void onPartnerViewRequested(Events.OnPartnerViewRequestedEvent event) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        if (event == null) {
+            return;
+        }
+        if (event.getPartner() != null) {
+            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartner());
+            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+        } else {
+            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartnerId());
+            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+        }
     }
 
     // ----------------------------------

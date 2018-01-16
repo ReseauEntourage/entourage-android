@@ -39,6 +39,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.EncounterTaskResult;
@@ -151,11 +152,17 @@ public class TourServiceManager {
         provider.setStatusListener(new FusedLocationStatusListener(tourService));
         provider.start();
         Tour savedTour = controller.getSavedTour();
-        if (savedTour != null) {
-            tourServiceManager.tour = savedTour;
-            tourServiceManager.tourId = savedTour.getId();
-            tourService.notifyListenersTourCreated(true, savedTour.getId());
-            provider.setLocationUpdateUserType(UserType.PRO);
+        if (savedTour != null && user != null) {
+            TourAuthor author = savedTour.getAuthor();
+            if (author == null || author.getUserID() != user.getId()) {
+                // it's not the user's tour, so remove it from preferences
+                controller.saveTour(null);
+            } else {
+                tourServiceManager.tour = savedTour;
+                tourServiceManager.tourId = savedTour.getId();
+                tourService.notifyListenersTourCreated(true, savedTour.getId());
+                provider.setLocationUpdateUserType(UserType.PRO);
+            }
         }
         BusProvider.getInstance().register(tourServiceManager);
         return tourServiceManager;
@@ -388,6 +395,7 @@ public class TourServiceManager {
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
             MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
+            if (mapFilter == null) return;
             currentNewsFeedCall = createNewsfeedWrapperCall(beforeDate, location, distance, itemsPerPage, mapFilter);
             currentNewsFeedCall.enqueue(new NewsFeedCallback(this, tourService));
         } else {

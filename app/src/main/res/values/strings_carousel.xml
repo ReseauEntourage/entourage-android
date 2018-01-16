@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="carousel_close_button">Passer</string>
+    <string name="carousel_close_button">@string/close</string>
 
-    <string name="carousel_p1_title">1. OSEZ</string>
-    <string name="carousel_p1_content1">Pour commencer, Entourage vous invite à aller à la rencontre des personnes sans-abri que vous croisez au quotidien.\n</string>
-    <string name="carousel_p1_content2">Pour vous aider, nous avons réalisé un guide complet :</string>
-    <string name="carousel_p1_handshake">Simple comme bonjour</string>
+    <string name="carousel_p1_title">Présentez-vous aux membres du réseau</string>
+    <string name="carousel_p1_about">Bonjour ! Je viens de rejoindre le réseau et je voudrais rencontrer des voisins bienveillants.</string>
+    <string name="carousel_p1_content"><![CDATA[Pour renseigner votre description, <font color="#ec4e1a">accédez à votre profil depuis le bouton menu</font> en haut à gauche : ]]></string>
 
-    <string name="carousel_p2_title">2. REJOIGNEZ</string>entourages
-    <string name="carousel_p2_content"><![CDATA[Les zones orangées sur la carte, ou \"<font color="#ec4e1a">entourages</font>\", représentent les actions bienveillantes créées par vos voisins.<br/><br/>Rejoignez-les pour donner du temps, des compétences, des conseils, etc.]]></string>
+    <string name="carousel_p2_title">Explorez les actions autour de vous</string>entourages
+    <string name="carousel_p2_content"><![CDATA[Consultez les actions créées par vos voisins et <font color="#ec4e1a">rejoignez celles qui vous intéressent depuis la carte : </font>]]></string>
 
-    <string name="carousel_p3_title">3. CRÉEZ</string>
-    <string name="carousel_p3_content">A votre tour, lancez vos propres initiatives solidaires  à tout moment en cliquant sur le bouton <b>+</b> en bas à droite.\n\nVos voisins pourront vous rejoindre pour se coordonner et vous aider dans votre action !</string>
+    <string name="carousel_p3_title">Osez la rencontre avec les personnes sans-abri</string>
+    <string name="carousel_p3_content"><![CDATA[<font color="#ec4e1a">Découvrez les conseils pratiques</font> du guide Simple Comme Bonjour <font color="#ec4e1a">depuis le menu</font> en haut à gauche :]]></string>
 
-    <string name="carousel_p4_title">BONUS!</string>
-    <string name="carousel_p4_content">Vous êtes membre ou sympathisant d’ATD Quart Monde ? Affichez son badge sur votre photo de profil !</string>
-    <string name="carousel_p4_partner_button">Afficher mon soutien</string>
+    <string name="carousel_p4_title">Lancez une action solidaire</string>
+    <string name="carousel_p4_content"><![CDATA[Faites appel à vos voisins afin d’entourer une personne sans-abri. <font color="#ec4e1a">Créez une action avec le bouton :</font>]]></string>
 
 </resources>
