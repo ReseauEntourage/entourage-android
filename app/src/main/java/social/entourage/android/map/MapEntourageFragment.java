@@ -1917,6 +1917,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         Iterator iteratorNewsfeed = newsfeedList.iterator();
         while (iteratorNewsfeed.hasNext()) {
             Newsfeed newsfeed = (Newsfeed) iteratorNewsfeed.next();
+            if(newsfeed==null) {
+                continue;
+            }
             if (!isHistory) {
                 Object card = newsfeed.getData();
                 if (card == null || !(card instanceof TimestampedObject)) {
