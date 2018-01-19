@@ -1712,6 +1712,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             // iterate over the received users
             while (iterator.hasNext()) {
                 TourUser tourUser =  iterator.next();
+                if(tourUser == null) {
+                    continue;
+                }
                 // add the author to members list and skip it
                 if (tourUser.getUserId() == feedItem.getAuthor().getUserID()) {
                     if (membersAdapter.findCard(tourUser) == null) {
