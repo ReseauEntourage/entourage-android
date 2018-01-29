@@ -984,7 +984,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onFeedItemClosed(boolean closed, FeedItem feedItem) {
-        if (getActivity() != null) {
+        if (getActivity() != null && feedItem != null) {
             if (closed) {
 
                 clearAll();
@@ -1014,9 +1014,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @StringRes int tourStatusStringId = R.string.local_service_stopped;
                     if (feedItem.isFreezed()) {
                         tourStatusStringId = R.string.tour_freezed;
-                        if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                            tourStatusStringId = R.string.entourage_info_text_close;
-                        }
+                    }
+                    if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                        tourStatusStringId = R.string.entourage_info_text_close;
                     }
 
                     Toast.makeText(getActivity(), tourStatusStringId, Toast.LENGTH_SHORT).show();
@@ -1025,8 +1025,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             } else {
                 if (getActivity() != null) {
                     @StringRes int tourClosedFailedId = R.string.tour_close_fail;
-                    if (feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)) {
-                        tourClosedFailedId = R.string.tour_freezed;
+                    if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                        if (feedItem.getStatus()!=null && feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)) {
+                            tourClosedFailedId = R.string.tour_freezed;
+                        }
                     }
                     Toast.makeText(getActivity(), tourClosedFailedId, Toast.LENGTH_SHORT).show();
                 }

@@ -1916,7 +1916,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 }
             }
         }
-        else {
+        else if(getActivity()!=null){
             // Error
             Toast.makeText(getActivity(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
         }

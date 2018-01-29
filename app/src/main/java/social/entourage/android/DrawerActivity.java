@@ -779,14 +779,17 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void logout(){
-        //remove the tutorial flag
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-        HashSet<String> loggedNumbers = (HashSet) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
-        loggedNumbers.remove(EntourageApplication.me(getApplicationContext()).getPhone());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers);
-        editor.commit();
+        //remove user phone
+        User me = EntourageApplication.me(getApplicationContext());
+        if(me != null) {
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+            loggedNumbers.remove(me.getPhone());
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers);
+            editor.commit();
+        }
 
         //TODO: do a proper DELETE not an UPDATE
         //presenter.deleteApplicationInfo(getDeviceID());

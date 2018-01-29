@@ -219,13 +219,13 @@ public class AuthenticationController {
     }
 
     private void loadUserPreferences() {
-        if (userPreferencesHashMap == null) {
-            Type type = new TypeToken<Map<Integer, UserPreferences>>() {}.getType();
-            userPreferencesHashMap = appSharedPref.getObject(PREF_KEY_USER_PREFERENCES, type);
-        }
+        Type type = new TypeToken<Map<Integer, UserPreferences>>() {}.getType();
+        userPreferencesHashMap = appSharedPref.getObject(PREF_KEY_USER_PREFERENCES, type);
+
         if (userPreferencesHashMap == null) {
             userPreferencesHashMap = new HashMap<>();
         }
+
         if (loggedUser != null) {
             userPreferences = userPreferencesHashMap.get(loggedUser.getId());
         }
