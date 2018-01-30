@@ -1801,7 +1801,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         hideProgressBar();
 
         if (chatMessage == null) {
-            Toast.makeText(getContext(), R.string.tour_info_error_chat_message, Toast.LENGTH_SHORT).show();
+            if(getContext()!=null) {
+                Toast.makeText(getContext(), R.string.tour_info_error_chat_message, Toast.LENGTH_SHORT).show();
+            }
             return;
         }
         commentEditText.setText("");
