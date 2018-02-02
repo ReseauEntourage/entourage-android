@@ -117,7 +117,6 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         // inform the app to refrehs the my entourages feed
         BusProvider.getInstance().post(new Events.OnMyEntouragesFilterChanged());
 
-        // flurry event
         EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_SAVE);
 
         // dismiss the dialog

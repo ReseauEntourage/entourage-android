@@ -10,7 +10,6 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
-import com.flurry.android.FlurryAgent;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -37,7 +36,7 @@ import social.entourage.android.newsfeed.FeedItemsStorage;
 import static social.entourage.android.BuildConfig.FLAVOR;
 
 /**
- * Application setup for Flurry, JodaTime and Dagger
+ * Application setup for Analytics, JodaTime and Dagger
  */
 public class EntourageApplication extends MultiDexApplication {
 
@@ -61,7 +60,6 @@ public class EntourageApplication extends MultiDexApplication {
         instance = this;
 
         setupFabric();
-        setupFlurry();
         setupMixpanel();
         setupFacebookSDK();
         JodaTimeAndroid.init(this);
@@ -82,16 +80,6 @@ public class EntourageApplication extends MultiDexApplication {
                 .authenticationModule(new AuthenticationModule())
                 .build();
         component.inject(this);
-    }
-
-    private void setupFlurry() {
-        new FlurryAgent.Builder()
-                .withLogEnabled(true)
-                .withCaptureUncaughtExceptions(true)
-                .withLogEnabled(true)
-                .withLogLevel(Log.VERBOSE)
-                .withListener(new EntourageEvents())
-                .build(this, BuildConfig.FLURRY_API_KEY);
     }
 
     private void setupMixpanel() {
