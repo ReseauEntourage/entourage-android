@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1085027645289",
+    "firebase_url": "https://entourage-90011.firebaseio.com",
+    "project_id": "entourage-90011",
+    "storage_bucket": "entourage-90011.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085027645289:android:d411eda9168df406",
+        "android_client_info": {
+          "package_name": "social.entourage.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085027645289-lub43l3qja0ilaroq09bqarir2jtu1g2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "social.entourage.android",
+            "certificate_hash": "5ab374848b9b5402a442152615cbd0bc2637347d"
+          }
+        },
+        {
+          "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBryJwDRkLE9jMc0hgLt4YlbP31Snw2qYA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

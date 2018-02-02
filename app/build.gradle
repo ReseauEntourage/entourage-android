@@ -181,3 +181,5 @@ dependencies {
 
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 }
+
+apply plugin: 'com.google.gms.google-services'
