@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,9 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -26,7 +23,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TimeUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,14 +38,11 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.crashlytics.android.Crashlytics;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.security.Permission;
 import java.util.HashSet;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -63,7 +56,6 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
@@ -98,7 +90,6 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationManager;
-import social.entourage.android.message.push.PushNotificationService;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.sidemenu.SideMenuItemView;
@@ -111,9 +102,6 @@ import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 import social.entourage.android.webview.WebViewFragment;
-
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -753,28 +741,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     private void updateMixpanelInfo() {
         User user = getAuthenticationController().getUser();
         if (user == null) return;
-        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
-        mixpanel.identify(String.valueOf(user.getId()));
-        MixpanelAPI.People people = mixpanel.getPeople();
-        people.identify(String.valueOf(user.getId()));
-
-        people.set("$email", user.getEmail());
-        people.set("EntouragePartner", user.getPartner());
-        people.set("EntourageUserType", user.isPro()?"Pro":"Public");
-        people.set("Language", Locale.getDefault().getLanguage());
-
-        if (PermissionChecker.checkSelfPermission(this, user.isPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            people.set("EntourageGeolocEnable", "YES");
-        } else {
-            people.set("EntourageGeolocEnable", "NO");
-        }
-
-        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
-        people.set("EntourageNotifEnable", notificationsEnabled && NotificationManagerCompat.from(this).areNotificationsEnabled() ?"YES":"NO");
-        if(notificationsEnabled) {
-            people.setPushRegistrationId(sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null));
-        }
+        EntourageEvents.updateMixpanelInfo(user, getApplicationContext(), NotificationManagerCompat.from(this).areNotificationsEnabled());
     }
 
     @Override
@@ -1051,12 +1018,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
         if (event == null) return;
 
-        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
-        if (mixpanel == null) return;
-        MixpanelAPI.People people = mixpanel.getPeople();
-        if (people == null) return;
-
-        people.set("EntourageGeolocEnable", event.isPermissionGranted() ? "YES" : "NO");
+        EntourageEvents.onLocationPermissionGranted(event.isPermissionGranted());
     }
 
     @Override

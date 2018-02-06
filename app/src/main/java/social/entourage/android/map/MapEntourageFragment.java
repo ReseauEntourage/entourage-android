@@ -1042,66 +1042,67 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onLocationProviderStatusChanged(boolean active) {
-        if (gpsLayout != null) {
-            if (active) {
-                if (gpsLayout.getVisibility() == View.VISIBLE) {
-                    // Move filter and center buttons up
-                    gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            } else {
-                                gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                            }
-
-                            int h = gpsLayout.getHeight();
-
-                            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)centerButton.getLayoutParams();
-                            lp.topMargin -= h;
-                            centerButton.setLayoutParams(lp);
-
-                            lp = (RelativeLayout.LayoutParams)filterButton.getLayoutParams();
-                            lp.topMargin -= h;
-                            filterButton.setLayoutParams(lp);
-
-                            lp = (RelativeLayout.LayoutParams)mapDisplayToggle.getLayoutParams();
-                            lp.topMargin -= h;
-                            mapDisplayToggle.setLayoutParams(lp);
+        if (gpsLayout == null) {
+            return;
+        }
+        if (active) {
+            if (gpsLayout.getVisibility() == View.VISIBLE) {
+                // Move filter and center buttons up
+                gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         }
-                    });
-                }
-                gpsLayout.setVisibility(View.GONE);
-            } else {
-                if (gpsLayout.getVisibility() == View.GONE) {
-                    // Move filter and center buttons down, so they are not covered by the gps layout
-                    gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            } else {
-                                gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                            }
 
-                            int h = gpsLayout.getHeight();
+                        int h = gpsLayout.getHeight();
 
-                            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)centerButton.getLayoutParams();
-                            lp.topMargin += h;
-                            centerButton.setLayoutParams(lp);
+                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) centerButton.getLayoutParams();
+                        lp.topMargin -= h;
+                        centerButton.setLayoutParams(lp);
 
-                            lp = (RelativeLayout.LayoutParams)filterButton.getLayoutParams();
-                            lp.topMargin += h;
-                            filterButton.setLayoutParams(lp);
+                        lp = (RelativeLayout.LayoutParams) filterButton.getLayoutParams();
+                        lp.topMargin -= h;
+                        filterButton.setLayoutParams(lp);
 
-                            lp = (RelativeLayout.LayoutParams)mapDisplayToggle.getLayoutParams();
-                            lp.topMargin += h;
-                            mapDisplayToggle.setLayoutParams(lp);
-                        }
-                    });
-                }
-                gpsLayout.setVisibility(View.VISIBLE);
+                        lp = (RelativeLayout.LayoutParams) mapDisplayToggle.getLayoutParams();
+                        lp.topMargin -= h;
+                        mapDisplayToggle.setLayoutParams(lp);
+                    }
+                });
             }
+            gpsLayout.setVisibility(View.GONE);
+        } else {
+            if (gpsLayout.getVisibility() == View.GONE) {
+                // Move filter and center buttons down, so they are not covered by the gps layout
+                gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
+
+                        int h = gpsLayout.getHeight();
+
+                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) centerButton.getLayoutParams();
+                        lp.topMargin += h;
+                        centerButton.setLayoutParams(lp);
+
+                        lp = (RelativeLayout.LayoutParams) filterButton.getLayoutParams();
+                        lp.topMargin += h;
+                        filterButton.setLayoutParams(lp);
+
+                        lp = (RelativeLayout.LayoutParams) mapDisplayToggle.getLayoutParams();
+                        lp.topMargin += h;
+                        mapDisplayToggle.setLayoutParams(lp);
+                    }
+                });
+            }
+            gpsLayout.setVisibility(View.VISIBLE);
         }
     }
 
