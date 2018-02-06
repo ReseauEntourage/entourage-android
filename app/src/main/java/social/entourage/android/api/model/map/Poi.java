@@ -26,7 +26,7 @@ public class Poi extends TimestampedObject implements Serializable, ClusterItem 
 
     private String description;
 
-    private String adress;
+    private String address;
 
     private String phone;
 
@@ -71,12 +71,12 @@ public class Poi extends TimestampedObject implements Serializable, ClusterItem 
         this.description = description;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String address) {
-        this.adress = address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhone() {
@@ -138,6 +138,16 @@ public class Poi extends TimestampedObject implements Serializable, ClusterItem 
     @Override
     public LatLng getPosition() {
         return new LatLng(latitude, longitude);
+    }
+
+    @Override
+    public String getTitle() {
+        return name;
+    }
+
+    @Override
+    public String getSnippet() {
+        return null;
     }
 
     // ----------------------------------

@@ -77,7 +77,7 @@ public class PoiViewHolder extends BaseCardViewHolder {
         poiTitle.setText(poi.getName() != null ? poi.getName() : "");
         PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.findCategoryTypeById(poi.getCategoryId());
         poiType.setText(categoryType != null ? categoryType.getName() : "");
-        poiAddress.setText(poi.getAdress() != null ? poi.getAdress() : "");
+        poiAddress.setText(poi.getAddress() != null ? poi.getAddress() : "");
 
         String distanceAsString = "";
         TourPoint poiLocation = new TourPoint(poi.getLatitude(), poi.getLongitude());

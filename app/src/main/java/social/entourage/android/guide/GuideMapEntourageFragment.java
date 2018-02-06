@@ -66,14 +66,12 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Category;
-import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
-import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
@@ -169,7 +167,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (toReturn == null) {
             toReturn = inflater.inflate(R.layout.fragment_guide_map, container, false);
         }
@@ -178,7 +176,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());

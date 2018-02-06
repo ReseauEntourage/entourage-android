@@ -10,6 +10,7 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -52,6 +53,7 @@ public class EntourageApplication extends MultiDexApplication {
     private FeedItemsStorage feedItemsStorage;
 
     private MixpanelAPI mixpanel;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onCreate() {
@@ -61,6 +63,7 @@ public class EntourageApplication extends MultiDexApplication {
 
         setupFabric();
         setupMixpanel();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setupFacebookSDK();
         JodaTimeAndroid.init(this);
         setupDagger();
@@ -111,6 +114,10 @@ public class EntourageApplication extends MultiDexApplication {
 
     public MixpanelAPI getMixpanel() {
         return mixpanel;
+    }
+
+    public FirebaseAnalytics getFirebase() {
+        return mFirebaseAnalytics;
     }
 
     public static EntourageApplication get(Context context) {

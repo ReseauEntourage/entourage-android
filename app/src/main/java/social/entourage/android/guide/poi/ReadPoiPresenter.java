@@ -20,7 +20,7 @@ public class ReadPoiPresenter {
     }
 
     public void displayPoi(Poi poi) {
-        fragment.displayPoi(poi, new OnAddressClickListener(poi.getAdress()), new OnPhoneClickListener(poi.getPhone()));
+        fragment.displayPoi(poi, new OnAddressClickListener(poi.getAddress()), new OnPhoneClickListener(poi.getPhone()));
     }
 
     private void openExternalMap(Uri geoLocation) {
