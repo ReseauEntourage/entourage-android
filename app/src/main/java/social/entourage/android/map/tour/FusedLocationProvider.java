@@ -161,10 +161,8 @@ public class FusedLocationProvider {
 
         if (UserType.PRO.equals(userType)) {
             locationRequestList.add(createLocationRequestForProUsage());
-            locationRequestList.add(createLocationRequestForPublicUsage());
-        } else {
-            locationRequestList.add(createLocationRequestForPublicUsage());
         }
+        locationRequestList.add(createLocationRequestForPublicUsage());
 
         return locationRequestList;
     }

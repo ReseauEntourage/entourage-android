@@ -601,10 +601,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
 
-        // MI: EMA-920 Show the disclaimer ever time
+        // MI: EMA-920 Show the disclaimer every time
         // Show the disclaimer fragment
         if (presenter != null) {
-            presenter.displayEntourageDisclaimer(me.isPro());
+            presenter.displayEntourageDisclaimer();
         }
 
     }

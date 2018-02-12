@@ -581,11 +581,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_charte:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
-                boolean isPro = false;
                 User me = getAuthenticationController().getUser();
-                if (me != null) {
-                    isPro = me.isPro();
-                }
                 Intent charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.CHARTE_LINK_ID)));
                 try {
                     startActivity(charteIntent);

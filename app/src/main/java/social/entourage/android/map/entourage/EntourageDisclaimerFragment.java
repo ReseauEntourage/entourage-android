@@ -33,7 +33,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
 
     public static final String TAG = "social.entourage.android.entourage.disclaimer";
 
-    private static final String KEY_IS_PRO = "social.entourage.android.KEY_IS_PRO";
+    //private static final String KEY_IS_PRO = "social.entourage.android.KEY_IS_PRO";
 
     // ----------------------------------
     // Attributes
@@ -45,8 +45,6 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     @BindView(R.id.entourage_disclaimer_switch)
     SwitchCompat disclaimerSwitch;
 
-    private boolean isPro;
-
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -57,12 +55,8 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    public static EntourageDisclaimerFragment newInstance(boolean isPro) {
+    public static EntourageDisclaimerFragment newInstance() {
         EntourageDisclaimerFragment fragment = new EntourageDisclaimerFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(EntourageDisclaimerFragment.KEY_IS_PRO, isPro);
-        fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -88,8 +82,6 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            isPro = args.getBoolean(EntourageDisclaimerFragment.KEY_IS_PRO, false);
-
             disclaimerTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
