@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,9 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             EntourageCategoriesAdapter.this.notifyDataSetChanged();
         }
     }
+
+    private static final int GROUP_TYPE_EMPTY = 0;
+    private static final int GROUP_TYPE_CATEGORY = 1;
 
     private Context context;
     private List<String> entourageTypeList;
@@ -199,8 +203,18 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
+    public int getGroupTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getGroupType(final int groupPosition) {
+        return groupPosition == 0 ? GROUP_TYPE_EMPTY : GROUP_TYPE_CATEGORY;
+    }
+
+    @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     @Override

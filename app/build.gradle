@@ -7,7 +7,7 @@ def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    buildToolsVersion '27.0.3'
     def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug;
 
     defaultConfig {
@@ -113,10 +113,10 @@ android {
 }
 
 dependencies {
-    def supportVersion = "27.0.1"
-    def playServicesVersion = "11.4.2"
-    def daggerVersion = "2.13"
-    def okHttpVersion = "3.9.0"
+    def supportVersion = "27.0.2"
+    def playServicesVersion = "11.8.0"
+    def daggerVersion = "2.14.1"
+    def okHttpVersion = "3.9.1"
     def retrofitVersion = "2.3.0"
     def butterKnifeVersion = "8.8.1"
     def awsVersion = "2.6.5"
@@ -181,3 +181,5 @@ dependencies {
 
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 }
+
+apply plugin: 'com.google.gms.google-services'
