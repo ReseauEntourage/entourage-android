@@ -176,7 +176,6 @@ public class MapFilterFragment extends EntourageDialogFragment {
         // inform the map screen to refresh the newsfeed
         BusProvider.getInstance().post(new Events.OnMapFilterChanged());
 
-        // flurry event
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_SUBMIT);
 
         // dismiss the dialog

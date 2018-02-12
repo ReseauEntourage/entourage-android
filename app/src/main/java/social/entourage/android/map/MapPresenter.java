@@ -131,10 +131,10 @@ public class MapPresenter {
         }
     }
 
-    public void displayEntourageDisclaimer(boolean isPro) {
+    public void displayEntourageDisclaimer() {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(isPro);
+            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance();
             fragment.show(fragmentManager, EntourageDisclaimerFragment.TAG);
         }
     }

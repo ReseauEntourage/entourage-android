@@ -3,8 +3,8 @@ package social.entourage.android;
 public class Constants {
 
     //TODO: should be changed after each release
-    // v4.3 API Key
-    public static final String API_KEY = "4d684bad4f06e5366e5c9bdf";
+    // v4.4 API Key
+    public static final String API_KEY = "1307d4a101dc2e01855960b1";
 
     // Announcements version
     public static final String ANNOUNCEMENTS_VERSION = "v1";
@@ -37,7 +37,7 @@ public class Constants {
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";
 
-    // Flurry events
+    // Analytics events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
     public static final String EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map";
 

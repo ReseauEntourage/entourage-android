@@ -127,7 +127,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         setActionButton(btnPoiPhone, poi.getPhone());
         setActionButton(btnPoiMail, poi.getEmail());
         setActionButton(btnPoiWeb, poi.getWebsite());
-        setActionButton(btnPoiAddress, poi.getAdress());
+        setActionButton(btnPoiAddress, poi.getAddress());
         btnPoiAddress.setOnClickListener(onAddressClickListener);
         btnPoiPhone.setOnClickListener(onPhoneClickListener);
         PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.findCategoryTypeById(poi.getCategoryId());

@@ -49,6 +49,138 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085027645289:android:b930ff2cffec3c00",
+        "android_client_info": {
+          "package_name": "social.entourage.android.preprod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085027645289-6vjklfbh235vpc9f5o4cl0i2qro0jj88.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "social.entourage.android.preprod",
+            "certificate_hash": "5ab374848b9b5402a442152615cbd0bc2637347d"
+          }
+        },
+        {
+          "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBryJwDRkLE9jMc0hgLt4YlbP31Snw2qYA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085027645289:android:e03eb71feab73eaf",
+        "android_client_info": {
+          "package_name": "social.entourage.android.preprod.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085027645289-nhm0jic546lshhggbd4jna91ge3nea6n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "social.entourage.android.preprod.debug",
+            "certificate_hash": "a628764af4684c0c01a31b13286778c496f056b5"
+          }
+        },
+        {
+          "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBryJwDRkLE9jMc0hgLt4YlbP31Snw2qYA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085027645289:android:78e3e8872307e28b",
+        "android_client_info": {
+          "package_name": "social.entourage.android.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085027645289-g6tpberndin6gjo6ta7p3lplml5ksrka.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "social.entourage.android.debug",
+            "certificate_hash": "a628764af4684c0c01a31b13286778c496f056b5"
+          }
+        },
+        {
+          "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBryJwDRkLE9jMc0hgLt4YlbP31Snw2qYA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
