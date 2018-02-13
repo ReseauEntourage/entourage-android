@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v4.content.PermissionChecker;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -44,11 +45,16 @@ public class EntourageEvents {
     }
 
     public static void updateMixpanelInfo(User user, Context context, boolean areNotificationsEnabled) {
+        FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
+
         mixpanel.identify(String.valueOf(user.getId()));
         MixpanelAPI.People people = mixpanel.getPeople();
         people.identify(String.valueOf(user.getId()));
-        FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
+        mFirebaseAnalytics.setUserId(String.valueOf(user.getId()));
+
+        Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
+        Crashlytics.setUserEmail(user.getEmail());
 
         people.set("$email", user.getEmail());
         people.set("EntouragePartner", user.getPartner());
