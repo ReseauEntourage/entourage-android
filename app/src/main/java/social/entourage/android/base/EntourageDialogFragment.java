@@ -15,6 +15,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.crashlytics.android.Crashlytics;
+
 import social.entourage.android.R;
 import social.entourage.android.deeplinks.DeepLinksManager;
 
@@ -48,6 +50,12 @@ public class EntourageDialogFragment extends DialogFragment {
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
+        if (getDialog() == null ) {  // Returns mDialog
+            // Tells DialogFragment to not use the fragment as a dialog, and so won't try to use mDialog
+            setShowsDialog( false );
+            //TODO check if this is working and how often
+            Crashlytics.log("Quickfix to avoid crash in DialogFragment.onActivityCreated");
+        }
         super.onActivityCreated(savedInstanceState);
         Dialog dialog = getDialog();
         if (dialog != null) {
