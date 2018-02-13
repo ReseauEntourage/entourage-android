@@ -18,7 +18,7 @@ else
     build=`git rev-list HEAD --count`
     previous_tag="$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1))"
 
-    previous_tag="Version_421463"
+    previous_tag="Version_431485"
 
     filename="GITCHANGELOG-FROM-$previous_tag-TO-$latest_tag.md"
     echo "#Changelog" > $filename
@@ -28,6 +28,7 @@ else
     # Get commit messages since previous tag
     changelog="$(git log --pretty=format:"* %s (%cd) by <%cn>" --date=short $previous_tag...$latest_tag)"
     echo "$changelog" >> $filename
+    echo  "Created file: $filename"
 fi
 
 # Output collected information
