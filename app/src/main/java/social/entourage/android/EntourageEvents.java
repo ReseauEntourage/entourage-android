@@ -57,14 +57,17 @@ public class EntourageEvents {
         Crashlytics.setUserEmail(user.getEmail());
 
         people.set("$email", user.getEmail());
-        people.set("EntouragePartner", user.getPartner());
         people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         people.set("Language", Locale.getDefault().getLanguage());
 
         mFirebaseAnalytics.setUserProperty("$email", user.getEmail());
-        mFirebaseAnalytics.setUserProperty("EntouragePartner", user.getPartner().getName());
         mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().getLanguage());
+
+        if(user.getPartner()!=null) {
+            people.set("EntouragePartner", user.getPartner().getName());
+            mFirebaseAnalytics.setUserProperty("EntouragePartner", user.getPartner().getName());
+        }
 
         if (PermissionChecker.checkSelfPermission(context, user.isPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             people.set("EntourageGeolocEnable", "YES");
