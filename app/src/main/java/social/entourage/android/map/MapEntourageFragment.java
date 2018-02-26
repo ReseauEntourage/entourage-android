@@ -2663,9 +2663,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
-                    EntourageEvents.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
-                    if (tourService != null) {
-                        tourService.updateNewsfeed(pagination);
+                    if ((tourService != null)&&(tourService.updateNewsfeed(pagination))) {
+                            //if update returns false no need to log this...
+                        EntourageEvents.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
                     }
                 }
             } else {
