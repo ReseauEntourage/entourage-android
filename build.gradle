@@ -18,5 +18,5 @@ allprojects {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
         google()
-        }
+    }
 }

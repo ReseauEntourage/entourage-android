@@ -46,3 +46,4 @@ proguard/
 
 # Log Files
 *.log
+app/prod/release/
