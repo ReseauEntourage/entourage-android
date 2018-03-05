@@ -862,7 +862,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         //we received a chat notification
         //check if it is referring to this feed item
         PushNotificationContent content = message.getContent();
-        if (content == null) {
+        if (content == null || feedItem == null) {
             return false;
         }
         if (content.isTourRelated() && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
