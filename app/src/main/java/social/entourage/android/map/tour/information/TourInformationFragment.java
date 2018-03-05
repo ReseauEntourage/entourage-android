@@ -1809,7 +1809,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         commentEditText.setText("");
 
         //hide the keyboard
-        if (commentEditText.hasFocus()) {
+        if (commentEditText.hasFocus() && getActivity()!=null) {
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
         }
