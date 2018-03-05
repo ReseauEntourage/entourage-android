@@ -230,7 +230,12 @@ public class TourServiceManager {
     }
 
     public void unregisterFromBus() {
-        BusProvider.getInstance().unregister(this);
+        try {
+            BusProvider.getInstance().unregister(this);
+        } catch (IllegalArgumentException e) {
+            
+        }
+
     }
 
     void resetCurrentNewsfeedCall() {
