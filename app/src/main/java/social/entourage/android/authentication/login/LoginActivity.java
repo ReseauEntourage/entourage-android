@@ -267,38 +267,9 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         passwordEditText.setTypeface(Typeface.DEFAULT);
         passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
 
-        firstnameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-                EntourageEvents.logEvent(Constants.EVENT_NAME_TYPE);
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-
-            }
-        });
-        lastnameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-                EntourageEvents.logEvent(Constants.EVENT_NAME_TYPE);
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-
-            }
-        });
+        LoginTextWatcher ltw = new LoginTextWatcher();
+        firstnameEditText.addTextChangedListener(ltw);
+        lastnameEditText.addTextChangedListener(ltw);
 
         if (loginPresenter != null) {
             AuthenticationController authenticationController = loginPresenter.authenticationController;
@@ -1103,5 +1074,26 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_startup_logo)
     void onEntourageLogoClick() {
         Toast.makeText(this, VERSION + BuildConfig.VERSION_NAME, Toast.LENGTH_LONG).show();
+    }
+
+    class LoginTextWatcher implements TextWatcher {
+        private boolean firstEvent = true;
+        @Override
+        public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+            if(firstEvent) {
+                EntourageEvents.logEvent(Constants.EVENT_NAME_TYPE);
+                firstEvent = false;
+            }
+        }
+
+        @Override
+        public void afterTextChanged(final Editable s) {
+
+        }
     }
 }

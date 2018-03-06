@@ -201,10 +201,10 @@ public class LoginPresenter {
                     if (response.isSuccessful()) {
                         authenticationController.saveUser(response.body().getUser());
                         activity.showPhotoChooseSource();
-                        activity.displayToast(activity.getString(R.string.login_text_email_update_success));
+                        activity.displayToast(activity.getString(R.string.login_text_profile_update_success));
                     }
                     else {
-                        activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
+                        activity.displayToast(activity.getString(R.string.login_text_profile_update_fail));
                         EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                     }
                 }
@@ -212,7 +212,7 @@ public class LoginPresenter {
                 @Override
                 public void onFailure(final Call<UserResponse> call, final Throwable t) {
                     activity.stopLoader();
-                    activity.displayToast(activity.getString(R.string.login_text_email_update_fail));
+                    activity.displayToast(activity.getString(R.string.login_text_profile_update_fail));
                     EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                 }
             });
