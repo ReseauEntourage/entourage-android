@@ -862,7 +862,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         //we received a chat notification
         //check if it is referring to this feed item
         PushNotificationContent content = message.getContent();
-        if (content == null) {
+        if (content == null || feedItem == null) {
             return false;
         }
         if (content.isTourRelated() && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
@@ -1809,7 +1809,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         commentEditText.setText("");
 
         //hide the keyboard
-        if (commentEditText.hasFocus()) {
+        if (commentEditText.hasFocus() && getActivity()!=null) {
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
         }

@@ -54,7 +54,7 @@ public class RegisterGCMService extends IntentService {
             editor.putString(KEY_REGISTRATION_ID, registrationId);
             editor.commit();
             EntourageApplication.get().getMixpanel().getPeople().setPushRegistrationId(registrationId);
-        }else if (intent.getStringExtra("unregistered") != null) {
+        }else if (intent!=null && intent.getStringExtra("unregistered") != null) {
             EntourageApplication.get().getMixpanel().getPeople().clearPushRegistrationId();
         }
         BusProvider.getInstance().register(this);

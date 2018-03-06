@@ -631,7 +631,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 stopFeedItem(actionTour);
             }
             // 3 : Check if tour is already paused
-            else if (tourService.isPaused()) {
+            else if (tourService!=null && tourService.isPaused()) {
                 launchConfirmationActivity();
             }
             // 4 : Check if should pause tour
@@ -639,7 +639,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 launchConfirmationActivity();
             }
             // 5 : Check if should stop tour
-            else if (action != null && TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+            else if (tourService!=null && action != null && TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                 tourService.endTreatment();
             }
         }

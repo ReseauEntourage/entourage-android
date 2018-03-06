@@ -150,7 +150,7 @@ dependencies {
     implementation "com.mixpanel.android:mixpanel-android:5.2.1"
     implementation "com.facebook.android:facebook-core:[4,5)"
 
-    api("com.crashlytics.sdk.android:crashlytics:2.9.0@aar") {
+    api("com.crashlytics.sdk.android:crashlytics:2.9.1@aar") {
         transitive = true;
     }
 
