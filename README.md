@@ -3,6 +3,8 @@
 
 Our goal is to create a local social network on smartphones to help the HOMELESS people fight their loneliness thru collaborative actions with neighbours.
 
+Our app is available [here](https://play.google.com/store/apps/details?id=social.entourage.android) on Google Play Store.
+
 
 ## Getting Started
 
