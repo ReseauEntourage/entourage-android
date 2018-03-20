@@ -31,7 +31,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class FusedLocationProvider {
     private final Context context;
-    private final GoogleApiClient apiClient;
+    private final GoogleApiClient googleApiClient;
     private final UserType userType;
     private UserType locationUpdateUserType;
     private LocationListener locationListener;
@@ -40,22 +40,22 @@ public class FusedLocationProvider {
     public FusedLocationProvider(final Context context,
                                  final UserType userType) {
         this.context = context.getApplicationContext();
-        this.apiClient = initializeGoogleApiClient(context.getApplicationContext());
+        this.googleApiClient = initializeGoogleApiClient(context.getApplicationContext());
         this.userType = userType;
         this.locationUpdateUserType = UserType.PUBLIC;
     }
 
     public void start() {
-        if (!apiClient.isConnected()) {
-            apiClient.connect();
+        if (!googleApiClient.isConnected()) {
+            googleApiClient.connect();
         } else {
             requestLocationUpdates();
         }
     }
 
     public void stop() {
-        if (apiClient.isConnected()) {
-            apiClient.disconnect();
+        if (googleApiClient.isConnected()) {
+            googleApiClient.disconnect();
             removeLocationUpdates();
         }
     }
@@ -77,12 +77,12 @@ public class FusedLocationProvider {
     }
 
     private void registerListener(final ProviderStatusListener statusListener) {
-        if (!apiClient.isConnected()) {
+        if (!googleApiClient.isConnected()) {
             return;
         }
 
         SettingsApi
-            .checkLocationSettings(apiClient,
+            .checkLocationSettings(googleApiClient,
                 new LocationSettingsRequest.Builder()
                     .addAllLocationRequests(getAllLocationRequests())
                     .build())
@@ -103,8 +103,8 @@ public class FusedLocationProvider {
         if (geolocationPermissionIsNotGranted()) {
             return null;
         }
-        Location lastLocation = FusedLocationApi.getLastLocation(apiClient);
-        //System.out.println("LAST LOCATION = " + lastLocation);
+        Location lastLocation = FusedLocationApi.getLastLocation(googleApiClient);
+        System.out.println("LAST LOCATION = " + lastLocation);
         return lastLocation;
     }
 
@@ -112,10 +112,10 @@ public class FusedLocationProvider {
         if (locationListener == null) {
             return;
         }
-        if (!apiClient.isConnected()) {
+        if (!googleApiClient.isConnected()) {
             return;
         }
-        FusedLocationApi.removeLocationUpdates(apiClient, locationListener);
+        FusedLocationApi.removeLocationUpdates(googleApiClient, locationListener);
     }
 
     private GoogleApiClient initializeGoogleApiClient(Context context) {
@@ -150,10 +150,10 @@ public class FusedLocationProvider {
         if (geolocationPermissionIsNotGranted()) {
             return;
         }
-        if (!apiClient.isConnected()) {
+        if (!googleApiClient.isConnected()) {
             return;
         }
-        FusedLocationApi.requestLocationUpdates(apiClient, getLocationRequest(), locationListener);
+        FusedLocationApi.requestLocationUpdates(googleApiClient, getLocationRequest(), locationListener);
     }
 
     private List<LocationRequest> getAllLocationRequests() {

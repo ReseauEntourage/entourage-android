@@ -233,7 +233,7 @@ public class TourServiceManager {
         try {
             BusProvider.getInstance().unregister(this);
         } catch (IllegalArgumentException e) {
-            
+            Log.d("TourServiceManager", "No need to unregister");
         }
 
     }

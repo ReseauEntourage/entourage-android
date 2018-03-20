@@ -43,10 +43,6 @@ public class ViewHolderFactory {
         return cardViewHolder;
     }
 
-    public static ViewHolderFactory createViewHolderFactory() {
-        return new ViewHolderFactory();
-    }
-
     public static class ViewHolderType {
         private int layoutResource;
         private Class cardViewHolderClass;

@@ -274,6 +274,8 @@ public class Constants {
     public static final String EVENT_ENCOUNTER_POPUP_ENCOUNTER = "SwitchToCreateEncounter";
     public static final String EVENT_ENCOUNTER_POPUP_ENTOURAGE = "ContinueCreatePublicEntourage";
 
+    public static final String EVENT_CAROUSEL_EXCEPTION = "CarouselException";
+
     // Geolocation
     public static final long UPDATE_TIMER_MILLIS_OFF_TOUR = 20000;
     public static final long UPDATE_TIMER_MILLIS_ON_TOUR = 5000;
