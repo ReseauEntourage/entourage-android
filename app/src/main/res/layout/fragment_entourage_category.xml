@@ -27,11 +27,6 @@
     <view
         android:id="@+id/entourage_category_help_link"
         class="social.entourage.android.view.HtmlTextView"
-        layout_alignParentBottom="true"
-        layout_marginEnd="65dp"
-        layout_marginRight="65dp"
-        layout_toLeftOf="@+id/create_entourage_help_link"
-        layout_toStartOf="@+id/create_entourage_help_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

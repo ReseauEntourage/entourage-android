@@ -219,7 +219,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
             //refresh the user info from the server
             Location location = EntourageLocation.getInstance().getCurrentLocation();
-            presenter.updateUser(null, null, null, (location != null ? location : null));
+            presenter.updateUser(null, null, null, location);
             //initialize the push notifications
             initializePushNotifications();
 

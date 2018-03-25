@@ -1,7 +1,5 @@
 package social.entourage.android.user;
 
-import android.support.v4.util.ArrayMap;
-
 import javax.inject.Inject;
 
 import retrofit2.Call;

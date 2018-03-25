@@ -30,9 +30,4 @@ public class EncounterTapeTaskQueue extends TaskQueue<EncounterUploadTask> {
         super.add(entry);
         start();
     }
-
-    @Override
-    public void remove() {
-        super.remove();
-    }
 }

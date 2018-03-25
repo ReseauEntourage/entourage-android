@@ -8,8 +8,8 @@ import social.entourage.android.map.entourage.category.EntourageCategory;
 
 public interface CreateEntourageListener {
 
-    public void onTitleChanged(String title);
-    public void onDescriptionChanged(String description);
-    public void onCategoryChosen(EntourageCategory category);
+    void onTitleChanged(String title);
+    void onDescriptionChanged(String description);
+    void onCategoryChosen(EntourageCategory category);
 
 }

@@ -1,15 +1,12 @@
 package social.entourage.android.map;
 
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-import social.entourage.android.EntourageActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.base.BaseCardViewHolder;

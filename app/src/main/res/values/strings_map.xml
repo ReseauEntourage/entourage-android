@@ -30,7 +30,7 @@
     <string name="map_filter_tour_type_title">Types de maraude</string>
     <string name="map_filter_entourage_type_title">Types d’action</string>
     <string name="map_filter_entourage_demand_text"><b>Demandes</b> : je cherche…</string>
-    <string name="map_filter_entourage_contribution_text"><b>Contributions</b> : je me propose de...</string>
+    <string name="map_filter_entourage_contribution_text"><b>Contributions</b> : je me propose de…</string>
     <string name="map_filter_tours_text">Maraudes</string>
     <string name="map_filter_personal_title">Montrer uniquement</string>
     <string name="map_filter_user_only_text">Mes entourages</string>

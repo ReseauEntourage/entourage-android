@@ -9,7 +9,6 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.base.EntourageBaseAdapter;
-import social.entourage.android.map.entourage.EntourageViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
 
 /**

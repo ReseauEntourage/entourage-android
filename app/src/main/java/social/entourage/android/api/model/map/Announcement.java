@@ -99,8 +99,7 @@ public class Announcement extends TimestampedObject {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj == null) return false;
-        if (!(obj instanceof Announcement)) return false;
+        if ((obj == null)  || (!(obj instanceof Announcement))) return false;
         return this.id == ((Announcement)obj).id;
     }
 

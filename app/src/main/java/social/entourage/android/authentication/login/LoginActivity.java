@@ -848,7 +848,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.add(loggedPhoneNumber);
-        sharedPreferences.edit().clear().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
+        sharedPreferences.edit().clear().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
 
         startMapActivity();
     }

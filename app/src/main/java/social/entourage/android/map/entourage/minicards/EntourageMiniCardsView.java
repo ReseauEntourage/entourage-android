@@ -1,11 +1,9 @@
 package social.entourage.android.map.entourage.minicards;
 
 import android.content.Context;
-import android.support.annotation.IntDef;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import java.util.List;

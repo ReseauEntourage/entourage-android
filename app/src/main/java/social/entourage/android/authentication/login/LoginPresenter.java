@@ -184,11 +184,6 @@ public class LoginPresenter {
 
         if (activity != null) {
             activity.startLoader();
-            HashMap<String, String> userMap = new HashMap<>();
-            userMap.put("email", user.getEmail());
-            userMap.put("firstname", user.getFirstName());
-            userMap.put("lastname", user.getLastName());
-            //TODO: check what userMap does
 
             final ArrayMap<String, Object> request = new ArrayMap<>();
             request.put("user", user);

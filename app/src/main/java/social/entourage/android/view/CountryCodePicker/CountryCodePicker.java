@@ -1156,11 +1156,6 @@ public class CountryCodePicker extends RelativeLayout {
         public PhoneNumberWatcher(String countryCode) {
             super(countryCode);
         }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            super.onTextChanged(s, start, before, count);
-        }
     }
 
     public void setPhoneNumberInputValidityListener(PhoneNumberInputValidityListener listener) {
