@@ -13,9 +13,6 @@ public class Constants {
     public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
     public static final String FILENAME_TAPE_QUEUE = "encounters_queue";
 
-    // Update Dialog
-    public static final String UPDATE_DIALOG_DISPLAYED = "update_dialog_displayed";
-
     // Request and result codes
     public static final int REQUEST_CREATE_ENCOUNTER = 1;
     public static final int RESULT_CREATE_ENCOUNTER_OK = 2;

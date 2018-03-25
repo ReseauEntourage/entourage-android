@@ -2,7 +2,6 @@ package social.entourage.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
@@ -56,19 +55,17 @@ public class DrawerPresenter {
     private final DrawerActivity activity;
     private final AppRequest appRequest;
     private final UserRequest userRequest;
-
-    private SharedPreferences defaultSharedPreferences;
+    private boolean checkForUpdate = true;
 
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
 
     @Inject
-    public DrawerPresenter(final DrawerActivity activity, final AppRequest appRequest, final UserRequest userRequest) {
+    DrawerPresenter(final DrawerActivity activity, final AppRequest appRequest, final UserRequest userRequest) {
         this.activity = activity;
         this.appRequest = appRequest;
         this.userRequest = userRequest;
-        initializeSharedPreferences();
     }
 
     // ----------------------------------
@@ -124,44 +121,25 @@ public class DrawerPresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
-    private void initializeSharedPreferences() {
-        defaultSharedPreferences = activity.getApplicationContext().getSharedPreferences(Constants.UPDATE_DIALOG_DISPLAYED, Context.MODE_PRIVATE);
-        defaultSharedPreferences.edit().putBoolean(Constants.UPDATE_DIALOG_DISPLAYED, false).commit();
-    }
-
     public void checkForUpdate() {
-        if (!defaultSharedPreferences.getBoolean(Constants.UPDATE_DIALOG_DISPLAYED, false)) {
+        if (checkForUpdate) {
             Call<ResponseBody> call = appRequest.checkForUpdate();
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    /*if (error.getResponse().getStatus() == 426) {
-                        if (!BuildConfig.DEBUG) {
-                            displayAppUpdateDialog();
-                        }
-                    }*/
-                }
-            });
-            /*appRequest.checkForUpdate(new ResponseCallback() {
-                @Override
-                public void success(Response response) {}
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Response response = error.getResponse();
-                    if (response != null && response.getStatus() == 426) {
+                    if (response.code() == 426) {
                         if (!BuildConfig.DEBUG) {
                             displayAppUpdateDialog();
                         }
                     }
                 }
-            });*/
-            defaultSharedPreferences.edit().putBoolean(Constants.UPDATE_DIALOG_DISPLAYED, true).commit();
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("CheckForUpdate", "Error connecting to API");
+                }
+            });
+            checkForUpdate=false;
         }
     }
 
