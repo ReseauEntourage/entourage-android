@@ -10,6 +10,10 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug;
+    def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken;
+
+    def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin;
+    def TEST_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_ACCOUNT_PWD + '"' : entourageTestPwd;
 
     defaultConfig {
         applicationId 'social.entourage.android'
@@ -22,8 +26,6 @@ android {
 
         def AWS_KEY = System.env.AWS_KEY ? '"' + System.env.AWS_KEY + '"' : entourageAWSKey;
         def AWS_SECRET = System.env.AWS_SECRET ? '"' + System.env.AWS_SECRET + '"' : entourageAWSSecret;
-
-        def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken;
 
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
         buildConfigField 'String', 'AWS_KEY', AWS_KEY
@@ -58,8 +60,8 @@ android {
         debug {
             signingConfig signingConfigs.debug
             applicationIdSuffix '.debug'
-            buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', "\"${System.env.TEST_ACCOUNT_LOGIN}\""
-            buildConfigField 'String', 'TEST_ACCOUNT_PWD', "\"${System.env.TEST_ACCOUNT_PWD}\""
+            buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
+            buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
         }
     }
 
@@ -161,18 +163,8 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
 
-    testImplementation(
-            "junit:junit:4.12",
-            "org.mockito:mockito-core:1.10.19",
-            "org.assertj:assertj-core:1.7.1",
-            "de.bechte.junit:junit-hierarchicalcontextrunner:4.12.1"
-    )
-
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:2.2.2") {
-        exclude group: 'com.android.support'
-    }
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0") {
-        exclude group: 'com.android.support'
         exclude group: 'com.squareup.okhttp3'
     }
 

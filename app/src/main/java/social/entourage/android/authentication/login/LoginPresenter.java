@@ -128,7 +128,7 @@ public class LoginPresenter {
                 });
             } else {
                 activity.stopLoader();
-                activity.displayToast(activity.getString(R.string.login_text_invalid_format));
+                activity.loginFail(LoginActivity.LOGIN_ERROR_INVALID_PHONE_FORMAT);
             }
         }
     }
@@ -196,10 +196,10 @@ public class LoginPresenter {
                     if (response.isSuccessful()) {
                         authenticationController.saveUser(response.body().getUser());
                         activity.showPhotoChooseSource();
-                        activity.displayToast(activity.getString(R.string.login_text_profile_update_success));
+                        activity.displayToast(R.string.login_text_profile_update_success);
                     }
                     else {
-                        activity.displayToast(activity.getString(R.string.login_text_profile_update_fail));
+                        activity.displayToast(R.string.login_text_profile_update_fail);
                         EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                     }
                 }
@@ -207,7 +207,7 @@ public class LoginPresenter {
                 @Override
                 public void onFailure(final Call<UserResponse> call, final Throwable t) {
                     activity.stopLoader();
-                    activity.displayToast(activity.getString(R.string.login_text_profile_update_fail));
+                    activity.displayToast(R.string.login_text_profile_update_fail);
                     EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                 }
             });
@@ -269,7 +269,7 @@ public class LoginPresenter {
                 });
             } else {
                 activity.stopLoader();
-                activity.displayToast(activity.getString(R.string.login_text_invalid_email));
+                activity.displayToast(R.string.login_text_invalid_email);
             }
         }
     }
@@ -305,7 +305,7 @@ public class LoginPresenter {
                                 activity.registerPhoneNumberSent(phoneNumber, false);
                                 activity.displayToast(R.string.registration_number_error_already_registered);
                             } else if (errorString.contains("INVALID_PHONE_FORMAT")) {
-                                activity.displayToast(R.string.login_error_invalid_phone_format);
+                                activity.displayToast(R.string.login_text_invalid_format);
                             } else {
                                 activity.displayToast(R.string.login_error);
                             }

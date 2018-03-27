@@ -1,7 +1,7 @@
 package social.entourage.android;
 
 import android.content.Context;
-import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
@@ -33,25 +33,73 @@ public class LoginTest {
 
     @Before
     public void setUp() {
+        checkNoUserIsLoggedIn();
         Context context = activityRule.getActivity();
         OkHttpClient client = EntourageApplication.get(context).getEntourageComponent().getOkHttpClient();
         resource = OkHttp3IdlingResource.create("OkHttp", client);
-        Espresso.registerIdlingResources(resource);
+        IdlingRegistry.getInstance().register(resource);
+    }
+
+    private void checkNoUserIsLoggedIn() {
+        if(EntourageApplication.me() != null) {
+            Context context = activityRule.getActivity();
+            EntourageApplication.get(context).getEntourageComponent().getAuthenticationController().logOutUser();
+        }
     }
 
     @After
     public void tearDown() throws Exception {
-        Espresso.unregisterIdlingResources(resource);
+        IdlingRegistry.getInstance().unregister(resource);
+        checkNoUserIsLoggedIn();
     }
 
     @Test
-    public void login() {
+    public void loginOK() {
+        checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
+
         onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
         onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
-
         onView(withId(R.id.login_button_signup)).perform(click());
 
-        onView(withText(R.string.login_error)).check(doesNotExist());
+        onView(withText(R.string.login_error_title)).check(doesNotExist());
     }
+
+    /*@Test
+    @TODO fix this because of unexpected errors in OkHttp3IdlingResource
+
+    public void loginOKwithCountryCode() {
+        checkNoUserIsLoggedIn();
+        onView(withId(R.id.login_button_login)).perform(click());
+
+        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("0", "+33")));
+        onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
+        onView(withId(R.id.login_button_signup)).perform(click());
+
+        onView(withText(R.string.login_error_title)).check(doesNotExist());
+    }
+
+    /*@Test
+    public void loginFailureWrongPassword() {
+        checkNoUserIsLoggedIn();
+        onView(withId(R.id.login_button_login)).perform(click());
+
+        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
+        onView(withId(R.id.login_edit_code)).perform(typeText("999999"));
+        onView(withId(R.id.login_button_signup)).perform(click());
+
+        onView(withText(R.string.login_error_title)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void loginFailureWrongPhoneNumberFormat() {
+        checkNoUserIsLoggedIn();
+        onView(withId(R.id.login_button_login)).perform(click());
+
+        onView(withId(R.id.login_edit_phone)).perform(typeText("012345678"));
+        onView(withId(R.id.login_edit_code)).perform(typeText("000000"));
+        onView(withId(R.id.login_button_signup)).perform(click());
+
+        onView(withText(R.string.login_error_title)).check(matches(isDisplayed()));
+    }*/
 }
