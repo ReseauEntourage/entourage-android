@@ -115,12 +115,12 @@ android {
 
 dependencies {
     def supportVersion = "27.1.0"
-    def playServicesVersion = "11.8.0"
-    def daggerVersion = "2.14.1"
+    def playServicesVersion = "12.0.0"
+    def daggerVersion = "2.15"
     def okHttpVersion = "3.9.1"
-    def retrofitVersion = "2.3.0"
+    def retrofitVersion = "2.4.0"
     def butterKnifeVersion = "8.8.1"
-    def awsVersion = "2.6.5"
+    def awsVersion = "2.6.17"
 
     implementation "com.android.support:multidex:1.0.3"
     implementation "com.android.support:support-v4:${supportVersion}"
@@ -158,8 +158,8 @@ dependencies {
         transitive = true;
     }
 
-    implementation 'com.google.firebase:firebase-core:11.8.0'
-    implementation 'com.google.firebase:firebase-perf:11.8.0'
+    implementation "com.google.firebase:firebase-core:${playServicesVersion}"
+    implementation "com.google.firebase:firebase-perf:${playServicesVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
 
