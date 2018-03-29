@@ -175,15 +175,17 @@ public class FusedLocationProvider {
         }
     }
 
+    @NonNull
     private LocationRequest createLocationRequestForPublicUsage() {
-        return new LocationRequest()
+        return LocationRequest.create()
             .setInterval(MINUTES.toMillis(5))
             .setFastestInterval(MINUTES.toMillis(1))
             .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
 
+    @NonNull
     private LocationRequest createLocationRequestForProUsage() {
-        return new LocationRequest()
+        return LocationRequest.create()
             .setInterval(SECONDS.toMillis(20))
             .setFastestInterval(SECONDS.toMillis(10))
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
