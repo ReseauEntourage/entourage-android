@@ -57,6 +57,10 @@ public class LoginTest {
 
     @Test
     public void loginOK() {
+        //first we try with wrong input
+        loginFailureWrongPassword();
+        loginFailureWrongPhoneNumberFormat();
+
         checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
 
@@ -69,7 +73,6 @@ public class LoginTest {
 
     /*@Test
     @TODO fix this because of unexpected errors in OkHttp3IdlingResource
-
     public void loginOKwithCountryCode() {
         checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
@@ -79,9 +82,9 @@ public class LoginTest {
         onView(withId(R.id.login_button_signup)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(doesNotExist());
-    }
+    }*/
 
-    /*@Test
+    //Test
     public void loginFailureWrongPassword() {
         checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
@@ -91,9 +94,11 @@ public class LoginTest {
         onView(withId(R.id.login_button_signup)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(matches(isDisplayed()));
+        onView(withText(R.string.login_retry_label)).perform(click());
+        onView(withId(R.id.login_back_button)).perform(click());
     }
 
-    @Test
+    //Test
     public void loginFailureWrongPhoneNumberFormat() {
         checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
@@ -103,5 +108,7 @@ public class LoginTest {
         onView(withId(R.id.login_button_signup)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(matches(isDisplayed()));
-    }*/
+        onView(withText(R.string.login_retry_label)).perform(click());
+        onView(withId(R.id.login_back_button)).perform(click());
+    }
 }
