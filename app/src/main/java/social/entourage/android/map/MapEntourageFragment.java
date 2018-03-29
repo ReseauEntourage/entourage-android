@@ -2532,7 +2532,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
                 } catch (Exception e) {
                     // This is just to see if we still get the Illegal state exception
-                    EntourageEvents.logEvent("CAROUSEL_EXCEPTION");
+                    EntourageEvents.logEvent(Constants.EVENT_CAROUSEL_EXCEPTION);
                 }
             }
         }, Constants.CAROUSEL_DELAY_MILLIS);

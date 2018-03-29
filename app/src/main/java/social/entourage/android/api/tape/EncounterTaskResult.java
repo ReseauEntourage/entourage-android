@@ -7,7 +7,7 @@ public class EncounterTaskResult {
     public enum OperationType {
         ENCOUNTER_ADD,
         ENCOUNTER_UPDATE
-    };
+    }
 
     private boolean success;
     private Encounter encounter;

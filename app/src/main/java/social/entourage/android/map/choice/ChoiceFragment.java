@@ -2,7 +2,6 @@ package social.entourage.android.map.choice;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -112,10 +111,6 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
 
     private void initializeView() {
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                super.onDraw(c, parent, state);
-            }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new ChoiceAdapter(this, tours));

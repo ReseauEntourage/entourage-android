@@ -1,14 +1,10 @@
 package social.entourage.android.deeplinks;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,7 +183,7 @@ public class DeepLinksManager {
                         return;
                     }
                 }
-            } catch (Exception ex) {}
+            } catch (Exception ignored) {}
         }
         else if (key.equals(DeepLinksView.PROFILE.getView())) {
             if (activity instanceof DrawerActivity) {
@@ -269,7 +265,7 @@ public class DeepLinksManager {
 
         private final String view;
 
-        private DeepLinksView(final String view) {
+        DeepLinksView(final String view) {
             this.view = view;
         }
 

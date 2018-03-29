@@ -121,11 +121,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     */
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void setupComponent(EntourageComponent entourageComponent) {
         DaggerCreateEncounterComponent.builder()
                 .entourageComponent(entourageComponent)
@@ -302,7 +297,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     // ----------------------------------
     // PRIVATE CLASSES
     // ----------------------------------
-
+    //TODO check if this leaks!
     private class GeocoderTask extends AsyncTask<LatLng, Void, String> {
 
         @Override

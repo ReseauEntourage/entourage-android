@@ -51,7 +51,6 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.base.EntourageViewHolderListener;
-import social.entourage.android.invite.view.InvitationsAdapter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
@@ -220,7 +219,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         if (me != null) {
             isPro = me.isPro();
         }
-        boolean isTourRunning = isBound ? tourService.isRunning() : false;
+        boolean isTourRunning = isBound && tourService.isRunning();
         startTourButton.setVisibility( isPro ? (isTourRunning ? View.GONE : View.VISIBLE) : View.GONE );
         addEncounterButton.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
     }

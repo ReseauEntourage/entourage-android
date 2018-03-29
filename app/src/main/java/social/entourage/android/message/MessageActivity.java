@@ -18,7 +18,6 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.message.push.PushNotificationManager;
-import social.entourage.android.message.push.PushNotificationService;
 
 public class MessageActivity extends EntourageSecuredActivity {
 

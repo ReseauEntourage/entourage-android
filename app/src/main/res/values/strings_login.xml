@@ -72,8 +72,7 @@
     <string name="login_error">Problème d\'authentification\nVeuillez réessayer</string>
     <string name="login_error_title">Veuillez réessayer</string>
     <string name="login_error_invalid_credentials">Le numéro de téléphone et ce code d’accès ne correspondent pas.</string>
-    <string name="login_error_invalid_phone_format">Erreur de connexion.
-            Si votre numéro n’est pas de France métropolitaine, incluez l’indicatif pays</string>
+    <string name="login_error_invalid_phone_format">Format du numéro invalide.\nSi votre numéro n’est pas de France métropolitaine, incluez l’indicatif pays</string>
     <string name="login_error_network">Vérifiez votre connexion et réessayez</string>
     <string name="login_retry_label">Réessayer</string>
 

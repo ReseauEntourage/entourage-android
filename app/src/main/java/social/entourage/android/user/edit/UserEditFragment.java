@@ -323,7 +323,7 @@ public class UserEditFragment extends EntourageDialogFragment {
             }
         } catch (ActivityNotFoundException ex) {
             Log.d("Exception", "Cannot open Notifications Settings page");
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
 
         }
     }

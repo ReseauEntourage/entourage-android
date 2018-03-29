@@ -15,8 +15,6 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import social.entourage.android.Constants;
-import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;

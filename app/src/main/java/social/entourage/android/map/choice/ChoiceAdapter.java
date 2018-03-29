@@ -67,11 +67,6 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
         holder.cardTextOrganization.setText(tour.getOrganizationName());
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
     public class ChoiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // TODO : implement ButterKnife with @Bind and ButterKnife.bind(this, view) - Doesn't work yet

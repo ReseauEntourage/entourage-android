@@ -22,7 +22,6 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.base.EntourageDialogFragment;
 
 public class EntourageDisclaimerFragment extends EntourageDialogFragment {
@@ -58,12 +57,6 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
     public static EntourageDisclaimerFragment newInstance() {
         EntourageDisclaimerFragment fragment = new EntourageDisclaimerFragment();
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override

@@ -1,22 +1,16 @@
 package social.entourage.android.authentication.login;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -74,7 +68,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
-    private static final int PERMISSIONS_REQUEST_PHONE_STATE = 1;
     private static final String VERSION = "Version : ";
 
     public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
@@ -292,18 +285,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_PHONE_STATE) {
-            for (int index = 0; index < permissions.length; index++) {
-                if (permissions[index].equalsIgnoreCase(Manifest.permission.READ_PHONE_STATE) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-                    checkPermissions();
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
     public void onBackPressed() {
         if (loginSignin.getVisibility() == View.VISIBLE) {
             phoneEditText.setText("");
@@ -338,35 +319,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             showLostCodeScreen();
         } else {
             super.onBackPressed();
-        }
-    }
-
-    // ----------------------------------
-    // PRIVATE METHODS
-    // ----------------------------------
-
-    @TargetApi(23)
-    private void checkPermissions() {
-        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
-                new AlertDialog.Builder(this)
-                    .setTitle(R.string.login_permission_title)
-                    .setMessage(R.string.login_permission_description)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_PHONE_STATE);
-                        }
-                    }).show();
-            } else {
-                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSIONS_REQUEST_PHONE_STATE);
-            }
-        } else {
-            TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-            String phoneNumber = manager.getLine1Number();
-            if (phoneNumber != null) {
-                phoneEditText.setText(phoneNumber);
-            }
         }
     }
 
@@ -420,7 +372,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         Toast.makeText(this, messageId, Toast.LENGTH_LONG).show();
     }
 
-    public void displayToast(String message) {
+    private void displayToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
@@ -519,7 +471,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
 
         if (loginPresenter == null || loginPresenter.authenticationController == null || loginPresenter.authenticationController.getUser() == null) {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
             PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
             if (photoEditFragment != null) {
                 photoEditFragment.onPhotoSent(false);
@@ -550,7 +502,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                             Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
                         }
                     } else {
-                        Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                        displayToast(R.string.user_photo_error_not_saved);
                         dismissProgressDialog();
                         PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                         if (photoEditFragment != null) {
@@ -567,7 +519,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
             @Override
             public void onError(final int id, final Exception ex) {
-                Toast.makeText(LoginActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+                displayToast(R.string.user_photo_error_not_saved);
                 dismissProgressDialog();
                 PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                 if (photoEditFragment != null) {
@@ -606,7 +558,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 phoneEditText.getText().toString(),
                 passwordEditText.getText().toString());
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -648,7 +600,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void sendNewCode() {
         String phoneNumber = Utils.checkPhoneNumberFormat(lostCodeCountryCodePicker.getSelectedCountryCodeWithPlus(), lostCodePhone.getText().toString());
         if (phoneNumber == null) {
-            displayToast(getString(R.string.login_text_invalid_format));
+            displayToast(R.string.login_text_invalid_format);
             return;
         }
         if (loginPresenter != null) {
@@ -656,7 +608,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             loginPresenter.sendNewCode(phoneNumber);
             EntourageEvents.logEvent(Constants.EVENT_LOGIN_SEND_NEW_CODE);
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -681,13 +633,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                     loginLostCode.setVisibility(View.GONE);
                     loginVerifyCode.setVisibility(View.VISIBLE);
                 } else {
-                    displayToast(getString(R.string.login_text_lost_code_ok));
+                    displayToast(R.string.login_text_lost_code_ok);
                 }
             }
         } else {
             if (isOnboarding) {
                 EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_2);
-                displayToast(getString(R.string.login_text_lost_code_ko));
+                displayToast(R.string.login_text_lost_code_ko);
             } else {
                 if (loginLostCode.getVisibility() == View.VISIBLE) {
                     //codeConfirmation.setText(R.string.login_text_lost_code_ko);
@@ -722,7 +674,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
             loginPresenter.updateUserToServer();
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -732,7 +684,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (loginPresenter != null) {
             loginPresenter.updateUserToServer();
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -771,11 +723,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             String firstname = firstnameEditText.getText().toString().trim();
             String lastname = lastnameEditText.getText().toString().trim();
             if (firstname.length() == 0) {
-                Toast.makeText(this, R.string.login_firstname_error, Toast.LENGTH_SHORT).show();
+                displayToast(R.string.login_firstname_error);
                 return;
             }
             if (lastname.length() == 0) {
-                Toast.makeText(this, R.string.login_lastname_error, Toast.LENGTH_SHORT).show();
+                displayToast(R.string.login_lastname_error);
                 return;
             }
             hideKeyboard();
@@ -790,7 +742,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             }
             loginPresenter.updateUserToServer();
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -809,7 +761,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 showGeolocationView();
             }
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -827,7 +779,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             }
             showGeolocationView();
         } else {
-            Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+            displayToast(R.string.user_photo_error_not_saved);
         }
     }
 
@@ -848,7 +800,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.add(loggedPhoneNumber);
-        sharedPreferences.edit().clear().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).commit();
+        sharedPreferences.edit().clear().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
 
         startMapActivity();
     }
@@ -922,17 +874,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             startLoader();
             loginPresenter.subscribeToNewsletter(newsletterEmail.getText().toString());
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
     void newsletterResult(boolean success) {
         stopLoader();
         if (success) {
-            displayToast(getString(R.string.login_text_newsletter_success));
+            displayToast(R.string.login_text_newsletter_success);
             onBackPressed();
         } else {
-            displayToast(getString(R.string.login_text_newsletter_fail));
+            displayToast(R.string.login_text_newsletter_fail);
         }
     }
 
@@ -954,7 +906,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 receivedCode.getText().toString()
             );
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -990,7 +942,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT);
             loginPresenter.registerUserPhone(phoneNumber);
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -999,7 +951,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         if (loginPresenter != null && onboardingUser != null) {
             loginPresenter. login(null, onboardingUser.getPhone(), smsCode);
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -1009,7 +961,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_1);
             loginPresenter.sendNewCode(onboardingUser.getPhone(), true);
         } else {
-            Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+            displayToast(R.string.login_error);
         }
     }
 
@@ -1073,7 +1025,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_startup_logo)
     void onEntourageLogoClick() {
-        Toast.makeText(this, VERSION + BuildConfig.VERSION_NAME, Toast.LENGTH_LONG).show();
+        displayToast(VERSION + BuildConfig.VERSION_NAME);
     }
 
     class LoginTextWatcher implements TextWatcher {

@@ -8,10 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import social.entourage.android.R;
-import social.entourage.android.carousel.CarouselFragment;
-import social.entourage.android.user.edit.partner.UserEditPartnerFragment;
 
 /**
  * Carousel page 4

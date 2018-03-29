@@ -2,6 +2,7 @@ package social.entourage.android.base;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
@@ -29,7 +30,7 @@ public class EntourageDialogFragment extends DialogFragment {
     private boolean isStopped = true;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Dialog dialog = getDialog();
         if (dialog != null) {
@@ -43,7 +44,7 @@ public class EntourageDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         DeepLinksManager.getInstance().handleCurrentDeepLink(this.getActivity());
     }

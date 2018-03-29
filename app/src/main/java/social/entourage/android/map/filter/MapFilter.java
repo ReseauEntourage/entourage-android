@@ -1,15 +1,10 @@
 package social.entourage.android.map.filter;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import social.entourage.android.api.model.TourType;
-import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryManager;

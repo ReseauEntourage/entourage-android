@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
@@ -31,7 +30,6 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.map.tour.join.received.TourJoinRequestReceivedActivity;
 import social.entourage.android.message.MessageActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;

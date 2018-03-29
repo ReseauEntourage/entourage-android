@@ -3,6 +3,7 @@ package social.entourage.android.partner;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.tools.CropCircleTransformation;
 
 /**
  * Fragment that displays the details of a partner organisation
@@ -156,6 +154,8 @@ public class PartnerFragment extends EntourageDialogFragment {
     private void configureView() {
         // Check for valid activity
         if (getActivity() == null || getActivity().isFinishing()) {
+            Log.i("PartnerFragment", "No activity for this View");
+            return;
         }
 
         // url

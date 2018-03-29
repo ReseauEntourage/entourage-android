@@ -4,8 +4,6 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.google.android.gms.iid.InstanceID;
@@ -24,10 +22,8 @@ public class RegisterGCMService extends IntentService {
     public static final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences ?
     private final String GCM_SCOPE = "GCM";
     public static final String SHARED_PREFERENCES_FILE_GCM = "ENTOURAGE_GCM_DATA";
-    private static final String KEY_APPLICATION_VERSION = "ENTOURAGE_APPLICATION_VERSION";
     public static final String KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID";
     public static final String KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED";
-    private static final int ENTOURAGE_MIN_VERSION = 0;
 
     public RegisterGCMService() {
         super("RegisterGCMService");
@@ -40,8 +36,6 @@ public class RegisterGCMService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-
         String registrationId = null;
         try {
             registrationId = InstanceID.getInstance(this).getToken(GCM_SENDER_ID, GCM_SCOPE);
@@ -50,6 +44,7 @@ public class RegisterGCMService extends IntentService {
         }
 
         if (registrationId != null) {
+            final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(KEY_REGISTRATION_ID, registrationId);
             editor.commit();
@@ -60,16 +55,4 @@ public class RegisterGCMService extends IntentService {
         BusProvider.getInstance().register(this);
         BusProvider.getInstance().post(new OnGCMTokenObtainedEvent(registrationId));
     }
-
-    private int getCurrentCodeVersion() {
-        try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            return packageInfo.versionCode;
-        }
-        catch (PackageManager.NameNotFoundException e) {
-            Log.e("Error", "Can not get package info");
-        }
-        return -1;
-    }
-
 }

@@ -33,7 +33,7 @@ public class Utils {
             } else {
                 phoneNumber = "+33" + phoneNumber;
             }
-        } else {
+        } else if (!phoneNumber.startsWith("+")) {
             if (countryCode != null) {
                 phoneNumber = countryCode + phoneNumber;
             }

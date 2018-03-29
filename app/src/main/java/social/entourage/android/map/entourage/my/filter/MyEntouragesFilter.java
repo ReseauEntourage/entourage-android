@@ -1,7 +1,6 @@
 package social.entourage.android.map.entourage.my.filter;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -62,13 +61,11 @@ public class MyEntouragesFilter implements Serializable {
     public String getTourTypes() {
         if (showTours) {
             if (allTourTypes == null) {
-                StringBuilder tourTypes = new StringBuilder();
-                tourTypes.append(TourType.MEDICAL.getName());
-                tourTypes.append(',');
-                tourTypes.append(TourType.BARE_HANDS.getName());
-                tourTypes.append(',');
-                tourTypes.append(TourType.ALIMENTARY.getName());
-                allTourTypes = tourTypes.toString();
+                allTourTypes = TourType.MEDICAL.getName()
+                        + ','
+                        + TourType.BARE_HANDS.getName()
+                        + ','
+                        + TourType.ALIMENTARY.getName();
             }
             return allTourTypes;
         }

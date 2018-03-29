@@ -312,7 +312,7 @@ public class MapFilterFragment extends EntourageDialogFragment {
 
     private void addEntourageCategories(String entourageType, LinearLayout layout, MapFilter mapFilter) {
         // create the hashmap entrance
-        List<Switch> switchList = new ArrayList<Switch>();
+        List<Switch> switchList = new ArrayList<>();
         actionSwitches.put(entourageType, switchList);
         // get the list of categories
         EntourageCategoryManager categoryManager = EntourageCategoryManager.getInstance();
