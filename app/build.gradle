@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'com.google.firebase.firebase-perf'
+//apply plugin: 'com.google.firebase.firebase-perf'
 
 def versionMajor = 4
 def versionMinor = 5
@@ -130,6 +130,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${supportVersion}"
     implementation "com.android.support:appcompat-v7:${supportVersion}"
     implementation "com.android.support:design:${supportVersion}"
+    implementation "com.android.support:customtabs:${supportVersion}"
     implementation "com.google.android.gms:play-services-maps:${playServicesVersion}"
     implementation "com.google.android.gms:play-services-location:${playServicesVersion}"
     implementation "com.google.android.gms:play-services-gcm:${playServicesVersion}"
