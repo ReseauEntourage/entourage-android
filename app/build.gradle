@@ -32,6 +32,9 @@ android {
         buildConfigField 'String', 'AWS_SECRET', AWS_SECRET
         buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN
 
+        buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
+        buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
+
         manifestPlaceholders = [
                 deepLinksHostName       : "www.entourage.social",
                 deepLinksEntourageScheme: "entourage"
@@ -60,8 +63,6 @@ android {
         debug {
             signingConfig signingConfigs.debug
             applicationIdSuffix '.debug'
-            buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
-            buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
         }
     }
 
