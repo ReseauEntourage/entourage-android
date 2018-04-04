@@ -88,7 +88,7 @@ android {
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
             buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
         }
-        pfpPreprod {
+        preprodPfp {
             applicationId 'social.entourage.android.pfp.preprod'
             dimension 'PFP'
             buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
