@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/login_view"
-              tools:context=".authentication.login.LoginActivity"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_view"
+    android:orientation="vertical"
+    tools:context=".authentication.login.LoginActivity">
 
     <!--ImageView
         android:id="@+id/login_startup_background"
@@ -29,7 +28,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitCenter"
-        android:src="@drawable/entourage_logo"/>
+        android:src="@drawable/entourage_logo" />
 
     <TextView
         android:id="@+id/login_startup_slogan"
@@ -41,8 +40,7 @@
         android:text="@string/pfp_slogan"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white"
-        android:textSize="@dimen/entourage_font_big"
-        />
+        android:textSize="@dimen/entourage_font_big" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -60,7 +58,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:text="@string/login_button_register"/>
+            android:text="@string/login_button_register" />
 
         <Button
             android:id="@+id/login_button_login"
@@ -71,7 +69,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:text="@string/login_button_login"/>
+            android:text="@string/login_button_login" />
     </LinearLayout>
 
 </RelativeLayout>
