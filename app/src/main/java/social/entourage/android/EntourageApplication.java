@@ -53,6 +53,11 @@ public class EntourageApplication extends MultiDexApplication {
     private MixpanelAPI mixpanel;
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    static public String ENTOURAGE_APP="entourage";
+    static public String PFP_APP="pfp";
+
+    public enum WhiteLabelApp {ENTOURAGE_APP, PFP_APP};
+
     @Override
     public void onCreate() {
         activities = new ArrayList<>();
@@ -310,6 +315,14 @@ public class EntourageApplication extends MultiDexApplication {
             return;
         }
         feedItemsStorage.updateFeedItemFromStorage(me.getId(), feedItem);
+    }
+
+    static boolean isCurrentApp(String appName) {
+        return BuildConfig.FLAVOR.contains(appName);
+    }
+
+    static boolean isEntourageApp() {
+        return isCurrentApp(ENTOURAGE_APP);
     }
 
 }
