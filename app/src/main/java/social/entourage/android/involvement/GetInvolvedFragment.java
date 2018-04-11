@@ -33,10 +33,6 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
 
     public static final String TAG = GetInvolvedFragment.class.getSimpleName();
 
-    private static final String RATE_URL = "market://details?id=";
-    private static final String FACEBOOK_URL = "https://www.facebook.com/EntourageReseauCivique";
-    private static final String TWITTER_URL = "https://twitter.com/r_entourage";
-
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -93,7 +89,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
     protected void onRateUsClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ABOUT_RATING);
 
-        Uri uri = Uri.parse(RATE_URL + this.getActivity().getPackageName());
+        Uri uri = Uri.parse(getString(R.string.rate_url) + this.getActivity().getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         // To count with Play market backstack, After pressing back button,
         // to taken back to our application, we need to add following flags to intent.
@@ -112,7 +108,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
     protected void onFacebookClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ABOUT_FACEBOOK);
 
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_URL));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.facebook_url)));
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
@@ -122,7 +118,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.get_involved_twitter_layout)
     protected void onTwitterClicked() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TWITTER_URL));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.twitter_url)));
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {

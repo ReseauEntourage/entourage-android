@@ -69,6 +69,7 @@ import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
@@ -462,11 +463,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         // Close the overlays
         onBackPressed();
         // Open the link to propose a POI
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.POI_PROPOSE_URL));
-        try {
-            startActivity(browserIntent);
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(getActivity(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            ((DrawerActivity)getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
         }
     }
 
@@ -537,8 +535,12 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // ----------------------------------
 
     private void initializeEmptyListPopup() {
-        emptyListTextView.setMovementMethod(LinkMovementMethod.getInstance());
-        emptyListTextView.setText(Utils.fromHtml(getString(R.string.map_poi_empty_popup, Constants.POI_PROPOSE_URL)));
+        String proposePOIUrl = "";
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            proposePOIUrl = ((DrawerActivity)getActivity()).getLink(Constants.PROPOSE_POI_ID);
+        }
+        emptyListTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
+        emptyListTextView.setText(Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl)));
     }
 
     @OnClick(R.id.fragment_guide_empty_list_popup)

@@ -14,9 +14,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
+import social.entourage.android.DrawerActivity;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
+import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.map.entourage.CreateEntourageListener;
+import social.entourage.android.view.HtmlTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,7 +94,7 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
             }
         }
 
-        initialiseView();
+        initializeView();
     }
 
     @Override
@@ -106,7 +110,12 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
         this.mListener = mListener;
     }
 
-    private void initialiseView() {
+    private void initializeView() {
+        initializeListView();
+        initializeHelpHtmlView();
+    }
+
+    private void initializeListView() {
         HashMap<String, List<EntourageCategory>> entourageCategoryHashMap = EntourageCategoryManager.getInstance().getEntourageCategories();
         List<String> entourageTypeList = EntourageCategoryManager.getInstance().getEntourageTypes();
         adapter = new EntourageCategoriesAdapter(getContext(), entourageTypeList, entourageCategoryHashMap, category);
@@ -114,6 +123,16 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
         int count = adapter.getGroupCount();
         for (int position = 0; position < count; position++) {
             listView.expandGroup(position);
+        }
+    }
+
+    private void initializeHelpHtmlView() {
+        HtmlTextView helpHtmlTextView = getView().findViewById(R.id.entourage_category_help_link);
+        if (helpHtmlTextView != null) {
+            if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+                String goalLink = ((DrawerActivity) getActivity()).getLink(Constants.GOAL_LINK_ID);
+                helpHtmlTextView.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntourageLinkMovementMethod.getInstance());
+            }
         }
     }
 

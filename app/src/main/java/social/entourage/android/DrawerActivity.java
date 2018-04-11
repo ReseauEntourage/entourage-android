@@ -591,13 +591,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_goal:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
-                Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.GOAL_LINK_ID)));
-                try {
-                    startActivity(goalIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-
+                showWebViewForLinkId(Constants.GOAL_LINK_ID);
                 break;
             case R.id.action_atd:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
@@ -702,6 +696,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void showWebView(String url) {
         WebViewFragment webViewFragment = WebViewFragment.newInstance(url);
         webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
+    }
+
+    public void showWebViewForLinkId(String linkId) {
+        String link = getLink(linkId);
+        showWebView(link);
     }
 
     public void showMapFilters() {
@@ -1017,6 +1016,12 @@ public class DrawerActivity extends EntourageSecuredActivity
         EntourageEvents.onLocationPermissionGranted(event.isPermissionGranted());
     }
 
+    @Subscribe
+    public void onShowURLRequested(Events.OnShowURLEvent event) {
+        if (event == null) return;
+        showWebView(event.getUrl());
+    }
+
     @Override
     public void closeTourInformationFragment(TourInformationFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -1320,7 +1325,8 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     public String getLink(String linkId) {
         if (authenticationController != null && authenticationController.getUser() != null) {
-            return getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
+            String link = getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
+            return link;
         }
         return "";
     }

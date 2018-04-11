@@ -25,8 +25,7 @@ public class AboutFragment extends EntourageDialogFragment {
 
     public static final String TAG = AboutFragment.class.getSimpleName();
 
-    private static final String TERMS_URL = "https://www.entourage.social/cgu/index.html";
-    private static final String WEBSITE_URL = "https://www.entourage.social";
+
 
     // ----------------------------------
     // ATTRIBUTES
@@ -58,7 +57,7 @@ public class AboutFragment extends EntourageDialogFragment {
     protected void onTermsClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ABOUT_CGU);
 
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_URL));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_url)));
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
@@ -70,7 +69,7 @@ public class AboutFragment extends EntourageDialogFragment {
     protected void onWebsiteClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ABOUT_WEBSITE);
 
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WEBSITE_URL));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_url)));
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
@@ -96,12 +95,7 @@ public class AboutFragment extends EntourageDialogFragment {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
             EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
             DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            Intent userGuideIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(drawerActivity.getLink(Constants.FAQ_LINK_ID)));
-            try {
-                startActivity(userGuideIntent);
-            } catch (Exception ex) {
-                Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-            }
+            drawerActivity.showWebViewForLinkId(Constants.FAQ_LINK_ID);
         }
     }
 

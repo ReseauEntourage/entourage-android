@@ -26,10 +26,7 @@ public class Constants {
     public static final String FAQ_LINK_ID = "faq";
     public static final String FEEDBACK_ID = "feedback";
     public static final String AMBASSADOR_ID = "volunteering";
-    // Links
-    public static final String POI_PROPOSE_URL = "https://goo.gl/jD5uIQ";
-    public static final String HELP_URL = "https://blog.entourage.social/franchir-le-pas/";
-
+    public static final String PROPOSE_POI_ID = "propose-poi";
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";

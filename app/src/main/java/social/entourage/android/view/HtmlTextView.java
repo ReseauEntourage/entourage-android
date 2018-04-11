@@ -3,6 +3,7 @@ package social.entourage.android.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -45,9 +46,13 @@ public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
     }
 
     public void setHtmlString(String htmlString) {
+        setHtmlString(htmlString, LinkMovementMethod.getInstance());
+    }
+
+    public void setHtmlString(String htmlString, MovementMethod movementMethod) {
         if (htmlString == null) htmlString = "";
         setText(Utils.fromHtml(htmlString), BufferType.SPANNABLE);
         this.htmlString = htmlString;
-        setMovementMethod(LinkMovementMethod.getInstance());
+        setMovementMethod(movementMethod);
     }
 }
