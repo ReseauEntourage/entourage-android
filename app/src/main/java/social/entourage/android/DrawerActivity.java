@@ -1114,7 +1114,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
         TransferObserver transferObserver = transferUtility.upload(
             BuildConfig.AWS_BUCKET,
-            BuildConfig.AWS_FOLDER + objectKey,
+            BuildConfig.AWS_MAIN_FOLDER + BuildConfig.AWS_FOLDER + objectKey,
             new File(photoUri.getPath()),
             CannedAccessControlList.PublicRead
         );

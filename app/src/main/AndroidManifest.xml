@@ -221,7 +221,7 @@
 
         <meta-data
             android:name="com.mixpanel.android.MPConfig.ResourcePackageName"
-            android:value="social.entourage.android" />
+            android:value="${applicationId}" />
 
         <meta-data android:name="com.mixpanel.android.MPConfig.MinimumSessionDuration"
                    android:value="0" />
