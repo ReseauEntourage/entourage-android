@@ -268,6 +268,9 @@ public class WebViewFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private class MyBrowser extends WebViewClient {
+
+        private String loadedUrl = "";
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
@@ -278,21 +281,24 @@ public class WebViewFragment extends EntourageDialogFragment {
         public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
-            Uri uri = Uri.parse(url);
-            String host = uri.getHost();
-            String domain = "";
-            if (host != null) {
-                host = host.toLowerCase();
-                if (host.startsWith("www.")) {
-                    host = host.substring(4);
+            if (!loadedUrl.equalsIgnoreCase(url)) {
+                loadedUrl = url;
+                Uri uri = Uri.parse(url);
+                String host = uri.getHost();
+                String domain = "";
+                if (host != null) {
+                    host = host.toLowerCase();
+                    if (host.startsWith("www.")) {
+                        host = host.substring(4);
+                    }
+                    if (host.length() > 0) {
+                        domain = host.substring(0, 1).toUpperCase() + host.substring(1);
+                    }
                 }
-                if (host.length() > 0) {
-                    domain = host.substring(0, 1).toUpperCase() + host.substring(1);
-                }
-            }
-            titleTextView.setText(domain);
+                titleTextView.setText(domain);
 
-            progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
