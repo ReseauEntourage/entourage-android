@@ -31,7 +31,7 @@ android {
 
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
-        buildConfigField 'String', 'AWS_MAIN_FOLDER', ""
+        buildConfigField 'String', 'AWS_MAIN_FOLDER', '""'
         buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
         buildConfigField 'String', 'AWS_KEY', AWS_KEY
         buildConfigField 'String', 'AWS_SECRET', AWS_SECRET
