@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_transparent">
+                android:background="@color/background_transparent"
+                android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/rounded_dialog"
+        android:orientation="vertical"
         android:padding="20dp">
 
         <ImageButton
@@ -75,12 +75,12 @@
             android:text="@string/invite_source_number"/>
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/close"
             android:id="@+id/invite_source_close_bottom_button"
             style="@style/AccentButton"
-            android:layout_marginTop="20dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/close"/>
 
     </LinearLayout>
 </RelativeLayout>

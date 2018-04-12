@@ -45,6 +45,7 @@ import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.edit.UserEditFragment;
+import social.entourage.android.user.report.UserReportFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 
 public class UserFragment extends EntourageDialogFragment {
@@ -375,21 +376,24 @@ public class UserFragment extends EntourageDialogFragment {
     protected void onReportUserClicked() {
         if (user == null) return;
         // Build the email intent
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));
-        // Set the email to
-        String[] addresses = {Constants.EMAIL_CONTACT};
-        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-        // Set the subject
-        String emailSubject = getString(R.string.user_report_email_subject, user.getDisplayName());
-        intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            // Start the intent
-            startActivity(intent);
-        } else {
-            // No Email clients
-            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
-        }
+//        Intent intent = new Intent(Intent.ACTION_SENDTO);
+//        intent.setData(Uri.parse("mailto:"));
+//        // Set the email to
+//        String[] addresses = {Constants.EMAIL_CONTACT};
+//        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+//        // Set the subject
+//        String emailSubject = getString(R.string.user_report_email_subject, user.getDisplayName());
+//        intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+//        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+//            // Start the intent
+//            startActivity(intent);
+//        } else {
+//            // No Email clients
+//            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
+//        }
+
+        UserReportFragment userReportFragment = UserReportFragment.newInstance(user.getId());
+        userReportFragment.show(getFragmentManager(), UserReportFragment.TAG);
     }
 
     // ----------------------------------
