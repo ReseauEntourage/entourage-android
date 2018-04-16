@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.EncounterRequest;
+import social.entourage.android.api.EntourageApiModule;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.LoginRequest;
@@ -33,6 +34,7 @@ import social.entourage.android.map.tour.TourService;
         modules = {
                 EntourageModule.class,
                 ApiModule.class,
+                EntourageApiModule.class,
                 AuthenticationModule.class
         }
 )

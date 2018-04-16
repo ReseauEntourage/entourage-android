@@ -336,7 +336,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     }
 
     @Subscribe
-    public void onPoiViewRequested(Events.OnPoiViewRequestedEvent event) {
+    public void onPoiViewRequested(social.entourage.android.api.model.tape.EntourageEvents.OnPoiViewRequestedEvent event) {
         if (event == null || event.getPoi() == null) return;
         EntourageEvents.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
         showPoiDetails(event.getPoi());

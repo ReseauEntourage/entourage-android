@@ -75,6 +75,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import social.entourage.android.BackPressable;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
@@ -251,7 +252,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @BindView(R.id.fragment_map_empty_list_popup)
     View emptyListPopup;
 
-    @BindView(R.id.fragment_map_show_guide)
+    @Nullable @BindView(R.id.fragment_map_show_guide)
     View showGuideView;
 
     @BindView(R.id.fragment_map_entourage_mini_cards)
@@ -2242,7 +2243,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         isFullMapShown = true;
         newEntouragesButton.setVisibility(View.GONE);
         mapDisplayToggle.setChecked(true);
-        showGuideView.setVisibility(View.VISIBLE);
+        if (showGuideView != null) showGuideView.setVisibility(View.VISIBLE);
 
         ensureMapVisible();
 
@@ -2272,7 +2273,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         isFullMapShown = false;
         mapDisplayToggle.setChecked(false);
-        showGuideView.setVisibility(View.GONE);
+        if (showGuideView != null) showGuideView.setVisibility(View.GONE);
         miniCardsView.setVisibility(View.INVISIBLE);
 
         hideEmptyListPopup();
@@ -2559,6 +2560,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // Show Guide button on full map screen
     // ----------------------------------
 
+    @Optional
     @OnClick(R.id.fragment_map_show_guide)
     protected void onShowGuideClicked() {
         if (getActivity() == null) return;

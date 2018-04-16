@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+
 import javax.inject.Inject;
 
 import okhttp3.ResponseBody;
@@ -262,5 +264,13 @@ public class DrawerPresenter {
                 Log.d(LOG_TAG, t.getLocalizedMessage());
             }
         });
+    }
+
+    protected void showSolidarityGuide() {
+        // does nothing
+    }
+
+    protected void proposePOI() {
+        // does nothing
     }
 }

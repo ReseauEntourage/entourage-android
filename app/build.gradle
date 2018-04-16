@@ -80,7 +80,6 @@ android {
         staging {
             dimension 'env'
             applicationIdSuffix '.preprod'
-            buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
             /*buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP_DEBUG*/
@@ -91,17 +90,32 @@ android {
         }
         entourage {
             dimension 'app'
+            ext {
+                prod = [
+                        serverURL : "https://api.entourage.social/api/v1/"
+                ]
+                staging = [
+                        serverURL : "https://entourage-back-preprod.herokuapp.com/api/v1/"
+                ]
+            }
         }
         pfp {
             dimension 'app'
             applicationId 'social.entourage.android.pfp'
-            buildConfigField 'String', 'ENTOURAGE_URL', '"https://apiPXTGS.entourage.social/api/v1/"'
             buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
             manifestPlaceholders = [
                     deepLinksHostName       : "www.entourage.social/pfp",
                     deepLinksEntourageScheme: "pfp-prod"
             ]
+            ext {
+                prod = [
+                        serverURL : "https://apiPXTGS.entourage.social/api/v1/"
+                ]
+                staging = [
+                        serverURL : "https://entourage-back-preprod.herokuapp.com/api/v1/"
+                ]
+            }
         }
     }
 
@@ -109,6 +123,12 @@ android {
         variant.outputs.all {
             outputFileName = "app-${variant.name}-${variant.versionName}.apk"
         }
+        def flavors = variant.productFlavors
+        // flavorDimensions "app" -> 0, "env" -> 1
+        def app = flavors[0]
+        def environment = flavors[1]
+
+        variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
     }
 
     packagingOptions {

@@ -9,7 +9,6 @@ import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.Poi;
 
 public class Events {
 
@@ -467,23 +466,6 @@ public class Events {
 
         public Partner getPartner() {
             return partner;
-        }
-    }
-
-    /**
-     * Event signaling that poi view is requested
-     */
-
-    public static class OnPoiViewRequestedEvent {
-
-        private Poi poi;
-
-        public OnPoiViewRequestedEvent(Poi poi) {
-            this.poi = poi;
-        }
-
-        public Poi getPoi() {
-            return poi;
         }
     }
 

@@ -76,7 +76,6 @@ import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.deeplinks.DeepLinksManager;
-import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -153,8 +152,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public FloatingActionMenu mapOptionsMenu;
 
     private Fragment mainFragment;
-    private MapEntourageFragment mapEntourageFragment;
-    private GuideMapEntourageFragment guideMapEntourageFragment;
+    protected MapEntourageFragment mapEntourageFragment;
     private UserFragment userFragment;
 
     private SharedPreferences gcmSharedPreferences;
@@ -421,8 +419,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     private void highlightCurrentMenuItem() {
         if (mainFragment instanceof MapEntourageFragment) {
             navigationView.setCheckedItem(R.id.action_tours);
-        } else if (mainFragment instanceof GuideMapEntourageFragment) {
-            navigationView.setCheckedItem(R.id.action_guide);
         } else if (mainFragment instanceof UserFragment) {
             navigationView.setCheckedItem(R.id.action_user);
         }
@@ -528,7 +524,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_guide:
                 if (mainFragment instanceof MapEntourageFragment) {
-                    showSolidarityGuide();
+                    if (presenter != null) presenter.showSolidarityGuide();
                     EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
                 }
                 break;
@@ -622,7 +618,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         selectedSidemenuAction = 0;
     }
 
-    private void loadFragment(Fragment newFragment, String tag) {
+    protected void loadFragment(Fragment newFragment, String tag) {
         mainFragment = newFragment;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
@@ -650,31 +646,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 });
             }
         }
-    }
-
-    private void showSolidarityGuide() {
-        // Change the Guide Option text
-        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
-        button.setLabelText(getString(R.string.map_poi_close_button));
-        // Make the 'Propose POI' button visible
-        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
-        if (proposePOIButton != null) {
-            proposePOIButton.setVisibility(View.VISIBLE);
-        }
-        // Hide the overlay
-        if (mapOptionsMenu.isOpened()) {
-            mapOptionsMenu.close(false);
-        }
-        // Inform the map that the guide will be shown
-        if (mapEntourageFragment != null) {
-            mapEntourageFragment.onGuideWillShow();
-        }
-        // Show the fragment
-        guideMapEntourageFragment = (GuideMapEntourageFragment) getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
-        if (guideMapEntourageFragment == null) {
-            guideMapEntourageFragment = new GuideMapEntourageFragment();
-        }
-        loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
     }
 
     private void hideSolidarityGuide() {
@@ -1198,8 +1169,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     @OnClick(R.id.button_poi_propose)
     protected void onPOIProposeClicked() {
         if (isGuideShown()) {
-            GuideMapEntourageFragment guideMapEntourageFragment = (GuideMapEntourageFragment) mainFragment;
-            guideMapEntourageFragment.proposePOI();
+            if (presenter != null) presenter.proposePOI();
         }
     }
 
@@ -1208,7 +1178,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment instanceof MapEntourageFragment) {
             EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
             // Show the guide screen
-            showSolidarityGuide();
+            if (presenter != null) presenter.showSolidarityGuide();
         } else {
             EntourageEvents.logEvent(Constants.EVENT_SCREEN_06_1);
             // Change the Guide Option text

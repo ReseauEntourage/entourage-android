@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <RelativeLayout
+            android:id="@+id/fragment_map_main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:weightSum="8">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_map_tours_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"/>
+
+            <Button
+                android:id="@+id/fragment_map_new_entourages_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/new_entourages"
+                android:drawableLeft="@drawable/arrow_new_entourages"
+                android:drawableStart="@drawable/arrow_new_entourages"
+                android:paddingEnd="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:text="@string/activity_map_new_entourages"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/fragment_map_empty_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/fragment_map_tours_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="@string/map_empty_newsfeed"
+                android:textColor="@color/black"
+                android:textSize="@dimen/entourage_font_medium"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/fragment_map_filter_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_filters_black"/>
+
+            <ImageButton
+                android:id="@+id/fragment_map_follow_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_position"/>
+
+            <ToggleButton
+                android:id="@+id/fragment_map_display_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:button="@drawable/bg_map_type_tab"
+                android:checked="false"
+                android:textOff=""
+                android:textOn=""/>
+
+        </RelativeLayout>
+
+        <view
+            android:id="@+id/fragment_map_entourage_mini_cards"
+            class="social.entourage.android.map.entourage.minicards.EntourageMiniCardsView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/fragment_map_show_guide"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:id="@+id/fragment_map_gps_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_clickable_layout_gps"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/map_gps_unavailable"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/entourage_font_small"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_map_empty_list_popup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/rounded_dialog"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/fragment_map_empty_list_popup_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="3dp"
+                android:contentDescription="@string/empty_description"
+                android:padding="3dp"
+                android:src="@drawable/ic_close_white"/>
+
+            <TextView
+                android:id="@+id/fragment_map_empty_list_popup_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:text="@string/map_empty_newsfeed_popup"
+                android:textColor="@color/white"
+                android:textColorLink="@color/white"
+                android:textSize="@dimen/entourage_font_medium"/>
+        </LinearLayout>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/tour_stop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="end"
+            android:layout_marginBottom="80dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="0dp"
+            android:src="@drawable/ic_pause_white"
+            android:visibility="gone"
+            app:fab_colorNormal="@color/dodger_blue"
+            app:fab_colorPressed="@color/dodger_blue"
+            app:fab_colorRipple="@color/dodger_blue"/>
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/layout_map_longclick"
+            android:id="@+id/layout_map_longclick"
+            android:visibility = "gone"/>
+
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/layout_map_launcher"
+        layout="@layout/layout_map_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/newsfeed_map_height"
+        android:visibility="gone"/>
+
+</RelativeLayout>
