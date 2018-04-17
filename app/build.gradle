@@ -113,7 +113,7 @@ android {
                         serverURL : "https://apiPXTGS.entourage.social/api/v1/"
                 ]
                 staging = [
-                        serverURL : "https://entourage-back-preprod.herokuapp.com/api/v1/"
+                        serverURL : "https://pfp-back-preprod.herokuapp.com/api/v1/"
                 ]
             }
         }
