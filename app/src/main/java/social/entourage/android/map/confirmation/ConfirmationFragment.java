@@ -5,6 +5,10 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,13 +24,16 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.base.EntourageDialogFragment;
 
 @SuppressWarnings("WeakerAccess")
-public class ConfirmationActivity extends EntourageSecuredActivity {
+public class ConfirmationFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
+
+    public static final String TAG = ConfirmationFragment.class.getSimpleName();
 
     public static final String KEY_END_TOUR = "social.entourage.android.KEY_END_TOUR";
     public static final String KEY_RESUME_TOUR = "social.entourage.android.KEY_RESUME_TOUR";
@@ -34,9 +41,6 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-
-    @Inject
-    ConfirmationPresenter presenter;
 
     @BindView(R.id.confirmation_encounters)
     TextView encountersView;
@@ -59,48 +63,42 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
     // LIFECYCLE
     // ----------------------------------
 
+    public ConfirmationFragment() {
+        // Required empty public constructor
+    }
+
+    public static ConfirmationFragment newInstance(Tour tour) {
+        ConfirmationFragment fragment = new ConfirmationFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(Tour.KEY_TOUR, tour);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setFinishOnTouchOutside(false);
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.layout_map_confirmation, container, false);
+        ButterKnife.bind(this, view);
 
-        setContentView(R.layout.layout_map_confirmation);
-        ButterKnife.bind(this);
+        return view;
+    }
 
-        if (!getAuthenticationController().isAuthenticated()) {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-
-        Intent intent = getIntent();
-        if (intent != null) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                tour = (Tour) bundle.getSerializable(Tour.KEY_TOUR);
-            }
+    @Override
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            tour = (Tour) args.getSerializable(Tour.KEY_TOUR);
         }
         initializeView();
     }
 
     @Override
-    protected void setupComponent(EntourageComponent entourageComponent) {
-        DaggerConfirmationComponent.builder()
-                .entourageComponent(entourageComponent)
-                .confirmationModule(new ConfirmationModule(this))
-                .build()
-                .inject(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        onResumeTour();
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    protected int getSlideStyle() {
+        return R.style.CustomDialogFragmentSlide;
     }
 
     // ----------------------------------
@@ -128,9 +126,10 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
         Bundle args = new Bundle();
         args.putBoolean(KEY_RESUME_TOUR, true);
         args.putSerializable(Tour.KEY_TOUR, tour);
-        Intent resumeIntent = new Intent(this, DrawerActivity.class);
+        Intent resumeIntent = new Intent(getActivity(), DrawerActivity.class);
         resumeIntent.putExtras(args);
         startActivity(resumeIntent);
+        dismiss();
     }
 
     @OnClick(R.id.confirmation_end_button)
@@ -138,8 +137,9 @@ public class ConfirmationActivity extends EntourageSecuredActivity {
         Bundle args = new Bundle();
         args.putBoolean(KEY_END_TOUR, true);
         args.putSerializable(Tour.KEY_TOUR, tour);
-        Intent resumeIntent = new Intent(this, DrawerActivity.class);
+        Intent resumeIntent = new Intent(getActivity(), DrawerActivity.class);
         resumeIntent.putExtras(args);
         startActivity(resumeIntent);
+        dismiss();
     }
 }
