@@ -498,4 +498,21 @@ public class Events {
 
     }
 
+    /**
+     * Event signaling that showing an url is requested
+     */
+
+    public static class OnShowURLEvent {
+
+        private String url;
+
+        public OnShowURLEvent(String url) {
+            this.url = url;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+    }
+
 }

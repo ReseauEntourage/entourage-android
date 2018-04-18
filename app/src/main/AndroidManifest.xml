@@ -122,12 +122,6 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".map.confirmation.ConfirmationActivity"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomDialogThemeNoTitle">
-        </activity>
-        <activity
             android:name=".map.encounter.ReadEncounterActivity"
             android:label="@string/activity_read_encounter_title"
             android:noHistory="true"

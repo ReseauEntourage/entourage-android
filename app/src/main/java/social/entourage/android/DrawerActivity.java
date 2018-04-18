@@ -80,7 +80,7 @@ import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
-import social.entourage.android.map.confirmation.ConfirmationActivity;
+import social.entourage.android.map.confirmation.ConfirmationFragment;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.encounter.ReadEncounterActivity;
@@ -263,9 +263,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             switchToMapFragment();
             if (intentAction != null) {
                 switch (intentAction) {
-                    case ConfirmationActivity.KEY_RESUME_TOUR:
+                    case ConfirmationFragment.KEY_RESUME_TOUR:
                         break;
-                    case ConfirmationActivity.KEY_END_TOUR:
+                    case ConfirmationFragment.KEY_END_TOUR:
                         break;
                     case TourService.KEY_NOTIFICATION_STOP_TOUR:
                     case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
@@ -377,10 +377,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         Bundle args = intent.getExtras();
         if (args != null) {
             intentTour = (Tour) args.getSerializable(Tour.KEY_TOUR);
-            if (args.getBoolean(ConfirmationActivity.KEY_RESUME_TOUR, false)) {
-                intentAction = ConfirmationActivity.KEY_RESUME_TOUR;
-            } else if (args.getBoolean(ConfirmationActivity.KEY_END_TOUR, false)) {
-                intentAction = ConfirmationActivity.KEY_END_TOUR;
+            if (args.getBoolean(ConfirmationFragment.KEY_RESUME_TOUR, false)) {
+                intentAction = ConfirmationFragment.KEY_RESUME_TOUR;
+            } else if (args.getBoolean(ConfirmationFragment.KEY_END_TOUR, false)) {
+                intentAction = ConfirmationFragment.KEY_END_TOUR;
             } else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
                 intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
             } else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(action)) {
@@ -591,13 +591,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_goal:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
-                Intent goalIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.GOAL_LINK_ID)));
-                try {
-                    startActivity(goalIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-
+                showWebViewForLinkId(Constants.GOAL_LINK_ID);
                 break;
             case R.id.action_atd:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
@@ -702,6 +696,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void showWebView(String url) {
         WebViewFragment webViewFragment = WebViewFragment.newInstance(url);
         webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
+    }
+
+    public void showWebViewForLinkId(String linkId) {
+        String link = getLink(linkId);
+        showWebView(link);
     }
 
     public void showMapFilters() {
@@ -1017,6 +1016,12 @@ public class DrawerActivity extends EntourageSecuredActivity
         EntourageEvents.onLocationPermissionGranted(event.isPermissionGranted());
     }
 
+    @Subscribe
+    public void onShowURLRequested(Events.OnShowURLEvent event) {
+        if (event == null) return;
+        showWebView(event.getUrl());
+    }
+
     @Override
     public void closeTourInformationFragment(TourInformationFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -1029,7 +1034,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         //buttonStartLauncher.setVisibility(View.GONE);
         Bundle args = new Bundle();
         args.putSerializable(Tour.KEY_TOUR, tour);
-        Intent confirmationIntent = new Intent(this, ConfirmationActivity.class);
+        Intent confirmationIntent = new Intent(this, ConfirmationFragment.class);
         confirmationIntent.putExtras(args);
         startActivity(confirmationIntent);
     }
@@ -1320,7 +1325,8 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     public String getLink(String linkId) {
         if (authenticationController != null && authenticationController.getUser() != null) {
-            return getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
+            String link = getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
+            return link;
         }
         return "";
     }

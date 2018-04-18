@@ -12,6 +12,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import social.entourage.android.api.model.Partner;
+import social.entourage.android.api.model.UserReport;
 
 public interface UserRequest {
 
@@ -29,6 +30,9 @@ public interface UserRequest {
 
     @POST("users")
     Call<UserResponse> registerUser(@Body ArrayMap<String, Object> userInfo);
+
+    @POST("users/{user_id}/report")
+    Call<ResponseBody> reportUser(@Path("user_id") int userId, @Body UserReport.UserReportWrapper userReportWrapper);
 
     @POST("users/{user_id}/partners")
     Call<Partner.PartnerWrapper> addPartner(@Path("user_id") int userId, @Body Partner.PartnerWrapper partner);

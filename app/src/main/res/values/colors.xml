@@ -22,7 +22,7 @@
     <color name="background_dark">@color/primary_dark</color>
     <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
-    <color name="background_transparent">#cbefeff4</color>
+    <color name="background_transparent">#66000000</color>
 
     <!-- Login -->
     <color name="background_login_light">#FFFFFF</color>

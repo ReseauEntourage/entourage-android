@@ -107,7 +107,7 @@ import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
-import social.entourage.android.map.confirmation.ConfirmationActivity;
+import social.entourage.android.map.confirmation.ConfirmationFragment;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
 import social.entourage.android.map.entourage.minicards.EntourageMiniCardsView;
 import social.entourage.android.map.filter.MapFilter;
@@ -623,11 +623,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void checkAction(String action, Tour actionTour) {
         if (getActivity() != null && isBound) {
             // 1 : Check if should Resume tour
-            if (action != null && ConfirmationActivity.KEY_RESUME_TOUR.equals(action)) {
+            if (action != null && ConfirmationFragment.KEY_RESUME_TOUR.equals(action)) {
                 resumeTour(actionTour);
             }
             // 2 : Check if should End tour
-            else if (action != null && ConfirmationActivity.KEY_END_TOUR.equals(action)) {
+            else if (action != null && ConfirmationFragment.KEY_END_TOUR.equals(action)) {
                 stopFeedItem(actionTour);
             }
             // 3 : Check if tour is already paused
@@ -1872,12 +1872,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void launchConfirmationActivity() {
         pauseTour();
-        //buttonStartLauncher.setVisibility(View.GONE);
-        Bundle args = new Bundle();
-        args.putSerializable(Tour.KEY_TOUR, getCurrentTour());
-        Intent confirmationIntent = new Intent(getActivity(), ConfirmationActivity.class);
-        confirmationIntent.putExtras(args);
-        getActivity().startActivity(confirmationIntent);
+
+        ConfirmationFragment confirmationFragment = ConfirmationFragment.newInstance(getCurrentTour());
+        confirmationFragment.show(getFragmentManager(), ConfirmationFragment.TAG);
     }
 
     private void addEncounter(Encounter encounter) {
