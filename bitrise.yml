@@ -2,6 +2,8 @@
 format_version: 1.3.0
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 trigger_map:
+- push_branch: whitelabel
+  workflow: whitelabel
 - push_branch: develop
   workflow: primary
 - pull_request_source_branch: "*"
@@ -18,16 +20,41 @@ workflows:
         - gradle_task: "$GRADLE_TASK"
     - deploy-to-bitrise-io: {}
     - slack:
-        run_if: ".IsBuildFailed"
         inputs:
         - webhook_url: https://hooks.slack.com/services/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
         - from_username: Bitrise
         - from_username_on_error: Bitrise
-        - message: 'New build is available on bitrise: build number=$BITRISE_BUILD_NUMBER
-            @vaite'
-        - message_on_error: Oups, build has failed...
+        - message: |-
+            New DEV android build is available: $BITRISE_BUILD_NUMBER  here:
+            $BITRISE_APP_URL
+        - message_on_error: 'Oups, build has failed for android... @francois @mihai.ionescu '
         - icon_url: ''
         - icon_url_on_error: ''
+        - pretext: "*Build Succeeded!* : ready for *QA*"
+        - channel: "#androiddev"
+  whitelabel:
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone: {}
+    - install-missing-android-tools: {}
+    - gradle-runner:
+        inputs:
+        - gradle_task: "$GRADLE_TASK_WHITELABEL"
+    - deploy-to-bitrise-io: {}
+    - slack:
+        inputs:
+        - webhook_url: https://hooks.slack.com/services/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
+        - from_username: Bitrise
+        - from_username_on_error: Bitrise
+        - message: |-
+            New DEV android build is available: $BITRISE_BUILD_NUMBER  here:
+            $BITRISE_APP_URL
+        - message_on_error: 'Oups, build has failed for android... @francois @mihai.ionescu '
+        - icon_url: ''
+        - icon_url_on_error: ''
+        - pretext_on_error: "*Build Failed!* for *V5.0*"
+        - pretext: "*Build Succeeded!* for *V5.0* (dev only)"
         - channel: "#androiddev"
 app:
   envs:
@@ -36,7 +63,17 @@ app:
     GRADLE_BUILD_FILE_PATH: build.gradle
   - opts:
       is_expand: false
-    GRADLE_TASK: testPreprodDebugUnitTest lintProdRelease assemblePreprod assembleProd
+    GRADLE_TASK: lintProdRelease assemblePreprodRelease assembleProdRelease
   - opts:
       is_expand: false
     GRADLEW_PATH: "./gradlew"
+  - opts:
+      is_expand: false
+    GRADLE_TASK_TEST: 'testPreprodDebugUnitTest '
+  - opts:
+      is_expand: false
+    GRADLE_TASK_WHITELABEL: assemblePfpStagingRelease assemblePfpProdRelease assembleEntourageStagingRelease
+      assembleEntourageProdRelease
+  - opts:
+      is_expand: false
+    GRADLE_TASK_LINT: 'lintPfpProdRelease lintEntourageProdRelease '
