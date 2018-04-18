@@ -238,7 +238,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @BindView(R.id.map_longclick_buttons)
     RelativeLayout mapLongClickButtonsView;
 
-    @BindView(R.id.tour_stop_button)
+    @Nullable @BindView(R.id.tour_stop_button)
     FloatingActionButton tourStopButton;
 
     FloatingActionMenu mapOptionsMenu;
@@ -435,7 +435,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             mapLongClickView.setVisibility(View.GONE);
             mapOptionsMenu.setVisibility(View.VISIBLE);
             if (tourService != null && tourService.isRunning()) {
-                tourStopButton.setVisibility(View.VISIBLE);
+                if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
             }
             return true;
         }
@@ -594,7 +594,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         mapOptionsMenu.setVisibility(View.VISIBLE);
         if (tourService != null && tourService.isRunning()) {
-            tourStopButton.setVisibility(View.VISIBLE);
+            if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
         }
         // Check if we need to show the entourage disclaimer
         User me = EntourageApplication.me(getActivity());
@@ -708,7 +708,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         mapOptionsMenu.setVisibility(View.VISIBLE);
         if (tourService != null) {
-            tourStopButton.setVisibility(tourService.isRunning() ? View.VISIBLE : View.GONE);
+            if (tourStopButton != null) tourStopButton.setVisibility(tourService.isRunning() ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -847,7 +847,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                 mapOptionsMenu.setVisibility(View.VISIBLE);
                 updateFloatingMenuOptions();
-                tourStopButton.setVisibility(View.VISIBLE);
+                if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
 
                 if (presenter != null) {
                     presenter.setDisplayEncounterDisclaimer(true);
@@ -995,7 +995,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     if (feedItem.getId() == currentTourId) {
                         mapOptionsMenu.setVisibility(View.VISIBLE);
                         updateFloatingMenuOptions();
-                        tourStopButton.setVisibility(View.GONE);
+                        if (tourStopButton != null) tourStopButton.setVisibility(View.GONE);
                         //bottomTitleTextView.setText(R.string.activity_map_title_small);
 
                         currentTourId = -1;
@@ -1353,7 +1353,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         EntourageEvents.logEvent(Constants.EVENT_START_TOUR);
     }
 
-    @OnClick(R.id.tour_stop_button)
+    @Optional @OnClick(R.id.tour_stop_button)
     public void onStartStopConfirmation() {
         EntourageEvents.logEvent(Constants.EVENT_TOUR_SUSPEND);
         pauseTour();
@@ -1512,17 +1512,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void updateFloatingMenuOptions() {
+        View addTourEncounterButton = mapOptionsMenu.findViewById(R.id.button_add_tour_encounter);
+        View startTourButton = mapOptionsMenu.findViewById(R.id.button_start_tour_launcher);
         if (tourService != null && tourService.isRunning()) {
-            mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.INVISIBLE);
-            mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(View.GONE);
-            tourStopButton.setVisibility(View.VISIBLE);
+            if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.INVISIBLE);
+            if (startTourButton != null) startTourButton.setVisibility(View.GONE);
+            if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
         } else {
             User me = EntourageApplication.me(getActivity());
             boolean isPro = (me != null && me.isPro());
 
-            mapOptionsMenu.findViewById(R.id.button_add_tour_encounter).setVisibility(View.GONE);
-            mapOptionsMenu.findViewById(R.id.button_start_tour_launcher).setVisibility(isPro ? View.INVISIBLE : View.GONE);
-            tourStopButton.setVisibility(View.GONE);
+            if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.GONE);
+            if (startTourButton != null) startTourButton.setVisibility(isPro ? View.INVISIBLE : View.GONE);
+            if (tourStopButton != null) tourStopButton.setVisibility(View.GONE);
         }
     }
 
@@ -1539,7 +1541,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         longTapCoordinates = latLng;
         //hide the FAB menu
         mapOptionsMenu.setVisibility(View.GONE);
-        tourStopButton.setVisibility(View.GONE);
+        if (tourStopButton != null) tourStopButton.setVisibility(View.GONE);
         //for public user, start the create entourage funnel directly
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());

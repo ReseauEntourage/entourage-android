@@ -109,7 +109,6 @@
             class="social.entourage.android.map.entourage.minicards.EntourageMiniCardsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/fragment_map_show_guide"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -181,25 +180,6 @@
                 android:textColorLink="@color/white"
                 android:textSize="@dimen/entourage_font_medium"/>
         </LinearLayout>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/tour_stop_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="end"
-            android:layout_marginBottom="80dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginStart="0dp"
-            android:src="@drawable/ic_pause_white"
-            android:visibility="gone"
-            app:fab_colorNormal="@color/dodger_blue"
-            app:fab_colorPressed="@color/dodger_blue"
-            app:fab_colorRipple="@color/dodger_blue"/>
 
         <include
             android:layout_width="match_parent"

@@ -49,6 +49,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import social.entourage.android.about.AboutFragment;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Partner;
@@ -1133,7 +1134,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     // Floating Action Buttons handling
     // ----------------------------------
 
-    @OnClick(R.id.button_start_tour_launcher)
+    @Optional @OnClick(R.id.button_start_tour_launcher)
     public void onStartTourClicked() {
         EntourageEvents.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
@@ -1144,7 +1145,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    @OnClick(R.id.button_add_tour_encounter)
+    @Optional @OnClick(R.id.button_add_tour_encounter)
     public void onAddTourEncounterClicked() {
         EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
