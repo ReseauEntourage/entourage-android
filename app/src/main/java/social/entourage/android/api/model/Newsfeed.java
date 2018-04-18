@@ -110,16 +110,10 @@ public class Newsfeed {
                 String type = jsonObject.get(TYPE).getAsString();
                 newsfeed.type = type;
                 if (type != null) {
-                    if (type.equals(Tour.NEWSFEED_TYPE)) {
-                        newsfeed.data = gson.fromJson(jsonObject.get(DATA), Tour.class);
+                    Class newsfeedClass = NewsfeedTypes.getNewsfeedClass(type);
+                    if (newsfeedClass != null) {
+                        newsfeed.data = gson.fromJson(jsonObject.get(DATA), newsfeedClass);
                     }
-                    else if (type.equals(Entourage.NEWSFEED_TYPE)) {
-                        newsfeed.data = gson.fromJson(jsonObject.get(DATA), Entourage.class);
-                    }
-                    else if (type.equals(Announcement.NEWSFEED_TYPE)) {
-                        newsfeed.data = gson.fromJson(jsonObject.get(DATA), Announcement.class);
-                    }
-
                 }
             } catch (Exception e) {
                 Log.d("NewsfeedAdapter", e.toString());
