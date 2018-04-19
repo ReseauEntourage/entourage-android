@@ -38,6 +38,8 @@
     <string name="badge_count_format">%1$d</string>
 
     <string name="empty_description"></string>
+    
+    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
 
     <string name="facebook_app_id">280727035774134</string>
     <string name="fb_login_protocol_scheme">fb280727035774134</string>

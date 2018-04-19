@@ -114,9 +114,8 @@ public class DrawerPresenter {
     }
 
     protected String getDeviceID() {
-        return activity.getApplicationContext()
-                .getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE)
-                .getString(RegisterGCMService.KEY_REGISTRATION_ID, null);
+        return EntourageApplication.get().getSharedPreferences()
+                .getString(EntourageApplication.KEY_REGISTRATION_ID, null);
     }
 
     // ----------------------------------

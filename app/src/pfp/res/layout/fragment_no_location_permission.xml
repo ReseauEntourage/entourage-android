@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/accent"
+                tools:context="social.entourage.android.map.permissions.NoLocationPermissionFragment">
+
+    <ImageButton
+        android:id="@+id/no_location_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:padding="5dp"
+        app:srcCompat="@drawable/ic_action_back"/>
+
+    <ImageView
+        android:id="@+id/no_location_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="80dp"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitCenter"
+        android:src="@drawable/map_pin_square"/>
+
+    <TextView
+        android:id="@+id/no_location_explanation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/no_location_logo"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="@string/map_permission_explanation"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/white"
+        android:textSize="@dimen/entourage_font_big"/>
+
+    <Button
+        android:id="@+id/no_location_activate_button"
+        style="@style/WhiteButton.RoundedCorners"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/no_location_explanation"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/map_permission_activate_button"/>
+
+    <Button
+        android:id="@+id/no_location_ignore_button"
+        style="@style/WhiteButton.RoundedCorners"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/no_location_activate_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:alpha="0.7"
+        android:text="@string/ignore"/>
+
+</RelativeLayout>

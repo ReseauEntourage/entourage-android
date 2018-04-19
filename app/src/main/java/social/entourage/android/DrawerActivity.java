@@ -177,7 +177,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         selectItem(R.id.action_tours);
 
-        gcmSharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        gcmSharedPreferences = EntourageApplication.get().getSharedPreferences();
 
         if (getIntent() != null) {
             intentAction = getIntent().getAction();
@@ -696,8 +696,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void initializePushNotifications() {
-        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+        final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
+        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false);
         if (notificationsEnabled) {
             startService(new Intent(this, RegisterGCMService.class));
         } else {
@@ -714,22 +714,22 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Override
     protected void logout(){
         //remove user phone
+        SharedPreferences.Editor editor = gcmSharedPreferences.edit();
         User me = EntourageApplication.me(getApplicationContext());
         if(me != null) {
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+            HashSet<String> loggedNumbers = (HashSet<String>) gcmSharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
             loggedNumbers.remove(me.getPhone());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
             editor.putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers);
-            editor.commit();
         }
 
         //TODO: do a proper DELETE not an UPDATE
         //presenter.deleteApplicationInfo(getDeviceID());
         presenter.updateApplicationInfo("");
 
-        gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
+        editor.remove(EntourageApplication.KEY_REGISTRATION_ID);
+        editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED);
+        editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED);
+        editor.apply();
 
         super.logout();
     }

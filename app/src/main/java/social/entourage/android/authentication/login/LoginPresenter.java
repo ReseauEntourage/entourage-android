@@ -19,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.LoginRequest;
@@ -79,7 +80,7 @@ public class LoginPresenter {
                 HashMap<String, String> user = new HashMap<>();
                 user.put("phone", phoneNumber);
                 user.put("sms_code", smsCode);
-                SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
                 HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
                 final boolean isTutorialDone = loggedNumbers.contains(phoneNumber);
                 activity.startLoader();

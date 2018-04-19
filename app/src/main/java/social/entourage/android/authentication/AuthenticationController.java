@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
@@ -108,7 +109,7 @@ public class AuthenticationController {
 
     public boolean isTutorialDone(Context context) {
         if (loggedUser == null) return false;
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
         return loggedNumbers.contains(loggedUser.getPhone());
     }

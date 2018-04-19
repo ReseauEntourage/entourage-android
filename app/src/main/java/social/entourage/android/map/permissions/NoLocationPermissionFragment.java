@@ -15,6 +15,7 @@ import android.view.Window;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
@@ -25,6 +26,7 @@ public class NoLocationPermissionFragment extends DialogFragment {
     public static final String TAG = "fragment_no_location_permission";
 
     private boolean showingGeolocationSettings = false;
+    private boolean enableGeolocation = false;
 
     public NoLocationPermissionFragment() {
         // Required empty public constructor
@@ -81,6 +83,7 @@ public class NoLocationPermissionFragment extends DialogFragment {
     protected void onBackButton() {
         if ( (getActivity() != null) && (getActivity() instanceof LoginActivity) ) {
             LoginActivity loginActivity = (LoginActivity)getActivity();
+            loginActivity.saveGeolocationPreference(enableGeolocation);
             loginActivity.showNotificationPermissionView();
         }
         dismiss();
@@ -91,5 +94,12 @@ public class NoLocationPermissionFragment extends DialogFragment {
         EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_ACTIVATE_04_4A);
         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         showingGeolocationSettings = true;
+        enableGeolocation = true;
+    }
+
+    @Optional
+    @OnClick(R.id.no_location_ignore_button)
+    protected void onIgnoreButton() {
+        onBackButton();
     }
 }

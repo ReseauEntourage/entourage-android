@@ -10,7 +10,6 @@ public class Constants {
     public static final String ANNOUNCEMENTS_VERSION = "v1";
 
     // Filenames
-    public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
     public static final String FILENAME_TAPE_QUEUE = "encounters_queue";
 
     // Request and result codes

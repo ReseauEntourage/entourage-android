@@ -74,13 +74,13 @@ public class EntourageEvents {
             mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", "NO");
         }
 
-        final SharedPreferences sharedPreferences = context.getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+        final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
+        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false);
         people.set("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
         mFirebaseAnalytics.setUserProperty("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
 
         if(notificationsEnabled) {
-            people.setPushRegistrationId(sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null));
+            people.setPushRegistrationId(sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null));
         }
     }
 

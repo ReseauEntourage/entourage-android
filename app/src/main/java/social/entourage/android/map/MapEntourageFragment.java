@@ -1268,6 +1268,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
 
+        // Check if the user allowed geolocation from screen 04.2 (login funnel)
+        boolean geolocationAllowedByUser = EntourageApplication.get().getSharedPreferences().getBoolean(EntourageApplication.KEY_GEOLOCATION_ENABLED, true);
+        if (!geolocationAllowedByUser) {
+            BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
+            return;
+        }
+
         if (shouldShowRequestPermissionRationale(permission)) {
             new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.map_permission_title)

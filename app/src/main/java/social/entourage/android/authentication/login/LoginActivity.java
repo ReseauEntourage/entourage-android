@@ -41,6 +41,7 @@ import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
@@ -52,7 +53,6 @@ import social.entourage.android.authentication.login.register.RegisterSMSCodeFra
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
-import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.tools.Utils;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -787,20 +787,20 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Private Methods
      ************************/
 
-    private void saveNotifications(boolean enabled) {
+    private void saveNotificationsPreference(boolean enabled) {
         //remember the choice
-        final SharedPreferences notificationsPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        final SharedPreferences notificationsPreferences = EntourageApplication.get().getSharedPreferences();
         SharedPreferences.Editor editor = notificationsPreferences.edit();
-        editor.putBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, enabled);
+        editor.putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, enabled);
         editor.commit();
     }
 
     private void finishTutorial() {
         //set the tutorial as done
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.add(loggedPhoneNumber);
-        sharedPreferences.edit().clear().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
+        sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
 
         startMapActivity();
     }
@@ -988,7 +988,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     @OnClick(R.id.login_notifications_ignore_button)
     protected void onNotificationsIgnore() {
-        saveNotifications(false);
+        saveNotificationsPreference(false);
         //loginNotificationsView.setVisibility(View.GONE);
         finishTutorial();
     }
@@ -996,7 +996,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_notifications_accept)
     protected void onNotificationsAccept() {
         EntourageEvents.logEvent(Constants.EVENT_NOTIFICATIONS_ACCEPT);
-        saveNotifications(true);
+        saveNotificationsPreference(true);
         //loginNotificationsView.setVisibility(View.GONE);
         finishTutorial();
     }
@@ -1019,8 +1019,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_geolocation_accept_button)
     protected void onGeolocationAccepted() {
         EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_ACCEPT);
+        saveGeolocationPreference(true);
         loginGeolocationView.setVisibility(View.GONE);
         showNotificationPermissionView();
+    }
+
+    public void saveGeolocationPreference(boolean enabled) {
+        //remember the choice
+        final SharedPreferences notificationsPreferences = EntourageApplication.get().getSharedPreferences();
+        SharedPreferences.Editor editor = notificationsPreferences.edit();
+        editor.putBoolean(EntourageApplication.KEY_GEOLOCATION_ENABLED, enabled);
+        editor.commit();
     }
 
     @OnClick(R.id.login_startup_logo)

@@ -2,6 +2,7 @@ package social.entourage.android;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
@@ -39,6 +40,18 @@ import static social.entourage.android.BuildConfig.FLAVOR;
  */
 public class EntourageApplication extends MultiDexApplication {
 
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    public static final String KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID";
+    public static final String KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED";
+    public static final String KEY_GEOLOCATION_ENABLED = "ENTOURAGE_GEOLOCATION_ENABLED";
+
+    // ----------------------------------
+    // MEMBERS
+    // ----------------------------------
+
     private static EntourageApplication instance;
     public static EntourageApplication get() { return instance; }
 
@@ -50,6 +63,8 @@ public class EntourageApplication extends MultiDexApplication {
 
     private FeedItemsStorage feedItemsStorage;
 
+    private SharedPreferences sharedPreferences;
+
     private MixpanelAPI mixpanel;
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -57,6 +72,10 @@ public class EntourageApplication extends MultiDexApplication {
     static public String PFP_APP="pfp";
 
     public enum WhiteLabelApp {ENTOURAGE_APP, PFP_APP};
+
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
 
     @Override
     public void onCreate() {
@@ -72,6 +91,7 @@ public class EntourageApplication extends MultiDexApplication {
         setupDagger();
         setupBadgeCount();
         setupFeedItemsStorage();
+        setupSharedPreferences();
     }
 
     private void setupFabric() {
@@ -107,6 +127,10 @@ public class EntourageApplication extends MultiDexApplication {
         }
     }
 
+    private void setupSharedPreferences() {
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+    }
+
     private void setupBadgeCount() {
         decreaseBadgeCount(0);
     }
@@ -121,6 +145,10 @@ public class EntourageApplication extends MultiDexApplication {
 
     public FirebaseAnalytics getFirebase() {
         return mFirebaseAnalytics;
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
     }
 
     public static EntourageApplication get(Context context) {
