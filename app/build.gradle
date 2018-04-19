@@ -90,6 +90,7 @@ android {
         }
         entourage {
             dimension 'app'
+            buildConfigField 'String', 'API_KEY', '"2319683867b6c10281896aa6"'
             ext {
                 prod = [
                         serverURL : "https://api.entourage.social/api/v1/"
@@ -104,6 +105,7 @@ android {
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
+            buildConfigField 'String', 'API_KEY', '"2ab4573f2d1c370f084ed7db"'
             manifestPlaceholders = [
                     deepLinksHostName       : "www.entourage.social/pfp",
                     deepLinksEntourageScheme: "pfp-prod"
@@ -113,9 +115,7 @@ android {
                         serverURL : "https://apiPXTGS.entourage.social/api/v1/"
                 ]
                 staging = [
-                        //TODO Revert to pfp server once it is ready for testing
-//                        serverURL : "https://pfp-back-preprod.herokuapp.com/api/v1/"
-                        serverURL : "https://entourage-back-preprod.herokuapp.com/api/v1/"
+                        serverURL : "https://pfp-back-preprod.herokuapp.com/api/v1/"
                 ]
             }
         }

@@ -4,7 +4,7 @@ public class Constants {
 
     //TODO: should be changed after each release
     // v4.6 API Key
-    public static final String API_KEY = "6fb0d70355e30b640378bf79";
+    //public static final String API_KEY = "6fb0d70355e30b640378bf79";
 
     // Announcements version
     public static final String ANNOUNCEMENTS_VERSION = "v1";

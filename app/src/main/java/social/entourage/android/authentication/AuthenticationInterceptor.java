@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import social.entourage.android.Constants;
+import social.entourage.android.BuildConfig;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 
@@ -36,7 +36,7 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
 
         request = request.newBuilder()
                 .header("Accept", "application/json")
-                .header("X-API-KEY", Constants.API_KEY)
+                .header("X-API-KEY", BuildConfig.API_KEY)
                 .url(url).build();
         Response response = chain.proceed(request);
 
