@@ -14,9 +14,6 @@ import java.util.Locale;
 import social.entourage.android.api.model.User;
 import social.entourage.android.message.push.RegisterGCMService;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
 /**
  * Wrapper for sending events to different aggregators
  * Created by Mihai Ionescu on 03/10/2017.
@@ -69,7 +66,7 @@ public class EntourageEvents {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", user.getPartner().getName());
         }
 
-        if (PermissionChecker.checkSelfPermission(context, user.isPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (PermissionChecker.checkSelfPermission(context, user.getLocationAccessString()) == PackageManager.PERMISSION_GRANTED) {
             people.set("EntourageGeolocEnable", "YES");
             mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", "YES");
         } else {

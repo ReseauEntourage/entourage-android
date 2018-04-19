@@ -33,7 +33,6 @@ import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.tools.BusProvider;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 /**
  * Presenter controlling the MapEntourageFragment
@@ -190,12 +189,12 @@ public class MapPresenter {
     }
 
     public void handleLocationPermission() {
-        fragment.checkPermission(userIsPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION);
+        fragment.checkPermission(getUserLocationAccess());
     }
 
-    private boolean userIsPro() {
+    private String getUserLocationAccess() {
         User user = authenticationController.getUser();
-        return user != null && user.isPro();
+        return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
     }
 
     public void resetUserOnboardingFlag() {

@@ -12,7 +12,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.map.TourAuthor;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class User implements Serializable {
 
@@ -253,7 +257,11 @@ public class User implements Serializable {
     }
 
     public boolean isPro() {
-        return TYPE_PRO.equals(type);
+        return EntourageApplication.isEntourageApp() && TYPE_PRO.equals(type);
+    }
+
+    public String getLocationAccessString() {
+        return isPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION;
     }
 
     public TourAuthor asTourAuthor() {

@@ -321,7 +321,7 @@ public class EntourageApplication extends MultiDexApplication {
         return BuildConfig.FLAVOR.contains(appName);
     }
 
-    static boolean isEntourageApp() {
+    public static boolean isEntourageApp() {
         return isCurrentApp(ENTOURAGE_APP);
     }
 

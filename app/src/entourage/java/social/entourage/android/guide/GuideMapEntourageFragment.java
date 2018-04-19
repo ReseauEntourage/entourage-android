@@ -403,7 +403,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     clusterManager.setRenderer(poiRenderer);
                     clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
                     googleMap.setOnMarkerClickListener(clusterManager);
-                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                            || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                         map.setMyLocationEnabled(true);
                     }
                     map.getUiSettings().setMyLocationButtonEnabled(false);
