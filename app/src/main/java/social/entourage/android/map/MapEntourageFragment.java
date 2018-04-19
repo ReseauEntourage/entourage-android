@@ -1619,9 +1619,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    String accessLocation = Manifest.permission.ACCESS_FINE_LOCATION;
                     switch (source) {
                         case GEOLOCATION_POPUP_RECENTER:
                             EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
+                            accessLocation = Manifest.permission.ACCESS_COARSE_LOCATION;
                             break;
                         case GEOLOCATION_POPUP_TOUR:
                             EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
@@ -1630,8 +1632,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             break;
                     }
 
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                    if (shouldShowRequestPermissionRationale(accessLocation)) {
+                        requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
                     } else {
                         // User selected "Never ask again", so show the settings page
                         displayGeolocationPreferences();
