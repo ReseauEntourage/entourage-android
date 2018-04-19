@@ -77,6 +77,25 @@
                 app:fab_label="@string/entourage_create_menu"
                 app:fab_size="mini"/>
 
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_start_tour_launcher"
+                style="@style/MapActionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_button_create_maraude"
+                app:fab_label="@string/tour_create"
+                app:fab_size="mini"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_add_tour_encounter"
+                style="@style/MapActionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_encounter"
+                android:visibility="gone"
+                app:fab_label="@string/tour_create_encounter_button"
+                app:fab_size="mini"/>
+
         </com.github.clans.fab.FloatingActionMenu>
 
     </RelativeLayout>
