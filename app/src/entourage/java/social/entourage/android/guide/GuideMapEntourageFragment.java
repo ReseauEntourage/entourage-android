@@ -178,7 +178,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
-        mapOptionsMenu = ((DrawerActivity)getActivity()).mapOptionsMenu;
+//        mapOptionsMenu = ((DrawerActivity)getActivity()).mapOptionsMenu;
         poisMap = new TreeMap<>();
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         initializeEmptyListPopup();

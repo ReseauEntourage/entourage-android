@@ -241,6 +241,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Nullable @BindView(R.id.tour_stop_button)
     FloatingActionButton tourStopButton;
 
+    @BindView(R.id.map_fab_menu)
     FloatingActionMenu mapOptionsMenu;
 
     @BindView(R.id.fragment_map_new_entourages_button)
@@ -1325,7 +1326,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    @OnClick(R.id.map_longclick_button_start_tour_launcher)
+    @Optional
+    @OnClick({R.id.button_start_tour_launcher, R.id.map_longclick_button_start_tour_launcher})
     public void onStartTourLauncher() {
         if (tourService != null) {
             if (!tourService.isRunning()) {
@@ -1369,7 +1371,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    @OnClick(R.id.map_longclick_button_create_encounter)
+    @Optional
+    @OnClick({R.id.button_add_tour_encounter, R.id.map_longclick_button_create_encounter})
     public void onAddEncounter() {
         if (getActivity() == null) {
             return;
@@ -1430,7 +1433,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         toggleToursList();
     }
 
-    @OnClick(R.id.map_longclick_button_entourage_action)
+    @OnClick({R.id.button_create_entourage, R.id.map_longclick_button_entourage_action})
     protected void onCreateEntourageAction() {
         displayEntouragePopupWhileTour();
     }
@@ -1463,7 +1466,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private void initializeFloatingMenu() {
-        mapOptionsMenu = ((DrawerActivity) getActivity()).mapOptionsMenu;
         mapOptionsMenu.setClosedOnTouchOutside(true);
         mapOptionsMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
@@ -1503,7 +1505,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     boolean isPro = (me != null) && me.isPro();
                     if (!isPro) {
                         // Show directly the create entourage disclaimer
-                        drawerActivity.onCreateEntourageClicked();
+                        displayEntouragePopupWhileTour();
                     } else {
                         // Let the FAB do it's normal thing
                         mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());

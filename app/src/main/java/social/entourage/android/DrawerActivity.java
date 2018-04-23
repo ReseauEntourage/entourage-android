@@ -134,8 +134,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     @BindView(R.id.toolbar_discussion)
     BadgeView discussionBadgeView;
 
-    @BindView(R.id.map_fab_menu)
-    public FloatingActionMenu mapOptionsMenu;
+//    @BindView(R.id.map_fab_menu)
+//    public FloatingActionMenu mapOptionsMenu;
 
     private BottomNavigationDataSource navigationDataSource = new BottomNavigationDataSource();
 
@@ -536,6 +536,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     protected void loadFragment(Fragment newFragment, String tag) {
         if (newFragment == null) return;
         mainFragment = newFragment;
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment = (MapEntourageFragment)newFragment;
+        }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
         fragmentTransaction.addToBackStack(null);
@@ -565,19 +568,20 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void hideSolidarityGuide() {
-        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
-        button.setLabelText(getString(R.string.map_poi_launcher_button));
-        // Make the 'Propose POI' button gone
-        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
-        if (proposePOIButton != null) {
-            proposePOIButton.setVisibility(View.GONE);
-        }
-        // Hide the overlay
-        if (mapOptionsMenu.isOpened()) {
-            mapOptionsMenu.close(false);
-        }
-        // Show the map screen
-        selectItem(R.id.action_tours);
+        //TODO Fix this
+//        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
+//        button.setLabelText(getString(R.string.map_poi_launcher_button));
+//        // Make the 'Propose POI' button gone
+//        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
+//        if (proposePOIButton != null) {
+//            proposePOIButton.setVisibility(View.GONE);
+//        }
+//        // Hide the overlay
+//        if (mapOptionsMenu.isOpened()) {
+//            mapOptionsMenu.close(false);
+//        }
+//        // Show the map screen
+//        selectItem(R.id.action_tours);
     }
 
     public void showWebView(String url) {
@@ -939,7 +943,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment instanceof MapEntourageFragment) {
             ((MapEntourageFragment) mainFragment).addEncounter();
         } else {
-            onPOILauncherClicked();
+            hideSolidarityGuide();
             ((MapEntourageFragment) mainFragment).addEncounter();
         }
     }
@@ -1016,7 +1020,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     // Floating Action Buttons handling
     // ----------------------------------
 
-    @Optional @OnClick(R.id.button_start_tour_launcher)
+    //TODO Fix the fab handling, the fab are now fragment-related
+
+//    @Optional @OnClick(R.id.button_start_tour_launcher)
     public void onStartTourClicked() {
         EntourageEvents.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
@@ -1027,7 +1033,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    @Optional @OnClick(R.id.button_add_tour_encounter)
+//    @Optional @OnClick(R.id.button_add_tour_encounter)
     public void onAddTourEncounterClicked() {
         EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
@@ -1038,7 +1044,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    @OnClick(R.id.button_create_entourage)
+//    @OnClick(R.id.button_create_entourage)
     public void onCreateEntourageClicked() {
         EntourageEvents.logEvent(Constants.EVENT_FEED_ACTION_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
@@ -1049,14 +1055,14 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    @OnClick(R.id.button_poi_propose)
+//    @OnClick(R.id.button_poi_propose)
     protected void onPOIProposeClicked() {
         if (isGuideShown()) {
             if (presenter != null) presenter.proposePOI();
         }
     }
 
-    @OnClick(R.id.button_poi_launcher)
+//    @OnClick(R.id.button_poi_launcher)
     public void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
@@ -1077,7 +1083,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     protected void onToolbarLogoClicked() {
         if (isGuideShown()) {
             // switch to map mode
-            onPOILauncherClicked();
+            hideSolidarityGuide();
         } else {
             if (mapEntourageFragment.isToursListVisible()) {
                 // make the map visible

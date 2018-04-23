@@ -246,6 +246,79 @@
             app:fab_colorPressed="@color/dodger_blue"
             app:fab_colorRipple="@color/dodger_blue"/>
 
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/map_fab_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="end"
+            android:paddingBottom="5dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            app:menu_backgroundColor="@color/white_88"
+            app:menu_colorNormal="@color/accent"
+            app:menu_colorPressed="@color/accent"
+            app:menu_colorRipple="@color/accent"
+            app:menu_labels_singleLine="true"
+            app:menu_labels_style="@style/MapActionLabelStyle"
+            app:menu_shadowRadius="2dp"
+            app:menu_shadowXOffset="0dp"
+            app:menu_shadowYOffset="0dp">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_poi_launcher"
+                style="@style/MapActionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_solidarity"
+                android:visibility="gone"
+                app:fab_label="@string/map_poi_launcher_button"
+                app:fab_size="mini"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_poi_propose"
+                style="@style/MapActionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_solidarity"
+                android:visibility="gone"
+                app:fab_label="@string/map_poi_propose_button"
+                app:fab_size="mini"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_create_entourage"
+                style="@style/MapActionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_entourage_contribution"
+                app:fab_label="@string/entourage_create_menu"
+                app:fab_size="mini"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_start_tour_launcher"
+                style="@style/MapActionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_button_create_maraude"
+                app:fab_label="@string/tour_create"
+                app:fab_size="mini"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_add_tour_encounter"
+                style="@style/MapActionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_encounter"
+                android:visibility="gone"
+                app:fab_label="@string/tour_create_encounter_button"
+                app:fab_size="mini"/>
+
+        </com.github.clans.fab.FloatingActionMenu>
+
         <include
             android:layout_width="match_parent"
             android:layout_height="match_parent"
