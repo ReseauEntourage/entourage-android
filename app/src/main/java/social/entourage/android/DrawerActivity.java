@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -91,6 +92,8 @@ import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.navigation.BaseBottomNavigationDataSource;
+import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
@@ -125,32 +128,16 @@ public class DrawerActivity extends EntourageSecuredActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-
-    @BindView(R.id.navigation_view)
-    NavigationView navigationView;
-
     @BindView(R.id.content_view)
     View contentView;
-
-    @BindView(R.id.drawer_header_user_name)
-    TextView userName;
-
-    @BindView(R.id.drawer_header_user_photo)
-    ImageView userPhoto;
-
-    @BindView(R.id.drawer_header_user_partner_logo)
-    PartnerLogoImageView userPartnerLogo;
-
-    @BindView(R.id.drawer_header_edit_profile)
-    TextView userEditProfileTextView;
 
     @BindView(R.id.toolbar_discussion)
     BadgeView discussionBadgeView;
 
     @BindView(R.id.map_fab_menu)
     public FloatingActionMenu mapOptionsMenu;
+
+    private BottomNavigationDataSource navigationDataSource = new BottomNavigationDataSource();
 
     private Fragment mainFragment;
     protected MapEntourageFragment mapEntourageFragment;
@@ -173,9 +160,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         ButterKnife.bind(this);
 
         configureToolbar();
-        configureNavigationItem();
-
-        selectItem(R.id.action_tours);
 
         gcmSharedPreferences = EntourageApplication.get().getSharedPreferences();
 
@@ -189,33 +173,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         User user = getAuthenticationController().getUser();
         if (user != null) {
-            userName.setText(user.getDisplayName());
-            String avatarURL = user.getAvatarURL();
-            if (avatarURL != null) {
-                Picasso.with(this)
-                        .load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(userPhoto);
-            } else {
-                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
-            }
-            // Show partner logo
-            String partnerURL = null;
-            Partner partner = user.getPartner();
-            if (partner != null) {
-                partnerURL = partner.getSmallLogoUrl();
-            }
-            if (partnerURL != null) {
-                Picasso.with(this)
-                        .load(Uri.parse(partnerURL))
-                        .placeholder(R.drawable.partner_placeholder)
-                        .transform(new CropCircleTransformation())
-                        .into(userPartnerLogo);
-            } else {
-                userPartnerLogo.setImageDrawable(null);
-            }
-
             //refresh the user info from the server
             Location location = EntourageLocation.getInstance().getCurrentLocation();
             presenter.updateUser(null, null, null, location);
@@ -242,8 +199,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                //TODO Need to handle this event in the new menu fragment
                 EntourageEvents.logEvent(Constants.EVENT_FEED_MENU);
-                drawerLayout.openDrawer(GravityCompat.START);
+                //drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -309,7 +267,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Override
     protected void onResume() {
         super.onResume();
-        highlightCurrentMenuItem();
 
         if (getIntent() != null) {
             String action = getIntent().getAction();
@@ -417,22 +374,15 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void highlightCurrentMenuItem() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            navigationView.setCheckedItem(R.id.action_tours);
-        } else if (mainFragment instanceof UserFragment) {
-            navigationView.setCheckedItem(R.id.action_user);
-        }
-    }
-
     private void configureToolbar() {
-        setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+//        setSupportActionBar(toolbar);
+//        final ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
 
+        //TODO Need to actually update the icon on the tab layout
         discussionBadgeView = (BadgeView) toolbar.findViewById(R.id.toolbar_discussion);
         if (discussionBadgeView != null) {
             discussionBadgeView.setOnClickListener(new View.OnClickListener() {
@@ -444,73 +394,37 @@ public class DrawerActivity extends EntourageSecuredActivity
             });
         }
 
-    }
+        //TODO Better implement a custom view for tabs
+        TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
+        if (tabLayout != null) {
 
-    private void configureNavigationItem() {
-        //make the navigation view full screen
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
-        params.width = metrics.widthPixels;
-        navigationView.setLayoutParams(params);
-
-        //add listener to back button
-        ImageView backView = (ImageView) navigationView.findViewById(R.id.drawer_header_back);
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                drawerLayout.closeDrawers();
-            }
-        });
-
-        //add navigationitemlistener
-        drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                selectItem(selectedSidemenuAction);
-            }
-        });
-
-        //add listener to user photo and name, that opens the user profile screen
-        userPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectedSidemenuAction = R.id.action_user;
-                drawerLayout.closeDrawers();
-            }
-        });
-        userName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectedSidemenuAction = R.id.action_user;
-                drawerLayout.closeDrawers();
-            }
-        });
-        //add listener to modify profile text view
-        userEditProfileTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectedSidemenuAction = R.id.action_edit_user;
-                drawerLayout.closeDrawers();
-            }
-        });
-
-        //add listeners to side menu items
-        LinearLayout sideMenuItemsLayout = (LinearLayout) navigationView.findViewById(R.id.sidemenuitems_layout);
-        if (sideMenuItemsLayout != null) {
-            int itemsCount = sideMenuItemsLayout.getChildCount();
-            for (int j = 0; j < itemsCount; j++) {
-                View child = sideMenuItemsLayout.getChildAt(j);
-                if (child instanceof SideMenuItemView) {
-                    child.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectedSidemenuAction = v.getId();
-                            drawerLayout.closeDrawers();
-                        }
-                    });
+            // we need to set the listener fist, to respond to the default selected tab request
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(final TabLayout.Tab tab) {
+                    int tabIndex = tab.getPosition();
+                    loadFragment(navigationDataSource.getFragmentAtIndex(tabIndex), navigationDataSource.getFragmentTagAtIndex(tabIndex));
                 }
+
+                @Override
+                public void onTabUnselected(final TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(final TabLayout.Tab tab) {
+
+                }
+            });
+
+            int tabCount = navigationDataSource.getItemCount();
+            for (int i = 0; i < tabCount; i++) {
+                BaseBottomNavigationDataSource.NavigationItem navigationItem = navigationDataSource.getNavigationItemAtIndex(i);
+                TabLayout.Tab tab = tabLayout.newTab();
+                tab.setText(navigationItem.getText());
+                if (navigationItem.getIcon() != 0) tab.setIcon(navigationItem.getIcon());
+                tabLayout.addTab(tab);
+                if (i == navigationDataSource.getDefaultSelectedTab()) tab.select();
             }
         }
     }
@@ -620,6 +534,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     protected void loadFragment(Fragment newFragment, String tag) {
+        if (newFragment == null) return;
         mainFragment = newFragment;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
@@ -804,39 +719,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         intentAction = null;
         intentTour = null;
         setIntent(null);
-    }
-
-    @Subscribe
-    public void userInfoUpdated(OnUserInfoUpdatedEvent event) {
-        User user = getAuthenticationController().getUser();
-        if (user != null) {
-            userName.setText(user.getDisplayName());
-            String avatarURL = user.getAvatarURL();
-            if (avatarURL != null) {
-                Picasso.with(this)
-                    .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(new CropCircleTransformation())
-                    .into(userPhoto);
-            } else {
-                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
-            }
-            // Show partner logo
-            String partnerURL = null;
-            Partner partner = user.getPartner();
-            if (partner != null) {
-                partnerURL = partner.getSmallLogoUrl();
-            }
-            if (partnerURL != null) {
-                Picasso.with(this)
-                        .load(Uri.parse(partnerURL))
-                        .placeholder(R.drawable.partner_placeholder)
-                        .transform(new CropCircleTransformation())
-                        .into(userPartnerLogo);
-            } else {
-                userPartnerLogo.setImageDrawable(null);
-            }
-        }
     }
 
     @Subscribe

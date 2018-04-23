@@ -93,10 +93,10 @@ android {
             buildConfigField 'String', 'API_KEY', '"2319683867b6c10281896aa6"'
             ext {
                 prod = [
-                        serverURL : "https://api.entourage.social/api/v1/"
+                        serverURL: "https://api.entourage.social/api/v1/"
                 ]
                 staging = [
-                        serverURL : "https://entourage-back-preprod.herokuapp.com/api/v1/"
+                        serverURL: "https://entourage-back-preprod.herokuapp.com/api/v1/"
                 ]
             }
         }
@@ -112,10 +112,10 @@ android {
             ]
             ext {
                 prod = [
-                        serverURL : "https://apiPXTGS.entourage.social/api/v1/"
+                        serverURL: "https://apiPXTGS.entourage.social/api/v1/"
                 ]
                 staging = [
-                        serverURL : "https://pfp-back-preprod.herokuapp.com/api/v1/"
+                        serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/"
                 ]
             }
         }

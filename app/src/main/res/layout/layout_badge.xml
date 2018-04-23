@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/badge_icon"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/empty_description"
-        android:src="@drawable/ic_discussion"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/badge_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/badge_icon"
-        android:layout_alignRight="@+id/badge_icon"
-        android:layout_alignTop="@+id/badge_icon"
-        android:background="@drawable/bg_badge"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/badge_size"
-        android:visibility="gone"/>
-</merge>
+        <ImageView
+            android:id="@+id/badge_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/ic_discussion"/>
+
+        <TextView
+            android:id="@+id/badge_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/badge_icon"
+            android:layout_alignRight="@+id/badge_icon"
+            android:layout_alignTop="@+id/badge_icon"
+            android:background="@drawable/bg_badge"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/badge_size"
+            android:visibility="gone"/>
+
+    </RelativeLayout>

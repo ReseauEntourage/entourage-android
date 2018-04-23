@@ -17,19 +17,22 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
 
         <FrameLayout
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"/>
+            android:layout_above="@+id/toolbar"/>
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/map_fab_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/toolbar"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="end"
@@ -80,18 +83,5 @@
         </com.github.clans.fab.FloatingActionMenu>
 
     </RelativeLayout>
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/background_light"
-        app:itemBackground="@drawable/drawer_item"
-        app:itemIconTint="@color/item_state_list"
-        app:itemTextColor="@color/text_state_list">
-            <include
-                layout="@layout/layout_side_menu" />
-        </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>
