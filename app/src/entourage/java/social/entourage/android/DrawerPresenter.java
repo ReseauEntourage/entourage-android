@@ -280,16 +280,16 @@ public class DrawerPresenter {
 //        if (activity.mapOptionsMenu.isOpened()) {
 //            activity.mapOptionsMenu.close(false);
 //        }
-//        // Inform the map that the guide will be shown
-//        if (activity.mapEntourageFragment != null) {
-//            activity.mapEntourageFragment.onGuideWillShow();
-//        }
-//        // Show the fragment
-//        GuideMapEntourageFragment guideMapEntourageFragment = (GuideMapEntourageFragment) activity.getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
-//        if (guideMapEntourageFragment == null) {
-//            guideMapEntourageFragment = new GuideMapEntourageFragment();
-//        }
-//        activity.loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
+        // Inform the map that the guide will be shown
+        if (activity.mapEntourageFragment != null) {
+            activity.mapEntourageFragment.onGuideWillShow();
+        }
+        // Show the fragment
+        GuideMapEntourageFragment guideMapEntourageFragment = (GuideMapEntourageFragment) activity.getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
+        if (guideMapEntourageFragment == null) {
+            guideMapEntourageFragment = new GuideMapEntourageFragment();
+        }
+        activity.loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
     }
 
     protected void proposePOI() {

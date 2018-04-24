@@ -567,7 +567,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void hideSolidarityGuide() {
+    public void hideSolidarityGuide() {
         //TODO Fix this
 //        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
 //        button.setLabelText(getString(R.string.map_poi_launcher_button));
@@ -582,6 +582,9 @@ public class DrawerActivity extends EntourageSecuredActivity
 //        }
 //        // Show the map screen
 //        selectItem(R.id.action_tours);
+        if (mapEntourageFragment != null) {
+            loadFragment(mapEntourageFragment, MapEntourageFragment.TAG);
+        }
     }
 
     public void showWebView(String url) {
