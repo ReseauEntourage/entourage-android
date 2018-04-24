@@ -554,6 +554,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void displayEntouragePopupWhileTour() {
+        EntourageEvents.logEvent(Constants.EVENT_FEED_ACTION_CREATE_CLICK);
         // if we have an ongoing tour
         if (isBound && tourService != null && tourService.isRunning()) {
             EntourageEvents.logEvent(Constants.EVENT_ENCOUNTER_POPUP_SHOW);
@@ -1329,6 +1330,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Optional
     @OnClick({R.id.button_start_tour_launcher, R.id.map_longclick_button_start_tour_launcher})
     public void onStartTourLauncher() {
+        EntourageEvents.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
         if (tourService != null) {
             if (!tourService.isRunning()) {
                 // Check if the geolocation is permitted
@@ -1377,6 +1379,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (getActivity() == null) {
             return;
         }
+        EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_CLICK);
         // Hide the create entourage menu ui
         mapLongClickView.setVisibility(View.GONE);
         if (mapOptionsMenu.isOpened()) {

@@ -1020,52 +1020,36 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
-    // Floating Action Buttons handling
+    // Floating Actions handling
     // ----------------------------------
 
-    //TODO Fix the fab handling, the fab are now fragment-related
-
-//    @Optional @OnClick(R.id.button_start_tour_launcher)
     public void onStartTourClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onStartTourLauncher();
         } else {
-            onPOILauncherClicked();
+            hideSolidarityGuide();
             mapEntourageFragment.onStartTourLauncher();
         }
     }
 
-//    @Optional @OnClick(R.id.button_add_tour_encounter)
     public void onAddTourEncounterClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onAddEncounter();
         } else {
-            onPOILauncherClicked();
+            hideSolidarityGuide();
             mapEntourageFragment.onAddEncounter();
         }
     }
 
-//    @OnClick(R.id.button_create_entourage)
     public void onCreateEntourageClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_FEED_ACTION_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntouragePopupWhileTour();
         } else {
-            onPOILauncherClicked();
+            hideSolidarityGuide();
             mapEntourageFragment.displayEntouragePopupWhileTour();
         }
     }
 
-//    @OnClick(R.id.button_poi_propose)
-    protected void onPOIProposeClicked() {
-        if (isGuideShown()) {
-            if (presenter != null) presenter.proposePOI();
-        }
-    }
-
-//    @OnClick(R.id.button_poi_launcher)
     public void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);

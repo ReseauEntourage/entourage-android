@@ -712,10 +712,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
         DrawerActivity drawerActivity = (DrawerActivity) getActivity();
         drawerActivity.onAddTourEncounterClicked();
-
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        EncounterDisclaimerFragment fragment = EncounterDisclaimerFragment.newInstance();
-//        fragment.show(fragmentManager, EncounterDisclaimerFragment.TAG);
     }
 
     @OnClick(R.id.button_poi_propose)
