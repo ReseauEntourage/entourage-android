@@ -1,6 +1,5 @@
 package social.entourage.android.authentication.login;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,6 +50,7 @@ import social.entourage.android.authentication.login.register.OnRegisterUserList
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
+import social.entourage.android.authentification.login.LoginPresenter;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.tools.Utils;
@@ -476,6 +476,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             if (photoEditFragment != null) {
                 photoEditFragment.onPhotoSent(false);
             }
+            return;
         }
 
         //Upload the photo to Amazon S3

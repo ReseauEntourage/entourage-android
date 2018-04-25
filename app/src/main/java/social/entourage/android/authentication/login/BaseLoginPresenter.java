@@ -35,7 +35,7 @@ import social.entourage.android.tools.Utils;
  * Presenter controlling the LoginActivity
  * @see LoginActivity
  */
-public class LoginPresenter {
+public abstract class BaseLoginPresenter {
 
     // ----------------------------------
     // CONSTANTS
@@ -53,12 +53,13 @@ public class LoginPresenter {
     private final UserRequest userRequest;
     protected final AuthenticationController authenticationController;
 
+    protected boolean isTutorialDone = false;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
-    @Inject
-    public LoginPresenter(
+    public BaseLoginPresenter(
             final LoginActivity activity,
             final LoginRequest loginRequest,
             final UserRequest userRequest,
@@ -82,7 +83,7 @@ public class LoginPresenter {
                 user.put("sms_code", smsCode);
                 SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
                 HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
-                final boolean isTutorialDone = loggedNumbers.contains(phoneNumber);
+                isTutorialDone = loggedNumbers.contains(phoneNumber);
                 activity.startLoader();
                 Call<LoginResponse> call = loginRequest.login(user);
                 call.enqueue(new Callback<LoginResponse>() {
@@ -327,4 +328,9 @@ public class LoginPresenter {
             }
         });
     }
+
+    // ----------------------------------
+    // OVERRIDABLE METHODS
+    // ----------------------------------
+
 }
