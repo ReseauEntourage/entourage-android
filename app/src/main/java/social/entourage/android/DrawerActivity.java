@@ -639,9 +639,9 @@ public class DrawerActivity extends EntourageSecuredActivity
         SharedPreferences.Editor editor = gcmSharedPreferences.edit();
         User me = EntourageApplication.me(getApplicationContext());
         if(me != null) {
-            HashSet<String> loggedNumbers = (HashSet<String>) gcmSharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+            HashSet<String> loggedNumbers = (HashSet<String>) gcmSharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
             loggedNumbers.remove(me.getPhone());
-            editor.putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers);
+            editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }
 
         //TODO: do a proper DELETE not an UPDATE

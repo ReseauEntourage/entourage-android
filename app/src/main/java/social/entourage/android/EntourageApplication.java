@@ -44,6 +44,7 @@ public class EntourageApplication extends MultiDexApplication {
     // CONSTANTS
     // ----------------------------------
 
+    public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
     public static final String KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID";
     public static final String KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED";
     public static final String KEY_GEOLOCATION_ENABLED = "ENTOURAGE_GEOLOCATION_ENABLED";

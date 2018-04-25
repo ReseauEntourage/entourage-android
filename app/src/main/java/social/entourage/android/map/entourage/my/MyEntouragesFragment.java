@@ -220,8 +220,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             isPro = me.isPro();
         }
         boolean isTourRunning = isBound && tourService.isRunning();
-        startTourButton.setVisibility( isPro ? (isTourRunning ? View.GONE : View.VISIBLE) : View.GONE );
-        addEncounterButton.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
+        if (startTourButton != null) startTourButton.setVisibility( isPro ? (isTourRunning ? View.GONE : View.VISIBLE) : View.GONE );
+        if (addEncounterButton != null) addEncounterButton.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
     }
 
     protected void showProgressBar() {

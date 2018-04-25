@@ -21,6 +21,8 @@ import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.tools.BusProvider;
 
+import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
+
 /**
  * Controller that managed the authenticated user and persist it on the phone
  */
@@ -35,6 +37,7 @@ public class AuthenticationController {
     private final ComplexPreferences appSharedPref;
     private User loggedUser;
     private UserPreferences userPreferences;
+    private boolean isNewUser = true;
 
     private Map<Integer, UserPreferences> userPreferencesHashMap = new HashMap<>();
 
@@ -96,11 +99,13 @@ public class AuthenticationController {
 
     public void logOutUser() {
         if(loggedUser != null) {
+            saveUserPreferences();
             appSharedPref.putObject(PREF_KEY_USER, null);
             appSharedPref.commit();
         }
         loggedUser = null;
         userPreferences = null;
+        isNewUser = true;
     }
 
     public boolean isAuthenticated() {
@@ -110,8 +115,12 @@ public class AuthenticationController {
     public boolean isTutorialDone(Context context) {
         if (loggedUser == null) return false;
         SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         return loggedNumbers.contains(loggedUser.getPhone());
+    }
+
+    public boolean isNewUser() {
+        return isNewUser;
     }
 
     public User getUser() {
@@ -230,6 +239,10 @@ public class AuthenticationController {
         if (loggedUser != null) {
             userPreferences = userPreferencesHashMap.get(loggedUser.getId());
         }
+        // since we save the user preferences for all the users
+        // we just need to check for an existing user preferences to see if it's a new user or not
+        isNewUser = (userPreferences == null);
+        // create the user preferences if they don't exist
         if (userPreferences == null) {
             userPreferences = new UserPreferences();
         }

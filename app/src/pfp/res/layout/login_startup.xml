@@ -58,7 +58,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:text="@string/login_button_register"/>
+            android:text="@string/login_button_register"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/login_button_login"

@@ -82,7 +82,7 @@ public abstract class BaseLoginPresenter {
                 user.put("phone", phoneNumber);
                 user.put("sms_code", smsCode);
                 SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-                HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+                HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
                 isTutorialDone = loggedNumbers.contains(phoneNumber);
                 activity.startLoader();
                 Call<LoginResponse> call = loginRequest.login(user);
@@ -194,22 +194,26 @@ public abstract class BaseLoginPresenter {
             call.enqueue(new Callback<UserResponse>() {
                 @Override
                 public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
-                    activity.stopLoader();
+                    if (activity != null) activity.stopLoader();
                     if (response.isSuccessful()) {
-                        authenticationController.saveUser(response.body().getUser());
-                        activity.showPhotoChooseSource();
-                        activity.displayToast(R.string.login_text_profile_update_success);
+                        if (authenticationController != null) authenticationController.saveUser(response.body().getUser());
+                        if (activity != null) {
+                            activity.showPhotoChooseSource();
+                            activity.displayToast(R.string.login_text_profile_update_success);
+                        }
                     }
                     else {
-                        activity.displayToast(R.string.login_text_profile_update_fail);
+                        if (activity != null) activity.displayToast(R.string.login_text_profile_update_fail);
                         EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                     }
                 }
 
                 @Override
                 public void onFailure(final Call<UserResponse> call, final Throwable t) {
-                    activity.stopLoader();
-                    activity.displayToast(R.string.login_text_profile_update_fail);
+                    if (activity != null) {
+                        activity.stopLoader();
+                        activity.displayToast(R.string.login_text_profile_update_fail);
+                    }
                     EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
                 }
             });
@@ -332,5 +336,49 @@ public abstract class BaseLoginPresenter {
     // ----------------------------------
     // OVERRIDABLE METHODS
     // ----------------------------------
+
+    /**
+     * Method that shows if we need to show Terms and conditions screen when user presses login button at startup
+     * @return true if we need to show the screen, false otherwise
+     */
+    public boolean shouldShowTC() {
+        return false;
+    }
+
+    /**
+     * Returns true if we continue with the registration funnel, when the user presses the 'Commencer' button
+     * false if we just dismiss the T&C screen and proceed to the login page
+     * @return
+     */
+    public boolean shouldContinueWithRegistration() {
+        return true;
+    }
+
+    /**
+     * Returns true if we need to show the input name view
+     * @param user the user to check
+     * @return
+     */
+    public boolean shouldShowNameView(User user) {
+        return (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0);
+    }
+
+    /**
+     * Returns true if we need to show the input email view
+     * @param user the user to check
+     * @return
+     */
+    public boolean shouldShowEmailView(User user) {
+        return (user.getEmail() == null || user.getEmail().length() == 0);
+    }
+
+    /**
+     * Returns true if we need to show the choose photo source view
+     * @param user the user to check
+     * @return
+     */
+    public boolean shouldShowPhotoChooseView(User user) {
+        return (user.getAvatarURL() == null || user.getAvatarURL().length() == 0);
+    }
 
 }

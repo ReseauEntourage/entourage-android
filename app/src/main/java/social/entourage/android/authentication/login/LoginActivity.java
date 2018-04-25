@@ -60,6 +60,8 @@ import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 import social.entourage.android.view.HtmlTextView;
 
+import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
+
 /**
  * Activity providing the login steps
  */
@@ -70,7 +72,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     // ----------------------------------
     private static final String VERSION = "Version : ";
 
-    public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
     public final static int LOGIN_ERROR_UNAUTHORIZED = -1;
     public final static int LOGIN_ERROR_INVALID_PHONE_FORMAT = -2;
     public final static int LOGIN_ERROR_UNKNOWN = -9998;
@@ -425,17 +426,19 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
         hideKeyboard();
 
-        loginStartup.setVisibility(View.GONE);
-        loginSignin.setVisibility(View.GONE);
-        loginVerifyCode.setVisibility(View.GONE);
-        if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
-            showNameView();
-        } else if (user.getEmail() == null || user.getEmail().length() == 0) {
-            showEmailView();
-        } else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
-            showPhotoChooseSource();
-        } else {
-            showGeolocationView();
+        if (loginPresenter != null) {
+            loginStartup.setVisibility(View.GONE);
+            loginSignin.setVisibility(View.GONE);
+            loginVerifyCode.setVisibility(View.GONE);
+            if (loginPresenter.shouldShowNameView(user)) {
+                showNameView();
+            } else if (loginPresenter.shouldShowEmailView(user)) {
+                showEmailView();
+            } else if (loginPresenter.shouldShowPhotoChooseView(user)) {
+                showPhotoChooseSource();
+            } else {
+                showGeolocationView();
+            }
         }
     }
 
@@ -659,11 +662,22 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     private void showEmailView() {
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_4);
         loginEmail.setVisibility(View.VISIBLE);
+
+        if (loginPresenter != null && loginPresenter.authenticationController != null) {
+            User user = loginPresenter.authenticationController.getUser();
+            if (user != null) {
+                if (user.getEmail() != null) {
+                    profileEmail.setText(user.getEmail());
+                }
+            }
+        }
+
         profileEmail.requestFocus();
     }
 
     @OnClick(R.id.login_email_back_button)
     void onEmailBackClicked() {
+        profileEmail.setText("");
         onBackPressed();
     }
 
@@ -735,7 +749,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             loginPresenter.updateUserName(firstname, lastname);
             User user = loginPresenter.authenticationController.getUser();
             if (user != null) {
-                if (user.getEmail() == null || user.getEmail().length() == 0) {
+                if (loginPresenter.shouldShowEmailView(user)) {
                     loginNameView.setVisibility(View.GONE);
                     showEmailView();
                     return;
@@ -806,6 +820,10 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         startMapActivity();
     }
 
+    /************************
+     * Tutorial View
+     ************************/
+
     /*
     TODO: put this back when the tutorial content is ready
     @OnClick(R.id.login_button_go)
@@ -818,28 +836,18 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     */
 
     /************************
-     * Tutorial View
-     ************************/
-
-    /*
-    TODO: put this back when the tutorial content is ready
-    @OnClick(R.id.login_button_finish_tutorial)
-    void finishTutorial() {
-        EntourageEvents.logEvent(Constants.EVENT_TUTORIAL_END);
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
-        startActivity(new Intent(this, DrawerActivity.class));
-    }
-    */
-
-    /************************
      * Startup View
      ************************/
 
     @OnClick(R.id.login_button_login)
     void onStartupLoginClicked() {
         EntourageEvents.logEvent(Constants.EVENT_SPLASH_LOGIN);
-        showLoginScreen();
+        if (loginPresenter != null && loginPresenter.shouldShowTC()) {
+            RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
+            registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
+        } else {
+            showLoginScreen();
+        }
     }
 
     void showLoginScreen() {
@@ -935,6 +943,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     public void registerShowSignIn() {
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_02_1);
         showLoginScreen();
+    }
+
+    @Override
+    public boolean registerStart() {
+        if (loginPresenter != null && loginPresenter.shouldContinueWithRegistration()) return true;
+        showLoginScreen();
+        return false;
     }
 
     @Override

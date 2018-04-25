@@ -29,4 +29,24 @@ public class LoginPresenter extends BaseLoginPresenter {
         User me = authenticationController.getUser();
         return (me != null && (me.getAvatarURL() == null || me.getAvatarURL().length() == 0));
     }
+
+    @Override
+    public boolean shouldShowTC() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldContinueWithRegistration() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldShowNameView(final User user) {
+        return super.shouldShowNameView(user) || authenticationController.isNewUser();
+    }
+
+    @Override
+    public boolean shouldShowEmailView(final User user) {
+        return super.shouldShowEmailView(user) || authenticationController.isNewUser();
+    }
 }
