@@ -12,7 +12,7 @@ public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
 
     public BottomNavigationDataSource() {
         add(new NavigationItem(R.string.action_map, R.drawable.navigation_tab_item_map), new MapEntourageFragment(), MapEntourageFragment.TAG);
-        add(new NavigationItem(R.string.action_my_messages, 0), new MyEntouragesFragment(), MyEntouragesFragment.TAG);
+        add(new NavigationItem(R.string.action_my_messages, R.drawable.navigation_tab_item_my_messages), new MyEntouragesFragment(), MyEntouragesFragment.TAG);
         add(new NavigationItem(R.string.action_menu, R.drawable.navigation_tab_item_menu), new SideMenuFragment(), SideMenuFragment.TAG);
 
         defaultSelectedTab = 1; // My messages tab
