@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.util.Linkify;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.R;
@@ -243,6 +246,16 @@ public class DeepLinksManager {
             }
         }
         deepLinkIntent = null;
+    }
+
+    /**
+     * Linkify the textview, by adding the app deep link
+     * @param textView textview to be linkified
+     */
+    public static void linkify(TextView textView) {
+        Pattern pattern = Pattern.compile(SCHEME_ENTOURAGE + "://" + DeepLinksView.ENTOURAGE.view + "/[0-9]+");
+        Linkify.addLinks(textView, Linkify.ALL); // to add support for standard URLs, emails, phones a.s.o.
+        Linkify.addLinks(textView, pattern, null);
     }
 
     /**

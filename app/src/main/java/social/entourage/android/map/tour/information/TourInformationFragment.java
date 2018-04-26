@@ -104,6 +104,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.carousel.CarouselFragment;
+import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
@@ -967,6 +968,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         // update description
         tourDescription.setText(feedItem.getDescription());
+        DeepLinksManager.linkify(tourDescription);
 
         if (invitationId > 0) {
             // already a member
@@ -1648,6 +1650,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
         tourOrganization.setText(feedItem.getTitle());
         tourDescription.setText(feedItem.getDescription());
+        DeepLinksManager.linkify(tourDescription);
         String displayType = feedItem.getFeedTypeLong(this.getActivity());
         if (displayType != null) {
             tourType.setText(displayType);
