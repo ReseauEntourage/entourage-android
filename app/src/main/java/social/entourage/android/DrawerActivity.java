@@ -587,16 +587,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    public void showWebView(String url) {
-        WebViewFragment webViewFragment = WebViewFragment.newInstance(url);
-        webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
-    }
-
-    public void showWebViewForLinkId(String linkId) {
-        String link = getLink(linkId);
-        showWebView(link);
-    }
-
     public void showMapFilters() {
         if (mapEntourageFragment != null) {
             if (isGuideShown()) {
@@ -1167,14 +1157,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     public boolean isGuideShown() {
         return !(mainFragment instanceof MapEntourageFragment);
-    }
-
-    public String getLink(String linkId) {
-        if (authenticationController != null && authenticationController.getUser() != null) {
-            String link = getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
-            return link;
-        }
-        return "";
     }
 
 }

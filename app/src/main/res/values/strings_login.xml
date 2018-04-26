@@ -81,7 +81,7 @@
     <!-- Registration -->
     <string name="registration_welcome_signin">Se connecter</string>
     <string name="registration_welcome_title">Bienvenue\nsur Entourage.</string>
-    <string name="registration_welcome_description">Vous venez de rejoindre la plus grande communauté de citoyens qui collaborent pour lutter contre l’exclusion sociale!\n\nEn vous inscrivant, vous acceptez nos <a href='https://www.entourage.social/cgu/index.html'>conditions d’utilisation</a> et vous reconnaissez avoir lu notre politique de confidentialité.</string>
+    <string name="registration_welcome_description">Vous venez de rejoindre la plus grande communauté de citoyens qui collaborent pour lutter contre l’exclusion sociale!\n\nEn vous inscrivant, vous acceptez nos &lt;a href=\'%1$s\'>conditions d’utilisation&lt;/a> et vous reconnaissez avoir lu notre politique de confidentialité.</string>
     <string name="registration_welcome_start">Commencer</string>
 
     <string name="registration_number_title">Quel est votre numéro de portable ? </string>

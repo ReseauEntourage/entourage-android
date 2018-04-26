@@ -3,19 +3,26 @@ package social.entourage.android.authentication.login.register;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.lang.reflect.Constructor;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
+import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageEvents;
+import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.base.EntourageLinkMovementMethod;
+import social.entourage.android.tools.Utils;
 
 
 public class RegisterWelcomeFragment extends EntourageDialogFragment {
@@ -113,7 +120,12 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
     private void initialiseView() {
 
-        descriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        if (getActivity() != null && getActivity() instanceof EntourageActivity) {
+            String termsLink = ((EntourageActivity)getActivity()).getLink(Constants.TERMS_LINK_ID);
+            String text = getString(R.string.registration_welcome_description, termsLink);
+            descriptionTextView.setText(Utils.fromHtml(text));
+        }
+        descriptionTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
 
     }
 

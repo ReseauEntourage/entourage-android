@@ -5,11 +5,6 @@
     <string name="pfp_slogan">VoisinAge</string>
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
 
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
-    <string name="disclaimer_link_pro">https://blog.entourage.social/charte-ethique/</string>
-
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
-
     <string name="deeplinks_label">!!Open with Entourage</string>
 
     <string name="facebook_app_id">280727035774134</string>

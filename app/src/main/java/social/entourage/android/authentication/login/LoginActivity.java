@@ -27,6 +27,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.github.clans.fab.FloatingActionButton;
+import com.squareup.otto.Subscribe;
 
 import java.io.File;
 import java.util.HashSet;
@@ -45,6 +46,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.register.OnRegisterUserListener;
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;
@@ -53,6 +55,7 @@ import social.entourage.android.authentication.login.register.RegisterWelcomeFra
 import social.entourage.android.authentification.login.LoginPresenter;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
+import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -321,6 +324,18 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        BusProvider.getInstance().register(this);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        BusProvider.getInstance().unregister(this);
+        super.onStop();
     }
 
     // ----------------------------------
@@ -1052,6 +1067,20 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     void onEntourageLogoClick() {
         displayToast(VERSION + BuildConfig.VERSION_NAME);
     }
+
+    /************************
+     * Bus Events
+     ************************/
+
+    @Subscribe
+    public void onShowURLRequested(Events.OnShowURLEvent event) {
+        if (event == null) return;
+        showWebView(event.getUrl());
+    }
+
+    /************************
+     * LoginTextWatcher Class
+     ************************/
 
     class LoginTextWatcher implements TextWatcher {
         private boolean firstEvent = true;

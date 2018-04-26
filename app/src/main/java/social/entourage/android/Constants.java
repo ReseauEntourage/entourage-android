@@ -26,6 +26,7 @@ public class Constants {
     public static final String FEEDBACK_ID = "feedback";
     public static final String AMBASSADOR_ID = "volunteering";
     public static final String PROPOSE_POI_ID = "propose-poi";
+    public static final String TERMS_LINK_ID = "terms";
 
     // Email Addresses
     public static final String EMAIL_CONTACT = "contact@entourage.social";
