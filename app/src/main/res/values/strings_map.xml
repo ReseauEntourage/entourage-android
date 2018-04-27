@@ -39,4 +39,11 @@
     <string name="map_filter_time_option1">24H</string>
     <string name="map_filter_time_option2">8J</string>
     <string name="map_filter_time_option3">1M</string>
+
+    <!-- Under Construction -->
+    <string name="map_underconstruction_title">Tous les messages</string>
+    <string name="map_underconstruction_explanation_1">Ici, vous trouverez prochainement les activités de la communauté autour de vous</string>
+    <string name="map_underconstruction_explanation_2">Vous pourrez demander à rejoindre des activités, en créer, et découvrir la communauté autour de vous</string>
+
+
 </resources>

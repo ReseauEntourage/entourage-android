@@ -6,6 +6,7 @@
     <color name="primary_dark">#717171</color>
     <color name="primary_light">#efeff4</color>
     <color name="accent">#00abf0</color>
+    <color name="accent_dark">#025E7F</color>
     <color name="toolbar">@color/primary</color>
     <color name="warm_grey">#9b9b9b</color>
     <color name="greyish_brown">#4a4a4a</color>
@@ -23,6 +24,7 @@
     <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
     <color name="background_transparent">#66000000</color>
+    <color name="background_accent_dark_translucent">#14025E7F</color>
 
     <!-- Login -->
     <color name="background_login_light">#FFFFFF</color>
@@ -37,8 +39,8 @@
 
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>
-    <color name="custom_button_accent_focused">#009cf0</color>
-    <color name="custom_button_accent_pressed">#009cf0</color>
+    <color name="custom_button_accent_focused">@color/accent_dark</color>
+    <color name="custom_button_accent_pressed">@color/accent_dark</color>
     <color name="custom_button_accent_disabled">#813619</color>
     <color name="custom_button_accent_disabled_alpha">#55f26521</color>
     <color name="custom_button_white_enabled">#FFFFFF</color>

@@ -34,4 +34,7 @@
 
     <dimen name="badge_size">10sp</dimen>
 
+    <!-- Top Bar sizes -->
+    <dimen name="top_bar_height">40dp</dimen>
+
 </resources>
