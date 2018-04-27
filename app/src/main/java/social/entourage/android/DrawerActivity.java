@@ -1,6 +1,5 @@
 package social.entourage.android;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,24 +10,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -37,10 +28,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.crashlytics.android.Crashlytics;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.HashSet;
@@ -50,10 +38,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Optional;
 import social.entourage.android.about.AboutFragment;
 import social.entourage.android.api.model.Message;
-import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
@@ -69,10 +55,8 @@ import social.entourage.android.api.tape.Events.OnPushNotificationReceived;
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent;
 import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
 import social.entourage.android.api.tape.Events.OnUserActEvent;
-import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
@@ -95,16 +79,12 @@ import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.navigation.BaseBottomNavigationDataSource;
 import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
-import social.entourage.android.sidemenu.SideMenuItemView;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
-import social.entourage.android.view.PartnerLogoImageView;
-import social.entourage.android.webview.WebViewFragment;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -439,7 +419,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 break;
             case R.id.action_guide:
                 if (mainFragment instanceof MapEntourageFragment) {
-                    if (presenter != null) presenter.showSolidarityGuide();
+                    if (presenter != null) presenter.displaySolidarityGuide();
                     EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
                 }
                 break;
@@ -603,8 +583,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public void showTutorial() {
-        CarouselFragment carouselFragment = new CarouselFragment();
-        carouselFragment.show(getSupportFragmentManager(), CarouselFragment.TAG);
+        if (presenter != null) {
+            presenter.displayTutorial();
+        }
     }
 
     private void initializePushNotifications() {
@@ -1044,7 +1025,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment instanceof MapEntourageFragment) {
             EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
             // Show the guide screen
-            if (presenter != null) presenter.showSolidarityGuide();
+            if (presenter != null) presenter.displaySolidarityGuide();
         } else {
             EntourageEvents.logEvent(Constants.EVENT_SCREEN_06_1);
             // Change the Guide Option text

@@ -2538,16 +2538,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 // Check if the map fragment is still on top
                 if (fragmentLifecycleCallbacks == null) return;
                 Fragment topFragment = fragmentLifecycleCallbacks.getTopFragment();
-                if (topFragment != null &&  !(topFragment instanceof MapEntourageFragment) ) {
+                if (topFragment == null) {
                     return;
                 }
-                CarouselFragment carouselFragment = new CarouselFragment();
-                try {
-                    carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
-                } catch (Exception e) {
-                    // This is just to see if we still get the Illegal state exception
-                    EntourageEvents.logEvent(Constants.EVENT_CAROUSEL_EXCEPTION);
-                }
+                ((DrawerActivity)getActivity()).showTutorial();
             }
         }, Constants.CAROUSEL_DELAY_MILLIS);
     }
