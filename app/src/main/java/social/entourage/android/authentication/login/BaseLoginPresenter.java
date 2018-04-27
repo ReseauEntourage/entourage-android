@@ -1,19 +1,12 @@
 package social.entourage.android.authentication.login;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
-
-import com.facebook.appevents.AppEventsConstants;
-import com.facebook.appevents.AppEventsLogger;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
-import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,7 +41,7 @@ public abstract class BaseLoginPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final LoginActivity activity;
+    protected final LoginActivity activity;
     private final LoginRequest loginRequest;
     private final UserRequest userRequest;
     protected final AuthenticationController authenticationController;
@@ -296,10 +289,7 @@ public abstract class BaseLoginPresenter {
                         activity.registerPhoneNumberSent(phoneNumber, true);
 
                         // send the facebook event
-                        AppEventsLogger logger = AppEventsLogger.newLogger(activity);
-                        Bundle params = new Bundle();
-                        params.putString(AppEventsConstants.EVENT_PARAM_REGISTRATION_METHOD, "entourage");
-                        logger.logEvent(AppEventsConstants.EVENT_NAME_COMPLETED_REGISTRATION, params);
+                        registerUserWithFacebook();
                     }
                 } else {
                     if (response.errorBody() != null) {
@@ -380,5 +370,11 @@ public abstract class BaseLoginPresenter {
     public boolean shouldShowPhotoChooseView(User user) {
         return (user.getAvatarURL() == null || user.getAvatarURL().length() == 0);
     }
+
+    /**
+     * Post user registration call that should send the log event to Facebook.<br/>
+     * By default it does nothing.
+     */
+    protected void registerUserWithFacebook() {}
 
 }

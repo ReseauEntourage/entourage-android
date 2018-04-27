@@ -6,21 +6,13 @@ import android.content.SharedPreferences;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
-import com.facebook.FacebookSdk;
-import com.facebook.LoggingBehavior;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-import io.fabric.sdk.android.Fabric;
 import me.leolin.shortcutbadger.ShortcutBadger;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.model.Message;
@@ -66,8 +58,7 @@ public class EntourageApplication extends MultiDexApplication {
 
     private SharedPreferences sharedPreferences;
 
-    private MixpanelAPI mixpanel;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    private LibrariesSupport librariesSupport;
 
     static public String ENTOURAGE_APP="entourage";
     static public String PFP_APP="pfp";
@@ -84,10 +75,9 @@ public class EntourageApplication extends MultiDexApplication {
         super.onCreate();
         instance = this;
 
-        setupFabric();
-        setupMixpanel();
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        setupFacebookSDK();
+        librariesSupport = new LibrariesSupport();
+        librariesSupport.setupLibraries(this);
+
         JodaTimeAndroid.init(this);
         setupDagger();
         setupBadgeCount();
@@ -95,10 +85,7 @@ public class EntourageApplication extends MultiDexApplication {
         setupSharedPreferences();
     }
 
-    private void setupFabric() {
-        Fabric.with(this, new Crashlytics());
-        Fabric.with(this, new Answers());
-    }
+
 
     private void setupDagger() {
         component = DaggerEntourageComponent.builder()
@@ -107,25 +94,6 @@ public class EntourageApplication extends MultiDexApplication {
                 .authenticationModule(new AuthenticationModule())
                 .build();
         component.inject(this);
-    }
-
-    private void setupMixpanel() {
-        mixpanel = MixpanelAPI.getInstance(this, BuildConfig.MIXPANEL_TOKEN);
-        JSONObject props = new JSONObject();
-        try {
-            props.put("Flavor", FLAVOR);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mixpanel.registerSuperProperties(props);
-    }
-
-    private void setupFacebookSDK() {
-        if (BuildConfig.DEBUG) {
-            Log.d("Facebook", "version " + FacebookSdk.getSdkVersion());
-            FacebookSdk.setIsDebugEnabled(true);
-            FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS);
-        }
     }
 
     private void setupSharedPreferences() {
@@ -141,11 +109,11 @@ public class EntourageApplication extends MultiDexApplication {
     }
 
     public MixpanelAPI getMixpanel() {
-        return mixpanel;
+        return librariesSupport.getMixpanel();
     }
 
     public FirebaseAnalytics getFirebase() {
-        return mFirebaseAnalytics;
+        return librariesSupport.getFirebaseAnalytics();
     }
 
     public SharedPreferences getSharedPreferences() {
@@ -180,8 +148,8 @@ public class EntourageApplication extends MultiDexApplication {
     public void onActivityDestroyed(EntourageActivity activity) {
         activities.remove(activity);
         saveFeedItemsStorage();
-        if (mixpanel != null) {
-            mixpanel.flush();
+        if (librariesSupport != null) {
+            librariesSupport.onActivityDestroyed(activity);
         }
     }
 
@@ -345,6 +313,10 @@ public class EntourageApplication extends MultiDexApplication {
         }
         feedItemsStorage.updateFeedItemFromStorage(me.getId(), feedItem);
     }
+
+    // ----------------------------------
+    // Multiple App support methods
+    // ----------------------------------
 
     static boolean isCurrentApp(String appName) {
         return BuildConfig.FLAVOR.contains(appName);
