@@ -51,6 +51,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.base.EntourageViewHolderListener;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
@@ -202,6 +203,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     private void initializeFabMenu() {
+        fabMenu.setVisibility(Configuration.getInstance().showMyMessagesFAB() ? View.VISIBLE : View.GONE);
         updateFabMenu();
         fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override

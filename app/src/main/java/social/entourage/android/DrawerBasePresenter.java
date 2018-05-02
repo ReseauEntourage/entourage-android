@@ -20,6 +20,7 @@ import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
 import social.entourage.android.carousel.CarouselFragment;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -117,6 +118,7 @@ public abstract class DrawerBasePresenter {
     }
 
     protected void displayTutorial() {
+        if (!Configuration.getInstance().showTutorial()) return;
         if (activity != null && activity.isSafeToCommit()) {
             CarouselFragment carouselFragment = new CarouselFragment();
             try {

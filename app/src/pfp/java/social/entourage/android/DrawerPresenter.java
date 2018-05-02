@@ -49,8 +49,4 @@ public class DrawerPresenter extends DrawerBasePresenter {
     // DISPLAY SCREENS METHODS
     // ----------------------------------
 
-    @Override
-    protected void displayTutorial() {
-        //does nothing
-    }
 }
