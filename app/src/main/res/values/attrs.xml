@@ -43,4 +43,7 @@
         <attr name="entourageTitleAction" format="string"/>
         <attr name="android:background"/>
     </declare-styleable>
+    <declare-styleable name="HalfCircleView">
+        <attr name="shapeColor" format="color"/>
+    </declare-styleable>
 </resources>

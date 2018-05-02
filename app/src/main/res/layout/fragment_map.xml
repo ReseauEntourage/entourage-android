@@ -258,7 +258,8 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:focusable="true">
 
         <TextView
             android:id="@+id/underconstruction_title"
@@ -297,6 +298,11 @@
                 android:textColor="@color/accent_dark"/>
 
         </LinearLayout>
+
+        <social.entourage.android.view.HalfCircleView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            />
 
     </LinearLayout>
 
