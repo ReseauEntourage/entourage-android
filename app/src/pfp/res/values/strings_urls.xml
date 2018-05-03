@@ -3,5 +3,8 @@
 
     <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
     <string name="disclaimer_link_pro">https://blog.entourage.social/charte-ethique/</string>
+    <string name="how_to_url">http://bit.ly/faqapplivoisin-age</string>
+
+    <string name="contact_email">voisin-age@petitsfreresdespauvres.fr</string>
 
 </resources>

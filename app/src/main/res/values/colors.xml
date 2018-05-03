@@ -59,6 +59,8 @@
     <color name="login_edittext_hint">#B2FFFFFF</color>
 
     <!-- Side Menu -->
+    <color name="sidemenu_background">@color/background_light</color>
+    <color name="sidemenu_item_background">@color/white</color>
     <color name="sidemenu_divider">@color/greyish</color>
     
     <!-- Notifications -->

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <declare-styleable name="FontTextView">
         <attr name="fontName" format="string" />
     </declare-styleable>
@@ -10,8 +11,11 @@
         <attr name="showDivider" format="boolean"/>
         <attr name="centerText" format="boolean" />
         <attr name="android:icon" />
+        <attr name="iconTint" />
         <attr name="android:title" />
         <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="textBackground" format="reference"/>
     </declare-styleable>
     <declare-styleable name="BadgeView">
         <attr name="android:icon" />

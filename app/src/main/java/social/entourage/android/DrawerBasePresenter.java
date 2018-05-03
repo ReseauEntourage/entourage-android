@@ -3,6 +3,7 @@ package social.entourage.android;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
+import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AlertDialog;
@@ -15,14 +16,20 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.about.AboutFragment;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
+import social.entourage.android.api.model.User;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.configuration.Configuration;
+import social.entourage.android.involvement.GetInvolvedFragment;
+import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
+import social.entourage.android.user.UserFragment;
+import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
@@ -64,6 +71,106 @@ public abstract class DrawerBasePresenter {
         this.activity = activity;
         this.appRequest = appRequest;
         this.userRequest = userRequest;
+    }
+
+    // ----------------------------------
+    // MENU HANDLING
+    // ----------------------------------
+
+    protected void handleMenu(@IdRes int menuId) {
+        if (activity == null) return;
+        switch (menuId) {
+            case R.id.action_tours:
+                activity.loadFragmentWithExtras();
+                break;
+            case R.id.action_guide:
+                if (activity.mainFragment instanceof MapEntourageFragment) {
+                    displaySolidarityGuide();
+                    EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
+                }
+                break;
+            case R.id.action_user:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
+                UserFragment userFragment = (UserFragment) activity.getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
+                if (userFragment == null) {
+                    userFragment = UserFragment.newInstance(activity.getAuthenticationController().getUser().getId());
+                }
+                userFragment.show(activity.getSupportFragmentManager(), UserFragment.TAG);
+                break;
+            case R.id.action_edit_user:
+                UserEditFragment fragment = new UserEditFragment();
+                fragment.show(activity.getSupportFragmentManager(), UserEditFragment.TAG);
+                break;
+            case R.id.action_logout:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_LOGOUT);
+                activity.logout();
+                break;
+            case R.id.action_settings:
+                Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_about:
+                /*
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://tutorial"));
+                        try {
+                            startActivity(intent);
+                        } catch (Exception ex) {
+                            Log.d("DEEPLINK", ex.toString());
+                        }
+                    }
+                }, 8*1000);
+                */
+
+                EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
+                AboutFragment aboutFragment = new AboutFragment();
+                aboutFragment.show(activity.getSupportFragmentManager(), AboutFragment.TAG);
+                break;
+            case R.id.action_blog:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
+                activity.showWebViewForLinkId(Constants.SCB_LINK_ID);
+                break;
+            case R.id.action_charte:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
+                Intent charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.CHARTE_LINK_ID)));
+                try {
+                    activity.startActivity(charteIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.action_goal:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
+                activity.showWebViewForLinkId(Constants.GOAL_LINK_ID);
+                break;
+            case R.id.action_atd:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
+                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.ATD_LINK_ID)));
+                try {
+                    activity.startActivity(atdIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.action_donation:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_DONATION);
+                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.DONATE_LINK_ID)));
+                try {
+                    activity.startActivity(donationIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.action_involvement:
+                GetInvolvedFragment getInvolvedFragment = GetInvolvedFragment.newInstance();
+                getInvolvedFragment.show(activity.getSupportFragmentManager(), GetInvolvedFragment.TAG);
+                break;
+            default:
+                //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
+                Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+        }
     }
 
     // ----------------------------------

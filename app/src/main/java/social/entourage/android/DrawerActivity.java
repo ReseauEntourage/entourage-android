@@ -119,7 +119,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     private BottomNavigationDataSource navigationDataSource = new BottomNavigationDataSource();
 
-    private Fragment mainFragment;
+    protected Fragment mainFragment;
     protected MapEntourageFragment mapEntourageFragment;
     private UserFragment userFragment;
 
@@ -413,102 +413,8 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (menuId == 0) {
             return;
         }
-        switch (menuId) {
-            case R.id.action_tours:
-                loadFragmentWithExtras();
-                break;
-            case R.id.action_guide:
-                if (mainFragment instanceof MapEntourageFragment) {
-                    if (presenter != null) presenter.displaySolidarityGuide();
-                    EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
-                }
-                break;
-            case R.id.action_user:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
-                userFragment = (UserFragment) getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
-                if (userFragment == null) {
-                    userFragment = UserFragment.newInstance(getAuthenticationController().getUser().getId());
-                }
-                //loadFragment(userFragment, TAG_FRAGMENT_USER);
-                userFragment.show(getSupportFragmentManager(), UserFragment.TAG);
-                break;
-            case R.id.action_edit_user:
-                UserEditFragment fragment = new UserEditFragment();
-                fragment.show(getSupportFragmentManager(), UserEditFragment.TAG);
-                break;
-            case R.id.action_logout:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_LOGOUT);
-                if (mapEntourageFragment != null) {
-                    mapEntourageFragment.saveOngoingTour();
-                }
-                logout();
-                break;
-            case R.id.action_settings:
-                Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.action_about:
-                /*
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://tutorial"));
-                        try {
-                            startActivity(intent);
-                        } catch (Exception ex) {
-                            Log.d("DEEPLINK", ex.toString());
-                        }
-                    }
-                }, 8*1000);
-                */
-
-                EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
-                AboutFragment aboutFragment = new AboutFragment();
-                aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
-                break;
-            case R.id.action_blog:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
-                showWebView(getLink(Constants.SCB_LINK_ID));
-                break;
-            case R.id.action_charte:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
-                User me = getAuthenticationController().getUser();
-                Intent charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.CHARTE_LINK_ID)));
-                try {
-                    startActivity(charteIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.action_goal:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
-                showWebViewForLinkId(Constants.GOAL_LINK_ID);
-                break;
-            case R.id.action_atd:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
-                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.ATD_LINK_ID)));
-                try {
-                    startActivity(atdIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.action_donation:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_DONATION);
-                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.DONATE_LINK_ID)));
-                try {
-                    startActivity(donationIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.action_involvement:
-                GetInvolvedFragment getInvolvedFragment = GetInvolvedFragment.newInstance();
-                getInvolvedFragment.show(getSupportFragmentManager(), GetInvolvedFragment.TAG);
-                break;
-            default:
-                //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
-                Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+        if (presenter != null) {
+            presenter.handleMenu(menuId);
         }
         selectedSidemenuAction = 0;
     }
@@ -525,7 +431,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    private void loadFragmentWithExtras() {
+    protected void loadFragmentWithExtras() {
         mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
         if (mapEntourageFragment == null) {
             mapEntourageFragment = new MapEntourageFragment();
@@ -605,7 +511,10 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    protected void logout(){
+    protected void logout() {
+        if (mapEntourageFragment != null) {
+            mapEntourageFragment.saveOngoingTour();
+        }
         //remove user phone
         SharedPreferences.Editor editor = gcmSharedPreferences.edit();
         User me = EntourageApplication.me(getApplicationContext());

@@ -134,7 +134,7 @@ public class EntourageCloseFragment extends DialogFragment {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
         // Set the email to
-        String[] addresses = {Constants.EMAIL_CONTACT};
+        String[] addresses = {getString(R.string.contact_email)};
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
         // Set the subject
         String title = feedItem.getTitle();

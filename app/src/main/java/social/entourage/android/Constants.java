@@ -28,9 +28,6 @@ public class Constants {
     public static final String PROPOSE_POI_ID = "propose-poi";
     public static final String TERMS_LINK_ID = "terms";
 
-    // Email Addresses
-    public static final String EMAIL_CONTACT = "contact@entourage.social";
-
     // Analytics events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
     public static final String EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map";

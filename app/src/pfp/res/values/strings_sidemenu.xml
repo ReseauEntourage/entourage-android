@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_update_info">Mettre à jour une information sur une personne que je voisine</string>
+    <string name="action_contact">Contacter l\'équipe Voisin-Age</string>
+    <string name="action_propose">Proposer une sortie</string>
+    <string name="action_charte">Charte éthique de Voisin-Age</string>
+    <string name="action_how_to">Mode d\'emploi de l\'application</string>
+</resources>

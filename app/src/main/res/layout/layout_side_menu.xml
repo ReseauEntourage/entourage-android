@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/background_light">
+              android:background="@color/sidemenu_background"
+              android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -87,7 +87,7 @@
                 android:id="@+id/action_blog"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_blog"
                 android:title="@string/action_blog"
                 app:showDivider="true"/>
@@ -96,7 +96,7 @@
                 android:id="@+id/action_goal"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_goal"
                 android:title="@string/action_goal"
                 app:showDivider="true"/>
@@ -105,7 +105,7 @@
                 android:id="@+id/action_guide"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_map_pin_grey"
                 android:title="@string/action_guide"
                 app:showDivider="false"/>
@@ -127,14 +127,14 @@
                 android:background="@color/white"
                 android:icon="@drawable/partner_badge_atd"
                 android:title="@string/action_atd"
-                app:showDivider="true"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_involvement"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_broadcast"
                 android:title="@string/action_involvement"
                 app:showDivider="true"/>
@@ -143,7 +143,7 @@
                 android:id="@+id/action_charte"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_charte"
                 android:title="@string/action_charte"
                 app:showDivider="true"/>
@@ -152,7 +152,7 @@
                 android:id="@+id/action_about"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_about"
                 android:title="@string/action_about"
                 app:showDivider="false"/>
@@ -171,7 +171,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/white"
+                android:background="@color/sidemenu_item_background"
                 android:textColor="@color/accent"
                 android:title="@string/action_logout"
                 app:centerText="true"

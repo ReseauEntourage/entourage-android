@@ -8,15 +8,20 @@
     <color name="accent">#00abf0</color>
     <color name="accent_dark">#025E7F</color>
     <color name="toolbar">@color/primary</color>
-    <color name="warm_grey">#9b9b9b</color>
+
     <color name="greyish_brown">#4a4a4a</color>
     <color name="greyish">#a5a59c</color>
-    <color name="pale_grey">#efeff4</color>
+    <color name="pale_grey">#e9f1f4</color>
+    <color name="brownish_grey">#5d5d5d</color>
+
     <color name="dodger_blue">#3a97ff</color>
     <color name="bright_blue">#007aff</color>
     <color name="silver">#c9c9ce</color>
     <color name="tomato">#ee3e3a</color>
-    <color name="brownish_grey">#5d5d5d</color>
+
+    <color name="dark_grey">#333333</color>
+    <color name="warm_grey">#999999</color>
+    <color name="light_grey">#ededed</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
@@ -59,7 +64,10 @@
     <color name="login_edittext_hint">#B2FFFFFF</color>
 
     <!-- Side Menu -->
-    <color name="sidemenu_divider">@color/greyish</color>
+    <color name="sidemenu_background">@color/white</color>
+    <color name="sidemenu_item_background">@color/pale_grey</color>
+    <color name="sidemenu_item_text_color">@color/dark_grey</color>
+    <color name="sidemenu_divider">@color/white</color>
     
     <!-- Notifications -->
     <color name="battleship_grey">#797a7c</color>

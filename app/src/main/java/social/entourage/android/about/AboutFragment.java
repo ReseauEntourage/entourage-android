@@ -81,7 +81,7 @@ public class AboutFragment extends EntourageDialogFragment {
     protected void onEmailClicked() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
-        String[] addresses = {Constants.EMAIL_CONTACT};
+        String[] addresses = {getString(R.string.contact_email)};
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
