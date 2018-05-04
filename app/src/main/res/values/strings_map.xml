@@ -25,6 +25,9 @@
     <string name="newsfeed_no_more_items">Aucun autre entourage près de cette position</string>
     <string name="map_show_guide_description">Voir les lieux\nsolidaires</string>
 
+    <string name="map_top_navigation_filter">Filtrer</string>
+    <string name="map_top_navigation_full_map">Voir la carte</string>
+
     <!-- Map Filter -->
     <string name="map_filter_title">FILTRES</string>
     <string name="map_filter_tour_type_title">Types de maraude</string>

@@ -10,13 +10,19 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+        <include
+            android:id="@+id/fragment_map_top_navigation"
+            layout="@layout/layout_map_top_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_bar_height"/>
+
         <RelativeLayout
             android:id="@+id/fragment_map_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/fragment_map_top_navigation"
             android:orientation="vertical"
             android:weightSum="8">
 
@@ -58,23 +64,6 @@
                 android:visibility="gone"/>
 
             <ImageButton
-                android:id="@+id/fragment_map_filter_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="@string/empty_description"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_filters_black"/>
-
-            <ImageButton
                 android:id="@+id/fragment_map_follow_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -89,18 +78,6 @@
                 android:contentDescription="@string/empty_description"
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_position"/>
-
-            <ToggleButton
-                android:id="@+id/fragment_map_display_toggle"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:button="@drawable/bg_map_type_tab"
-                android:checked="false"
-                android:textOff=""
-                android:textOn=""/>
 
         </RelativeLayout>
 
@@ -119,6 +96,7 @@
             android:id="@+id/fragment_map_gps_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_map_top_navigation"
             android:background="@drawable/bg_clickable_layout_gps"
             android:gravity="center"
             android:orientation="vertical"
@@ -258,8 +236,9 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical"
-        android:focusable="true">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/underconstruction_title"

@@ -1,6 +1,7 @@
 package social.entourage.android.base;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +31,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     protected boolean needsTopView = false;
     private MapViewHolder mapViewHolder;
     private OnMapReadyCallback onMapReadyCallback;
+    private View.OnClickListener onFollowButtonClickListener;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
@@ -42,6 +44,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewType == TimestampedObject.TOP_VIEW) {
             mapViewHolder = (MapViewHolder)cardViewHolder;
             mapViewHolder.setMapReadyCallback(onMapReadyCallback);
+            mapViewHolder.setFollowButtonOnClickListener(onFollowButtonClickListener);
         }
 
         return cardViewHolder;
@@ -218,6 +221,10 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setOnMapReadyCallback(final OnMapReadyCallback onMapReadyCallback) {
         this.onMapReadyCallback = onMapReadyCallback;
+    }
+
+    public void setOnFollowButtonClickListener(final View.OnClickListener onFollowButtonClickListener) {
+        this.onFollowButtonClickListener = onFollowButtonClickListener;
     }
 
     public void setMapHeight(int height) {

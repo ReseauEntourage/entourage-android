@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -130,8 +131,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @BindView(R.id.map_longclick_buttons)
     RelativeLayout guideLongClickButtonsView;
 
-    @BindView(R.id.fragment_guide_display_toggle)
-    ToggleButton guideDisplayToggle;
+    @BindView(R.id.fragment_map_display_toggle)
+    Button guideDisplayToggle;
 
     @BindView(R.id.fragment_guide_main_layout)
     RelativeLayout layoutMain;
@@ -255,7 +256,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @OnClick(R.id.fragment_guide_follow_button)
     void onFollowGeolocation() {
         // Check if geolocation is permitted
         if (!isGeolocationPermitted()) {
@@ -269,7 +269,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
     }
 
-    @OnClick(R.id.fragment_guide_filter_button)
+    @OnClick(R.id.fragment_map_filter_button)
     void onShowFilter() {
         GuideFilterFragment guideFilterFragment = new GuideFilterFragment();
         guideFilterFragment.show(getFragmentManager(), GuideFilterFragment.TAG);
@@ -283,9 +283,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         activity.hideSolidarityGuide();
     }
 
-    @OnClick(R.id.fragment_guide_display_toggle)
+    @OnClick(R.id.fragment_map_display_toggle)
     public void onDisplayToggle() {
-        if (guideDisplayToggle.isChecked()) {
+        if (!isFullMapShown) {
             EntourageEvents.logEvent(Constants.EVENT_GUIDE_MAP_VIEW);
         }
         else {
@@ -728,6 +728,12 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             poisListView.setLayoutManager(new LinearLayoutManager(getContext()));
             poisAdapter = new PoisAdapter();
             poisAdapter.setOnMapReadyCallback(onMapReadyCallback);
+            poisAdapter.setOnFollowButtonClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    GuideMapEntourageFragment.this.onFollowGeolocation();
+                }
+            });
             poisListView.setAdapter(poisAdapter);
         }
     }
@@ -749,7 +755,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
         isFullMapShown = true;
 
-        guideDisplayToggle.setChecked(true);
+        //TODO Maybe change the text ?
+        //guideDisplayToggle.setChecked(true);
 
         ensureMapVisible();
 
@@ -783,7 +790,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
         isFullMapShown = false;
 
-        guideDisplayToggle.setChecked(false);
+        //TODO Maybe change the text ?
+        //guideDisplayToggle.setChecked(false);
 
         hideInfoPopup();
         hideEmptyListPopup();

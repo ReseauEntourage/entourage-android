@@ -203,12 +203,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @BindView(R.id.fragment_map_gps_layout)
     LinearLayout gpsLayout;
 
-    @BindView(R.id.fragment_map_follow_button)
-    View centerButton;
-
-    @BindView(R.id.fragment_map_filter_button)
-    View filterButton;
-
     @BindView(R.id.layout_map_launcher)
     View mapLauncherLayout;
 
@@ -230,7 +224,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     RelativeLayout layoutMain;
 
     @BindView(R.id.fragment_map_display_toggle)
-    ToggleButton mapDisplayToggle;
+    Button mapDisplayToggle;
 
     @BindView(R.id.layout_map_longclick)
     RelativeLayout mapLongClickView;
@@ -1062,17 +1056,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                         int h = gpsLayout.getHeight();
 
-                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) centerButton.getLayoutParams();
+                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMain.getLayoutParams();
                         lp.topMargin -= h;
-                        centerButton.setLayoutParams(lp);
-
-                        lp = (RelativeLayout.LayoutParams) filterButton.getLayoutParams();
-                        lp.topMargin -= h;
-                        filterButton.setLayoutParams(lp);
-
-                        lp = (RelativeLayout.LayoutParams) mapDisplayToggle.getLayoutParams();
-                        lp.topMargin -= h;
-                        mapDisplayToggle.setLayoutParams(lp);
+                        layoutMain.setLayoutParams(lp);
                     }
                 });
             }
@@ -1091,17 +1077,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                         int h = gpsLayout.getHeight();
 
-                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) centerButton.getLayoutParams();
+                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMain.getLayoutParams();
                         lp.topMargin += h;
-                        centerButton.setLayoutParams(lp);
-
-                        lp = (RelativeLayout.LayoutParams) filterButton.getLayoutParams();
-                        lp.topMargin += h;
-                        filterButton.setLayoutParams(lp);
-
-                        lp = (RelativeLayout.LayoutParams) mapDisplayToggle.getLayoutParams();
-                        lp.topMargin += h;
-                        mapDisplayToggle.setLayoutParams(lp);
+                        layoutMain.setLayoutParams(lp);
                     }
                 });
             }
@@ -1312,7 +1290,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    @OnClick(R.id.fragment_map_follow_button)
+//    @Optional
+//    @OnClick(R.id.fragment_map_follow_button)
     void onFollowGeolocation() {
         EntourageEvents.logEvent(Constants.EVENT_FEED_RECENTERCLICK);
         // Check if geolocation is enabled
@@ -1427,7 +1406,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_display_toggle)
     public void onDisplayToggle() {
-        if (mapDisplayToggle.isChecked()) {
+        if (!isFullMapShown) {
             EntourageEvents.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
         }
         else {
@@ -1771,6 +1750,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             newsfeedListView.setLayoutManager(new LinearLayoutManager(getContext()));
             newsfeedAdapter = new NewsfeedAdapter();
             newsfeedAdapter.setOnMapReadyCallback(onMapReadyCallback);
+            newsfeedAdapter.setOnFollowButtonClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    MapEntourageFragment.this.onFollowGeolocation();
+                }
+            });
             newsfeedListView.setAdapter(newsfeedAdapter);
         }
     }
@@ -2258,7 +2243,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         isFullMapShown = true;
         newEntouragesButton.setVisibility(View.GONE);
-        mapDisplayToggle.setChecked(true);
+        //TODO Maybe change the text on the button ?
+        //mapDisplayToggle.setChecked(true);
         if (showGuideView != null) showGuideView.setVisibility(View.VISIBLE);
 
         ensureMapVisible();
@@ -2288,7 +2274,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         isFullMapShown = false;
-        mapDisplayToggle.setChecked(false);
+        //TODO Maybe change the text on the button ?
+        //mapDisplayToggle.setChecked(false);
         if (showGuideView != null) showGuideView.setVisibility(View.GONE);
         miniCardsView.setVisibility(View.INVISIBLE);
 
