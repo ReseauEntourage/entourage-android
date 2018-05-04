@@ -5,57 +5,36 @@
                 android:background="@color/background_light"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <social.entourage.android.view.EntourageTitleView
-        android:id="@+id/myentourages_navigation_layout"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/myentourages_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:entourageTitle="@string/mytours_title"/>
+        android:layout_alignParentTop="true"
+        android:background="@color/accent"
+        app:tabIndicatorColor="@color/white"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/white">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/myentourages_all"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/myentourages_unread"/>
+
+    </android.support.design.widget.TabLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/myentourages_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/myentourages_filter_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/myentourages_navigation_layout"
+        android:layout_below="@+id/myentourages_tab"
         />
-
-    <RelativeLayout
-        android:id="@+id/myentourages_filter_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/background">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/greyish"/>
-
-        <ImageButton
-            android:id="@+id/myentourages_filter_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_filters"/>
-
-    </RelativeLayout>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/myentourages_fab_menu"

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -71,6 +72,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     private static final int MAX_SCROLL_DELTA_Y = 20;
     private static final long REFRESH_INVITATIONS_INTERVAL = 60000; //1 minute in ms
+
+    private static final int FILTER_TAB_INDEX_ALL = 0;
+    private static final int FILTER_TAB_INDEX_UNREAD = 1;
 
     // ----------------------------------
     // Attributes
@@ -149,7 +153,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
         View view = inflater.inflate(R.layout.fragment_my_entourages, container, false);
         ButterKnife.bind(this, view);
-        initializeView();
 
         return view;
     }
@@ -158,6 +161,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        initializeView();
 
         retrieveMyFeeds();
     }
@@ -191,8 +195,40 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     private void initializeView() {
+        initializeFilterTab();
         initializeEntouragesView();
         initializeFabMenu();
+    }
+
+    private void initializeFilterTab() {
+        TabLayout tabLayout = getView().findViewById(R.id.myentourages_tab);
+        if (tabLayout == null) return;
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(final TabLayout.Tab tab) {
+                MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(getContext());
+                switch (tab.getPosition()) {
+                    case FILTER_TAB_INDEX_ALL:
+                        filter.showUnreadOnly = false;
+                        refreshMyFeeds();
+                        break;
+                    case FILTER_TAB_INDEX_UNREAD:
+                        filter.showUnreadOnly = true;
+                        refreshMyFeeds();
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(final TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(final TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private void initializeEntouragesView() {
@@ -259,18 +295,14 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // BUTTONS HANDLING
     // ----------------------------------
 
-    @OnClick(R.id.title_close_button)
-    void onBackClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_BACK_CLICK);
-        dismiss();
-    }
-
+    /* Removed in 5.0
     @OnClick(R.id.myentourages_filter_button)
     void onFilterClicked() {
         EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_CLICK);
         MyEntouragesFilterFragment fragment = new MyEntouragesFilterFragment();
         fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
     }
+    */
 
     @OnClick(R.id.button_create_entourage)
     void onCreateEntourageClicked() {
