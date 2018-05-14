@@ -214,6 +214,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                         break;
                     case FILTER_TAB_INDEX_UNREAD:
                         filter.showUnreadOnly = true;
+                        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_UNREAD);
                         refreshMyFeeds();
                         break;
                 }
