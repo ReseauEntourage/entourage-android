@@ -143,7 +143,7 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
 
         if (entourageTitle != null) {
             titleEditText.setText(entourageTitle);
-            titleEditText.setSelection(entourageTitle.length());
+            titleEditText.setSelection(Math.min(entourageTitle.length(), TITLE_MAX_CHAR_COUNT));
         }
 
         titleEditText.addTextChangedListener(new TextWatcher() {
@@ -161,7 +161,7 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
             public void afterTextChanged(final Editable s) {
                 String charCountString = getContext().getString(R.string.entourage_create_title_char_count_format, s.length(), TITLE_MAX_CHAR_COUNT);
                 titleCharCountTextView.setText(charCountString);
-                if (s.length() == TITLE_MAX_CHAR_COUNT) {
+                if (s.length() >= TITLE_MAX_CHAR_COUNT) {
                     titleCharCountTextView.setTextColor(ResourcesCompat.getColor(getResources(), R.color.entourage_error, null));
                     infoView.setVisibility(View.GONE);
                     errorView.setVisibility(View.VISIBLE);
