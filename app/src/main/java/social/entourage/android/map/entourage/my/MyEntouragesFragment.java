@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -432,13 +433,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     protected void onNewsfeedReceived(List<Newsfeed> newsfeedList) {
-        if (!isAdded()) {
-            return;
-        }
         hideProgressBar();
         //reset the loading indicator
         if (entouragesPagination != null) {
             entouragesPagination.isLoading = false;
+        }
+        if (!isAdded()) {
+            return;
         }
         //ignore errors
         if (newsfeedList == null) return;
