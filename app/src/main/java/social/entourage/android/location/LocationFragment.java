@@ -183,21 +183,6 @@ public class LocationFragment extends EntourageDialogFragment {
         mListener = null;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (autocompleteFragment != null) {
-            FragmentActivity fragmentActivity = getActivity();
-            if (fragmentActivity != null) {
-                FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
-                if (fragmentManager != null) {
-                    fragmentManager.beginTransaction().remove(autocompleteFragment).commitAllowingStateLoss();
-                }
-            }
-        }
-    }
-
     // ----------------------------------
     // INTERFACE CALLBACKS
     // ----------------------------------
@@ -332,11 +317,11 @@ public class LocationFragment extends EntourageDialogFragment {
 
     private void initializePlaces() {
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-        autocompleteFragment = (SupportPlaceAutocompleteFragment) fragmentManager.findFragmentById(R.id.entourage_location_places);
-
-        if (autocompleteFragment == null) return;
+        if (autocompleteFragment == null) {
+            autocompleteFragment = new SupportPlaceAutocompleteFragment();
+        }
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.entourage_location_places, autocompleteFragment).commit();
 
 //        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
 //                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
