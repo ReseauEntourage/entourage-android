@@ -2243,8 +2243,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         isFullMapShown = true;
         newEntouragesButton.setVisibility(View.GONE);
-        //TODO Maybe change the text on the button ?
-        //mapDisplayToggle.setChecked(true);
+        mapDisplayToggle.setText(R.string.map_top_navigation_full_map);
         if (showGuideView != null) showGuideView.setVisibility(View.VISIBLE);
 
         ensureMapVisible();
@@ -2274,8 +2273,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             return;
         }
         isFullMapShown = false;
-        //TODO Maybe change the text on the button ?
-        //mapDisplayToggle.setChecked(false);
+        mapDisplayToggle.setText(R.string.map_top_navigation_list);
         if (showGuideView != null) showGuideView.setVisibility(View.GONE);
         miniCardsView.setVisibility(View.INVISIBLE);
 

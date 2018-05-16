@@ -185,6 +185,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         initializeEmptyListPopup();
         initializeMap();
         initializePOIList();
+        initializeTopNavigationBar();
         updateFloatingMenuOptions();
     }
 
@@ -194,14 +195,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 .guideMapModule(new GuideMapModule(this))
                 .build()
                 .inject(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.activity_display_guide_title);
-        }
     }
 
     @Override
@@ -756,7 +749,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         isFullMapShown = true;
 
         //TODO Maybe change the text ?
-        //guideDisplayToggle.setChecked(true);
+        guideDisplayToggle.setText(R.string.map_top_navigation_full_map);
 
         ensureMapVisible();
 
@@ -791,7 +784,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         isFullMapShown = false;
 
         //TODO Maybe change the text ?
-        //guideDisplayToggle.setChecked(false);
+        guideDisplayToggle.setText(R.string.map_top_navigation_list);
 
         hideInfoPopup();
         hideEmptyListPopup();
@@ -816,6 +809,15 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     public void ensureMapVisible() {
         poisListView.scrollToPosition(0);
+    }
+
+    // ----------------------------------
+    // Top Navigation bar
+    // ----------------------------------
+
+    private void initializeTopNavigationBar() {
+        // Guide starts in full map mode, adjust the text accordingly
+        guideDisplayToggle.setText(R.string.map_top_navigation_full_map);
     }
 
     // ----------------------------------
