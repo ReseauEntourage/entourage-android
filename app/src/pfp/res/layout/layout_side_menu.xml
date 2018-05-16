@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/sidemenu_item_background"
-                android:icon="@drawable/ic_about"
+                android:icon="@drawable/ic_question_chat"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_contact"
@@ -142,6 +142,17 @@
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_how_to"
+                app:iconTint="@color/accent"/>
+
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_about"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/sidemenu_item_background"
+                android:icon="@drawable/ic_about"
+                android:textColor="@color/sidemenu_item_text_color"
+                android:textSize="@dimen/entourage_font_large"
+                android:title="@string/action_about"
                 app:iconTint="@color/accent"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView

@@ -4,13 +4,19 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
+import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageEvents;
@@ -25,11 +31,13 @@ public class AboutFragment extends EntourageDialogFragment {
 
     public static final String TAG = AboutFragment.class.getSimpleName();
 
-
-
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    @Nullable
+    @BindView(R.id.about_version)
+    TextView versionTextView;
 
     // ----------------------------------
     // LIFECYCLE
@@ -44,6 +52,18 @@ public class AboutFragment extends EntourageDialogFragment {
         return toReturn;
     }
 
+    @Override
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        populate();
+    }
+
+    private void populate() {
+        if (versionTextView != null) {
+            versionTextView.setText(getString(R.string.about_version_format, BuildConfig.VERSION_NAME));
+        }
+    }
+
     // ----------------------------------
     // BUTTON HANDLING
     // ----------------------------------
@@ -53,6 +73,25 @@ public class AboutFragment extends EntourageDialogFragment {
         dismiss();
     }
 
+    @Optional
+    @OnClick(R.id.about_version_layout)
+    protected void onVersionClicked() {
+        Uri uri = Uri.parse(getString(R.string.rate_url) + this.getActivity().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + this.getActivity().getPackageName())));
+        }
+    }
+
+    @Optional
     @OnClick(R.id.about_conditions_layout)
     protected void onTermsClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ABOUT_CGU);
@@ -65,6 +104,7 @@ public class AboutFragment extends EntourageDialogFragment {
         }
     }
 
+    @Optional
     @OnClick(R.id.about_website_layout)
     protected void onWebsiteClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ABOUT_WEBSITE);
@@ -77,6 +117,7 @@ public class AboutFragment extends EntourageDialogFragment {
         }
     }
 
+    @Optional
     @OnClick(R.id.about_email_layout)
     protected void onEmailClicked() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -90,6 +131,7 @@ public class AboutFragment extends EntourageDialogFragment {
         }
     }
 
+    @Optional
     @OnClick(R.id.faq_website_layout)
     protected void onFAQClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
@@ -99,6 +141,7 @@ public class AboutFragment extends EntourageDialogFragment {
         }
     }
 
+    @Optional
     @OnClick(R.id.about_tutorial_layout)
     protected void onTutorialClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {

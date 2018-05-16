@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Missing ids from entourage app -->
     <item name="fragment_map_show_guide" type="id" />
 
     <item name="action_blog" type="id" />
@@ -7,4 +8,9 @@
     <item name="action_donation" type="id" />
     <item name="action_atd" type="id" />
     <item name="action_involvement" type="id" />
+
+    <item name="about_website_layout" type="id" />
+    <item name="faq_website_layout" type="id" />
+    <item name="about_email_layout" type="id" />
+    <item name="about_tutorial_layout" type="id" />
 </resources>
