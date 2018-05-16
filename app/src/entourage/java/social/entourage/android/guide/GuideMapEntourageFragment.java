@@ -748,7 +748,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
         isFullMapShown = true;
 
-        //TODO Maybe change the text ?
         guideDisplayToggle.setText(R.string.map_top_navigation_full_map);
 
         ensureMapVisible();
@@ -782,8 +781,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             return;
         }
         isFullMapShown = false;
-
-        //TODO Maybe change the text ?
+        
         guideDisplayToggle.setText(R.string.map_top_navigation_list);
 
         hideInfoPopup();
