@@ -103,14 +103,14 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         // save the values to the filter
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
 
-        filter.entourageTypeDemand = entourageDemandSwitch.isChecked();
-        filter.entourageTypeContribution = entourageContributionSwitch.isChecked();
-        filter.showTours = toursSwitch.isChecked();
+        filter.setEntourageTypeDemand( entourageDemandSwitch.isChecked() );
+        filter.setEntourageTypeContribution( entourageContributionSwitch.isChecked() );
+        filter.setShowTours( toursSwitch.isChecked() );
 
-        filter.showUnreadOnly = unreadSwitch.isChecked();
-        filter.showOwnEntouragesOnly = createdByMeOnlySwitch.isChecked();
-        filter.showPartnerEntourages = partnerSwitch.isChecked();
-        filter.closedEntourages = closedSwitch.isChecked();
+        filter.setShowUnreadOnly( unreadSwitch.isChecked() );
+        filter.setShowOwnEntouragesOnly( createdByMeOnlySwitch.isChecked() );
+        filter.setShowPartnerEntourages( partnerSwitch.isChecked() );
+        filter.setClosedEntourages( closedSwitch.isChecked() );
 
         MyEntouragesFilterFactory.saveMyEntouragesFilter(filter, this.getContext());
 
@@ -155,14 +155,14 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
     private void initializeView() {
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
 
-        entourageDemandSwitch.setChecked(filter.entourageTypeDemand);
-        entourageContributionSwitch.setChecked(filter.entourageTypeContribution);
-        toursSwitch.setChecked(filter.showTours);
+        entourageDemandSwitch.setChecked(filter.isEntourageTypeDemand());
+        entourageContributionSwitch.setChecked(filter.isEntourageTypeContribution());
+        toursSwitch.setChecked(filter.isShowTours());
 
-        unreadSwitch.setChecked(filter.showUnreadOnly);
-        createdByMeOnlySwitch.setChecked(filter.showOwnEntouragesOnly);
-        partnerSwitch.setChecked(filter.showPartnerEntourages);
-        closedSwitch.setChecked(filter.closedEntourages);
+        unreadSwitch.setChecked(filter.isShowUnreadOnly());
+        createdByMeOnlySwitch.setChecked(filter.isShowOwnEntouragesOnly());
+        partnerSwitch.setChecked(filter.isShowPartnerEntourages());
+        closedSwitch.setChecked(filter.isClosedEntourages());
 
         User me = EntourageApplication.me(getActivity());
         boolean isPro = false;

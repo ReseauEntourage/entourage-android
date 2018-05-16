@@ -210,11 +210,11 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(getContext());
                 switch (tab.getPosition()) {
                     case FILTER_TAB_INDEX_ALL:
-                        filter.showUnreadOnly = false;
+                        filter.setShowUnreadOnly(false);
                         refreshMyFeeds();
                         break;
                     case FILTER_TAB_INDEX_UNREAD:
-                        filter.showUnreadOnly = true;
+                        filter.setShowUnreadOnly(true);
                         EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_UNREAD);
                         refreshMyFeeds();
                         break;
@@ -445,7 +445,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         if (newsfeedList == null) return;
         //add the feed
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
-        boolean showUnreadOnly = filter.showUnreadOnly;
+        boolean showUnreadOnly = filter.isShowUnreadOnly();
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
 
