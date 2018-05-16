@@ -16,7 +16,6 @@ public class Configuration extends BaseConfiguration {
 
     protected Configuration() {
         showTutorial = true;
-        showMyMessagesFAB = true;
     }
 
 }
