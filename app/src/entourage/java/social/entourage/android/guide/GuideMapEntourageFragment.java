@@ -781,7 +781,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             return;
         }
         isFullMapShown = false;
-        
+
         guideDisplayToggle.setText(R.string.map_top_navigation_list);
 
         hideInfoPopup();
