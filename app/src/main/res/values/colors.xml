@@ -45,7 +45,7 @@
     <!-- Profile -->
     <color name="background_user_category">#CFCFCF</color>
     <color name="background_user_content">@color/white</color>
-    <color name="profile_name">@color/dark_grey</color>
+    <color name="profile_name">@color/greyish_brown</color>
     <color name="profile_badge_text">@color/white</color>
     <color name="profile_tag_pending">@color/complementary_3</color>
     <color name="profile_tag_accepted">@color/accent_alt</color>
