@@ -81,7 +81,7 @@ public class UserFragment extends EntourageDialogFragment {
     PartnerLogoImageView userPartnerLogo;
 
     @BindView(R.id.user_name)
-    TextView userName;
+    UserNameView userName;
 
     @BindView(R.id.user_role)
     TextView userRole;
@@ -238,6 +238,7 @@ public class UserFragment extends EntourageDialogFragment {
             }
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
+            userName.setTag(user.getTag());
             userTourCount.setText(getString(R.string.user_entourage_count_format, entourageCount));
 
             String userAbout = user.getAbout();

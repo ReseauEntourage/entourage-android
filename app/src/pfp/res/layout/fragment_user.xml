@@ -73,12 +73,8 @@
                 android:id="@+id/user_profile_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:background="@color/accent"/>
+                android:background="@color/pale_grey"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:id="@+id/user_photo"
@@ -105,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_photo"
                     android:layout_marginTop="10dp"
+                    android:background="@color/white"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/profile_name"

@@ -32,6 +32,9 @@ public class User implements Serializable {
     public static final String TYPE_PUBLIC = "public";
     public static final String TYPE_PRO = "pro";
 
+    public static final String TAG_PENDING = "en attente";
+    public static final String TAG_ACCEPTED = "animateur";
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -73,6 +76,8 @@ public class User implements Serializable {
     private String type = TYPE_PRO;
 
     private String about;
+
+    private String tag;
 
     @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
@@ -211,6 +216,14 @@ public class User implements Serializable {
 
     public void setAbout(final String about) {
         this.about = about;
+    }
+
+    public String getTag() {
+        return TAG_ACCEPTED;
+    }
+
+    public void setTag(final String tag) {
+        this.tag = tag;
     }
 
     public boolean isEntourageDisclaimerShown() {

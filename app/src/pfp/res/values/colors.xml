@@ -23,6 +23,15 @@
     <color name="warm_grey">#999999</color>
     <color name="light_grey">#ededed</color>
 
+    <color name="accent_alt">#00b859</color>
+    <color name="accent_alt_dark">#016e3a</color>
+
+    <color name="complementary_1">#f5b700</color>
+    <color name="complementary_2">#78104a</color>
+    <color name="complementary_3">#b10f69</color>
+    <color name="complementary_4">#ea118a</color>
+    <color name="complementary_5">#ff2159</color>
+
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
     <color name="background_dark">@color/primary_dark</color>
@@ -41,6 +50,7 @@
     <!-- Profile -->
     <color name="background_user_category">#CFCFCF</color>
     <color name="background_user_content">@color/white</color>
+    <color name="profile_name">@color/dark_grey</color>
 
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>
