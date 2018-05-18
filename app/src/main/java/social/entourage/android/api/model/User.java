@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.map.TourAuthor;
@@ -32,8 +33,8 @@ public class User implements Serializable {
     public static final String TYPE_PUBLIC = "public";
     public static final String TYPE_PRO = "pro";
 
-    public static final String TAG_PENDING = "en attente";
-    public static final String TAG_ACCEPTED = "animateur";
+    public static final String ROLE_PENDING = "en attente";
+    public static final String ROLE_ACCEPTED = "animateur";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -77,7 +78,7 @@ public class User implements Serializable {
 
     private String about;
 
-    private String tag;
+    private ArrayList<String> roles;
 
     @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
@@ -218,12 +219,8 @@ public class User implements Serializable {
         this.about = about;
     }
 
-    public String getTag() {
-        return TAG_ACCEPTED;
-    }
-
-    public void setTag(final String tag) {
-        this.tag = tag;
+    public ArrayList<String> getRoles() {
+        return roles;
     }
 
     public boolean isEntourageDisclaimerShown() {

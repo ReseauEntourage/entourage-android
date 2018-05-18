@@ -1,6 +1,5 @@
 package social.entourage.android.user;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -238,7 +237,7 @@ public class UserFragment extends EntourageDialogFragment {
             }
 
             userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
-            userName.setTag(user.getTag());
+            userName.setRoles(user.getRoles());
             userTourCount.setText(getString(R.string.user_entourage_count_format, entourageCount));
 
             String userAbout = user.getAbout();

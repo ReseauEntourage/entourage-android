@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/user_name_holder"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
               android:orientation="horizontal">
 
-    <TextView
+    <social.entourage.android.user.role.RoleView
         android:id="@+id/user_name_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/profile_tag_pending"
-        android:textColor="@color/profile_badge_text"
+        android:textColor="@color/profile_role_text"
         android:textSize="@dimen/entourage_font_medium"
         tools:text="En attente"/>
 

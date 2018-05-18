@@ -101,7 +101,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_photo"
                     android:layout_marginTop="10dp"
-                    android:background="@color/white"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/profile_name"
