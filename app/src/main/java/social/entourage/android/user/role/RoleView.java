@@ -41,7 +41,7 @@ public class RoleView extends AppCompatTextView {
 
     private void init(AttributeSet attrs, int defStyle) {
         backgroundCornerRadius = getResources().getDimension(R.dimen.role_corner_radius);
-        backgroundColor = R.color.profile_role_accepted;
+        backgroundColor = R.color.white;
         setCustomBackground();
     }
 

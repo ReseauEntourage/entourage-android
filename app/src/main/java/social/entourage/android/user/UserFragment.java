@@ -236,7 +236,7 @@ public class UserFragment extends EntourageDialogFragment {
                 userPartnerLogo.setImageDrawable(null);
             }
 
-            userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
+            userName.setText(user.getDisplayName());
             userName.setRoles(user.getRoles());
             userTourCount.setText(getString(R.string.user_entourage_count_format, entourageCount));
 

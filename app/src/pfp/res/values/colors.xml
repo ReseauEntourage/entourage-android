@@ -51,6 +51,8 @@
     <color name="background_user_category">#CFCFCF</color>
     <color name="background_user_content">@color/white</color>
     <color name="profile_name">@color/dark_grey</color>
+    <color name="profile_role_pending">@color/complementary_3</color>
+    <color name="profile_role_accepted">@color/accent_alt</color>
 
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>

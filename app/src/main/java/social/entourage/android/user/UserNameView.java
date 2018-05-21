@@ -11,17 +11,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.UserRole;
+import social.entourage.android.user.role.UserRole;
 import social.entourage.android.user.role.RoleView;
+import social.entourage.android.user.role.UserRolesFactory;
 
 /**
- * Custom View used to display an user name with optional tags
+ * Custom View used to display a text with optional tags
  * Created by Mihai Ionescu on 17/05/2018.
  */
 public class UserNameView extends LinearLayout {
 
-    private LinearLayout contentHolder;
+    private LinearLayout tagsLeftHolder;
+    private LinearLayout tagsRightHolder;
     private TextView nameTextView;
 
     public UserNameView(final Context context) {
@@ -42,7 +43,8 @@ public class UserNameView extends LinearLayout {
     private void init(AttributeSet attrs, int defStyle) {
         inflate(getContext(), R.layout.layout_user_name, this);
 
-        contentHolder = findViewById(R.id.user_name_holder);
+        tagsLeftHolder = findViewById(R.id.user_name_tags_left_holder);
+        tagsRightHolder = findViewById(R.id.user_name_tags_right_holder);
         nameTextView = findViewById(R.id.user_name_name);
 
         if (!isInEditMode()) {
@@ -61,41 +63,36 @@ public class UserNameView extends LinearLayout {
     public void setRoles(ArrayList<String> roles) {
         removeAllRoleViews();
         if (roles != null) {
-            int index = 0;
             for (int i = 0; i < roles.size(); i++) {
                 String role = roles.get(i);
-                UserRole userRole = UserRole.findByName(role);
-                if (userRole != null) {
-                    addRoleView(getContext().getString(userRole.getResourceId()), index);
-                    index++;
+                UserRole userRole = UserRolesFactory.getInstance().findByName(role);
+                if (userRole != null && userRole.isVisible()) {
+                    addRoleView(userRole);
                 }
             }
         }
     }
 
-    public void addRoleView(String role) {
-        addRoleView(role, 0);
-    }
-
-    public void addRoleView(String role, int index) {
+    public void addRoleView(UserRole role) {
         RoleView roleView = new RoleView(getContext());
-        roleView.setText(role);
+        roleView.setText(role.getNameResourceId());
         roleView.setTextColor(ContextCompat.getColor(getContext(), R.color.profile_role_text));
         roleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.entourage_font_medium));
-        if (User.ROLE_PENDING.equalsIgnoreCase(role)) {
-            roleView.changeBackgroundColor(R.color.profile_role_pending);
-        }
-        else {
-            roleView.changeBackgroundColor(R.color.profile_role_accepted);
-        }
+        roleView.changeBackgroundColor(role.getColorResourceId());
 
         LinearLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.rightMargin = (int)getResources().getDimension(R.dimen.role_margin);
-        contentHolder.addView(roleView, index, lp);
+        if (role.getPosition() == UserRole.Position.LEFT) {
+            lp.rightMargin = (int)getResources().getDimension(R.dimen.role_margin);
+            tagsLeftHolder.addView(roleView, lp);
+        } else {
+            lp.leftMargin = (int)getResources().getDimension(R.dimen.role_margin);
+            tagsRightHolder.addView(roleView, lp);
+        }
     }
 
     private void removeAllRoleViews() {
-        contentHolder.removeViews(0, contentHolder.getChildCount()-1);
+        tagsLeftHolder.removeAllViews();
+        tagsRightHolder.removeAllViews();
     }
 
 }
