@@ -197,7 +197,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         getIntentAction(intent);
         if (mainFragment != null) {
-            switchToMapFragment();
+//            switchToMapFragment();
             if (intentAction != null) {
                 switch (intentAction) {
                     case ConfirmationFragment.KEY_RESUME_TOUR:
