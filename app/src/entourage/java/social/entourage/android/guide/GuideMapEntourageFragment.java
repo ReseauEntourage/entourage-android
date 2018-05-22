@@ -318,9 +318,13 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @Subscribe
     public void onSolidarityGuideFilterChanged(Events.OnSolidarityGuideFilterChanged event) {
         if (presenter != null) {
-            clusterManager.clearItems();
+            if(clusterManager!=null) {
+                clusterManager.clearItems();
+            }
             poisMap.clear();
-            poisAdapter.removeAll();
+            if(poisAdapter!=null) {
+                poisAdapter.removeAll();
+            }
             presenter.updatePoisNearby(map);
         }
     }
