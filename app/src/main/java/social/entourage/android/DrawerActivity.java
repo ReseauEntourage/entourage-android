@@ -772,12 +772,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Override
     public void showStopTourActivity(Tour tour) {
         mapEntourageFragment.pauseTour(tour);
-        //buttonStartLauncher.setVisibility(View.GONE);
-        Bundle args = new Bundle();
-        args.putSerializable(Tour.KEY_TOUR, tour);
-        Intent confirmationIntent = new Intent(this, ConfirmationFragment.class);
-        confirmationIntent.putExtras(args);
-        startActivity(confirmationIntent);
+
+        ConfirmationFragment confirmationFragment = ConfirmationFragment.newInstance(tour);
+        confirmationFragment.show(getSupportFragmentManager(), ConfirmationFragment.TAG);
     }
 
     @Override
