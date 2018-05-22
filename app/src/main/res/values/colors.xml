@@ -90,6 +90,11 @@
     <color name="entourage_ok">@color/greyish</color>
     <color name="entourage_error">@color/tomato</color>
 
+    <!-- Action details screens -->
+    <color name="feeditem_details_topbar_background">@color/accent</color>
+    <color name="feeditem_details_topbar_tint">@color/white</color>
+    <color name="feeditem_details_title">@color/white</color>
+
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>

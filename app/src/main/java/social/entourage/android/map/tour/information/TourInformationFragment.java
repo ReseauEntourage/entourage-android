@@ -78,6 +78,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import butterknife.Optional;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -152,6 +153,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = false;
 
+    @Nullable
     @BindView(R.id.tour_info_title)
     TextView fragmentTitle;
 
@@ -220,12 +222,15 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @BindView(R.id.tour_info_private_section)
     RelativeLayout privateSection;
 
+    @Nullable
     @BindView(R.id.tour_info_share_button)
     AppCompatImageButton shareButton;
 
+    @Nullable
     @BindView(R.id.tour_info_user_add_button)
     AppCompatImageButton addUserButton;
 
+    @Nullable
     @BindView(R.id.tour_info_more_button)
     AppCompatImageButton moreButton;
 
@@ -581,6 +586,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
+    @Optional
     @OnClick({R.id.tour_info_share_button, R.id.invite_source_share_button, R.id.feeditem_option_share})
     public void onShareButton() {
         // close the invite source view
@@ -613,6 +619,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         EntourageEvents.logEvent((feedItem != null && feedItem.isPrivate()) ? Constants.EVENT_ENTOURAGE_SHARE_MEMBER : Constants.EVENT_ENTOURAGE_SHARE_NONMEMBER);
     }
 
+    @Optional
     @OnClick(R.id.tour_info_more_button)
     public void onMoreButton() {
 
@@ -796,6 +803,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
+    @Optional
     @OnClick(R.id.tour_info_user_add_button)
     protected void onUserAddClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
@@ -893,17 +901,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         loadingView.setVisibility(View.GONE);
 
         // Initialize the header
-        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            fragmentTitle.setText(R.string.tour_info_title);
-        }
-        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            if (feedItem.getFeedType().equals(Entourage.TYPE_DEMAND)) {
-                fragmentTitle.setText(R.string.entourage_type_demand);
-            }
-            else {
-                fragmentTitle.setText(R.string.entourage_type_contribution);
-            }
-        }
+        fragmentTitle.setText(feedItem.getTitle());
 
         // Initialize the header
         tourOrganization.setText(feedItem.getTitle());
@@ -1087,15 +1085,15 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         boolean isTourPrivate = feedItem.isPrivate();
 
         // Share button available only for entourages and non-members
-        shareButton.setVisibility( ((feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) && !isTourPrivate) ? View.VISIBLE : View.GONE );
+        if (shareButton != null) shareButton.setVisibility( ((feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) && !isTourPrivate) ? View.VISIBLE : View.GONE );
 
-        addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && !feedItem.isClosed() ? View.VISIBLE : View.GONE) : View.GONE);
+        if (addUserButton != null) addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && !feedItem.isClosed() ? View.VISIBLE : View.GONE) : View.GONE);
 
-        moreButton.setVisibility(View.VISIBLE);
+        if (moreButton != null) moreButton.setVisibility(View.VISIBLE);
 
         if (invitationId > 0) {
-            shareButton.setVisibility(View.GONE);
-            moreButton.setVisibility(View.GONE);
+            if (shareButton != null) shareButton.setVisibility(View.GONE);
+            if (moreButton != null) moreButton.setVisibility(View.GONE);
         }
     }
 

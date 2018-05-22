@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    tools:showIn="@layout/fragment_tour_information">
+
+    <ImageButton
+        android:id="@+id/tour_info_description_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_info"
+        android:tint="@color/feeditem_details_topbar_tint"
+        android:visibility="visible"
+        android:layout_marginEnd="5dp"/>
+</LinearLayout>

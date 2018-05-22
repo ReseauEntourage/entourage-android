@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    tools:showIn="@layout/fragment_tour_information">
+
+    <ImageButton
+        android:id="@+id/tour_info_share_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tour_info_more_button"
+        android:layout_toStartOf="@+id/tour_info_more_button"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/ic_share_android"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/tour_info_user_add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tour_info_more_button"
+        android:layout_toStartOf="@+id/tour_info_more_button"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/ic_user_plus"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/tour_info_more_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/ic_more"
+        android:tint="@color/feeditem_details_topbar_tint"
+        android:visibility="visible"/>
+</RelativeLayout>
