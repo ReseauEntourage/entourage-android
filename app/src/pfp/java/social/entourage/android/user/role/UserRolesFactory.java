@@ -19,9 +19,9 @@ public class UserRolesFactory extends BaseUserRolesFactory {
     }
 
     private UserRolesFactory() {
-        register(new UserRole("not_validated", R.string.role_not_validated, R.color.profile_role_pending, UserRole.Position.LEFT, true));
-        register(new UserRole("visitor", R.string.role_visitor, 0, UserRole.Position.LEFT, false));
-        register(new UserRole("visited", R.string.role_visited, 0, UserRole.Position.LEFT, false));
+        register(new UserRole("not_validated", R.string.role_not_validated, R.color.profile_role_pending, UserRole.Position.RIGHT, true));
+        register(new UserRole("visitor", R.string.role_visitor, 0, UserRole.Position.RIGHT, false));
+        register(new UserRole("visited", R.string.role_visited, 0, UserRole.Position.RIGHT, false));
         register(new UserRole("coordinator", R.string.role_coordinator, R.color.profile_role_accepted, UserRole.Position.RIGHT, true));
     }
 
