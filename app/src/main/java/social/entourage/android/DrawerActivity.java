@@ -3,6 +3,8 @@ package social.entourage.android;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -106,7 +109,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     DrawerPresenter presenter;
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    View toolbar;
 
     @BindView(R.id.content_view)
     View contentView;
@@ -402,7 +405,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 BaseBottomNavigationDataSource.NavigationItem navigationItem = navigationDataSource.getNavigationItemAtIndex(i);
                 TabLayout.Tab tab = tabLayout.newTab();
                 tab.setText(navigationItem.getText());
-                if (navigationItem.getIcon() != 0) tab.setIcon(navigationItem.getIcon());
+                tab.setIcon(navigationItem.getIcon(getApplicationContext()));
                 tabLayout.addTab(tab);
                 if (i == navigationDataSource.getDefaultSelectedTab()) tab.select();
             }

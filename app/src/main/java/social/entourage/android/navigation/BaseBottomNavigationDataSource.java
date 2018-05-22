@@ -1,11 +1,19 @@
 package social.entourage.android.navigation;
 
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.DrawableUtils;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+
+import social.entourage.android.R;
 
 /**
  * Bottom navigation data source
@@ -69,8 +77,11 @@ public abstract class BaseBottomNavigationDataSource {
             return text;
         }
 
-        public int getIcon() {
-            return icon;
+        public Drawable getIcon(Context context) {
+            ColorStateList colorStateList = ContextCompat.getColorStateList(context, R.color.navigation_icons_state_list);
+            Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, icon));
+            DrawableCompat.setTintList(drawable, colorStateList);
+            return drawable;
         }
     }
 }
