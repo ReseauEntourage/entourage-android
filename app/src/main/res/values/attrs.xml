@@ -50,4 +50,8 @@
     <declare-styleable name="HalfCircleView">
         <attr name="shapeColor" format="color"/>
     </declare-styleable>
+    <declare-styleable name="UserNameView">
+        <attr name="android:textColor"/>
+        <attr name="android:textSize"/>
+    </declare-styleable>
 </resources>

@@ -1,6 +1,7 @@
 package social.entourage.android.user;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -46,6 +47,19 @@ public class UserNameView extends LinearLayout {
         tagsLeftHolder = findViewById(R.id.user_name_tags_left_holder);
         tagsRightHolder = findViewById(R.id.user_name_tags_right_holder);
         nameTextView = findViewById(R.id.user_name_name);
+
+        // Load attributes
+        final TypedArray a = getContext().obtainStyledAttributes(
+                attrs, R.styleable.UserNameView, defStyle, 0);
+
+        if (a.hasValue(R.styleable.UserNameView_android_textColor)) {
+            nameTextView.setTextColor(a.getColor(R.styleable.UserNameView_android_textColor, ContextCompat.getColor(getContext(), R.color.white)));
+        }
+        if (a.hasValue(R.styleable.UserNameView_android_textSize)) {
+            nameTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, a.getDimension(R.styleable.UserNameView_android_textSize, 14.0f));
+        }
+
+        a.recycle();
 
         if (!isInEditMode()) {
             removeAllRoleViews();

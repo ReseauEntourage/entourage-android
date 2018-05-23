@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Join Request -->
+    <string name="tour_join_request_received_message_short">aimerait participer à la sortie</string>
+
+</resources>
