@@ -97,6 +97,9 @@
     <color name="entourage_ok">@color/greyish</color>
     <color name="entourage_error">@color/tomato</color>
 
+    <!-- Action details screens -->
+    <color name="feeditem_icon_background_stroke">@color/light_grey</color>
+
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>

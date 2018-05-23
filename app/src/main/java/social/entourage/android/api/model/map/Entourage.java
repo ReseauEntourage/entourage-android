@@ -1,7 +1,11 @@
 package social.entourage.android.api.model.map;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.content.res.AppCompatResources;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
@@ -11,6 +15,8 @@ import java.util.Date;
 
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
+import social.entourage.android.map.entourage.category.EntourageCategory;
+import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 
 /**
  * Created by mihaiionescu on 28/04/16.
@@ -216,6 +222,18 @@ public class Entourage extends FeedItem implements Serializable {
     @Override
     public TourPoint getEndPoint() {
         return null;
+    }
+
+    @Override
+    public Drawable getIconDrawable(Context context) {
+        EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory(this);
+        if (entourageCategory != null) {
+            Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes()).mutate();
+            categoryIcon.clearColorFilter();
+            categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
+            return categoryIcon;
+        }
+        return super.getIconDrawable(context);
     }
 
     // ----------------------------------

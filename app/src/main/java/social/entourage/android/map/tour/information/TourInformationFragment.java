@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +21,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.speech.RecognizerIntent;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -526,7 +529,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         this.dismiss();
     }
 
-    @OnClick({R.id.tour_info_title, R.id.tour_card_arrow})
+    @Optional
+    @OnClick({R.id.tour_info_title, R.id.tour_card_arrow, R.id.tour_info_description_button})
     protected void onSwitchSections() {
         // Ignore if the entourage is not loaded or is public
         if (feedItem == null || !feedItem.isPrivate())
@@ -902,6 +906,14 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         // Initialize the header
         fragmentTitle.setText(feedItem.getTitle());
+        Drawable iconDrawable = feedItem.getIconDrawable(getContext());
+        if (iconDrawable == null) {
+            fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        } else {
+            LayerDrawable layerDrawable = (LayerDrawable) ContextCompat.getDrawable(getContext(), R.drawable.feeditem_icon);
+            layerDrawable.setDrawableByLayerId(R.id.feeditem_icon_id, iconDrawable);
+            fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(layerDrawable, null, null, null);
+        }
 
         // Initialize the header
         tourOrganization.setText(feedItem.getTitle());

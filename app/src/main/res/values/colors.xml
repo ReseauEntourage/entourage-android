@@ -5,7 +5,7 @@
     <color name="primary">#ffffff</color>
     <color name="primary_dark">#717171</color>
     <color name="primary_light">#efeff4</color>
-    <color name="accent">#00abf0</color>
+    <color name="accent">#f26521</color>
     <color name="accent_dark">#f26521</color>
     <color name="toolbar">@color/primary</color>
     <color name="warm_grey">#9b9b9b</color>
@@ -94,6 +94,8 @@
     <color name="feeditem_details_topbar_background">@color/accent</color>
     <color name="feeditem_details_topbar_tint">@color/white</color>
     <color name="feeditem_details_title">@color/white</color>
+    <color name="feeditem_icon_background_solid">@color/white</color>
+    <color name="feeditem_icon_background_stroke">@color/warm_grey</color>
 
     <!-- Others -->
     <color name="login_view">#333333</color>
