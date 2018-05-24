@@ -106,13 +106,9 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_tours_count)
     TextView userTourCount;
 
-    @BindView(R.id.user_associations_title)
-    TextView userAssociationsTitle;
-
-    @BindView(R.id.user_associations_view)
-    RecyclerView userAssociationsView;
-
-    UserOrganizationsAdapter organizationsAdapter;
+    @Nullable
+    @BindView(R.id.user_profile_associations)
+    UserAssociations userAssociations;
 
     @BindView(R.id.user_profile_progressBar)
     ProgressBar progressBar;
@@ -248,32 +244,9 @@ public class UserFragment extends EntourageDialogFragment {
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);
             userEmailVerifiedImage.setImageResource(userEmailVerified ? R.drawable.verified : R.drawable.not_verified);
 
-            List<BaseOrganization> organizationList = new ArrayList<>();
-            if (user.getPartner() != null) {
-                organizationList.add(user.getPartner());
+            if (userAssociations != null) {
+                userAssociations.initUserAssociations(user, this);
             }
-            if (user.getOrganization() != null) {
-                organizationList.add(user.getOrganization());
-            }
-            if (organizationsAdapter == null) {
-                userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-                organizationsAdapter = new UserOrganizationsAdapter(organizationList);
-                userAssociationsView.setAdapter(organizationsAdapter);
-
-                ItemClickSupport.addTo(userAssociationsView)
-                        .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                            @Override
-                            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                                onEditProfileClicked();
-                            }
-                        });
-            } else {
-                organizationsAdapter.setOrganizationList(organizationList);
-            }
-
-            userAssociationsTitle.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
-            userAssociationsView.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
         }
     }
 

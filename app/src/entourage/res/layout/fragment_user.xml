@@ -73,8 +73,12 @@
                 android:id="@+id/user_profile_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/pale_grey"
-                android:paddingBottom="20dp">
+                android:layout_marginBottom="20dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:background="@color/accent"/>
 
                 <ImageView
                     android:id="@+id/user_photo"
@@ -180,7 +184,7 @@
 
             </LinearLayout>
 
-            <social.entourage.android.user.PFPUserProfileAssociationsView
+            <social.entourage.android.user.EntourageUserProfileAssociationsView
                 android:id="@+id/user_profile_associations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -247,7 +251,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone"
                 android:weightSum="3">
 
                 <TextView

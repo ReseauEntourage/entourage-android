@@ -14,7 +14,7 @@ public class UserRolesFactory extends BaseUserRolesFactory {
 
     private static final UserRolesFactory ourInstance = new UserRolesFactory();
 
-    public static BaseUserRolesFactory getInstance() {
+    public static UserRolesFactory getInstance() {
         return ourInstance;
     }
 
@@ -23,6 +23,14 @@ public class UserRolesFactory extends BaseUserRolesFactory {
         register(new UserRole("visitor", R.string.role_visitor, 0, UserRole.Position.RIGHT, false));
         register(new UserRole("visited", R.string.role_visited, 0, UserRole.Position.RIGHT, false));
         register(new UserRole("coordinator", R.string.role_coordinator, R.color.profile_role_accepted, UserRole.Position.RIGHT, true));
+    }
+
+    public boolean isVisited(String role) {
+        UserRole userRole = findByName(role);
+        if (userRole != null) {
+            return (userRole.getName().equalsIgnoreCase("visited"));
+        }
+        return false;
     }
 
 }

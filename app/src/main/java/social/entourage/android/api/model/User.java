@@ -33,9 +33,6 @@ public class User implements Serializable {
     public static final String TYPE_PUBLIC = "public";
     public static final String TYPE_PRO = "pro";
 
-    public static final String ROLE_PENDING = "en attente";
-    public static final String ROLE_ACCEPTED = "animateur";
-
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

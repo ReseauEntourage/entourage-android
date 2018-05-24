@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- User Profile -->
+    <string name="user_circles_title_visitor">Je voisine</string>
+    <string name="user_circles_title_visited">Je suis voisiné(e) par</string>
+
     <!-- Photo wizard -->
     <string name="user_photo_choose_description">Avec une photo, c’est tout de suite plus sympa.\nAffichez à la communauté votre sourire le plus chaleureux !</string>
 

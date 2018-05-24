@@ -184,25 +184,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/user_associations_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/pale_grey"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="20dp"
-                android:text="@string/user_associations_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"
-                android:textStyle="bold"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/user_associations_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
             <RelativeLayout
                 android:id="@+id/user_number_of_entourages_layout"
                 android:layout_width="match_parent"
