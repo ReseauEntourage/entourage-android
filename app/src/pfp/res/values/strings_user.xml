@@ -2,6 +2,7 @@
 <resources>
 
     <!-- User Profile -->
+    <string name="user_associations_title">Membres de voisinages</string>
     <string name="user_circles_title_visitor">Je voisine</string>
     <string name="user_circles_title_visited">Je suis voisiné(e) par</string>
 
