@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="tour_info_text_join_html"><![CDATA[<font color=\"#00abf0\">%1$s </font>%2$s]]></string>
+
     <!-- Join Request -->
     <string name="tour_join_request_received_message_short">aimerait participer à la sortie</string>
 

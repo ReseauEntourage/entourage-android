@@ -96,7 +96,6 @@
         android:layout_above="@+id/tour_info_comment_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tour_info_private_separator"
         android:background="@color/background"/>
 
     <FrameLayout

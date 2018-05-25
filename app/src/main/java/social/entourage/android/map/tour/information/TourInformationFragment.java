@@ -160,36 +160,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @BindView(R.id.tour_info_title)
     TextView fragmentTitle;
 
-    @BindView(R.id.tour_card_title)
-    TextView tourOrganization;
-
-    @BindView(R.id.tour_card_photo)
-    ImageView tourAuthorPhoto;
-
-    @BindView(R.id.tour_card_partner_logo)
-    PartnerLogoImageView tourAuthorPartnerLogo;
-
-    @BindView(R.id.tour_card_type)
-    TextView tourType;
-
-    @BindView(R.id.tour_card_author)
-    TextView tourAuthorName;
-
-    @BindView(R.id.tour_card_location)
-    TextView tourLocation;
-
-    @BindView(R.id.tour_card_people_count)
-    TextView tourPeopleCount;
-
-    @BindView(R.id.tour_card_people_image)
-    ImageView tourPeopleImage;
-
-    @BindView(R.id.tour_card_arrow)
-    ImageView tourCardArrow;
-
-    @BindView(R.id.tour_card_act_layout)
-    RelativeLayout headerActLayout;
-
     @BindView(R.id.tour_info_description)
     TextView tourDescription;
 
@@ -569,6 +539,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
+    @Optional
     @OnClick({R.id.tour_card_author, R.id.tour_card_photo})
     protected void onAuthorClicked() {
         BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(feedItem.getAuthor().getUserID()));
@@ -915,67 +886,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(layerDrawable, null, null, null);
         }
 
-        // Initialize the header
-        tourOrganization.setText(feedItem.getTitle());
-
-        String displayType = feedItem.getFeedTypeLong(this.getActivity());
-        if (displayType != null) {
-            tourType.setText(displayType);
-        } else {
-            tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_info_unknown)));
-        }
-
-        TourAuthor author = feedItem.getAuthor();
-        if (author != null) {
-            tourAuthorName.setText(author.getUserName());
-
-            String avatarURLAsString = author.getAvatarURLAsString();
-            if (avatarURLAsString != null) {
-                Picasso.with(getContext()).load(Uri.parse(avatarURLAsString))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(tourAuthorPhoto);
-            }
-            // Partner logo
-            Partner partner = author.getPartner();
-            if (partner != null) {
-                String partnerLogoURL = partner.getSmallLogoUrl();
-                if (partnerLogoURL != null) {
-                    Picasso.with(getContext())
-                            .load(Uri.parse(partnerLogoURL))
-                            .placeholder(R.drawable.partner_placeholder)
-                            .transform(new CropCircleTransformation())
-                            .into(tourAuthorPartnerLogo);
-                }
-                else {
-                    tourAuthorPartnerLogo.setImageDrawable(null);
-                }
-            } else {
-                tourAuthorPartnerLogo.setImageDrawable(null);
-            }
-
-        } else {
-            tourAuthorName.setText("--");
-        }
-
-        String distanceAsString = "";
-        TourPoint startPoint = null;
-        if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            startPoint = feedItem.getStartPoint();
-        }
-        else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            startPoint = ((Entourage)feedItem).getLocation();
-        }
-        if (startPoint != null) {
-            distanceAsString = startPoint.distanceToCurrentLocation();
-        }
-
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
-
-        tourPeopleCount.setText(getString(R.string.tour_cell_numberOfPeople, feedItem.getNumberOfPeople()));
-
-        headerActLayout.setVisibility(View.GONE);
-
         // update description
         tourDescription.setText(feedItem.getDescription());
         DeepLinksManager.linkify(tourDescription);
@@ -993,20 +903,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         // switch to appropiate section
         if (feedItem.isPrivate()) {
-            tourPeopleCount.setVisibility(View.INVISIBLE);
-            tourPeopleImage.setVisibility(View.INVISIBLE);
-            tourAuthorPhoto.setVisibility(View.INVISIBLE);
-            tourAuthorPartnerLogo.setVisibility(View.INVISIBLE);
-            tourCardArrow.setVisibility(View.VISIBLE);
             updateJoinStatus();
             switchToPrivateSection();
         }
         else {
-            tourPeopleCount.setVisibility(View.VISIBLE);
-            tourPeopleImage.setVisibility(View.VISIBLE);
-            tourAuthorPhoto.setVisibility(View.VISIBLE);
-            tourAuthorPartnerLogo.setVisibility(View.VISIBLE);
-            tourCardArrow.setVisibility(View.GONE);
             switchToPublicSection();
         }
 
@@ -1651,29 +1551,15 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // Update the UI
         feedItem = updatedEntourage;
 
-        if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            if (feedItem.getFeedType().equals(Entourage.TYPE_DEMAND)) {
-                fragmentTitle.setText(R.string.entourage_type_demand);
-            } else {
-                fragmentTitle.setText(R.string.entourage_type_contribution);
-            }
-        }
-        tourOrganization.setText(feedItem.getTitle());
-        tourDescription.setText(feedItem.getDescription());
-        DeepLinksManager.linkify(tourDescription);
-        String displayType = feedItem.getFeedTypeLong(this.getActivity());
-        if (displayType != null) {
-            tourType.setText(displayType);
+        fragmentTitle.setText(feedItem.getTitle());
+        Drawable iconDrawable = feedItem.getIconDrawable(getContext());
+        if (iconDrawable == null) {
+            fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         } else {
-            tourType.setText(getString(R.string.tour_info_text_type_title, getString(R.string.tour_info_unknown)));
+            LayerDrawable layerDrawable = (LayerDrawable) ContextCompat.getDrawable(getContext(), R.drawable.feeditem_icon);
+            layerDrawable.setDrawableByLayerId(R.id.feeditem_icon_id, iconDrawable);
+            fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(layerDrawable, null, null, null);
         }
-
-        String distanceAsString = "";
-        TourPoint entourageLocation = ((Entourage)feedItem).getLocation();
-        if (entourageLocation != null) {
-            distanceAsString = entourageLocation.distanceToCurrentLocation();
-        }
-        tourLocation.setText(String.format(getResources().getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
     }
 
     @Subscribe

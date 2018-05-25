@@ -22,40 +22,51 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tic_chat_message"
+        <LinearLayout
+            android:id="@+id/tic_chat_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
             android:layout_marginLeft="17dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="17dp"
             android:background="@drawable/bubble_discussion_others"
-            android:gravity="center_vertical"
             android:minHeight="60dp"
-            android:paddingLeft="22dp"
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            android:paddingLeft="20dp"
             android:paddingRight="10dp"
-            android:paddingStart="22dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/accent_dark"
-            android:textSize="@dimen/entourage_font_large"
-            tools:text="Some chat message from other people"
-            android:paddingEnd="10dp"/>
+            android:paddingStart="20dp">
 
-        <TextView
-            android:id="@+id/tic_chat_timestamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/warm_grey"
-            android:textSize="@dimen/entourage_font_small"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tic_chat_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingEnd="5dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="5dp"
+                android:paddingStart="0dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/accent_dark"
+                android:textSize="@dimen/entourage_font_large"
+                tools:text="Some chat message from other people"/>
+
+            <TextView
+                android:id="@+id/tic_chat_timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/entourage_font_small"
+                android:visibility="visible"
+                tools:text="13h43"/>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tic_chat_message"
+            android:layout_alignBottom="@+id/tic_chat_holder"
             android:layout_gravity="bottom"
             android:layout_marginBottom="10dp">
 

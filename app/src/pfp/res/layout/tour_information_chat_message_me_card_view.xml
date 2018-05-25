@@ -40,7 +40,7 @@
             android:layout_marginTop="5dp"
             android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_small"
-            android:visibility="gone"/>
+            />
     </LinearLayout>
 
     <ImageView
