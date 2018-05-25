@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.map.TourAuthor;
+import social.entourage.android.api.model.map.UserMembership;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -76,6 +77,8 @@ public class User implements Serializable {
     private String about;
 
     private ArrayList<String> roles;
+
+    private ArrayList<UserMembership.MembershipList> memberships;
 
     @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
@@ -218,6 +221,25 @@ public class User implements Serializable {
 
     public ArrayList<String> getRoles() {
         return roles;
+    }
+
+    public ArrayList<UserMembership.MembershipList> getAllMemberships() {
+        return memberships;
+    }
+
+    public ArrayList<UserMembership> getMemberships(String type) {
+        if (memberships == null || type == null) return new ArrayList<>();
+        for (UserMembership.MembershipList membershipList:
+             memberships) {
+            if (type.equalsIgnoreCase(membershipList.getType())) {
+                return membershipList.getList();
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    public void setMemberships(final ArrayList<UserMembership.MembershipList> memberships) {
+        this.memberships = memberships;
     }
 
     public boolean isEntourageDisclaimerShown() {

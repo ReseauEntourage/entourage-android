@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="@dimen/entourage_padding_10">
+
+    <ImageView
+        android:id="@+id/membership_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_entourage_category_skill"/>
+
+    <TextView
+        android:id="@+id/membership_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/entourage_font_medium"
+        android:textStyle="bold"
+        tools:text="Private Circle Item"/>
+
+    <ImageView
+        android:id="@+id/membership_count_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/empty_description"
+        app:srcCompat="@drawable/ic_users"/>
+
+    <TextView
+        android:id="@+id/membership_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:textColor="@color/greyish_brown"
+        tools:text="122"
+        android:layout_marginStart="3dp"/>
+</LinearLayout>
