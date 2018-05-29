@@ -89,6 +89,13 @@ public class SideMenuItemView extends RelativeLayout {
             if (centerText) {
                 titleView.setGravity(Gravity.CENTER);
             }
+
+            //Right arrow
+            boolean bShowRightArrow = styledAttributes.getBoolean(R.styleable.SideMenuItemView_showRightArrow, true);
+            if (!bShowRightArrow) {
+                ImageView rightArrow = findViewById(R.id.side_menu_item_arrow);
+                if (rightArrow != null) rightArrow.setVisibility(GONE);
+            }
         }
         finally {
             styledAttributes.recycle();

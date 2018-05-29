@@ -68,6 +68,9 @@ public class DrawerPresenter extends DrawerBasePresenter {
                     Toast.makeText(activity, R.string.error_no_email, Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.action_feedback:
+                activity.showWebViewForLinkId(Constants.FEEDBACK_ID);
+                break;
             case R.id.action_propose:
                 Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;

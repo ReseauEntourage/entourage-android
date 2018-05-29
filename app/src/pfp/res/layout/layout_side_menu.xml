@@ -109,6 +109,17 @@
                 app:iconTint="@color/accent"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/sidemenu_item_background"
+                android:icon="@drawable/ic_star"
+                android:textColor="@color/sidemenu_item_text_color"
+                android:textSize="@dimen/entourage_font_large"
+                android:title="@string/action_feedback"
+                />
+
+            <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_propose"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -166,6 +177,7 @@
                 android:title="@string/action_logout"
                 app:centerText="true"
                 app:showDivider="false"
+                app:showRightArrow="false"
                 app:textBackground="@drawable/bg_button_white_accent_rounded"/>
 
         </LinearLayout>

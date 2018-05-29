@@ -9,6 +9,7 @@
     </declare-styleable>
     <declare-styleable name="SideMenuItemView">
         <attr name="showDivider" format="boolean"/>
+        <attr name="showRightArrow" format="boolean"/>
         <attr name="centerText" format="boolean" />
         <attr name="android:icon" />
         <attr name="iconTint" />
