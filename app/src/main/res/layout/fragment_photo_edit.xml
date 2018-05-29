@@ -77,7 +77,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_forward"
+            android:src="@drawable/ic_forward_tint"
             app:fab_colorNormal="@color/white"
             app:fab_colorPressed="@color/custom_button_white_pressed"
             app:fab_colorRipple="@color/white"/>
