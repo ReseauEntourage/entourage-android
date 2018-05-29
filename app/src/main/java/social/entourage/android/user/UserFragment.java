@@ -40,6 +40,7 @@ import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.ItemClickSupport;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
@@ -251,8 +252,8 @@ public class UserFragment extends EntourageDialogFragment {
     }
 
     private void showUserEditFragment() {
-        // Allow editing only of the logged user
-        if (!isMyProfile) return;
+        // Allow editing only of the logged user and if enabled in configuration
+        if (!(isMyProfile && Configuration.getInstance().showUserEditProfile())) return;
         // Show the edit profile screen
         UserEditFragment fragment = new UserEditFragment();
         fragment.show(getFragmentManager(), UserEditFragment.TAG);

@@ -8,6 +8,7 @@ public abstract class BaseConfiguration {
 
     boolean showTutorial = false;
     boolean showMyMessagesFAB = false;
+    boolean showUserEditProfile = true;
 
     protected BaseConfiguration() {}
 
@@ -19,4 +20,7 @@ public abstract class BaseConfiguration {
         return showTutorial;
     }
 
+    public boolean showUserEditProfile() {
+        return showUserEditProfile;
+    }
 }

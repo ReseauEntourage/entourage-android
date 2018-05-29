@@ -14,4 +14,8 @@ public class Configuration extends BaseConfiguration {
         return _instance;
     }
 
+    private Configuration() {
+        showUserEditProfile = false;
+    }
+
 }

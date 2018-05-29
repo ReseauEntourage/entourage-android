@@ -45,7 +45,9 @@ public class UserMembership implements Serializable {
         this.numberOfPeople = numberOfPeople;
     }
 
-    public static class MembershipList {
+    public static class MembershipList implements Serializable {
+
+        private static final long serialVersionUID = 8567771380837512524L;
 
         private String type;
         private ArrayList<UserMembership> list;

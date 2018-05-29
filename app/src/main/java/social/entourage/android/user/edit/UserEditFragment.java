@@ -169,7 +169,9 @@ public class UserEditFragment extends EntourageDialogFragment {
         if (getActivity() != null) {
             if (editedUser == null) {
                 User user = EntourageApplication.me(getActivity());
+                if (user == null) return;
                 editedUser = user.clone();
+                if (editedUser == null) return;
             }
 
             if (editedUser.getAvatarURL() != null) {
