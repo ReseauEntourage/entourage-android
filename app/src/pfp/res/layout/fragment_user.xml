@@ -48,6 +48,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:scaleType="centerInside"
+            android:tint="@color/white"
             app:srcCompat="@drawable/flag"/>
 
     </RelativeLayout>
@@ -198,11 +199,12 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:background="@color/pale_grey"
-                    android:gravity="center_horizontal"
                     android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:paddingTop="20dp"
                     android:text="@string/user_number_entourages_title"
-                    android:textColor="@color/greyish_brown"
+                    android:textColor="@color/dark_grey"
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
 
@@ -213,13 +215,13 @@
                     android:layout_below="@+id/user_number_entourages_title"
                     android:paddingBottom="10dp"
                     android:paddingEnd="20dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:paddingStart="20dp"
                     android:paddingTop="10dp"
                     android:text="@string/user_number_entourages_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/greyish_brown"
+                    android:textColor="@color/dark_grey"
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <TextView
@@ -237,7 +239,7 @@
                     android:paddingStart="20dp"
                     android:paddingTop="10dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/greyish"
+                    android:textColor="@color/dark_grey"
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
             </RelativeLayout>
