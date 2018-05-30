@@ -17,5 +17,6 @@
     <item name="tour_info_share_button" type="id" />
     <item name="tour_info_user_add_button" type="id" />
     <item name="tour_info_more_button" type="id" />
+    <item name="tour_info_member_add" type="id" />
 
 </resources>

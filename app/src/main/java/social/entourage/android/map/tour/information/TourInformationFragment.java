@@ -204,6 +204,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     AppCompatImageButton addUserButton;
 
     @Nullable
+    @BindView(R.id.tour_info_description_button)
+    AppCompatImageButton descriptionButton;
+
+    @Nullable
     @BindView(R.id.tour_info_more_button)
     AppCompatImageButton moreButton;
 
@@ -785,6 +789,20 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         inviteSourceLayout.setVisibility(View.VISIBLE);
     }
 
+    @Optional
+    @OnClick(R.id.tour_info_member_add)
+    protected void onMembersAddClicked() {
+        if (feedItem == null) return;
+        if (feedItem.isPrivate()) {
+            // For members show the invite screen
+            onUserAddClicked();
+        }
+        else {
+            // For non-members, show the share screen
+            onShareButton();
+        }
+    }
+
     @OnClick({R.id.invite_source_close_button, R.id.invite_source_close_bottom_button})
     protected void onCloseInviteSourceClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_CLOSE);
@@ -1002,6 +1020,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (addUserButton != null) addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && !feedItem.isClosed() ? View.VISIBLE : View.GONE) : View.GONE);
 
         if (moreButton != null) moreButton.setVisibility(View.VISIBLE);
+
+        if (descriptionButton != null) descriptionButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
 
         if (invitationId > 0) {
             if (shareButton != null) shareButton.setVisibility(View.GONE);
