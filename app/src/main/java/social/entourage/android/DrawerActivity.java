@@ -412,6 +412,13 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
+    protected void selectNavigationTab(int tabIndex) {
+        TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
+        if (tabLayout != null) {
+            tabLayout.getTabAt(tabIndex).select();
+        }
+    }
+
     public void selectItem(@IdRes int menuId) {
         if (menuId == 0) {
             return;
@@ -559,7 +566,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         if (!isSafeToCommit()) return;
         //Log.d("DEEPLINK", "checkIntentAction");
-        switchToMapFragment();
+        //switchToMapFragment();
         Intent intent = getIntent();
         if (intent == null) {
             intentAction = null;

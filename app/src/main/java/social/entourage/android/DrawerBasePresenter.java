@@ -84,10 +84,8 @@ public abstract class DrawerBasePresenter {
                 activity.loadFragmentWithExtras();
                 break;
             case R.id.action_guide:
-                if (activity.mainFragment instanceof MapEntourageFragment) {
-                    displaySolidarityGuide();
-                    EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
-                }
+                displaySolidarityGuide();
+                EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
                 break;
             case R.id.action_user:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);

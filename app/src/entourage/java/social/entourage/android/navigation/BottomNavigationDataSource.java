@@ -10,6 +10,8 @@ import social.entourage.android.sidemenu.SideMenuFragment;
  */
 public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
 
+    public static final int TAB_MAP = 0;
+
     public BottomNavigationDataSource() {
         add(new NavigationItem(R.string.action_map, R.drawable.ic_navigation_map), new MapEntourageFragment(), MapEntourageFragment.TAG);
         add(new NavigationItem(R.string.action_my_messages, R.drawable.ic_navigation_my_messages), new MyEntouragesFragment(), MyEntouragesFragment.TAG);
