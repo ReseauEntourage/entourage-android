@@ -121,14 +121,14 @@ public class Message implements Serializable {
             if (content != null) {
                 String contentType = content.getType();
                 if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(contentType)) {
-                    return context.getResources().getQuantityString(R.plurals.notification_text_chat_message, count);
+                    return context.getResources().getQuantityString(R.plurals.notification_text_chat_message, count, count);
                 }
                 if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(contentType)) {
                     String notificationText = "";
                     if (content.isEntourageRelated()) {
-                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, content.getFeedItemName());
+                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count , count, content.getFeedItemName());
                     } else {
-                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_tour_multiple, count);
+                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_tour_multiple, count, count);
                     }
                     return notificationText;
                 }
