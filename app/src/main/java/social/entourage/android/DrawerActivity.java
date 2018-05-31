@@ -435,10 +435,13 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment = (MapEntourageFragment)newFragment;
         }
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commitAllowingStateLoss();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (!fragmentManager.popBackStackImmediate(tag, 0)) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commitAllowingStateLoss();
+        }
     }
 
     protected void loadFragmentWithExtras() {

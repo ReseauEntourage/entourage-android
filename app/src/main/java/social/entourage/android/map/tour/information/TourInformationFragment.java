@@ -21,7 +21,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.speech.RecognizerIntent;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -41,7 +40,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -64,12 +62,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
 import com.squareup.otto.Subscribe;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -92,7 +88,6 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
-import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
@@ -119,8 +114,6 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.tools.CropCircleTransformation;
-import social.entourage.android.view.PartnerLogoImageView;
 
 public class TourInformationFragment extends EntourageDialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
 
@@ -134,10 +127,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private static final int READ_CONTACTS_PERMISSION_CODE = 3;
 
     private static final int SCROLL_DELTA_Y_THRESHOLD = 20;
-
-    private static final int REQUEST_NONE = 0;
-    private static final int REQUEST_QUIT_TOUR = 1;
-    private static final int REQUEST_JOIN_TOUR = 2;
 
     private static final int MAP_SNAPSHOT_ZOOM = 15;
 
@@ -951,13 +940,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private void initializeOptionsView() {
         User me = EntourageApplication.me(getActivity());
 
-        Button stopTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_stop);
-        Button quitTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_quit);
-        Button editEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_edit);
-        Button shareEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_share);
-        Button reportEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_report);
-        Button joinEntourageButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_join);
-        Button contactTourButton = (Button)optionsLayout.findViewById(R.id.feeditem_option_contact);
+        Button stopTourButton = optionsLayout.findViewById(R.id.feeditem_option_stop);
+        Button quitTourButton = optionsLayout.findViewById(R.id.feeditem_option_quit);
+        Button editEntourageButton = optionsLayout.findViewById(R.id.feeditem_option_edit);
+        Button shareEntourageButton = optionsLayout.findViewById(R.id.feeditem_option_share);
+        Button reportEntourageButton = optionsLayout.findViewById(R.id.feeditem_option_report);
+        Button joinEntourageButton = optionsLayout.findViewById(R.id.feeditem_option_join);
+        Button contactTourButton = optionsLayout.findViewById(R.id.feeditem_option_contact);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
         editEntourageButton.setVisibility(View.GONE);
@@ -1022,7 +1011,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void updatePublicScrollViewLayout() {
-        ScrollView scrollView = (ScrollView)getView().findViewById(R.id.tour_info_public_scrollview);
+        ScrollView scrollView = getView().findViewById(R.id.tour_info_public_scrollview);
         if (scrollView == null) return;
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
         int oldRule = lp.getRules()[RelativeLayout.ABOVE];
@@ -1198,6 +1187,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     public void onCameraChange(final CameraPosition cameraPosition) {
                         if (takeSnapshotOnCameraMove) {
                             getMapSnapshot();
+                            hiddenGoogleMap = null;
                         }
                     }
                 });
@@ -1207,9 +1197,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         });
     }
 
-    private boolean getMapSnapshot() {
-        if (hiddenGoogleMap == null) return false;
-        if (tourTimestampList.size() == 0) return true;
+    private void getMapSnapshot() {
+        if (hiddenGoogleMap == null) return;
+        if (tourTimestampList.size() == 0) {
+            hiddenGoogleMap = null;
+            return;
+        }
         final TourTimestamp tourTimestamp = tourTimestampList.get(0);
         isTakingSnapshot = true;
         //take the snapshot
@@ -1241,11 +1234,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
                         hiddenGoogleMap.moveCamera(camera);
                     }
+                } else {
+                    hiddenGoogleMap = null;
                 }
                 tourTimestampList.remove(tourTimestamp);
             }
         });
-        return true;
     }
 
     private void snapshotTaken(TourTimestamp tourTimestamp) {
@@ -1616,11 +1610,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (tourUsers != null) {
             membersList.clear();
             List<TimestampedObject> timestampedObjectList = new ArrayList<>();
-            Iterator<TourUser> iterator = tourUsers.iterator();
             // iterate over the received users
-            while (iterator.hasNext()) {
-                TourUser tourUser =  iterator.next();
-                if(tourUser == null) {
+            for (final TourUser tourUser : tourUsers) {
+                if (tourUser == null) {
                     continue;
                 }
                 // add the author to members list and skip it
@@ -1644,7 +1636,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 tourUser.setFeedItem(feedItem);
 
                 // check if we already have this user
-                TourUser oldUser = (TourUser)discussionAdapter.findCard(tourUser);
+                TourUser oldUser = (TourUser) discussionAdapter.findCard(tourUser);
                 if (oldUser != null && !oldUser.getStatus().equals(tourUser.getStatus())) {
                     discussionAdapter.updateCard(tourUser);
                 } else {
@@ -1836,8 +1828,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (getView() == null) {
             return;
         }
-        Button acceptInvitationButton = (Button) getView().findViewById(R.id.tour_info_invited_accept_button);
-        Button rejectInvitationButton = (Button) getView().findViewById(R.id.tour_info_invited_reject_button);
+        Button acceptInvitationButton = getView().findViewById(R.id.tour_info_invited_accept_button);
+        Button rejectInvitationButton = getView().findViewById(R.id.tour_info_invited_reject_button);
         acceptInvitationButton.setEnabled(true);
         rejectInvitationButton.setEnabled(true);
         if (success) {
