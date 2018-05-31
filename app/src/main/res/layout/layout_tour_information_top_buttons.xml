@@ -22,16 +22,6 @@
         android:visibility="gone"/>
 
     <ImageButton
-        android:id="@+id/tour_info_user_add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/empty_description"
-        android:src="@drawable/ic_user_plus"
-        android:tint="@color/feeditem_details_topbar_tint"
-        android:visibility="gone"/>
-
-    <ImageButton
         android:id="@+id/tour_info_description_button"
         android:layout_width="30dp"
         android:layout_height="30dp"

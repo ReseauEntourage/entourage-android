@@ -200,10 +200,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     AppCompatImageButton shareButton;
 
     @Nullable
-    @BindView(R.id.tour_info_user_add_button)
-    AppCompatImageButton addUserButton;
-
-    @Nullable
     @BindView(R.id.tour_info_description_button)
     AppCompatImageButton descriptionButton;
 
@@ -782,8 +778,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
-    @Optional
-    @OnClick(R.id.tour_info_user_add_button)
     protected void onUserAddClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
         inviteSourceLayout.setVisibility(View.VISIBLE);
@@ -1016,8 +1010,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         // Share button available only for entourages and non-members
         if (shareButton != null) shareButton.setVisibility( ((feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) && !isTourPrivate) ? View.VISIBLE : View.GONE );
-
-        if (addUserButton != null) addUserButton.setVisibility(isTourPrivate ? (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD && !feedItem.isClosed() ? View.VISIBLE : View.GONE) : View.GONE);
 
         if (moreButton != null) moreButton.setVisibility(View.VISIBLE);
 
@@ -1319,13 +1311,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         actLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.VISIBLE);
         privateSection.setVisibility(View.GONE);
-        membersLayout.setVisibility(View.GONE);
 
         updateHeaderButtons();
         initializeOptionsView();
         updateJoinStatus();
 
         initializeMap();
+        initializeMembersView();
 
         if (feedItem != null && feedItem.isPrivate()) {
             EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER);
@@ -1337,7 +1329,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private void switchToPrivateSection() {
         actLayout.setVisibility(feedItem.isFreezed() ? View.VISIBLE : View.GONE);
         requestJoinLayout.setVisibility(View.GONE);
-        membersLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.GONE);
         privateSection.setVisibility(View.VISIBLE);
         if (mapFragment == null) {
