@@ -185,10 +185,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     RelativeLayout privateSection;
 
     @Nullable
-    @BindView(R.id.tour_info_share_button)
-    AppCompatImageButton shareButton;
-
-    @Nullable
     @BindView(R.id.tour_info_description_button)
     AppCompatImageButton descriptionButton;
 
@@ -551,7 +547,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     @Optional
-    @OnClick({R.id.tour_info_share_button, R.id.invite_source_share_button, R.id.feeditem_option_share})
+    @OnClick({R.id.invite_source_share_button, R.id.feeditem_option_share})
     public void onShareButton() {
         // close the invite source view
         inviteSourceLayout.setVisibility(View.GONE);
@@ -997,15 +993,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
         boolean isTourPrivate = feedItem.isPrivate();
 
-        // Share button available only for entourages and non-members
-        if (shareButton != null) shareButton.setVisibility( ((feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) && !isTourPrivate) ? View.VISIBLE : View.GONE );
-
         if (moreButton != null) moreButton.setVisibility(View.VISIBLE);
 
         if (descriptionButton != null) descriptionButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
 
         if (invitationId > 0) {
-            if (shareButton != null) shareButton.setVisibility(View.GONE);
             if (moreButton != null) moreButton.setVisibility(View.GONE);
         }
     }

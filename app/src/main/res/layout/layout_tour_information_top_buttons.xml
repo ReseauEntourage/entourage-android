@@ -12,22 +12,14 @@
     tools:showIn="@layout/fragment_tour_information">
 
     <ImageButton
-        android:id="@+id/tour_info_share_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/empty_description"
-        android:src="@drawable/ic_share_android"
-        android:tint="@color/feeditem_details_topbar_tint"
-        android:visibility="gone"/>
-
-    <ImageButton
         android:id="@+id/tour_info_description_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
         android:scaleType="fitXY"
         android:tint="@color/white"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_info"/>
 
     <ImageButton
