@@ -7,8 +7,6 @@
     <string name="login_title_newsletter">DÉCOUVREZ VOISINAGE</string>
     <string name="login_text_info">Version réservée\nà un usage associatif</string>
     <string name="login_text_description">Voisinage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
-    <string name="login_text_lost_code_ko">Ce numéro ne semble pas inscrit: créez un compte.\n\nMembres d\'une association utilisatrice de Voisinage, contactez associations@entourage.social</string>
-    <string name="login_text_lost_code_ko_html"><![CDATA[<font color=\"#FFFFFF\">Ce numéro ne semble pas inscrit: créez un compte.<br/><br/>Membres d\'une association utilisatrice de Voisinage, contactez associations@entourage.social</font>]]></string>
     <string name="login_text_newsletter_info">Voisinage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
     <string name="login_text_email_details">Nous ne l’utiliserons que pour vous envoyer notre newsletter et les dernières actualités de Voisinage</string>
 

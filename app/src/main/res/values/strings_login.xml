@@ -18,7 +18,7 @@
     <string name="login_text_lost_code_description">Afin de recevoir votre nouveau code, saisissez votre numéro de portable.</string>
     <string name="login_text_lost_code_ok">Votre code vient de vous être envoyé</string>
     <string name="login_text_lost_code_ok_html"><![CDATA[<font color=\"#000000\">Votre code vient de vous être envoyé</font>]]></string>
-    <string name="login_text_lost_code_ko">Ce numéro ne semble pas inscrit: créez un compte.\n\nMembres d\'une association utilisatrice d\'Entourage, contactez associations@entourage.social</string>
+    <string name="login_text_lost_code_ko">Impossible de renvoyer un code</string>
     <string name="login_text_lost_code_ko_html"><![CDATA[<font color=\"#FFFFFF\">Ce numéro ne semble pas inscrit: créez un compte.<br/><br/>Membres d\'une association utilisatrice d\'Entourage, contactez associations@entourage.social</font>]]></string>
     <string name="login_text_invalid_format">Format du numéro invalide</string>
     <string name="login_text_invalid_email">Email invalide</string>

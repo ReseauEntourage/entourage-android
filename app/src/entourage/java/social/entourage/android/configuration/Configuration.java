@@ -15,6 +15,7 @@ public class Configuration extends BaseConfiguration {
     }
 
     protected Configuration() {
+        showLostCodeErrorToast = false;
         showTutorial = true;
     }
 

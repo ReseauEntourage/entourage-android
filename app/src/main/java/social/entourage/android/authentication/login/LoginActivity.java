@@ -54,6 +54,7 @@ import social.entourage.android.authentication.login.register.RegisterSMSCodeFra
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
 import social.entourage.android.authentification.login.LoginPresenter;
 import social.entourage.android.base.AmazonS3Utils;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
@@ -656,7 +657,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 }
             }
         } else {
-            if (isOnboarding) {
+            if (isOnboarding || Configuration.getInstance().showLostCodeErrorToast()) {
                 EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_2);
                 displayToast(R.string.login_text_lost_code_ko);
             } else {
