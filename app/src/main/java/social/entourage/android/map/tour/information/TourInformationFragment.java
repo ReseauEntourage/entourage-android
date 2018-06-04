@@ -40,6 +40,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -144,6 +145,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     TourService tourService;
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = false;
+
+    @BindView(R.id.tour_info_icon)
+    ImageView tourIcon;
 
     @Nullable
     @BindView(R.id.tour_info_title)
@@ -876,11 +880,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         fragmentTitle.setText(feedItem.getTitle());
         Drawable iconDrawable = feedItem.getIconDrawable(getContext());
         if (iconDrawable == null) {
-            fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            tourIcon.setVisibility(View.GONE);
         } else {
-            LayerDrawable layerDrawable = (LayerDrawable) ContextCompat.getDrawable(getContext(), R.drawable.feeditem_icon);
-            layerDrawable.setDrawableByLayerId(R.id.feeditem_icon_id, iconDrawable);
-            fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(layerDrawable, null, null, null);
+            tourIcon.setVisibility(View.VISIBLE);
+            tourIcon.setImageDrawable(iconDrawable);
         }
 
         // update description
@@ -1551,11 +1554,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         fragmentTitle.setText(feedItem.getTitle());
         Drawable iconDrawable = feedItem.getIconDrawable(getContext());
         if (iconDrawable == null) {
-            fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            tourIcon.setVisibility(View.GONE);
         } else {
-            LayerDrawable layerDrawable = (LayerDrawable) ContextCompat.getDrawable(getContext(), R.drawable.feeditem_icon);
-            layerDrawable.setDrawableByLayerId(R.id.feeditem_icon_id, iconDrawable);
-            fragmentTitle.setCompoundDrawablesWithIntrinsicBounds(layerDrawable, null, null, null);
+            tourIcon.setVisibility(View.VISIBLE);
+            tourIcon.setImageDrawable(iconDrawable);
         }
     }
 

@@ -30,18 +30,33 @@
             android:tint="@color/feeditem_details_topbar_tint"
             app:srcCompat="@drawable/ic_action_back"/>
 
+        <ImageView
+            android:id="@+id/tour_info_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/tour_info_close"
+            android:layout_toRightOf="@+id/tour_info_close"
+            android:background="@drawable/bg_feeditem_icon"
+            android:contentDescription="@string/empty_description"
+            android:padding="3dp"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_entourage_category_question_chat"/>
+
         <TextView
             android:id="@+id/tour_info_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_toEndOf="@+id/tour_info_close"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/tour_info_icon"
             android:layout_toLeftOf="@+id/tour_info_top_buttons"
-            android:layout_toRightOf="@+id/tour_info_close"
+            android:layout_toRightOf="@+id/tour_info_icon"
             android:layout_toStartOf="@+id/tour_info_top_buttons"
-            android:drawablePadding="5dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
