@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Choose neighborhood view -->
+    <string name="neighborhood_choose_title">VOISINAGE</string>
+    <string name="neighborhood_choose_next">@string/next</string>
+    <string name="neighborhood_choose_error">!!Please choose a neighborhood!</string>
+
+    <!-- Neighborhood visit date view -->
+    <string name="neighborhood_visit_title">DATE</string>
+    <string name="neighborhood_visit_next">@string/next</string>
+    <string name="neighborhood_visit_details">J’ai voisiné cette personne le…</string>
+
+</resources>

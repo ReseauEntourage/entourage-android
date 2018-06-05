@@ -93,7 +93,7 @@
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_update_info"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:iconTint="@color/accent"
                 app:showDivider="true"/>
 

@@ -61,13 +61,13 @@ public class Utils {
         Date now = new Date();
         // check for today
         if (now.getYear() == date.getYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
-            return context.getString(R.string.date_today);
+            return context.getString(R.string.date_today).toUpperCase();
         }
         // check for yesterday
         long sinceMidnight = now.getSeconds() * 1000 + now.getMinutes() * 60 * 1000 + now.getHours() * 60 * 60 * 1000;
         long oneDay = 86400000L; // 24 hours in millis
         if ( (now.getTime() - date.getTime()) < (oneDay + sinceMidnight) ) {
-            return context.getString(R.string.date_yesterday);
+            return context.getString(R.string.date_yesterday).toUpperCase();
         }
         // regular date
         Calendar calendar = Calendar.getInstance();

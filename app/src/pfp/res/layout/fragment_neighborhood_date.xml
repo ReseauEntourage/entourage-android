@@ -1,0 +1,115 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/pale_grey"
+              android:orientation="vertical"
+              tools:context="social.entourage.android.neighborhood.NeighborhoodDateFragment">
+
+    <social.entourage.android.view.EntourageTitleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:entourageTitle="@string/neighborhood_visit_title"
+        app:entourageTitleAction="@string/neighborhood_visit_next"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/neighborhood_visit_details"
+        android:textColor="@color/greyish_brown"
+        android:textSize="@dimen/entourage_font_large"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:id="@+id/neighborhood_date_today_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:tag="0">
+
+        <TextView
+            android:id="@+id/neighborhood_date_today"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/date_today"
+            android:textSize="@dimen/entourage_font_large"/>
+
+        <CheckBox
+            android:id="@+id/neighborhood_date_today_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/cb_contact"
+            android:tag="0"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/neighborhood_date_yesterday_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:tag="1">
+
+        <TextView
+            android:id="@+id/neighborhood_date_yesterday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/date_yesterday"
+            android:textSize="@dimen/entourage_font_large"/>
+
+        <CheckBox
+            android:id="@+id/neighborhood_date_yesterday_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/cb_contact"
+            android:tag="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/neighborhood_date_other_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:tag="2">
+
+        <TextView
+            android:id="@+id/neighborhood_date_other"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/date_today"
+            android:textAllCaps="false"
+            android:textSize="@dimen/entourage_font_large"/>
+
+        <CheckBox
+            android:id="@+id/neighborhood_date_other_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/cb_contact"
+            android:tag="2"/>
+    </LinearLayout>
+
+    <CalendarView
+        android:id="@+id/neighborhood_calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
+
+</LinearLayout>

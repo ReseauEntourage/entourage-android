@@ -28,6 +28,7 @@ import social.entourage.android.api.model.ApplicationInfo;
 import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.neighborhood.NeighborhoodChooseFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 
@@ -55,7 +56,8 @@ public class DrawerPresenter extends DrawerBasePresenter {
         if (activity == null) return;
         switch (menuId) {
             case R.id.action_update_info:
-                Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+                NeighborhoodChooseFragment neighborhoodChooseFragment = new NeighborhoodChooseFragment();
+                neighborhoodChooseFragment.show(activity.getSupportFragmentManager(), NeighborhoodChooseFragment.TAG);
                 break;
             case R.id.action_contact:
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
