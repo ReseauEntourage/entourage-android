@@ -111,16 +111,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
             tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
             if (showCategoryIcon()) {
                 // add the icon for entourages
-                if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                    EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory((Entourage) feedItem);
-                    Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes()).mutate();
-                    categoryIcon.clearColorFilter();
-                    categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
-                    tourTitle.setCompoundDrawablesWithIntrinsicBounds(categoryIcon, null, null, null);
-                } else {
-                    Drawable categoryIcon = AppCompatResources.getDrawable(context, ((Tour) feedItem).getIconRes());
-                    tourTitle.setCompoundDrawablesWithIntrinsicBounds(categoryIcon, null, null, null);
-                }
+                tourTitle.setCompoundDrawablesWithIntrinsicBounds(feedItem.getIconDrawable(context), null, null, null);
             }
         }
 

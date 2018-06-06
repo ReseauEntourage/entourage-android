@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/neighborhood_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/bg_feeditem_icon"
             android:contentDescription="@string/empty_description"
             android:padding="3dp"/>
