@@ -13,7 +13,9 @@ import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.LoginRequest;
 import social.entourage.android.api.NewsfeedRequest;
+import social.entourage.android.api.PFPApiModule;
 import social.entourage.android.api.PartnerRequest;
+import social.entourage.android.api.PrivateCircleRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.tape.EncounterTapeService;
@@ -32,6 +34,7 @@ import social.entourage.android.map.tour.TourService;
         modules = {
                 EntourageModule.class,
                 ApiModule.class,
+                PFPApiModule.class,
                 AuthenticationModule.class
         }
 )
@@ -51,6 +54,8 @@ public interface EntourageComponent {
     NewsfeedRequest getNewsfeedRequest();
     InvitationRequest getInvitationRequest();
     PartnerRequest getPartnerRequest();
+
+    PrivateCircleRequest getPrivateCircleRequest();
 
     OkHttpClient getOkHttpClient();
 

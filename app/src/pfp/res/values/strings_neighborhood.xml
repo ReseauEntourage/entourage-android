@@ -10,5 +10,7 @@
     <string name="neighborhood_visit_title">DATE</string>
     <string name="neighborhood_visit_next">@string/next</string>
     <string name="neighborhood_visit_details">J’ai voisiné cette personne le…</string>
+    <string name="neighborhood_visit_sent_ok">!!Visit sent</string>
+    <string name="neighborhood_visit_sent_error">!!Error sending the visit</string>
 
 </resources>

@@ -56,6 +56,7 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
     NeighborhoodChooseAdapter adapter;
 
     EntouragePagination pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+    private OnScrollListener scrollListener = new OnScrollListener();
 
     // ----------------------------------
     // LIFECYCLE
@@ -65,6 +66,19 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        neighborhoodRecyclerView.addOnScrollListener(scrollListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        neighborhoodRecyclerView.removeOnScrollListener(scrollListener);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,8 +134,6 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
     // API Calls
     // ----------------------------------
 
-    //TODO we need to have an adapter with pagination!!
-
     private void getNeighborhoods() {
         NewsfeedRequest newsfeedRequest = EntourageApplication.get().getEntourageComponent().getNewsfeedRequest();
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(getContext());
@@ -154,7 +166,8 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
                             }
                         }
                     }
-                    adapter.setNeighborhoodList(entourageList);
+                    adapter.addNeighborhoodList(entourageList);
+                    pagination.loadedItems(entourageList.size());
                 }
                 progressBar.setVisibility(View.GONE);
             }
@@ -164,6 +177,33 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
                 progressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    // ----------------------------------
+    // PRIVATE CLASSES
+    // ----------------------------------
+
+    private class OnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+            if (dy > 0) {
+                // Scrolling down
+                int visibleItemCount = recyclerView.getChildCount();
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
+                    getNeighborhoods();
+                }
+            } else {
+                // Scrolling up
+            }
+        }
+
+        @Override
+        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        }
     }
 
 }

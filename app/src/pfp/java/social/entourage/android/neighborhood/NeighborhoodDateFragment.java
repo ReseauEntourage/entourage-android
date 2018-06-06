@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -18,10 +19,16 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
+import social.entourage.android.api.PrivateCircleRequest;
+import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.VisitChatMessage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.tools.Utils;
 
 /**
  * A {@link EntourageDialogFragment} subclass, to select the date of a neighborhood visit
@@ -142,7 +149,21 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
 
     @OnClick(R.id.title_action_button)
     protected void onNextButtonClicked() {
-        //TODO Send the date to the server
+        Date visitDate = null;
+        switch (selectedRow) {
+            case ROW_TODAY:
+                visitDate = new Date();
+                break;
+            case ROW_YESTERDAY:
+                visitDate = new Date(System.currentTimeMillis() - 24*60*60*1000);
+                break;
+            case ROW_OTHER:
+                visitDate = new Date(calendarView.getDate());
+                break;
+        }
+        if (visitDate != null) {
+            sendVisitDate(visitDate);
+        }
     }
 
     @OnClick({
@@ -209,4 +230,36 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
         calendar.set(year, month, dayOfMonth);
         dateOtherTextView.setText(DateFormat.getDateInstance().format(new Date(calendar.getTimeInMillis())));
     }
+
+    // ----------------------------------
+    // API Calls
+    // ----------------------------------
+
+    private void sendVisitDate(Date visitDate) {
+        PrivateCircleRequest request = EntourageApplication.get().getEntourageComponent().getPrivateCircleRequest();
+        VisitChatMessage visitChatMessage = new VisitChatMessage(VisitChatMessage.TYPE_VISIT, visitDate);
+        Call<ChatMessage.ChatMessageWrapper> call = request.visitMessage(entourageId, new VisitChatMessage.VisitChatMessageWrapper(visitChatMessage));
+        call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
+            @Override
+            public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
+                if (response.isSuccessful()) {
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), R.string.neighborhood_visit_sent_ok, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), R.string.neighborhood_visit_sent_error, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), R.string.neighborhood_visit_sent_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 }

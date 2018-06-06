@@ -48,8 +48,8 @@ public class NeighborhoodChooseAdapter extends RecyclerView.Adapter {
     private int selectedNeighborhood = AdapterView.INVALID_POSITION;
     private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener();
 
-    public void setNeighborhoodList(final List<Entourage> neighborhoodList) {
-        this.neighborhoodList = neighborhoodList;
+    public void addNeighborhoodList(final List<Entourage> neighborhoodList) {
+        this.neighborhoodList.addAll(neighborhoodList);
         selectedNeighborhood = 0;
         notifyDataSetChanged();
     }
