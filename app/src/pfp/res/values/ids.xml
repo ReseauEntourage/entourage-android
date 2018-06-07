@@ -14,7 +14,6 @@
     <item name="about_email_layout" type="id" />
     <item name="about_tutorial_layout" type="id" />
 
-    <item name="tour_info_more_button" type="id" />
     <item name="tour_info_member_add" type="id" />
 
 </resources>

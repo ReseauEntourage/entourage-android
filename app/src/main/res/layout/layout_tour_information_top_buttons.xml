@@ -15,12 +15,14 @@
         android:id="@+id/tour_info_description_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginRight="5dp"
         android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitXY"
         android:tint="@color/white"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_info"/>
+        app:srcCompat="@drawable/ic_info"
+        android:layout_marginEnd="5dp"/>
 
     <ImageButton
         android:id="@+id/tour_info_more_button"
@@ -30,5 +32,5 @@
         android:contentDescription="@string/empty_description"
         android:src="@drawable/ic_more"
         android:tint="@color/feeditem_details_topbar_tint"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 </LinearLayout>

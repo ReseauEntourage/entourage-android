@@ -485,6 +485,14 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.tour_info_close)
     protected void onCloseButton() {
+        // If we are showing the public section and the feed item is private
+        // switch to the private section
+        // otherwise just close the view
+        boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
+        if (isPublicSectionVisible && (feedItem != null && feedItem.isPrivate())) {
+            onSwitchSections();
+            return;
+        }
         this.dismiss();
     }
 
@@ -511,6 +519,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
         publicSection.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
         privateSection.setVisibility(isPublicSectionVisible ?  View.VISIBLE : View.GONE);
+
+        updateHeaderButtons();
 
         if (!isPublicSectionVisible) {
             EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC);
@@ -994,11 +1004,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (feedItem == null) {
             return;
         }
-        boolean isTourPrivate = feedItem.isPrivate();
+        boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
 
-        if (moreButton != null) moreButton.setVisibility(View.VISIBLE);
+        if (moreButton != null) moreButton.setVisibility(isPublicSectionVisible ? View.VISIBLE : View.GONE);
 
-        if (descriptionButton != null) descriptionButton.setVisibility(isTourPrivate ? View.VISIBLE : View.GONE);
+        if (descriptionButton != null) descriptionButton.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
 
         if (invitationId > 0) {
             if (moreButton != null) moreButton.setVisibility(View.GONE);
