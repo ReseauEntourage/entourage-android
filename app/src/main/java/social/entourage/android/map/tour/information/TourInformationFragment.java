@@ -1303,7 +1303,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         membersAdapter.addItems(membersList);
 
         // Show the members count
-        membersCountTextView.setText(getString(R.string.tour_info_members_count, membersAdapter.getItemCount()));
+        int membersCount = feedItem != null ? feedItem.getNumberOfPeople() : membersAdapter.getItemCount();
+        membersCountTextView.setText(getString(R.string.tour_info_members_count, membersCount));
     }
 
     private void switchToPublicSection() {
