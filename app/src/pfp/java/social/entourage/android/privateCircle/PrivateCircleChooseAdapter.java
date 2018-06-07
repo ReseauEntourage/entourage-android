@@ -1,4 +1,4 @@
-package social.entourage.android.neighborhood;
+package social.entourage.android.privateCircle;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -22,7 +22,7 @@ import social.entourage.android.api.model.map.Entourage;
 /**
  * Created by Mihai Ionescu on 05/06/2018.
  */
-public class NeighborhoodChooseAdapter extends RecyclerView.Adapter {
+public class PrivateCircleChooseAdapter extends RecyclerView.Adapter {
 
     private static class NeighborhoodChooseViewHolder extends RecyclerView.ViewHolder {
 
@@ -119,7 +119,7 @@ public class NeighborhoodChooseAdapter extends RecyclerView.Adapter {
             } else {
                 selectedNeighborhood = position;
             }
-            NeighborhoodChooseAdapter.this.notifyDataSetChanged();
+            PrivateCircleChooseAdapter.this.notifyDataSetChanged();
         }
     }
 }

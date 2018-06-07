@@ -4,23 +4,23 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/pale_grey"
-              tools:context="social.entourage.android.neighborhood.NeighborhoodChooseFragment">
+              tools:context="social.entourage.android.privateCircle.PrivateCircleChooseFragment">
 
     <social.entourage.android.view.EntourageTitleView
-        android:id="@+id/neighborhood_choose_title_view"
+        android:id="@+id/privatecircle_choose_title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:entourageTitle="@string/neighborhood_choose_title"
-        app:entourageTitleAction="@string/neighborhood_choose_next">
+        app:entourageTitle="@string/privatecircle_choose_title"
+        app:entourageTitleAction="@string/privatecircle_choose_next">
 
     </social.entourage.android.view.EntourageTitleView>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/neighborhood_choose_list"
+        android:id="@+id/privatecircle_choose_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/neighborhood_choose_title_view"
+        android:layout_below="@+id/privatecircle_choose_title_view"
         android:visibility="visible">
 
     </android.support.v7.widget.RecyclerView>

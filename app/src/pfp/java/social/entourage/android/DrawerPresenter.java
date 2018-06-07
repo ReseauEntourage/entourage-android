@@ -1,36 +1,15 @@
 package social.entourage.android;
 
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.IdRes;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.util.ArrayMap;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-
-import com.github.clans.fab.FloatingActionButton;
 
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
-import social.entourage.android.api.UserResponse;
-import social.entourage.android.api.model.ApplicationInfo;
-import social.entourage.android.map.entourage.my.MyEntouragesFragment;
-import social.entourage.android.map.tour.my.MyToursFragment;
-import social.entourage.android.message.push.RegisterGCMService;
-import social.entourage.android.neighborhood.NeighborhoodChooseFragment;
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
-import social.entourage.android.user.edit.photo.PhotoEditFragment;
+import social.entourage.android.privateCircle.PrivateCircleChooseFragment;
 
 /**
  * Presenter controlling the DrawerActivity
@@ -56,8 +35,8 @@ public class DrawerPresenter extends DrawerBasePresenter {
         if (activity == null) return;
         switch (menuId) {
             case R.id.action_update_info:
-                NeighborhoodChooseFragment neighborhoodChooseFragment = new NeighborhoodChooseFragment();
-                neighborhoodChooseFragment.show(activity.getSupportFragmentManager(), NeighborhoodChooseFragment.TAG);
+                PrivateCircleChooseFragment privateCircleChooseFragment = new PrivateCircleChooseFragment();
+                privateCircleChooseFragment.show(activity.getSupportFragmentManager(), PrivateCircleChooseFragment.TAG);
                 break;
             case R.id.action_contact:
                 Intent intent = new Intent(Intent.ACTION_SENDTO);

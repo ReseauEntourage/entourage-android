@@ -5,25 +5,25 @@
               android:layout_height="match_parent"
               android:background="@color/pale_grey"
               android:orientation="vertical"
-              tools:context="social.entourage.android.neighborhood.NeighborhoodDateFragment">
+              tools:context="social.entourage.android.privateCircle.PrivateCircleDateFragment">
 
     <social.entourage.android.view.EntourageTitleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:entourageTitle="@string/neighborhood_visit_title"
-        app:entourageTitleAction="@string/neighborhood_visit_next"/>
+        app:entourageTitle="@string/privatecircle_visit_title"
+        app:entourageTitleAction="@string/privatecircle_visit_next"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/neighborhood_visit_details"
+        android:text="@string/privatecircle_visit_details"
         android:textColor="@color/greyish_brown"
         android:textSize="@dimen/entourage_font_large"
         android:textStyle="bold"/>
 
     <LinearLayout
-        android:id="@+id/neighborhood_date_today_holder"
+        android:id="@+id/privatecircle_date_today_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -36,7 +36,7 @@
         android:tag="0">
 
         <TextView
-            android:id="@+id/neighborhood_date_today"
+            android:id="@+id/privatecircle_date_today"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,7 +44,7 @@
             android:textSize="@dimen/entourage_font_large"/>
 
         <CheckBox
-            android:id="@+id/neighborhood_date_today_checkBox"
+            android:id="@+id/privatecircle_date_today_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/cb_contact"
@@ -52,7 +52,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/neighborhood_date_yesterday_holder"
+        android:id="@+id/privatecircle_date_yesterday_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -63,7 +63,7 @@
         android:tag="1">
 
         <TextView
-            android:id="@+id/neighborhood_date_yesterday"
+            android:id="@+id/privatecircle_date_yesterday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +71,7 @@
             android:textSize="@dimen/entourage_font_large"/>
 
         <CheckBox
-            android:id="@+id/neighborhood_date_yesterday_checkBox"
+            android:id="@+id/privatecircle_date_yesterday_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/cb_contact"
@@ -79,7 +79,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/neighborhood_date_other_holder"
+        android:id="@+id/privatecircle_date_other_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -90,7 +90,7 @@
         android:tag="2">
 
         <TextView
-            android:id="@+id/neighborhood_date_other"
+            android:id="@+id/privatecircle_date_other"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -99,7 +99,7 @@
             android:textSize="@dimen/entourage_font_large"/>
 
         <CheckBox
-            android:id="@+id/neighborhood_date_other_checkBox"
+            android:id="@+id/privatecircle_date_other_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/cb_contact"
@@ -107,7 +107,7 @@
     </LinearLayout>
 
     <CalendarView
-        android:id="@+id/neighborhood_calendarView"
+        android:id="@+id/privatecircle_calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"/>

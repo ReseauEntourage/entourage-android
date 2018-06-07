@@ -1,4 +1,4 @@
-package social.entourage.android.neighborhood;
+package social.entourage.android.privateCircle;
 
 
 import android.os.Bundle;
@@ -33,27 +33,27 @@ import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
 
 /**
- * A {@link EntourageDialogFragment} subclass that shows a list of neighborhoods with the capability of choosing one
+ * A {@link EntourageDialogFragment} subclass that shows a list of private circles with the capability of choosing one
  */
-public class NeighborhoodChooseFragment extends EntourageDialogFragment {
+public class PrivateCircleChooseFragment extends EntourageDialogFragment {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
-    public static final String TAG = NeighborhoodChooseFragment.class.getSimpleName();
+    public static final String TAG = PrivateCircleChooseFragment.class.getSimpleName();
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
-    @BindView(R.id.neighborhood_choose_list)
-    RecyclerView neighborhoodRecyclerView;
+    @BindView(R.id.privatecircle_choose_list)
+    RecyclerView privateCircleRecyclerView;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    NeighborhoodChooseAdapter adapter;
+    PrivateCircleChooseAdapter adapter;
 
     EntouragePagination pagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
     private OnScrollListener scrollListener = new OnScrollListener();
@@ -62,7 +62,7 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
     // LIFECYCLE
     // ----------------------------------
 
-    public NeighborhoodChooseFragment() {
+    public PrivateCircleChooseFragment() {
         // Required empty public constructor
     }
 
@@ -70,14 +70,14 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
     public void onResume() {
         super.onResume();
 
-        neighborhoodRecyclerView.addOnScrollListener(scrollListener);
+        privateCircleRecyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        neighborhoodRecyclerView.removeOnScrollListener(scrollListener);
+        privateCircleRecyclerView.removeOnScrollListener(scrollListener);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_neighborhood_choose, container, false);
+        View v = inflater.inflate(R.layout.fragment_privatecircle_choose, container, false);
         ButterKnife.bind(this, v);
 
         return v;
@@ -100,9 +100,9 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
     private void configureView() {
         //adapter
         if (adapter == null) {
-            neighborhoodRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            adapter = new NeighborhoodChooseAdapter();
-            neighborhoodRecyclerView.setAdapter(adapter);
+            privateCircleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            adapter = new PrivateCircleChooseAdapter();
+            privateCircleRecyclerView.setAdapter(adapter);
         }
         //get the list of neighborhoods
         getNeighborhoods();
@@ -120,13 +120,13 @@ public class NeighborhoodChooseFragment extends EntourageDialogFragment {
     @OnClick(R.id.title_action_button)
     protected void onNextButtonClicked() {
         if (adapter.getSelectedNeighborhood() == AdapterView.INVALID_POSITION) {
-            Toast.makeText(getContext(), R.string.neighborhood_choose_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.privatecircle_choose_error, Toast.LENGTH_SHORT).show();
             return;
         }
         Entourage entourage = adapter.getItemAt(adapter.getSelectedNeighborhood());
         if (entourage != null) {
-            NeighborhoodDateFragment neighborhoodDateFragment = NeighborhoodDateFragment.newInstance(entourage.getId());
-            neighborhoodDateFragment.show(getFragmentManager(), NeighborhoodDateFragment.TAG);
+            PrivateCircleDateFragment privateCircleDateFragment = PrivateCircleDateFragment.newInstance(entourage.getId());
+            privateCircleDateFragment.show(getFragmentManager(), PrivateCircleDateFragment.TAG);
         }
     }
 

@@ -1,4 +1,4 @@
-package social.entourage.android.neighborhood;
+package social.entourage.android.privateCircle;
 
 
 import android.graphics.Typeface;
@@ -32,16 +32,16 @@ import social.entourage.android.base.EntourageDialogFragment;
 
 /**
  * A {@link EntourageDialogFragment} subclass, to select the date of a neighborhood visit
- * Use the {@link NeighborhoodDateFragment#newInstance} factory method to
+ * Use the {@link PrivateCircleDateFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NeighborhoodDateFragment extends EntourageDialogFragment implements CalendarView.OnDateChangeListener {
+public class PrivateCircleDateFragment extends EntourageDialogFragment implements CalendarView.OnDateChangeListener {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
 
-    public static final String TAG = NeighborhoodDateFragment.class.getSimpleName();
+    public static final String TAG = PrivateCircleDateFragment.class.getSimpleName();
 
     private static final int ROW_TODAY = 0;
     private static final int ROW_YESTERDAY = 1;
@@ -51,25 +51,25 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
     // ATTRIBUTES
     // ----------------------------------
 
-    @BindView(R.id.neighborhood_date_today)
+    @BindView(R.id.privatecircle_date_today)
     TextView dateTodayTextView;
 
-    @BindView(R.id.neighborhood_date_today_checkBox)
+    @BindView(R.id.privatecircle_date_today_checkBox)
     CheckBox dateTodayCB;
 
-    @BindView(R.id.neighborhood_date_yesterday)
+    @BindView(R.id.privatecircle_date_yesterday)
     TextView dateYesterdayTextView;
 
-    @BindView(R.id.neighborhood_date_yesterday_checkBox)
+    @BindView(R.id.privatecircle_date_yesterday_checkBox)
     CheckBox dateYesterdayCB;
 
-    @BindView(R.id.neighborhood_date_other)
+    @BindView(R.id.privatecircle_date_other)
     TextView dateOtherTextView;
 
-    @BindView(R.id.neighborhood_date_other_checkBox)
+    @BindView(R.id.privatecircle_date_other_checkBox)
     CheckBox dateOtherCB;
 
-    @BindView(R.id.neighborhood_calendarView)
+    @BindView(R.id.privatecircle_calendarView)
     CalendarView calendarView;
 
     private int selectedRow = ROW_TODAY;
@@ -80,7 +80,7 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
     // LIFECYCLE
     // ----------------------------------
 
-    public NeighborhoodDateFragment() {
+    public PrivateCircleDateFragment() {
         // Required empty public constructor
     }
 
@@ -89,10 +89,10 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
      * this fragment using the provided parameters.
      *
      * @param entourageId Entourage ID.
-     * @return A new instance of fragment NeighborhoodDateFragment.
+     * @return A new instance of fragment PrivateCircleDateFragment.
      */
-    public static NeighborhoodDateFragment newInstance(long entourageId) {
-        NeighborhoodDateFragment fragment = new NeighborhoodDateFragment();
+    public static PrivateCircleDateFragment newInstance(long entourageId) {
+        PrivateCircleDateFragment fragment = new PrivateCircleDateFragment();
         Bundle args = new Bundle();
         args.putLong(FeedItem.KEY_FEEDITEM_ID, entourageId);
         fragment.setArguments(args);
@@ -112,7 +112,7 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_neighborhood_date, container, false);
+        View v = inflater.inflate(R.layout.fragment_privatecircle_date, container, false);
         ButterKnife.bind(this, v);
 
         return v;
@@ -167,8 +167,8 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
     }
 
     @OnClick({
-            R.id.neighborhood_date_today_holder, R.id.neighborhood_date_yesterday_holder, R.id.neighborhood_date_other_holder,
-            R.id.neighborhood_date_today_checkBox, R.id.neighborhood_date_yesterday_checkBox, R.id.neighborhood_date_other_checkBox
+            R.id.privatecircle_date_today_holder, R.id.privatecircle_date_yesterday_holder, R.id.privatecircle_date_other_holder,
+            R.id.privatecircle_date_today_checkBox, R.id.privatecircle_date_yesterday_checkBox, R.id.privatecircle_date_other_checkBox
     })
     protected void onRowClicked(View view) {
         String tag = (String) view.getTag();
@@ -244,11 +244,11 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
             public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
                 if (response.isSuccessful()) {
                     if (getContext() != null) {
-                        Toast.makeText(getContext(), R.string.neighborhood_visit_sent_ok, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.privatecircle_visit_sent_ok, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     if (getContext() != null) {
-                        Toast.makeText(getContext(), R.string.neighborhood_visit_sent_error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.privatecircle_visit_sent_error, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -256,7 +256,7 @@ public class NeighborhoodDateFragment extends EntourageDialogFragment implements
             @Override
             public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
                 if (getContext() != null) {
-                    Toast.makeText(getContext(), R.string.neighborhood_visit_sent_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.privatecircle_visit_sent_error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
