@@ -42,6 +42,7 @@ import social.entourage.android.view.PartnerLogoImageView;
 public class FeedItemViewHolder extends BaseCardViewHolder {
 
     private TextView tourTitle;
+    private ImageView tourIcon;
     private ImageView photoView;
     private PartnerLogoImageView partnerLogoView;
     private TextView tourTypeTextView;
@@ -67,18 +68,19 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
 
-        tourTitle = (TextView)itemView.findViewById(R.id.tour_card_title);
-        photoView = (ImageView)itemView.findViewById(R.id.tour_card_photo);
-        partnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tour_card_partner_logo);
-        tourTypeTextView = (TextView)itemView.findViewById(R.id.tour_card_type);
-        tourAuthor = (TextView)itemView.findViewById(R.id.tour_card_author);
-        tourLocation = (TextView)itemView.findViewById(R.id.tour_card_location);
-        badgeCountView = (TextView)itemView.findViewById(R.id.tour_card_badge_count);
-        numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
-        actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
+        tourTitle = itemView.findViewById(R.id.tour_card_title);
+        tourIcon = itemView.findViewById(R.id.tour_card_icon);
+        photoView = itemView.findViewById(R.id.tour_card_photo);
+        partnerLogoView = itemView.findViewById(R.id.tour_card_partner_logo);
+        tourTypeTextView = itemView.findViewById(R.id.tour_card_type);
+        tourAuthor = itemView.findViewById(R.id.tour_card_author);
+        tourLocation = itemView.findViewById(R.id.tour_card_location);
+        badgeCountView = itemView.findViewById(R.id.tour_card_badge_count);
+        numberOfPeopleTextView = itemView.findViewById(R.id.tour_card_people_count);
+        actButton = itemView.findViewById(R.id.tour_card_button_act);
         dividerLeft = itemView.findViewById(R.id.tour_card_divider_left);
         dividerRight = itemView.findViewById(R.id.tour_card_divider_right);
-        lastMessageTextView = (TextView)itemView.findViewById(R.id.tour_card_last_message);
+        lastMessageTextView = itemView.findViewById(R.id.tour_card_last_message);
 
         onClickListener = new OnClickListener();
 
@@ -109,10 +111,15 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         //title
         if (tourTitle != null) {
             tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
-            if (showCategoryIcon()) {
+            if (showCategoryIcon() && tourIcon == null) {
                 // add the icon for entourages
                 tourTitle.setCompoundDrawablesWithIntrinsicBounds(feedItem.getIconDrawable(context), null, null, null);
             }
+        }
+        //icon
+        if (showCategoryIcon() && tourIcon != null) {
+            // add the icon for entourages
+            tourIcon.setImageDrawable(feedItem.getIconDrawable(context));
         }
 
         TourAuthor author = feedItem.getAuthor();

@@ -7,4 +7,6 @@
     <item name="about_version" type="id" />
     <item name="about_version_layout" type="id" />
 
+    <item name="tour_card_icon" type="id" />
+
 </resources>

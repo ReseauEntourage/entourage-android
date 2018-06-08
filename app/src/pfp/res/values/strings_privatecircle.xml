@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="entourage_type_pfp">Voisinage</string>
+
     <!-- Choose neighborhood view -->
     <string name="privatecircle_choose_title">VOISINAGE</string>
     <string name="privatecircle_choose_next">@string/next</string>

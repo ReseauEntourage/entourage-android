@@ -47,7 +47,6 @@ public class FPFEntourage extends Entourage implements Serializable {
     // FeedItem overrides
     // ----------------------------------
 
-
     @Override
     public Drawable getIconDrawable(final Context context) {
         if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
@@ -57,5 +56,13 @@ public class FPFEntourage extends Entourage implements Serializable {
             return AppCompatResources.getDrawable(context, R.drawable.ic_neighborhood);
         }
         return super.getIconDrawable(context);
+    }
+
+    @Override
+    public String getFeedTypeLong(final Context context) {
+        if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType) || TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));
+        }
+        return super.getFeedTypeLong(context);
     }
 }
