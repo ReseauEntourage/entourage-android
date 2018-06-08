@@ -6,7 +6,7 @@
     <!-- Choose neighborhood view -->
     <string name="privatecircle_choose_title">VOISINAGE</string>
     <string name="privatecircle_choose_next">@string/next</string>
-    <string name="privatecircle_choose_error">!!Please choose a private circle!</string>
+    <string name="privatecircle_choose_error">Indiquez le voisinage</string>
 
     <!-- Neighborhood visit date view -->
     <string name="privatecircle_visit_title">DATE</string>

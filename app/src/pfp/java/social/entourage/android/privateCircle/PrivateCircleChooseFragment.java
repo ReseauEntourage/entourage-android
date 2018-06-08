@@ -119,11 +119,11 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.title_action_button)
     protected void onNextButtonClicked() {
-        if (adapter.getSelectedNeighborhood() == AdapterView.INVALID_POSITION) {
+        if (adapter.getSelectedPrivateCircle() == AdapterView.INVALID_POSITION) {
             Toast.makeText(getContext(), R.string.privatecircle_choose_error, Toast.LENGTH_SHORT).show();
             return;
         }
-        Entourage entourage = adapter.getItemAt(adapter.getSelectedNeighborhood());
+        Entourage entourage = adapter.getItemAt(adapter.getSelectedPrivateCircle());
         if (entourage != null) {
             PrivateCircleDateFragment privateCircleDateFragment = PrivateCircleDateFragment.newInstance(entourage.getId());
             privateCircleDateFragment.show(getFragmentManager(), PrivateCircleDateFragment.TAG);
@@ -166,7 +166,7 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
                             }
                         }
                     }
-                    adapter.addNeighborhoodList(entourageList);
+                    adapter.addPrivateCircleList(entourageList);
                     pagination.loadedItems(entourageList.size());
                 }
                 progressBar.setVisibility(View.GONE);

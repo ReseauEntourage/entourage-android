@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -50,6 +51,9 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    @BindView(R.id.title_action_button)
+    TextView actionButton;
 
     @BindView(R.id.privatecircle_date_today)
     TextView dateTodayTextView;
@@ -236,6 +240,7 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
     // ----------------------------------
 
     private void sendVisitDate(Date visitDate) {
+        actionButton.setEnabled(false);
         PrivateCircleRequest request = EntourageApplication.get().getEntourageComponent().getPrivateCircleRequest();
         VisitChatMessage visitChatMessage = new VisitChatMessage(VisitChatMessage.TYPE_VISIT, visitDate);
         Call<ChatMessage.ChatMessageWrapper> call = request.visitMessage(entourageId, new VisitChatMessage.VisitChatMessageWrapper(visitChatMessage));
@@ -243,14 +248,21 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
             @Override
             public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
                 if (response.isSuccessful()) {
-                    if (getContext() != null) {
-                        Toast.makeText(getContext(), R.string.privatecircle_visit_sent_ok, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EntourageApplication.get(), R.string.privatecircle_visit_sent_ok, Toast.LENGTH_SHORT).show();
+                    if (!isStateSaved() && isAdded()) {
+                        // pop to the menu, if the screen it is still displayed
+                        dismiss();
+                        PrivateCircleChooseFragment privateCircleChooseFragment = (PrivateCircleChooseFragment)getFragmentManager().findFragmentByTag(PrivateCircleChooseFragment.TAG);
+                        if (privateCircleChooseFragment != null) {
+                            privateCircleChooseFragment.dismiss();
+                        }
                     }
                 } else {
                     if (getContext() != null) {
                         Toast.makeText(getContext(), R.string.privatecircle_visit_sent_error, Toast.LENGTH_SHORT).show();
                     }
                 }
+                actionButton.setEnabled(true);
             }
 
             @Override
@@ -258,6 +270,7 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
                 if (getContext() != null) {
                     Toast.makeText(getContext(), R.string.privatecircle_visit_sent_error, Toast.LENGTH_SHORT).show();
                 }
+                actionButton.setEnabled(true);
             }
         });
     }

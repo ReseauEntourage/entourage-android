@@ -7,13 +7,14 @@
               android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/privatecircle_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/neighborhood_icon"
+            android:id="@+id/privatecircle_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/bg_feeditem_icon"
@@ -21,7 +22,7 @@
             android:padding="3dp"/>
 
         <TextView
-            android:id="@+id/neighborhood_title"
+            android:id="@+id/privatecircle_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -34,7 +35,7 @@
             android:textSize="@dimen/entourage_font_large"/>
 
         <CheckBox
-            android:id="@+id/neighborhood_checkbox"
+            android:id="@+id/privatecircle_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/cb_contact"/>
