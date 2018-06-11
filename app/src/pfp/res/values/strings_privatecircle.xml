@@ -12,7 +12,7 @@
     <string name="privatecircle_visit_title">DATE</string>
     <string name="privatecircle_visit_next">@string/next</string>
     <string name="privatecircle_visit_details">J’ai voisiné cette personne le…</string>
-    <string name="privatecircle_visit_sent_ok">!!Visit sent</string>
-    <string name="privatecircle_visit_sent_error">!!Error sending the visit</string>
+    <string name="privatecircle_visit_sent_ok">Les autres membres sont informés</string>
+    <string name="privatecircle_visit_sent_error">L\'information n\'a pas pu être envoyée</string>
 
 </resources>

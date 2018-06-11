@@ -89,12 +89,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/sidemenu_item_background"
-                android:icon="@drawable/ic_heart"
+                android:icon="@drawable/ic_menu_heart"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_update_info"
                 android:visibility="visible"
-                app:iconTint="@color/accent"
                 app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
