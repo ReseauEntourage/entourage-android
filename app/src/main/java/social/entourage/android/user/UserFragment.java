@@ -44,6 +44,7 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
+import social.entourage.android.user.discussion.UserDiscussionFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.report.UserReportFragment;
 import social.entourage.android.view.PartnerLogoImageView;
@@ -111,6 +112,9 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_profile_associations)
     UserAssociations userAssociations;
 
+    @BindView(R.id.user_message_layout)
+    View userMessageLayout;
+
     @BindView(R.id.user_profile_progressBar)
     ProgressBar progressBar;
 
@@ -173,14 +177,6 @@ public class UserFragment extends EntourageDialogFragment {
         super.onStart();
 
         BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.activity_display_user_title);
-        }
     }
 
     @Override
@@ -248,6 +244,9 @@ public class UserFragment extends EntourageDialogFragment {
             if (userAssociations != null) {
                 userAssociations.initUserAssociations(user, this);
             }
+
+            //User message layout is available only for the other users
+            userMessageLayout.setVisibility(isMyProfile ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -368,6 +367,12 @@ public class UserFragment extends EntourageDialogFragment {
 
         UserReportFragment userReportFragment = UserReportFragment.newInstance(user.getId());
         userReportFragment.show(getFragmentManager(), UserReportFragment.TAG);
+    }
+
+    @OnClick(R.id.user_message_button)
+    protected void onMessageUserClicked() {
+        UserDiscussionFragment userDiscussionFragment = UserDiscussionFragment.newInstance(user);
+        userDiscussionFragment.show(getFragmentManager(), UserDiscussionFragment.TAG);
     }
 
     // ----------------------------------

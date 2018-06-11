@@ -57,7 +57,7 @@
         android:id="@+id/user_profile_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/user_message_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/user_title_layout">
@@ -184,7 +184,8 @@
             <social.entourage.android.user.PFPUserProfileAssociationsView
                 android:id="@+id/user_profile_associations"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                />
 
             <RelativeLayout
                 android:id="@+id/user_number_of_entourages_layout"
@@ -344,6 +345,27 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/user_message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_white_rounded_top"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <Button
+            android:id="@+id/user_message_button"
+            style="@style/AccentButton.BigRoundedCorners"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="@string/user_message_button"
+            android:textAllCaps="true"/>
+    </FrameLayout>
 
     <ProgressBar
         android:layout_width="wrap_content"
