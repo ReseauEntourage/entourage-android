@@ -33,6 +33,8 @@ public class Entourage extends FeedItem implements Serializable {
 
     public static final String TYPE_CONTRIBUTION = "contribution";
     public static final String TYPE_DEMAND = "ask_for_help";
+    public static final String TYPE_PRIVATE_CIRCLE = "private_circle";
+    public static final String TYPE_NEIGHBORHOOD = "neighborhood";
 
     public static final String NEWSFEED_TYPE = "Entourage";
 
@@ -44,6 +46,9 @@ public class Entourage extends FeedItem implements Serializable {
 
     @SerializedName("created_at")
     private Date createdTime;
+
+    @SerializedName("group_type")
+    String groupType;
 
     @SerializedName("entourage_type")
     private String entourageType;
@@ -127,6 +132,14 @@ public class Entourage extends FeedItem implements Serializable {
         this.category = category;
     }
 
+    public String getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(final String groupType) {
+        this.groupType = groupType;
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -191,6 +204,9 @@ public class Entourage extends FeedItem implements Serializable {
 
     @Override
     public String getFeedTypeLong(Context context) {
+        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));
+        }
         if (entourageType != null) {
             if (TYPE_DEMAND.equals(entourageType)) {
                 return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));
@@ -226,6 +242,9 @@ public class Entourage extends FeedItem implements Serializable {
 
     @Override
     public Drawable getIconDrawable(Context context) {
+        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return AppCompatResources.getDrawable(context, R.drawable.ic_neighborhood);
+        }
         EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory(this);
         if (entourageCategory != null) {
             Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes()).mutate();

@@ -12,11 +12,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.UserMembership;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.ItemClickSupport;
+import social.entourage.android.tools.BusProvider;
+import social.entourage.android.user.membership.UserMembershipsAdapter;
 
 /**
  * Created by Mihai Ionescu on 24/05/2018.
@@ -25,9 +29,11 @@ public class EntourageUserProfileAssociationsView extends RelativeLayout impleme
 
     TextView userAssociationsTitle;
     RecyclerView userAssociationsView;
-
     UserOrganizationsAdapter organizationsAdapter;
 
+    TextView userNeighborhoodsTitle;
+    RecyclerView userNeighborhoodsView;
+    UserMembershipsAdapter userNeighborhoodsAdapter;
 
     public EntourageUserProfileAssociationsView(final Context context) {
         super(context);
@@ -55,6 +61,9 @@ public class EntourageUserProfileAssociationsView extends RelativeLayout impleme
 
         userAssociationsTitle = findViewById(R.id.user_associations_title);
         userAssociationsView = findViewById(R.id.user_associations_view);
+
+        userNeighborhoodsTitle = findViewById(R.id.user_neighborhoods_title);
+        userNeighborhoodsView = findViewById(R.id.user_neighborhoods_view);
     }
 
     @Override
@@ -85,5 +94,29 @@ public class EntourageUserProfileAssociationsView extends RelativeLayout impleme
 
         userAssociationsTitle.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
         userAssociationsView.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
+
+        ArrayList<UserMembership> userMembershipList = user.getMemberships(Entourage.TYPE_NEIGHBORHOOD);
+        if (userNeighborhoodsAdapter == null) {
+            userNeighborhoodsView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            userNeighborhoodsAdapter = new UserMembershipsAdapter(userMembershipList, Entourage.TYPE_NEIGHBORHOOD);
+
+            ItemClickSupport.addTo(userNeighborhoodsView)
+                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                        @Override
+                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                            UserMembership userMembership = userNeighborhoodsAdapter.getItemAt(position);
+                            if (userMembership != null) {
+                                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipId()));
+                            }
+                        }
+                    });
+        } else {
+            userNeighborhoodsAdapter.setMembershipList(userMembershipList);
+        }
+
+        userNeighborhoodsTitle.setVisibility( userMembershipList.size() > 0 ? View.VISIBLE : View.GONE );
+        userNeighborhoodsView.setVisibility( userMembershipList.size() > 0 ? View.VISIBLE : View.GONE );
+
     }
 }

@@ -38,7 +38,8 @@ public class UserMembershipsAdapter extends RecyclerView.Adapter {
                 membershipCount.setText("");
                 return;
             }
-            //No icon at this point
+            //Icon
+            membershipIcon.setImageDrawable(membership.getIconDrawable(itemView.getContext()));
             //Title
             membershipTitle.setText(membership.getMembershipTitle());
             //Count
@@ -46,11 +47,13 @@ public class UserMembershipsAdapter extends RecyclerView.Adapter {
         }
     }
 
+    private ArrayList<UserMembership> membershipList;
 
-    private ArrayList<UserMembership> circleList;
-
-    public UserMembershipsAdapter(ArrayList<UserMembership> circleList) {
-        this.circleList = circleList;
+    public UserMembershipsAdapter(ArrayList<UserMembership> membershipList, String type) {
+        this.membershipList = membershipList;
+        for (UserMembership userMembership:this.membershipList) {
+            userMembership.setType(type);
+        }
     }
 
     @NonNull
@@ -62,19 +65,24 @@ public class UserMembershipsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        UserMembership userMembership = circleList.get(position);
+        UserMembership userMembership = membershipList.get(position);
         UserMembershipViewHolder userMembershipViewHolder = (UserMembershipViewHolder) holder;
         if (userMembershipViewHolder != null) userMembershipViewHolder.populate(userMembership);
     }
 
     @Override
     public int getItemCount() {
-        if (circleList == null) return 0;
-        return circleList.size();
+        if (membershipList == null) return 0;
+        return membershipList.size();
     }
 
-    public void setPrivateCircleList(ArrayList<UserMembership> circleList) {
-        this.circleList = circleList;
+    public void setMembershipList(ArrayList<UserMembership> membershipList) {
+        this.membershipList = membershipList;
         notifyDataSetChanged();
+    }
+
+    public UserMembership getItemAt(int position) {
+        if (position < 0 || position >= membershipList.size()) return null;
+        return membershipList.get(position);
     }
 }

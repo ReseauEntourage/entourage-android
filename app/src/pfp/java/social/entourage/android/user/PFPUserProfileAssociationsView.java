@@ -13,7 +13,12 @@ import java.util.ArrayList;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.PFPEntourage;
 import social.entourage.android.api.model.map.UserMembership;
+import social.entourage.android.api.tape.Events;
+import social.entourage.android.base.ItemClickSupport;
+import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.membership.UserMembershipsAdapter;
 import social.entourage.android.user.role.UserRolesFactory;
 
@@ -22,9 +27,6 @@ import social.entourage.android.user.role.UserRolesFactory;
  * Created by Mihai Ionescu on 24/05/2018.
  */
 public class PFPUserProfileAssociationsView extends RelativeLayout implements UserAssociations {
-
-    private static final String PRIVATE_CIRCLE = "private_circle";
-    private static final String NEIGHBORHOOD = "neighborhood";
 
     TextView userNeighborhoodsTitle;
     RecyclerView userNeighborhoodsView;
@@ -58,8 +60,8 @@ public class PFPUserProfileAssociationsView extends RelativeLayout implements Us
     private void init(final AttributeSet attrs, final int defStyleAttr) {
         inflate(getContext(), R.layout.layout_user_pfp_membership, this);
 
-        userNeighborhoodsTitle = findViewById(R.id.user_associations_title);
-        userNeighborhoodsView = findViewById(R.id.user_associations_view);
+        userNeighborhoodsTitle = findViewById(R.id.user_neighborhoods_title);
+        userNeighborhoodsView = findViewById(R.id.user_neighborhoods_view);
         userPrivateCirclesTitle = findViewById(R.id.user_private_circles_title);
         userPrivateCirclesView = findViewById(R.id.user_private_circles_view);
     }
@@ -69,8 +71,8 @@ public class PFPUserProfileAssociationsView extends RelativeLayout implements Us
         ArrayList<UserMembership> neighborhoodList = new ArrayList();
         ArrayList<UserMembership> circleList = new ArrayList();
         if (user != null) {
-            neighborhoodList = user.getMemberships(NEIGHBORHOOD);
-            circleList = user.getMemberships(PRIVATE_CIRCLE);
+            neighborhoodList = user.getMemberships(Entourage.TYPE_NEIGHBORHOOD);
+            circleList = user.getMemberships(Entourage.TYPE_PRIVATE_CIRCLE);
             ArrayList<String> userRoles = user.getRoles();
             if (userRoles != null && userRoles.size() > 0) {
                 String role = userRoles.get(0);
@@ -81,18 +83,21 @@ public class PFPUserProfileAssociationsView extends RelativeLayout implements Us
         if (userNeighborhoodsAdapter == null) {
             userNeighborhoodsView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            userNeighborhoodsAdapter = new UserMembershipsAdapter(neighborhoodList);
+            userNeighborhoodsAdapter = new UserMembershipsAdapter(neighborhoodList, Entourage.TYPE_NEIGHBORHOOD);
             userNeighborhoodsView.setAdapter(userNeighborhoodsAdapter);
 
-//            ItemClickSupport.addTo(userAssociationsView)
-//                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-//                            userFragment.onEditProfileClicked();
-//                        }
-//                    });
+            ItemClickSupport.addTo(userNeighborhoodsView)
+                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                        @Override
+                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                            UserMembership userMembership = userNeighborhoodsAdapter.getItemAt(position);
+                            if (userMembership != null) {
+                                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipId()));
+                            }
+                        }
+                    });
         } else {
-            userNeighborhoodsAdapter.setPrivateCircleList(neighborhoodList);
+            userNeighborhoodsAdapter.setMembershipList(neighborhoodList);
         }
         userNeighborhoodsTitle.setVisibility( neighborhoodList.size() > 0 ? View.VISIBLE : View.GONE );
         userNeighborhoodsView.setVisibility( neighborhoodList.size() > 0 ? View.VISIBLE : View.GONE );
@@ -100,18 +105,21 @@ public class PFPUserProfileAssociationsView extends RelativeLayout implements Us
         if (privateCircleAdapter == null) {
             userPrivateCirclesView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            privateCircleAdapter = new UserMembershipsAdapter(circleList);
+            privateCircleAdapter = new UserMembershipsAdapter(circleList, Entourage.TYPE_PRIVATE_CIRCLE);
             userPrivateCirclesView.setAdapter(privateCircleAdapter);
 
-//            ItemClickSupport.addTo(userAssociationsView)
-//                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-//                            userFragment.onEditProfileClicked();
-//                        }
-//                    });
+            ItemClickSupport.addTo(userPrivateCirclesView)
+                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                        @Override
+                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                            UserMembership userMembership = privateCircleAdapter.getItemAt(position);
+                            if (userMembership != null) {
+                                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipId()));
+                            }
+                        }
+                    });
         } else {
-            privateCircleAdapter.setPrivateCircleList(circleList);
+            privateCircleAdapter.setMembershipList(circleList);
         }
         userPrivateCirclesTitle.setVisibility( circleList.size() > 0 ? View.VISIBLE : View.GONE );
         userPrivateCirclesView.setVisibility( circleList.size() > 0 ? View.VISIBLE : View.GONE );

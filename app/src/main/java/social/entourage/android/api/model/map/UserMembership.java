@@ -1,9 +1,15 @@
 package social.entourage.android.api.model.map;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v7.content.res.AppCompatResources;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import social.entourage.android.R;
 
 /**
  * Created by Mihai Ionescu on 25/05/2018.
@@ -20,6 +26,8 @@ public class UserMembership implements Serializable {
 
     @SerializedName("number_of_people")
     private int numberOfPeople;
+
+    private String type;
 
     public int getMembershipId() {
         return membershipId;
@@ -43,6 +51,24 @@ public class UserMembership implements Serializable {
 
     public void setNumberOfPeople(final int numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
+    }
+
+    public Drawable getIconDrawable(final Context context) {
+        if (Entourage.TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(type)) {
+            return AppCompatResources.getDrawable(context, R.drawable.ic_heart);
+        }
+        if (Entourage.TYPE_NEIGHBORHOOD.equalsIgnoreCase(type)) {
+            return AppCompatResources.getDrawable(context, R.drawable.ic_neighborhood);
+        }
+        return null;
     }
 
     public static class MembershipList implements Serializable {

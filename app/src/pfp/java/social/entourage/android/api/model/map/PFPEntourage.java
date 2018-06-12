@@ -15,33 +15,7 @@ import social.entourage.android.R;
  * PFP Entourage
  * Created by Mihai Ionescu on 05/06/2018.
  */
-public class FPFEntourage extends Entourage implements Serializable {
-
-    // ----------------------------------
-    // Constants
-    // ----------------------------------
-
-    public static final String TYPE_PRIVATE_CIRCLE = "private_circle";
-    public static final String TYPE_NEIGHBORHOOD = "neighborhood";
-
-    // ----------------------------------
-    // Attributes
-    // ----------------------------------
-
-    @SerializedName("group_type")
-    String groupType;
-
-    // ----------------------------------
-    // GETTERS & SETTERS
-    // ----------------------------------
-
-    public String getGroupType() {
-        return groupType;
-    }
-
-    public void setGroupType(final String groupType) {
-        this.groupType = groupType;
-    }
+public class PFPEntourage extends Entourage implements Serializable {
 
     // ----------------------------------
     // FeedItem overrides
@@ -52,15 +26,12 @@ public class FPFEntourage extends Entourage implements Serializable {
         if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
             return AppCompatResources.getDrawable(context, R.drawable.ic_heart);
         }
-        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
-            return AppCompatResources.getDrawable(context, R.drawable.ic_neighborhood);
-        }
         return super.getIconDrawable(context);
     }
 
     @Override
     public String getFeedTypeLong(final Context context) {
-        if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType) || TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+        if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
             return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));
         }
         return super.getFeedTypeLong(context);
