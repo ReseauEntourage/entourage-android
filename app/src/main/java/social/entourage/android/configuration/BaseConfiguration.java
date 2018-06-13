@@ -15,6 +15,8 @@ public abstract class BaseConfiguration {
     // Show the user edit screen
     boolean showUserEditProfile = true;
 
+    boolean showEditEntourageView = true;
+
     protected BaseConfiguration() {}
 
     public boolean showLostCodeErrorToast() {
@@ -31,5 +33,9 @@ public abstract class BaseConfiguration {
 
     public boolean showUserEditProfile() {
         return showUserEditProfile;
+    }
+
+    public boolean showEditEntourageView() {
+        return showEditEntourageView;
     }
 }

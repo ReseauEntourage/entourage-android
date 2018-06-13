@@ -104,6 +104,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.carousel.CarouselFragment;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
@@ -738,11 +739,40 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.feeditem_option_edit)
     protected void onEditEntourageButton() {
-        CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage)feedItem);
-        fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
+        if (feedItem == null) return;
 
-        //hide the options
-        optionsLayout.setVisibility(View.GONE);
+        if (Configuration.getInstance().showEditEntourageView()) {
+            CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage) feedItem);
+            fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
+
+            //hide the options
+            optionsLayout.setVisibility(View.GONE);
+        } else {
+            // just send an email
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            // Set the email to
+            String[] addresses = {getString(R.string.contact_email)};
+            intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+            // Set the subject
+            String title = feedItem.getTitle();
+            if (title == null) title = "";
+            String emailSubject = getString(R.string.edit_entourage_email_title, title);
+            intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+            String description = feedItem.getDescription();
+            if (description == null) description = "";
+            String emailBody = getString(R.string.edit_entourage_email_body, description);
+            intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                //hide the options
+                optionsLayout.setVisibility(View.GONE);
+                // Start the intent
+                startActivity(intent);
+            } else {
+                // No Email clients
+                Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
+            }
+        }
 
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT);
     }
