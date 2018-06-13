@@ -764,7 +764,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             name = feedItem.getAuthor().getUserName();
             if (name == null) name = "Unknown";
         }
-        String emailSubject = getString(R.string.report_entourage_email_title, title, name);
+        String emailSubject = getString(R.string.report_entourage_email_title, title);
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             //hide the options
