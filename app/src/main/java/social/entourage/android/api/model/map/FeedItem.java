@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 
@@ -237,6 +238,14 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public Drawable getIconDrawable(Context context) {
         return null;
+    }
+
+    public boolean showHeatmapAsOverlay() {
+        return true;
+    }
+
+    public int getHeatmapResourceId() {
+        return R.drawable.heat_zone;
     }
 
     @Override

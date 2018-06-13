@@ -59,6 +59,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
@@ -1167,14 +1168,23 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         // add heatmap
-                        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.heat_zone);
-                        GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
-                                .image(icon)
-                                .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
-                                .clickable(true)
-                                .anchor(0.5f, 0.5f);
+                        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId());
+                        if (feedItem.showHeatmapAsOverlay()) {
+                            GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
+                                    .image(icon)
+                                    .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
+                                    .clickable(true)
+                                    .anchor(0.5f, 0.5f);
 
-                        googleMap.addGroundOverlay(groundOverlayOptions);
+                            googleMap.addGroundOverlay(groundOverlayOptions);
+                        } else {
+                            MarkerOptions markerOptions = new MarkerOptions()
+                                    .icon(icon)
+                                    .position(position)
+                                    .draggable(false)
+                                    .anchor(0.5f, 0.5f);
+                            googleMap.addMarker(markerOptions);
+                        }
                     }
                 }
             }

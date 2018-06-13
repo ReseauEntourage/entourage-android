@@ -255,6 +255,22 @@ public class Entourage extends FeedItem implements Serializable {
         return super.getIconDrawable(context);
     }
 
+    @Override
+    public boolean showHeatmapAsOverlay() {
+        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return false;
+        }
+        return super.showHeatmapAsOverlay();
+    }
+
+    @Override
+    public int getHeatmapResourceId() {
+        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return R.drawable.ic_neighborhood;
+        }
+        return super.getHeatmapResourceId();
+    }
+
     // ----------------------------------
     // TimestampedObject overrides
     // ----------------------------------
