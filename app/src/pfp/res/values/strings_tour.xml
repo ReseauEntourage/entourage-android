@@ -6,4 +6,8 @@
     <!-- Join Request -->
     <string name="tour_join_request_received_message_short">aimerait participer à la sortie</string>
 
+    <!-- Report Entourage -->
+    <!-- Parameters: 1 - Entourage title -->
+    <string name="report_entourage_email_title">Signalement d\'un problème dans le voisinage %1$s</string>
+
 </resources>

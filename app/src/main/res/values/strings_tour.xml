@@ -53,7 +53,7 @@
     <string name="tour_info_options_freeze_tour">Clôturer</string>
     <string name="tour_info_options_stop_tour">@string/tour_stop</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
-    <string name="tour_info_options_report">Signaler l\'entourage</string>
+    <string name="tour_info_options_report">Signaler un problème</string>
     <string name="tour_info_options_share">Partager</string>
     <string name="tour_info_options_join">Rejoindre</string>
     <string name="tour_info_options_close">Annuler</string>
@@ -135,7 +135,7 @@
     <string name="tour_encounter_too_far">La rencontre est trop éloignée de la maraude</string>
 
     <!-- Report Entourage -->
-    <!-- Parameters: 1 - Entourage title, 2 - Creator's name -->
-    <string name="report_entourage_email_title">Signalement d’un entourage qui pose problème: %1$s créé par %2$s</string>
+    <!-- Parameters: 1 - Entourage title -->
+    <string name="report_entourage_email_title">Signalement d’un problème: %1$s</string>
 
 </resources>
