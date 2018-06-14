@@ -1,5 +1,6 @@
 package social.entourage.android.map.entourage.category;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -98,12 +99,22 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     }
 
     @Override
+    public void onDismiss(final DialogInterface dialog) {
+        resetSelectedCategory();
+        super.onDismiss(dialog);
+    }
+
+    @Override
     public void dismiss() {
+        resetSelectedCategory();
+        super.dismiss();
+    }
+
+    private void resetSelectedCategory() {
         if (adapter != null && adapter.selectedCategory != null) {
             // Reset the flag so consequent fragment shows will not appear broken
             adapter.selectedCategory.setDefault(false);
         }
-        super.dismiss();
     }
 
     public void setListener(final CreateEntourageListener mListener) {
