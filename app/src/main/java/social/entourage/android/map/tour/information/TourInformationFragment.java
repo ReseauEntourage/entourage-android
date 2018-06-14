@@ -817,7 +817,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @OnClick(R.id.tour_info_member_add)
     protected void onMembersAddClicked() {
         if (feedItem == null) return;
-        if (feedItem.isPrivate()) {
+        if (feedItem.isPrivate() && Configuration.getInstance().showInviteView()) {
             // For members show the invite screen
             onUserAddClicked();
         }

@@ -52,4 +52,10 @@ public class PFPEntourage extends Entourage implements Serializable {
         }
         return super.getFeedTypeLong(context);
     }
+
+    @Override
+    public String getShareURL() {
+        //TODO remove this method override when the server will return a proper share url for voisinage
+        return null;
+    }
 }

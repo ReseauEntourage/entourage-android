@@ -14,8 +14,10 @@ public abstract class BaseConfiguration {
     boolean showMyMessagesFAB = false;
     // Show the user edit screen
     boolean showUserEditProfile = true;
-
+    // Show the edit entourage screen from 14.2 .If false, send an email
     boolean showEditEntourageView = true;
+    // Show the invite screen in 14.2 . If false, show the share screen
+    boolean showInviteView = true;
 
     protected BaseConfiguration() {}
 
@@ -37,5 +39,9 @@ public abstract class BaseConfiguration {
 
     public boolean showEditEntourageView() {
         return showEditEntourageView;
+    }
+
+    public boolean showInviteView() {
+        return showInviteView;
     }
 }
