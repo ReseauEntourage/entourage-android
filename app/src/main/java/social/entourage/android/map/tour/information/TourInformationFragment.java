@@ -1345,6 +1345,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // Show the members count
         int membersCount = feedItem != null ? feedItem.getNumberOfPeople() : membersAdapter.getItemCount();
         membersCountTextView.setText(getString(R.string.tour_info_members_count, membersCount));
+
+        // hide the 'invite a friend' for a tour
+        View memberAddView = getView().findViewById(R.id.tour_info_member_add);
+        if (memberAddView != null) {
+            memberAddView.setVisibility(feedItem != null && feedItem.getType() != TimestampedObject.TOUR_CARD ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void switchToPublicSection() {
