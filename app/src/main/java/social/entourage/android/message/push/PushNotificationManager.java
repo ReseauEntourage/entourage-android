@@ -351,7 +351,7 @@ public class PushNotificationManager {
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage));
         builder.setContentTitle(message.getContentTitleForCount(count, context));
         builder.setContentText(message.getContentTextForCount(count, context));
-        builder.setSubText(message.getMessage());
+        //builder.setSubText(message.getMessage());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             PushNotificationContent content = message.getContent();

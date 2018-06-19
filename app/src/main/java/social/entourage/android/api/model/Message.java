@@ -102,57 +102,39 @@ public class Message implements Serializable {
     }
 
     public String getContentTitleForCount(int count, Context context) {
-        if (count > 1) {
             if (content != null) {
                 if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(content.getType())) {
-                    return context.getString(R.string.notification_title_chat_message);
+                    return context.getResources().getQuantityString(R.plurals.notification_title_chat_message, count, author);
                 }
-                return author;
-            } else {
-                return author;
             }
-        } else {
             return author;
-        }
     }
 
     public String getContentTextForCount(int count, Context context) {
-        if (count > 1) {
-            if (content != null) {
-                String contentType = content.getType();
-                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(contentType)) {
-                    return context.getResources().getQuantityString(R.plurals.notification_text_chat_message, count);
-                }
-                if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(contentType)) {
-                    String notificationText = "";
+        if (content != null) {
+            String contentType = content.getType();
+            if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(contentType)) {
+                return context.getResources().getQuantityString(R.plurals.notification_text_chat_message, count, count, content.message);
+            }
+            if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(contentType)) {
+                String notificationText = "";
+                if (count > 1) {
                     if (content.isEntourageRelated()) {
                         notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, content.getFeedItemName());
                     } else {
-                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_tour_multiple, count);
+                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_tour_multiple, count, count);
                     }
-                    return notificationText;
-                }
-                return object;
-            } else {
-                return object;
-            }
-        } else {
-            if (content != null) {
-                String contentType = content.getType();
-                if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(contentType)) {
-                    String notificationText = "";
+                } else {
                     if (content.isEntourageRelated()) {
                         notificationText = context.getString(R.string.notification_text_join_request_entourage_single, author, content.getFeedItemName());
                     } else {
                         notificationText = context.getString(R.string.notification_text_join_request_tour_single, author);
                     }
-                    return notificationText;
                 }
-                return object;
-            } else {
-                return object;
+                return notificationText;
             }
         }
+        return object;
     }
 
 }
