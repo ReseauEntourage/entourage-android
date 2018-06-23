@@ -54,6 +54,13 @@ android {
             storePassword "${System.env.KEYSTORE_PASS}"
         }
 
+        googleplay_pfp {
+            keyAlias 'googleplay_pfp'
+            keyPassword "${System.env.KEYSTORE_PASS}"
+            storeFile file('../keystore/googleplay-pfp-keystore.jks')
+            storePassword "${System.env.KEYSTORE_PASS}"
+        }
+
         debug {
             storeFile file('../keystore/debug.keystore')
         }
@@ -102,6 +109,7 @@ android {
         }
         pfp {
             dimension 'app'
+            signingConfig signingConfigs.googleplay_pfp
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
