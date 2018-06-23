@@ -66,18 +66,6 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.googleplay
-            debuggable false
-        }
-
-        debug {
-            signingConfig signingConfigs.debug
-            applicationIdSuffix '.debug'
-        }
-    }
-
     flavorDimensions 'app', 'env'
 
     productFlavors {
@@ -109,7 +97,6 @@ android {
         }
         pfp {
             dimension 'app'
-            signingConfig signingConfigs.googleplay_pfp
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
@@ -126,6 +113,19 @@ android {
                         serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/"
                 ]
             }
+        }
+    }
+
+    buildTypes {
+        release {
+            productFlavors.entourage.signingConfig signingConfigs.googleplay
+            productFlavors.pfp.signingConfig signingConfigs.googleplay_pfp
+            debuggable false
+        }
+
+        debug {
+            signingConfig signingConfigs.debug
+            applicationIdSuffix '.debug'
         }
     }
 
