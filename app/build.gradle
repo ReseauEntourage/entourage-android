@@ -55,7 +55,7 @@ android {
         }
 
         googleplay_pfp {
-            keyAlias 'googleplay_pfp'
+            keyAlias 'googleplay-pfp'
             keyPassword "${System.env.KEYSTORE_PASS}"
             storeFile file('../keystore/googleplay-pfp-keystore.jks')
             storePassword "${System.env.KEYSTORE_PASS}"
