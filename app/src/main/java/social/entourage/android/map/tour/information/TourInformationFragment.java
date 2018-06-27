@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -1167,9 +1168,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         CameraPosition cameraPosition = new CameraPosition(new LatLng(startPoint.getLatitude(), startPoint.getLongitude()), EntourageLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0, 0);
                         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-                        // add heatmap
-                        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId());
                         if (feedItem.showHeatmapAsOverlay()) {
+                            // add heatmap
+                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId());
                             GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
                                     .image(icon)
                                     .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
@@ -1178,6 +1179,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
                             googleMap.addGroundOverlay(groundOverlayOptions);
                         } else {
+                            // add marker
+                            BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(feedItem.getHeatmapResourceId());
+                            Bitmap b = bitmapdraw.getBitmap();
+                            Bitmap scalledMarker = Bitmap.createScaledBitmap(b, (int)Entourage.HEATMAP_SIZE/2, (int)Entourage.HEATMAP_SIZE/2, false);
+                            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(scalledMarker);
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .icon(icon)
                                     .position(position)
