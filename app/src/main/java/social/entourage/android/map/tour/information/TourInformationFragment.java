@@ -1018,7 +1018,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         shareEntourageButton.setVisibility( feedItem.isPrivate() ? View.GONE : View.VISIBLE );
                     }
                 } else {
-                    stopTourButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);
+                    stopTourButton.setVisibility(feedItem.isFreezed() || !feedItem.canBeClosed() ? View.GONE : View.VISIBLE);
                     if (feedItem.isClosed()) {
                         stopTourButton.setText(R.string.tour_info_options_freeze_tour);
                     } else {

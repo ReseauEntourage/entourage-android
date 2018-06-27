@@ -46,6 +46,14 @@ public class PFPEntourage extends Entourage implements Serializable {
     }
 
     @Override
+    public boolean canBeClosed() {
+        if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
+            return false;
+        }
+        return super.canBeClosed();
+    }
+
+    @Override
     public String getFeedTypeLong(final Context context) {
         if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
             return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));

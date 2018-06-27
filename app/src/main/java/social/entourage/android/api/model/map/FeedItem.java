@@ -248,6 +248,8 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return R.drawable.heat_zone;
     }
 
+    public boolean canBeClosed() { return true; }
+
     @Override
     public void copyLocalFields(final TimestampedObject other) {
         super.copyLocalFields(other);

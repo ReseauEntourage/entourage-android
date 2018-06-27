@@ -271,6 +271,14 @@ public class Entourage extends FeedItem implements Serializable {
         return super.getHeatmapResourceId();
     }
 
+    @Override
+    public boolean canBeClosed() {
+        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return false;
+        }
+        return super.canBeClosed();
+    }
+
     // ----------------------------------
     // TimestampedObject overrides
     // ----------------------------------
