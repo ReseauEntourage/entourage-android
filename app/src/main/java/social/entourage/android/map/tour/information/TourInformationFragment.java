@@ -754,7 +754,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:"));
             // Set the email to
-            String[] addresses = {getString(R.string.contact_email)};
+            String[] addresses = {getString(R.string.edit_action_email)};
             intent.putExtra(Intent.EXTRA_EMAIL, addresses);
             // Set the subject
             String title = feedItem.getTitle();

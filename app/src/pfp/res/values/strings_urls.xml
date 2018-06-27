@@ -8,5 +8,6 @@
     <string name="feedback_url">https://entourage-asso.typeform.com/to/Imi9sX?user_id=%1$d</string>
 
     <string name="contact_email">voisin-age@petitsfreresdespauvres.fr</string>
+    <string name="edit_action_email">voisinage-test@petitsfreresdespauvres.fr</string>
 
 </resources>
