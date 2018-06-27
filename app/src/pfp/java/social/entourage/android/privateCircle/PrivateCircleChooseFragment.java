@@ -157,17 +157,17 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
                     if (newsfeedList != null) {
                         for (Newsfeed newsfeed: newsfeedList) {
                             Object feedData = newsfeed.getData();
-                            if (feedData == null || !(feedData instanceof FeedItem)) {
+                            if (feedData == null || !(feedData instanceof Entourage)) {
                                 continue;
                             }
-                            FeedItem feedItem = (FeedItem) newsfeed.getData();
-                            if (feedItem.getType() == Entourage.ENTOURAGE_CARD) {
-                                entourageList.add((Entourage)feedItem);
+                            Entourage entourage = (Entourage) newsfeed.getData();
+                            if (Entourage.TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(entourage.getGroupType())) {
+                                entourageList.add(entourage);
                             }
                         }
                     }
                     adapter.addPrivateCircleList(entourageList);
-                    pagination.loadedItems(entourageList.size());
+                    pagination.loadedItems(newsfeedList.size());
                 }
                 progressBar.setVisibility(View.GONE);
             }
