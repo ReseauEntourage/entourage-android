@@ -178,7 +178,7 @@ public class Events {
 
         private FeedItem feedItem;
         private int feedItemType = 0;
-        private long feedItemId = 0;
+        private String feedItemUUID = "";
         private String feedItemShareURL;
         private long invitationId = 0;
         private int feedRank = 0;
@@ -192,19 +192,15 @@ public class Events {
             this.feedRank = feedRank;
         }
 
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId) {
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemUUID, String feedItemShareURL) {
             this.feedItemType = feedItemType;
-            this.feedItemId = feedItemId;
-        }
-
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemShareURL) {
-            this.feedItemType = feedItemType;
+            this.feedItemUUID = feedItemUUID;
             this.feedItemShareURL = feedItemShareURL;
         }
 
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId, long invitationId) {
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemUUID, long invitationId) {
             this.feedItemType = feedItemType;
-            this.feedItemId = feedItemId;
+            this.feedItemUUID = feedItemUUID;
             this.invitationId = invitationId;
         }
 
@@ -212,8 +208,8 @@ public class Events {
             return feedItem;
         }
 
-        public long getFeedItemId() {
-            return feedItemId;
+        public String getFeedItemUUID() {
+            return feedItemUUID;
         }
 
         public int getFeedItemType() {

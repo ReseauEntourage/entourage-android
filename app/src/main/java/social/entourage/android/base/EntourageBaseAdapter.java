@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.map.MapViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
 
@@ -172,6 +173,19 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
             TimestampedObject timestampedObject = items.get(i);
             if (timestampedObject.getType() == type && timestampedObject.getId() == id) {
                 return timestampedObject;
+            }
+        }
+        return null;
+    }
+
+    public TimestampedObject findCard(int type, String uuid) {
+        for (int i = 0; i < items.size(); i++) {
+            TimestampedObject timestampedObject = items.get(i);
+            if (timestampedObject.getType() == type && timestampedObject instanceof FeedItem) {
+                FeedItem feedItem = (FeedItem) timestampedObject;
+                if (feedItem.getUUID().equalsIgnoreCase(uuid)) {
+                    return timestampedObject;
+                }
             }
         }
         return null;

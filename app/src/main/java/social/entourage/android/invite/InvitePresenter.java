@@ -35,9 +35,9 @@ public class InvitePresenter {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void inviteBySMS(long feedItemId, int feedItemType, MultipleInvitations invitations) {
+    public void inviteBySMS(String feedItemUUID, int feedItemType, MultipleInvitations invitations) {
         if (feedItemType == FeedItem.ENTOURAGE_CARD) {
-            inviteBySMSEntourage(feedItemId, invitations);
+            inviteBySMSEntourage(feedItemUUID, invitations);
         }
         else  if (feedItemType == FeedItem.TOUR_CARD) {
             // TODO Tour InviteBySMS
@@ -45,10 +45,10 @@ public class InvitePresenter {
         }
     }
 
-    private void inviteBySMSEntourage(long entourageId, MultipleInvitations invitations) {
+    private void inviteBySMSEntourage(String entourageUUID, MultipleInvitations invitations) {
 
         MultipleInvitations.MultipleInvitationsWrapper wrapper = new MultipleInvitations.MultipleInvitationsWrapper(invitations);
-        Call<MultipleInvitations.MultipleInvitationsResponse> call = entourageRequest.inviteBySMS(entourageId, wrapper);
+        Call<MultipleInvitations.MultipleInvitationsResponse> call = entourageRequest.inviteBySMS(entourageUUID, wrapper);
         call.enqueue(new Callback<MultipleInvitations.MultipleInvitationsResponse>() {
             @Override
             public void onResponse(final Call<MultipleInvitations.MultipleInvitationsResponse> call, final Response<MultipleInvitations.MultipleInvitationsResponse> response) {

@@ -58,10 +58,10 @@ public class TourInformationPresenter {
     // Api calls
     // ----------------------------------
 
-    public void getFeedItem(long feedItemId, int feedItemType, int feedRank, int distance) {
+    public void getFeedItem(String feedItemUUID, int feedItemType, int feedRank, int distance) {
         fragment.showProgressBar();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(feedItemId);
+            Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(feedItemUUID);
             call.enqueue(new Callback<Tour.TourWrapper>() {
                 @Override
                 public void onResponse(final Call<Tour.TourWrapper> call, final Response<Tour.TourWrapper> response) {
@@ -79,7 +79,7 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(feedItemId, distance, feedRank);
+            Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(feedItemUUID, distance, feedRank);
             call.enqueue(new Callback<Entourage.EntourageWrapper>() {
                 @Override
                 public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
@@ -137,7 +137,7 @@ public class TourInformationPresenter {
         }
         int feedItemType = fragment.feedItem.getType();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<TourUser.TourUsersWrapper> call = tourRequest.retrieveTourUsers(fragment.feedItem.getId());
+            Call<TourUser.TourUsersWrapper> call = tourRequest.retrieveTourUsers(fragment.feedItem.getUUID());
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
@@ -155,7 +155,7 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<TourUser.TourUsersWrapper> call = entourageRequest.retrieveEntourageUsers(fragment.feedItem.getId());
+            Call<TourUser.TourUsersWrapper> call = entourageRequest.retrieveEntourageUsers(fragment.feedItem.getUUID());
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
@@ -189,7 +189,7 @@ public class TourInformationPresenter {
         }
         int feedItemType = fragment.feedItem.getType();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<ChatMessage.ChatMessagesWrapper> call = tourRequest.retrieveTourMessages(fragment.feedItem.getId(), lastMessageDate);
+            Call<ChatMessage.ChatMessagesWrapper> call = tourRequest.retrieveTourMessages(fragment.feedItem.getUUID(), lastMessageDate);
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
@@ -207,7 +207,7 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveEntourageMessages(fragment.feedItem.getId(), lastMessageDate);
+            Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveEntourageMessages(fragment.feedItem.getUUID(), lastMessageDate);
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
@@ -242,7 +242,7 @@ public class TourInformationPresenter {
 
         int feedItemType = fragment.feedItem.getType();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<ChatMessage.ChatMessageWrapper> call = tourRequest.chatMessage(fragment.feedItem.getId(), chatMessageWrapper);
+            Call<ChatMessage.ChatMessageWrapper> call = tourRequest.chatMessage(fragment.feedItem.getUUID(), chatMessageWrapper);
             call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
@@ -260,7 +260,7 @@ public class TourInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<ChatMessage.ChatMessageWrapper> call = entourageRequest.chatMessage(fragment.feedItem.getId(), chatMessageWrapper);
+            Call<ChatMessage.ChatMessageWrapper> call = entourageRequest.chatMessage(fragment.feedItem.getUUID(), chatMessageWrapper);
             call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
                 @Override
                 public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
@@ -290,7 +290,7 @@ public class TourInformationPresenter {
         }
         int feedItemType = fragment.feedItem.getType();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<Encounter.EncountersWrapper> call = tourRequest.retrieveTourEncounters(fragment.feedItem.getId());
+            Call<Encounter.EncountersWrapper> call = tourRequest.retrieveTourEncounters(fragment.feedItem.getUUID());
             call.enqueue(new Callback<Encounter.EncountersWrapper>() {
                 @Override
                 public void onResponse(final Call<Encounter.EncountersWrapper> call, final Response<Encounter.EncountersWrapper> response) {
@@ -326,10 +326,10 @@ public class TourInformationPresenter {
         if (feedItemType == TimestampedObject.TOUR_CARD) {
             // Tour user update status
             if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
-                acceptTourJoinRequest(feedItem.getId(), userId);
+                acceptTourJoinRequest(feedItem.getUUID(), userId);
             }
             else if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
-                rejectJoinTourRequest(feedItem.getId(), userId);
+                rejectJoinTourRequest(feedItem.getUUID(), userId);
             }
             else {
                 fragment.onUserJoinRequestUpdated(userId, status, EntourageError.ERROR_UNKNOWN);
@@ -338,10 +338,10 @@ public class TourInformationPresenter {
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
             // Entourage user update status
             if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
-                acceptEntourageJoinRequest(feedItem.getId(), userId);
+                acceptEntourageJoinRequest(feedItem.getUUID(), userId);
             }
             else if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
-                rejectJoinEntourageRequest(feedItem.getId(), userId);
+                rejectJoinEntourageRequest(feedItem.getUUID(), userId);
             }
             else {
                 fragment.onUserJoinRequestUpdated(userId, status, EntourageError.ERROR_UNKNOWN);
@@ -353,12 +353,12 @@ public class TourInformationPresenter {
         }
     }
 
-    protected void acceptTourJoinRequest(long tourId, final int userId) {
+    protected void acceptTourJoinRequest(String tourUUID, final int userId) {
         HashMap<String, String> status = new HashMap<>();
         status.put("status", FeedItem.JOIN_STATUS_ACCEPTED);
         HashMap<String, Object> user = new HashMap<>();
         user.put("user", status);
-        Call<ResponseBody> call = tourRequest.updateUserTourStatus(tourId, userId, user);
+        Call<ResponseBody> call = tourRequest.updateUserTourStatus(tourUUID, userId, user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
@@ -381,8 +381,8 @@ public class TourInformationPresenter {
         });
     }
 
-    protected void rejectJoinTourRequest(long tourId, final int userId) {
-        Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourId, userId);
+    protected void rejectJoinTourRequest(String tourUUID, final int userId) {
+        Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourUUID, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
@@ -404,12 +404,12 @@ public class TourInformationPresenter {
         });
     }
 
-    protected void acceptEntourageJoinRequest(long entourageId, final int userId) {
+    protected void acceptEntourageJoinRequest(String entourageUUID, final int userId) {
         HashMap<String, String> status = new HashMap<>();
         status.put("status", FeedItem.JOIN_STATUS_ACCEPTED);
         HashMap<String, Object> user = new HashMap<>();
         user.put("user", status);
-        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourageId, userId, user);
+        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourageUUID, userId, user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
@@ -432,8 +432,8 @@ public class TourInformationPresenter {
         });
     }
 
-    protected void rejectJoinEntourageRequest(long entourageId, final int userId) {
-        Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageId, userId);
+    protected void rejectJoinEntourageRequest(String entourageUUID, final int userId) {
+        Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageUUID, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {

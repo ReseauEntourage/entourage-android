@@ -118,7 +118,7 @@ public class DeepLinksManager {
             String requestedView = pathSegments.get(0);
             String key = pathSegments.get(1);
             if (requestedView.equalsIgnoreCase(DeepLinksView.ENTOURAGES.getView())) {
-                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, key));
+                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", key));
                 deepLinkIntent = null;
             }
             else if (requestedView.equalsIgnoreCase(DeepLinksView.DEEPLINK.getView())) {
@@ -231,7 +231,7 @@ public class DeepLinksManager {
             if (activity instanceof DrawerActivity) {
                 if (pathSegments != null && pathSegments.size() >= 1) {
                     String entourage = pathSegments.get(0);
-                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, entourage));
+                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", entourage));
                 }
             } else {
                 return;

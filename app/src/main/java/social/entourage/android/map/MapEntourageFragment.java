@@ -40,7 +40,6 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -106,7 +105,6 @@ import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
 import social.entourage.android.base.EntourageToast;
-import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationFragment;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
@@ -181,7 +179,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private boolean isMapLoaded;
     private boolean isFollowing = true;
 
-    private long currentTourId = -1;
+    private String currentTourUUID = "";
     private int color;
     private int displayedTourHeads = 0;
 
@@ -479,19 +477,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         onClickListener.addEncounterMarker(marker, encounter);
     }
 
-    public void displayChosenFeedItem(long feedItemId, int feedItemType) {
-        displayChosenFeedItem(feedItemId, feedItemType, 0);
+    public void displayChosenFeedItem(String feedItemUUID, int feedItemType) {
+        displayChosenFeedItem(feedItemUUID, feedItemType, 0);
     }
 
-    public void displayChosenFeedItem(long feedItemId, int feedItemType, long invitationId) {
+    public void displayChosenFeedItem(String feedItemUUID, int feedItemType, long invitationId) {
         //display the feed item
-        FeedItem feedItem = (FeedItem) newsfeedAdapter.findCard(feedItemType, feedItemId);
+        FeedItem feedItem = (FeedItem) newsfeedAdapter.findCard(feedItemType, feedItemUUID);
         if (feedItem != null) {
             displayChosenFeedItem(feedItem, invitationId);
         } else {
             if (presenter != null) {
                 EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
-                presenter.openFeedItem(feedItemId, feedItemType, invitationId);
+                presenter.openFeedItem(feedItemUUID, feedItemType, invitationId);
             }
         }
     }
@@ -513,7 +511,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //check if we are not already displaying the tour
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
-        if (tourInformationFragment != null && tourInformationFragment.getFeedItemType() == feedItem.getType() && tourInformationFragment.getFeedItemId() == feedItem.getId()) {
+        if (tourInformationFragment != null && tourInformationFragment.getFeedItemType() == feedItem.getType() && tourInformationFragment.getFeedItemId().equalsIgnoreCase(feedItem.getUUID())) {
             //TODO refresh the tour info screen
             return;
         }
@@ -523,7 +521,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void displayChosenFeedItem(String feedItemShareURL, int feedItemType) {
+    public void displayChosenFeedItemFromShareURL(String feedItemShareURL, int feedItemType) {
         //display the feed item
         if (presenter != null) {
             EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
@@ -827,13 +825,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     @Override
-    public void onTourCreated(boolean created, long tourId) {
+    public void onTourCreated(boolean created,String tourUUID) {
         buttonLaunchTour.setEnabled(true);
         launcherProgressBar.setVisibility(View.GONE);
         if (getActivity() != null) {
             if (created) {
                 isFollowing = true;
-                currentTourId = tourId;
+                currentTourUUID = tourUUID;
                 presenter.incrementUserToursCount();
                 mapLauncherLayout.setVisibility(View.GONE);
                 if (newsfeedListView.getVisibility() == View.VISIBLE) {
@@ -888,8 +886,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         tours = removeRedundantTours(tours, false);
         Collections.sort(tours, new Tour.TourComparatorOldToNew());
         for (Tour tour : tours) {
-            if (currentTourId != tour.getId()) {
-                //drawNearbyTour(tour, false);
+            if (!tour.getUUID().equalsIgnoreCase(currentTourUUID)) {
                 addTourCard(tour);
             }
         }
@@ -898,12 +895,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             map.clear();
             for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
                 if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
-                    if (currentTourId != timestampedObject.getId()) {
+                    Tour tour = (Tour)timestampedObject;
+                    if (!tour.getUUID().equalsIgnoreCase(currentTourUUID)) {
                         drawNearbyTour((Tour) timestampedObject, false);
                     }
                 }
             }
-            if (tourService != null && currentTourId != -1) {
+            if (tourService != null && currentTourUUID != null && currentTourUUID.length() > 0) {
                 PolylineOptions line = new PolylineOptions();
                 for (Polyline polyline : currentTourLines) {
                     line.addAll(polyline.getPoints());
@@ -942,7 +940,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         tours = removeRecentTours(tours);
         Collections.sort(tours, new Tour.TourComparatorOldToNew());
         for (Tour tour : tours) {
-            if (currentTourId != tour.getId()) {
+            if (!tour.getUUID().equalsIgnoreCase(currentTourUUID)) {
                 drawNearbyTour(tour, true);
             }
         }
@@ -988,13 +986,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
 
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                    if (feedItem.getId() == currentTourId) {
+                    if (feedItem.getUUID().equalsIgnoreCase(currentTourUUID)) {
                         mapOptionsMenu.setVisibility(View.VISIBLE);
                         updateFloatingMenuOptions();
                         if (tourStopButton != null) tourStopButton.setVisibility(View.GONE);
                         //bottomTitleTextView.setText(R.string.activity_map_title_small);
 
-                        currentTourId = -1;
+                        currentTourUUID = "";
                     } else {
                         tourService.notifyListenersTourResumed();
                     }
@@ -1186,7 +1184,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
                 if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
                     Tour tour = (Tour) timestampedObject;
-                    if (currentTourId == tour.getId()) {
+                    if (tour.getUUID().equalsIgnoreCase(currentTourUUID)) {
                         continue;
                     }
                     drawNearbyTour(tour, false);
@@ -1195,7 +1193,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
             }
             //redraw the current ongoing tour, if any
-            if (tourService != null && currentTourId != -1) {
+            if (tourService != null && currentTourUUID != null && currentTourUUID.length() > 0) {
                 PolylineOptions line = new PolylineOptions();
                 for (Polyline polyline : currentTourLines) {
                     line.addAll(polyline.getPoints());
@@ -1381,7 +1379,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
             saveCameraPosition();
             Bundle args = new Bundle();
-            args.putLong(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourId);
+            //TODO Fix this
+            args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID);
             if (longTapCoordinates != null) {
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude);
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates.longitude);
@@ -1783,7 +1782,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     public void pauseTour(Tour tour) {
         if (tourService != null && tourService.isRunning()) {
-            if (tourService.getCurrentTourId() == tour.getId()) {
+            if (tourService.getCurrentTourId().equalsIgnoreCase(tour.getUUID())) {
                 tourService.pauseTreatment();
             }
         }
@@ -1797,7 +1796,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     private void resumeTour(Tour tour) {
         if (tourService != null) {
-            if (tour != null && tourService.getCurrentTourId() == tour.getId() && tourService.isRunning()) {
+            if (tour != null && tourService.getCurrentTourId().equalsIgnoreCase(tour.getUUID()) && tourService.isRunning()) {
                 EntourageEvents.logEvent(Constants.EVENT_RESTART_TOUR);
                 tourService.resumeTreatment();
             }
@@ -1815,7 +1814,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
                         tourService.stopFeedItem(feedItem);
                     } else {
-                        if (feedItem.getType() == TimestampedObject.TOUR_CARD && tourService.getCurrentTourId() == feedItem.getId()) {
+                        if (feedItem.getType() == TimestampedObject.TOUR_CARD && tourService.getCurrentTourId().equalsIgnoreCase(feedItem.getUUID())) {
                             // ongoing tour
                             loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                             loaderStop.setCancelable(true);
@@ -2469,7 +2468,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         // Show the first invitation
         Invitation firstInvitation = invitationList.get(0);
         if (firstInvitation != null) {
-            presenter.openFeedItem(firstInvitation.getEntourageId(), FeedItem.ENTOURAGE_CARD, firstInvitation.getId());
+            presenter.openFeedItem(firstInvitation.getEntourageUUID(), FeedItem.ENTOURAGE_CARD, firstInvitation.getId());
         }
     }
 
@@ -2625,7 +2624,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 if (isRunning) {
                     updateFloatingMenuOptions();
 
-                    currentTourId = tourService.getCurrentTourId();
+                    currentTourUUID = tourService.getCurrentTourId();
                     //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
 
                     addCurrentTourEncounters();

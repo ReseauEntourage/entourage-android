@@ -86,11 +86,11 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                             requestsCount++;
                             if (content.isTourRelated()) {
                                 EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
-                                presenter.acceptTourJoinRequest(content.getJoinableId(), content.getUserId());
+                                presenter.acceptTourJoinRequest(content.getJoinableUUID(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
                                 EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
-                                presenter.acceptEntourageJoinRequest(content.getJoinableId(), content.getUserId());
+                                presenter.acceptEntourageJoinRequest(content.getJoinableUUID(), content.getUserId());
                             }
                             else {
                                 finish();
@@ -106,11 +106,11 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                             requestsCount++;
                             if (content.isTourRelated()) {
                                 EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
-                                presenter.rejectJoinTourRequest(content.getJoinableId(), content.getUserId());
+                                presenter.rejectJoinTourRequest(content.getJoinableUUID(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
                                 EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
-                                presenter.rejectJoinEntourageRequest(content.getJoinableId(), content.getUserId());
+                                presenter.rejectJoinEntourageRequest(content.getJoinableUUID(), content.getUserId());
                             }
                             else {
                                 finish();

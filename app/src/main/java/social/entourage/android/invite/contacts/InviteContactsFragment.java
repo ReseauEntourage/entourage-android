@@ -144,9 +144,9 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         // Required empty public constructor
     }
 
-    public static InviteContactsFragment newInstance(long feedId, int feedItemType) {
+    public static InviteContactsFragment newInstance(String feedItemUUID, int feedItemType) {
         InviteContactsFragment fragment = new InviteContactsFragment();
-        fragment.setFeedData(feedId, feedItemType);
+        fragment.setFeedData(feedItemUUID, feedItemType);
 
         return fragment;
     }
@@ -245,7 +245,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         ((EntourageActivity)getActivity()).showProgressDialog(R.string.invite_contacts_inviting);
         // Send the phone number to server
         serverRequestsCount++;
-        presenter.inviteBySMS(feedItemId, feedItemType, invitations);
+        presenter.inviteBySMS(feedItemUUID, feedItemType, invitations);
     }
 
     // ----------------------------------
@@ -341,7 +341,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
                 }
                 // Send the phone number to server
                 serverRequestsCount++;
-                presenter.inviteBySMS(feedItemId, feedItemType, invitations);
+                presenter.inviteBySMS(feedItemUUID, feedItemType, invitations);
                 break;
         }
     }

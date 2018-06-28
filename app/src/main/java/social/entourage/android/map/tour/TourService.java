@@ -198,8 +198,8 @@ public class TourService extends Service {
         return tourServiceManager.getTour();
     }
 
-    public long getCurrentTourId() {
-        return tourServiceManager.getTourId();
+    public String getCurrentTourId() {
+        return tourServiceManager.getTourUUID();
     }
 
     // ----------------------------------
@@ -418,12 +418,12 @@ public class TourService extends Service {
         return tourServiceManager.isLocationInTour(latLng);
     }
 
-    public void notifyListenersTourCreated(boolean created, long id) {
+    public void notifyListenersTourCreated(boolean created, String uuid) {
         if (created) {
             startNotification();
         }
         for (TourServiceListener listener : tourServiceListeners) {
-            listener.onTourCreated(created, id);
+            listener.onTourCreated(created, uuid);
         }
     }
 
@@ -538,7 +538,7 @@ public class TourService extends Service {
     // ----------------------------------
 
     public interface TourServiceListener {
-        void onTourCreated(boolean created, long tourId);
+        void onTourCreated(boolean created, String tourUUID);
 
         void onTourUpdated(LatLng newPoint);
 

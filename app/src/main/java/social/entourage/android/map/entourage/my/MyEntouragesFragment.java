@@ -516,7 +516,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     @Override
-    public void onTourCreated(final boolean created, final long tourId) {
+    public void onTourCreated(final boolean created, final String tourUUID) {
         if (created) {
             updateFabMenu();
         }

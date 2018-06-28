@@ -33,6 +33,11 @@ public class UserMembership implements Serializable {
         return membershipId;
     }
 
+    public String getMembershipUUID() {
+        //TODO Return an UUID from the server
+        return String.valueOf(membershipId);
+    }
+
     public void setMembershipId(final int membershipId) {
         this.membershipId = membershipId;
     }

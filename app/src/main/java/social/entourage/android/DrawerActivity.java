@@ -3,8 +3,6 @@ package social.entourage.android;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,9 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +37,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.about.AboutFragment;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
@@ -63,9 +58,7 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
-import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.deeplinks.DeepLinksManager;
-import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationFragment;
@@ -84,7 +77,6 @@ import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
-import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
@@ -591,19 +583,19 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
                 else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
                     if (content.isTourRelated()) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.TOUR_CARD);
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
                     } else if (content.isEntourageRelated()) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD);
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
                     }
                 } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
                     PushNotificationContent.Extra extra = content.extra;
                     if (extra != null) {
-                        mapEntourageFragment.displayChosenFeedItem(extra.entourageId, TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
+                        mapEntourageFragment.displayChosenFeedItem(String.valueOf(extra.entourageId), TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
                     }
                 } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
                     PushNotificationContent.Extra extra = content.extra;
                     if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
-                        mapEntourageFragment.displayChosenFeedItem(extra.joinableId, content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
                     }
                 }
             }
@@ -646,15 +638,15 @@ public class DrawerActivity extends EntourageSecuredActivity
             } else {
                 //check if we are receiving feed type and id
                 int feedItemType = event.getFeedItemType();
-                long feedItemId = event.getFeedItemId();
+                String feedItemUUID = event.getFeedItemUUID();
                 if (feedItemType == 0) {
                     return;
                 }
-                if (feedItemId == 0) {
+                if (feedItemUUID == null || feedItemUUID.length() == 0) {
                     String shareURL = event.getFeedItemShareURL();
-                    mapEntourageFragment.displayChosenFeedItem(shareURL, feedItemType);
+                    mapEntourageFragment.displayChosenFeedItemFromShareURL(shareURL, feedItemType);
                 } else {
-                    mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
+                    mapEntourageFragment.displayChosenFeedItem(feedItemUUID, feedItemType, event.getInvitationId());
                 }
             }
         }

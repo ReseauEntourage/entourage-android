@@ -75,7 +75,7 @@ public class CreateEntouragePresenter {
         Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
         entourageWrapper.setEntourage(entourage);
 
-        Call<Entourage.EntourageWrapper> call = entourageRequest.editEntourage(entourage.getId(), entourageWrapper);
+        Call<Entourage.EntourageWrapper> call = entourageRequest.editEntourage(entourage.getUUID(), entourageWrapper);
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
             public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {

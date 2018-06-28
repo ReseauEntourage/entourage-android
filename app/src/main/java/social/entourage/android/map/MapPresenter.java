@@ -106,10 +106,10 @@ public class MapPresenter {
         }
     }
 
-    public void openFeedItem(long feedItemId, int feedItemType, long invitationId) {
+    public void openFeedItem(String feedItemUUID, int feedItemType, long invitationId) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemId, feedItemType, invitationId);
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemUUID, feedItemType, invitationId);
             tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }

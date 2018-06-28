@@ -53,9 +53,9 @@ public class InviteByPhoneNumberFragment extends InviteBaseFragment {
         // Required empty public constructor
     }
 
-    public static InviteByPhoneNumberFragment newInstance(long feedId, int feedItemType) {
+    public static InviteByPhoneNumberFragment newInstance(String feedItemUUID, int feedItemType) {
         InviteByPhoneNumberFragment fragment = new InviteByPhoneNumberFragment();
-        fragment.setFeedData(feedId, feedItemType);
+        fragment.setFeedData(feedItemUUID, feedItemType);
         return fragment;
     }
 
@@ -102,7 +102,7 @@ public class InviteByPhoneNumberFragment extends InviteBaseFragment {
             // Send the request to server
             MultipleInvitations invitations = new MultipleInvitations(Invitation.INVITE_BY_SMS);
             invitations.addPhoneNumber(phoneNumber);
-            presenter.inviteBySMS(feedItemId, feedItemType, invitations);
+            presenter.inviteBySMS(feedItemUUID, feedItemType, invitations);
         }
     }
 

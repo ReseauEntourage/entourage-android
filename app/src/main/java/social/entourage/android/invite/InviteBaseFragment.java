@@ -26,7 +26,7 @@ public class InviteBaseFragment extends EntourageDialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    protected long feedItemId;
+    protected String feedItemUUID;
     protected int feedItemType;
 
     @Inject
@@ -42,9 +42,9 @@ public class InviteBaseFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    protected void setFeedData(long feedId, int feedItemType) {
+    protected void setFeedData(String feedUUID, int feedItemType) {
         Bundle args = new Bundle();
-        args.putLong(FeedItem.KEY_FEEDITEM_ID, feedId);
+        args.putString(FeedItem.KEY_FEEDITEM_UUID, feedUUID);
         args.putInt(FeedItem.KEY_FEEDITEM_TYPE, feedItemType);
         this.setArguments(args);
     }
@@ -53,7 +53,7 @@ public class InviteBaseFragment extends EntourageDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            feedItemId = getArguments().getLong(FeedItem.KEY_FEEDITEM_ID);
+            feedItemUUID = getArguments().getString(FeedItem.KEY_FEEDITEM_UUID);
             feedItemType = getArguments().getInt(FeedItem.KEY_FEEDITEM_TYPE);
         }
     }

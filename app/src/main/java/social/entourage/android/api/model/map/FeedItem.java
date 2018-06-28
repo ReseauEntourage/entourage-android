@@ -34,6 +34,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
     public static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
+    public static final String KEY_FEEDITEM_UUID = "social.entourage.android.KEY_FEEDITEM_UUID";
     public static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
 
     public static final String STATUS_OPEN = "open";
@@ -52,8 +53,11 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // Attributes
     // ----------------------------------
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     protected long id;
+
+    @Expose(serialize = false)
+    protected String uuid;
 
     protected String status;
 
@@ -65,15 +69,15 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     @Expose(serialize = false, deserialize = false)
     protected transient Address startAddress;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     @SerializedName("number_of_people")
     protected int numberOfPeople;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     @SerializedName("join_status")
     protected String joinStatus;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     @SerializedName("last_message")
     protected LastMessage lastMessage;
 
@@ -136,6 +140,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public void setId(final long id) {
         this.id = id;
+    }
+
+    public String getUUID() {
+        return uuid == null ? "" : uuid;
     }
 
     public String getJoinStatus() {

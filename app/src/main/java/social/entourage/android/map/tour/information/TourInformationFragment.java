@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -60,7 +59,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
@@ -245,7 +243,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     int apiRequestsCount;
 
     FeedItem feedItem;
-    long requestedFeedItemId;
+    String requestedFeedItemUUID;
     int requestedFeedItemType;
     String requestedFeedItemShareURL;
     long invitationId;
@@ -293,10 +291,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         return fragment;
     }
 
-    public static TourInformationFragment newInstance(long feedId, int feedItemType, long invitationId) {
+    public static TourInformationFragment newInstance(String feedItemUUID, int feedItemType, long invitationId) {
         TourInformationFragment fragment = new TourInformationFragment();
         Bundle args = new Bundle();
-        args.putLong(FeedItem.KEY_FEEDITEM_ID, feedId);
+        args.putString(FeedItem.KEY_FEEDITEM_UUID, feedItemUUID);
         args.putInt(FeedItem.KEY_FEEDITEM_TYPE, feedItemType);
         args.putLong(KEY_INVITATION_ID, invitationId);
         fragment.setArguments(args);
@@ -348,18 +346,18 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                             distance = (int) Math.ceil(startPoint.distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude())) / 1000); // in kilometers
                         }
                     }
-                    presenter.getFeedItem(feedItem.getId(), feedItem.getType(), feedRank, distance);
+                    presenter.getFeedItem(feedItem.getUUID(), feedItem.getType(), feedRank, distance);
                     feedItem = null;
                 }
             } else {
                 requestedFeedItemShareURL = args.getString(KEY_FEED_SHARE_URL);
-                requestedFeedItemId = args.getLong(FeedItem.KEY_FEEDITEM_ID);
+                requestedFeedItemUUID = args.getString(FeedItem.KEY_FEEDITEM_UUID);
                 requestedFeedItemType = args.getInt(FeedItem.KEY_FEEDITEM_TYPE);
                 if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
                     if (requestedFeedItemShareURL != null && requestedFeedItemShareURL.length() > 0) {
                         presenter.getFeedItem(requestedFeedItemShareURL, requestedFeedItemType);
                     } else {
-                        presenter.getFeedItem(requestedFeedItemId, requestedFeedItemType, 0, 0);
+                        presenter.getFeedItem(requestedFeedItemUUID, requestedFeedItemType, 0, 0);
                     }
                 }
             }
@@ -468,11 +466,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         return new ColorDrawable(getResources().getColor(R.color.background));
     }
 
-    public long getFeedItemId() {
+    public String getFeedItemId() {
         if (feedItem != null) {
-            return feedItem.getId();
+            return feedItem.getUUID();
         }
-        return requestedFeedItemId;
+        return requestedFeedItemUUID;
     }
 
     public long getFeedItemType() {
@@ -845,7 +843,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // close the invite source view
         inviteSourceLayout.setVisibility(View.GONE);
         // open the contacts fragment
-        InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getId(), feedItem.getType());
+        InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getUUID(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
         // set the listener
         fragment.setInviteFriendsListener(this);
@@ -857,7 +855,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // close the invite source view
         inviteSourceLayout.setVisibility(View.GONE);
         // open the contacts fragment
-        InviteByPhoneNumberFragment fragment = InviteByPhoneNumberFragment.newInstance(feedItem.getId(), feedItem.getType());
+        InviteByPhoneNumberFragment fragment = InviteByPhoneNumberFragment.newInstance(feedItem.getUUID(), feedItem.getType());
         fragment.show(getFragmentManager(), InviteByPhoneNumberFragment.TAG);
         // set the listener
         fragment.setInviteFriendsListener(this);
@@ -1944,7 +1942,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     // ----------------------------------
 
     @Override
-    public void onTourCreated(final boolean created, final long tourId) {
+    public void onTourCreated(final boolean created, final String tourUUID) {
 
     }
 
