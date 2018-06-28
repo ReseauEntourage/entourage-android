@@ -72,46 +72,40 @@ public class Utils {
         // regular date
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        String month = "";
-        switch (calendar.get(Calendar.MONTH)) {
-            case Calendar.JANUARY:
-                month = context.getString(R.string.date_month_1);
-                break;
-            case Calendar.FEBRUARY:
-                month = context.getString(R.string.date_month_2);
-                break;
-            case Calendar.MARCH:
-                month = context.getString(R.string.date_month_3);
-                break;
-            case Calendar.APRIL:
-                month = context.getString(R.string.date_month_4);
-                break;
-            case Calendar.MAY:
-                month = context.getString(R.string.date_month_5);
-                break;
-            case Calendar.JUNE:
-                month = context.getString(R.string.date_month_6);
-                break;
-            case Calendar.JULY:
-                month = context.getString(R.string.date_month_7);
-                break;
-            case Calendar.AUGUST:
-                month = context.getString(R.string.date_month_8);
-                break;
-            case Calendar.SEPTEMBER:
-                month = context.getString(R.string.date_month_9);
-                break;
-            case Calendar.OCTOBER:
-                month = context.getString(R.string.date_month_10);
-                break;
-            case Calendar.NOVEMBER:
-                month = context.getString(R.string.date_month_11);
-                break;
-            case Calendar.DECEMBER:
-                month = context.getString(R.string.date_month_12);
-                break;
-        }
+        String month = getMonthAsString(calendar.get(Calendar.MONTH), context);
+
         return context.getString(R.string.date_format, calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR)).toUpperCase();
+    }
+
+    public static String getMonthAsString(int month, Context context) {
+        switch (month) {
+            case Calendar.JANUARY:
+                return context.getString(R.string.date_month_1);
+            case Calendar.FEBRUARY:
+                return context.getString(R.string.date_month_2);
+            case Calendar.MARCH:
+                return context.getString(R.string.date_month_3);
+            case Calendar.APRIL:
+                return context.getString(R.string.date_month_4);
+            case Calendar.MAY:
+                return context.getString(R.string.date_month_5);
+            case Calendar.JUNE:
+                return context.getString(R.string.date_month_6);
+            case Calendar.JULY:
+                return context.getString(R.string.date_month_7);
+            case Calendar.AUGUST:
+                return context.getString(R.string.date_month_8);
+            case Calendar.SEPTEMBER:
+                return context.getString(R.string.date_month_9);
+            case Calendar.OCTOBER:
+                return context.getString(R.string.date_month_10);
+            case Calendar.NOVEMBER:
+                return context.getString(R.string.date_month_11);
+            case Calendar.DECEMBER:
+                return context.getString(R.string.date_month_12);
+            default:
+                return "";
+        }
     }
 
     @SuppressWarnings("deprecation")

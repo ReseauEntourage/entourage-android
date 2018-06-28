@@ -8,5 +8,6 @@
     <item name="about_version_layout" type="id" />
 
     <item name="tour_card_icon" type="id" />
+    <item name="tour_card_last_update_date" type="id" />
 
 </resources>

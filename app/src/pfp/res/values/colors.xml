@@ -100,6 +100,10 @@
     <!-- Action details screens -->
     <color name="feeditem_icon_background_stroke">@color/light_grey</color>
 
+    <!-- FeedItem card -->
+    <color name="feeditem_card_details_normal">@color/warm_grey</color>
+    <color name="feeditem_card_details_bold">@color/dark_grey</color>
+
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>

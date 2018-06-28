@@ -2,19 +2,19 @@ package social.entourage.android.newsfeed;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
@@ -29,11 +29,11 @@ import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
-import social.entourage.android.map.entourage.category.EntourageCategory;
-import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
+
+import static social.entourage.android.tools.Utils.getMonthAsString;
 
 /**
  * Created by mihaiionescu on 24/03/2017.
@@ -54,6 +54,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
     private View dividerLeft;
     private View dividerRight;
     private TextView lastMessageTextView;
+    private TextView lastUpdateDateTextView;
 
     private FeedItem feedItem;
 
@@ -81,6 +82,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         dividerLeft = itemView.findViewById(R.id.tour_card_divider_left);
         dividerRight = itemView.findViewById(R.id.tour_card_divider_right);
         lastMessageTextView = itemView.findViewById(R.id.tour_card_last_message);
+        lastUpdateDateTextView = itemView.findViewById(R.id.tour_card_last_update_date);
 
         onClickListener = new OnClickListener();
 
@@ -265,13 +267,41 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
                 lastMessageTextView.setText("");
             }
             lastMessageTextView.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
-            lastMessageTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.greyish) : res.getColor(R.color.black));
+            lastMessageTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.feeditem_card_details_normal) : res.getColor(R.color.feeditem_card_details_bold));
+        }
+
+        //last update date
+        if (lastUpdateDateTextView != null) {
+            Date lastUpdateDate = feedItem.getUpdatedTime();
+            lastUpdateDateTextView.setText(formatLastUpdateDate(lastUpdateDate));
+            lastUpdateDateTextView.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
+            lastUpdateDateTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.feeditem_card_details_normal) : res.getColor(R.color.feeditem_card_details_bold));
         }
 
     }
 
     protected boolean showCategoryIcon() {
         return true;
+    }
+
+    private String formatLastUpdateDate(Date date) {
+        if (date == null) return "";
+        Date now = new Date();
+        // for today, return the time part
+        if (now.getYear() == date.getYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
+            return DateFormat.format("H'h'mm", date).toString();
+        }
+        // check for yesterday
+        long sinceMidnight = now.getSeconds() * 1000 + now.getMinutes() * 60 * 1000 + now.getHours() * 60 * 60 * 1000;
+        long oneDay = 86400000L; // 24 hours in millis
+        if ( (now.getTime() - date.getTime()) < (oneDay + sinceMidnight) ) {
+            return context.getString(R.string.date_yesterday);
+        }
+        // other date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        String month = getMonthAsString(calendar.get(Calendar.MONTH), context);
+        return context.getString(R.string.date_format_short, calendar.get(Calendar.DAY_OF_MONTH), month);
     }
 
     //--------------------------
