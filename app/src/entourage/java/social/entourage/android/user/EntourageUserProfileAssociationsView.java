@@ -107,7 +107,7 @@ public class EntourageUserProfileAssociationsView extends RelativeLayout impleme
                         public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                             UserMembership userMembership = userNeighborhoodsAdapter.getItemAt(position);
                             if (userMembership != null) {
-                                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipId()));
+                                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipUUID(), null));
                             }
                         }
                     });
