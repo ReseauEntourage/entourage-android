@@ -129,10 +129,18 @@ public class TourInformationPresenter {
         }
     }
 
-    public void getFeedItemUsers() {
+    public void getFeedItemMembers() {
+        getFeedItemUsers(null);
+    }
+
+    public void getFeedItemJoinRequests() {
+        getFeedItemUsers("group_feed");
+    }
+
+    private void getFeedItemUsers(final String context) {
         fragment.showProgressBar();
         if (fragment.feedItem == null) {
-            fragment.onFeedItemUsersReceived(null);
+            fragment.onFeedItemUsersReceived(null, context);
             return;
         }
         int feedItemType = fragment.feedItem.getType();
@@ -142,38 +150,38 @@ public class TourInformationPresenter {
                 @Override
                 public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
                     if (response.isSuccessful()) {
-                        fragment.onFeedItemUsersReceived(response.body().getUsers());
+                        fragment.onFeedItemUsersReceived(response.body().getUsers(), context);
                     } else {
-                        fragment.onFeedItemUsersReceived(null);
+                        fragment.onFeedItemUsersReceived(null, context);
                     }
                 }
 
                 @Override
                 public void onFailure(final Call<TourUser.TourUsersWrapper> call, final Throwable t) {
-                    fragment.onFeedItemUsersReceived(null);
+                    fragment.onFeedItemUsersReceived(null, context);
                 }
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<TourUser.TourUsersWrapper> call = entourageRequest.retrieveEntourageUsers(fragment.feedItem.getUUID());
+            Call<TourUser.TourUsersWrapper> call = entourageRequest.retrieveEntourageUsers(fragment.feedItem.getUUID(), context);
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
                 public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
                     if (response.isSuccessful()) {
-                        fragment.onFeedItemUsersReceived(response.body().getUsers());
+                        fragment.onFeedItemUsersReceived(response.body().getUsers(), context);
                     } else {
-                        fragment.onFeedItemUsersReceived(null);
+                        fragment.onFeedItemUsersReceived(null, context);
                     }
                 }
 
                 @Override
                 public void onFailure(final Call<TourUser.TourUsersWrapper> call, final Throwable t) {
-                    fragment.onFeedItemUsersReceived(null);
+                    fragment.onFeedItemUsersReceived(null, context);
                 }
             });
         }
         else {
-            fragment.onFeedItemUsersReceived(null);
+            fragment.onFeedItemUsersReceived(null, context);
         }
     }
 

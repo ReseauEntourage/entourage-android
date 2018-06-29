@@ -28,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import butterknife.Optional;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -112,6 +113,7 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_profile_associations)
     UserAssociations userAssociations;
 
+    @Nullable
     @BindView(R.id.user_message_layout)
     View userMessageLayout;
 
@@ -246,7 +248,9 @@ public class UserFragment extends EntourageDialogFragment {
             }
 
             //User message layout is available only for the other users
-            userMessageLayout.setVisibility(isMyProfile ? View.GONE : View.VISIBLE);
+            if (userMessageLayout != null) {
+                userMessageLayout.setVisibility(isMyProfile ? View.GONE : View.VISIBLE);
+            }
         }
     }
 
@@ -369,9 +373,10 @@ public class UserFragment extends EntourageDialogFragment {
         userReportFragment.show(getFragmentManager(), UserReportFragment.TAG);
     }
 
+    @Optional
     @OnClick(R.id.user_message_button)
     protected void onMessageUserClicked() {
-        UserDiscussionFragment userDiscussionFragment = UserDiscussionFragment.newInstance(user);
+        UserDiscussionFragment userDiscussionFragment = UserDiscussionFragment.newInstance(user, false);
         userDiscussionFragment.show(getFragmentManager(), UserDiscussionFragment.TAG);
     }
 

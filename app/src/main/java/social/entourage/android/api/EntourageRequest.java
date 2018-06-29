@@ -49,9 +49,10 @@ public interface EntourageRequest {
             @Body Entourage.EntourageWrapper entourageWrapper
     );
 
-    @GET("entourages/{entourage_id}/users.json")
+    @GET("entourages/{entourage_id}/users")
     Call<TourUser.TourUsersWrapper> retrieveEntourageUsers(
-            @Path("entourage_id") String entourageUUID
+            @Path("entourage_id") String entourageUUID,
+            @Query("context") String context
     );
 
     @POST("entourages/{entourage_id}/users")

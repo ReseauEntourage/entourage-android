@@ -1410,7 +1410,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     private void loadPrivateCards() {
         if (presenter != null) {
-            presenter.getFeedItemUsers();
+            presenter.getFeedItemJoinRequests();
+            presenter.getFeedItemMembers();
             presenter.getFeedItemMessages();
             if (feedItem != null && feedItem.isMine()) {
                 presenter.getFeedItemEncounters();
@@ -1659,54 +1660,17 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
-    protected void onFeedItemUsersReceived(List<TourUser> tourUsers) {
+    protected synchronized void onFeedItemUsersReceived(List<TourUser> tourUsers, String context) {
         if (getActivity() == null || !isAdded()) return;
 
         if (tourUsers != null) {
-            membersList.clear();
-            List<TimestampedObject> timestampedObjectList = new ArrayList<>();
-            // iterate over the received users
-            for (final TourUser tourUser : tourUsers) {
-                if (tourUser == null) {
-                    continue;
-                }
-                // add the author to members list and skip it
-                if (tourUser.getUserId() == feedItem.getAuthor().getUserID()) {
-                    if (membersAdapter.findCard(tourUser) == null) {
-                        TourUser clone = tourUser.clone();
-                        clone.setDisplayedAsMember(true);
-                        membersList.add(clone);
-                    }
-                    continue;
-                }
-                //show only the accepted users
-                if (!tourUser.getStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED)) {
-                    // Remove the user from the members list, in case the user left the entourage
-                    membersAdapter.removeCard(tourUser);
-                    //show the pending and cancelled requests too (by skipping the others)
-                    if (!(tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING) || tourUser.getStatus().equals(FeedItem.JOIN_STATUS_CANCELLED))) {
-                        continue;
-                    }
-                }
-                tourUser.setFeedItem(feedItem);
-
-                // check if we already have this user
-                TourUser oldUser = (TourUser) discussionAdapter.findCard(tourUser);
-                if (oldUser != null && !oldUser.getStatus().equals(tourUser.getStatus())) {
-                    discussionAdapter.updateCard(tourUser);
-                } else {
-                    timestampedObjectList.add(tourUser);
-
-                    if (FeedItem.JOIN_STATUS_ACCEPTED.equals(tourUser.getStatus())) {
-                        TourUser clone = tourUser.clone();
-                        clone.setDisplayedAsMember(true);
-                        membersList.add(clone);
-                    }
-                }
+            if (context == null) {
+                // members
+                onFeedItemMembersReceived(tourUsers);
+            } else {
+                onFeedItemJoinRequestsReceived(tourUsers);
             }
-            feedItem.addCardInfoList(timestampedObjectList);
 
-            initializeMembersView();
         }
 
         //hide the progress bar
@@ -1714,6 +1678,64 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         //update the discussion list
         updateDiscussionList();
+    }
+
+    private void onFeedItemMembersReceived(List<TourUser> tourUsers) {
+        membersList.clear();
+        List<TimestampedObject> timestampedObjectList = new ArrayList<>();
+        // iterate over the received users
+        for (final TourUser tourUser : tourUsers) {
+            if (tourUser == null) {
+                continue;
+            }
+            //show only the accepted users
+            if (!tourUser.getStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED)) {
+                // Remove the user from the members list, in case the user left the entourage
+                membersAdapter.removeCard(tourUser);
+                //show the pending and cancelled requests too (by skipping the others)
+                if (!(tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING) || tourUser.getStatus().equals(FeedItem.JOIN_STATUS_CANCELLED))) {
+                    continue;
+                }
+            }
+            tourUser.setFeedItem(feedItem);
+            tourUser.setDisplayedAsMember(true);
+            membersList.add(tourUser);
+        }
+
+        initializeMembersView();
+    }
+
+    private void onFeedItemJoinRequestsReceived(List<TourUser> tourUsers) {
+        List<TimestampedObject> timestampedObjectList = new ArrayList<>();
+        // iterate over the received users
+        for (final TourUser tourUser : tourUsers) {
+            if (tourUser == null) {
+                continue;
+            }
+            // skip the author
+            if (tourUser.getUserId() == feedItem.getAuthor().getUserID()) {
+                continue;
+            }
+            //show only the accepted users
+            if (!tourUser.getStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED)) {
+                // Remove the user from the members list, in case the user left the entourage
+                membersAdapter.removeCard(tourUser);
+                //show the pending and cancelled requests too (by skipping the others)
+                if (!(tourUser.getStatus().equals(FeedItem.JOIN_STATUS_PENDING) || tourUser.getStatus().equals(FeedItem.JOIN_STATUS_CANCELLED))) {
+                    continue;
+                }
+            }
+            tourUser.setFeedItem(feedItem);
+
+            // check if we already have this user
+            TourUser oldUser = (TourUser) discussionAdapter.findCard(tourUser);
+            if (oldUser != null && !oldUser.getStatus().equals(tourUser.getStatus())) {
+                discussionAdapter.updateCard(tourUser);
+            } else {
+                timestampedObjectList.add(tourUser);
+            }
+        }
+        feedItem.addCardInfoList(timestampedObjectList);
     }
 
     protected void onFeedItemMessagesReceived(List<ChatMessage> chatMessageList) {

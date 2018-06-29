@@ -46,11 +46,14 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
 
     public static final String TAG = UserDiscussionFragment.class.getSimpleName();
 
+    private static final String KEY_SHOW_INFO_BUTTON = "UserDiscussionFragment.KEY_SHOW_INFO_BUTTON";
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
     private User otherUser;
+    private boolean showInfoButton;
 
     @BindView(R.id.user_discussion_icon)
     ImageView userPhoto;
@@ -81,10 +84,11 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
      * @param otherUser The other user of this discussion.
      * @return A new instance of fragment UserDiscussionFragment.
      */
-    public static UserDiscussionFragment newInstance(User otherUser) {
+    public static UserDiscussionFragment newInstance(User otherUser, boolean showInfoButton) {
         UserDiscussionFragment fragment = new UserDiscussionFragment();
         Bundle args = new Bundle();
         args.putSerializable(User.KEY_USER, otherUser);
+        args.putBoolean(KEY_SHOW_INFO_BUTTON, showInfoButton);
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,6 +98,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             otherUser = (User)getArguments().getSerializable(User.KEY_USER);
+            showInfoButton = getArguments().getBoolean(KEY_SHOW_INFO_BUTTON, true);
         }
     }
 
@@ -146,6 +151,12 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
         }
         //get the current discussion
         getDiscussion();
+
+        //info button
+        View infoButton = this.getView().findViewById(R.id.user_discussion_info);
+        if (infoButton != null) {
+            infoButton.setVisibility(showInfoButton ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void scrollToLastCard() {
