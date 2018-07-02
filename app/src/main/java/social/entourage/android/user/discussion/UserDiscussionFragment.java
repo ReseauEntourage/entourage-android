@@ -20,14 +20,23 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
+import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.tools.CropCircleTransformation;
@@ -172,10 +181,12 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
         dismiss();
     }
 
-    @OnClick(R.id.user_discussion_info)
+    @OnClick({R.id.user_discussion_info, R.id.user_discussion_icon, R.id.user_discussion_title})
     protected void onInfoButtonClicked() {
-        UserFragment userFragment = UserFragment.newInstance(otherUser.getId());
-        userFragment.show(getFragmentManager(), UserFragment.TAG);
+        if (showInfoButton) {
+            UserFragment userFragment = UserFragment.newInstance(otherUser.getId());
+            userFragment.show(getFragmentManager(), UserFragment.TAG);
+        }
     }
 
     @OnClick(R.id.user_discussion_comment_send_button)
@@ -194,18 +205,77 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private void getDiscussion() {
+        User.UserConversation userConversation = otherUser.getConversation();
+        if (userConversation == null ||  userConversation.getUUID() == null) return;
 
+        EntourageRequest entourageRequest = EntourageApplication.get().getEntourageComponent().getEntourageRequest();
+        if (entourageRequest == null) return;
+        Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveEntourageMessages(userConversation.getUUID());
+        call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
+            @Override
+            public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
+                if (response.isSuccessful()) {
+                    List<ChatMessage> chatMessageList = response.body().getChatMessages();
+                    //check who sent the message
+                    AuthenticationController authenticationController = EntourageApplication.get(getActivity()).getEntourageComponent().getAuthenticationController();
+                    if (authenticationController.isAuthenticated()) {
+                        int me = authenticationController.getUser().getId();
+                        for (final ChatMessage chatMessage : chatMessageList) {
+                            chatMessage.setIsMe(chatMessage.getUserId() == me);
+                        }
+                    }
+                    //add the messages to the adapter
+                    List<TimestampedObject> timestampedObjectList = new ArrayList<>();
+                    timestampedObjectList.addAll(chatMessageList);
+                    discussionAdapter.addItems(timestampedObjectList);
+                } else {
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), R.string.server_error, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<ChatMessage.ChatMessagesWrapper> call, final Throwable t) {
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void sendChatMessage(String message) {
+        User.UserConversation userConversation = otherUser.getConversation();
+        if (userConversation == null ||  userConversation.getUUID() == null) return;
+
         if (message == null || message.trim().length() == 0) {
             onChatMessageSent(null);
             return;
         }
-        //For now simulate sending a message
+        EntourageRequest entourageRequest = EntourageApplication.get().getEntourageComponent().getEntourageRequest();
+        if (entourageRequest == null) return;
+
         ChatMessage chatMessage = new ChatMessage(message);
         chatMessage.setCreationDate(new Date());
-        onChatMessageSent(chatMessage);
+        ChatMessage.ChatMessageWrapper chatMessageWrapper = new ChatMessage.ChatMessageWrapper();
+        chatMessageWrapper.setChatMessage(chatMessage);
+
+        Call<ChatMessage.ChatMessageWrapper> call = entourageRequest.chatMessage(userConversation.getUUID(), chatMessageWrapper);
+        call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
+            @Override
+            public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
+                if (response.isSuccessful()) {
+                    onChatMessageSent(response.body().getChatMessage());
+                } else {
+                    onChatMessageSent(null);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
+                onChatMessageSent(null);
+            }
+        });
     }
 
     private void onChatMessageSent(ChatMessage chatMessage) {

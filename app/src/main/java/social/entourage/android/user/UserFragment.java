@@ -247,9 +247,9 @@ public class UserFragment extends EntourageDialogFragment {
                 userAssociations.initUserAssociations(user, this);
             }
 
-            //User message layout is available only for the other users
+            //User message layout is available only for the other users, if the conversation field is set
             if (userMessageLayout != null) {
-                userMessageLayout.setVisibility(isMyProfile ? View.GONE : View.VISIBLE);
+                userMessageLayout.setVisibility(isMyProfile || user.getConversation() == null ? View.GONE : View.VISIBLE);
             }
         }
     }

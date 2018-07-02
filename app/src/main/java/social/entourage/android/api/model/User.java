@@ -81,6 +81,8 @@ public class User implements Serializable {
 
     private ArrayList<UserMembership.MembershipList> memberships;
 
+    private UserConversation conversation;
+
     @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
 
@@ -243,6 +245,10 @@ public class User implements Serializable {
         this.memberships = memberships;
     }
 
+    public UserConversation getConversation() {
+        return conversation;
+    }
+
     public boolean isEntourageDisclaimerShown() {
         return entourageDisclaimerShown;
     }
@@ -383,6 +389,20 @@ public class User implements Serializable {
                 return null;
             }
             return new User(id, email, displayName, stats, organization, token, avatarURL);
+        }
+    }
+
+    // ----------------------------------
+    // User Conversation
+    // ----------------------------------
+
+    public static class UserConversation {
+
+        @SerializedName("uuid")
+        private String UUID;
+
+        public String getUUID() {
+            return UUID;
         }
     }
 

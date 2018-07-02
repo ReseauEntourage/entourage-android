@@ -355,7 +355,8 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/user_message_button"

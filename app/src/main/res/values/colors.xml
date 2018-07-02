@@ -17,6 +17,7 @@
     <color name="silver">#c9c9ce</color>
     <color name="tomato">#ee3e3a</color>
     <color name="brownish_grey">#5d5d5d</color>
+    <color name="light_grey">#ededed</color>
 
     <color name="accent_alt">@color/accent</color>
     <color name="accent_alt_dark">@color/accent_dark</color>
