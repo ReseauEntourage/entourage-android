@@ -248,6 +248,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return null;
     }
 
+    public String getIconURL() {
+        return null;
+    }
+
     public boolean showHeatmapAsOverlay() {
         return true;
     }

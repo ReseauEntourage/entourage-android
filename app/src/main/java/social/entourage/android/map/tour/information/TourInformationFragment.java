@@ -63,6 +63,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
 import com.squareup.otto.Subscribe;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,6 +117,7 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.CropCircleTransformation;
 
 public class TourInformationFragment extends EntourageDialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
 
@@ -918,12 +920,22 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         // Initialize the header
         fragmentTitle.setText(feedItem.getTitle());
-        Drawable iconDrawable = feedItem.getIconDrawable(getContext());
-        if (iconDrawable == null) {
-            tourIcon.setVisibility(View.GONE);
-        } else {
+        String iconURL = feedItem.getIconURL();
+        if (iconURL != null) {
+            Picasso.with(getContext())
+                    .load(iconURL)
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .transform(new CropCircleTransformation())
+                    .into(tourIcon);
             tourIcon.setVisibility(View.VISIBLE);
-            tourIcon.setImageDrawable(iconDrawable);
+        } else {
+            Drawable iconDrawable = feedItem.getIconDrawable(getContext());
+            if (iconDrawable == null) {
+                tourIcon.setVisibility(View.GONE);
+            } else {
+                tourIcon.setVisibility(View.VISIBLE);
+                tourIcon.setImageDrawable(iconDrawable);
+            }
         }
 
         // update description

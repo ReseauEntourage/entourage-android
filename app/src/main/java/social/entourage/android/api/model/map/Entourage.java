@@ -35,6 +35,7 @@ public class Entourage extends FeedItem implements Serializable {
     public static final String TYPE_DEMAND = "ask_for_help";
     public static final String TYPE_PRIVATE_CIRCLE = "private_circle";
     public static final String TYPE_NEIGHBORHOOD = "neighborhood";
+    public static final String TYPE_CONVERSATION = "conversation";
 
     public static final String NEWSFEED_TYPE = "Entourage";
 
@@ -245,6 +246,9 @@ public class Entourage extends FeedItem implements Serializable {
         if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
             return AppCompatResources.getDrawable(context, R.drawable.ic_neighborhood);
         }
+        if (TYPE_CONVERSATION.equalsIgnoreCase(groupType)) {
+            return null;
+        }
         EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory(this);
         if (entourageCategory != null) {
             Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes()).mutate();
@@ -253,6 +257,17 @@ public class Entourage extends FeedItem implements Serializable {
             return categoryIcon;
         }
         return super.getIconDrawable(context);
+    }
+
+    @Override
+    public String getIconURL() {
+        if (TYPE_CONVERSATION.equalsIgnoreCase(groupType)) {
+            TourAuthor author = getAuthor();
+            if (author != null) {
+                return author.getAvatarURLAsString();
+            }
+        }
+        return super.getIconURL();
     }
 
     @Override

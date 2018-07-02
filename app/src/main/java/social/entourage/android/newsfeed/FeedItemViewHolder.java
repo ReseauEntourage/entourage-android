@@ -2,9 +2,13 @@ package social.entourage.android.newsfeed;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -39,7 +44,7 @@ import static social.entourage.android.tools.Utils.getMonthAsString;
  * Created by mihaiionescu on 24/03/2017.
  */
 
-public class FeedItemViewHolder extends BaseCardViewHolder {
+public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
 
     private TextView tourTitle;
     private ImageView tourIcon;
@@ -115,13 +120,37 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
             tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
             if (showCategoryIcon() && tourIcon == null) {
                 // add the icon for entourages
-                tourTitle.setCompoundDrawablesWithIntrinsicBounds(feedItem.getIconDrawable(context), null, null, null);
+                Picasso.with(context)
+                        .cancelRequest(this);
+                String iconURL = feedItem.getIconURL();
+                if (iconURL != null) {
+                    Picasso.with(context)
+                            .load(iconURL)
+                            .error(R.drawable.ic_user_photo_small)
+                            .transform(new CropCircleTransformation())
+                            .into(this);
+                    ;
+                } else {
+                    tourTitle.setCompoundDrawablesWithIntrinsicBounds(feedItem.getIconDrawable(context), null, null, null);
+                }
             }
         }
         //icon
         if (showCategoryIcon() && tourIcon != null) {
             // add the icon for entourages
-            tourIcon.setImageDrawable(feedItem.getIconDrawable(context));
+            Picasso.with(context)
+                    .cancelRequest(tourIcon);
+            String iconURL = feedItem.getIconURL();
+            if (iconURL != null) {
+                Picasso.with(context)
+                        .load(iconURL)
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(tourIcon);
+                ;
+            } else {
+                tourIcon.setImageDrawable(feedItem.getIconDrawable(context));
+            }
         }
 
         TourAuthor author = feedItem.getAuthor();
@@ -302,6 +331,28 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         calendar.setTime(date);
         String month = getMonthAsString(calendar.get(Calendar.MONTH), context);
         return context.getString(R.string.date_format_short, calendar.get(Calendar.DAY_OF_MONTH), month);
+    }
+
+    //--------------------------
+    // PICASSO TARGET IMPLEMENTATION
+    //--------------------------
+
+    @Override
+    public void onBitmapLoaded(final Bitmap bitmap, final Picasso.LoadedFrom from) {
+        int targetWidth = itemView.getResources().getDimensionPixelOffset(R.dimen.feeditem_icon_width);
+        int targetHeight = itemView.getResources().getDimensionPixelOffset(R.dimen.feeditem_icon_height);
+        BitmapDrawable drawable = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false));
+        tourTitle.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+    }
+
+    @Override
+    public void onBitmapFailed(final Drawable errorDrawable) {
+        tourTitle.setCompoundDrawablesWithIntrinsicBounds(errorDrawable, null, null, null);
+    }
+
+    @Override
+    public void onPrepareLoad(final Drawable placeHolderDrawable) {
+
     }
 
     //--------------------------

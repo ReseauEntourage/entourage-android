@@ -22,6 +22,9 @@
     <dimen name="announcement_icon_width">29dp</dimen>
     <dimen name="announcement_icon_height">29dp</dimen>
 
+    <dimen name="feeditem_icon_width">29dp</dimen>
+    <dimen name="feeditem_icon_height">29dp</dimen>
+
     <!-- Entourage padding -->
     <dimen name="entourage_padding_10">10dp</dimen>
 
