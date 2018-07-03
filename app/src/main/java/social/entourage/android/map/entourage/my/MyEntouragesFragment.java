@@ -2,12 +2,14 @@ package social.entourage.android.map.entourage.my;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -380,6 +382,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         if (card != null && card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
             entouragesAdapter.updateCard(card);
+
+            // if (presenter != null) presenter.getFeedItem(String.valueOf(joinableId), cardType);
         }
     }
 
@@ -496,6 +500,19 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             return;
         }
         entouragesAdapter.setInvitations(invitationList);
+    }
+
+    protected void onFeedItemReceived(FeedItem feedItem) {
+        if (getActivity() == null || !isAdded()) return;
+
+        hideProgressBar();
+        if (feedItem != null) {
+            TimestampedObject card = entouragesAdapter.findCard(feedItem);
+            if (card != null && card instanceof FeedItem) {
+                ((FeedItem)card).increaseBadgeCount();
+                entouragesAdapter.updateCard(feedItem);
+            }
+        }
     }
 
     // ----------------------------------

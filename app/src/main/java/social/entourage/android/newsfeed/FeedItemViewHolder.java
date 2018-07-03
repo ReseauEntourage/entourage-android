@@ -118,6 +118,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
         //title
         if (tourTitle != null) {
             tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
+            tourTitle.setTypeface(tourTitle.getTypeface(), feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
             if (showCategoryIcon() && tourIcon == null) {
                 // add the icon for entourages
                 Picasso.with(context)
@@ -297,6 +298,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
             } else {
                 lastMessageTextView.setText("");
             }
+            lastMessageTextView.setVisibility(lastMessageTextView.getText().length() == 0 ? View.GONE : View.VISIBLE);
             lastMessageTextView.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
             lastMessageTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.feeditem_card_details_normal) : res.getColor(R.color.feeditem_card_details_bold));
         }
