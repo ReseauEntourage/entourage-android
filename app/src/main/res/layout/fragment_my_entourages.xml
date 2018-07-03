@@ -86,9 +86,10 @@
     </com.github.clans.fab.FloatingActionMenu>
 
     <ProgressBar
+        android:id="@+id/myentourages_progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/myentourages_progressBar"
         android:layout_centerInParent="true"
-        android:indeterminate="true"/>
+        android:indeterminate="true"
+        android:visibility="gone"/>
 </RelativeLayout>

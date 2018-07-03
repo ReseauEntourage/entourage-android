@@ -164,7 +164,11 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         initializeView();
 
-        retrieveMyFeeds();
+        // retrieve the feeds if nothing was loaded
+        // the first item in the adapter is the invitations list, so we need to check starting with 1
+        if (entouragesAdapter != null && entouragesAdapter.getDataItemCount() <= 1) {
+            retrieveMyFeeds();
+        }
     }
 
     @Override
@@ -234,8 +238,10 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     private void initializeEntouragesView() {
+        if (entouragesAdapter == null) {
+            entouragesAdapter = new MyEntouragesAdapter();
+        }
         entouragesView.setLayoutManager(new LinearLayoutManager(getContext()));
-        entouragesAdapter = new MyEntouragesAdapter();
         entouragesAdapter.setViewHolderListener(this);
         entouragesView.setAdapter(entouragesAdapter);
     }
