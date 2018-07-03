@@ -38,10 +38,13 @@ import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.configuration.Configuration;
+import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
@@ -376,8 +379,12 @@ public class UserFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.user_message_button)
     protected void onMessageUserClicked() {
-        UserDiscussionFragment userDiscussionFragment = UserDiscussionFragment.newInstance(user, false);
-        userDiscussionFragment.show(getFragmentManager(), UserDiscussionFragment.TAG);
+//        UserDiscussionFragment userDiscussionFragment = UserDiscussionFragment.newInstance(user, false);
+//        userDiscussionFragment.show(getFragmentManager(), UserDiscussionFragment.TAG);
+        if (user.getConversation() == null) return;
+        TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(user.getConversation().getUUID(), FeedItem.ENTOURAGE_CARD, 0);
+        tourInformationFragment.setShowInfoButton(false);
+        tourInformationFragment.show(getFragmentManager(), TourInformationFragment.TAG);
     }
 
     // ----------------------------------

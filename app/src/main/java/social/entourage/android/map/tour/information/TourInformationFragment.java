@@ -250,6 +250,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     String requestedFeedItemShareURL;
     long invitationId;
     boolean acceptInvitationSilently = false;
+    boolean showInfoButton = true;
 
     Date oldestChatMessageDate = null;
     boolean needsMoreChatMessaged = true;
@@ -482,6 +483,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         return requestedFeedItemType;
     }
 
+    public void setShowInfoButton(final boolean showInfoButton) {
+        this.showInfoButton = showInfoButton;
+    }
+
     // ----------------------------------
     // Button Handling
     // ----------------------------------
@@ -500,7 +505,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     @Optional
-    @OnClick({R.id.tour_info_title, R.id.tour_card_arrow, R.id.tour_info_description_button})
+    @OnClick({R.id.tour_info_icon, R.id.tour_info_title, R.id.tour_card_arrow, R.id.tour_info_description_button})
     protected void onSwitchSections() {
         // Ignore if the entourage is not loaded or is public
         if (feedItem == null || !feedItem.isPrivate())
@@ -516,6 +521,15 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
+        }
+
+        // For conversation, open the author profile
+        if (FeedItem.ENTOURAGE_CARD == feedItem.getType() && Entourage.TYPE_CONVERSATION.equalsIgnoreCase(((Entourage)feedItem).getGroupType())) {
+            if (showInfoButton) {
+                // only if this screen wasn't shown from the profile page
+                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(feedItem.getAuthor().getUserID()));
+            }
+            return;
         }
 
         // Switch sections
@@ -1050,7 +1064,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         if (moreButton != null) moreButton.setVisibility(isPublicSectionVisible ? View.VISIBLE : View.GONE);
 
-        if (descriptionButton != null) descriptionButton.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
+        if (descriptionButton != null) descriptionButton.setVisibility(isPublicSectionVisible || !showInfoButton ? View.GONE : View.VISIBLE);
 
         if (invitationId > 0) {
             if (moreButton != null) moreButton.setVisibility(View.GONE);
