@@ -124,6 +124,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                         .cancelRequest(this);
                 String iconURL = feedItem.getIconURL();
                 if (iconURL != null) {
+                    tourTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     Picasso.with(context)
                             .load(iconURL)
                             .error(R.drawable.ic_user_photo_small)
@@ -142,6 +143,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                     .cancelRequest(tourIcon);
             String iconURL = feedItem.getIconURL();
             if (iconURL != null) {
+                tourIcon.setImageDrawable(null);
                 Picasso.with(context)
                         .load(iconURL)
                         .placeholder(R.drawable.ic_user_photo_small)
