@@ -38,7 +38,7 @@ public class MapFilter {
     public boolean onlyMyEntourages = false;
     public boolean onlyMyPartnerEntourages = false;
 
-    public int timeframe = DAYS_2;
+    public int timeframe = DAYS_3;
 
     // ----------------------------------
     // Lifecycle
