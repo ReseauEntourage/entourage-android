@@ -39,7 +39,7 @@
             android:layout_marginRight="@dimen/entourage_padding_10"
             android:gravity="center_horizontal"
             android:text="@string/user_report_explanation"
-            android:textColor="@color/greyish_brown"
+            android:textColor="@color/report_user_explanation"
             android:textSize="@dimen/entourage_font_large"/>
 
         <TextView

@@ -48,6 +48,7 @@
     <color name="background_user_content">@color/white</color>
     <color name="profile_name">@color/greyish_brown</color>
     <color name="profile_role_text">@color/white</color>
+    <color name="report_user_explanation">@color/tomato</color>
 
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>
