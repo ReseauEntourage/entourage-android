@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="myentourages_no_items_background">@color/background_accent_dark_translucent</color>
+    <color name="myentourages_no_items_title">@color/text_dark</color>
+    <color name="myentourages_no_items_details">@color/greyish_brown</color>
+</resources>

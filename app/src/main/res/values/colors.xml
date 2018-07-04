@@ -34,7 +34,7 @@
     <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
     <color name="background_transparent">#66000000</color>
-    <color name="background_accent_dark_translucent">#14025e7f</color>
+    <color name="background_accent_dark_translucent">@color/pale_grey</color>
 
     <!-- Login -->
     <color name="background_login_light">#FFFFFF</color>

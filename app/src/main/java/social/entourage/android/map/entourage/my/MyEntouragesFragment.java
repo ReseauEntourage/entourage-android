@@ -104,6 +104,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     MyEntouragesAdapter entouragesAdapter;
 
+    @BindView(R.id.myentourages_layout_no_items)
+    View noItemsView;
+
     @BindView(R.id.myentourages_progressBar)
     ProgressBar progressBar;
 
@@ -168,9 +171,10 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
         // retrieve the feeds if nothing was loaded
         // the first item in the adapter is the invitations list, so we need to check starting with 1
-        if (entouragesAdapter != null && entouragesAdapter.getDataItemCount() <= 1) {
-            retrieveMyFeeds();
-        }
+        //if (entouragesAdapter != null && entouragesAdapter.getDataItemCount() <= 1) {
+        //    retrieveMyFeeds();
+        //}
+        refreshMyFeeds();
     }
 
     @Override
@@ -485,6 +489,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             if (entouragesPagination != null) {
                 entouragesPagination.loadedItems(newsfeedList.size());
             }
+        } else {
+            noItemsView.setVisibility(entouragesAdapter.getDataItemCount() == 0 ? View.VISIBLE : View.GONE);
         }
     }
 

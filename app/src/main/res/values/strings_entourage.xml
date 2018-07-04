@@ -81,6 +81,9 @@
     <string name="myentourages_all">Tous les messages</string>
     <string name="myentourages_unread">Non lus</string>
 
+    <string name="myentourages_no_items_title">Vous n\'avez pas encore de messages…</string>
+    <string name="myentourages_no_items_details">Demandez à rejoindre des sorties, devenez membre validé de Voisin-Age et vous retrouverez alors vos conversations avec les membres du réseau Voisin-Age ici</string>
+
     <!-- My Entourages Filter -->
     <string name="myentourages_filter_entourages_title">Montrer</string>
     <string name="myentourages_filter_active">Actifs</string>
