@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Entourage Card -->
+    <string name="entourage_type_private_circle">voisinage</string>
+
     <!-- Share Entourage -->
     <string name="entourage_share_link">@string/contact_email</string>
     <string name="entourage_share_text_author">Le réseau Voisin-Age est une communauté de voisins qui créent des liens intergénérationnels. Pour rejoindre le réseau, contactez %1$s</string>

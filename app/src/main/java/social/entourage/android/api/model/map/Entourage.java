@@ -206,7 +206,7 @@ public class Entourage extends FeedItem implements Serializable {
     @Override
     public String getFeedTypeLong(Context context) {
         if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
-            return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));
+            return context.getString(R.string.entourage_type_neighborhood);
         }
         if (entourageType != null) {
             if (TYPE_DEMAND.equals(entourageType)) {
@@ -217,6 +217,18 @@ public class Entourage extends FeedItem implements Serializable {
             }
         }
         return "";
+    }
+
+    @Override
+    public int getFeedTypeColor() {
+        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return R.color.action_type_neighborhood;
+        }
+        EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory(this);
+        if (entourageCategory != null) {
+            return entourageCategory.getTypeColorRes();
+        }
+        return super.getFeedTypeColor();
     }
 
     @Override
@@ -292,6 +304,14 @@ public class Entourage extends FeedItem implements Serializable {
             return false;
         }
         return super.canBeClosed();
+    }
+
+    @Override
+    public boolean showAuthor() {
+        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return false;
+        }
+        return super.showAuthor();
     }
 
     // ----------------------------------

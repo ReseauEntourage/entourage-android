@@ -46,6 +46,7 @@
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
     <string name="entourage_type_contribution">Contribution</string>
+    <string name="entourage_type_neighborhood">voisinage</string>
     <string name="entourage_type_format">%1$s par\u0020</string>
     
     <!-- Entourage Location -->

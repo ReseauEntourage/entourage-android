@@ -8,7 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +26,6 @@ import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
@@ -41,7 +40,7 @@ import social.entourage.android.view.PartnerLogoImageView;
 import static social.entourage.android.tools.Utils.getMonthAsString;
 
 /**
- * Created by mihaiionescu on 24/03/2017.
+ * Created by Mihai Ionescu on 24/03/2017.
  */
 
 public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
@@ -84,8 +83,6 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
         badgeCountView = itemView.findViewById(R.id.tour_card_badge_count);
         numberOfPeopleTextView = itemView.findViewById(R.id.tour_card_people_count);
         actButton = itemView.findViewById(R.id.tour_card_button_act);
-        dividerLeft = itemView.findViewById(R.id.tour_card_divider_left);
-        dividerRight = itemView.findViewById(R.id.tour_card_divider_right);
         lastMessageTextView = itemView.findViewById(R.id.tour_card_last_message);
         lastUpdateDateTextView = itemView.findViewById(R.id.tour_card_last_update_date);
 
@@ -131,7 +128,6 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                             .error(R.drawable.ic_user_photo_small)
                             .transform(new CropCircleTransformation())
                             .into(this);
-                    ;
                 } else {
                     tourTitle.setCompoundDrawablesWithIntrinsicBounds(feedItem.getIconDrawable(context), null, null, null);
                 }
@@ -150,7 +146,6 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                         .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
                         .into(tourIcon);
-                ;
             } else {
                 tourIcon.setImageDrawable(feedItem.getIconDrawable(context));
             }
@@ -203,10 +198,18 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                 tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), feedItem.getAuthor().getUserName()));
             }
         }
+        if (!feedItem.showAuthor()) {
+            if (tourAuthor != null) tourAuthor.setText("");
+            if (photoView != null) photoView.setImageDrawable(null);
+            if (partnerLogoView != null) partnerLogoView.setImageDrawable(null);
+        }
 
         //Feed Item type
         if (tourTypeTextView != null) {
             tourTypeTextView.setText(feedItem.getFeedTypeLong(context));
+            if (feedItem.getFeedTypeColor() != 0) {
+                tourTypeTextView.setTextColor(ContextCompat.getColor(context, feedItem.getFeedTypeColor()));
+            }
         }
 
         if (tourLocation != null) {
@@ -217,9 +220,9 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
             }
 
             if (distanceAsString.equalsIgnoreCase("")) {
-                tourLocation.setText(String.format(res.getString(R.string.tour_cell_location_no_distance), Tour.getStringDiffToNow(feedItem.getStartTime())));
+                tourLocation.setText("");
             } else {
-                tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
+                tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), distanceAsString));
             }
         }
 
@@ -281,13 +284,12 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                     actButton.setText(R.string.tour_cell_button_view);
                     actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     dividerColor = R.color.greyish;
-                    textColor = R.color.greyish_brown;
                 }
             }
             actButton.setTextColor(res.getColor(textColor));
 
-            dividerLeft.setBackgroundResource(dividerColor);
-            dividerRight.setBackgroundResource(dividerColor);
+            if (dividerLeft != null) dividerLeft.setBackgroundResource(dividerColor);
+            if (dividerRight != null) dividerRight.setBackgroundResource(dividerColor);
         }
 
         //last message

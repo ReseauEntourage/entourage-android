@@ -3,6 +3,7 @@ package social.entourage.android.api.model.map;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 
 import com.google.gson.annotations.Expose;
@@ -260,7 +261,11 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return R.drawable.heat_zone;
     }
 
+    public int getFeedTypeColor() {return 0;}
+
     public boolean canBeClosed() { return true; }
+
+    public boolean showAuthor() { return true; }
 
     @Override
     public void copyLocalFields(final TimestampedObject other) {

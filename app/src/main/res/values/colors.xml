@@ -84,6 +84,9 @@
     <color name="tour_type_social">#97d791</color>
     <color name="tour_type_distributive">#ffc57f</color>
 
+    <!-- Action types -->
+    <color name="action_type_neighborhood">#025E7F</color>
+
     <!-- Partner Logo -->
     <color name="partner_logo_background">@color/background</color>
     <color name="partner_logo_transparent">#00000000</color>
