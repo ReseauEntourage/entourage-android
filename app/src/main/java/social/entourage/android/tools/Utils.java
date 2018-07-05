@@ -1,14 +1,23 @@
 package social.entourage.android.tools;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.util.Patterns;
+
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.Entourage;
 
 /**
  * Created by mihaiionescu on 27/07/16.
@@ -118,5 +127,32 @@ public class Utils {
             result = Html.fromHtml(html);
         }
         return result;
+    }
+
+    /**
+     * Creates a {@link BitmapDescriptor} from  a drawable, preserving the original ratio.
+     *
+     * @param drawable The drawable that should be a {@link BitmapDescriptor}.
+     * @param dstWidth Destination width
+     * @param dstHeight Destination height
+     * @return The created {@link BitmapDescriptor}.
+     */
+    @NonNull
+    public static BitmapDescriptor getBitmapDescriptorFromDrawable(@NonNull Drawable drawable, int dstWidth, int dstHeight) {
+        BitmapDescriptor bitmapDescriptor;
+        // Usually the pin could be loaded via BitmapDescriptorFactory directly.
+        // The target map_pin is a VectorDrawable which is currently not supported
+        // within BitmapDescriptors.
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        drawable.setBounds(0, 0, width, height);
+        Bitmap markerBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(markerBitmap);
+        drawable.draw(canvas);
+        float scale = Math.max(width / (float) dstWidth, height / (float) dstHeight);
+        if (scale <= 0) scale = 1;
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(markerBitmap, (int) (width / scale), (int) (height / scale), false);
+        bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(scaledBitmap);
+        return bitmapDescriptor;
     }
 }

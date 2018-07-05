@@ -118,6 +118,7 @@ import social.entourage.android.map.tour.information.discussion.DiscussionAdapte
 import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
+import social.entourage.android.tools.Utils;
 
 public class TourInformationFragment extends EntourageDialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
 
@@ -1204,10 +1205,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                             googleMap.addGroundOverlay(groundOverlayOptions);
                         } else {
                             // add marker
-                            BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(feedItem.getHeatmapResourceId());
-                            Bitmap b = bitmapdraw.getBitmap();
-                            Bitmap scalledMarker = Bitmap.createScaledBitmap(b, (int)Entourage.HEATMAP_SIZE/2, (int)Entourage.HEATMAP_SIZE/2, false);
-                            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(scalledMarker);
+                            Drawable drawable = getResources().getDrawable(feedItem.getHeatmapResourceId());
+                            BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, (int) Entourage.HEATMAP_SIZE / 2, (int) Entourage.HEATMAP_SIZE / 2);
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .icon(icon)
                                     .position(position)

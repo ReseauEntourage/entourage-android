@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_neighborhood_oval" />
+    <item>
+        <inset
+            android:drawable="@drawable/ic_neighborhood"
+            android:insetTop="5dp"
+            android:insetLeft="5dp"
+            android:insetRight="5dp"
+            android:insetBottom="30dp"
+            />
+    </item>
+</layer-list>

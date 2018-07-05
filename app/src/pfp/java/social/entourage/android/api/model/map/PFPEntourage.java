@@ -40,7 +40,7 @@ public class PFPEntourage extends Entourage implements Serializable {
     @Override
     public int getHeatmapResourceId() {
         if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
-            return R.drawable.ic_heart;
+            return R.drawable.ic_private_circle_pin;
         }
         return super.getHeatmapResourceId();
     }

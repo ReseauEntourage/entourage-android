@@ -21,7 +21,6 @@ import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
@@ -228,7 +227,7 @@ public class MapPresenter {
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
         final Map<Marker, Encounter> encounterMarkerHashMap = new HashMap<>();
-        final Map<Marker, Tour> tourMarkerHashMap = new HashMap<>();
+        final Map<Marker, FeedItem> markerFeedItemHashMap = new HashMap<>();
 
         public void addEncounterMarker(Marker marker, Encounter encounter) {
             encounterMarkerHashMap.put(marker, encounter);
@@ -247,13 +246,13 @@ public class MapPresenter {
             return marker;
         }
 
-        public void addTourMarker(Marker marker, Tour tour) {
-            tourMarkerHashMap.put(marker, tour);
+        public void addTourMarker(Marker marker, FeedItem feedItem) {
+            markerFeedItemHashMap.put(marker, feedItem);
         }
 
         public void clear() {
             encounterMarkerHashMap.clear();
-            tourMarkerHashMap.clear();
+            markerFeedItemHashMap.clear();
         }
 
         @Override
@@ -261,8 +260,16 @@ public class MapPresenter {
             LatLng markerPosition = marker.getPosition();
             if (encounterMarkerHashMap.get(marker) != null) {
                 openEncounter(encounterMarkerHashMap.get(marker));
-            } else if (tourMarkerHashMap.get(marker) != null) {
-                openFeedItem(tourMarkerHashMap.get(marker), 0, 0);
+            } else if (markerFeedItemHashMap.get(marker) != null) {
+                FeedItem feedItem = markerFeedItemHashMap.get(marker);
+                if (FeedItem.TOUR_CARD == feedItem.getType()) {
+                    openFeedItem(feedItem, 0, 0);
+                }
+                else {
+                    if (fragment != null) {
+                        fragment.handleHeatzoneClick(markerPosition);
+                    }
+                }
             }
             return false;
         }
@@ -270,10 +277,10 @@ public class MapPresenter {
 
     public class OnEntourageGroundOverlayClickListener implements GoogleMap.OnGroundOverlayClickListener {
 
-        final Map<LatLng, Entourage> entourageMarkerHashMap = new HashMap<>();
+        final Map<LatLng, FeedItem> entourageMarkerHashMap = new HashMap<>();
 
-        public void addEntourageGroundOverlay(LatLng markerPosition, Entourage entourage) {
-            entourageMarkerHashMap.put(markerPosition, entourage);
+        public void addEntourageGroundOverlay(LatLng markerPosition, FeedItem feedItem) {
+            entourageMarkerHashMap.put(markerPosition, feedItem);
         }
 
         public void clear() {

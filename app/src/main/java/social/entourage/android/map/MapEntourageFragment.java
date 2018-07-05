@@ -8,8 +8,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -120,6 +124,7 @@ import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.Utils;
 
 import static social.entourage.android.Constants.EVENT_SCREEN_06_1;
 import static social.entourage.android.Constants.EVENT_SCREEN_06_2;
@@ -2122,23 +2127,36 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    private void drawNearbyEntourage(Entourage entourage) {
-        if (map != null && markersMap != null && entourage != null) {
-            if (entourage.getLocation() != null) {
-                if (markersMap.get(entourage.hashString()) == null) {
-                    LatLng position = entourage.getLocation().getLocation();
-                    if (heatmapIcon == null) {
-                        heatmapIcon = BitmapDescriptorFactory.fromResource(R.drawable.heat_zone);
-                    }
-                    GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
-                        .image(heatmapIcon)
-                        .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
-                        .clickable(true)
-                        .anchor(0.5f, 0.5f);
+    private void drawNearbyEntourage(FeedItem feedItem) {
+        if (map != null && markersMap != null && feedItem != null) {
+            if (feedItem.getStartPoint() != null) {
+                if (markersMap.get(feedItem.hashString()) == null) {
+                    LatLng position = feedItem.getStartPoint().getLocation();
+                    if (feedItem.showHeatmapAsOverlay()) {
+                        heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId());
+                        GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
+                                .image(heatmapIcon)
+                                .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
+                                .clickable(true)
+                                .anchor(0.5f, 0.5f);
 
-                    markersMap.put(entourage.hashString(), map.addGroundOverlay(groundOverlayOptions));
-                    if (presenter != null) {
-                        presenter.getOnGroundOverlayClickListener().addEntourageGroundOverlay(position, entourage);
+                        markersMap.put(feedItem.hashString(), map.addGroundOverlay(groundOverlayOptions));
+                        if (presenter != null) {
+                            presenter.getOnGroundOverlayClickListener().addEntourageGroundOverlay(position, feedItem);
+                        }
+                    } else {
+                        // add marker
+                        Drawable drawable = getResources().getDrawable(feedItem.getHeatmapResourceId());
+                        BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, (int) Entourage.HEATMAP_SIZE / 2, (int) Entourage.HEATMAP_SIZE / 2);
+                        MarkerOptions markerOptions = new MarkerOptions()
+                                    .icon(icon)
+                                    .position(position)
+                                    .draggable(false)
+                                    .anchor(0.5f, 0.5f);
+                        Marker marker = map.addMarker(markerOptions);
+                        if (presenter != null) {
+                            presenter.getOnClickListener().addTourMarker(marker, feedItem);
+                        }
                     }
                 }
             }
