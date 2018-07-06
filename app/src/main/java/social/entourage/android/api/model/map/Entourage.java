@@ -293,7 +293,7 @@ public class Entourage extends FeedItem implements Serializable {
     @Override
     public int getHeatmapResourceId() {
         if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
-            return R.drawable.ic_neighborhood_pin;
+            return R.drawable.ic_neighborhood;
         }
         return super.getHeatmapResourceId();
     }
