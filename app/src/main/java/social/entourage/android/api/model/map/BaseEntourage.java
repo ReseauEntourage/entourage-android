@@ -19,9 +19,9 @@ import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 
 /**
- * Created by mihaiionescu on 28/04/16.
+ * Created by Mihai Ionescu on 06/07/2018.
  */
-public class Entourage extends FeedItem implements Serializable {
+public class BaseEntourage extends FeedItem implements Serializable {
 
     // ----------------------------------
     // Constants
@@ -68,11 +68,11 @@ public class Entourage extends FeedItem implements Serializable {
     // CONSTRUCTORS
     // ----------------------------------
 
-    public Entourage() {
+    public BaseEntourage() {
         super();
     }
 
-    public Entourage(String entourageType, String category, String title, String description, TourPoint location) {
+    public BaseEntourage(String entourageType, String category, String title, String description, TourPoint location) {
         super();
         this.entourageType = entourageType;
         this.category = category;
@@ -149,7 +149,7 @@ public class Entourage extends FeedItem implements Serializable {
         return STATUS_CLOSED.equals(status);
     }
 
-    public boolean isSame(Entourage entourage) {
+    public boolean isSame(BaseEntourage entourage) {
         if (entourage == null) return false;
         if (id != entourage.id) return false;
         if (!status.equals(entourage.status)) return false;
@@ -373,4 +373,5 @@ public class Entourage extends FeedItem implements Serializable {
         }
 
     }
+
 }

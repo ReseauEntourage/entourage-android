@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.PFPEntourage;
 import social.entourage.android.api.model.map.UserMembership;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.ItemClickSupport;

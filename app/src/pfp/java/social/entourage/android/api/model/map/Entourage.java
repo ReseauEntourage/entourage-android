@@ -2,10 +2,7 @@ package social.entourage.android.api.model.map;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
-
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -15,7 +12,24 @@ import social.entourage.android.R;
  * PFP Entourage
  * Created by Mihai Ionescu on 05/06/2018.
  */
-public class PFPEntourage extends Entourage implements Serializable {
+public class Entourage extends BaseEntourage implements Serializable {
+
+    // ----------------------------------
+    // Constants
+    // ----------------------------------
+
+    private static final long serialVersionUID = -7858700650513499498L;
+
+    // ----------------------------------
+    // Constructors
+    // ----------------------------------
+
+    public Entourage() {
+    }
+
+    public Entourage(final String entourageType, final String category, final String title, final String description, final TourPoint location) {
+        super(entourageType, category, title, description, location);
+    }
 
     // ----------------------------------
     // FeedItem overrides

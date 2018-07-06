@@ -9,6 +9,7 @@ import java.util.List;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Entourage;
 
 /**
@@ -81,7 +82,7 @@ public class EntourageCategoryManager {
         return entourageCategoriesHashMap.get(categoryType);
     }
 
-    public EntourageCategory findCategory(Entourage entourage) {
+    public EntourageCategory findCategory(BaseEntourage entourage) {
         if (entourage == null) return null;
         return findCategory(entourage.getEntourageType(), entourage.getCategory());
     }
