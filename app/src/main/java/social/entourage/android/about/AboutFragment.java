@@ -150,4 +150,13 @@ public class AboutFragment extends EntourageDialogFragment {
             drawerActivity.showTutorial();
         }
     }
+
+    @Optional
+    @OnClick(R.id.about_privacy_layout)
+    protected void onPrivacyClicked() {
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+            drawerActivity.showWebViewForLinkId(Constants.PRIVACY_LINK_ID);
+        }
+    }
 }

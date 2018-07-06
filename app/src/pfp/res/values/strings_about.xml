@@ -1,3 +1,4 @@
 <resources>
     <string name="about_version">Version de l’application</string>
+    <string name="about_privacy">Politique de Confidentialité</string>
 </resources>

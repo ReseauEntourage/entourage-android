@@ -23,6 +23,7 @@ public class Constants {
     public static final String AMBASSADOR_ID = "volunteering";
     public static final String PROPOSE_POI_ID = "propose-poi";
     public static final String TERMS_LINK_ID = "terms";
+    public static final String PRIVACY_LINK_ID = "privacy-policy";
 
     // Analytics events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
