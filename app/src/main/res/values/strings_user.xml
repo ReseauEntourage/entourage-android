@@ -28,6 +28,8 @@
     <string name="user_about_hint">Présentez-vous à la communauté en quelques mots !</string>
     <string name="user_about_edit_button">Écrire ma présentation</string>
     <string name="user_message_button">lui écrire</string>
+    <string name="user_photo_edit"><u>changer ma photo</u></string>
+    <string name="user_about_edit"><u>editer</u></string>
 
     <string name="user_retrieval_error">Erreur de récupération du profil</string>
 

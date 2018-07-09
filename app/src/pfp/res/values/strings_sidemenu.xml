@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="action_edit_profile"><u>modifier mon profil</u></string>
     <string name="action_update_info">Mettre à jour une information sur une personne que je voisine</string>
     <string name="action_contact">Contacter l\'équipe Voisin-Age</string>
     <string name="action_feedback">Donnez vos retours rapides</string>

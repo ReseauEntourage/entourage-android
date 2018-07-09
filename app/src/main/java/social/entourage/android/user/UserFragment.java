@@ -49,7 +49,9 @@ import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.discussion.UserDiscussionFragment;
+import social.entourage.android.user.edit.UserEditAboutFragment;
 import social.entourage.android.user.edit.UserEditFragment;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.report.UserReportFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 
@@ -81,6 +83,10 @@ public class UserFragment extends EntourageDialogFragment {
 
     @BindView(R.id.user_photo)
     ImageView userPhoto;
+
+    @Nullable
+    @BindView(R.id.user_photo_button)
+    TextView userPhotoEdit;
 
     @BindView(R.id.user_partner_logo)
     PartnerLogoImageView userPartnerLogo;
@@ -233,6 +239,7 @@ public class UserFragment extends EntourageDialogFragment {
             } else {
                 userPartnerLogo.setImageDrawable(null);
             }
+            if (userPhotoEdit != null) userPhotoEdit.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
             userName.setText(user.getDisplayName());
             userName.setRoles(user.getRoles());
@@ -285,6 +292,13 @@ public class UserFragment extends EntourageDialogFragment {
         if (presenter != null) {
             presenter.updateUser(user);
         }
+    }
+
+    public User getEditedUser() {
+        if (user != null) {
+            return user.clone();
+        }
+        return null;
     }
 
     // ----------------------------------
@@ -385,6 +399,20 @@ public class UserFragment extends EntourageDialogFragment {
         TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(user.getConversation().getUUID(), FeedItem.ENTOURAGE_CARD, 0);
         tourInformationFragment.setShowInfoButton(false);
         tourInformationFragment.show(getFragmentManager(), TourInformationFragment.TAG);
+    }
+
+    @Optional
+    @OnClick(R.id.user_photo_button)
+    protected void onPhotoEditClicked() {
+        PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+        fragment.show(getFragmentManager(), PhotoChooseSourceFragment.TAG);
+    }
+
+    @Optional
+    @OnClick(R.id.user_about_edit_button)
+    protected void onAboutEditClicked() {
+        UserEditAboutFragment editAboutFragment = new UserEditAboutFragment();
+        editAboutFragment.show(getFragmentManager(), UserEditAboutFragment.TAG);
     }
 
     // ----------------------------------

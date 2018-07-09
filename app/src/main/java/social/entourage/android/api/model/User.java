@@ -396,7 +396,9 @@ public class User implements Serializable {
     // User Conversation
     // ----------------------------------
 
-    public static class UserConversation {
+    public static class UserConversation implements Serializable {
+
+        private static final long serialVersionUID = -2040655965839688879L;
 
         @SerializedName("uuid")
         private String UUID;

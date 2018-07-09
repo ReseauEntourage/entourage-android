@@ -15,7 +15,7 @@ public class Configuration extends BaseConfiguration {
     }
 
     private Configuration() {
-        showUserEditProfile = false;
+        showUserEditProfile = true;
         showEditEntourageView = false;
         showInviteView = false;
     }

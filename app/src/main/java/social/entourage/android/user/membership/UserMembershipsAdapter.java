@@ -48,9 +48,11 @@ public class UserMembershipsAdapter extends RecyclerView.Adapter {
     }
 
     private ArrayList<UserMembership> membershipList;
+    private String membershipType;
 
     public UserMembershipsAdapter(ArrayList<UserMembership> membershipList, String type) {
         this.membershipList = membershipList;
+        this.membershipType = type;
         for (UserMembership userMembership:this.membershipList) {
             userMembership.setType(type);
         }
@@ -78,6 +80,9 @@ public class UserMembershipsAdapter extends RecyclerView.Adapter {
 
     public void setMembershipList(ArrayList<UserMembership> membershipList) {
         this.membershipList = membershipList;
+        for (UserMembership userMembership:this.membershipList) {
+            userMembership.setType(membershipType);
+        }
         notifyDataSetChanged();
     }
 
