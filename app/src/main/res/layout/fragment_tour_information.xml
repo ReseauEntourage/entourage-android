@@ -28,7 +28,7 @@
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
             android:tint="@color/feeditem_details_topbar_tint"
-            app:srcCompat="@drawable/ic_action_back"/>
+            app:srcCompat="@drawable/ic_back"/>
 
         <ImageView
             android:id="@+id/tour_info_icon"

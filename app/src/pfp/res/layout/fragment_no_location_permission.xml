@@ -13,7 +13,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/empty_description"
         android:padding="5dp"
-        app:srcCompat="@drawable/ic_action_back"/>
+        app:srcCompat="@drawable/ic_back"/>
 
     <ImageView
         android:id="@+id/no_location_logo"
