@@ -11,7 +11,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
@@ -36,6 +39,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
     public static final String TYPE_PRIVATE_CIRCLE = "private_circle";
     public static final String TYPE_NEIGHBORHOOD = "neighborhood";
     public static final String TYPE_CONVERSATION = "conversation";
+    public static final String TYPE_OUTING = "outing";
 
     public static final String NEWSFEED_TYPE = "Entourage";
 
@@ -62,6 +66,8 @@ public class BaseEntourage extends FeedItem implements Serializable {
     private String description;
 
     private TourPoint location;
+
+    private Metadata metadata;
 
 
     // ----------------------------------
@@ -141,6 +147,10 @@ public class BaseEntourage extends FeedItem implements Serializable {
         this.groupType = groupType;
     }
 
+    public Metadata getMetadata() {
+        return metadata;
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -208,6 +218,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
         if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
             return context.getString(R.string.entourage_type_neighborhood);
         }
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            return context.getString(R.string.entourage_type_outing);
+        }
         if (entourageType != null) {
             if (TYPE_DEMAND.equals(entourageType)) {
                 return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));
@@ -223,6 +236,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
     public int getFeedTypeColor() {
         if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
             return R.color.action_type_neighborhood;
+        }
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            return R.color.action_type_outing;
         }
         EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory(this);
         if (entourageCategory != null) {
@@ -261,6 +277,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
         if (TYPE_CONVERSATION.equalsIgnoreCase(groupType)) {
             return null;
         }
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            return AppCompatResources.getDrawable(context, R.drawable.ic_action_outing);
+        }
         EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory(this);
         if (entourageCategory != null) {
             Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes()).mutate();
@@ -284,7 +303,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     @Override
     public boolean showHeatmapAsOverlay() {
-        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+        if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType) || TYPE_OUTING.equalsIgnoreCase(groupType)) {
             return false;
         }
         return super.showHeatmapAsOverlay();
@@ -294,6 +313,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
     public int getHeatmapResourceId() {
         if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
             return R.drawable.ic_neighborhood;
+        }
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            return R.drawable.ic_action_outing;
         }
         return super.getHeatmapResourceId();
     }
@@ -339,22 +361,8 @@ public class BaseEntourage extends FeedItem implements Serializable {
     }
 
     // ----------------------------------
-    // WRAPPERS
+    // INNER CLASSES
     // ----------------------------------
-
-    public static class EntourageWrapper {
-
-        private Entourage entourage;
-
-        public Entourage getEntourage() {
-            return entourage;
-        }
-
-        public void setEntourage(final Entourage entourage) {
-            this.entourage = entourage;
-        }
-
-    }
 
     public static class EntourageJoinInfo {
 
@@ -370,6 +378,47 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
         public void setDistance(final Integer distance) {
             this.distance = distance;
+        }
+
+    }
+
+    public static class Metadata implements Serializable {
+
+        @SerializedName("starts_at")
+        private Date startDate;
+
+        @SerializedName("display_address")
+        private String displayAddress;
+
+        public Date getStartDate() {
+            return startDate;
+        }
+
+        public String getStartDateAsString(Context context) {
+            if (startDate == null) return "";
+            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format), Locale.getDefault());
+            return df.format(startDate);
+        }
+
+        public String getDisplayAddress() {
+            return displayAddress;
+        }
+    }
+
+    // ----------------------------------
+    // WRAPPERS
+    // ----------------------------------
+
+    public static class EntourageWrapper {
+
+        private Entourage entourage;
+
+        public Entourage getEntourage() {
+            return entourage;
+        }
+
+        public void setEntourage(final Entourage entourage) {
+            this.entourage = entourage;
         }
 
     }

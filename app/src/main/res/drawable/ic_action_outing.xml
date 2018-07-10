@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap android:src="@drawable/ic_action_outing_black"
+        android:tint="@color/action_type_outing_icon_tint"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+</bitmap>
