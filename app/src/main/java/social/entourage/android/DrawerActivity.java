@@ -19,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -106,8 +107,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     @BindView(R.id.content_view)
     View contentView;
 
-    @BindView(R.id.toolbar_discussion)
-    BadgeView discussionBadgeView;
+    TextView discussionBadgeView;
 
 //    @BindView(R.id.map_fab_menu)
 //    public FloatingActionMenu mapOptionsMenu;
@@ -352,26 +352,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void configureToolbar() {
-//        setSupportActionBar(toolbar);
-//        final ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
 
-        //TODO Need to actually update the icon on the tab layout
-        discussionBadgeView = (BadgeView) toolbar.findViewById(R.id.toolbar_discussion);
-        if (discussionBadgeView != null) {
-            discussionBadgeView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    EntourageEvents.logEvent(Constants.EVENT_SCREEN_17_2);
-                    showMyEntourages();
-                }
-            });
-        }
-
-        //TODO Better implement a custom view for tabs
         TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
         if (tabLayout != null) {
 
@@ -398,10 +379,17 @@ public class DrawerActivity extends EntourageSecuredActivity
             for (int i = 0; i < tabCount; i++) {
                 BaseBottomNavigationDataSource.NavigationItem navigationItem = navigationDataSource.getNavigationItemAtIndex(i);
                 TabLayout.Tab tab = tabLayout.newTab();
+                tab.setCustomView(R.layout.toolbar_view);
                 tab.setText(navigationItem.getText());
                 tab.setIcon(navigationItem.getIcon(getApplicationContext()));
                 tabLayout.addTab(tab);
                 if (i == navigationDataSource.getDefaultSelectedTab()) tab.select();
+                if (i == navigationDataSource.getMyMessagesTabIndex()) {
+                    View view = tab.getCustomView();
+                    if (view != null) {
+                        discussionBadgeView = view.findViewById(R.id.badge_count);
+                    }
+                }
             }
         }
     }
@@ -1046,7 +1034,10 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     private void refreshBadgeCount() {
         EntourageApplication application = EntourageApplication.get(getApplicationContext());
-        discussionBadgeView.setBadgeCount(application.badgeCount);
+        if (discussionBadgeView != null) {
+            discussionBadgeView.setVisibility(application.badgeCount > 0 ? View.VISIBLE : View.INVISIBLE);
+            discussionBadgeView.setText(String.valueOf(application.badgeCount));
+        }
     }
 
     public boolean isGuideShown() {
