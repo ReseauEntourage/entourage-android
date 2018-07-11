@@ -24,18 +24,20 @@
 
         <TextView
             android:id="@+id/badge_count"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="-5dp"
             android:layout_marginStart="-5dp"
             android:layout_toEndOf="@android:id/icon"
             android:layout_toRightOf="@android:id/icon"
             android:background="@drawable/bg_badge"
             android:gravity="center"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
             android:textColor="@color/white"
             android:textSize="@dimen/badge_size"
             android:visibility="invisible"
-            tools:text="5"/>
+            tools:text="10"/>
 
     </RelativeLayout>
 
