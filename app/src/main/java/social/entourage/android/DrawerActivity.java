@@ -196,8 +196,10 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (intentAction != null) {
                 switch (intentAction) {
                     case ConfirmationFragment.KEY_RESUME_TOUR:
+                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         break;
                     case ConfirmationFragment.KEY_END_TOUR:
+                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         break;
                     case TourService.KEY_NOTIFICATION_STOP_TOUR:
                     case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
@@ -739,7 +741,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
             if (!feedItem.isClosed()) {
                 // close
-                mapEntourageFragment.stopFeedItem(feedItem);
+                mapEntourageFragment.stopFeedItem(feedItem, event.isSuccess());
             } else {
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
                     // freeze

@@ -63,6 +63,8 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     private TourPoint location;
 
+    private EntourageCloseOutcome outcome;
+
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -139,6 +141,10 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     public void setGroupType(final String groupType) {
         this.groupType = groupType;
+    }
+
+    public EntourageCloseOutcome getOutcome() {
+        return outcome;
     }
 
     // ----------------------------------
@@ -370,6 +376,29 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
         public void setDistance(final Integer distance) {
             this.distance = distance;
+        }
+
+    }
+
+    public static class EntourageCloseWrapper {
+
+        private String status;
+
+        private EntourageCloseOutcome outcome;
+
+        public EntourageCloseWrapper(String status, boolean success) {
+            this.status = status;
+            outcome = new EntourageCloseOutcome(success);
+        }
+
+    }
+
+    public static class EntourageCloseOutcome {
+
+        private boolean success;
+
+        public EntourageCloseOutcome(boolean success) {
+            this.success = success;
         }
 
     }

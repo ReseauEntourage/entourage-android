@@ -356,11 +356,11 @@ public class TourService extends Service {
         }
     }
 
-    public void stopFeedItem(FeedItem feedItem) {
+    public void stopFeedItem(FeedItem feedItem, boolean success) {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
             tourServiceManager.finishTour((Tour) feedItem);
         } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            tourServiceManager.closeEntourage((Entourage) feedItem);
+            tourServiceManager.closeEntourage((Entourage) feedItem, success);
         }
     }
 

@@ -628,7 +628,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
             // 2 : Check if should End tour
             else if (action != null && ConfirmationFragment.KEY_END_TOUR.equals(action)) {
-                stopFeedItem(actionTour);
+                stopFeedItem(actionTour, true);
             }
             // 3 : Check if tour is already paused
             else if (tourService!=null && tourService.isPaused()) {
@@ -1808,7 +1808,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
     }
 
-    public void stopFeedItem(FeedItem feedItem) {
+    public void stopFeedItem(FeedItem feedItem, boolean success) {
         if (getActivity() != null) {
             if (tourService != null) {
                 if (feedItem != null) {
@@ -1817,7 +1817,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                         loaderStop.setCancelable(true);
                         EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
-                        tourService.stopFeedItem(feedItem);
+                        tourService.stopFeedItem(feedItem, success);
                     } else {
                         if (feedItem.getType() == TimestampedObject.TOUR_CARD && tourService.getCurrentTourId().equalsIgnoreCase(feedItem.getUUID())) {
                             // ongoing tour
@@ -1830,7 +1830,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                             loaderStop.setCancelable(true);
                             EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
-                            tourService.stopFeedItem(feedItem);
+                            tourService.stopFeedItem(feedItem, success);
                         }
                     }
                 } else {

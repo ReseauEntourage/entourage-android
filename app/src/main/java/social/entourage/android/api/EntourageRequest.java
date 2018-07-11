@@ -43,10 +43,10 @@ public interface EntourageRequest {
             @Path("entourage_id") String entourageShareURL
     );
 
-    @PUT("entourages/{id}.json")
+    @PUT("entourages/{id}")
     Call<Entourage.EntourageWrapper> closeEntourage(
             @Path("id") String entourageUUID,
-            @Body Entourage.EntourageWrapper entourageWrapper
+            @Body Entourage.EntourageCloseWrapper entourageCloseWrapper
     );
 
     @GET("entourages/{entourage_id}/users")

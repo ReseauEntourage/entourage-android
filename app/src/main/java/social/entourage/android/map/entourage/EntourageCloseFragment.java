@@ -103,7 +103,7 @@ public class EntourageCloseFragment extends DialogFragment {
 
     @OnClick(R.id.entourage_close_success_button)
     protected void onSuccessClicked() {
-        BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+        BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false, true));
         showEmail(R.string.entourage_close_email_title_success);
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS);
         dismiss();
@@ -111,7 +111,7 @@ public class EntourageCloseFragment extends DialogFragment {
 
     @OnClick(R.id.entourage_close_failed_button)
     protected void onFailedClicked() {
-        BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+        BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false, false));
         showEmail(R.string.entourage_close_email_title_failed);
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE);
         dismiss();

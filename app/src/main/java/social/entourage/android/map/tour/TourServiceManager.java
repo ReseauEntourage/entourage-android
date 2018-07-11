@@ -520,12 +520,11 @@ public class TourServiceManager {
         }
     }
 
-    protected void closeEntourage(final Entourage entourage) {
+    protected void closeEntourage(final Entourage entourage, boolean success) {
         final String oldStatus = entourage.getStatus();
         entourage.setStatus(FeedItem.STATUS_CLOSED);
         entourage.setEndTime(new Date());
-        final Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
-        entourageWrapper.setEntourage(entourage);
+        final Entourage.EntourageCloseWrapper entourageWrapper = new Entourage.EntourageCloseWrapper(FeedItem.STATUS_CLOSED, success);
         Call<Entourage.EntourageWrapper> call = entourageRequest.closeEntourage(entourage.getUUID(), entourageWrapper);
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override

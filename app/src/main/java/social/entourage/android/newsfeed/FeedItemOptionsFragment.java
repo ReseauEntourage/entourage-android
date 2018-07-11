@@ -184,7 +184,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
             }
         }
         else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
-            BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+            BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false, true));
             dismiss();
         }
     }

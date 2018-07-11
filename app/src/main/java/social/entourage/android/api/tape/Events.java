@@ -252,14 +252,16 @@ public class Events {
 
         private FeedItem feedItem;
         private boolean showUI = true;
+        private boolean success = true;
 
         public OnFeedItemCloseRequestEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
         }
 
-        public OnFeedItemCloseRequestEvent(FeedItem feedItem, boolean showUI) {
+        public OnFeedItemCloseRequestEvent(FeedItem feedItem, boolean showUI, boolean success) {
             this.feedItem = feedItem;
             this.showUI = showUI;
+            this.success = success;
         }
 
         public FeedItem getFeedItem() {
@@ -268,6 +270,10 @@ public class Events {
 
         public boolean isShowUI() {
             return showUI;
+        }
+
+        public boolean isSuccess() {
+            return success;
         }
     }
 
