@@ -3,6 +3,7 @@
 
     <!-- Entourage Card -->
     <string name="entourage_type_private_circle">voisinage</string>
+    <string name="entourage_type_outing">sortie\u0020</string>
 
     <!-- Share Entourage -->
     <string name="entourage_share_link">@string/contact_email</string>

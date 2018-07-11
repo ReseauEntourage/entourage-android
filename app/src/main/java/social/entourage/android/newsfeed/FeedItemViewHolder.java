@@ -26,6 +26,7 @@ import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
@@ -195,13 +196,21 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
 
             //author
             if (tourAuthor != null) {
-                tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), feedItem.getAuthor().getUserName()));
+                tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), author.getUserName()));
             }
         }
         if (!feedItem.showAuthor()) {
             if (tourAuthor != null) tourAuthor.setText("");
             if (photoView != null) photoView.setImageDrawable(null);
             if (partnerLogoView != null) partnerLogoView.setImageDrawable(null);
+        }
+
+        //Metadata
+        if (feedItem instanceof BaseEntourage) {
+            BaseEntourage.Metadata metadata = ((BaseEntourage) feedItem).getMetadata();
+            if (metadata != null) {
+                if (tourAuthor != null && metadata.getStartDate() != null) tourAuthor.setText(metadata.getStartDateAsString(context));
+            }
         }
 
         //Feed Item type
