@@ -86,8 +86,6 @@
 
     <!-- Action types -->
     <color name="action_type_neighborhood">#025E7F</color>
-    <color name="action_type_outing">@color/greyish_brown</color>
-    <color name="action_type_outing_icon_tint">#78104a</color>
 
     <!-- Partner Logo -->
     <color name="partner_logo_background">@color/background</color>

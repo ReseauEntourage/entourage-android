@@ -91,7 +91,6 @@
 
     <!-- Action types -->
     <color name="action_type_private_circle">#EA118A</color>
-    <color name="action_type_outing">#b10f69</color>
 
     <!-- Partner Logo -->
     <color name="partner_logo_background">@color/background</color>
