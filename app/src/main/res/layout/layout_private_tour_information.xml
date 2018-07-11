@@ -74,7 +74,7 @@
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/encounter_voice_message_button"
-            android:src="@drawable/ic_record_sound"/>
+            android:src="@drawable/ic_action_record_sound"/>
 
         <Button
             android:id="@+id/tour_info_comment_send_button"
