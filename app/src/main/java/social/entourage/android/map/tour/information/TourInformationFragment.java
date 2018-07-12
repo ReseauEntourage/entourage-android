@@ -1491,8 +1491,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     // Different layout for requesting to join
                     actLayout.setVisibility(View.INVISIBLE);
                     requestJoinLayout.setVisibility(View.VISIBLE);
-                    requestJoinTitle.setText(feedItem.getType() == TimestampedObject.TOUR_CARD ? R.string.tour_info_request_join_title_tour : R.string.tour_info_request_join_title_entourage);
-                    requestJoinButton.setText(feedItem.getType() == TimestampedObject.TOUR_CARD ? R.string.tour_info_request_join_button_tour : R.string.tour_info_request_join_button_entourage);
+                    requestJoinTitle.setText(feedItem.getJoinRequestTitle());
+                    requestJoinButton.setText(feedItem.getJoinRequestButton());
                     updatePublicScrollViewLayout();
                     return;
             }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.content.res.AppCompatResources;
 
@@ -318,6 +319,16 @@ public class BaseEntourage extends FeedItem implements Serializable {
             return false;
         }
         return super.showAuthor();
+    }
+
+    @Override
+    public @StringRes int getJoinRequestTitle() {
+        return R.string.tour_info_request_join_title_entourage;
+    }
+
+    @Override
+    public @StringRes int getJoinRequestButton() {
+        return R.string.tour_info_request_join_button_entourage;
     }
 
     // ----------------------------------

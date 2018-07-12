@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -266,6 +267,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     public boolean canBeClosed() { return true; }
 
     public boolean showAuthor() { return true; }
+
+    public @StringRes int getJoinRequestTitle() { return R.string.tour_info_request_join_title_tour; }
+
+    public @StringRes int getJoinRequestButton() { return R.string.tour_info_request_join_button_tour; }
 
     @Override
     public void copyLocalFields(final TimestampedObject other) {

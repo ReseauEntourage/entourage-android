@@ -152,7 +152,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@color/accent"
+        android:background="@drawable/bg_white_rounded_top"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="10dp"
@@ -164,12 +164,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tour_info_request_join_title_entourage"
-            android:textColor="@color/white"
+            android:textColor="@color/accent"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <Button
             android:id="@+id/tour_info_request_join_button"
-            style="@style/WhiteButton.RoundedCorners"
+            style="@style/AccentButton.BigRoundedCorners"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginBottom="10dp"
