@@ -16,13 +16,18 @@ public class MapFilterFactory {
     }
 
     public static MapFilter getMapFilter(Context context) {
-//        EntourageApplication app = EntourageApplication.get(context);
-//        if (app != null && app.getEntourageComponent() != null) {
-//            AuthenticationController authenticationController = app.getEntourageComponent().getAuthenticationController();
-//            if (authenticationController != null) {
-//                return authenticationController.getMapFilter();
-//            }
-//        }
+        EntourageApplication app = EntourageApplication.get(context);
+        if (app != null && app.getEntourageComponent() != null) {
+            AuthenticationController authenticationController = app.getEntourageComponent().getAuthenticationController();
+            if (authenticationController != null) {
+                MapFilter mapFilter = authenticationController.getMapFilter();
+                if (!(mapFilter instanceof MapFilterPFP)) {
+                    mapFilter = new MapFilterPFP();
+                    authenticationController.saveMapFilter();
+                }
+                return mapFilter;
+            }
+        }
         return new MapFilterPFP();
     }
 
