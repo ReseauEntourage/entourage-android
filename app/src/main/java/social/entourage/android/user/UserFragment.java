@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +17,6 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -34,21 +29,17 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
-import social.entourage.android.user.discussion.UserDiscussionFragment;
 import social.entourage.android.user.edit.UserEditAboutFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -108,6 +99,10 @@ public class UserFragment extends EntourageDialogFragment {
 
     @BindView(R.id.user_profile_about)
     TextView userAboutTextView;
+
+    @Nullable
+    @BindView(R.id.user_about_edit_button)
+    TextView userAboutEditButton;
 
     @BindView(R.id.user_identification_email_check)
     ImageView userEmailVerifiedImage;
@@ -212,6 +207,7 @@ public class UserFragment extends EntourageDialogFragment {
 
             userEditProfile.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
             userReportButton.setVisibility(isMyProfile ? View.GONE : View.VISIBLE);
+            if (userAboutEditButton != null) userAboutEditButton.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
             if (user.getAvatarURL() != null) {
                 Picasso.with(getActivity()).load(Uri.parse(user.getAvatarURL()))

@@ -103,7 +103,8 @@
                     android:paddingTop="5dp"
                     android:text="@string/user_photo_edit"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_small"/>
+                    android:textSize="@dimen/entourage_font_small"
+                    android:visibility="gone"/>
 
                 <social.entourage.android.view.PartnerLogoImageView
                     android:id="@+id/user_partner_logo"
@@ -187,7 +188,8 @@
                     android:paddingTop="5dp"
                     android:text="@string/user_about_edit"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_small"/>
+                    android:textSize="@dimen/entourage_font_small"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
