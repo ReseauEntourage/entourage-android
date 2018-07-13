@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Mihai Ionescu on 04/07/2018.
  */
-public class MapFilterPFP extends MapFilter implements Serializable {
+public class MapFilter implements MapFilterInterface, Serializable {
 
     private static final long serialVersionUID = 1562838744560618668L;
 
@@ -15,19 +15,21 @@ public class MapFilterPFP extends MapFilter implements Serializable {
 
     public boolean entourageTypeNeighborhood = true;
     public boolean entourageTypePrivateCircle = true;
+    public boolean entourageTypeOuting = true;
+    public boolean includePastEvents = false;
 
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
 
-    private static MapFilter ourInstance = new MapFilterPFP();
+    private static MapFilter ourInstance = new MapFilter();
 
     public static MapFilter getInstance() {
         return ourInstance;
     }
 
     // ----------------------------------
-    // Methods
+    // MapFilterInterface implementation
     // ----------------------------------
 
     @Override
@@ -41,7 +43,36 @@ public class MapFilterPFP extends MapFilter implements Serializable {
             if (entourageTypes.length() > 0) entourageTypes.append(",");
             entourageTypes.append("pc");
         }
+        if (entourageTypeOuting) {
+            if (entourageTypes.length() > 0) entourageTypes.append(",");
+            entourageTypes.append("ou");
+        }
 
         return entourageTypes.toString();
+    }
+
+    @Override
+    public boolean onlyMyEntourages() {
+        return false;
+    }
+
+    @Override
+    public int getTimeFrame() {
+        return 720; // 30 days
+    }
+
+    @Override
+    public boolean onlyMyPartnerEntourages() {
+        return false;
+    }
+
+    @Override
+    public void entourageCreated() {
+
+    }
+
+    @Override
+    public void validateCategories() {
+
     }
 }

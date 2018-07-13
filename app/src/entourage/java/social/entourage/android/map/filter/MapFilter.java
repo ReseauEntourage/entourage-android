@@ -1,5 +1,6 @@
 package social.entourage.android.map.filter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +13,7 @@ import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 /**
  * Created by mihaiionescu on 17/05/16.
  */
-public class MapFilter {
+public class MapFilter implements MapFilterInterface, Serializable {
 
     private static final long serialVersionUID = -2822136342813499636L;
 
@@ -55,9 +56,10 @@ public class MapFilter {
     }
 
     // ----------------------------------
-    // Methods
+    // MapFilter implementation
     // ----------------------------------
 
+    @Override
     public String getTypes() {
         StringBuilder entourageTypes = new StringBuilder("");
 
@@ -80,6 +82,36 @@ public class MapFilter {
         return entourageTypes.toString();
     }
 
+    @Override
+    public boolean onlyMyEntourages() {
+        return onlyMyEntourages;
+    }
+
+    @Override
+    public int getTimeFrame() {
+        return timeframe;
+    }
+
+    @Override
+    public boolean onlyMyPartnerEntourages() {
+        return onlyMyPartnerEntourages;
+    }
+
+    @Override
+    public void entourageCreated() {
+        entourageTypeContribution = true;
+        entourageTypeDemand = true;
+    }
+
+    public void validateCategories() {
+        if (entourageTypeDemand) validateCategoriesForType(Entourage.TYPE_DEMAND);
+        if (entourageTypeContribution) validateCategoriesForType(Entourage.TYPE_CONTRIBUTION);
+    }
+
+    // ----------------------------------
+    // Methods
+    // ----------------------------------
+
     public boolean isCategoryChecked(EntourageCategory entourageCategory) {
         if (Entourage.TYPE_DEMAND.equals(entourageCategory.getEntourageType())) return entourageTypeDemand && entourageCategories.contains(entourageCategory.getKey());
         if (Entourage.TYPE_CONTRIBUTION.equals(entourageCategory.getEntourageType())) return entourageTypeContribution && entourageCategories.contains(entourageCategory.getKey());
@@ -99,11 +131,6 @@ public class MapFilter {
     // ----------------------------------
     // Serialization
     // ----------------------------------
-
-    public void validateCategories() {
-        if (entourageTypeDemand) validateCategoriesForType(Entourage.TYPE_DEMAND);
-        if (entourageTypeContribution) validateCategoriesForType(Entourage.TYPE_CONTRIBUTION);
-    }
 
     protected void validateCategoriesForType(String actionType) {
         //get the list of categories for this type

@@ -733,8 +733,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         // Force the map filtering for entourages as ON
         MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
-        mapFilter.entourageTypeContribution = true;
-        mapFilter.entourageTypeDemand = true;
+        mapFilter.entourageCreated();
         if (presenter != null) {
             presenter.saveMapFilter();
         }

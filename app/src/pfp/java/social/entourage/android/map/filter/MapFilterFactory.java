@@ -12,7 +12,7 @@ import social.entourage.android.authentication.AuthenticationController;
 public class MapFilterFactory {
 
     public static MapFilter getMapFilter(boolean isProUser) {
-        return new MapFilterPFP();
+        return new MapFilter();
     }
 
     public static MapFilter getMapFilter(Context context) {
@@ -20,15 +20,10 @@ public class MapFilterFactory {
         if (app != null && app.getEntourageComponent() != null) {
             AuthenticationController authenticationController = app.getEntourageComponent().getAuthenticationController();
             if (authenticationController != null) {
-                MapFilter mapFilter = authenticationController.getMapFilter();
-                if (!(mapFilter instanceof MapFilterPFP)) {
-                    mapFilter = new MapFilterPFP();
-                    authenticationController.saveMapFilter();
-                }
-                return mapFilter;
+                return authenticationController.getMapFilter();
             }
         }
-        return new MapFilterPFP();
+        return new MapFilter();
     }
 
 }

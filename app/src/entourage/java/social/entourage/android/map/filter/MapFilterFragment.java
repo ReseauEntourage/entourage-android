@@ -1,12 +1,8 @@
 package social.entourage.android.map.filter;
 
 import android.graphics.PorterDuff;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
@@ -29,11 +24,8 @@ import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.tape.Events;
-import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryManager;
-import social.entourage.android.tools.BusProvider;
 
 public class MapFilterFragment extends BaseMapFilterFragment {
 
@@ -180,7 +172,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
     @Override
     protected void loadFilter() {
 
-        MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
+        MapFilter mapFilter = (MapFilter)MapFilterFactory.getMapFilter(getContext());
 
         User me = EntourageApplication.me();
 
@@ -223,7 +215,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
     @Override
     protected void saveFilter() {
-        MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
+        MapFilter mapFilter = (MapFilter) MapFilterFactory.getMapFilter(getContext());
 
         mapFilter.tourTypeMedical = tourMedicalSwitch.isChecked();
         mapFilter.tourTypeSocial = tourSocialSwitch.isChecked();
