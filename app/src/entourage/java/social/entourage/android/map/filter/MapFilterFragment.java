@@ -50,6 +50,11 @@ public class MapFilterFragment extends BaseMapFilterFragment {
     @BindView(R.id.map_filter_tour_distributive_switch)
     Switch tourDistributiveSwitch;
 
+    @BindView(R.id.map_filter_entourage_outing_switch)
+    Switch entourageOutingSwitch;
+    @BindView(R.id.map_filter_past_events_switch)
+    Switch pastEventsSwitch;
+
     @BindView(R.id.map_filter_entourage_demand_switch)
     Switch entourageDemandSwitch;
     @BindView(R.id.map_filter_entourage_demand_details_layout)
@@ -116,6 +121,13 @@ public class MapFilterFragment extends BaseMapFilterFragment {
         EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS);
         tourAllSwitch.setChecked(!allToursDisabled());
         tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
+    }
+
+    @OnClick(R.id.map_filter_entourage_outing_switch)
+    protected void  onOutingSwitch() {
+        if (!entourageOutingSwitch.isChecked()) {
+            pastEventsSwitch.setChecked(false);
+        }
     }
 
     @OnClick(R.id.map_filter_entourage_demand_switch)
@@ -188,6 +200,9 @@ public class MapFilterFragment extends BaseMapFilterFragment {
         tourAllSwitch.setChecked(!allToursDisabled());
         tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
 
+        entourageOutingSwitch.setChecked(mapFilter.entourageTypeOuting);
+        pastEventsSwitch.setChecked(mapFilter.showPastEvents);
+
         entourageDemandSwitch.setChecked(mapFilter.entourageTypeDemand);
         entourageDemandDetailsLayout.setVisibility(mapFilter.entourageTypeDemand ? View.VISIBLE : View.GONE);
         addEntourageCategories(Entourage.TYPE_DEMAND, entourageDemandDetailsLayout, mapFilter);
@@ -220,6 +235,9 @@ public class MapFilterFragment extends BaseMapFilterFragment {
         mapFilter.tourTypeMedical = tourMedicalSwitch.isChecked();
         mapFilter.tourTypeSocial = tourSocialSwitch.isChecked();
         mapFilter.tourTypeDistributive = tourDistributiveSwitch.isChecked();
+
+        mapFilter.entourageTypeOuting = entourageOutingSwitch.isChecked();
+        mapFilter.showPastEvents = pastEventsSwitch.isChecked();
 
         mapFilter.entourageTypeDemand = entourageDemandSwitch.isChecked();
         mapFilter.entourageTypeContribution = entourageContributionSwitch.isChecked();

@@ -29,6 +29,9 @@ public class MapFilter implements MapFilterInterface, Serializable {
     public boolean tourTypeSocial = true;
     public boolean tourTypeDistributive = true;
 
+    public boolean entourageTypeOuting = true;
+    public boolean showPastEvents = false;
+
     public boolean entourageTypeDemand = true;
     public boolean entourageTypeContribution = true;
 
@@ -74,6 +77,10 @@ public class MapFilter implements MapFilterInterface, Serializable {
             if (entourageTypes.length() > 0) entourageTypes.append(",");
             entourageTypes.append(TourType.ALIMENTARY.getKey());
         }
+        if (entourageTypeOuting) {
+            if (entourageTypes.length() > 0) entourageTypes.append(",");
+            entourageTypes.append("ou");
+        }
         for (String categoryKey: entourageCategories) {
             if (entourageTypes.length() > 0) entourageTypes.append(",");
             entourageTypes.append(categoryKey);
@@ -95,6 +102,11 @@ public class MapFilter implements MapFilterInterface, Serializable {
     @Override
     public boolean onlyMyPartnerEntourages() {
         return onlyMyPartnerEntourages;
+    }
+
+    @Override
+    public boolean showPastEvents() {
+        return showPastEvents;
     }
 
     @Override
