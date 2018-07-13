@@ -7,5 +7,7 @@
     <string name="map_filter_entourage_type_title">Types de voisinage</string>
     <string name="map_filter_entourage_neighborhood_text">Voisinages de quartier</string>
     <string name="map_filter_entourage_private_circle_text">Voisinages d’une personne</string>
+    <string name="map_filter_entourage_outing_text">Sorties</string>
+    <string name="map_filter_past_events_text">Voir les sorties passées</string>
 
 </resources>

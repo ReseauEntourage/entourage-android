@@ -14,12 +14,13 @@ import social.entourage.android.map.entourage.category.EntourageCategoryManager;
  */
 public interface MapFilterInterface {
 
-    public String getTypes();
-    public boolean onlyMyEntourages();
-    public int getTimeFrame();
-    public boolean onlyMyPartnerEntourages();
+    String getTypes();
+    boolean onlyMyEntourages();
+    int getTimeFrame();
+    boolean onlyMyPartnerEntourages();
+    boolean showPastEvents();
 
-    public void entourageCreated();
-    public void validateCategories();
+    void entourageCreated();
+    void validateCategories();
 
 }

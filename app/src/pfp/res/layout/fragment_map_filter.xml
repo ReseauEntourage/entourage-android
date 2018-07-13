@@ -145,6 +145,115 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/map_filter_entourage_outing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/greyish"/>
+
+                    <ImageView
+                        android:id="@+id/map_filter_entourage_outing_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_feeditem_icon"
+                        android:contentDescription="@string/empty_description"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_action_outing"/>
+
+                    <TextView
+                        android:id="@+id/map_filter_entourage_outing_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/map_filter_entourage_outing_icon"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_outing_switch"
+                        android:layout_toRightOf="@+id/map_filter_entourage_outing_icon"
+                        android:layout_toStartOf="@+id/map_filter_entourage_outing_switch"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="@string/map_filter_entourage_outing_text"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
+
+                    <Switch
+                        android:id="@+id/map_filter_entourage_outing_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/map_filter_past_events"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/greyish"/>
+
+                    <ImageView
+                        android:id="@+id/map_filter_past_events_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/empty_description"
+                        android:padding="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/map_filter_past_events_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/map_filter_past_events_icon"
+                        android:layout_toLeftOf="@+id/map_filter_past_events_switch"
+                        android:layout_toRightOf="@+id/map_filter_past_events_icon"
+                        android:layout_toStartOf="@+id/map_filter_past_events_switch"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="@string/map_filter_past_events_text"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
+
+                    <Switch
+                        android:id="@+id/map_filter_past_events_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
+
+                </RelativeLayout>
+
             </LinearLayout>
 
         </LinearLayout>

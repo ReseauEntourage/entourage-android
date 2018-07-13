@@ -607,7 +607,8 @@ public class TourServiceManager {
                 mapFilter.onlyMyEntourages(),
                 mapFilter.getTimeFrame(),
                 mapFilter.onlyMyPartnerEntourages(),
-                Constants.ANNOUNCEMENTS_VERSION
+                Constants.ANNOUNCEMENTS_VERSION,
+                mapFilter.showPastEvents()
         );
     }
 

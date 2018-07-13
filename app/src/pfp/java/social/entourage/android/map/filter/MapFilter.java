@@ -67,6 +67,11 @@ public class MapFilter implements MapFilterInterface, Serializable {
     }
 
     @Override
+    public boolean showPastEvents() {
+        return includePastEvents;
+    }
+
+    @Override
     public void entourageCreated() {
 
     }

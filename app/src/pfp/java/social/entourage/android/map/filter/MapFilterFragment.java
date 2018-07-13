@@ -3,6 +3,7 @@ package social.entourage.android.map.filter;
 import android.widget.Switch;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import social.entourage.android.R;
 
 public class MapFilterFragment extends BaseMapFilterFragment {
@@ -21,6 +22,12 @@ public class MapFilterFragment extends BaseMapFilterFragment {
     @BindView(R.id.map_filter_entourage_private_circle_switch)
     Switch entouragePrivateCircleSwitch;
 
+    @BindView(R.id.map_filter_entourage_outing_switch)
+    Switch entourageOutingSwitch;
+
+    @BindView(R.id.map_filter_past_events_switch)
+    Switch pastEventsSwitch;
+
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -33,6 +40,13 @@ public class MapFilterFragment extends BaseMapFilterFragment {
     // Buttons handling
     // ----------------------------------
 
+    @OnClick(R.id.map_filter_entourage_outing_switch)
+    protected void onOutingSwitchClicked() {
+        if (!entourageOutingSwitch.isChecked()) {
+            pastEventsSwitch.setChecked(false);
+        }
+    }
+
     // ----------------------------------
     // Private methods
     // ----------------------------------
@@ -43,6 +57,8 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
         entourageNeighborhoodSwitch.setChecked(mapFilter.entourageTypeNeighborhood);
         entouragePrivateCircleSwitch.setChecked(mapFilter.entourageTypePrivateCircle);
+        entourageOutingSwitch.setChecked(mapFilter.entourageTypeOuting);
+        pastEventsSwitch.setChecked(mapFilter.includePastEvents);
     }
 
     @Override
@@ -51,5 +67,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
         mapFilter.entourageTypeNeighborhood = entourageNeighborhoodSwitch.isChecked();
         mapFilter.entourageTypePrivateCircle = entouragePrivateCircleSwitch.isChecked();
+        mapFilter.entourageTypeOuting = entourageOutingSwitch.isChecked();
+        mapFilter.includePastEvents = pastEventsSwitch.isChecked();
     }
 }
