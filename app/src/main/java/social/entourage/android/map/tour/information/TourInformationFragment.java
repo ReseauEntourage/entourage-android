@@ -93,6 +93,7 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -824,6 +825,34 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
+    @OnClick(R.id.feeditem_option_promote)
+    protected void onPromoteEntourageButton() {
+        if (feedItem == null) return;
+        // Build the email intent
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        // Set the email to
+        String[] addresses = {getString(R.string.contact_email)};
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        // Set the subject
+        String title = feedItem.getTitle();
+        if (title == null) title = "";
+        String emailSubject = getString(R.string.promote_entourage_email_title, title);
+        intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+        // Set the body
+        String emailBody = getString(R.string.promote_entourage_email_body, title);
+        intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            //hide the options
+            optionsLayout.setVisibility(View.GONE);
+            // Start the intent
+            startActivity(intent);
+        } else {
+            // No Email clients
+            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     protected void onUserAddClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
         inviteSourceLayout.setVisibility(View.VISIBLE);
@@ -957,6 +986,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         tourDescription.setText(feedItem.getDescription());
         DeepLinksManager.linkify(tourDescription);
 
+        // metadata
+        initializeMetadataView();
+
         if (invitationId > 0) {
             // already a member
             // send a silent accept
@@ -1013,6 +1045,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         Button reportEntourageButton = optionsLayout.findViewById(R.id.feeditem_option_report);
         Button joinEntourageButton = optionsLayout.findViewById(R.id.feeditem_option_join);
         Button contactTourButton = optionsLayout.findViewById(R.id.feeditem_option_contact);
+        Button promoteEntourageButton = optionsLayout.findViewById(R.id.feeditem_option_promote);
         stopTourButton.setVisibility(View.GONE);
         quitTourButton.setVisibility(View.GONE);
         editEntourageButton.setVisibility(View.GONE);
@@ -1020,6 +1053,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         reportEntourageButton.setVisibility(View.GONE);
         joinEntourageButton.setVisibility(View.GONE);
         contactTourButton.setVisibility(View.GONE);
+        promoteEntourageButton.setVisibility(View.GONE);
 
         if (feedItem != null) {
             boolean hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || feedItem.isFreezed();
@@ -1051,6 +1085,18 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     }
                     if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
                         editEntourageButton.setVisibility(View.VISIBLE);
+                    }
+                }
+                if (membersList != null && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+                    for (TimestampedObject member : membersList) {
+                        if (!(member instanceof TourUser)) continue;
+                        TourUser tourUser = (TourUser) member;
+                        if (tourUser.getUserId() != myId) continue;
+                        String role = tourUser.getRole();
+                        if (role != null && role.equalsIgnoreCase("organizer")) {
+                            promoteEntourageButton.setVisibility(View.VISIBLE);
+                        }
+                        break;
                     }
                 }
             }
@@ -1382,6 +1428,31 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
+    private void initializeMetadataView() {
+        View metadataView = getView().findViewById(R.id.tour_info_metadata_layout);
+        if (metadataView == null) return;
+        // show the view only for outing
+        boolean metadataVisible = false;
+        BaseEntourage.Metadata metadata;
+        if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            metadata = ((Entourage)feedItem).getMetadata();
+            metadataVisible = Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) && (metadata != null);
+        } else {
+            return;
+        }
+        metadataView.setVisibility(metadataVisible ? View.VISIBLE : View.GONE);
+        if (!metadataVisible) return;
+        // populate the data
+        TextView organiser = getView().findViewById(R.id.tour_info_metadata_organiser);
+        if (organiser != null && feedItem.getAuthor() != null) {
+            organiser.setText(getString(R.string.tour_info_metadata_organiser_format, feedItem.getAuthor().getUserName()));
+        }
+        TextView metadataDate = getView().findViewById(R.id.tour_info_metadata_date);
+        if (metadataDate != null) metadataDate.setText(metadata.getStartDateAsString(getContext()));
+        TextView metadataAddress = getView().findViewById(R.id.tour_info_metadata_address);
+        if (metadataAddress != null) metadataAddress.setText(metadata.getDisplayAddress());
+    }
+
     private void switchToPublicSection() {
         actLayout.setVisibility(View.VISIBLE);
         publicSection.setVisibility(View.VISIBLE);
@@ -1692,6 +1763,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             if (context == null) {
                 // members
                 onFeedItemMembersReceived(tourUsers);
+                initializeOptionsView();
             } else {
                 onFeedItemJoinRequestsReceived(tourUsers);
             }

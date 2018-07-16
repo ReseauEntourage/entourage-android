@@ -42,6 +42,9 @@ public class TourUser extends TimestampedObject implements Serializable {
     @SerializedName("partner")
     private Partner partner;
 
+    @SerializedName("role")
+    private String role;
+
     private boolean isDisplayedAsMember = false;
 
     @Expose(serialize = false, deserialize = false)
@@ -105,6 +108,10 @@ public class TourUser extends TimestampedObject implements Serializable {
 
     public Partner getPartner() {
         return partner;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public boolean isDisplayedAsMember() {
