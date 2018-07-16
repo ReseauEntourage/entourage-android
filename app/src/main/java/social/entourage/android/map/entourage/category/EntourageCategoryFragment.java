@@ -91,7 +91,10 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
         if (getArguments() != null) {
             category = (EntourageCategory)getArguments().getSerializable(KEY_ENTOURAGE_CATEGORY);
             if (category != null) {
-                category.setDefault(true);
+                category.setSelected(true);
+            } else {
+                category = EntourageCategoryManager.getInstance().getDefaultCategory();
+                category.setSelected(true);
             }
         }
 
@@ -113,7 +116,7 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     private void resetSelectedCategory() {
         if (adapter != null && adapter.selectedCategory != null) {
             // Reset the flag so consequent fragment shows will not appear broken
-            adapter.selectedCategory.setDefault(false);
+            adapter.selectedCategory.setSelected(false);
         }
     }
 

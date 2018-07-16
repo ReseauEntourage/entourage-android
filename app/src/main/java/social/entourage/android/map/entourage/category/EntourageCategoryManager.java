@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import social.entourage.android.EntourageApplication;
@@ -94,6 +95,22 @@ public class EntourageCategoryManager {
             for (EntourageCategory category:list) {
                 if (category.getCategory() != null) {
                     if (category.getCategory().equalsIgnoreCase(entourageCategory)) {
+                        return category;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public EntourageCategory getDefaultCategory() {
+        Iterator<String> keyIterator = entourageCategoriesHashMap.keySet().iterator();
+        while (keyIterator.hasNext()) {
+            String key = keyIterator.next();
+            List<EntourageCategory> list = entourageCategoriesHashMap.get(key);
+            if (list != null) {
+                for (EntourageCategory category:list) {
+                    if (category.isDefault()) {
                         return category;
                     }
                 }

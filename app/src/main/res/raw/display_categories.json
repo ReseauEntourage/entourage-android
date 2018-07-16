@@ -5,7 +5,9 @@
     "key": "as",
     "display_category_title": "Des voisins pour entourer une personne",
     "title_example": "Rencontrez Tatiana ! ",
-    "description_example": "Tatiana sur les Champs Elysées est pleine d'humour ! Elle a besoin de produits d'hygiène (et d'une valise de billets me dit elle en riant). Entourez-la!\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes)."
+    "description_example": "Tatiana sur les Champs Elysées est pleine d'humour ! Elle a besoin de produits d'hygiène (et d'une valise de billets me dit elle en riant). Entourez-la!\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "ask_for_help",
@@ -13,7 +15,9 @@
     "key": "am",
     "display_category_title": "Un don matériel",
     "title_example": "Gilles a besoin d'une paire de gants",
-    "description_example": "Gilles passe la journée dehors la main tendue. Avec ce froid, il a les doigts tout engourdis. Qui aurait des gants à donner ? \n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes)."
+    "description_example": "Gilles passe la journée dehors la main tendue. Avec ce froid, il a les doigts tout engourdis. Qui aurait des gants à donner ? \n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "ask_for_help",
@@ -21,7 +25,9 @@
     "key": "ar",
     "display_category_title": "Une ressource mise à disposition",
     "title_example": "Nathalie aimerait l'aide d'un voisin pour laver et sécher ses vêtements.",
-    "description_example": "J'ai rencontré Nathalie à la Soupe Populaire. Elle tient à sa propreté. Le top serait de pouvoir lui donner votre contact pour qu'elle puisse laver ses vêtements.\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes)."
+    "description_example": "J'ai rencontré Nathalie à la Soupe Populaire. Elle tient à sa propreté. Le top serait de pouvoir lui donner votre contact pour qu'elle puisse laver ses vêtements.\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "ask_for_help",
@@ -29,7 +35,9 @@
     "key": "ai",
     "display_category_title": "Poser une question au réseau",
     "title_example": "Y a-t-il un foyer d'hébergement qui accepte les animaux, pour Laurent et son chat ?",
-    "description_example": "Laurent dort à la rue actuellement, avec son chat. Connaissez-vous une solution d'hébergement ?\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes)."
+    "description_example": "Laurent dort à la rue actuellement, avec son chat. Connaissez-vous une solution d'hébergement ?\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "ask_for_help",
@@ -37,7 +45,9 @@
     "key": "ak",
     "display_category_title": "Une compétence",
     "title_example": "Recherche quelqu'un pour parler polonais avec Grégory",
-    "description_example": "Grégory est polonais et discuter dans sa langue lui manque. Si quelqu'un peut lui parler dans sa langue, ce serait top !\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes)."
+    "description_example": "Grégory est polonais et discuter dans sa langue lui manque. Si quelqu'un peut lui parler dans sa langue, ce serait top !\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "ask_for_help",
@@ -45,7 +55,9 @@
     "key": "ao",
     "display_category_title": "Autre chose !",
     "title_example": "Sarah a besoin de faire garder son chien pendant un RDV administratif",
-    "description_example": "(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes)."
+    "description_example": "(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "contribution",
@@ -53,7 +65,9 @@
     "key": "cs",
     "display_category_title": "Partager un repas, un café",
     "title_example": "Qui peut me faire rencontrer une personne de la rue dans le quartier ? ",
-    "description_example": "Je ne suis jamais allé à la rencontre de personnes sans-abri. Qui peut me présenter à une personne qu'il connait bien ?"
+    "description_example": "Je ne suis jamais allé à la rencontre de personnes sans-abri. Qui peut me présenter à une personne qu'il connait bien ?",
+    "hidden": false,
+    "default": true
   },
   {
     "entourage_type": "contribution",
@@ -61,7 +75,9 @@
     "key": "cm",
     "display_category_title": "Faire un don matériel",
     "title_example": "Je donne : 1 sac de couchage chaud",
-    "description_example": "J'ai 1 sac de couchage en bon état que je n'utilise pas. \nJe suis disponible pour le donner dans mon quartier, les soirs de semaine après 18h."
+    "description_example": "J'ai 1 sac de couchage en bon état que je n'utilise pas. \nJe suis disponible pour le donner dans mon quartier, les soirs de semaine après 18h.",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "contribution",
@@ -69,7 +85,9 @@
     "key": "cr",
     "display_category_title": "Mettre à disposition une ressource",
     "title_example": "Je mets à disposition ma machine à laver et vous invite à ma table !",
-    "description_example": "Le temps d'une soirée, on est une colocation sympa vous permettant de vous mettre au chaud quelques heures. On serait heureux de partager un repas en ta compagnie. "
+    "description_example": "Le temps d'une soirée, on est une colocation sympa vous permettant de vous mettre au chaud quelques heures. On serait heureux de partager un repas en ta compagnie. ",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "contribution",
@@ -77,7 +95,9 @@
     "key": "ci",
     "display_category_title": "Diffuser une information",
     "title_example": "Le saviez-vous ? De + en + de familles à la rue",
-    "description_example": "En 2012, il y avait 30 000 enfants parmi les 141 500 SDF. (Source Insee)"
+    "description_example": "En 2012, il y avait 30 000 enfants parmi les 141 500 SDF. (Source Insee)",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "contribution",
@@ -85,7 +105,9 @@
     "key": "ck",
     "display_category_title": "Donner une compétence",
     "title_example": "Je peux vous aider dans vos démarches administratives ",
-    "description_example": "Je suis ancien employé de mairie et je peux aider dans des démarches administratives."
+    "description_example": "Je suis ancien employé de mairie et je peux aider dans des démarches administratives.",
+    "hidden": false,
+    "default": false
   },
   {
     "entourage_type": "contribution",
@@ -93,6 +115,8 @@
     "key": "co",
     "display_category_title": "Aider à ma façon",
     "title_example": "Je souhaite devenir bénévole pour une association qui lutte contre l'exclusion.",
-    "description_example": "(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes)."
+    "description_example": "(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
+    "hidden": false,
+    "default": false
   }
 ]

@@ -322,7 +322,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
             String category = editedEntourage.getCategory();
             entourageCategory = EntourageCategoryManager.getInstance().findCategory(entourageType, category);
             if (entourageCategory != null) {
-                entourageCategory.setDefault(true);
+                entourageCategory.setSelected(true);
             }
         } else {
             entourageCategory = null;
