@@ -1,4 +1,4 @@
-package social.entourage.android.map.entourage;
+package social.entourage.android.map.entourage.create;
 
 import dagger.Component;
 import social.entourage.android.ActivityScope;

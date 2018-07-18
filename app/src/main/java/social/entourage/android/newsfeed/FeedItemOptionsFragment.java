@@ -31,7 +31,7 @@ import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.map.entourage.CreateEntourageFragment;
+import social.entourage.android.map.entourage.create.CreateEntourageFragment;
 import social.entourage.android.map.entourage.EntourageCloseFragment;
 import social.entourage.android.tools.BusProvider;
 

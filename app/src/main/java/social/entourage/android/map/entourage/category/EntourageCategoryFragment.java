@@ -20,13 +20,13 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageLinkMovementMethod;
-import social.entourage.android.map.entourage.CreateEntourageListener;
+import social.entourage.android.map.entourage.create.CreateEntourageListener;
 import social.entourage.android.view.HtmlTextView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link social.entourage.android.map.entourage.CreateEntourageListener} interface
+ * {@link CreateEntourageListener} interface
  * to handle interaction events.
  * Use the {@link EntourageCategoryFragment#newInstance} factory method to
  * create an instance of this fragment.

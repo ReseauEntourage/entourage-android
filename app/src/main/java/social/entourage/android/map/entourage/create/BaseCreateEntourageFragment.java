@@ -1,8 +1,7 @@
-package social.entourage.android.map.entourage;
+package social.entourage.android.map.entourage.create;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +48,7 @@ import social.entourage.android.view.HtmlTextView;
 /**
  *
  */
-public class CreateEntourageFragment extends EntourageDialogFragment implements LocationFragment.OnFragmentInteractionListener, CreateEntourageListener {
+public class BaseCreateEntourageFragment extends EntourageDialogFragment implements LocationFragment.OnFragmentInteractionListener, CreateEntourageListener {
 
     // ----------------------------------
     // Constants
@@ -58,7 +56,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
     public static final String TAG = "social.entourage.android.createentourage";
 
-    private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
+    protected static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
 
     private static final int VOICE_RECOGNITION_TITLE_CODE = 1;
     private static final int VOICE_RECOGNITION_DESCRIPTION_CODE = 2;
@@ -91,18 +89,18 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     @BindView(R.id.create_entourage_description_label)
     TextView descriptionLabelTextView;
 
-    private EntourageCategory entourageCategory;
-    private LatLng location;
+    protected EntourageCategory entourageCategory;
+    protected LatLng location;
 
-    private boolean isSaving = false;
+    protected boolean isSaving = false;
 
-    private Entourage editedEntourage;
+    protected Entourage editedEntourage;
 
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
 
-    public CreateEntourageFragment() {
+    public BaseCreateEntourageFragment() {
         // Required empty public constructor
     }
 
@@ -144,11 +142,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
-        DaggerCreateEntourageComponent.builder()
-                .entourageComponent(entourageComponent)
-                .createEntourageModule(new CreateEntourageModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override
@@ -252,6 +245,11 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
     }
 
+    @OnClick(R.id.create_entourage_date_layout)
+    protected void onEditDateClicked() {
+        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+    }
+
     // ----------------------------------
     // Microphone handling
     // ----------------------------------
@@ -304,7 +302,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
     // Private methods
     // ----------------------------------
 
-    private void initializeView() {
+    protected void initializeView() {
         Bundle args = getArguments();
         if (args != null) {
             editedEntourage = (Entourage)args.getSerializable(FeedItem.KEY_FEEDITEM);
@@ -343,7 +341,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         }
     }
 
-    private void initializeLocation() {
+    protected void initializeLocation() {
         Bundle args = getArguments();
         if (args != null) {
             if (editedEntourage != null) {
@@ -358,13 +356,13 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         }
     }
 
-    private void initializeTitleEditText() {
+    protected void initializeTitleEditText() {
         if (editedEntourage != null) {
             titleEditText.setText(editedEntourage.getTitle());
         }
     }
 
-    private void initializeDescriptionEditText() {
+    protected void initializeDescriptionEditText() {
         if (editedEntourage != null) {
             descriptionEditText.setText(editedEntourage.getDescription());
         }
@@ -380,7 +378,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
         }
     }
 
-    private boolean isValid() {
+    protected boolean isValid() {
         if (entourageCategory == null) {
             Toast.makeText(getActivity(), R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show();
             return false;
@@ -391,12 +389,6 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
             return false;
         }
         return true;
-    }
-
-    protected void showKeyboard(View view) {
-        view.requestFocus();
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private class GeocoderTask extends AsyncTask<LatLng, Void, String> {
@@ -424,7 +416,7 @@ public class CreateEntourageFragment extends EntourageDialogFragment implements 
 
         @Override
         protected void onPostExecute(final String address) {
-            CreateEntourageFragment.this.positionTextView.setText(address);
+            BaseCreateEntourageFragment.this.positionTextView.setText(address);
         }
     }
 

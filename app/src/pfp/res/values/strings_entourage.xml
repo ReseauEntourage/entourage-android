@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Create Entourage -->
+    <string name="entourage_create_action_title">SORTIE</string>
+    <string name="entourage_create_position_description">Adresse *</string>
+    <string name="entourage_create_title_label">Titre *</string>
+    <string name="entourage_create_date_label">Date *</string>
+    <string name="entourage_create_privacy_public">Public</string>
+    <string name="entourage_create_privacy_private">Privé</string>
+    <string name="entourage_create_privacy_description_public">Tous peuvent trouver la sortie dans le fil d\'actualités, mais seuls les membres de mon voisinage sont notifiés.</string>
+    <string name="entourage_create_privacy_description_private">Cette option sera bientôt disponible. En attendant, communiquez directement dans une conversation avec les personnes que vous souhaitez inviter.</string>
+
     <!-- Entourage Card -->
     <string name="entourage_type_private_circle">voisinage</string>
     <string name="entourage_type_outing">sortie\u0020</string>

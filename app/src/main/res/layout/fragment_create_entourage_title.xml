@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@color/pale_grey"
               android:orientation="vertical"
-              tools:context="social.entourage.android.map.entourage.CreateEntourageTitleFragment">
+              tools:context="social.entourage.android.map.entourage.create.CreateEntourageTitleFragment">
 
     <social.entourage.android.view.EntourageTitleView
         android:layout_width="match_parent"
