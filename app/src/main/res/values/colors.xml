@@ -50,6 +50,9 @@
     <color name="profile_role_text">@color/white</color>
     <color name="report_user_explanation">@color/tomato</color>
 
+    <!-- Map -->
+    <color name="map_plus_button">@color/accent</color>
+
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>
     <color name="custom_button_accent_focused">#e25e06</color>

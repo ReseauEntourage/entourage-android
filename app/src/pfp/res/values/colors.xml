@@ -54,6 +54,9 @@
     <color name="profile_role_pending">@color/complementary_3</color>
     <color name="profile_role_accepted">@color/accent_alt</color>
 
+    <!-- Map -->
+    <color name="map_plus_button">@color/accent_alt</color>
+
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>
     <color name="custom_button_accent_focused">@color/accent_dark</color>
