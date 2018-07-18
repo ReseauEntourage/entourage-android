@@ -7,7 +7,7 @@
     <string name="terms_url">http://bit.ly/cgu_applivoisin-age</string>
     <string name="feedback_url">https://entourage-asso.typeform.com/to/Imi9sX?user_id=%1$d</string>
 
-    <string name="contact_email">voisin-age@petitsfreresdespauvres.org</string>
-    <string name="edit_action_email">voisinage-test@petitsfreresdespauvres.org</string>
+    <string name="contact_email">voisin-age@petitsfreresdespauvres.fr</string>
+    <string name="edit_action_email">voisin-age@petitsfreresdespauvres.fr</string>
 
 </resources>
