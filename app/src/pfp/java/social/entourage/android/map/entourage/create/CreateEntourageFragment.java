@@ -3,14 +3,22 @@ package social.entourage.android.map.entourage.create;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.location.LocationFragment;
 
@@ -26,6 +34,18 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     // ----------------------------------
     // Attributes
     // ----------------------------------
+
+    @BindView(R.id.create_entourage_title_label)
+    TextView titleLabel;
+
+    @BindView(R.id.create_entourage_description_label)
+    TextView descriptionLabel;
+
+    @BindView(R.id.create_entourage_position_description)
+    TextView positionLabel;
+
+    @BindView(R.id.create_entourage_date_label)
+    TextView dateLabel;
 
     @BindView(R.id.create_entourage_privacy_label)
     TextView privacyLabel;
@@ -55,6 +75,13 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     // ----------------------------------
     // Interactions handling
     // ----------------------------------
+
+    @Override
+    protected void onPositionClicked() {
+        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
+        LocationFragment fragment = LocationFragment.newInstance(location, positionTextView.getText().toString(), true, this);
+        fragment.show(getFragmentManager(), LocationFragment.TAG);
+    }
 
     @OnClick(R.id.create_entourage_privacy_switch)
     protected void onPrivacySwitchClicked() {
@@ -88,7 +115,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     // ----------------------------------
 
     // ----------------------------------
-    // Private methods
+    // Base class overrides
     // ----------------------------------
 
     @Override
@@ -103,12 +130,24 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
         }
     }
 
+    @Override
     protected void initializeTitleEditText() {
-
+        if (editedEntourage != null) {
+            onTitleChanged(editedEntourage.getTitle());
+        }
     }
 
+    @Override
     protected void initializeDescriptionEditText() {
+        if (editedEntourage != null) {
+            onDescriptionChanged(editedEntourage.getDescription());
+        }
+    }
 
+    @Override
+    protected void updateDateTextView() {
+        super.updateDateTextView();
+        dateLabel.setVisibility(View.GONE);
     }
 
     @Override
@@ -121,12 +160,16 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     // ----------------------------------
 
     @Override
-    public void onEntourageLocationChosen(LatLng location, String address) {
-        if (location != null) {
-            this.location = location;
-            if (address != null) {
-                positionTextView.setText(address);
-            }
+    public void onEntourageLocationChosen(LatLng location, String address, Place place) {
+        // for PFP, we use only the place
+        if (place != null) {
+            this.location = place.getLatLng();
+            positionTextView.setText(place.getAddress());
+            positionLabel.setVisibility(View.GONE);
+        } else {
+            this.location = null;
+            positionTextView.setText("");
+            positionLabel.setVisibility(View.VISIBLE);
         }
     }
 
@@ -136,12 +179,24 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
 
     @Override
     public void onTitleChanged(final String title) {
-        titleEditText.setText(title);
+        if (title == null || title.trim().length() == 0) {
+            titleLabel.setVisibility(View.VISIBLE);
+            titleEditText.setText("");
+        } else {
+            titleLabel.setVisibility(View.GONE);
+            titleEditText.setText(title);
+        }
     }
 
     @Override
     public void onDescriptionChanged(final String description) {
-        descriptionEditText.setText(description);
+        if (description == null || description.trim().length() == 0) {
+            descriptionLabel.setVisibility(View.VISIBLE);
+            descriptionEditText.setText("");
+        } else {
+            descriptionLabel.setVisibility(View.GONE);
+            descriptionEditText.setText(description);
+        }
     }
 
 }

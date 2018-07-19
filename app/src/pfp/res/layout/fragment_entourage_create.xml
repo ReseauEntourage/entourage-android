@@ -50,14 +50,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:gravity="end"
-                    android:maxLines="1"
-                    android:paddingEnd="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingStart="5dp"
-                    android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/create_entourage_title_arrow"
@@ -95,14 +90,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:gravity="end"
-                    android:maxLines="1"
-                    android:paddingEnd="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingStart="5dp"
-                    android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/create_entourage_description_arrow"
@@ -114,55 +104,46 @@
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/create_entourage_position_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:background="@color/pale_grey"
                 android:clickable="true"
-                android:padding="10dp"
-                android:focusable="true">
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/create_entourage_position_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:text="@string/entourage_create_position_description"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"/>
 
+                <TextView
+                    android:id="@+id/create_entourage_position"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/create_entourage_position_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerHorizontal="true"
                     android:contentDescription="@string/empty_description"
                     android:src="@drawable/arrow_grey"
                     app:tint="@color/accent_dark"/>
 
-                <TextView
-                    android:id="@+id/create_entourage_position"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/create_entourage_position_description"
-                    android:layout_toLeftOf="@+id/create_entourage_position_arrow"
-                    android:layout_toRightOf="@+id/create_entourage_position_description"
-                    android:layout_toStartOf="@+id/create_entourage_position_arrow"
-                    android:gravity="end"
-                    android:paddingEnd="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="0dp"
-                    android:paddingStart="5dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
-            </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/create_entourage_date_layout"
@@ -177,12 +158,20 @@
 
                 <TextView
                     android:id="@+id/create_entourage_date_label"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/entourage_create_date_label"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/create_entourage_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/create_entourage_date_arrow"

@@ -14,6 +14,7 @@
     <string name="entourage_create_description_contribution_hint">Exemple : Je suis ancien employé de mairie et disponible pour aide administrative pour l’accès au logement.\nSi vous pensez avoir besoin d’aide, nous pouvons nous retrouver dans un café le weekend.</string>
     <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$s\">Besoin d\'idées d\'action?</a>]]></string>
     <string name="entourage_create_date_label">Date *</string>
+    <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>

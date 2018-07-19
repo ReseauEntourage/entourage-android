@@ -7,6 +7,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,9 +16,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,7 +55,7 @@ import social.entourage.android.view.HtmlTextView;
 /**
  *
  */
-public class BaseCreateEntourageFragment extends EntourageDialogFragment implements LocationFragment.OnFragmentInteractionListener, CreateEntourageListener {
+public class BaseCreateEntourageFragment extends EntourageDialogFragment implements LocationFragment.OnFragmentInteractionListener, CreateEntourageListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     // ----------------------------------
     // Constants
@@ -89,8 +96,12 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @BindView(R.id.create_entourage_description_label)
     TextView descriptionLabelTextView;
 
+    @BindView(R.id.create_entourage_date)
+    TextView entourageDateTextView;
+
     protected EntourageCategory entourageCategory;
     protected LatLng location;
+    protected Calendar entourageDate = Calendar.getInstance();
 
     protected boolean isSaving = false;
 
@@ -247,7 +258,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @OnClick(R.id.create_entourage_date_layout)
     protected void onEditDateClicked() {
-        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+        showDatePicker();
     }
 
     // ----------------------------------
@@ -311,6 +322,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         initializeLocation();
         initializeTitleEditText();
         initializeDescriptionEditText();
+        initializeDate();
         initializeHelpHtmlView();
     }
 
@@ -365,6 +377,13 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected void initializeDescriptionEditText() {
         if (editedEntourage != null) {
             descriptionEditText.setText(editedEntourage.getDescription());
+        }
+    }
+
+    protected void initializeDate() {
+        if (editedEntourage != null) {
+            entourageDate.setTime(editedEntourage.getStartTime());
+            updateDateTextView();
         }
     }
 
@@ -424,7 +443,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     // LocationFragment.OnFragmentInteractionListener
     // ----------------------------------
 
-    public void onEntourageLocationChosen(LatLng location, String address) {
+    public void onEntourageLocationChosen(LatLng location, String address, Place place) {
         if (location != null) {
             this.location = location;
             if (address != null) {
@@ -451,5 +470,55 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     public void onCategoryChosen(final EntourageCategory category) {
         this.entourageCategory = category;
         updateCategoryTextView();
+    }
+
+    // ----------------------------------
+    // Date/Time Methods
+    // ----------------------------------
+
+    protected void updateDateTextView() {
+        if (entourageDate == null) return;
+        DateFormat df = new SimpleDateFormat(getString(R.string.entourage_create_date_format), Locale.getDefault());
+        entourageDateTextView.setText(df.format(entourageDate.getTime()));
+    }
+
+    private void showDatePicker() {
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                this,
+                entourageDate.get(Calendar.YEAR),
+                entourageDate.get(Calendar.MONTH),
+                entourageDate.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.setCancelText(R.string.cancel);
+        dpd.setMinDate(Calendar.getInstance()); // only today and future dates
+        dpd.show(getActivity().getFragmentManager(), "DatePickerDialog");
+    }
+
+    private void showTimePicker() {
+        TimePickerDialog tpd = TimePickerDialog.newInstance(
+                BaseCreateEntourageFragment.this,
+                true);
+        tpd.setInitialSelection(entourageDate.get(Calendar.HOUR_OF_DAY), entourageDate.get(Calendar.MINUTE));
+        tpd.setCancelText(R.string.cancel);
+        tpd.show(getActivity().getFragmentManager(), "TimePickerDialog");
+    }
+
+    @Override
+    public void onDateSet(final DatePickerDialog view, final int year, final int monthOfYear, final int dayOfMonth) {
+        entourageDate.set(year, monthOfYear, dayOfMonth);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                showTimePicker();
+            }
+        });
+    }
+
+    @Override
+    public void onTimeSet(final TimePickerDialog view, final int hourOfDay, final int minute, final int second) {
+        entourageDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        entourageDate.set(Calendar.MINUTE, minute);
+        entourageDate.set(Calendar.SECOND, second);
+        updateDateTextView();
     }
 }

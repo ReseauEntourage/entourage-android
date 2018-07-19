@@ -68,6 +68,7 @@ public class LocationFragment extends EntourageDialogFragment {
 
     private static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
     private static final String KEY_ENTOURAGE_ADDRESS = "social.entourage.android.KEY_ENTOURAGE_ADDRESS";
+    private static final String KEY_USE_GOOGLE_PLACES_ONLY = "social.entourage.android.KEY_USE_GOOGLE_PLACES_ONLY";
 
     private static final float LOCATION_MOVE_DELTA = 50; //meters
 
@@ -79,8 +80,10 @@ public class LocationFragment extends EntourageDialogFragment {
 
     private LatLng originalLocation;
     private String originalAddress;
+    private boolean useGooglePlacesOnly = false;
 
     private LatLng location;
+    private Place selectedPlace;
 
     private OnFragmentInteractionListener mListener;
 
@@ -94,10 +97,7 @@ public class LocationFragment extends EntourageDialogFragment {
 
     SupportPlaceAutocompleteFragment autocompleteFragment = null;
 
-    private GeocoderLocationTask geocoderLocationTask = null;
     private GeocoderAddressTask geocoderAddressTask = null;
-
-    private boolean moveToLocationFound = false;
 
     private Marker pin;
 
@@ -114,6 +114,8 @@ public class LocationFragment extends EntourageDialogFragment {
      * this fragment using the provided parameters.
      *
      * @param location The initial location.
+     * @param address The initial address as string
+     * @param listener The listener
      * @return A new instance of fragment LocationFragment.
      */
 
@@ -127,6 +129,28 @@ public class LocationFragment extends EntourageDialogFragment {
         return fragment;
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param location The initial location.
+     * @param address The initial address as string
+     * @param useGooglePlacesOnly true if the fragment will use only Google Places to fetch an address
+     * @param listener The listener
+     * @return A new instance of fragment LocationFragment.
+     */
+
+    public static LocationFragment newInstance(LatLng location, String address, boolean useGooglePlacesOnly, OnFragmentInteractionListener listener) {
+        LocationFragment fragment = new LocationFragment();
+        fragment.mListener = listener;
+        Bundle args = new Bundle();
+        args.putParcelable(KEY_ENTOURAGE_LOCATION, location);
+        args.putString(KEY_ENTOURAGE_ADDRESS, address);
+        args.putBoolean(KEY_USE_GOOGLE_PLACES_ONLY, useGooglePlacesOnly);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +160,7 @@ public class LocationFragment extends EntourageDialogFragment {
                 location = new LatLng(originalLocation.latitude, originalLocation.longitude);
             }
             originalAddress = getArguments().getString(KEY_ENTOURAGE_ADDRESS);
+            useGooglePlacesOnly = getArguments().getBoolean(KEY_USE_GOOGLE_PLACES_ONLY, false);
         }
     }
 
@@ -195,7 +220,7 @@ public class LocationFragment extends EntourageDialogFragment {
     @OnClick(R.id.title_action_button)
     protected void onValidateClicked() {
         if (mListener != null) {
-            mListener.onEntourageLocationChosen(location, addressTextView.getText().toString());
+            mListener.onEntourageLocationChosen(location, addressTextView.getText().toString(), selectedPlace);
         }
         dismiss();
     }
@@ -287,11 +312,17 @@ public class LocationFragment extends EntourageDialogFragment {
                         if (geocoderAddressTask != null) {
                             geocoderAddressTask.cancel(true);
                         }
-                        geocoderAddressTask = new GeocoderAddressTask();
-                        geocoderAddressTask.execute(location);
+                        if (!useGooglePlacesOnly) {
+                            geocoderAddressTask = new GeocoderAddressTask();
+                            geocoderAddressTask.execute(location);
+                        }
 
                         if (autocompleteFragment != null) {
-                            autocompleteFragment.setBoundsBias(LatLngBounds.builder().include(location).build());
+                            //autocompleteFragment.setBoundsBias(LatLngBounds.builder().include(location).build());
+                            autocompleteFragment.setBoundsBias(new LatLngBounds(
+                                    new LatLng(location.latitude - LOCATION_SEARCH_RADIUS, location.longitude - LOCATION_SEARCH_RADIUS),
+                                    new LatLng(location.latitude + LOCATION_SEARCH_RADIUS, location.longitude + LOCATION_SEARCH_RADIUS)
+                            ));
                         }
                     }
                 });
@@ -329,7 +360,13 @@ public class LocationFragment extends EntourageDialogFragment {
 //        autocompleteFragment.setFilter(typeFilter);
 
         if (originalLocation != null) {
-            autocompleteFragment.setBoundsBias(LatLngBounds.builder().include(originalLocation).build());
+            //autocompleteFragment.setBoundsBias(LatLngBounds.builder().include(originalLocation).build());
+            autocompleteFragment.setBoundsBias(new LatLngBounds(
+                    new LatLng(originalLocation.latitude - LOCATION_SEARCH_RADIUS, originalLocation.longitude - LOCATION_SEARCH_RADIUS),
+                    new LatLng(originalLocation.latitude + LOCATION_SEARCH_RADIUS, originalLocation.longitude + LOCATION_SEARCH_RADIUS)
+            ));
+        } else {
+            autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(42, -5), new LatLng(51, 9)));
         }
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -343,6 +380,7 @@ public class LocationFragment extends EntourageDialogFragment {
                     }
                     addressTextView.setText(place.getAddress());
                 }
+                selectedPlace = place;
             }
 
             @Override
@@ -392,36 +430,7 @@ public class LocationFragment extends EntourageDialogFragment {
         }
     }
 
-    private class GeocoderLocationTask extends AsyncTask<String, Void, List<Address>> {
-
-        @Override
-        protected List<Address> doInBackground(final String... params) {
-            try {
-                if (getActivity() == null) {
-                    return null;
-                }
-                Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
-                String address = params[0];
-                List<Address> addresses = geoCoder.getFromLocationName(address,
-                        5,
-                        location.latitude - LOCATION_SEARCH_RADIUS,
-                        location.longitude - LOCATION_SEARCH_RADIUS,
-                        location.latitude + LOCATION_SEARCH_RADIUS,
-                        location.longitude + LOCATION_SEARCH_RADIUS);
-                return addresses;
-            }
-            catch (IOException ignored) {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(final List<Address> addresses) {
-        }
-    }
-
     public interface OnFragmentInteractionListener {
-        void onEntourageLocationChosen(LatLng location, String address);
+        void onEntourageLocationChosen(LatLng location, String address, Place place);
     }
 }

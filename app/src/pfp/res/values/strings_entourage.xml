@@ -11,6 +11,9 @@
     <string name="entourage_create_privacy_description_public">Tous peuvent trouver la sortie dans le fil d\'actualités, mais seuls les membres de mon voisinage sont notifiés.</string>
     <string name="entourage_create_privacy_description_private">Cette option sera bientôt disponible. En attendant, communiquez directement dans une conversation avec les personnes que vous souhaitez inviter.</string>
 
+    <!-- Entourage Title Fragment -->
+    <string name="entourage_title_fragment_hint">Si on se rencontrait ?</string>
+
     <!-- Entourage Card -->
     <string name="entourage_type_private_circle">voisinage</string>
     <string name="entourage_type_outing">sortie\u0020</string>
