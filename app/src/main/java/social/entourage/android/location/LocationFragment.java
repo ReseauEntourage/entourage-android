@@ -304,8 +304,6 @@ public class LocationFragment extends EntourageDialogFragment {
                     @Override
                     public void onCameraIdle() {
                         CameraPosition cameraPosition = map.getCameraPosition();
-                        float[] results = new float[1];
-                        Location.distanceBetween(location.latitude, location.longitude, cameraPosition.target.latitude, cameraPosition.target.longitude, results);
                         location = cameraPosition.target;
                         pin.setPosition(location);
 

@@ -158,6 +158,10 @@ public class BaseEntourage extends FeedItem implements Serializable {
         return metadata;
     }
 
+    public void setMetadata(final Metadata metadata) {
+        this.metadata = metadata;
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -407,8 +411,21 @@ public class BaseEntourage extends FeedItem implements Serializable {
         @SerializedName("display_address")
         private String displayAddress;
 
+        @SerializedName("place_name")
+        private String placeName;
+
+        @SerializedName("street_address")
+        private String streetAddress;
+
+        @SerializedName("google_place_id")
+        private String googlePlaceId;
+
         public Date getStartDate() {
             return startDate;
+        }
+
+        public void setStartDate(final Date startDate) {
+            this.startDate = startDate;
         }
 
         public String getStartDateAsString(Context context) {
@@ -419,6 +436,34 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
         public String getDisplayAddress() {
             return displayAddress;
+        }
+
+        public void setDisplayAddress(final String displayAddress) {
+            this.displayAddress = displayAddress;
+        }
+
+        public String getPlaceName() {
+            return placeName;
+        }
+
+        public void setPlaceName(final String placeName) {
+            this.placeName = placeName;
+        }
+
+        public String getStreetAddress() {
+            return streetAddress;
+        }
+
+        public void setStreetAddress(final String streetAddress) {
+            this.streetAddress = streetAddress;
+        }
+
+        public String getGooglePlaceId() {
+            return googlePlaceId;
+        }
+
+        public void setGooglePlaceId(final String googlePlaceId) {
+            this.googlePlaceId = googlePlaceId;
         }
     }
 

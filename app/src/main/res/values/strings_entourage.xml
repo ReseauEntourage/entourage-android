@@ -5,8 +5,8 @@
     <string name="entourage_create_type_label">Catégorie</string>
     <string name="entourage_create_type_demand">Je cherche : %1$s</string>
     <string name="entourage_create_type_contribution">Je me propose de : %1$s</string>
-    <string name="entourage_create_position_description">Ma position</string>
-    <string name="entourage_create_title_label">Titre</string>
+    <string name="entourage_create_position_description">Adresse *</string>
+    <string name="entourage_create_title_label">Titre *</string>
     <string name="entourage_create_title_hint">Exemple : %1$s</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_label">Description</string>
@@ -22,6 +22,8 @@
     <string name="entourage_create_error_title_empty">Le titre ne peut pas être vide</string>
     <string name="entourage_create_error_title_too_long">Le titre est trop long</string>
     <string name="entourage_create_error_description_empty">La description ne peut pas être vide</string>
+    <string name="entourage_create_error_date_empty">Choisissez une date</string>
+    <string name="entourage_create_error_location_empty">!!No location chosen</string>
 
     <string name="entourage_create_menu">Créer une action</string>
 
@@ -70,14 +72,15 @@
     <string name="entourage_info_text_close">Entourage fermé</string>
 
     <!-- Entourage disclaimer -->
+    <string name="entourage_disclaimer_title">AVANT DE COMMENCER</string>
     <string name="entourage_disclaimer_text_chart1">Je respecte la</string>
     <string name="entourage_disclaimer_text_chart2">Charte d\'Entourage</string>
     <string name="entourage_disclaimer_accord_title">Recueillir l’accord</string>
-    <string name="entourage_disclaimer_accord_details">Je dois recueillir le consentement des personnes concernées avant de créer un entourage</string>
+    <string name="entourage_disclaimer_accord_details">Je demande le consentement d’une personne avant de mentionner de ses informations personnelles</string>
     <string name="entourage_disclaimer_security_title">Sécurité</string>
-    <string name="entourage_disclaimer_security_details">Je n’inclus aucune donnée permettant d\'identifier ou de localiser les personnes concernées</string>
-    <string name="entourage_disclaimer_geolocation_title">Géolocalisation ?</string>
-    <string name="entourage_disclaimer_geolocation_details">La position précise des entourages ne sera pas diffusée : elle est remplacée par les zones oranges sur la carte</string>
+    <string name="entourage_disclaimer_security_details">Je veille à ce qu’on ne puisse pas identifier ou localiser des personnes en me lisant</string>
+    <string name="entourage_disclaimer_geolocation_title">Localisation ?</string>
+    <string name="entourage_disclaimer_geolocation_details">L’adresse précise des évènements est montrée</string>
     <string name="entourage_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
     <string name="entourage_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
 

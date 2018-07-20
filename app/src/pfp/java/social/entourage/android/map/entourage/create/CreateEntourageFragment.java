@@ -20,6 +20,8 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.location.LocationFragment;
 
 /**
@@ -78,6 +80,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
 
     @Override
     protected void onPositionClicked() {
+        if (getFragmentManager() == null) return;
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
         LocationFragment fragment = LocationFragment.newInstance(location, positionTextView.getText().toString(), true, this);
         fragment.show(getFragmentManager(), LocationFragment.TAG);
@@ -124,6 +127,11 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
         if (args != null) {
             if (editedEntourage != null) {
                 location = editedEntourage.getLocation().getLocation();
+                BaseEntourage.Metadata metadata = editedEntourage.getMetadata();
+                if (metadata != null) {
+                    positionTextView.setText(metadata.getDisplayAddress());
+                    positionLabel.setVisibility(View.GONE);
+                }
             } else {
                 location = args.getParcelable(KEY_ENTOURAGE_LOCATION);
             }
@@ -142,6 +150,12 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
         if (editedEntourage != null) {
             onDescriptionChanged(editedEntourage.getDescription());
         }
+    }
+
+    @Override
+    protected void initializeCategory() {
+        super.initializeCategory();
+        if (groupType == null) groupType = Entourage.TYPE_OUTING; // only outings
     }
 
     @Override
@@ -166,6 +180,14 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
             this.location = place.getLatLng();
             positionTextView.setText(place.getAddress());
             positionLabel.setVisibility(View.GONE);
+            if (groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) {
+                if (entourageMetadata == null) entourageMetadata = new BaseEntourage.Metadata();
+                entourageMetadata.setPlaceName(place.getName().toString());
+                if (place.getAddress() != null) {
+                    entourageMetadata.setStreetAddress(place.getAddress().toString());
+                }
+                entourageMetadata.setGooglePlaceId(place.getId());
+            }
         } else {
             this.location = null;
             positionTextView.setText("");

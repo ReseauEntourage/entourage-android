@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
@@ -38,8 +39,10 @@ public class CreateEntouragePresenter {
     // Methods
     // ----------------------------------
 
-    protected void createEntourage(String type, String category, String title, String description, TourPoint location) {
+    protected void createEntourage(String type, String category, String title, String description, TourPoint location, String groupType, BaseEntourage.Metadata metadata) {
         Entourage entourage = new Entourage(type, category, title, description, location);
+        entourage.setGroupType(groupType);
+        entourage.setMetadata(metadata);
         Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
         entourageWrapper.setEntourage(entourage);
 

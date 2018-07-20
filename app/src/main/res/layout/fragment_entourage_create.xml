@@ -19,9 +19,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/create_entourage_category_layout"
@@ -58,85 +60,20 @@
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/create_entourage_category_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"/>
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
 
             </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/create_entourage_position_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/create_entourage_category_layout"
-                android:layout_marginTop="18dp"
-                android:background="@color/background"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/create_entourage_position_pin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/empty_description"
-                    android:src="@drawable/ic_map_pin_grey"/>
-
-                <TextView
-                    android:id="@+id/create_entourage_position_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_toEndOf="@+id/create_entourage_position_pin"
-                    android:layout_toRightOf="@+id/create_entourage_position_pin"
-                    android:text="@string/entourage_create_position_description"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"/>
-
-                <ImageView
-                    android:id="@+id/create_entourage_position_arrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerHorizontal="true"
-                    android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"/>
-
-                <TextView
-                    android:id="@+id/create_entourage_position"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/create_entourage_position_description"
-                    android:layout_toLeftOf="@+id/create_entourage_position_arrow"
-                    android:layout_toRightOf="@+id/create_entourage_position_description"
-                    android:layout_toStartOf="@+id/create_entourage_position_arrow"
-                    android:gravity="end"
-                    android:paddingEnd="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="0dp"
-                    android:paddingStart="5dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
-            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/create_entourage_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/create_entourage_position_layout"
                 android:layout_marginTop="18dp"
                 android:background="@color/background"
                 android:gravity="center_vertical"
@@ -168,12 +105,13 @@
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/create_entourage_title_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"/>
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
 
             </LinearLayout>
 
@@ -181,7 +119,6 @@
                 android:id="@+id/create_entourage_description_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/create_entourage_title_layout"
                 android:layout_marginTop="16dp"
                 android:background="@color/background"
                 android:gravity="center_vertical"
@@ -213,12 +150,58 @@
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/create_entourage_description_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"/>
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_entourage_position_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@color/background"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/create_entourage_position_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entourage_create_position_description"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/create_entourage_position"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="5dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/create_entourage_position_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
 
             </LinearLayout>
 
@@ -226,7 +209,6 @@
                 android:id="@+id/create_entourage_date_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/create_entourage_description_layout"
                 android:layout_marginTop="16dp"
                 android:background="@color/background"
                 android:clickable="true"
@@ -237,11 +219,23 @@
 
                 <TextView
                     android:id="@+id/create_entourage_date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entourage_create_date_label"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/create_entourage_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/entourage_create_date_label"
-                    android:textColor="@color/greyish_brown"
+                    android:gravity="end"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <android.support.v7.widget.AppCompatImageView
@@ -249,7 +243,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/arrow_grey"
-                    android:tint="@color/accent_dark"/>
+                    android:tint="@color/accent"/>
             </LinearLayout>
 
             <view
@@ -257,14 +251,13 @@
                 class="social.entourage.android.view.HtmlTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/create_entourage_date_layout"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:textSize="@dimen/entourage_font_medium"
-                app:htmlText="@string/entourage_create_help_text"/>
+                app:htmlText="@string/entourage_create_help_text"
+                android:focusable="true"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 </LinearLayout>

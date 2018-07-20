@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.TourPoint;
@@ -53,7 +55,7 @@ import social.entourage.android.tools.BusProvider;
 import social.entourage.android.view.HtmlTextView;
 
 /**
- *
+ * Base fragment for creating and editing an action/entourage
  */
 public class BaseCreateEntourageFragment extends EntourageDialogFragment implements LocationFragment.OnFragmentInteractionListener, CreateEntourageListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -101,7 +103,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     protected EntourageCategory entourageCategory;
     protected LatLng location;
+    protected String groupType;
     protected Calendar entourageDate = Calendar.getInstance();
+    protected BaseEntourage.Metadata entourageMetadata;
 
     protected boolean isSaving = false;
 
@@ -134,7 +138,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -145,9 +149,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        setupComponent(EntourageApplication.get().getEntourageComponent());
 
         initializeView();
     }
@@ -213,14 +217,18 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                         editedEntourage.setEntourageType(entourageCategory.getEntourageType());
                         editedEntourage.setCategory(entourageCategory.getCategory());
                     }
+                    editedEntourage.setGroupType(groupType);
+                    editedEntourage.setMetadata(entourageMetadata);
                     presenter.editEntourage(editedEntourage);
                 } else {
                     presenter.createEntourage(
-                            entourageCategory.getEntourageType(),
-                            entourageCategory.getCategory(),
+                            entourageCategory != null ? entourageCategory.getEntourageType() : null,
+                            entourageCategory != null ? entourageCategory.getCategory() : null,
                             titleEditText.getText().toString(),
                             descriptionEditText.getText().toString(),
-                            entourageLocation);
+                            entourageLocation,
+                            groupType,
+                            entourageMetadata);
                 }
             } else {
                 Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
@@ -230,6 +238,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @OnClick(R.id.create_entourage_category_layout)
     protected void onEditTypeClicked() {
+        if (getFragmentManager() == null) return;
         EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory);
         fragment.setListener(this);
         fragment.show(getFragmentManager(), EntourageCategoryFragment.TAG);
@@ -237,6 +246,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @OnClick(R.id.create_entourage_position_layout)
     protected void onPositionClicked() {
+        if (getFragmentManager() == null) return;
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
         LocationFragment fragment = LocationFragment.newInstance(location, positionTextView.getText().toString(), this);
         fragment.show(getFragmentManager(), LocationFragment.TAG);
@@ -244,6 +254,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @OnClick(R.id.create_entourage_title_layout)
     protected void onEditTitleClicked() {
+        if (getFragmentManager() == null) return;
         CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString(), entourageCategory);
         entourageTitleFragment.setListener(this);
         entourageTitleFragment.show(getFragmentManager(), CreateEntourageTitleFragment.TAG);
@@ -251,6 +262,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @OnClick(R.id.create_entourage_description_layout)
     protected void onEditDescriptionClicked() {
+        if (getFragmentManager() == null) return;
         CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString(), entourageCategory);
         descriptionFragment.setListener(this);
         descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
@@ -317,6 +329,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         Bundle args = getArguments();
         if (args != null) {
             editedEntourage = (Entourage)args.getSerializable(FeedItem.KEY_FEEDITEM);
+            if (editedEntourage != null) {
+                entourageMetadata = editedEntourage.getMetadata();
+            }
         }
         initializeCategory();
         initializeLocation();
@@ -326,7 +341,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         initializeHelpHtmlView();
     }
 
-    private void initializeCategory() {
+    protected void initializeCategory() {
         if (editedEntourage != null) {
             String entourageType = editedEntourage.getEntourageType();
             String category = editedEntourage.getCategory();
@@ -334,6 +349,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             if (entourageCategory != null) {
                 entourageCategory.setSelected(true);
             }
+            groupType = editedEntourage.getGroupType();
         } else {
             entourageCategory = null;
         }
@@ -382,12 +398,16 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     protected void initializeDate() {
         if (editedEntourage != null) {
-            entourageDate.setTime(editedEntourage.getStartTime());
+            BaseEntourage.Metadata metadata = editedEntourage.getMetadata();
+            if (metadata != null) {
+                entourageDate.setTime(metadata.getStartDate());
+            }
             updateDateTextView();
         }
     }
 
     private void initializeHelpHtmlView() {
+        if (getView() == null) return;
         HtmlTextView helpHtmlTextView = getView().findViewById(R.id.create_entourage_help_link);
         if (helpHtmlTextView != null) {
             if (getActivity() != null && getActivity() instanceof DrawerActivity) {
@@ -398,14 +418,32 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     }
 
     protected boolean isValid() {
-        if (entourageCategory == null) {
-            Toast.makeText(getActivity(), R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show();
-            return false;
-        }
         String title = titleEditText.getText().toString().trim();
         if (title.length() == 0) {
             Toast.makeText(getActivity(), R.string.entourage_create_error_title_empty, Toast.LENGTH_SHORT).show();
             return false;
+        }
+        if (groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) {
+            String dateString = entourageDateTextView.getText().toString().trim();
+            if (dateString.length() == 0) {
+                Toast.makeText(getActivity(), R.string.entourage_create_error_date_empty, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } else {
+            if (entourageCategory == null) {
+                Toast.makeText(getActivity(), R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        if (location == null) {
+            Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            String address = positionTextView.getText().toString().trim();
+            if (address.length() == 0) {
+                Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
         return true;
     }
@@ -450,6 +488,16 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 positionTextView.setText(address);
             }
         }
+        if (place != null) {
+            if (groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) {
+                if (entourageMetadata == null) entourageMetadata = new BaseEntourage.Metadata();
+                entourageMetadata.setPlaceName(place.getName().toString());
+                if (place.getAddress() != null) {
+                    entourageMetadata.setStreetAddress(place.getAddress().toString());
+                }
+                entourageMetadata.setGooglePlaceId(place.getId());
+            }
+        }
     }
 
     // ----------------------------------
@@ -483,6 +531,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     }
 
     private void showDatePicker() {
+        if (getActivity() == null || getActivity().getFragmentManager() == null) return;
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 this,
                 entourageDate.get(Calendar.YEAR),
@@ -495,6 +544,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     }
 
     private void showTimePicker() {
+        if (getActivity() == null || getActivity().getFragmentManager() == null) return;
         TimePickerDialog tpd = TimePickerDialog.newInstance(
                 BaseCreateEntourageFragment.this,
                 true);
@@ -519,6 +569,8 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         entourageDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
         entourageDate.set(Calendar.MINUTE, minute);
         entourageDate.set(Calendar.SECOND, second);
+        if (entourageMetadata == null) entourageMetadata = new BaseEntourage.Metadata();
+        entourageMetadata.setStartDate(entourageDate.getTime());
         updateDateTextView();
     }
 }
