@@ -52,6 +52,7 @@ import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
 import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.view.EntourageTitleView;
 import social.entourage.android.view.HtmlTextView;
 
 /**
@@ -66,6 +67,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     public static final String TAG = "social.entourage.android.createentourage";
 
     protected static final String KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION";
+    protected static final String KEY_ENTOURAGE_GROUP_TYPE = "social.entourage.android.KEY_ENTOURAGE_GROUP_TYPE";
 
     private static final int VOICE_RECOGNITION_TITLE_CODE = 1;
     private static final int VOICE_RECOGNITION_DESCRIPTION_CODE = 2;
@@ -76,6 +78,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @Inject
     CreateEntouragePresenter presenter;
+
+    @BindView(R.id.create_entourage_category_layout)
+    View categoryLayout;
 
     @BindView(R.id.create_entourage_category)
     TextView categoryTextView;
@@ -98,6 +103,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @BindView(R.id.create_entourage_description_label)
     TextView descriptionLabelTextView;
 
+    @BindView(R.id.create_entourage_date_layout)
+    View entourageDateLayout;
+
     @BindView(R.id.create_entourage_date)
     TextView entourageDateTextView;
 
@@ -119,10 +127,11 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         // Required empty public constructor
     }
 
-    public static CreateEntourageFragment newInstance(LatLng location) {
+    public static CreateEntourageFragment newInstance(LatLng location, String groupType) {
         CreateEntourageFragment fragment = new CreateEntourageFragment();
         Bundle args = new Bundle();
         args.putParcelable(KEY_ENTOURAGE_LOCATION, location);
+        args.putString(KEY_ENTOURAGE_GROUP_TYPE, groupType);
         fragment.setArguments(args);
 
         return fragment;
@@ -248,7 +257,10 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected void onPositionClicked() {
         if (getFragmentManager() == null) return;
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
-        LocationFragment fragment = LocationFragment.newInstance(location, positionTextView.getText().toString(), this);
+        LocationFragment fragment = LocationFragment.newInstance(
+                location, positionTextView.getText().toString(),
+                Entourage.TYPE_OUTING.equalsIgnoreCase(groupType),
+                this);
         fragment.show(getFragmentManager(), LocationFragment.TAG);
     }
 
@@ -332,6 +344,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             if (editedEntourage != null) {
                 entourageMetadata = editedEntourage.getMetadata();
             }
+            groupType = args.getString(KEY_ENTOURAGE_GROUP_TYPE, null);
         }
         initializeCategory();
         initializeLocation();
@@ -353,10 +366,11 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         } else {
             entourageCategory = null;
         }
+        updateFragmentTitle();
         updateCategoryTextView();
     }
 
-    private void updateCategoryTextView() {
+    protected void updateCategoryTextView() {
         if (entourageCategory == null) {
             categoryTextView.setText("");
         } else {
@@ -367,6 +381,18 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                     )
             );
         }
+        categoryLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.GONE : View.VISIBLE);
+    }
+
+    protected void updateFragmentTitle() {
+        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            if (getView() != null) {
+                EntourageTitleView fragmentTitleView = getView().findViewById(R.id.create_entourage_fragment_title);
+                if (fragmentTitleView != null) {
+                    fragmentTitleView.setTitle(getString(R.string.entourage_create_outing_title));
+                }
+            }
+        }
     }
 
     protected void initializeLocation() {
@@ -374,10 +400,16 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (args != null) {
             if (editedEntourage != null) {
                 location = editedEntourage.getLocation().getLocation();
+                if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+                    BaseEntourage.Metadata metadata = editedEntourage.getMetadata();
+                    if (metadata != null) {
+                        positionTextView.setText(metadata.getDisplayAddress());
+                    }
+                }
             } else {
                 location = args.getParcelable(KEY_ENTOURAGE_LOCATION);
             }
-            if (location != null) {
+            if (location != null && !Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
                 GeocoderTask geocoderTask = new GeocoderTask();
                 geocoderTask.execute(location);
             }
@@ -404,6 +436,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             }
             updateDateTextView();
         }
+        entourageDateLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.VISIBLE : View.GONE);
     }
 
     private void initializeHelpHtmlView() {

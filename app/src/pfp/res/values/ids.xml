@@ -16,4 +16,6 @@
 
     <item name="create_entourage_help_link" type="id" />
 
+    <item name="button_create_outing" type="id" />
+
 </resources>

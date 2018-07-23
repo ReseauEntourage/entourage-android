@@ -797,7 +797,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         getAuthenticationController().saveUser(me);
 
         // Dismiss the disclaimer fragment
-        fragment.dismiss();
+        if (fragment != null) fragment.dismiss();
 
         // Show the create entourage fragment
         if (mainFragment instanceof MapEntourageFragment) {

@@ -10,6 +10,7 @@
     tools:context="social.entourage.android.map.entourage.create.CreateEntourageFragment">
 
     <social.entourage.android.view.EntourageTitleView
+        android:id="@+id/create_entourage_fragment_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/entourage_create_action_title"

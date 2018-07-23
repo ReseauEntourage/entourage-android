@@ -2,7 +2,8 @@
 <resources>
 
     <!-- Create Entourage -->
-    <string name="entourage_create_action_title">SORTIE</string>
+    <string name="entourage_create_outing_title">SORTIE</string>
+    <string name="entourage_create_action_title">@string/entourage_create_outing_title</string>
     <string name="entourage_create_privacy_public">Public</string>
     <string name="entourage_create_privacy_private">Privé</string>
     <string name="entourage_create_privacy_description_public">Tous peuvent trouver la sortie dans le fil d\'actualités, mais seuls les membres de mon voisinage sont notifiés.</string>

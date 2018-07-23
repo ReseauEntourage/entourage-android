@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="@color/white"
+                android:width="2dp"/>
+        </shape>
+    </item>
+    <item android:top="2dp"
+        android:left="2dp"
+        android:bottom="2dp"
+        android:right="2dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/accent" />
+        </shape>
+    </item>
+    <item android:top="8dp"
+          android:left="8dp"
+          android:bottom="8dp"
+          android:right="8dp">
+        <bitmap android:src="@drawable/ic_entourage_category_event"
+                android:tint="@color/white"/>
+    </item>
+</layer-list>

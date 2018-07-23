@@ -2,6 +2,7 @@
 <resources>
     <!-- Create Entourage -->
     <string name="entourage_create_action_title">ACTION</string>
+    <string name="entourage_create_outing_title">ÉVÈNEMENT</string>
     <string name="entourage_create_type_label">Catégorie</string>
     <string name="entourage_create_type_demand">Je cherche : %1$s</string>
     <string name="entourage_create_type_contribution">Je me propose de : %1$s</string>
@@ -26,6 +27,7 @@
     <string name="entourage_create_error_location_empty">!!No location chosen</string>
 
     <string name="entourage_create_menu">Créer une action</string>
+    <string name="outing_create_menu">Créer un évènement</string>
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>
@@ -76,13 +78,19 @@
     <string name="entourage_disclaimer_text_chart1">Je respecte la</string>
     <string name="entourage_disclaimer_text_chart2">Charte d\'Entourage</string>
     <string name="entourage_disclaimer_accord_title">Recueillir l’accord</string>
-    <string name="entourage_disclaimer_accord_details">Je demande le consentement d’une personne avant de mentionner de ses informations personnelles</string>
+    <string name="entourage_disclaimer_accord_details">Je dois recueillir le consentement des personnes concernées avant de créer un entourage</string>
     <string name="entourage_disclaimer_security_title">Sécurité</string>
-    <string name="entourage_disclaimer_security_details">Je veille à ce qu’on ne puisse pas identifier ou localiser des personnes en me lisant</string>
-    <string name="entourage_disclaimer_geolocation_title">Localisation ?</string>
-    <string name="entourage_disclaimer_geolocation_details">L’adresse précise des évènements est montrée</string>
+    <string name="entourage_disclaimer_security_details">Je n’inclus aucune donnée permettant d\'identifier ou de localiser les personnes concernées</string>
+    <string name="entourage_disclaimer_geolocation_title">Géolocalisation ?</string>
+    <string name="entourage_disclaimer_geolocation_details">La position précise des entourages ne sera pas diffusée : elle est remplacée par les zones oranges sur la carte</string>
     <string name="entourage_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
     <string name="entourage_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
+
+    <!-- Outing disclaimer -->
+    <string name="outing_disclaimer_accord_details">Je demande le consentement d’une personne avant de mentionner de ses informations personnelles</string>
+    <string name="outing_disclaimer_security_details">Je veille à ce qu’on ne puisse pas identifier ou localiser des personnes en me lisant</string>
+    <string name="outing_disclaimer_geolocation_title">Localisation ?</string>
+    <string name="outing_disclaimer_geolocation_details">L’adresse précise des évènements est montrée</string>
 
     <!-- My Entourages -->
     <string name="myentourages_title">MES ENTOURAGES</string>

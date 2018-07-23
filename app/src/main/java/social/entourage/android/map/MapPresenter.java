@@ -120,18 +120,18 @@ public class MapPresenter {
         }
     }
 
-    public void createEntourage(LatLng location) {
+    public void createEntourage(LatLng location, String groupType) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location);
+            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location, groupType);
             entourageFragment.show(fragmentManager, CreateEntourageFragment.TAG);
         }
     }
 
-    public void displayEntourageDisclaimer() {
+    public void displayEntourageDisclaimer(String groupType) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance();
+            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(groupType);
             fragment.show(fragmentManager, EntourageDisclaimerFragment.TAG);
         }
     }

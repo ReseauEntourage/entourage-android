@@ -18,6 +18,8 @@ public class Configuration extends BaseConfiguration {
         showUserEditProfile = true;
         showEditEntourageView = false;
         showInviteView = false;
+        showMapFABMenu = false;
+        showEntourageDisclaimer = false;
     }
 
 }

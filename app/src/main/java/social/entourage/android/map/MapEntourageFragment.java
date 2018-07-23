@@ -109,6 +109,7 @@ import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
 import social.entourage.android.base.EntourageToast;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationFragment;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
@@ -276,6 +277,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // keeps tracks of the attached fragments
     MapEntourageFragmentLifecycleCallbacks fragmentLifecycleCallbacks;
 
+    // requested entourage group type
+    String entourageGroupType = null;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -299,7 +303,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         if (toReturn == null) {
             toReturn = inflater.inflate(R.layout.fragment_map, container, false);
@@ -309,7 +313,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (presenter == null) {
             setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
@@ -382,7 +386,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onSaveInstanceState(final Bundle outState) {
+    public void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
         isStopped = true;
     }
@@ -596,15 +600,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
         }
         // Check if we need to show the entourage disclaimer
-        User me = EntourageApplication.me(getActivity());
-        if (me == null) {
-            return;
-        }
-
-        // MI: EMA-920 Show the disclaimer every time
-        // Show the disclaimer fragment
-        if (presenter != null) {
-            presenter.displayEntourageDisclaimer();
+        if (Configuration.getInstance().showEntourageDisclaimer()) {
+            if (presenter != null) {
+                presenter.displayEntourageDisclaimer(entourageGroupType);
+            }
+        } else {
+            if (getActivity() != null) {
+                ((DrawerActivity) getActivity()).onEntourageDisclaimerAccepted(null);
+            }
         }
 
     }
@@ -616,7 +619,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             longTapCoordinates = null;
         }
         if (presenter != null) {
-            presenter.createEntourage(location);
+            presenter.createEntourage(location, entourageGroupType);
         }
     }
 
@@ -1420,6 +1423,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick({R.id.button_create_entourage, R.id.map_longclick_button_entourage_action})
     protected void onCreateEntourageAction() {
+        entourageGroupType = null;
+        displayEntouragePopupWhileTour();
+    }
+
+    @Optional
+    @OnClick({R.id.button_create_outing})
+    protected void onCreateOuting() {
+        entourageGroupType = Entourage.TYPE_OUTING;
         displayEntouragePopupWhileTour();
     }
 
@@ -1488,7 +1499,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 } else {
                     User me = EntourageApplication.me(getContext());
                     boolean isPro = (me != null) && me.isPro();
-                    if (!isPro) {
+                    if (!isPro || !Configuration.getInstance().showMapFABMenu()) {
                         // Show directly the create entourage disclaimer
                         displayEntouragePopupWhileTour();
                     } else {
@@ -1539,7 +1550,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //for public user, start the create entourage funnel directly
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());
-        if (!isPro) {
+        if (!isPro  || !Configuration.getInstance().showMapFABMenu()) {
             displayEntourageDisclaimer();
             return;
         }

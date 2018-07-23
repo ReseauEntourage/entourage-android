@@ -78,14 +78,6 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     // Interactions handling
     // ----------------------------------
 
-    @Override
-    protected void onPositionClicked() {
-        if (getFragmentManager() == null) return;
-        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
-        LocationFragment fragment = LocationFragment.newInstance(location, positionTextView.getText().toString(), true, this);
-        fragment.show(getFragmentManager(), LocationFragment.TAG);
-    }
-
     @OnClick(R.id.create_entourage_privacy_switch)
     protected void onPrivacySwitchClicked() {
         if (privacySwitch == null) return;
@@ -154,8 +146,8 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
 
     @Override
     protected void initializeCategory() {
-        super.initializeCategory();
         if (groupType == null) groupType = Entourage.TYPE_OUTING; // only outings
+        super.initializeCategory();
     }
 
     @Override
