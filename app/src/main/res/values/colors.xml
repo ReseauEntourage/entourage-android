@@ -52,6 +52,7 @@
 
     <!-- Map -->
     <color name="map_plus_button">@color/accent</color>
+    <color name="map_announcement_background">#ffc57f</color>
 
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>
