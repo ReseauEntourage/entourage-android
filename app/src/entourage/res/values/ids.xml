@@ -12,6 +12,8 @@
     <item name="user_message_layout" type="id" />
     <item name="user_message_button" type="id" />
 
+    <item name="place_autocomplete_fragment" type="id" />
+
     <item name="tour_card_icon" type="id" />
     <item name="tour_card_last_update_date" type="id" />
 

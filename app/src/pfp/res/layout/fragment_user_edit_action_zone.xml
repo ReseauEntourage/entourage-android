@@ -1,0 +1,122 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/accent"
+              android:orientation="vertical"
+              tools:context="social.entourage.android.user.edit.UserEditActionZoneFragment">
+
+    <ImageButton
+        android:id="@+id/title_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:padding="5dp"
+        android:src="@drawable/ic_action_back"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty_description"
+                android:src="@drawable/map_pin_square"/>
+
+            <TextView
+                android:id="@+id/action_zone_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/user_action_zone_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_xtra_large"/>
+
+            <TextView
+                android:id="@+id/action_zone_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/user_action_zone_description"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_medium"/>
+
+            <TextView
+                android:id="@+id/action_zone_description2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/user_action_zone_description2"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/action_zone_address"
+                style="@style/CustomEditTextThemeAccent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:hint="@string/user_action_zone_hint"
+                android:inputType="textPostalAddress"
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:id="@+id/action_zone_places_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="-10dp"
+                android:layout_marginRight="-10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp">
+
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/action_zone_go_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_forward_tint"
+                    app:fab_colorNormal="@color/white"
+                    app:fab_colorPressed="@color/custom_button_white_pressed"
+                    app:fab_colorRipple="@color/white"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

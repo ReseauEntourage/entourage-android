@@ -83,6 +83,8 @@ public class User implements Serializable {
 
     private UserConversation conversation;
 
+    private Address address;
+
     @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
 
@@ -249,6 +251,18 @@ public class User implements Serializable {
         return conversation;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(final Address address) {
+        this.address = address;
+    }
+
+    // ----------------------------------
+    // Other methods
+    // ----------------------------------
+
     public boolean isEntourageDisclaimerShown() {
         return entourageDisclaimerShown;
     }
@@ -409,7 +423,68 @@ public class User implements Serializable {
     }
 
     // ----------------------------------
-    // WRAPPER
+    // User Address
+    // ----------------------------------
+
+    public static class Address implements Serializable {
+
+        private static final long serialVersionUID = 5727042444482111831L;
+
+        private double latitude;
+
+        private double longitude;
+
+        @SerializedName("display_address")
+        private String displayAddress;
+
+        @SerializedName("google_place_id")
+        private String googlePlaceId;
+
+        public Address(String googlePlaceId) {
+            this.googlePlaceId = googlePlaceId;
+        }
+
+        public Address(double latitude, double longitude, String displayAddress) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.displayAddress = displayAddress;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(final double latitude) {
+            this.latitude = latitude;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(final double longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getDisplayAddress() {
+            return displayAddress;
+        }
+
+        public void setDisplayAddress(final String displayAddress) {
+            this.displayAddress = displayAddress;
+        }
+
+        public String getGooglePlaceId() {
+            return googlePlaceId;
+        }
+
+        public void setGooglePlaceId(final String googlePlaceId) {
+            this.googlePlaceId = googlePlaceId;
+        }
+    }
+
+    // ----------------------------------
+    // WRAPPERS
     // ----------------------------------
 
     public static class UserWrapper {
@@ -426,6 +501,23 @@ public class User implements Serializable {
 
         public void setUser(User user) {
             this.user = user;
+        }
+    }
+
+    public static class AddressWrapper {
+
+        private Address address;
+
+        private AddressWrapper(Address address) {
+            this.address = address;
+        }
+
+        public Address getAddress() {
+            return address;
+        }
+
+        public void setAddress(final Address address) {
+            this.address = address;
         }
     }
 }

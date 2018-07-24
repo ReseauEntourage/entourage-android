@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -87,9 +89,6 @@ public class UserEditFragment extends EntourageDialogFragment {
     @BindView(R.id.user_phone)
     TextView userPhone;
 
-    @BindView(R.id.user_address)
-    TextView userAddress;
-
     @BindView(R.id.user_about)
     TextView userAbout;
 
@@ -108,6 +107,12 @@ public class UserEditFragment extends EntourageDialogFragment {
     @BindView(R.id.user_add_association_separator)
     View userAddAssociationSeparator;
 
+    @BindView(R.id.user_action_zone)
+    TextView userActionZone;
+
+    @BindView(R.id.user_action_zone_button)
+    Button userActionZoneButton;
+
     @BindView(R.id.user_edit_progressBar)
     ProgressBar progressBar;
 
@@ -125,7 +130,7 @@ public class UserEditFragment extends EntourageDialogFragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_user_edit, container, false);
@@ -135,7 +140,7 @@ public class UserEditFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         configureView();
@@ -190,7 +195,6 @@ public class UserEditFragment extends EntourageDialogFragment {
             userLastname.setText(editedUser.getLastName());
             userEmail.setText(editedUser.getEmail());
             userPhone.setText(editedUser.getPhone());
-            userAddress.setText("");
             userAbout.setText(editedUser.getAbout());
 
             List<BaseOrganization> organizationList = new ArrayList<>();
@@ -209,6 +213,20 @@ public class UserEditFragment extends EntourageDialogFragment {
             }
 
             userAddAssociationSeparator.setVisibility(organizationList.size() > 0 ? View.VISIBLE : View.GONE);
+
+            User.Address address = editedUser.getAddress();
+            if (address == null) {
+                userActionZone.setText("");
+                userActionZoneButton.setText(R.string.user_edit_action_zone_button_no_address);
+            } else {
+                String displayAddress = address.getDisplayAddress();
+                if (displayAddress == null || displayAddress.length() == 0) {
+                    userActionZone.setText("");
+                } else {
+                    userActionZone.setText(getString(R.string.user_edit_action_zone_format, address.getDisplayAddress()));
+                }
+                userActionZoneButton.setText(R.string.user_edit_action_zone_button);
+            }
 
         }
     }
@@ -328,6 +346,13 @@ public class UserEditFragment extends EntourageDialogFragment {
         } catch (Exception ignored) {
 
         }
+    }
+
+    @OnClick(R.id.user_action_zone_button)
+    protected void onActionZoneEditClicked() {
+        if (getFragmentManager() == null) return;
+        UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(editedUser.getAddress());
+        userEditActionZoneFragment.show(getFragmentManager(), UserEditActionZoneFragment.TAG);
     }
 
     // ----------------------------------
