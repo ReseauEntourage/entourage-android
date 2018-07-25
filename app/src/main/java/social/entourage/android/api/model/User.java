@@ -508,7 +508,7 @@ public class User implements Serializable {
 
         private Address address;
 
-        private AddressWrapper(Address address) {
+        public AddressWrapper(Address address) {
             this.address = address;
         }
 

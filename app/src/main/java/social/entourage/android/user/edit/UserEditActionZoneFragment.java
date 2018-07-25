@@ -27,7 +27,13 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import social.entourage.android.EntourageApplication;
+import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.model.User;
+import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
 
@@ -50,12 +56,11 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
-    @BindView(R.id.action_zone_address)
-    TextView addressTextView;
+    protected User.Address userAddress;
 
-    private User.Address userAddress;
+    private boolean saving = false;
 
-    PlaceAutocompleteFragment autocompleteFragment = null;
+    SupportPlaceAutocompleteFragment autocompleteFragment = null;
 
     // ----------------------------------
     // LIFECYCLE
@@ -103,10 +108,6 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (userAddress != null) {
-            addressTextView.setText(userAddress.getDisplayAddress());
-        }
-
         initializeGooglePlaces();
     }
 
@@ -121,7 +122,8 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.action_zone_go_button)
     protected void onSaveButtonClicked() {
-        Toast.makeText(getContext(), R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+        if (saving) return;
+        saveAddress();
     }
 
     // ----------------------------------
@@ -129,23 +131,19 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private void initializeGooglePlaces() {
-        if (getActivity() == null) return;
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        if (autocompleteFragment == null) return;
+
+        if (autocompleteFragment == null) {
+            autocompleteFragment = new SupportPlaceAutocompleteFragment();
+        }
+        if (userAddress != null) {
+            Bundle args = new Bundle();
+            args.putString(KEY_USER_ADDRESS, userAddress.getDisplayAddress());
+            autocompleteFragment.setArguments(args);
+        }
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.place_autocomplete_fragment, autocompleteFragment).commit();
 
         autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(42, -5), new LatLng(51, 9)));
-
-        autocompleteFragment.setHint(getString(R.string.user_action_zone_hint));
-        if (userAddress != null) {
-            autocompleteFragment.setText(userAddress.getDisplayAddress());
-        }
-        if (autocompleteFragment.getView() != null) {
-            EditText autocompleteEditText = autocompleteFragment.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input);
-            if (autocompleteEditText != null && getContext() != null) {
-                autocompleteEditText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-            }
-        }
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -162,6 +160,66 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
                 }
             }
         });
+    }
+
+    private void saveAddress() {
+        if (userAddress == null) return;
+        saving = true;
+        UserRequest userRequest = EntourageApplication.get().getEntourageComponent().getUserRequest();
+        Call<User.AddressWrapper> call = userRequest.updateAddress(new User.AddressWrapper(userAddress));
+        call.enqueue(new Callback<User.AddressWrapper>() {
+            @Override
+            public void onResponse(final Call<User.AddressWrapper> call, final Response<User.AddressWrapper> response) {
+                if (response.isSuccessful()) {
+                    AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+                    User me = authenticationController.getUser();
+                    if (me != null && response.body() != null) {
+                        me.setAddress(response.body().getAddress());
+                        authenticationController.saveUser(me);
+                    }
+                    if (getActivity() != null) {
+                        Toast.makeText(getActivity(), R.string.user_action_zone_send_ok, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (getActivity() != null) {
+                        Toast.makeText(getActivity(), R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                saving = false;
+            }
+
+            @Override
+            public void onFailure(final Call<User.AddressWrapper> call, final Throwable t) {
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show();
+                }
+                saving = false;
+            }
+        });
+    }
+
+    // ----------------------------------
+    // Private class
+    // ----------------------------------
+
+    public static class SupportPlaceAutocompleteFragment extends com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment {
+
+        @Override
+        public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+            setHint(getString(R.string.user_action_zone_hint));
+            if (getArguments() != null) {
+                String address = getArguments().getString(KEY_USER_ADDRESS, "");
+                setText(address);
+            }
+            if (getView() != null) {
+                EditText autocompleteEditText = getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input);
+                if (autocompleteEditText != null && getContext() != null) {
+                    autocompleteEditText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                }
+            }
+        }
     }
 
 }

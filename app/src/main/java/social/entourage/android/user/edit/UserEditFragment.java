@@ -390,6 +390,7 @@ public class UserEditFragment extends EntourageDialogFragment {
         User user = EntourageApplication.me(getActivity());
         editedUser.setAvatarURL(user.getAvatarURL());
         editedUser.setPartner(user.getPartner());
+        editedUser.setAddress(user.getAddress());
 
         configureView();
     }

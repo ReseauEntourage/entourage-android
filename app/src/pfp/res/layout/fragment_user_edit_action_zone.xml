@@ -52,27 +52,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/entourage_font_medium"/>
 
-            <TextView
-                android:id="@+id/action_zone_description2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/user_action_zone_description2"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:visibility="gone"/>
-
-            <EditText
-                android:id="@+id/action_zone_address"
-                style="@style/CustomEditTextThemeAccent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:hint="@string/user_action_zone_hint"
-                android:inputType="textPostalAddress"
-                android:visibility="gone"/>
-
             <RelativeLayout
                 android:id="@+id/action_zone_places_layout"
                 android:layout_width="match_parent"
@@ -83,9 +62,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp">
 
-                <fragment
+                <FrameLayout
                     android:id="@+id/place_autocomplete_fragment"
-                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />
