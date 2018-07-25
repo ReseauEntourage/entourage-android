@@ -106,6 +106,7 @@
     <string name="user_action_zone_description">Entourage, c’est utile parce que c’est local !\nIndiquez le lieu autour duquel vous souhaitez agir avec d’autres personnes.\n\n<b>Cette information n’est pas affichée.</b> Vous pouvez la modifier dans vos réglages.</string>
     <string name="user_action_zone_description2">Adresse - peut être approximative</string>
     <string name="user_action_zone_hint">1 avenue Jean Jaurès...</string>
+    <string name="user_action_zone_no_address_error">!!Please select an address</string>
     <string name="user_action_zone_send_ok">!!Address saved</string>
     <string name="user_action_zone_send_failed">!!Failure to save the address</string>
     

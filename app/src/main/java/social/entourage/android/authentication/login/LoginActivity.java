@@ -58,6 +58,7 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
+import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
@@ -69,7 +70,8 @@ import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
 /**
  * Activity providing the login steps
  */
-public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface {
+public class LoginActivity extends EntourageActivity
+        implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -450,6 +452,8 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 showNameView();
             } else if (loginPresenter.shouldShowEmailView(user)) {
                 showEmailView();
+            } else if (loginPresenter.shouldShowActionZoneView(user)) {
+                showActionZoneView();
             } else if (loginPresenter.shouldShowPhotoChooseView(user)) {
                 showPhotoChooseSource();
             } else {
@@ -1067,6 +1071,45 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_startup_logo)
     void onEntourageLogoClick() {
         displayToast(VERSION + BuildConfig.VERSION_NAME);
+    }
+
+    /************************
+     * Action Zone View
+     ************************/
+
+    private void showActionZoneView() {
+        UserEditActionZoneFragment actionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+        actionZoneFragment.setFragmentListener(this);
+        actionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+    }
+
+    private void hideActionZoneView() {
+        UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        if (actionZoneFragment != null) {
+            actionZoneFragment.dismiss();
+        }
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentDismiss() {
+        showNameView();
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentAddressSaved() {
+        hideActionZoneView();
+        if (loginPresenter != null && loginPresenter.authenticationController != null) {
+            User user = loginPresenter.authenticationController.getUser();
+            if (user != null) {
+                if (loginPresenter.shouldShowPhotoChooseView(user)) {
+                    showPhotoChooseSource();
+                } else {
+                    showGeolocationView();
+                }
+                return;
+            }
+        }
+        showGeolocationView();
     }
 
     /************************

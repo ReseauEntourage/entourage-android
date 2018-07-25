@@ -1,6 +1,7 @@
 package social.entourage.android.user.edit;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -62,6 +63,8 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
 
     SupportPlaceAutocompleteFragment autocompleteFragment = null;
 
+    private FragmentListener fragmentListener;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -111,6 +114,16 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
         initializeGooglePlaces();
     }
 
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentDismiss();
+    }
+
+    public void setFragmentListener(final FragmentListener fragmentListener) {
+        this.fragmentListener = fragmentListener;
+    }
+
     // ----------------------------------
     // Buttons Handling
     // ----------------------------------
@@ -118,6 +131,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     @OnClick(R.id.title_close_button)
     protected void onCloseButtonClicked() {
         dismiss();
+        if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentDismiss();
     }
 
     @OnClick(R.id.action_zone_go_button)
@@ -163,7 +177,10 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     }
 
     private void saveAddress() {
-        if (userAddress == null) return;
+        if (userAddress == null) {
+            Toast.makeText(getActivity(), R.string.user_action_zone_no_address_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
         saving = true;
         UserRequest userRequest = EntourageApplication.get().getEntourageComponent().getUserRequest();
         Call<User.AddressWrapper> call = userRequest.updateAddress(new User.AddressWrapper(userAddress));
@@ -180,6 +197,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), R.string.user_action_zone_send_ok, Toast.LENGTH_SHORT).show();
                     }
+                    if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentAddressSaved();
                 } else {
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show();
@@ -199,7 +217,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     }
 
     // ----------------------------------
-    // Private class
+    // Inner classes
     // ----------------------------------
 
     public static class SupportPlaceAutocompleteFragment extends com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment {
@@ -220,6 +238,13 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
                 }
             }
         }
+    }
+
+    public interface FragmentListener {
+
+        public void onUserEditActionZoneFragmentDismiss();
+        public void onUserEditActionZoneFragmentAddressSaved();
+
     }
 
 }

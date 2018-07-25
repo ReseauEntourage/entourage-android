@@ -363,6 +363,17 @@ public abstract class BaseLoginPresenter {
     }
 
     /**
+     * Returns true if we need to show the set action zone view
+     * @param user the user to check
+     * @return
+     */
+    public boolean shouldShowActionZoneView(User user) {
+        //TODO Fix this after testing is done
+        return true;
+        //return (user.getAddress() == null || user.getAddress().getDisplayAddress() == null || user.getAddress().getDisplayAddress().length() == 0);
+    }
+
+    /**
      * Returns true if we need to show the choose photo source view
      * @param user the user to check
      * @return
