@@ -1080,6 +1080,7 @@ public class LoginActivity extends EntourageActivity
     private void showActionZoneView() {
         UserEditActionZoneFragment actionZoneFragment = UserEditActionZoneFragment.newInstance(null);
         actionZoneFragment.setFragmentListener(this);
+        actionZoneFragment.setFromLogin(true);
         actionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
     }
 

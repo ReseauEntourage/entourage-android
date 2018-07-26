@@ -368,9 +368,7 @@ public abstract class BaseLoginPresenter {
      * @return
      */
     public boolean shouldShowActionZoneView(User user) {
-        //TODO Fix this after testing is done
-        return true;
-        //return (user.getAddress() == null || user.getAddress().getDisplayAddress() == null || user.getAddress().getDisplayAddress().length() == 0);
+        return (user.getAddress() == null || user.getAddress().getDisplayAddress() == null || user.getAddress().getDisplayAddress().length() == 0);
     }
 
     /**

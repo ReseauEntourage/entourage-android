@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,6 +59,10 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     // ATTRIBUTES
     // ----------------------------------
 
+    @Nullable
+    @BindView(R.id.action_zone_ignore_button)
+    Button ignoreButton;
+
     protected User.Address userAddress;
 
     private boolean saving = false;
@@ -64,6 +70,8 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     SupportPlaceAutocompleteFragment autocompleteFragment = null;
 
     private FragmentListener fragmentListener;
+
+    private boolean isFromLogin = false;
 
     // ----------------------------------
     // LIFECYCLE
@@ -111,6 +119,11 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (!isFromLogin && ignoreButton != null) {
+            //Hide the ignore button if the fragment is not shown from the login screen
+            ignoreButton.setVisibility(View.GONE);
+        }
+
         initializeGooglePlaces();
     }
 
@@ -120,8 +133,17 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
         if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentDismiss();
     }
 
+    @Override
+    protected int getSlideStyle() {
+        return isFromLogin ? 0 : super.getSlideStyle();
+    }
+
     public void setFragmentListener(final FragmentListener fragmentListener) {
         this.fragmentListener = fragmentListener;
+    }
+
+    public void setFromLogin(final boolean fromLogin) {
+        isFromLogin = fromLogin;
     }
 
     // ----------------------------------
@@ -138,6 +160,12 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     protected void onSaveButtonClicked() {
         if (saving) return;
         saveAddress();
+    }
+
+    @Optional
+    @OnClick(R.id.action_zone_ignore_button)
+    protected void onIgnoreButtonClicked() {
+        if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentAddressSaved();
     }
 
     // ----------------------------------
@@ -242,8 +270,8 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
 
     public interface FragmentListener {
 
-        public void onUserEditActionZoneFragmentDismiss();
-        public void onUserEditActionZoneFragmentAddressSaved();
+        void onUserEditActionZoneFragmentDismiss();
+        void onUserEditActionZoneFragmentAddressSaved();
 
     }
 

@@ -7,14 +7,33 @@
               android:orientation="vertical"
               tools:context="social.entourage.android.user.edit.UserEditActionZoneFragment">
 
-    <ImageButton
-        android:id="@+id/title_close_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/empty_description"
-        android:padding="5dp"
-        android:src="@drawable/ic_action_back"/>
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/title_close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:src="@drawable/ic_action_back"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/action_zone_ignore_button"
+            style="@style/TransparentButton.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ignore"/>
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -72,9 +91,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp">
 
-                <fragment
+                <FrameLayout
                     android:id="@+id/place_autocomplete_fragment"
-                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />

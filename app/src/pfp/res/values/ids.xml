@@ -18,4 +18,6 @@
 
     <item name="button_create_outing" type="id" />
 
+    <item name="action_zone_ignore_button" type="id" />
+
 </resources>
