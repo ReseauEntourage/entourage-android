@@ -277,6 +277,10 @@ public class AuthenticationController {
         }
     }
 
+    public UserPreferences getUserPreferences() {
+        return userPreferences;
+    }
+
     public void saveUserPreferences() {
         if (loggedUser == null) {
             return;

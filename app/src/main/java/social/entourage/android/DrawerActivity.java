@@ -56,6 +56,7 @@ import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
 import social.entourage.android.api.tape.Events.OnUserActEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
@@ -78,6 +79,7 @@ import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
+import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
@@ -88,7 +90,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     MyToursFragment.OnFragmentInteractionListener,
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
-    PhotoChooseInterface {
+    PhotoChooseInterface,
+    UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -123,6 +126,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     private Tour intentTour;
 
     @IdRes int selectedSidemenuAction;
+
+    private boolean editActionZoneShown = false;
 
     // ----------------------------------
     // LIFECYCLE
@@ -1025,6 +1030,51 @@ public class DrawerActivity extends EntourageSecuredActivity
         MyEntouragesFragment myEntouragesFragment = (MyEntouragesFragment) getSupportFragmentManager().findFragmentByTag(MyEntouragesFragment.TAG);
         if (myEntouragesFragment != null) {
             myEntouragesFragment.onPushNotificationReceived(message);
+        }
+    }
+
+    // ----------------------------------
+    // ACTION ZONE HANDLING
+    // ----------------------------------
+
+    public void showEditActionZoneFragment() {
+        if (editActionZoneShown) return;
+        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+        if (authenticationController.isAuthenticated()) {
+            User me = authenticationController.getUser();
+            UserPreferences userPreferences = authenticationController.getUserPreferences();
+            if (me != null && userPreferences != null) {
+                boolean noAddress = me.getAddress() == null || me.getAddress().getDisplayAddress() == null || me.getAddress().getDisplayAddress().length() == 0;
+                if (!userPreferences.isEditActionZoneShown() && noAddress) {
+                    UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+                    userEditActionZoneFragment.setFragmentListener(this);
+                    userEditActionZoneFragment.setFromLogin(true);
+                    userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+                }
+            }
+        }
+        editActionZoneShown = true;
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentDismiss() {
+
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentAddressSaved() {
+        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+        if (authenticationController.isAuthenticated()) {
+            User me = authenticationController.getUser();
+            UserPreferences userPreferences = authenticationController.getUserPreferences();
+            if (me != null && userPreferences != null) {
+                userPreferences.setEditActionZoneShown(true);
+                authenticationController.saveUserPreferences();
+            }
+        }
+        UserEditActionZoneFragment fragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        if (fragment != null && !fragment.isStateSaved()) {
+            fragment.dismiss();
         }
     }
 

@@ -175,6 +175,10 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         //    retrieveMyFeeds();
         //}
         refreshMyFeeds();
+
+        if (getActivity() != null) {
+            ((DrawerActivity)getActivity()).showEditActionZoneFragment();
+        }
     }
 
     @Override

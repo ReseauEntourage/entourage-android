@@ -323,6 +323,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             fragmentLifecycleCallbacks = new MapEntourageFragmentLifecycleCallbacks();
             getFragmentManager().registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false);
         }
+
+        if (getActivity() != null) {
+            ((DrawerActivity)getActivity()).showEditActionZoneFragment();
+        }
     }
 
     @Override
