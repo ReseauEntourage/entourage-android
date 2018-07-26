@@ -1756,6 +1756,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void initializeMapZoom() {
+        User me = EntourageApplication.get().getEntourageComponent().getAuthenticationController().getUser();
+        if (me != null) {
+            User.Address address = me.getAddress();
+            if (address != null) {
+                centerMap(new LatLng(address.getLatitude(), address.getLongitude()));
+                isFollowing = false;
+                return;
+            }
+        }
         centerMap(EntourageLocation.getInstance().getLastCameraPosition());
     }
 
