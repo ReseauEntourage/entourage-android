@@ -89,6 +89,7 @@
         android:id="@+id/myentourages_layout_no_items"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/myentourages_tab"
         android:background="@color/white"
         android:clickable="true"
         android:focusable="true"
@@ -99,6 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/myentourages_no_items_background"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="40dp"
             android:paddingLeft="20dp"
@@ -116,7 +118,7 @@
 
             <TextView
                 android:id="@+id/myentourages_no_items_details"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/entourage_padding_10"
                 android:text="@string/myentourages_no_items_details"

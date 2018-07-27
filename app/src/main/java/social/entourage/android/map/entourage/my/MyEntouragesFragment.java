@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -106,6 +107,12 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     @BindView(R.id.myentourages_layout_no_items)
     View noItemsView;
+
+    @BindView(R.id.myentourages_no_items_title)
+    TextView noItemsTitleTextView;
+
+    @BindView(R.id.myentourages_no_items_details)
+    TextView noItemsDetailsTextView;
 
     @BindView(R.id.myentourages_progressBar)
     ProgressBar progressBar;
@@ -493,8 +500,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             if (entouragesPagination != null) {
                 entouragesPagination.loadedItems(newsfeedList.size());
             }
+        }
+        if (entouragesAdapter.getDataItemCount() == 0) {
+            noItemsView.setVisibility(View.VISIBLE);
+            noItemsTitleTextView.setVisibility(showUnreadOnly ? View.GONE : View.VISIBLE);
+            noItemsDetailsTextView.setText(showUnreadOnly ? R.string.myentourages_no_unread_items_details : R.string.myentourages_no_items_details);
         } else {
-            noItemsView.setVisibility(entouragesAdapter.getDataItemCount() == 0 ? View.VISIBLE : View.GONE);
+            noItemsView.setVisibility(View.GONE);
         }
     }
 
