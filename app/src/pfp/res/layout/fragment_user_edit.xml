@@ -168,7 +168,7 @@
                     android:id="@+id/user_about_edit_button"
                     style="@style/AccentButton.RoundedCorners"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
                     android:layout_marginEnd="10dp"
@@ -304,12 +304,14 @@
                 <Button
                     android:id="@+id/user_action_zone_button"
                     style="@style/AccentButton.RoundedCorners"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:text="@string/user_edit_action_zone_button_no_address"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="normal"/>
 
                 <View
                     android:id="@+id/view5"
