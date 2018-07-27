@@ -1507,8 +1507,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         // Show directly the create entourage disclaimer
                         displayEntouragePopupWhileTour();
                     } else {
-                        // Let the FAB do it's normal thing
-                        mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
+                        if (isBound && tourService != null && tourService.isRunning()) {
+                            // Show directly the create encounter
+                            onAddEncounter();
+                        } else {
+                            // Let the FAB do it's normal thing
+                            mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
+                        }
                     }
                 }
             }
