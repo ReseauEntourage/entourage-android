@@ -618,6 +618,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     public void createEntourage() {
         LatLng location = EntourageLocation.getInstance().getLastCameraPosition().target;
+        if (!Entourage.TYPE_OUTING.equalsIgnoreCase(entourageGroupType)) {
+            // For demand/contribution, by default select the action zone location, if set
+            User me = EntourageApplication.me();
+            if (me != null) {
+                User.Address address = me.getAddress();
+                if (address != null) {
+                    location = new LatLng(address.getLatitude(), address.getLongitude());
+                }
+            }
+        }
         if (longTapCoordinates != null) {
             location = longTapCoordinates;
             longTapCoordinates = null;

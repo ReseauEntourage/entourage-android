@@ -258,7 +258,8 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (getFragmentManager() == null) return;
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
         LocationFragment fragment = LocationFragment.newInstance(
-                location, positionTextView.getText().toString(),
+                location,
+                positionTextView.getText().toString(),
                 Entourage.TYPE_OUTING.equalsIgnoreCase(groupType),
                 this);
         fragment.show(getFragmentManager(), LocationFragment.TAG);
