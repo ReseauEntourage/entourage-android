@@ -24,7 +24,7 @@
     <string name="entourage_create_error_title_too_long">Le titre est trop long</string>
     <string name="entourage_create_error_description_empty">La description ne peut pas être vide</string>
     <string name="entourage_create_error_date_empty">Choisissez une date</string>
-    <string name="entourage_create_error_location_empty">!!No location chosen</string>
+    <string name="entourage_create_error_location_empty">Indiquez une localisation</string>
 
     <string name="entourage_create_menu">Créer une action</string>
     <string name="outing_create_menu">Créer un évènement</string>
