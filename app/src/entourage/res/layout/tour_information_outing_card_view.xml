@@ -7,7 +7,7 @@
               android:layout_marginLeft="40dp"
               android:layout_marginRight="40dp"
               android:layout_marginTop="10dp"
-              android:background="@drawable/rounded_dialog_light_grey"
+              android:background="@drawable/rounded_dialog"
               android:gravity="center_horizontal"
               android:orientation="vertical">
 
@@ -29,7 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:textColor="@color/dark_grey"
         android:textSize="@dimen/entourage_font_medium"/>
 
     <TextView
@@ -38,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:textColor="@color/dark_grey"
         android:textSize="@dimen/entourage_font_medium"
         android:textStyle="bold"/>
 
@@ -50,7 +48,6 @@
         android:layout_marginRight="5dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/dark_grey"
         android:textSize="@dimen/entourage_font_medium"
         android:textStyle="bold"/>
 
@@ -61,12 +58,11 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/dark_grey"
         android:textSize="@dimen/entourage_font_medium"/>
 
     <Button
         android:id="@+id/tic_outing_view_button"
-        style="@style/AccentButtonStraightTop"
+        style="@style/WhiteButton.Straight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
