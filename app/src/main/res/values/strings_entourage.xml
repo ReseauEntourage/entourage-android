@@ -92,6 +92,10 @@
     <string name="outing_disclaimer_geolocation_title">Localisation ?</string>
     <string name="outing_disclaimer_geolocation_details">L’adresse précise des évènements est montrée</string>
 
+    <!-- Outing as chat message card -->
+    <string name="outing_message_card_created_author"><![CDATA[%1$s a créé une <font color=\"%2$s\">sortie</font> :]]></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s a <b>modifié</b> une <font color=\"%2$s\">sortie</font> :]]></string>
+
     <!-- My Entourages -->
     <string name="myentourages_title">MES ENTOURAGES</string>
     <string name="myentourages_all">Tous les messages</string>
@@ -139,6 +143,7 @@
     <string name="entourage_share_text_author">J\'ai créé ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_member">J\'ai rejoint ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_non_member">Ce projet solidaire sur Entourage a besoin de toi. Rejoins-le en téléchargeant l\'app ici %1$s</string>
+
     <!-- Entourage Mini Card -->
     <string name="entourage_mini_card_created">Créé par\u0020</string>
 
