@@ -190,7 +190,7 @@ public class MapPresenter {
         fragment.checkPermission(getUserLocationAccess());
     }
 
-    private String getUserLocationAccess() {
+    protected String getUserLocationAccess() {
         User user = authenticationController.getUser();
         return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
     }

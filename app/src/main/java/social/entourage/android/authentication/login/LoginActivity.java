@@ -423,7 +423,6 @@ public class LoginActivity extends EntourageActivity
 
     public void launchFillInProfileView(String phoneNumber, User user) {
 
-        //TODO Need a better approach
         DialogFragment fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
         if (fragment != null) {
             fragment.dismiss();
@@ -452,12 +451,14 @@ public class LoginActivity extends EntourageActivity
                 showNameView();
             } else if (loginPresenter.shouldShowEmailView(user)) {
                 showEmailView();
-            } else if (loginPresenter.shouldShowActionZoneView(user)) {
-                showActionZoneView();
             } else if (loginPresenter.shouldShowPhotoChooseView(user)) {
                 showPhotoChooseSource();
-            } else {
+            } else if (loginPresenter.shouldShowActionZoneView(user)) {
+                showActionZoneView();
+            } else if (loginPresenter.authenticationController.isNewUser()){
                 showGeolocationView();
+            } else {
+                finishTutorial();
             }
         }
     }
@@ -483,7 +484,7 @@ public class LoginActivity extends EntourageActivity
     @Override
     public void onPhotoIgnore() {
         EntourageEvents.logEvent(Constants.EVENT_PHOTO_IGNORE);
-        showGeolocationView();
+        showActionZoneView();
     }
 
     @Override
@@ -812,7 +813,7 @@ public class LoginActivity extends EntourageActivity
             if (fragment != null && !fragment.isStopped()) {
                 fragment.dismiss();
             }
-            showGeolocationView();
+            showActionZoneView();
         } else {
             displayToast(R.string.user_photo_error_not_saved);
         }
@@ -1078,13 +1079,16 @@ public class LoginActivity extends EntourageActivity
      ************************/
 
     private void showActionZoneView() {
-        UserEditActionZoneFragment actionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+        if (isFinishing()) return;
+        User me = loginPresenter.authenticationController.getUser();
+        UserEditActionZoneFragment actionZoneFragment = UserEditActionZoneFragment.newInstance(me != null ? me.getAddress() : null);
         actionZoneFragment.setFragmentListener(this);
         actionZoneFragment.setFromLogin(true);
         actionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
     }
 
     private void hideActionZoneView() {
+        if (isFinishing()) return;
         UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
         if (actionZoneFragment != null) {
             actionZoneFragment.dismiss();
@@ -1097,19 +1101,13 @@ public class LoginActivity extends EntourageActivity
     }
 
     @Override
+    public void onUserEditActionZoneFragmentIgnore() {
+        onUserEditActionZoneFragmentAddressSaved();
+    }
+
+    @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
         hideActionZoneView();
-        if (loginPresenter != null && loginPresenter.authenticationController != null) {
-            User user = loginPresenter.authenticationController.getUser();
-            if (user != null) {
-                if (loginPresenter.shouldShowPhotoChooseView(user)) {
-                    showPhotoChooseSource();
-                } else {
-                    showGeolocationView();
-                }
-                return;
-            }
-        }
         showGeolocationView();
     }
 

@@ -26,6 +26,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -69,7 +72,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
 
     SupportPlaceAutocompleteFragment autocompleteFragment = null;
 
-    private FragmentListener fragmentListener;
+    private List<FragmentListener> fragmentListeners = new ArrayList<>();
 
     private boolean isFromLogin = false;
 
@@ -130,7 +133,9 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     @Override
     public void onDismiss(final DialogInterface dialog) {
         super.onDismiss(dialog);
-        if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentDismiss();
+        for (FragmentListener fragmentListener: fragmentListeners) {
+            fragmentListener.onUserEditActionZoneFragmentDismiss();
+        }
     }
 
     @Override
@@ -139,7 +144,17 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     }
 
     public void setFragmentListener(final FragmentListener fragmentListener) {
-        this.fragmentListener = fragmentListener;
+        if (fragmentListener == null) return;
+        fragmentListeners.add(fragmentListener);
+    }
+
+    public void addFragmentListener(final FragmentListener fragmentListener) {
+        if (fragmentListener == null) return;
+        fragmentListeners.add(fragmentListener);
+    }
+
+    public void removeFragmentListener(final FragmentListener fragmentListener) {
+        fragmentListeners.remove(fragmentListener);
     }
 
     public void setFromLogin(final boolean fromLogin) {
@@ -153,7 +168,9 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     @OnClick(R.id.title_close_button)
     protected void onCloseButtonClicked() {
         dismiss();
-        if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentDismiss();
+        for (FragmentListener fragmentListener: fragmentListeners) {
+            fragmentListener.onUserEditActionZoneFragmentDismiss();
+        }
     }
 
     @OnClick(R.id.action_zone_go_button)
@@ -165,7 +182,9 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.action_zone_ignore_button)
     protected void onIgnoreButtonClicked() {
-        if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentAddressSaved();
+        for (FragmentListener fragmentListener: fragmentListeners) {
+            fragmentListener.onUserEditActionZoneFragmentIgnore();
+        }
     }
 
     // ----------------------------------
@@ -225,7 +244,9 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), R.string.user_action_zone_send_ok, Toast.LENGTH_SHORT).show();
                     }
-                    if (fragmentListener != null) fragmentListener.onUserEditActionZoneFragmentAddressSaved();
+                    for (FragmentListener fragmentListener: fragmentListeners) {
+                        fragmentListener.onUserEditActionZoneFragmentAddressSaved();
+                    }
                 } else {
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show();
@@ -272,6 +293,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
 
         void onUserEditActionZoneFragmentDismiss();
         void onUserEditActionZoneFragmentAddressSaved();
+        void onUserEditActionZoneFragmentIgnore();
 
     }
 

@@ -126,11 +126,12 @@ import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
+import social.entourage.android.user.edit.UserEditActionZoneFragment;
 
 import static social.entourage.android.Constants.EVENT_SCREEN_06_1;
 import static social.entourage.android.Constants.EVENT_SCREEN_06_2;
 
-public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener, TourService.NewsFeedListener {
+public class MapEntourageFragment extends Fragment implements BackPressable, TourService.TourServiceListener, TourService.NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -360,14 +361,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
-            for (int index = 0; index < permissions.length; index++) {
-                if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-                    //checkPermission();
-                    EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_POPUP_REFUSE);
-                    BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
-                } else {
-                    EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_POPUP_ACCEPT);
-                    BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
+            if (presenter != null) {
+                for (int index = 0; index < permissions.length; index++) {
+                    if (permissions[index].equalsIgnoreCase(presenter.getUserLocationAccess()) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                        //checkPermission();
+                        EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_POPUP_REFUSE);
+                        BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
+                    } else {
+                        EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_POPUP_ACCEPT);
+                        BusProvider.getInstance().post(new OnLocationPermissionGranted(true));
+                    }
                 }
             }
         }
@@ -377,7 +380,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onStart() {
         super.onStart();
-        presenter.handleLocationPermission();
+        //presenter.handleLocationPermission();
+        if (!isGeolocationGranted()) {
+            if (getActivity() != null) {
+                ((DrawerActivity)getActivity()).showEditActionZoneFragment(true, this);
+            }
+        }
         newsfeedListView.addOnScrollListener(scrollListener);
         isStopped = false;
     }
@@ -1617,8 +1625,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private boolean isGeolocationGranted() {
-        return (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        if (getActivity() == null || presenter == null) return false;
+        return (PermissionChecker.checkSelfPermission(getActivity(), presenter.getUserLocationAccess()) == PackageManager.PERMISSION_GRANTED);
     }
 
     private void showAllowGeolocationDialog(final int source) {
@@ -2663,6 +2671,35 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             saveCameraPosition();
         }
     }
+
+    // ----------------------------------
+    // UserEditActionZoneFragment.FragmentListener
+    // ----------------------------------
+
+    @Override
+    public void onUserEditActionZoneFragmentDismiss() {
+
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentAddressSaved() {
+        User me = EntourageApplication.me();
+        if (me != null) {
+            User.Address address = me.getAddress();
+            if (address != null) {
+                centerMap(new LatLng(address.getLatitude(), address.getLongitude()));
+            }
+        }
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentIgnore() {
+        onUserEditActionZoneFragmentAddressSaved();
+        if (presenter != null) {
+            presenter.handleLocationPermission();
+        }
+    }
+
 
     // ----------------------------------
     // INNER CLASSES

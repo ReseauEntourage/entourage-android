@@ -1038,16 +1038,21 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     public void showEditActionZoneFragment() {
-        if (editActionZoneShown) return;
+        showEditActionZoneFragment(false, null);
+    }
+
+    public void showEditActionZoneFragment(boolean forced, UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
+        if (editActionZoneShown && !forced) return;
         AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
         if (authenticationController.isAuthenticated()) {
             User me = authenticationController.getUser();
             UserPreferences userPreferences = authenticationController.getUserPreferences();
             if (me != null && userPreferences != null) {
                 boolean noAddress = me.getAddress() == null || me.getAddress().getDisplayAddress() == null || me.getAddress().getDisplayAddress().length() == 0;
-                if (!userPreferences.isEditActionZoneShown() && noAddress) {
+                if ((forced || !userPreferences.isEditActionZoneShown()) && noAddress) {
                     UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
-                    userEditActionZoneFragment.setFragmentListener(this);
+                    userEditActionZoneFragment.addFragmentListener(this);
+                    userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
                     userEditActionZoneFragment.setFromLogin(true);
                     userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
                 }
@@ -1059,6 +1064,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Override
     public void onUserEditActionZoneFragmentDismiss() {
 
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentIgnore() {
+        // treat as it saved the address
+        onUserEditActionZoneFragmentAddressSaved();
     }
 
     @Override

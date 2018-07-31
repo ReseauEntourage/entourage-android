@@ -252,7 +252,8 @@ public class User implements Serializable {
     }
 
     public Address getAddress() {
-        return address;
+        return null;
+        //return address;
     }
 
     public void setAddress(final Address address) {
