@@ -1,5 +1,6 @@
 package social.entourage.android.authentication.login;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,10 +9,15 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -363,9 +369,9 @@ public class LoginActivity extends EntourageActivity
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
-            // We don't care if the user allowed/denied the location, just finish the login
+            // We don't care if the user allowed/denied the location, just show the notifications view
             hideActionZoneView();
-            finishTutorial();
+            showNotificationPermissionView();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
@@ -484,10 +490,8 @@ public class LoginActivity extends EntourageActivity
                 showPhotoChooseSource();
             } else if (loginPresenter.shouldShowActionZoneView(user)) {
                 showActionZoneView();
-            } else if (loginPresenter.authenticationController.isNewUser()) {
-                showGeolocationView();
             } else {
-                finishTutorial();
+                showNotificationPermissionView();
             }
         }
     }
@@ -507,7 +511,7 @@ public class LoginActivity extends EntourageActivity
     @Override
     public void onPhotoBack() {
         EntourageEvents.logEvent(Constants.EVENT_PHOTO_BACK);
-        showGeolocationView();
+        showActionZoneView();
     }
 
     @Override
@@ -826,7 +830,7 @@ public class LoginActivity extends EntourageActivity
                 if (loginPresenter.shouldShowActionZoneView()) {
                     showActionZoneView();
                 } else {
-                    finishTutorial();
+                    showNotificationPermissionView();
                 }
             }
         } else {
@@ -1052,13 +1056,17 @@ public class LoginActivity extends EntourageActivity
      ************************/
 
     public void showNotificationPermissionView() {
+        if (NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled()) {
+            finishTutorial();
+            return;
+        }
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_04_3);
         loginNotificationsView.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.login_notifications_ignore_button)
     protected void onNotificationsIgnore() {
-        saveNotificationsPreference(false);
+        //saveNotificationsPreference(false);
         //loginNotificationsView.setVisibility(View.GONE);
         finishTutorial();
     }
@@ -1066,9 +1074,25 @@ public class LoginActivity extends EntourageActivity
     @OnClick(R.id.login_notifications_accept)
     protected void onNotificationsAccept() {
         EntourageEvents.logEvent(Constants.EVENT_NOTIFICATIONS_ACCEPT);
-        saveNotificationsPreference(true);
+        //saveNotificationsPreference(true);
         //loginNotificationsView.setVisibility(View.GONE);
         finishTutorial();
+        Intent settingsIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            settingsIntent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        } else {
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            settingsIntent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .setData(uri);
+        }
+        try {
+            startActivity(settingsIntent);
+        } catch (ActivityNotFoundException ex) {
+            Log.d("NOTIFICATIONS", "Failed to start the activity that shows the app settings");
+        }
     }
 
     /************************
@@ -1152,13 +1176,13 @@ public class LoginActivity extends EntourageActivity
     public void onUserEditActionZoneFragmentAddressSaved() {
         if (isGeolocationGranted()) {
             hideActionZoneView();
-            finishTutorial();
+            showNotificationPermissionView();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 String accessLocation = getUserLocationAccess();
                 requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
             } else {
-                finishTutorial();
+                showNotificationPermissionView();
             }
         }
     }
