@@ -362,13 +362,17 @@ public abstract class BaseLoginPresenter {
         return (user.getEmail() == null || user.getEmail().length() == 0);
     }
 
+    public boolean shouldShowActionZoneView() {
+        return shouldShowActionZoneView(authenticationController.getUser());
+    }
+
     /**
      * Returns true if we need to show the set action zone view
      * @param user the user to check
      * @return
      */
     public boolean shouldShowActionZoneView(User user) {
-        return (user.getAddress() == null || user.getAddress().getDisplayAddress() == null || user.getAddress().getDisplayAddress().length() == 0);
+        return (user == null || user.getAddress() == null || user.getAddress().getDisplayAddress() == null || user.getAddress().getDisplayAddress().length() == 0);
     }
 
     /**

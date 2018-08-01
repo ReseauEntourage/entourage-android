@@ -496,7 +496,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     private void initializePushNotifications() {
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false);
+        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true);
         if (notificationsEnabled) {
             startService(new Intent(this, RegisterGCMService.class));
         } else {

@@ -3,18 +3,24 @@ package social.entourage.android.authentication.login;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -65,6 +71,7 @@ import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 import social.entourage.android.view.HtmlTextView;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
 
 /**
@@ -77,6 +84,8 @@ public class LoginActivity extends EntourageActivity
     // CONSTANTS
     // ----------------------------------
     private static final String VERSION = "Version : ";
+
+    private static final int PERMISSIONS_REQUEST_LOCATION = 1;
 
     public final static int LOGIN_ERROR_UNAUTHORIZED = -1;
     public final static int LOGIN_ERROR_INVALID_PHONE_FORMAT = -2;
@@ -266,6 +275,16 @@ public class LoginActivity extends EntourageActivity
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
         passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
+        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    onLoginClick();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         LoginTextWatcher ltw = new LoginTextWatcher();
         firstnameEditText.addTextChangedListener(ltw);
@@ -339,6 +358,16 @@ public class LoginActivity extends EntourageActivity
     protected void onStop() {
         BusProvider.getInstance().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
+            // We don't care if the user allowed/denied the location, just finish the login
+            hideActionZoneView();
+            finishTutorial();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     // ----------------------------------
@@ -455,7 +484,7 @@ public class LoginActivity extends EntourageActivity
                 showPhotoChooseSource();
             } else if (loginPresenter.shouldShowActionZoneView(user)) {
                 showActionZoneView();
-            } else if (loginPresenter.authenticationController.isNewUser()){
+            } else if (loginPresenter.authenticationController.isNewUser()) {
                 showGeolocationView();
             } else {
                 finishTutorial();
@@ -794,7 +823,11 @@ public class LoginActivity extends EntourageActivity
                 PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
                 fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
             } else {
-                showGeolocationView();
+                if (loginPresenter.shouldShowActionZoneView()) {
+                    showActionZoneView();
+                } else {
+                    finishTutorial();
+                }
             }
         } else {
             displayToast(R.string.login_error);
@@ -1069,6 +1102,16 @@ public class LoginActivity extends EntourageActivity
         editor.commit();
     }
 
+    private boolean isGeolocationGranted() {
+        return (PermissionChecker.checkSelfPermission(this, getUserLocationAccess()) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    protected String getUserLocationAccess() {
+        if (loginPresenter == null) return ACCESS_COARSE_LOCATION;
+        User user = loginPresenter.authenticationController.getUser();
+        return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
+    }
+
     @OnClick(R.id.login_startup_logo)
     void onEntourageLogoClick() {
         displayToast(VERSION + BuildConfig.VERSION_NAME);
@@ -1107,8 +1150,17 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
-        hideActionZoneView();
-        showGeolocationView();
+        if (isGeolocationGranted()) {
+            hideActionZoneView();
+            finishTutorial();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String accessLocation = getUserLocationAccess();
+                requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
+            } else {
+                finishTutorial();
+            }
+        }
     }
 
     /************************
