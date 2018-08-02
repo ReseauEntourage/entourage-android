@@ -54,7 +54,7 @@ import social.entourage.android.user.UserOrganizationsAdapter;
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 
-public class UserEditFragment extends EntourageDialogFragment {
+public class UserEditFragment extends EntourageDialogFragment implements UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -348,13 +348,6 @@ public class UserEditFragment extends EntourageDialogFragment {
         }
     }
 
-    @OnClick(R.id.user_action_zone_button)
-    protected void onActionZoneEditClicked() {
-        if (getFragmentManager() == null) return;
-        UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(editedUser.getAddress());
-        userEditActionZoneFragment.show(getFragmentManager(), UserEditActionZoneFragment.TAG);
-    }
-
     // ----------------------------------
     // Protected methods
     // ----------------------------------
@@ -463,4 +456,33 @@ public class UserEditFragment extends EntourageDialogFragment {
         }
     }
 
+    // ----------------------------------
+    // Edit Action Zone
+    // ----------------------------------
+
+    @OnClick(R.id.user_action_zone_button)
+    protected void onActionZoneEditClicked() {
+        if (getFragmentManager() == null) return;
+        UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(editedUser.getAddress());
+        userEditActionZoneFragment.setFragmentListener(this);
+        userEditActionZoneFragment.show(getFragmentManager(), UserEditActionZoneFragment.TAG);
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentDismiss() {
+
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentAddressSaved() {
+        UserEditActionZoneFragment userEditActionZoneFragment = (UserEditActionZoneFragment)getFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        if (userEditActionZoneFragment != null && !userEditActionZoneFragment.isStateSaved()) {
+            userEditActionZoneFragment.dismiss();
+        }
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentIgnore() {
+        onUserEditActionZoneFragmentAddressSaved();
+    }
 }
