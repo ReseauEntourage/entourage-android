@@ -144,6 +144,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private static final int PERMISSIONS_REQUEST_LOCATION = 1;
     private static final int MAX_TOUR_HEADS_DISPLAYED = 10;
 
+    private static final long DELAY_REFRESH_TOURS_INTERVAL = 3000; // 3 seconds delay when starting the timer to refresh the feed
     private static final long REFRESH_TOURS_INTERVAL = 60000; //1 minute in ms
 
     // Constants used to track the source call of the geolocation popup
@@ -2470,9 +2471,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void run() {
                         if (tourService != null) {
+                            /*
                             if (!isMapLoaded) {
                                 return; //Don't refresh till the map is loaded
                             }
+                            */
                             pagination.isRefreshing = true;
                             tourService.updateNewsfeed(pagination);
                         }
@@ -2481,7 +2484,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
         };
         //schedule the timer
-        refreshToursTimer.schedule(refreshToursTimerTask, 0, REFRESH_TOURS_INTERVAL);
+        refreshToursTimer.schedule(refreshToursTimerTask, DELAY_REFRESH_TOURS_INTERVAL, REFRESH_TOURS_INTERVAL);
     }
 
     private void timerStop() {
