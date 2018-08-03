@@ -10,7 +10,10 @@
     <string name="entourage_create_privacy_description_private">Cette option sera bientôt disponible. En attendant, communiquez directement dans une conversation avec les personnes que vous souhaitez inviter.</string>
 
     <!-- Entourage Title Fragment -->
-    <string name="entourage_title_fragment_hint">Si on se rencontrait ?</string>
+    <string name="entourage_title_fragment_hint">Atelier de créativité</string>
+
+    <!-- Entourage Description Fragment -->
+    <string name="entourage_description_fragment_hint">Exemple : Je vous propose de nous retrouver pour un atelier de créativité (peinture, collage, ...) ce vendredi.</string>
 
     <!-- Entourage Card -->
     <string name="entourage_type_private_circle">voisinage</string>
