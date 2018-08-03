@@ -97,7 +97,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             if (editedEncounter == null) {
                 // Create mode
                 readOnly = false;
-                presenter.setTourId(arguments.getLong(BUNDLE_KEY_TOUR_ID));
+                presenter.setTourUUID(arguments.getString(BUNDLE_KEY_TOUR_ID));
                 presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE));
                 presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
 

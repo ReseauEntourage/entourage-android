@@ -1409,7 +1409,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
             saveCameraPosition();
             Bundle args = new Bundle();
-            //TODO Fix this
             args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID);
             if (longTapCoordinates != null) {
                 args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude);

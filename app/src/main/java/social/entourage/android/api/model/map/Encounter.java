@@ -24,7 +24,7 @@ public class Encounter extends TimestampedObject implements Serializable {
 
     private long id;
 
-    private long tourId;
+    private String tourId;
 
     @SerializedName("date")
     private Date creationDate;
@@ -64,11 +64,11 @@ public class Encounter extends TimestampedObject implements Serializable {
         this.id = id;
     }
 
-    public long getTourId() {
+    public String getTourId() {
         return tourId;
     }
 
-    public void setTourId(long tourId) {
+    public void setTourId(String tourId) {
         this.tourId = tourId;
     }
 
