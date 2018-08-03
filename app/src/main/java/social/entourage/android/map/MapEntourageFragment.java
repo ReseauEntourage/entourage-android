@@ -1521,7 +1521,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 } else {
                     User me = EntourageApplication.me(getContext());
                     boolean isPro = (me != null) && me.isPro();
-                    if (!isPro || !Configuration.getInstance().showMapFABMenu()) {
+                    if (!isPro && !Configuration.getInstance().showMapFABMenu()) {
                         // Show directly the create entourage disclaimer
                         displayEntouragePopupWhileTour();
                     } else {
