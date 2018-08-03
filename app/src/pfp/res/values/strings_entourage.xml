@@ -25,5 +25,8 @@
     <string name="entourage_share_text_member">Le réseau Voisin-Age est une communauté de voisins qui créent des liens intergénérationnels. Pour rejoindre le réseau, contactez %1$s</string>
     <string name="entourage_share_text_non_member">Le réseau Voisin-Age est une communauté de voisins qui créent des liens intergénérationnels. Pour rejoindre le réseau, contactez %1$s</string>
 
+    <!-- Close Entourage Alert -->
+    <string name="entourage_close_alert_description">Supprimer la sortie ?</string>
+
 
 </resources>

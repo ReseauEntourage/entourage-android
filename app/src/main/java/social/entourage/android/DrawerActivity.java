@@ -57,7 +57,6 @@ import social.entourage.android.api.tape.Events.OnUserActEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.UserPreferences;
-import social.entourage.android.badge.BadgeView;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
@@ -76,7 +75,6 @@ import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.navigation.BaseBottomNavigationDataSource;
 import social.entourage.android.navigation.BottomNavigationDataSource;
-import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
@@ -718,8 +716,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mapEntourageFragment != null) {
             if (event.isShowUI()) {
                 EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
-                FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
-                feedItemOptionsFragment.show(getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
+                presenter.displayFeedItemOptions(feedItem);
                 return;
             }
             // Only the author can close entourages/tours

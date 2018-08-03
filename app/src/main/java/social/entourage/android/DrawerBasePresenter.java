@@ -22,12 +22,14 @@ import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
+import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -212,6 +214,14 @@ public abstract class DrawerBasePresenter {
             MyEntouragesFragment fragment = new MyEntouragesFragment();
             fragment.show(fragmentManager, MyEntouragesFragment.TAG);
         }
+    }
+
+    protected void displayFeedItemOptions(FeedItem feedItem) {
+        if (activity != null && activity.isSafeToCommit()) {
+            FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
+            feedItemOptionsFragment.show(activity.getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
+        }
+
     }
 
     protected void displaySolidarityGuide() {

@@ -1,6 +1,7 @@
 package social.entourage.android.map.entourage;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +60,10 @@ public class EntourageCloseFragment extends DialogFragment {
         args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void show(FragmentManager fragmentManager, String tag, Context context) {
+        show(fragmentManager, tag);
     }
 
     @Override

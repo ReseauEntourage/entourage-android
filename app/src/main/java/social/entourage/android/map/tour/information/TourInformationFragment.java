@@ -677,7 +677,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 //show close fragment
                 FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
                 EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG);
+                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
             }
         }
         else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
