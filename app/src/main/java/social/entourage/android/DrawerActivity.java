@@ -137,6 +137,8 @@ public class DrawerActivity extends EntourageSecuredActivity
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
 
+        if (isFinishing()) return;
+
         configureToolbar();
 
         gcmSharedPreferences = EntourageApplication.get().getSharedPreferences();
