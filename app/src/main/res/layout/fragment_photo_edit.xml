@@ -48,19 +48,28 @@
             android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_medium"/>
 
-        <LinearLayout
-            android:orientation="vertical"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/photo_edit_description"
             android:layout_above="@+id/photo_edit_filler">
 
             <com.theartofdev.edmodo.cropper.CropImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
                 android:id="@+id/photo_edit_cropImageView"
-                android:layout_weight="1"/>
-        </LinearLayout>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.theartofdev.edmodo.cropper.CropImageView>
+
+            <ProgressBar
+                android:id="@+id/photo_edit_progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:progressDrawable="@color/white"
+                android:visibility="gone"/>
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/photo_edit_filler"
