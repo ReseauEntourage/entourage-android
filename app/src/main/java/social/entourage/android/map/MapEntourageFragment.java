@@ -86,6 +86,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageLocation;
+import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
@@ -1625,8 +1626,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private boolean isGeolocationGranted() {
-        if (getActivity() == null || presenter == null) return false;
-        return (PermissionChecker.checkSelfPermission(getActivity(), presenter.getUserLocationAccess()) == PackageManager.PERMISSION_GRANTED);
+        EntourageSecuredActivity activity = (EntourageSecuredActivity) getActivity();
+        if (activity == null) return false;
+        return activity.isGeolocationGranted();
     }
 
     private void showAllowGeolocationDialog(final int source) {
@@ -1657,12 +1659,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             break;
                     }
 
+                    /*
                     if (shouldShowRequestPermissionRationale(accessLocation)) {
                         requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
                     } else {
                         // User selected "Never ask again", so show the settings page
                         displayGeolocationPreferences();
                     }
+                    */
+                    requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
+
                 }
             })
             .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {

@@ -8,10 +8,12 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +47,14 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import social.entourage.android.Constants;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageLocation;
+import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Fragment to choose the location of an entourage
@@ -73,6 +80,8 @@ public class LocationFragment extends EntourageDialogFragment {
     private static final float LOCATION_MOVE_DELTA = 50; //meters
 
     private static final float LOCATION_SEARCH_RADIUS = 0.18f; // 20 kilometers in lat/long degrees
+
+    private static final int PERMISSIONS_REQUEST_LOCATION = 1;
 
     // ----------------------------------
     // Attributes
@@ -208,6 +217,25 @@ public class LocationFragment extends EntourageDialogFragment {
         mListener = null;
     }
 
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
+            EntourageSecuredActivity activity = (EntourageSecuredActivity) getActivity();
+            if (activity != null && map != null) {
+                for (int index = 0; index < permissions.length; index++) {
+                    if (permissions[index].equalsIgnoreCase(activity.getUserLocationAccess()) && grantResults[index] == PackageManager.PERMISSION_GRANTED) {
+                        try {
+                            map.setMyLocationEnabled(true);
+                        } catch (SecurityException ex) {
+                            Log.d("LOCATION", ex.getLocalizedMessage());
+                        }
+                    }
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     // ----------------------------------
     // INTERFACE CALLBACKS
     // ----------------------------------
@@ -228,23 +256,16 @@ public class LocationFragment extends EntourageDialogFragment {
     @OnClick(R.id.entourage_location_current_position)
     protected void onCurrentLocationClicked() {
         if (map != null) {
-            boolean cameraMoved = false;
-            Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
-            if (currentLocation != null) {
-                location = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(location);
-                map.moveCamera(cameraUpdate);
-                cameraMoved = true;
-            }
-            else if (originalLocation != null) {
-                location = originalLocation;
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(originalLocation);
-                map.moveCamera(cameraUpdate);
-                cameraMoved = true;
-            }
-            if (cameraMoved) {
-                if (originalAddress != null) {
-                    addressTextView.setText(originalAddress);
+            EntourageSecuredActivity activity = (EntourageSecuredActivity) getActivity();
+            if (activity != null) {
+                if (activity.isGeolocationGranted()) {
+                    Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+                    if (currentLocation != null) {
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                        map.moveCamera(cameraUpdate);
+                    }
+                } else {
+                    requestPermissions(new String[]{activity.getUserLocationAccess()}, PERMISSIONS_REQUEST_LOCATION);
                 }
             }
         }
