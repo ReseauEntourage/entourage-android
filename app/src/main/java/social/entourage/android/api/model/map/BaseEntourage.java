@@ -45,6 +45,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
     public static final String NEWSFEED_TYPE = "Entourage";
 
     public static final float HEATMAP_SIZE = 500; //meters
+    private static int MARKER_SIZE = 0;
 
     // ----------------------------------
     // Attributes
@@ -355,6 +356,13 @@ public class BaseEntourage extends FeedItem implements Serializable {
     @Override
     public @StringRes int getJoinRequestButton() {
         return R.string.tour_info_request_join_button_entourage;
+    }
+
+    public static int getMarkerSize(Context context) {
+        if (MARKER_SIZE == 0) {
+            MARKER_SIZE = context.getResources().getDimensionPixelOffset(R.dimen.entourage_map_marker);
+        }
+        return MARKER_SIZE;
     }
 
     // ----------------------------------

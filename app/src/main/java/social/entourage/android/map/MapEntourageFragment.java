@@ -2199,7 +2199,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     } else {
                         // add marker
                         Drawable drawable = getResources().getDrawable(feedItem.getHeatmapResourceId());
-                        BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, (int) Entourage.HEATMAP_SIZE / 2, (int) Entourage.HEATMAP_SIZE / 2);
+                        BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, Entourage.getMarkerSize(getContext()), Entourage.getMarkerSize(getContext()));
                         MarkerOptions markerOptions = new MarkerOptions()
                                     .icon(icon)
                                     .position(position)
