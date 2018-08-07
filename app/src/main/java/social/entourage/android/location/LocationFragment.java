@@ -220,6 +220,7 @@ public class LocationFragment extends EntourageDialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        cancelTimer();
     }
 
     @Override
