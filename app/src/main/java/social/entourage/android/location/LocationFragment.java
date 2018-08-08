@@ -53,7 +53,9 @@ import butterknife.OnClick;
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.tools.BusProvider;
 
 /**
  * Fragment to choose the location of an entourage
@@ -230,11 +232,14 @@ public class LocationFragment extends EntourageDialogFragment {
             if (activity != null && map != null) {
                 for (int index = 0; index < permissions.length; index++) {
                     if (permissions[index].equalsIgnoreCase(activity.getUserLocationAccess()) && grantResults[index] == PackageManager.PERMISSION_GRANTED) {
+                        BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
                         try {
                             map.setMyLocationEnabled(true);
                         } catch (SecurityException ex) {
                             Log.d("LOCATION", ex.getLocalizedMessage());
                         }
+                    } else {
+                        BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
                     }
                 }
             }

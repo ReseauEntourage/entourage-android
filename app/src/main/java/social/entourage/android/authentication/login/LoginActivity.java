@@ -369,6 +369,13 @@ public class LoginActivity extends EntourageActivity
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
+            for (int index = 0; index < permissions.length; index++) {
+                if (permissions[index].equalsIgnoreCase(getUserLocationAccess()) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
+                } else {
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
+                }
+            }
             // We don't care if the user allowed/denied the location, just show the notifications view
             hideActionZoneView();
             showNotificationPermissionView();
