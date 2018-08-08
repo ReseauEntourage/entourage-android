@@ -246,6 +246,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return false;
     }
 
+    // ----------------------------------
+    // UI METHODS
+    // ----------------------------------
+
     public Drawable getIconDrawable(Context context) {
         return null;
     }
@@ -271,6 +275,18 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     public @StringRes int getJoinRequestTitle() { return R.string.tour_info_request_join_title_tour; }
 
     public @StringRes int getJoinRequestButton() { return R.string.tour_info_request_join_button_tour; }
+
+    public @StringRes int getQuitDialogTitle() {
+        return R.string.tour_info_quit_tour_title;
+    }
+
+    public @StringRes int getQuitDialogMessage() {
+        return R.string.tour_info_quit_tour_description;
+    }
+
+    // ----------------------------------
+    // COPY OBJECT METHODS
+    // ----------------------------------
 
     @Override
     public void copyLocalFields(final TimestampedObject other) {

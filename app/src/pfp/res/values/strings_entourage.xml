@@ -19,6 +19,9 @@
     <string name="entourage_type_private_circle">voisinage</string>
     <string name="entourage_type_outing">sortie\u0020</string>
 
+    <string name="entourage_info_quit_entourage_title">Quitter la sortie</string>
+    <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter la sortie ?</string>
+
     <!-- Share Entourage -->
     <string name="entourage_share_link">@string/contact_email</string>
     <string name="entourage_share_text_author">Le réseau Voisin-Age est une communauté de voisins qui créent des liens intergénérationnels. Pour rejoindre le réseau, contactez %1$s</string>

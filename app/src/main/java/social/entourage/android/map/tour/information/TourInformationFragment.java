@@ -316,7 +316,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View toReturn = inflater.inflate(R.layout.fragment_tour_information, container, false);
         ButterKnife.bind(this, toReturn);
@@ -327,9 +327,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        setupComponent(EntourageApplication.get().getEntourageComponent());
 
         Bundle args = getArguments();
         if (args != null) {
@@ -520,7 +520,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             View view = getDialog().getCurrentFocus();
             if (view != null) {
                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                if (imm != null) imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         }
 
@@ -675,9 +675,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 //hide the options
                 optionsLayout.setVisibility(View.GONE);
                 //show close fragment
-                FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-                EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
+                if (getActivity() != null) {
+                    FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+                    EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
+                    entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
+                }
             }
         }
         else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
@@ -690,13 +692,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.feeditem_option_quit)
     public void onQuitTourButton() {
+        if (getActivity() == null) return;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        int titleId = R.string.tour_info_quit_tour_title;
-        int messageId = R.string.tour_info_quit_tour_description;
-        if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            titleId = R.string.entourage_info_quit_entourage_title;
-            messageId = R.string.entourage_info_quit_entourage_description;
-        }
+        int titleId = feedItem.getQuitDialogTitle();
+        int messageId = feedItem.getQuitDialogMessage();
         builder.setTitle(titleId)
                 .setMessage(messageId)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -756,12 +755,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.feeditem_option_edit)
     protected void onEditEntourageButton() {
-        if (feedItem == null) return;
+        if (feedItem == null || getActivity() == null) return;
 
         if (Configuration.getInstance().showEditEntourageView()) {
-            CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage) feedItem);
-            fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
-
+            if (getFragmentManager() != null) {
+                CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage) feedItem);
+                fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
+            }
             //hide the options
             optionsLayout.setVisibility(View.GONE);
         } else {
@@ -796,7 +796,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.feeditem_option_report)
     protected void onReportEntourageButton() {
-        if (feedItem == null) return;
+        if (feedItem == null || getActivity() == null) return;
         // Build the email intent
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
@@ -806,11 +806,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // Set the subject
         String title = feedItem.getTitle();
         if (title == null) title = "";
-        String name = "Unknown";
-        if (feedItem.getAuthor() != null) {
-            name = feedItem.getAuthor().getUserName();
-            if (name == null) name = "Unknown";
-        }
         String emailSubject = getString(R.string.report_entourage_email_title, title);
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -826,7 +821,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.feeditem_option_promote)
     protected void onPromoteEntourageButton() {
-        if (feedItem == null) return;
+        if (feedItem == null || getActivity() == null) return;
         // Build the email intent
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
@@ -879,6 +874,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.invite_source_contacts_button)
     protected void onInviteContactsClicked() {
+        if (getActivity() == null) return;
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_CONTACTS);
         // check the permissions
         if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -888,14 +884,17 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // close the invite source view
         inviteSourceLayout.setVisibility(View.GONE);
         // open the contacts fragment
-        InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getUUID(), feedItem.getType());
-        fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
-        // set the listener
-        fragment.setInviteFriendsListener(this);
+        if (getFragmentManager() != null) {
+            InviteContactsFragment fragment = InviteContactsFragment.newInstance(feedItem.getUUID(), feedItem.getType());
+            fragment.show(getFragmentManager(), InviteContactsFragment.TAG);
+            // set the listener
+            fragment.setInviteFriendsListener(this);
+        }
     }
 
     @OnClick(R.id.invite_source_number_button)
     protected void onInvitePhoneNumberClicked() {
+        if (getFragmentManager() == null) return;
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_PHONE);
         // close the invite source view
         inviteSourceLayout.setVisibility(View.GONE);
@@ -962,7 +961,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         loadingView.setVisibility(View.GONE);
 
         // Initialize the header
-        fragmentTitle.setText(feedItem.getTitle());
+        if (fragmentTitle != null) fragmentTitle.setText(feedItem.getTitle());
         String iconURL = feedItem.getIconURL();
         if (iconURL != null) {
             Picasso.with(getContext())
@@ -1118,6 +1117,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void updatePublicScrollViewLayout() {
+        if (getView() == null) return;
         ScrollView scrollView = getView().findViewById(R.id.tour_info_public_scrollview);
         if (scrollView == null) return;
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
@@ -1421,17 +1421,21 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         membersCountTextView.setText(getString(R.string.tour_info_members_count, membersCount));
 
         // hide the 'invite a friend' for a tour
-        View memberAddView = getView().findViewById(R.id.tour_info_member_add);
-        if (memberAddView != null) {
-            memberAddView.setVisibility(feedItem != null && feedItem.getType() != TimestampedObject.TOUR_CARD ? View.VISIBLE : View.GONE);
+        if (getView() != null) {
+            View memberAddView = getView().findViewById(R.id.tour_info_member_add);
+            if (memberAddView != null) {
+                memberAddView.setVisibility(feedItem != null && feedItem.getType() != TimestampedObject.TOUR_CARD ? View.VISIBLE : View.GONE);
+            }
         }
     }
 
     private void initializeMetadataView() {
-        View metadataView = getView().findViewById(R.id.tour_info_metadata_layout);
+        View fragmentView = getView();
+        if (fragmentView == null) return;
+        View metadataView = fragmentView.findViewById(R.id.tour_info_metadata_layout);
         if (metadataView == null) return;
         // show the view only for outing
-        boolean metadataVisible = false;
+        boolean metadataVisible;
         BaseEntourage.Metadata metadata;
         if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
             metadata = ((Entourage)feedItem).getMetadata();
@@ -1442,13 +1446,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         metadataView.setVisibility(metadataVisible ? View.VISIBLE : View.GONE);
         if (!metadataVisible) return;
         // populate the data
-        TextView organiser = getView().findViewById(R.id.tour_info_metadata_organiser);
+        TextView organiser = fragmentView.findViewById(R.id.tour_info_metadata_organiser);
         if (organiser != null && feedItem.getAuthor() != null) {
             organiser.setText(getString(R.string.tour_info_metadata_organiser_format, feedItem.getAuthor().getUserName()));
         }
-        TextView metadataDate = getView().findViewById(R.id.tour_info_metadata_date);
+        TextView metadataDate = fragmentView.findViewById(R.id.tour_info_metadata_date);
         if (metadataDate != null) metadataDate.setText(metadata.getStartDateAsString(getContext()));
-        TextView metadataAddress = getView().findViewById(R.id.tour_info_metadata_address);
+        TextView metadataAddress = fragmentView.findViewById(R.id.tour_info_metadata_address);
         if (metadataAddress != null) metadataAddress.setText(metadata.getDisplayAddress());
     }
 
@@ -1708,7 +1712,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // Update the UI
         feedItem = updatedEntourage;
 
-        fragmentTitle.setText(feedItem.getTitle());
+        if (fragmentTitle != null) fragmentTitle.setText(feedItem.getTitle());
         Drawable iconDrawable = feedItem.getIconDrawable(getContext());
         if (iconDrawable == null) {
             tourIcon.setVisibility(View.GONE);
@@ -1743,6 +1747,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 loadPrivateCards();
             }
         } else {
+            if (getContext() == null) return;
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setMessage(R.string.tour_info_error_retrieve_entourage);
             builder.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
@@ -1778,7 +1783,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     private void onFeedItemMembersReceived(List<TourUser> tourUsers) {
         membersList.clear();
-        List<TimestampedObject> timestampedObjectList = new ArrayList<>();
         // iterate over the received users
         for (final TourUser tourUser : tourUsers) {
             if (tourUser == null) {
@@ -1884,7 +1888,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         //hide the keyboard
         if (commentEditText.hasFocus() && getActivity()!=null) {
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
         }
 
         //add the message to the list
@@ -1952,7 +1956,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             }
             // Remove the push notification
             if (FeedItem.JOIN_STATUS_ACCEPTED.equals(status)) {
-                EntourageApplication application = EntourageApplication.get(getContext());
+                EntourageApplication application = EntourageApplication.get();
                 if (application != null) {
                     application.removePushNotification(feedItem, userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
                 }
@@ -2234,8 +2238,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 if (!isVisible()) {
                     return;
                 }
-                CarouselFragment carouselFragment = new CarouselFragment();
-                carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
+                if (getFragmentManager() != null) {
+                    CarouselFragment carouselFragment = new CarouselFragment();
+                    carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
+                }
             }
         }, Constants.CAROUSEL_DELAY_MILLIS);
     }

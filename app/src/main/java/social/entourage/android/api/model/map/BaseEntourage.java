@@ -358,6 +358,16 @@ public class BaseEntourage extends FeedItem implements Serializable {
         return R.string.tour_info_request_join_button_entourage;
     }
 
+    @Override
+    public int getQuitDialogTitle() {
+        return R.string.entourage_info_quit_entourage_title;
+    }
+
+    @Override
+    public int getQuitDialogMessage() {
+        return R.string.entourage_info_quit_entourage_description;
+    }
+
     public static int getMarkerSize(Context context) {
         if (MARKER_SIZE == 0) {
             MARKER_SIZE = context.getResources().getDimensionPixelOffset(R.dimen.entourage_map_marker);
