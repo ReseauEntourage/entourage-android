@@ -267,6 +267,13 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        checkIntentAction(null);
+    }
+
+    @Override
     protected void onStop() {
         BusProvider.getInstance().unregister(this);
 
@@ -483,9 +490,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public void showMyEntourages() {
-        if (presenter != null) {
-            presenter.displayMyEntourages();
-        }
+        selectNavigationTab(navigationDataSource.getMyMessagesTabIndex());
     }
 
     public void showTutorial() {
@@ -572,9 +577,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             PushNotificationContent content = message.getContent();
             if (content != null) {
                 if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
-                    if (presenter != null) {
-                        presenter.displayMyEntourages();
-                    }
+                    showMyEntourages();
                 }
                 else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
                     if (content.isTourRelated()) {

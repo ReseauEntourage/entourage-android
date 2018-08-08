@@ -208,14 +208,6 @@ public abstract class DrawerBasePresenter {
         }
     }
 
-    protected void displayMyEntourages() {
-        if (activity != null && activity.isSafeToCommit()) {
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            MyEntouragesFragment fragment = new MyEntouragesFragment();
-            fragment.show(fragmentManager, MyEntouragesFragment.TAG);
-        }
-    }
-
     protected void displayFeedItemOptions(FeedItem feedItem) {
         if (activity != null && activity.isSafeToCommit()) {
             FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);

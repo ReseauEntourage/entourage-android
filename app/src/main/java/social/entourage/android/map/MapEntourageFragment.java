@@ -408,15 +408,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.activity_tours_title);
-            if (isMapLoaded) {
-                BusProvider.getInstance().post(new OnCheckIntentActionEvent());
-//                if (newsfeedAdapter != null) {
-//                    newsfeedAdapter.notifyItemChanged(0);
-//                }
-            }
-        }
+
         timerStart();
     }
 
@@ -1778,7 +1770,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         @Override
                         public void onMapLoaded() {
                             isMapLoaded = true;
-                            BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         }
                     });
                 }
