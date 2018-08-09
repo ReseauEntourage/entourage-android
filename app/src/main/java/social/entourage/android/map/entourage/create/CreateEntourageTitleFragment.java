@@ -2,6 +2,7 @@ package social.entourage.android.map.entourage.create;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
@@ -16,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
@@ -48,11 +50,15 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
     @BindView(R.id.title_entourage_info)
     View infoView;
 
+    @BindView(R.id.title_entourage_info_text)
+    TextView infoTextView;
+
     @BindView(R.id.title_entourage_error)
     View errorView;
 
     private String entourageTitle;
     private EntourageCategory entourageCategory;
+    private String entourageGroupType;
 
     private CreateEntourageListener mListener;
 
@@ -64,11 +70,12 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    public static CreateEntourageTitleFragment newInstance(String title, EntourageCategory entourageCategory) {
+    public static CreateEntourageTitleFragment newInstance(String title, EntourageCategory entourageCategory, String groupType) {
         CreateEntourageTitleFragment fragment = new CreateEntourageTitleFragment();
         Bundle args = new Bundle();
         args.putString(KEY_ENTOURAGE_TITLE, title);
         args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, entourageCategory);
+        args.putString(BaseCreateEntourageFragment.KEY_ENTOURAGE_GROUP_TYPE, groupType);
         fragment.setArguments(args);
 
         return fragment;
@@ -77,14 +84,16 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            entourageTitle = getArguments().getString(KEY_ENTOURAGE_TITLE);
-            entourageCategory = (EntourageCategory)getArguments().getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY);
+        Bundle args = getArguments();
+        if (args != null) {
+            entourageTitle = args.getString(KEY_ENTOURAGE_TITLE);
+            entourageCategory = (EntourageCategory)args.getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY);
+            entourageGroupType = args.getString(BaseCreateEntourageFragment.KEY_ENTOURAGE_GROUP_TYPE);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -95,7 +104,7 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initializeView();
@@ -181,6 +190,11 @@ public class CreateEntourageTitleFragment extends EntourageDialogFragment {
             if (titleExample != null && titleExample.length() > 0) {
                 titleEditText.setHint(getString(R.string.entourage_create_title_hint, titleExample));
             }
+        }
+
+        if (BaseEntourage.TYPE_OUTING.equalsIgnoreCase(entourageGroupType)) {
+            titleEditText.setHint(R.string.entourage_title_fragment_hint_outing);
+            infoTextView.setText(R.string.entourage_title_fragment_info_outing);
         }
 
     }

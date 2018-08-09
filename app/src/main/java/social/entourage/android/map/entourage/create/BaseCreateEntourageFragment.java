@@ -268,7 +268,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @OnClick(R.id.create_entourage_title_layout)
     protected void onEditTitleClicked() {
         if (getFragmentManager() == null) return;
-        CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString(), entourageCategory);
+        CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString(), entourageCategory, groupType);
         entourageTitleFragment.setListener(this);
         entourageTitleFragment.show(getFragmentManager(), CreateEntourageTitleFragment.TAG);
     }
@@ -276,7 +276,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @OnClick(R.id.create_entourage_description_layout)
     protected void onEditDescriptionClicked() {
         if (getFragmentManager() == null) return;
-        CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString(), entourageCategory);
+        CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString(), entourageCategory, groupType);
         descriptionFragment.setListener(this);
         descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
     }

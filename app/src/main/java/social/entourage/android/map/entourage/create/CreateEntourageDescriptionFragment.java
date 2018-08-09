@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.map.entourage.category.EntourageCategory;
 import social.entourage.android.map.entourage.category.EntourageCategoryFragment;
@@ -36,8 +38,12 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
     @BindView(R.id.description_entourage_edittext)
     EditText descriptionEditText;
 
+    @BindView(R.id.description_entourage_info_text)
+    TextView infoTextView;
+
     private String entourageDescription;
     private EntourageCategory entourageCategory;
+    private String entourageGroupType;
 
     private CreateEntourageListener mListener;
 
@@ -49,11 +55,12 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
         // Required empty public constructor
     }
 
-    public static CreateEntourageDescriptionFragment newInstance(String description, EntourageCategory entourageCategory) {
+    public static CreateEntourageDescriptionFragment newInstance(String description, EntourageCategory entourageCategory, String groupType) {
         CreateEntourageDescriptionFragment fragment = new CreateEntourageDescriptionFragment();
         Bundle args = new Bundle();
         args.putString(ENTOURAGE_DESCRIPTION, description);
         args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, entourageCategory);
+        args.putString(BaseCreateEntourageFragment.KEY_ENTOURAGE_GROUP_TYPE, groupType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,9 +68,11 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            entourageDescription = getArguments().getString(ENTOURAGE_DESCRIPTION);
-            entourageCategory = (EntourageCategory)getArguments().getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY);
+        Bundle args = getArguments();
+        if (args != null) {
+            entourageDescription = args.getString(ENTOURAGE_DESCRIPTION);
+            entourageCategory = (EntourageCategory)args.getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY);
+            entourageGroupType = args.getString(BaseCreateEntourageFragment.KEY_ENTOURAGE_GROUP_TYPE);
         }
     }
 
@@ -128,6 +137,10 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
             if (descriptionExample != null && descriptionExample.length() > 0) {
                 descriptionEditText.setHint(descriptionExample);
             }
+        }
+        if (BaseEntourage.TYPE_OUTING.equalsIgnoreCase(entourageGroupType)) {
+            descriptionEditText.setHint(R.string.entourage_description_fragment_hint_outing);
+            infoTextView.setText(R.string.entourage_description_fragment_info_outing);
         }
     }
 
