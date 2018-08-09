@@ -92,6 +92,11 @@ public class Entourage extends BaseEntourage implements Serializable {
     }
 
     @Override
+    public boolean showInviteViewAfterCreation() {
+        return false;
+    }
+
+    @Override
     public String getShareURL() {
         //TODO remove this method override when the server will return a proper share url for voisinage
         return null;

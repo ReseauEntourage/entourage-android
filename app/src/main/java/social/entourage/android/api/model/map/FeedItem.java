@@ -284,6 +284,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return R.string.tour_info_quit_tour_description;
     }
 
+    public boolean showInviteViewAfterCreation() {
+        return true;
+    }
+
     // ----------------------------------
     // COPY OBJECT METHODS
     // ----------------------------------

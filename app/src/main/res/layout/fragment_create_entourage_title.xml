@@ -67,11 +67,12 @@
         android:paddingRight="10dp"
         android:paddingStart="10dp">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/tip"/>
+            app:srcCompat="@drawable/tip"
+            app:tint="@color/accent"/>
 
         <TextView
             android:layout_width="0dp"
