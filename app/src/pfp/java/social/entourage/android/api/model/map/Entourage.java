@@ -97,8 +97,11 @@ public class Entourage extends BaseEntourage implements Serializable {
     }
 
     @Override
-    public String getShareURL() {
-        //TODO remove this method override when the server will return a proper share url for voisinage
-        return null;
+    public boolean showEditEntourageView() {
+        if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType) || TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
+            return false;
+        }
+        return super.showEditEntourageView();
     }
+
 }

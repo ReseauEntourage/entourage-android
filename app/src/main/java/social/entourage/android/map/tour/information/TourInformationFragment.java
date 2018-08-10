@@ -757,7 +757,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     protected void onEditEntourageButton() {
         if (feedItem == null || getActivity() == null) return;
 
-        if (Configuration.getInstance().showEditEntourageView()) {
+        if (feedItem.showEditEntourageView()) {
             if (getFragmentManager() != null) {
                 CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage) feedItem);
                 fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
@@ -960,32 +960,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // Hide the loading view
         loadingView.setVisibility(View.GONE);
 
-        // Initialize the header
-        if (fragmentTitle != null) fragmentTitle.setText(feedItem.getTitle());
-        String iconURL = feedItem.getIconURL();
-        if (iconURL != null) {
-            Picasso.with(getContext())
-                    .load(iconURL)
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(new CropCircleTransformation())
-                    .into(tourIcon);
-            tourIcon.setVisibility(View.VISIBLE);
-        } else {
-            Drawable iconDrawable = feedItem.getIconDrawable(getContext());
-            if (iconDrawable == null) {
-                tourIcon.setVisibility(View.GONE);
-            } else {
-                tourIcon.setVisibility(View.VISIBLE);
-                tourIcon.setImageDrawable(iconDrawable);
-            }
-        }
-
-        // update description
-        tourDescription.setText(feedItem.getDescription());
-        DeepLinksManager.linkify(tourDescription);
-
-        // metadata
-        initializeMetadataView();
+        updateFeedItemInfo();
 
         if (invitationId > 0) {
             // already a member
@@ -1429,7 +1404,37 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
-    private void initializeMetadataView() {
+    private void updateFeedItemInfo() {
+        // Update the header
+        if (fragmentTitle != null) fragmentTitle.setText(feedItem.getTitle());
+        String iconURL = feedItem.getIconURL();
+        if (iconURL != null) {
+            Picasso.with(getContext()).cancelRequest(tourIcon);
+            Picasso.with(getContext())
+                    .load(iconURL)
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .transform(new CropCircleTransformation())
+                    .into(tourIcon);
+            tourIcon.setVisibility(View.VISIBLE);
+        } else {
+            Drawable iconDrawable = feedItem.getIconDrawable(getContext());
+            if (iconDrawable == null) {
+                tourIcon.setVisibility(View.GONE);
+            } else {
+                tourIcon.setVisibility(View.VISIBLE);
+                tourIcon.setImageDrawable(iconDrawable);
+            }
+        }
+
+        // update description
+        tourDescription.setText(feedItem.getDescription());
+        DeepLinksManager.linkify(tourDescription);
+
+        // metadata
+        updateMetadataView();
+    }
+
+    private void updateMetadataView() {
         View fragmentView = getView();
         if (fragmentView == null) return;
         View metadataView = fragmentView.findViewById(R.id.tour_info_metadata_layout);
@@ -1712,14 +1717,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // Update the UI
         feedItem = updatedEntourage;
 
-        if (fragmentTitle != null) fragmentTitle.setText(feedItem.getTitle());
-        Drawable iconDrawable = feedItem.getIconDrawable(getContext());
-        if (iconDrawable == null) {
-            tourIcon.setVisibility(View.GONE);
-        } else {
-            tourIcon.setVisibility(View.VISIBLE);
-            tourIcon.setImageDrawable(iconDrawable);
-        }
+        updateFeedItemInfo();
     }
 
     @Subscribe

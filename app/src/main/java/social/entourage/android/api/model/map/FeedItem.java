@@ -288,6 +288,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return true;
     }
 
+    public boolean showEditEntourageView() {
+        return true;
+    }
+
     // ----------------------------------
     // COPY OBJECT METHODS
     // ----------------------------------
