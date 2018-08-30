@@ -70,7 +70,8 @@
                 android:clickable="true"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+                android:paddingRight="20dp"
+                android:focusable="true">
 
                 <TextView
                     android:id="@+id/textView6"
@@ -168,7 +169,7 @@
                     android:id="@+id/user_about_edit_button"
                     style="@style/AccentButton.RoundedCorners"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
                     android:layout_marginEnd="10dp"
@@ -229,14 +230,14 @@
             <Button
                 android:id="@+id/user_add_association_button"
                 style="@style/AccentButton.RoundedCorners"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
-                android:maxLines="1"
                 android:text="@string/user_edit_add_association_button"
-                android:textSize="@dimen/entourage_font_small"
+                android:textSize="@dimen/entourage_font_medium"
                 android:textStyle="normal"/>
 
             <TextView
@@ -271,6 +272,48 @@
                 android:textStyle="bold"/>
 
             <LinearLayout
+                android:id="@+id/user_action_zone_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/user_action_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:hint="@string/user_edit_action_zone_hint"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/greyish_brown"
+                    android:textColorHint="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <Button
+                    android:id="@+id/user_action_zone_button"
+                    style="@style/AccentButton.RoundedCorners"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/user_edit_action_zone_button_no_address"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="normal"/>
+
+                <View
+                    android:id="@+id/view5"
+                    style="@style/SeparatorAlpha"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/user_private_informations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -285,7 +328,8 @@
                     android:clickable="true"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:focusable="true">
 
                     <TextView
                         android:id="@+id/textView8"
@@ -316,7 +360,8 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:focusable="true">
 
                     <TextView
                         android:id="@+id/textView9"
@@ -421,38 +466,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/user_public_informations"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/textView12"
-                    style="@style/UserProfileTextViewStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/user_edit_address_label"
-                    android:textSize="@dimen/entourage_font_medium"/>
-
-                <TextView
-                    android:id="@+id/user_address"
-                    style="@style/UserProfileTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/textView12"
-                    android:layout_toRightOf="@+id/textView12"
-                    android:gravity="end"
-                    android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
-            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"

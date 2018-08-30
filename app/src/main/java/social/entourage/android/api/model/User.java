@@ -1,6 +1,7 @@
 package social.entourage.android.api.model;
 
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,8 +12,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.map.TourAuthor;
+import social.entourage.android.api.model.map.UserMembership;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class User implements Serializable {
 
@@ -69,6 +76,14 @@ public class User implements Serializable {
     private String type = TYPE_PRO;
 
     private String about;
+
+    private ArrayList<String> roles;
+
+    private ArrayList<UserMembership.MembershipList> memberships;
+
+    private UserConversation conversation;
+
+    private Address address;
 
     @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
@@ -209,6 +224,45 @@ public class User implements Serializable {
         this.about = about;
     }
 
+    public ArrayList<String> getRoles() {
+        return roles;
+    }
+
+    public ArrayList<UserMembership.MembershipList> getAllMemberships() {
+        return memberships;
+    }
+
+    public ArrayList<UserMembership> getMemberships(String type) {
+        if (memberships == null || type == null) return new ArrayList<>();
+        for (UserMembership.MembershipList membershipList:
+             memberships) {
+            if (type.equalsIgnoreCase(membershipList.getType())) {
+                return membershipList.getList();
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    public void setMemberships(final ArrayList<UserMembership.MembershipList> memberships) {
+        this.memberships = memberships;
+    }
+
+    public UserConversation getConversation() {
+        return conversation;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(final Address address) {
+        this.address = address;
+    }
+
+    // ----------------------------------
+    // Other methods
+    // ----------------------------------
+
     public boolean isEntourageDisclaimerShown() {
         return entourageDisclaimerShown;
     }
@@ -253,7 +307,11 @@ public class User implements Serializable {
     }
 
     public boolean isPro() {
-        return TYPE_PRO.equals(type);
+        return EntourageApplication.isEntourageApp() && TYPE_PRO.equals(type);
+    }
+
+    public String getLocationAccessString() {
+        return isPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION;
     }
 
     public TourAuthor asTourAuthor() {
@@ -349,7 +407,84 @@ public class User implements Serializable {
     }
 
     // ----------------------------------
-    // WRAPPER
+    // User Conversation
+    // ----------------------------------
+
+    public static class UserConversation implements Serializable {
+
+        private static final long serialVersionUID = -2040655965839688879L;
+
+        @SerializedName("uuid")
+        private String UUID;
+
+        public String getUUID() {
+            return UUID;
+        }
+    }
+
+    // ----------------------------------
+    // User Address
+    // ----------------------------------
+
+    public static class Address implements Serializable {
+
+        private static final long serialVersionUID = 5727042444482111831L;
+
+        private double latitude;
+
+        private double longitude;
+
+        @SerializedName("display_address")
+        private String displayAddress;
+
+        @SerializedName("google_place_id")
+        private String googlePlaceId;
+
+        public Address(String googlePlaceId) {
+            this.googlePlaceId = googlePlaceId;
+        }
+
+        public Address(double latitude, double longitude, String displayAddress) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.displayAddress = displayAddress;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(final double latitude) {
+            this.latitude = latitude;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(final double longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getDisplayAddress() {
+            return displayAddress;
+        }
+
+        public void setDisplayAddress(final String displayAddress) {
+            this.displayAddress = displayAddress;
+        }
+
+        public String getGooglePlaceId() {
+            return googlePlaceId;
+        }
+
+        public void setGooglePlaceId(final String googlePlaceId) {
+            this.googlePlaceId = googlePlaceId;
+        }
+    }
+
+    // ----------------------------------
+    // WRAPPERS
     // ----------------------------------
 
     public static class UserWrapper {
@@ -366,6 +501,23 @@ public class User implements Serializable {
 
         public void setUser(User user) {
             this.user = user;
+        }
+    }
+
+    public static class AddressWrapper {
+
+        private Address address;
+
+        public AddressWrapper(Address address) {
+            this.address = address;
+        }
+
+        public Address getAddress() {
+            return address;
+        }
+
+        public void setAddress(final Address address) {
+            this.address = address;
         }
     }
 }

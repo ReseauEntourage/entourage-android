@@ -1,8 +1,10 @@
 package social.entourage.android.api.model.map;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -263,6 +265,15 @@ public class Tour extends FeedItem implements Serializable {
 
     public @ColorRes int getTypeColorRes() {
         return Tour.getTypeColorRes(tourType);
+    }
+
+    @Override
+    public Drawable getIconDrawable(final Context context) {
+        @DrawableRes int iconRes = getIconRes();
+        if (iconRes != 0) {
+            return ContextCompat.getDrawable(context, iconRes);
+        }
+        return super.getIconDrawable(context);
     }
 
     // ----------------------------------

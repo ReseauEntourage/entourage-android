@@ -24,6 +24,7 @@ import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.tools.Utils;
+import social.entourage.android.user.UserNameView;
 import social.entourage.android.view.PartnerLogoImageView;
 
 /**
@@ -44,7 +45,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
 
     private ImageView mPhotoView;
     private PartnerLogoImageView mPartnerLogoView;
-    private TextView mPrivateUsernameView;
+    private UserNameView mPrivateUsernameView;
     private TextView mJoinMessage;
     private TextView mJoinDescription;
     private Button mAcceptButton;
@@ -74,7 +75,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
 
         mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
         mPartnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tic_partner_logo);
-        mPrivateUsernameView = (TextView) itemView.findViewById(R.id.tic_private_username);
+        mPrivateUsernameView = itemView.findViewById(R.id.tic_private_username);
         mJoinDescription = (TextView) itemView.findViewById(R.id.tic_join_description);
         mJoinMessage = (TextView) itemView.findViewById(R.id.tic_join_message);
         mAcceptButton = (Button) itemView.findViewById(R.id.tic_accept_button);
@@ -168,6 +169,8 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mPublicSection.setVisibility(View.GONE);
 
         mPrivateUsernameView.setText(user.getDisplayName());
+        //TODO Set the user role once they are sent from the server
+        mPrivateUsernameView.setRoles(null);
 
         String avatarURL = user.getAvatarURLAsString();
         if (avatarURL != null) {

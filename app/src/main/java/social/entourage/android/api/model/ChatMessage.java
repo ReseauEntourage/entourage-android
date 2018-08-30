@@ -15,6 +15,10 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     private final static String HASH_STRING_HEAD = "ChatMessage-";
     private static final long serialVersionUID = 2171009008739523540L;
 
+    public static final String TYPE_TEXT = "text";
+    public static final String TYPE_VISIT = "visit";
+    public static final String TYPE_OUTING = "outing";
+
     @Expose(serialize = false)
     @SerializedName("id")
     private long chatId;
@@ -30,6 +34,12 @@ public class ChatMessage extends TimestampedObject implements Serializable {
 
     @Expose(serialize = false, deserialize = false)
     private boolean isMe;
+
+    @Expose(serialize = false)
+    @SerializedName("message_type")
+    private String messageType;
+
+    private Metadata metadata;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -97,6 +107,14 @@ public class ChatMessage extends TimestampedObject implements Serializable {
         this.isMe = isMe;
     }
 
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public Metadata getMetadata() {
+        return metadata;
+    }
+
     @Override
     public Date getTimestamp() {
         return creationDate;
@@ -114,12 +132,57 @@ public class ChatMessage extends TimestampedObject implements Serializable {
 
     @Override
     public int getType() {
+        if (TYPE_OUTING.equalsIgnoreCase(messageType)) return CHAT_MESSAGE_OUTING;
         return isMe ? CHAT_MESSAGE_ME : CHAT_MESSAGE_OTHER;
     }
 
     @Override
     public long getId() {
         return chatId;
+    }
+
+    // ----------------------------------
+    // INNER CLASSES
+    // ----------------------------------
+
+    public static class Metadata implements Serializable {
+
+        private static final long serialVersionUID = 5065260171819947605L;
+
+        public static final String OPERATION_CREATED = "created";
+        public static final String OPERATION_UPDATED = "updated";
+
+        private String uuid;
+
+        private String title;
+
+        private String operation;
+
+        @SerializedName("starts_at")
+        private Date startsAt;
+
+        @SerializedName("display_address")
+        private String displayAddress;
+
+        public String getUUID() {
+            return uuid;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getOperation() {
+            return operation;
+        }
+
+        public Date getStartsAt() {
+            return startsAt;
+        }
+
+        public String getDisplayAddress() {
+            return displayAddress;
+        }
     }
 
     // ----------------------------------

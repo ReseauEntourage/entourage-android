@@ -1,6 +1,7 @@
 package social.entourage.android.api.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 
@@ -120,7 +121,7 @@ public class Message implements Serializable {
                 String notificationText = "";
                 if (count > 1) {
                     if (content.isEntourageRelated()) {
-                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count , count, content.getFeedItemName());
+                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, count, content.getFeedItemName());
                     } else {
                         notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_tour_multiple, count, count);
                     }
@@ -132,6 +133,9 @@ public class Message implements Serializable {
                     }
                 }
                 return notificationText;
+            }
+            if (!TextUtils.isEmpty(content.message)) {
+                return content.message;
             }
         }
         return object;

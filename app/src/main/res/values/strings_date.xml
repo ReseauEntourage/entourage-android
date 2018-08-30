@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="date_today">AUJOURD\'HUI</string>
-    <string name="date_yesterday">HIER</string>
+    <string name="date_today">Aujourd\'hui</string>
+    <string name="date_yesterday">Hier</string>
     <string name="date_format">%1$d %2$s %3$d</string>
+    <string name="date_format_short">%1$d %2$s</string>
     <string name="date_month_1">jan.</string>
     <string name="date_month_2">fév.</string>
     <string name="date_month_3">mar.</string>

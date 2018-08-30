@@ -22,6 +22,11 @@
     <dimen name="announcement_icon_width">29dp</dimen>
     <dimen name="announcement_icon_height">29dp</dimen>
 
+    <dimen name="feeditem_icon_width">29dp</dimen>
+    <dimen name="feeditem_icon_height">29dp</dimen>
+
+    <dimen name="entourage_map_marker">60dp</dimen>
+
     <!-- Entourage padding -->
     <dimen name="entourage_padding_10">10dp</dimen>
 
@@ -33,5 +38,14 @@
     <dimen name="entourage_font_small">13sp</dimen>
 
     <dimen name="badge_size">10sp</dimen>
+
+    <!-- Top Bar sizes -->
+    <dimen name="top_bar_height">40dp</dimen>
+
+    <!-- Role View sizes -->
+    <dimen name="role_corner_radius">5dp</dimen>
+    <dimen name="role_padding_top">0dp</dimen>
+    <dimen name="role_padding_bottom">2dp</dimen>
+    <dimen name="role_margin">5dp</dimen>
 
 </resources>

@@ -6,8 +6,9 @@
     <color name="primary_dark">#717171</color>
     <color name="primary_light">#efeff4</color>
     <color name="accent">#f26521</color>
+    <color name="accent_dark">#f26521</color>
     <color name="toolbar">@color/primary</color>
-    <color name="warm_grey">#9b9b9b</color>
+    <color name="warm_grey">#999999</color>
     <color name="greyish_brown">#4a4a4a</color>
     <color name="greyish">#a5a59c</color>
     <color name="pale_grey">#efeff4</color>
@@ -16,6 +17,16 @@
     <color name="silver">#c9c9ce</color>
     <color name="tomato">#ee3e3a</color>
     <color name="brownish_grey">#5d5d5d</color>
+    <color name="light_grey">#ededed</color>
+
+    <color name="accent_alt">@color/accent</color>
+    <color name="accent_alt_dark">@color/accent_dark</color>
+    
+    <color name="complementary_1">@color/accent</color>
+    <color name="complementary_2">@color/accent</color>
+    <color name="complementary_3">@color/accent</color>
+    <color name="complementary_4">@color/accent</color>
+    <color name="complementary_5">@color/accent</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
@@ -23,17 +34,25 @@
     <color name="background_light">@color/primary_light</color>
     <color name="background_pressed">#000000</color>
     <color name="background_transparent">#66000000</color>
+    <color name="background_accent_dark_translucent">@color/pale_grey</color>
 
     <!-- Login -->
     <color name="background_login_light">#FFFFFF</color>
     <color name="background_login_grey">#F7F7F7</color>
-    <color name="text_dark">#4F4F4F</color>
+    <color name="text_dark">#4f4f4f</color>
     <color name="login_divider">@color/greyish</color>
     <color name="login_edittext_hint_alpha">#b2ffffff</color>
 
     <!-- Profile -->
     <color name="background_user_category">#CFCFCF</color>
     <color name="background_user_content">@color/white</color>
+    <color name="profile_name">@color/greyish_brown</color>
+    <color name="profile_role_text">@color/white</color>
+    <color name="report_user_explanation">@color/tomato</color>
+
+    <!-- Map -->
+    <color name="map_plus_button">@color/accent</color>
+    <color name="map_announcement_background">#ffc57f</color>
 
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>
@@ -57,6 +76,8 @@
     <color name="login_edittext_hint">#B2FFFFFF</color>
 
     <!-- Side Menu -->
+    <color name="sidemenu_background">@color/background_light</color>
+    <color name="sidemenu_item_background">@color/white</color>
     <color name="sidemenu_divider">@color/greyish</color>
     
     <!-- Notifications -->
@@ -67,6 +88,11 @@
     <color name="tour_type_social">#97d791</color>
     <color name="tour_type_distributive">#ffc57f</color>
 
+    <!-- Action types -->
+    <color name="action_type_neighborhood">#025E7F</color>
+    <color name="action_type_outing">@color/greyish_brown</color>
+    <color name="action_type_outing_icon_tint">#78104a</color>
+
     <!-- Partner Logo -->
     <color name="partner_logo_background">@color/background</color>
     <color name="partner_logo_transparent">#00000000</color>
@@ -74,6 +100,17 @@
     <!-- Create Entourage -->
     <color name="entourage_ok">@color/greyish</color>
     <color name="entourage_error">@color/tomato</color>
+
+    <!-- Action details screens -->
+    <color name="feeditem_details_topbar_background">@color/accent</color>
+    <color name="feeditem_details_topbar_tint">@color/white</color>
+    <color name="feeditem_details_title">@color/white</color>
+    <color name="feeditem_icon_background_solid">@color/white</color>
+    <color name="feeditem_icon_background_stroke">@color/warm_grey</color>
+    
+    <!-- FeedItem card -->
+    <color name="feeditem_card_details_normal">@color/greyish</color>
+    <color name="feeditem_card_details_bold">@color/black</color>
 
     <!-- Others -->
     <color name="login_view">#333333</color>
@@ -84,5 +121,6 @@
     <color name="white">#ffffff</color>
     <color name="badge_background">#ee3e3a</color>
     <color name="white_88">#ccffffff</color>
+    <color name="dark_grey">#333333</color>
 
 </resources>

@@ -1,6 +1,5 @@
 package social.entourage.android;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,22 +10,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
-import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,10 +28,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.crashlytics.android.Crashlytics;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.otto.Subscribe;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.HashSet;
@@ -49,9 +38,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.about.AboutFragment;
 import social.entourage.android.api.model.Message;
-import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
@@ -67,17 +54,12 @@ import social.entourage.android.api.tape.Events.OnPushNotificationReceived;
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent;
 import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
 import social.entourage.android.api.tape.Events.OnUserActEvent;
-import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.authentication.login.LoginActivity;
-import social.entourage.android.badge.BadgeView;
+import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
-import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.deeplinks.DeepLinksManager;
-import social.entourage.android.guide.GuideMapEntourageFragment;
-import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationFragment;
@@ -91,17 +73,14 @@ import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.message.push.RegisterGCMService;
-import social.entourage.android.newsfeed.FeedItemOptionsFragment;
-import social.entourage.android.sidemenu.SideMenuItemView;
+import social.entourage.android.navigation.BaseBottomNavigationDataSource;
+import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.UserFragment;
-import social.entourage.android.user.edit.UserEditFragment;
+import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
-import social.entourage.android.view.PartnerLogoImageView;
-import social.entourage.android.webview.WebViewFragment;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -109,7 +88,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     MyToursFragment.OnFragmentInteractionListener,
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
-    PhotoChooseInterface {
+    PhotoChooseInterface,
+    UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -123,38 +103,20 @@ public class DrawerActivity extends EntourageSecuredActivity
     DrawerPresenter presenter;
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-
-    @BindView(R.id.navigation_view)
-    NavigationView navigationView;
+    View toolbar;
 
     @BindView(R.id.content_view)
     View contentView;
 
-    @BindView(R.id.drawer_header_user_name)
-    TextView userName;
+    TextView discussionBadgeView;
 
-    @BindView(R.id.drawer_header_user_photo)
-    ImageView userPhoto;
+//    @BindView(R.id.map_fab_menu)
+//    public FloatingActionMenu mapOptionsMenu;
 
-    @BindView(R.id.drawer_header_user_partner_logo)
-    PartnerLogoImageView userPartnerLogo;
+    private BottomNavigationDataSource navigationDataSource = new BottomNavigationDataSource();
 
-    @BindView(R.id.drawer_header_edit_profile)
-    TextView userEditProfileTextView;
-
-    @BindView(R.id.toolbar_discussion)
-    BadgeView discussionBadgeView;
-
-    @BindView(R.id.map_fab_menu)
-    public FloatingActionMenu mapOptionsMenu;
-
-    private Fragment mainFragment;
-    private MapEntourageFragment mapEntourageFragment;
-    private GuideMapEntourageFragment guideMapEntourageFragment;
+    protected Fragment mainFragment;
+    protected MapEntourageFragment mapEntourageFragment;
     private UserFragment userFragment;
 
     private SharedPreferences gcmSharedPreferences;
@@ -162,6 +124,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     private Tour intentTour;
 
     @IdRes int selectedSidemenuAction;
+
+    private boolean editActionZoneShown = false;
 
     // ----------------------------------
     // LIFECYCLE
@@ -173,12 +137,11 @@ public class DrawerActivity extends EntourageSecuredActivity
         setContentView(R.layout.activity_drawer);
         ButterKnife.bind(this);
 
+        if (isFinishing()) return;
+
         configureToolbar();
-        configureNavigationItem();
 
-        selectItem(R.id.action_tours);
-
-        gcmSharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        gcmSharedPreferences = EntourageApplication.get().getSharedPreferences();
 
         if (getIntent() != null) {
             intentAction = getIntent().getAction();
@@ -190,33 +153,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         User user = getAuthenticationController().getUser();
         if (user != null) {
-            userName.setText(user.getDisplayName());
-            String avatarURL = user.getAvatarURL();
-            if (avatarURL != null) {
-                Picasso.with(this)
-                        .load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(new CropCircleTransformation())
-                        .into(userPhoto);
-            } else {
-                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
-            }
-            // Show partner logo
-            String partnerURL = null;
-            Partner partner = user.getPartner();
-            if (partner != null) {
-                partnerURL = partner.getSmallLogoUrl();
-            }
-            if (partnerURL != null) {
-                Picasso.with(this)
-                        .load(Uri.parse(partnerURL))
-                        .placeholder(R.drawable.partner_placeholder)
-                        .transform(new CropCircleTransformation())
-                        .into(userPartnerLogo);
-            } else {
-                userPartnerLogo.setImageDrawable(null);
-            }
-
             //refresh the user info from the server
             Location location = EntourageLocation.getInstance().getCurrentLocation();
             presenter.updateUser(null, null, null, location);
@@ -243,8 +179,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                //TODO Need to handle this event in the new menu fragment
                 EntourageEvents.logEvent(Constants.EVENT_FEED_MENU);
-                drawerLayout.openDrawer(GravityCompat.START);
+                //drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -260,12 +197,14 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         getIntentAction(intent);
         if (mainFragment != null) {
-            switchToMapFragment();
+//            switchToMapFragment();
             if (intentAction != null) {
                 switch (intentAction) {
                     case ConfirmationFragment.KEY_RESUME_TOUR:
+                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         break;
                     case ConfirmationFragment.KEY_END_TOUR:
+                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         break;
                     case TourService.KEY_NOTIFICATION_STOP_TOUR:
                     case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
@@ -310,7 +249,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Override
     protected void onResume() {
         super.onResume();
-        highlightCurrentMenuItem();
 
         if (getIntent() != null) {
             String action = getIntent().getAction();
@@ -326,6 +264,13 @@ public class DrawerActivity extends EntourageSecuredActivity
         EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
 
         refreshBadgeCount();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        checkIntentAction(null);
     }
 
     @Override
@@ -418,103 +363,53 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void highlightCurrentMenuItem() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            navigationView.setCheckedItem(R.id.action_tours);
-        } else if (mainFragment instanceof GuideMapEntourageFragment) {
-            navigationView.setCheckedItem(R.id.action_guide);
-        } else if (mainFragment instanceof UserFragment) {
-            navigationView.setCheckedItem(R.id.action_user);
-        }
-    }
-
     private void configureToolbar() {
-        setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
-        discussionBadgeView = (BadgeView) toolbar.findViewById(R.id.toolbar_discussion);
-        if (discussionBadgeView != null) {
-            discussionBadgeView.setOnClickListener(new View.OnClickListener() {
+        TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
+        if (tabLayout != null) {
+
+            // we need to set the listener fist, to respond to the default selected tab request
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
-                public void onClick(final View v) {
-                    EntourageEvents.logEvent(Constants.EVENT_SCREEN_17_2);
-                    showMyEntourages();
+                public void onTabSelected(final TabLayout.Tab tab) {
+                    int tabIndex = tab.getPosition();
+                    loadFragment(navigationDataSource.getFragmentAtIndex(tabIndex), navigationDataSource.getFragmentTagAtIndex(tabIndex));
+                }
+
+                @Override
+                public void onTabUnselected(final TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(final TabLayout.Tab tab) {
+
                 }
             });
-        }
 
-    }
-
-    private void configureNavigationItem() {
-        //make the navigation view full screen
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
-        params.width = metrics.widthPixels;
-        navigationView.setLayoutParams(params);
-
-        //add listener to back button
-        ImageView backView = (ImageView) navigationView.findViewById(R.id.drawer_header_back);
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                drawerLayout.closeDrawers();
-            }
-        });
-
-        //add navigationitemlistener
-        drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                selectItem(selectedSidemenuAction);
-            }
-        });
-
-        //add listener to user photo and name, that opens the user profile screen
-        userPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectedSidemenuAction = R.id.action_user;
-                drawerLayout.closeDrawers();
-            }
-        });
-        userName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectedSidemenuAction = R.id.action_user;
-                drawerLayout.closeDrawers();
-            }
-        });
-        //add listener to modify profile text view
-        userEditProfileTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectedSidemenuAction = R.id.action_edit_user;
-                drawerLayout.closeDrawers();
-            }
-        });
-
-        //add listeners to side menu items
-        LinearLayout sideMenuItemsLayout = (LinearLayout) navigationView.findViewById(R.id.sidemenuitems_layout);
-        if (sideMenuItemsLayout != null) {
-            int itemsCount = sideMenuItemsLayout.getChildCount();
-            for (int j = 0; j < itemsCount; j++) {
-                View child = sideMenuItemsLayout.getChildAt(j);
-                if (child instanceof SideMenuItemView) {
-                    child.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectedSidemenuAction = v.getId();
-                            drawerLayout.closeDrawers();
-                        }
-                    });
+            int tabCount = navigationDataSource.getItemCount();
+            for (int i = 0; i < tabCount; i++) {
+                BaseBottomNavigationDataSource.NavigationItem navigationItem = navigationDataSource.getNavigationItemAtIndex(i);
+                TabLayout.Tab tab = tabLayout.newTab();
+                tab.setCustomView(R.layout.toolbar_view);
+                tab.setText(navigationItem.getText());
+                tab.setIcon(navigationItem.getIcon(getApplicationContext()));
+                tabLayout.addTab(tab);
+                if (i == navigationDataSource.getDefaultSelectedTab()) tab.select();
+                if (i == navigationDataSource.getMyMessagesTabIndex()) {
+                    View view = tab.getCustomView();
+                    if (view != null) {
+                        discussionBadgeView = view.findViewById(R.id.badge_count);
+                    }
                 }
             }
+        }
+    }
+
+    protected void selectNavigationTab(int tabIndex) {
+        TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
+        if (tabLayout != null) {
+            tabLayout.getTabAt(tabIndex).select();
         }
     }
 
@@ -522,115 +417,28 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (menuId == 0) {
             return;
         }
-        switch (menuId) {
-            case R.id.action_tours:
-                loadFragmentWithExtras();
-                break;
-            case R.id.action_guide:
-                if (mainFragment instanceof MapEntourageFragment) {
-                    showSolidarityGuide();
-                    EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
-                }
-                break;
-            case R.id.action_user:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
-                userFragment = (UserFragment) getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
-                if (userFragment == null) {
-                    userFragment = UserFragment.newInstance(getAuthenticationController().getUser().getId());
-                }
-                //loadFragment(userFragment, TAG_FRAGMENT_USER);
-                userFragment.show(getSupportFragmentManager(), UserFragment.TAG);
-                break;
-            case R.id.action_edit_user:
-                UserEditFragment fragment = new UserEditFragment();
-                fragment.show(getSupportFragmentManager(), UserEditFragment.TAG);
-                break;
-            case R.id.action_logout:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_LOGOUT);
-                if (mapEntourageFragment != null) {
-                    mapEntourageFragment.saveOngoingTour();
-                }
-                logout();
-                break;
-            case R.id.action_settings:
-                Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.action_about:
-                /*
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://tutorial"));
-                        try {
-                            startActivity(intent);
-                        } catch (Exception ex) {
-                            Log.d("DEEPLINK", ex.toString());
-                        }
-                    }
-                }, 8*1000);
-                */
-
-                EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
-                AboutFragment aboutFragment = new AboutFragment();
-                aboutFragment.show(getSupportFragmentManager(), AboutFragment.TAG);
-                break;
-            case R.id.action_blog:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
-                showWebView(getLink(Constants.SCB_LINK_ID));
-                break;
-            case R.id.action_charte:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
-                User me = getAuthenticationController().getUser();
-                Intent charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.CHARTE_LINK_ID)));
-                try {
-                    startActivity(charteIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.action_goal:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
-                showWebViewForLinkId(Constants.GOAL_LINK_ID);
-                break;
-            case R.id.action_atd:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
-                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.ATD_LINK_ID)));
-                try {
-                    startActivity(atdIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.action_donation:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_DONATION);
-                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getLink(Constants.DONATE_LINK_ID)));
-                try {
-                    startActivity(donationIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(this, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.action_involvement:
-                GetInvolvedFragment getInvolvedFragment = GetInvolvedFragment.newInstance();
-                getInvolvedFragment.show(getSupportFragmentManager(), GetInvolvedFragment.TAG);
-                break;
-            default:
-                //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
-                Toast.makeText(this, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
+        if (presenter != null) {
+            presenter.handleMenu(menuId);
         }
         selectedSidemenuAction = 0;
     }
 
-    private void loadFragment(Fragment newFragment, String tag) {
+    protected void loadFragment(Fragment newFragment, String tag) {
+        if (newFragment == null) return;
         mainFragment = newFragment;
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commitAllowingStateLoss();
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment = (MapEntourageFragment)newFragment;
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (!fragmentManager.popBackStackImmediate(tag, 0)) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commitAllowingStateLoss();
+        }
     }
 
-    private void loadFragmentWithExtras() {
+    protected void loadFragmentWithExtras() {
         mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
         if (mapEntourageFragment == null) {
             mapEntourageFragment = new MapEntourageFragment();
@@ -652,55 +460,24 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void showSolidarityGuide() {
-        // Change the Guide Option text
-        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
-        button.setLabelText(getString(R.string.map_poi_close_button));
-        // Make the 'Propose POI' button visible
-        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
-        if (proposePOIButton != null) {
-            proposePOIButton.setVisibility(View.VISIBLE);
-        }
-        // Hide the overlay
-        if (mapOptionsMenu.isOpened()) {
-            mapOptionsMenu.close(false);
-        }
-        // Inform the map that the guide will be shown
+    public void hideSolidarityGuide() {
+        //TODO Fix this
+//        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
+//        button.setLabelText(getString(R.string.map_poi_launcher_button));
+//        // Make the 'Propose POI' button gone
+//        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
+//        if (proposePOIButton != null) {
+//            proposePOIButton.setVisibility(View.GONE);
+//        }
+//        // Hide the overlay
+//        if (mapOptionsMenu.isOpened()) {
+//            mapOptionsMenu.close(false);
+//        }
+//        // Show the map screen
+//        selectItem(R.id.action_tours);
         if (mapEntourageFragment != null) {
-            mapEntourageFragment.onGuideWillShow();
+            loadFragment(mapEntourageFragment, MapEntourageFragment.TAG);
         }
-        // Show the fragment
-        guideMapEntourageFragment = (GuideMapEntourageFragment) getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
-        if (guideMapEntourageFragment == null) {
-            guideMapEntourageFragment = new GuideMapEntourageFragment();
-        }
-        loadFragment(guideMapEntourageFragment, GuideMapEntourageFragment.TAG);
-    }
-
-    private void hideSolidarityGuide() {
-        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
-        button.setLabelText(getString(R.string.map_poi_launcher_button));
-        // Make the 'Propose POI' button gone
-        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
-        if (proposePOIButton != null) {
-            proposePOIButton.setVisibility(View.GONE);
-        }
-        // Hide the overlay
-        if (mapOptionsMenu.isOpened()) {
-            mapOptionsMenu.close(false);
-        }
-        // Show the map screen
-        selectItem(R.id.action_tours);
-    }
-
-    public void showWebView(String url) {
-        WebViewFragment webViewFragment = WebViewFragment.newInstance(url);
-        webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
-    }
-
-    public void showWebViewForLinkId(String linkId) {
-        String link = getLink(linkId);
-        showWebView(link);
     }
 
     public void showMapFilters() {
@@ -713,19 +490,18 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public void showMyEntourages() {
-        if (presenter != null) {
-            presenter.displayMyEntourages();
-        }
+        selectNavigationTab(navigationDataSource.getMyMessagesTabIndex());
     }
 
     public void showTutorial() {
-        CarouselFragment carouselFragment = new CarouselFragment();
-        carouselFragment.show(getSupportFragmentManager(), CarouselFragment.TAG);
+        if (presenter != null) {
+            presenter.displayTutorial();
+        }
     }
 
     private void initializePushNotifications() {
-        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+        final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
+        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true);
         if (notificationsEnabled) {
             startService(new Intent(this, RegisterGCMService.class));
         } else {
@@ -740,24 +516,27 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    protected void logout(){
+    protected void logout() {
+        if (mapEntourageFragment != null) {
+            mapEntourageFragment.saveOngoingTour();
+        }
         //remove user phone
+        SharedPreferences.Editor editor = gcmSharedPreferences.edit();
         User me = EntourageApplication.me(getApplicationContext());
         if(me != null) {
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
-            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(LoginActivity.KEY_TUTORIAL_DONE, new HashSet<String>());
+            HashSet<String> loggedNumbers = (HashSet<String>) gcmSharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
             loggedNumbers.remove(me.getPhone());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.putStringSet(LoginActivity.KEY_TUTORIAL_DONE, loggedNumbers);
-            editor.commit();
+            editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }
 
         //TODO: do a proper DELETE not an UPDATE
         //presenter.deleteApplicationInfo(getDeviceID());
         presenter.updateApplicationInfo("");
 
-        gcmSharedPreferences.edit().remove(RegisterGCMService.KEY_REGISTRATION_ID).commit();
+        editor.remove(EntourageApplication.KEY_REGISTRATION_ID);
+        editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED);
+        editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED);
+        editor.apply();
 
         super.logout();
     }
@@ -782,7 +561,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         if (!isSafeToCommit()) return;
         //Log.d("DEEPLINK", "checkIntentAction");
-        switchToMapFragment();
+        //switchToMapFragment();
         Intent intent = getIntent();
         if (intent == null) {
             intentAction = null;
@@ -798,25 +577,23 @@ public class DrawerActivity extends EntourageSecuredActivity
             PushNotificationContent content = message.getContent();
             if (content != null) {
                 if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
-                    if (presenter != null) {
-                        presenter.displayMyEntourages();
-                    }
+                    showMyEntourages();
                 }
                 else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
                     if (content.isTourRelated()) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.TOUR_CARD);
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
                     } else if (content.isEntourageRelated()) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD);
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
                     }
                 } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
                     PushNotificationContent.Extra extra = content.extra;
                     if (extra != null) {
-                        mapEntourageFragment.displayChosenFeedItem(extra.entourageId, TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
+                        mapEntourageFragment.displayChosenFeedItem(String.valueOf(extra.entourageId), TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
                     }
                 } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
                     PushNotificationContent.Extra extra = content.extra;
                     if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
-                        mapEntourageFragment.displayChosenFeedItem(extra.joinableId, content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
                     }
                 }
             }
@@ -832,39 +609,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         intentAction = null;
         intentTour = null;
         setIntent(null);
-    }
-
-    @Subscribe
-    public void userInfoUpdated(OnUserInfoUpdatedEvent event) {
-        User user = getAuthenticationController().getUser();
-        if (user != null) {
-            userName.setText(user.getDisplayName());
-            String avatarURL = user.getAvatarURL();
-            if (avatarURL != null) {
-                Picasso.with(this)
-                    .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(new CropCircleTransformation())
-                    .into(userPhoto);
-            } else {
-                userPhoto.setImageResource(R.drawable.ic_user_photo_small);
-            }
-            // Show partner logo
-            String partnerURL = null;
-            Partner partner = user.getPartner();
-            if (partner != null) {
-                partnerURL = partner.getSmallLogoUrl();
-            }
-            if (partnerURL != null) {
-                Picasso.with(this)
-                        .load(Uri.parse(partnerURL))
-                        .placeholder(R.drawable.partner_placeholder)
-                        .transform(new CropCircleTransformation())
-                        .into(userPartnerLogo);
-            } else {
-                userPartnerLogo.setImageDrawable(null);
-            }
-        }
     }
 
     @Subscribe
@@ -892,15 +636,15 @@ public class DrawerActivity extends EntourageSecuredActivity
             } else {
                 //check if we are receiving feed type and id
                 int feedItemType = event.getFeedItemType();
-                long feedItemId = event.getFeedItemId();
+                String feedItemUUID = event.getFeedItemUUID();
                 if (feedItemType == 0) {
                     return;
                 }
-                if (feedItemId == 0) {
+                if (feedItemUUID == null || feedItemUUID.length() == 0) {
                     String shareURL = event.getFeedItemShareURL();
-                    mapEntourageFragment.displayChosenFeedItem(shareURL, feedItemType);
+                    mapEntourageFragment.displayChosenFeedItemFromShareURL(shareURL, feedItemType);
                 } else {
-                    mapEntourageFragment.displayChosenFeedItem(feedItemId, feedItemType, event.getInvitationId());
+                    mapEntourageFragment.displayChosenFeedItem(feedItemUUID, feedItemType, event.getInvitationId());
                 }
             }
         }
@@ -977,8 +721,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mapEntourageFragment != null) {
             if (event.isShowUI()) {
                 EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
-                FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
-                feedItemOptionsFragment.show(getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
+                presenter.displayFeedItemOptions(feedItem);
                 return;
             }
             // Only the author can close entourages/tours
@@ -993,7 +736,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
             if (!feedItem.isClosed()) {
                 // close
-                mapEntourageFragment.stopFeedItem(feedItem);
+                mapEntourageFragment.stopFeedItem(feedItem, event.isSuccess());
             } else {
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
                     // freeze
@@ -1061,7 +804,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         getAuthenticationController().saveUser(me);
 
         // Dismiss the disclaimer fragment
-        fragment.dismiss();
+        if (fragment != null) fragment.dismiss();
 
         // Show the create entourage fragment
         if (mainFragment instanceof MapEntourageFragment) {
@@ -1082,7 +825,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment instanceof MapEntourageFragment) {
             ((MapEntourageFragment) mainFragment).addEncounter();
         } else {
-            onPOILauncherClicked();
+            hideSolidarityGuide();
             ((MapEntourageFragment) mainFragment).addEncounter();
         }
     }
@@ -1111,7 +854,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
         TransferObserver transferObserver = transferUtility.upload(
             BuildConfig.AWS_BUCKET,
-            BuildConfig.AWS_FOLDER + objectKey,
+            BuildConfig.AWS_MAIN_FOLDER + BuildConfig.AWS_FOLDER + objectKey,
             new File(photoUri.getPath()),
             CannedAccessControlList.PublicRead
         );
@@ -1156,56 +899,41 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
-    // Floating Action Buttons handling
+    // Floating Actions handling
     // ----------------------------------
 
-    @OnClick(R.id.button_start_tour_launcher)
     public void onStartTourClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_FEED_TOUR_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onStartTourLauncher();
         } else {
-            onPOILauncherClicked();
+            hideSolidarityGuide();
             mapEntourageFragment.onStartTourLauncher();
         }
     }
 
-    @OnClick(R.id.button_add_tour_encounter)
     public void onAddTourEncounterClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onAddEncounter();
         } else {
-            onPOILauncherClicked();
+            hideSolidarityGuide();
             mapEntourageFragment.onAddEncounter();
         }
     }
 
-    @OnClick(R.id.button_create_entourage)
     public void onCreateEntourageClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_FEED_ACTION_CREATE_CLICK);
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntouragePopupWhileTour();
         } else {
-            onPOILauncherClicked();
+            hideSolidarityGuide();
             mapEntourageFragment.displayEntouragePopupWhileTour();
         }
     }
 
-    @OnClick(R.id.button_poi_propose)
-    protected void onPOIProposeClicked() {
-        if (isGuideShown()) {
-            GuideMapEntourageFragment guideMapEntourageFragment = (GuideMapEntourageFragment) mainFragment;
-            guideMapEntourageFragment.proposePOI();
-        }
-    }
-
-    @OnClick(R.id.button_poi_launcher)
     public void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
             // Show the guide screen
-            showSolidarityGuide();
+            if (presenter != null) presenter.displaySolidarityGuide();
         } else {
             EntourageEvents.logEvent(Constants.EVENT_SCREEN_06_1);
             // Change the Guide Option text
@@ -1221,7 +949,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     protected void onToolbarLogoClicked() {
         if (isGuideShown()) {
             // switch to map mode
-            onPOILauncherClicked();
+            hideSolidarityGuide();
         } else {
             if (mapEntourageFragment.isToursListVisible()) {
                 // make the map visible
@@ -1308,24 +1036,75 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
+    // ACTION ZONE HANDLING
+    // ----------------------------------
+
+    public void showEditActionZoneFragment() {
+        showEditActionZoneFragment(false, null);
+    }
+
+    public void showEditActionZoneFragment(boolean forced, UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
+        if (editActionZoneShown && !forced) return;
+        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+        if (authenticationController.isAuthenticated()) {
+            User me = authenticationController.getUser();
+            UserPreferences userPreferences = authenticationController.getUserPreferences();
+            if (me != null && userPreferences != null) {
+                boolean noAddress = me.getAddress() == null || me.getAddress().getDisplayAddress() == null || me.getAddress().getDisplayAddress().length() == 0;
+                if ((forced || !userPreferences.isEditActionZoneShown()) && noAddress) {
+                    UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+                    userEditActionZoneFragment.addFragmentListener(this);
+                    userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
+                    userEditActionZoneFragment.setFromLogin(true);
+                    userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+                }
+            }
+        }
+        editActionZoneShown = true;
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentDismiss() {
+
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentIgnore() {
+        // treat as it saved the address
+        onUserEditActionZoneFragmentAddressSaved();
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentAddressSaved() {
+        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+        if (authenticationController.isAuthenticated()) {
+            User me = authenticationController.getUser();
+            UserPreferences userPreferences = authenticationController.getUserPreferences();
+            if (me != null && userPreferences != null) {
+                userPreferences.setEditActionZoneShown(true);
+                authenticationController.saveUserPreferences();
+            }
+        }
+        UserEditActionZoneFragment fragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        if (fragment != null && !fragment.isStateSaved()) {
+            fragment.dismiss();
+        }
+    }
+
+    // ----------------------------------
     // Helper functions
     // ----------------------------------
 
     private void refreshBadgeCount() {
         EntourageApplication application = EntourageApplication.get(getApplicationContext());
-        discussionBadgeView.setBadgeCount(application.badgeCount);
+        if (discussionBadgeView != null) {
+            discussionBadgeView.setVisibility(application.badgeCount > 0 ? View.VISIBLE : View.INVISIBLE);
+            discussionBadgeView.setText(String.valueOf(application.badgeCount));
+        }
     }
 
     public boolean isGuideShown() {
         return !(mainFragment instanceof MapEntourageFragment);
-    }
-
-    public String getLink(String linkId) {
-        if (authenticationController != null && authenticationController.getUser() != null) {
-            String link = getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
-            return link;
-        }
-        return "";
     }
 
 }

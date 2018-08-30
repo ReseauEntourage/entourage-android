@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -19,9 +20,11 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.http.Body;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.base.EntourageDialogFragment;
 
 public class EntourageDisclaimerFragment extends EntourageDialogFragment {
@@ -32,7 +35,7 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
 
     public static final String TAG = "social.entourage.android.entourage.disclaimer";
 
-    //private static final String KEY_IS_PRO = "social.entourage.android.KEY_IS_PRO";
+    private static final String KEY_GROUP_TYPE = "social.entourage.android.KEY_GROUP_TYPE";
 
     // ----------------------------------
     // Attributes
@@ -54,25 +57,36 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    public static EntourageDisclaimerFragment newInstance() {
+    public static EntourageDisclaimerFragment newInstance(String groupType) {
         EntourageDisclaimerFragment fragment = new EntourageDisclaimerFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_GROUP_TYPE, groupType);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_entourage_disclaimer, container, false);
+        String groupType = null;
+        if (getArguments() != null) {
+            groupType = getArguments().getString(KEY_GROUP_TYPE, null);
+        }
+        View view = inflater.inflate(
+                Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.layout.fragment_outing_disclaimer : R.layout.fragment_entourage_disclaimer,
+                container,
+                false);
         ButterKnife.bind(this, view);
 
         return view;
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         disclaimerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {

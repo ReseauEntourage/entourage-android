@@ -64,4 +64,9 @@ public class EntourageTitleView extends RelativeLayout {
 
         a.recycle();
     }
+
+    public void setTitle(final String mTitle) {
+        this.mTitle = mTitle;
+        titleTextView.setText(mTitle);
+    }
 }

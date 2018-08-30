@@ -70,6 +70,11 @@ public class Invitation extends TimestampedObject {
         this.entourageId = entourageId;
     }
 
+    public String getEntourageUUID() {
+        //TODO Retrieve it from the server
+        return String.valueOf(entourageId);
+    }
+
     @Override
     public long getId() {
         return invitationId;

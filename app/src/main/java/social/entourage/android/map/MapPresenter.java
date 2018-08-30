@@ -21,19 +21,16 @@ import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
-import social.entourage.android.map.entourage.CreateEntourageFragment;
+import social.entourage.android.map.entourage.create.CreateEntourageFragment;
 import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.tools.BusProvider;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 /**
  * Presenter controlling the MapEntourageFragment
@@ -107,10 +104,10 @@ public class MapPresenter {
         }
     }
 
-    public void openFeedItem(long feedItemId, int feedItemType, long invitationId) {
+    public void openFeedItem(String feedItemUUID, int feedItemType, long invitationId) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemId, feedItemType, invitationId);
+            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemUUID, feedItemType, invitationId);
             tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
         }
     }
@@ -123,18 +120,18 @@ public class MapPresenter {
         }
     }
 
-    public void createEntourage(LatLng location) {
+    public void createEntourage(LatLng location, String groupType) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location);
+            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location, groupType);
             entourageFragment.show(fragmentManager, CreateEntourageFragment.TAG);
         }
     }
 
-    public void displayEntourageDisclaimer() {
+    public void displayEntourageDisclaimer(String groupType) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance();
+            EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(groupType);
             fragment.show(fragmentManager, EntourageDisclaimerFragment.TAG);
         }
     }
@@ -190,12 +187,12 @@ public class MapPresenter {
     }
 
     public void handleLocationPermission() {
-        fragment.checkPermission(userIsPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION);
+        fragment.checkPermission(getUserLocationAccess());
     }
 
-    private boolean userIsPro() {
+    protected String getUserLocationAccess() {
         User user = authenticationController.getUser();
-        return user != null && user.isPro();
+        return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
     }
 
     public void resetUserOnboardingFlag() {
@@ -229,7 +226,7 @@ public class MapPresenter {
 
     public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
         final Map<Marker, Encounter> encounterMarkerHashMap = new HashMap<>();
-        final Map<Marker, Tour> tourMarkerHashMap = new HashMap<>();
+        final Map<Marker, FeedItem> markerFeedItemHashMap = new HashMap<>();
 
         public void addEncounterMarker(Marker marker, Encounter encounter) {
             encounterMarkerHashMap.put(marker, encounter);
@@ -248,13 +245,13 @@ public class MapPresenter {
             return marker;
         }
 
-        public void addTourMarker(Marker marker, Tour tour) {
-            tourMarkerHashMap.put(marker, tour);
+        public void addTourMarker(Marker marker, FeedItem feedItem) {
+            markerFeedItemHashMap.put(marker, feedItem);
         }
 
         public void clear() {
             encounterMarkerHashMap.clear();
-            tourMarkerHashMap.clear();
+            markerFeedItemHashMap.clear();
         }
 
         @Override
@@ -262,8 +259,16 @@ public class MapPresenter {
             LatLng markerPosition = marker.getPosition();
             if (encounterMarkerHashMap.get(marker) != null) {
                 openEncounter(encounterMarkerHashMap.get(marker));
-            } else if (tourMarkerHashMap.get(marker) != null) {
-                openFeedItem(tourMarkerHashMap.get(marker), 0, 0);
+            } else if (markerFeedItemHashMap.get(marker) != null) {
+                FeedItem feedItem = markerFeedItemHashMap.get(marker);
+                if (FeedItem.TOUR_CARD == feedItem.getType()) {
+                    openFeedItem(feedItem, 0, 0);
+                }
+                else {
+                    if (fragment != null) {
+                        fragment.handleHeatzoneClick(markerPosition);
+                    }
+                }
             }
             return false;
         }
@@ -271,10 +276,10 @@ public class MapPresenter {
 
     public class OnEntourageGroundOverlayClickListener implements GoogleMap.OnGroundOverlayClickListener {
 
-        final Map<LatLng, Entourage> entourageMarkerHashMap = new HashMap<>();
+        final Map<LatLng, FeedItem> entourageMarkerHashMap = new HashMap<>();
 
-        public void addEntourageGroundOverlay(LatLng markerPosition, Entourage entourage) {
-            entourageMarkerHashMap.put(markerPosition, entourage);
+        public void addEntourageGroundOverlay(LatLng markerPosition, FeedItem feedItem) {
+            entourageMarkerHashMap.put(markerPosition, feedItem);
         }
 
         public void clear() {

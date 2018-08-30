@@ -104,7 +104,7 @@ public class PushNotificationManager {
         }
 
         // Display all notifications except the join_request_canceled
-        if (content == null || !PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED.equals(content.getType())) {
+        if (!PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED.equals(content.getType())) {
             displayPushNotification(message, context);
         }
     }
@@ -229,7 +229,7 @@ public class PushNotificationManager {
      * @param feedType feed type (see {@link FeedItem})
      * @param userId not used
      * @param pushType the required type
-     * @returnthe number of push notifications that were removed
+     * @return the number of push notifications that were removed
      */
     public synchronized int removePushNotification(long feedId, int feedType, int userId, String pushType) {
         // Sanity checks
@@ -333,6 +333,7 @@ public class PushNotificationManager {
         int count = messageList.size();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        if (notificationManager == null) return;
 
         String channelId = context.getString(R.string.app_name);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -386,7 +387,7 @@ public class PushNotificationManager {
         if (count == 0) {
             // no more messages, cancel the notification
             String notificationTag = null;
-            int notificationId = 0;
+            int notificationId;
             int separator = key.indexOf(Message.HASH_SEPARATOR);
             if (separator > 0) {
                 notificationTag = key.substring(0, separator);
@@ -395,7 +396,9 @@ public class PushNotificationManager {
                 notificationId = Integer.parseInt(key);
             }
             NotificationManager notificationManager = (NotificationManager) EntourageApplication.get().getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.cancel(notificationTag, notificationId);
+            if (notificationManager != null) {
+                notificationManager.cancel(notificationTag, notificationId);
+            }
             return false;
         } else {
             Message message = messageList.get(messageList.size()-1);

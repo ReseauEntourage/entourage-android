@@ -3,7 +3,9 @@ package social.entourage.android.map;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 
@@ -17,7 +19,8 @@ import social.entourage.android.base.BaseCardViewHolder;
 
 public class MapViewHolder extends BaseCardViewHolder {
 
-    public EntourageMapView mMapView;
+    private ImageButton mFollowButton;
+    private EntourageMapView mMapView;
 
     public MapViewHolder(View view) {
         super(view);
@@ -25,9 +28,10 @@ public class MapViewHolder extends BaseCardViewHolder {
 
     @Override
     protected void bindFields() {
-        mMapView = (EntourageMapView) itemView.findViewById(R.id.layout_feed_map_card_mapview);
+        mFollowButton = itemView.findViewById(R.id.layout_feed_map_card_follow_button);
+        mMapView = itemView.findViewById(R.id.layout_feed_map_card_mapview);
         //Force the map to full height, even if the view holder is smaller
-        LinearLayout.LayoutParams layout = (LinearLayout.LayoutParams)mMapView.getLayoutParams();
+        RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams)mMapView.getLayoutParams();
         DisplayMetrics displayMetrics = itemView.getContext().getResources().getDisplayMetrics();
         layout.height = displayMetrics.heightPixels;
         //Move the map up, so that the center of the map is visible
@@ -55,6 +59,12 @@ public class MapViewHolder extends BaseCardViewHolder {
         }
     }
 
+    public void setFollowButtonOnClickListener(View.OnClickListener listener) {
+        if (mFollowButton != null) {
+            mFollowButton.setOnClickListener(listener);
+        }
+    }
+
     public void mapViewOnCreate(Bundle savedInstanceState) {
         if (mMapView != null) {
             mMapView.onCreate(savedInstanceState);
@@ -70,7 +80,7 @@ public class MapViewHolder extends BaseCardViewHolder {
         itemView.getLayoutParams().height = height;
 
         //Move the map so that the center is visible
-        LinearLayout.LayoutParams layout = (LinearLayout.LayoutParams)mMapView.getLayoutParams();
+        RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams)mMapView.getLayoutParams();
         layout.topMargin = (height - layout.height)/2;
         mMapView.setLayoutParams(layout);
 

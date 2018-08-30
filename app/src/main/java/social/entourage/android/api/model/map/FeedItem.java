@@ -1,7 +1,11 @@
 package social.entourage.android.api.model.map;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -15,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 
@@ -31,6 +36,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public static final String KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM";
     public static final String KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID";
+    public static final String KEY_FEEDITEM_UUID = "social.entourage.android.KEY_FEEDITEM_UUID";
     public static final String KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE";
 
     public static final String STATUS_OPEN = "open";
@@ -49,8 +55,11 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // Attributes
     // ----------------------------------
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     protected long id;
+
+    @Expose(serialize = false)
+    protected String uuid;
 
     protected String status;
 
@@ -62,15 +71,15 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     @Expose(serialize = false, deserialize = false)
     protected transient Address startAddress;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     @SerializedName("number_of_people")
     protected int numberOfPeople;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     @SerializedName("join_status")
     protected String joinStatus;
 
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     @SerializedName("last_message")
     protected LastMessage lastMessage;
 
@@ -133,6 +142,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public void setId(final long id) {
         this.id = id;
+    }
+
+    public String getUUID() {
+        return uuid == null ? "" : uuid;
     }
 
     public String getJoinStatus() {
@@ -232,6 +245,56 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         }
         return false;
     }
+
+    // ----------------------------------
+    // UI METHODS
+    // ----------------------------------
+
+    public Drawable getIconDrawable(Context context) {
+        return null;
+    }
+
+    public String getIconURL() {
+        return null;
+    }
+
+    public boolean showHeatmapAsOverlay() {
+        return true;
+    }
+
+    public int getHeatmapResourceId() {
+        return R.drawable.heat_zone;
+    }
+
+    public int getFeedTypeColor() {return 0;}
+
+    public boolean canBeClosed() { return true; }
+
+    public boolean showAuthor() { return true; }
+
+    public @StringRes int getJoinRequestTitle() { return R.string.tour_info_request_join_title_tour; }
+
+    public @StringRes int getJoinRequestButton() { return R.string.tour_info_request_join_button_tour; }
+
+    public @StringRes int getQuitDialogTitle() {
+        return R.string.tour_info_quit_tour_title;
+    }
+
+    public @StringRes int getQuitDialogMessage() {
+        return R.string.tour_info_quit_tour_description;
+    }
+
+    public boolean showInviteViewAfterCreation() {
+        return true;
+    }
+
+    public boolean showEditEntourageView() {
+        return true;
+    }
+
+    // ----------------------------------
+    // COPY OBJECT METHODS
+    // ----------------------------------
 
     @Override
     public void copyLocalFields(final TimestampedObject other) {

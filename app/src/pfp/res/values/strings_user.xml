@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- User Profile -->
+    <string name="user_number_entourages_title">Sorties</string>
+    <string name="user_number_entourages_label">Nombre de sorties</string>
+    <string name="user_circles_title_visitor">Je voisine</string>
+    <string name="user_circles_title_visited">Je suis voisiné(e) par</string>
+
+    <string name="user_edit_action_zone_button_no_address">Définir mon adresse</string>
+    <string name="user_edit_action_zone_button">Modifier mon adresse</string>
+
+    <!-- Photo wizard -->
+    <string name="user_photo_choose_description">Avec une photo, c’est tout de suite plus sympa.\nAffichez à la communauté votre sourire le plus chaleureux !</string>
+
+    <!-- Action zone -->
+    <string name="user_action_zone_title">Quelle est votre adresse ?</string>
+    <string name="user_action_zone_description">Voisin-Age, c’est utile parce que c’est local !\nIndiquez votre adresse pour rencontrer les membres de Voisin-Age les plus proches\n\n<b>Cette information n’est pas affichée sur votre profil.</b></string>
+    <string name="user_action_zone_description2">Adresse - peut être approximative</string>
+    <string name="user_action_zone_hint">adresse</string>
+
+</resources>

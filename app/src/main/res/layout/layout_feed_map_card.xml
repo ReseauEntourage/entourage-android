@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:layout_height="@dimen/newsfeed_map_height"
-              android:orientation="vertical">
+              android:layout_height="@dimen/newsfeed_map_height">
 
     <social.entourage.android.map.EntourageMapView
         android:id="@+id/layout_feed_map_card_mapview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:longClickable="true"/>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/layout_feed_map_card_follow_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/ic_position"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

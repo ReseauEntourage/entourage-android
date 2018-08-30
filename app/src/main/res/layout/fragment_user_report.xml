@@ -18,7 +18,7 @@
         android:orientation="vertical"
         >
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/user_report_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,8 @@
             android:layout_marginTop="@dimen/entourage_padding_10"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_close"/>
+            android:src="@drawable/ic_close"
+            android:tint="@color/accent"/>
 
         <TextView
             android:id="@+id/user_report_explanation_text"
@@ -38,7 +39,7 @@
             android:layout_marginRight="@dimen/entourage_padding_10"
             android:gravity="center_horizontal"
             android:text="@string/user_report_explanation"
-            android:textColor="@color/greyish_brown"
+            android:textColor="@color/report_user_explanation"
             android:textSize="@dimen/entourage_font_large"/>
 
         <TextView

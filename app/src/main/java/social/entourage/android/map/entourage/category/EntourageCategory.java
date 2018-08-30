@@ -38,7 +38,12 @@ public class EntourageCategory implements Serializable{
     @SerializedName("description_example")
     private String descriptionExample;
 
+    private boolean hidden = false;
+
+    @SerializedName("default")
     private boolean isDefault = false;
+
+    private boolean isSelected = false;
 
     // ----------------------------------
     // GETTERS & SETTERS
@@ -84,16 +89,24 @@ public class EntourageCategory implements Serializable{
         this.descriptionExample = descriptionExample;
     }
 
-    public boolean isDefault() {
-        return isDefault;
+    public boolean isSelected() {
+        return isSelected;
     }
 
-    public void setDefault(final boolean aDefault) {
-        isDefault = aDefault;
+    public void setSelected(final boolean selected) {
+        isSelected = selected;
     }
 
     public String getKey() {
         return key;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
     }
 
     // ----------------------------------

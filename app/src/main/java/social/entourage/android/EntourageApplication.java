@@ -2,24 +2,17 @@ package social.entourage.android;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
-import com.facebook.FacebookSdk;
-import com.facebook.LoggingBehavior;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-import io.fabric.sdk.android.Fabric;
 import me.leolin.shortcutbadger.ShortcutBadger;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.model.Message;
@@ -39,6 +32,19 @@ import static social.entourage.android.BuildConfig.FLAVOR;
  */
 public class EntourageApplication extends MultiDexApplication {
 
+    // ----------------------------------
+    // CONSTANTS
+    // ----------------------------------
+
+    public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
+    public static final String KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID";
+    public static final String KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED";
+    public static final String KEY_GEOLOCATION_ENABLED = "ENTOURAGE_GEOLOCATION_ENABLED";
+
+    // ----------------------------------
+    // MEMBERS
+    // ----------------------------------
+
     private static EntourageApplication instance;
     public static EntourageApplication get() { return instance; }
 
@@ -50,8 +56,18 @@ public class EntourageApplication extends MultiDexApplication {
 
     private FeedItemsStorage feedItemsStorage;
 
-    private MixpanelAPI mixpanel;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    private SharedPreferences sharedPreferences;
+
+    private LibrariesSupport librariesSupport;
+
+    static public String ENTOURAGE_APP="entourage";
+    static public String PFP_APP="pfp";
+
+    public enum WhiteLabelApp {ENTOURAGE_APP, PFP_APP};
+
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
 
     @Override
     public void onCreate() {
@@ -59,20 +75,17 @@ public class EntourageApplication extends MultiDexApplication {
         super.onCreate();
         instance = this;
 
-        setupFabric();
-        setupMixpanel();
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        setupFacebookSDK();
+        librariesSupport = new LibrariesSupport();
+        librariesSupport.setupLibraries(this);
+
         JodaTimeAndroid.init(this);
         setupDagger();
         setupBadgeCount();
         setupFeedItemsStorage();
+        setupSharedPreferences();
     }
 
-    private void setupFabric() {
-        Fabric.with(this, new Crashlytics());
-        Fabric.with(this, new Answers());
-    }
+
 
     private void setupDagger() {
         component = DaggerEntourageComponent.builder()
@@ -83,23 +96,8 @@ public class EntourageApplication extends MultiDexApplication {
         component.inject(this);
     }
 
-    private void setupMixpanel() {
-        mixpanel = MixpanelAPI.getInstance(this, BuildConfig.MIXPANEL_TOKEN);
-        JSONObject props = new JSONObject();
-        try {
-            props.put("Flavor", FLAVOR);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mixpanel.registerSuperProperties(props);
-    }
-
-    private void setupFacebookSDK() {
-        if (BuildConfig.DEBUG) {
-            Log.d("Facebook", "version " + FacebookSdk.getSdkVersion());
-            FacebookSdk.setIsDebugEnabled(true);
-            FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS);
-        }
+    private void setupSharedPreferences() {
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
     }
 
     private void setupBadgeCount() {
@@ -111,11 +109,15 @@ public class EntourageApplication extends MultiDexApplication {
     }
 
     public MixpanelAPI getMixpanel() {
-        return mixpanel;
+        return librariesSupport.getMixpanel();
     }
 
     public FirebaseAnalytics getFirebase() {
-        return mFirebaseAnalytics;
+        return librariesSupport.getFirebaseAnalytics();
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
     }
 
     public static EntourageApplication get(Context context) {
@@ -146,8 +148,8 @@ public class EntourageApplication extends MultiDexApplication {
     public void onActivityDestroyed(EntourageActivity activity) {
         activities.remove(activity);
         saveFeedItemsStorage();
-        if (mixpanel != null) {
-            mixpanel.flush();
+        if (librariesSupport != null) {
+            librariesSupport.onActivityDestroyed(activity);
         }
     }
 
@@ -310,6 +312,18 @@ public class EntourageApplication extends MultiDexApplication {
             return;
         }
         feedItemsStorage.updateFeedItemFromStorage(me.getId(), feedItem);
+    }
+
+    // ----------------------------------
+    // Multiple App support methods
+    // ----------------------------------
+
+    static boolean isCurrentApp(String appName) {
+        return BuildConfig.FLAVOR.contains(appName);
+    }
+
+    public static boolean isEntourageApp() {
+        return isCurrentApp(ENTOURAGE_APP);
     }
 
 }

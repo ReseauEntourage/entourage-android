@@ -63,16 +63,16 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             // unset the previously selected partner, if different than the current
             if (EntourageCategoriesAdapter.this.selectedCategory != category) {
                 if (EntourageCategoriesAdapter.this.selectedCategory != null) {
-                    EntourageCategoriesAdapter.this.selectedCategory.setDefault(false);
+                    EntourageCategoriesAdapter.this.selectedCategory.setSelected(false);
                 }
             }
 
             // save the state
-            category.setDefault(isChecked);
+            category.setSelected(isChecked);
             if (EntourageCategoriesAdapter.this.selectedCategory != category) {
                 EntourageCategoriesAdapter.this.selectedCategory = category;
             } else {
-                EntourageCategoriesAdapter.this.selectedCategory = category.isDefault() ? category : null;
+                EntourageCategoriesAdapter.this.selectedCategory = category.isSelected() ? category : null;
             }
 
             // refresh the list view
@@ -136,7 +136,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             viewHolder.mIcon.setColorFilter(ContextCompat.getColor(context, category.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
 
             viewHolder.mLabel.setText(category.getTitle());
-            if (category.isDefault()) {
+            if (category.isSelected()) {
                 viewHolder.mLabel.setTypeface(viewHolder.mLabel.getTypeface(), Typeface.BOLD);
             } else {
                 viewHolder.mLabel.setTypeface(Typeface.create(viewHolder.mLabel.getTypeface(), Typeface.NORMAL));
@@ -145,7 +145,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             // set the tag to null so that oncheckedchangelistener isn't fired when populating the view
             viewHolder.mCheckbox.setTag(null);
             // set the check state
-            viewHolder.mCheckbox.setChecked(category.isDefault());
+            viewHolder.mCheckbox.setChecked(category.isSelected());
             // set the tag to the item position
             viewHolder.mCheckbox.setTag(category);
         }

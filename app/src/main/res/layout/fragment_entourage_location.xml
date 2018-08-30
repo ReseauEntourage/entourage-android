@@ -68,11 +68,13 @@
         android:layout_marginTop="20dp"
         android:background="@color/white">
 
-        <fragment
+        <FrameLayout
             android:id="@+id/entourage_location_places"
-            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+        </FrameLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.user.UserFragment;
 
 /**
  * Fragment to edit an user's about text
@@ -103,9 +104,18 @@ public class UserEditAboutFragment extends DialogFragment {
         if (about.length() > ABOUT_MAX_CHAR_COUNT) {
             Toast.makeText(getContext(), R.string.user_edit_about_error, Toast.LENGTH_SHORT).show();
         } else {
-            user.setAbout(about.trim());
-            if (userEditFragment != null) {
-                userEditFragment.configureView();
+            if (user != null) {
+                user.setAbout(about.trim());
+                if (userEditFragment != null) {
+                    userEditFragment.configureView();
+                } else {
+                    if (getFragmentManager() != null) {
+                        UserFragment userFragment = (UserFragment) getFragmentManager().findFragmentByTag(UserFragment.TAG);
+                        if (userFragment != null) {
+                            userFragment.saveAccount(user);
+                        }
+                    }
+                }
             }
             dismiss();
         }
@@ -116,11 +126,21 @@ public class UserEditAboutFragment extends DialogFragment {
     // ----------------------------------
 
     private void configureView() {
-        userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
-        if (userEditFragment == null) {
+        if (getFragmentManager() != null) {
+            userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+            if (userEditFragment == null) {
+                //Try to see if we can find the User View fragment
+                UserFragment userFragment = (UserFragment) getFragmentManager().findFragmentByTag(UserFragment.TAG);
+                if (userFragment != null) {
+                    user = userFragment.getEditedUser();
+                }
+            } else {
+                user = userEditFragment.getEditedUser();
+            }
+        }
+        if (user == null) {
             return;
         }
-        user = userEditFragment.getEditedUser();
 
         aboutEditText.setText(user.getAbout());
         aboutEditText.setSelection(aboutEditText.length());

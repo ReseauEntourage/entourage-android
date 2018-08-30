@@ -1,0 +1,60 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|end"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingEnd="10dp"
+    android:paddingLeft="50dp"
+    android:paddingRight="10dp"
+    android:paddingStart="50dp"
+    android:paddingTop="10dp">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/bubble_discussion_me"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tic_chat_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/white"
+            android:textSize="@dimen/entourage_font_large"
+            tools:text="Chat test"/>
+
+        <TextView
+            android:id="@+id/tic_chat_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/entourage_font_small"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/tic_chat_user_photo"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/ic_user_photo_small"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tic_chat_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+</LinearLayout>

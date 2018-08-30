@@ -14,4 +14,7 @@
     <string name="action_atd">Notre partenariat avec ATD</string>
     <string name="action_donation">Faire un don</string>
     <string name="action_involvement">Agir avec Entourage</string>
+    <string name="action_map">à proximité</string>
+    <string name="action_my_messages">messagerie</string>
+    <string name="action_menu">menu</string>
 </resources>

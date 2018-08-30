@@ -6,6 +6,7 @@ package social.entourage.android.authentication.login.register;
 public interface OnRegisterUserListener {
 
     void registerShowSignIn();
+    boolean registerStart();
     void registerSavePhoneNumber(String phoneNumber);
     void registerCheckCode(String smsCode);
     void registerResendCode();

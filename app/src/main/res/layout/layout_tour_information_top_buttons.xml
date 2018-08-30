@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:gravity="center_vertical"
+    tools:showIn="@layout/fragment_tour_information">
+
+    <ImageButton
+        android:id="@+id/tour_info_description_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="5dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitXY"
+        android:tint="@color/white"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_info"
+        android:layout_marginEnd="5dp"/>
+
+    <ImageButton
+        android:id="@+id/tour_info_more_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/ic_more"
+        android:tint="@color/feeditem_details_topbar_tint"
+        android:visibility="gone"/>
+</LinearLayout>

@@ -256,6 +256,127 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/map_filter_outing_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/map_filter_outing_title"
+                    style="@style/EntourageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map_filter_outing_title"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <RelativeLayout
+                    android:id="@+id/map_filter_entourage_outing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
+
+                    <ImageView
+                        android:id="@+id/map_filter_entourage_outing_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/empty_description"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_entourage_category_event"/>
+
+                    <TextView
+                        android:id="@+id/map_filter_entourage_outing_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/map_filter_entourage_outing_image"
+                        android:layout_toLeftOf="@+id/map_filter_entourage_outing_switch"
+                        android:layout_toRightOf="@+id/map_filter_entourage_outing_image"
+                        android:layout_toStartOf="@+id/map_filter_entourage_outing_switch"
+                        android:text="@string/map_filter_entourage_outing_text"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"
+                        android:textStyle="bold"/>
+
+                    <Switch
+                        android:id="@+id/map_filter_entourage_outing_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/map_filter_past_events"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginLeft="45dp"
+                        android:layout_marginStart="45dp"
+                        android:background="@color/greyish"/>
+
+                    <ImageView
+                        android:id="@+id/map_filter_past_events_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/empty_description"
+                        android:padding="6dp"/>
+
+                    <TextView
+                        android:id="@+id/map_filter_past_events_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/map_filter_past_events_image"
+                        android:layout_toLeftOf="@+id/map_filter_past_events_switch"
+                        android:layout_toRightOf="@+id/map_filter_past_events_image"
+                        android:layout_toStartOf="@+id/map_filter_past_events_switch"
+                        android:text="@string/map_filter_past_events_text"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"/>
+
+                    <Switch
+                        android:id="@+id/map_filter_past_events_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="0dp"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/map_filter_entourage_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

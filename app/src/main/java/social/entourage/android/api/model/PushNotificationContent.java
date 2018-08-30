@@ -43,6 +43,13 @@ public class PushNotificationContent implements Serializable {
         return 0;
     }
 
+    public String getJoinableUUID() {
+        if (extra != null) {
+            return String.valueOf(extra.joinableId);
+        }
+        return "";
+    }
+
     public boolean isTourRelated() {
         return extra != null && Extra.JOINABLE_TYPE_TOUR.equals(extra.joinableType);
     }
@@ -67,6 +74,8 @@ public class PushNotificationContent implements Serializable {
 
         @SerializedName(value = "joinable_id", alternate = {"feed_id"})
         public long joinableId;
+
+        public String joinableUUID = "";
 
         @SerializedName(value = "joinable_type", alternate = {"feed_type"})
         public String joinableType;

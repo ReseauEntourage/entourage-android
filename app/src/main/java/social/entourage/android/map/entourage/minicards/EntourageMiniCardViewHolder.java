@@ -19,6 +19,6 @@ public class EntourageMiniCardViewHolder extends EntourageViewHolder {
 
     @Override
     protected boolean showCategoryIcon() {
-        return false;
+        return true;
     }
 }

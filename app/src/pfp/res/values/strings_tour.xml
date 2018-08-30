@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="tour_info_text_join_html"><![CDATA[<font color=\"#00abf0\">%1$s </font>%2$s]]></string>
+    <string name="tour_info_request_join_title_entourage">vous souhaitez rejoindre ce voisinage ?</string>
+    <string name="tour_info_request_join_button_entourage">CONTACTER L’ANIMATEUR</string>
+
+    <!-- Join Request -->
+    <string name="tour_join_request_received_message_short">aimerait participer à la sortie</string>
+
+    <!-- Report Entourage -->
+    <!-- Parameters: 1 - Entourage title -->
+    <string name="report_entourage_email_title">Signalement d\'un problème dans le voisinage %1$s</string>
+
+    <!-- Edit Entourage Email -->
+    <string name="edit_entourage_email_title">Veuillez modifier la description du voisinage "%1$s"</string>
+
+</resources>

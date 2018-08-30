@@ -39,12 +39,12 @@ public class TourJoinRequestReceivedPresenter {
     // API CALLS
     // ----------------------------------
 
-    protected void acceptTourJoinRequest(long tourId, int userId) {
+    protected void acceptTourJoinRequest(String tourUUID, int userId) {
         HashMap<String, String> status = new HashMap<>();
         status.put("status", Tour.JOIN_STATUS_ACCEPTED);
         HashMap<String, Object> user = new HashMap<>();
         user.put("user", status);
-        Call<ResponseBody> call = tourRequest.updateUserTourStatus(tourId, userId, user);
+        Call<ResponseBody> call = tourRequest.updateUserTourStatus(tourUUID, userId, user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
@@ -67,8 +67,8 @@ public class TourJoinRequestReceivedPresenter {
         });
     }
 
-    protected void rejectJoinTourRequest(long tourId, int userId) {
-        Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourId, userId);
+    protected void rejectJoinTourRequest(String tourUUID, int userId) {
+        Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourUUID, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
@@ -90,12 +90,12 @@ public class TourJoinRequestReceivedPresenter {
         });
     }
 
-    protected void acceptEntourageJoinRequest(long entourageId, int userId) {
+    protected void acceptEntourageJoinRequest(String entourageUUID, int userId) {
         HashMap<String, String> status = new HashMap<>();
         status.put("status", Tour.JOIN_STATUS_ACCEPTED);
         HashMap<String, Object> user = new HashMap<>();
         user.put("user", status);
-        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourageId, userId, user);
+        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourageUUID, userId, user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
@@ -118,8 +118,8 @@ public class TourJoinRequestReceivedPresenter {
         });
     }
 
-    protected void rejectJoinEntourageRequest(long entourageId, int userId) {
-        Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageId, userId);
+    protected void rejectJoinEntourageRequest(String entourageUUID, int userId) {
+        Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageUUID, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {

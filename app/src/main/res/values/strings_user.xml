@@ -22,10 +22,14 @@
     <string name="user_number_entourages_label">Nombre d’entourages</string>
     <string name="user_number_tours_label">Nombre de maraudes</string>
     <string name="user_associations_title">Association(s)</string>
+    <string name="user_neighborhoods_title">Membres de voisinages</string>
     <string name="user_entourage_count_format">%1$d</string>
     <string name="user_about_title">À propos de moi</string>
     <string name="user_about_hint">Présentez-vous à la communauté en quelques mots !</string>
     <string name="user_about_edit_button">Écrire ma présentation</string>
+    <string name="user_message_button">lui écrire</string>
+    <string name="user_photo_edit"><u>changer ma photo</u></string>
+    <string name="user_about_edit"><u>editer</u></string>
 
     <string name="user_retrieval_error">Erreur de récupération du profil</string>
 
@@ -37,12 +41,14 @@
     <string name="user_edit_password_label">Mot de passe</string>
     <string name="user_edit_password_button">Changer</string>
     <string name="user_edit_phone_label">Téléphone</string>
-    <string name="user_public_information_label">Informations publiques</string>
-    <string name="user_edit_address_label">Quartier</string>
     <string name="user_edit_no_association">Vous ne trouvez pas votre association ? Ecrivez à associations@entourage.social pour nous demander de l’ajouter !</string>
     <string name="user_edit_add_association_label">Affichez sur votre profil l’association dont vous vous sentez proche !</string>
     <string name="user_edit_add_association_button">Afficher une association</string>
     <string name="user_edit_notifications_label">Notifications</string>
+    <string name="user_edit_action_zone_format">Vous recevez les notifications pour les actions autour de : %1$s</string>
+    <string name="user_edit_action_zone_hint">Où souhaitez-vous agir ?\nSoyez notifié des actualités importantes.</string>
+    <string name="user_edit_action_zone_button_no_address">Définir ma zone</string>
+    <string name="user_edit_action_zone_button">Modifier ma zone</string>
     <string name="user_edit_delete_account_button">Supprimer mon compte</string>
 
     <string name="user_edit_password_old_password_label">Ancien code d’accès</string>
@@ -95,4 +101,13 @@
     <string name="user_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
     <string name="user_report_email_subject">Signalement d\'un utilisateur - %1$s</string>
 
+    <!-- Action zone -->
+    <string name="user_action_zone_title">Définissez votre zone d\'action</string>
+    <string name="user_action_zone_description">Entourage, c’est utile parce que c’est local !\nIndiquez le lieu autour duquel vous souhaitez agir avec d’autres personnes.\n\n<b>Cette information n’est pas affichée.</b> Vous pouvez la modifier dans vos réglages.</string>
+    <string name="user_action_zone_description2">Adresse - peut être approximative</string>
+    <string name="user_action_zone_hint">1 avenue Jean Jaurès...</string>
+    <string name="user_action_zone_no_address_error">Veuillez ajouter une adresse</string>
+    <string name="user_action_zone_send_ok">Adresse enregistrée</string>
+    <string name="user_action_zone_send_failed">L\'adresse n\'a pas été enregistrée</string>
+    
 </resources>

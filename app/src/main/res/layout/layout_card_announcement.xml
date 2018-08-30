@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
-    android:background="@color/accent"
+    android:background="@color/map_announcement_background"
     android:clipChildren="false"
     android:orientation="vertical"
     android:paddingEnd="12dp"

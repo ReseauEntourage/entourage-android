@@ -67,7 +67,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginStart="5dp"
-                android:autoLink="all"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/entourage_font_large"/>

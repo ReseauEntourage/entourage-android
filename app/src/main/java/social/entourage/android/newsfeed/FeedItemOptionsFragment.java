@@ -31,7 +31,7 @@ import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.map.entourage.CreateEntourageFragment;
+import social.entourage.android.map.entourage.create.CreateEntourageFragment;
 import social.entourage.android.map.entourage.EntourageCloseFragment;
 import social.entourage.android.tools.BusProvider;
 
@@ -179,12 +179,12 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
                 //BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
                 FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
                 EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG);
+                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
                 dismiss();
             }
         }
         else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
-            BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+            BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false, true));
             dismiss();
         }
     }

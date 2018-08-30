@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="map_permission_explanation">Pour vous faire découvrir le réseau Voisin&#8209;Age autour de vous, Voisin&#8209;Age doit connaître votre position.</string>
+
+    <!-- Map Filter -->
+    <string name="map_filter_entourage_type_title">Types de voisinage</string>
+    <string name="map_filter_entourage_neighborhood_text">Voisinages de quartier</string>
+    <string name="map_filter_entourage_private_circle_text">Voisinages d’une personne</string>
+    <string name="map_filter_entourage_outing_text">Sorties</string>
+    <string name="map_filter_past_events_text">Voir les sorties passées</string>
+
+</resources>
