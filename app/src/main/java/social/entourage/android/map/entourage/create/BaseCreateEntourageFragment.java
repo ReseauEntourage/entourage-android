@@ -432,7 +432,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected void initializeDate() {
         if (editedEntourage != null) {
             BaseEntourage.Metadata metadata = editedEntourage.getMetadata();
-            if (metadata != null) {
+            if (metadata != null && metadata.getStartDate() != null) {
                 entourageDate.setTime(metadata.getStartDate());
             }
             updateDateTextView();
