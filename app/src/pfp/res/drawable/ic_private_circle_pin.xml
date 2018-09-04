@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_private_circle_oval">
+    </item>
+    <item>
+        <inset android:drawable="@drawable/ic_heart" android:inset="10dp"/>
+    </item>
+</layer-list>

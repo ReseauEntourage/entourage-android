@@ -21,7 +21,7 @@ public class InvitationCardViewHolder extends BaseCardViewHolder {
     private TextView mInviterNameView;
 
     private long invitationId = 0;
-    private long entourageId = 0;
+    private String entourageUUID = "";
 
     public InvitationCardViewHolder(final View view) {
         super(view);
@@ -35,9 +35,9 @@ public class InvitationCardViewHolder extends BaseCardViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                if (entourageId == 0 || invitationId == 0) return;
+                if (entourageUUID == null || entourageUUID.length() == 0 || invitationId == 0) return;
                 EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_BANNER_CLICK);
-                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, entourageId, invitationId));
+                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, entourageUUID, invitationId));
             }
         });
 
@@ -50,7 +50,7 @@ public class InvitationCardViewHolder extends BaseCardViewHolder {
 
     private void populate(Invitation invitation) {
         invitationId = invitation.getId();
-        entourageId = invitation.getEntourageId();
+        entourageUUID = invitation.getEntourageUUID();
 
         mInviterNameView.setText(itemView.getResources().getString(R.string.invitation_card_inviter, invitation.getInviterName()));
     }

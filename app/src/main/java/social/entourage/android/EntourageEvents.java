@@ -14,9 +14,6 @@ import java.util.Locale;
 import social.entourage.android.api.model.User;
 import social.entourage.android.message.push.RegisterGCMService;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
 /**
  * Wrapper for sending events to different aggregators
  * Created by Mihai Ionescu on 03/10/2017.
@@ -41,7 +38,11 @@ public class EntourageEvents {
         MixpanelAPI.People people = mixpanel.getPeople();
         if (people == null) return;
 
-        people.set("EntourageGeolocEnable", isPermissionGranted ? "YES" : "NO");
+        String geolocStatus = isPermissionGranted? "YES":"NO";
+        people.set("EntourageGeolocEnable", geolocStatus);
+        if(EntourageApplication.get().getFirebase()!=null) {
+            EntourageApplication.get().getFirebase().setUserProperty("EntourageGeolocEnable", geolocStatus);
+        }
     }
 
     public static void updateMixpanelInfo(User user, Context context, boolean areNotificationsEnabled) {
@@ -60,7 +61,7 @@ public class EntourageEvents {
         people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         people.set("Language", Locale.getDefault().getLanguage());
 
-        mFirebaseAnalytics.setUserProperty("$email", user.getEmail());
+        mFirebaseAnalytics.setUserProperty("Email", user.getEmail());
         mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().getLanguage());
 
@@ -69,23 +70,20 @@ public class EntourageEvents {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", user.getPartner().getName());
         }
 
-        if (PermissionChecker.checkSelfPermission(context, user.isPro() ? ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            people.set("EntourageGeolocEnable", "YES");
-            mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", "YES");
-        } else {
-            people.set("EntourageGeolocEnable", "NO");
-            mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", "NO");
+        String geolocStatus="NO";
+        if (PermissionChecker.checkSelfPermission(context, user.getLocationAccessString()) == PackageManager.PERMISSION_GRANTED) {
+            geolocStatus = "YES";
         }
+        people.set("EntourageGeolocEnable", geolocStatus);
+        mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
 
-        final SharedPreferences sharedPreferences = context.getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-        boolean notificationsEnabled = sharedPreferences.getBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, false);
+        final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
+        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false);
         people.set("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
         mFirebaseAnalytics.setUserProperty("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
 
         if(notificationsEnabled) {
-            people.setPushRegistrationId(sharedPreferences.getString(RegisterGCMService.KEY_REGISTRATION_ID, null));
+            people.setPushRegistrationId(sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null));
         }
     }
-
-
 }

@@ -39,6 +39,10 @@ public class DiscussionAdapter extends EntourageBaseAdapter {
                 TimestampedObject.ENCOUNTER,
                 new ViewHolderFactory.ViewHolderType(EncounterCardViewHolder.class, EncounterCardViewHolder.getLayoutResource())
         );
+        viewHolderFactory.registerViewHolder(
+                TimestampedObject.CHAT_MESSAGE_OUTING,
+                new ViewHolderFactory.ViewHolderType(OutingCardViewHolder.class, OutingCardViewHolder.getLayoutResource())
+        );
 
         setHasStableIds(false);
     }

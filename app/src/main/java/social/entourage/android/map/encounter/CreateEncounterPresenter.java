@@ -28,7 +28,7 @@ public class CreateEncounterPresenter implements EncounterUploadCallback {
     private final AuthenticationController authenticationController;
     private final EncounterTapeTaskQueue queue;
 
-    private long tourId;
+    private String tourUUID;
     private double latitude;
     private double longitude;
 
@@ -50,7 +50,7 @@ public class CreateEncounterPresenter implements EncounterUploadCallback {
         encounter.setMessage(message);
         encounter.setStreetPersonName(streetPersonName);
         encounter.setCreationDate(new Date());
-        encounter.setTourId(tourId);
+        encounter.setTourId(tourUUID);
         encounter.setLatitude(latitude);
         encounter.setLongitude(longitude);
 
@@ -68,8 +68,8 @@ public class CreateEncounterPresenter implements EncounterUploadCallback {
         encounterUploadTask.execute(this);
     }
 
-    public void setTourId(long tourId) {
-        this.tourId = tourId;
+    public void setTourUUID(String tourUUID) {
+        this.tourUUID = tourUUID;
     }
 
     public void setLatitude(double latitude) {

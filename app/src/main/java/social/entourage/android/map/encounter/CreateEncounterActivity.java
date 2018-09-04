@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -96,7 +97,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             if (editedEncounter == null) {
                 // Create mode
                 readOnly = false;
-                presenter.setTourId(arguments.getLong(BUNDLE_KEY_TOUR_ID));
+                presenter.setTourUUID(arguments.getString(BUNDLE_KEY_TOUR_ID));
                 presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE));
                 presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE));
 
@@ -274,7 +275,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     // LocationFragment.OnFragmentInteractionListener
     // ----------------------------------
 
-    public void onEntourageLocationChosen(LatLng location, String address) {
+    public void onEntourageLocationChosen(LatLng location, String address, Place place) {
         if (location != null) {
             this.location = location;
             if (presenter != null) {

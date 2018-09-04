@@ -77,7 +77,7 @@ public class TourJoinRequestPresenter {
         TourJoinMessage joinMessage = new TourJoinMessage(message.trim());
         TourJoinMessage.TourJoinMessageWrapper joinMessageWrapper = new TourJoinMessage.TourJoinMessageWrapper();
         joinMessageWrapper.setJoinMessage(joinMessage);
-        Call<TourUser.TourUserWrapper> call = tourRequest.updateJoinTourMessage(tour.getId(), me.getId(), joinMessageWrapper);
+        Call<TourUser.TourUserWrapper> call = tourRequest.updateJoinTourMessage(tour.getUUID(), me.getId(), joinMessageWrapper);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
             public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
@@ -111,7 +111,7 @@ public class TourJoinRequestPresenter {
         messageHashMap.put("message", message);
         info.put("request", messageHashMap);
 
-        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourage.getId(), me.getId(), info);
+        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourage.getUUID(), me.getId(), info);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {

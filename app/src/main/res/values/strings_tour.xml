@@ -45,32 +45,36 @@
     <string name="tour_info_text_join_rejected">\u0020 rejeté</string>
     <string name="tour_info_text_join_pending">\u0020 en attente</string>
     <string name="tour_info_text_join_cancelled_tour">a annulé sa demande de rejoindre la maraude</string>
-    <string name="tour_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre l\'entourage</string>
+    <string name="tour_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
     <string name="tour_info_text_join_quited_tour">a quitté la maraude</string>
-    <string name="tour_info_text_join_quited_entourage">a quitté l\'entourage</string>
+    <string name="tour_info_text_join_quited_entourage">a quitté le groupe</string>
     <string name="tour_info_text_join_html"><![CDATA[<font color=\"#F26521\">%1$s </font>%2$s]]></string>
     <string name="tour_info_error_chat_message">Message non envoyé</string>
     <string name="tour_info_options_freeze_tour">Clôturer</string>
     <string name="tour_info_options_stop_tour">@string/tour_stop</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
-    <string name="tour_info_options_report">Signaler l\'entourage</string>
+    <string name="tour_info_options_report">Signaler un problème</string>
     <string name="tour_info_options_share">Partager</string>
     <string name="tour_info_options_join">Rejoindre</string>
     <string name="tour_info_options_close">Annuler</string>
     <string name="tour_info_options_contact">Contacter</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>
+    <string name="tour_info_options_promote">promouvoir la sortie</string>
     <string name="tour_info_encounter_location">&#160;et %1$s se sont rencontrés ici.</string>
     <string name="tour_info_encounter_location_mine">&lt;u>&#160;et %1$s se sont rencontrés ici.&lt;/u></string>
     <string name="tour_info_quit_tour_title">Quitter la maraude</string>
     <string name="tour_info_quit_tour_description">Voulez-vous vraiment quitter la maraude ?</string>
     <string name="tour_info_quit_tour_error">Echec d\'envoi de la requête</string>
     <string name="tour_info_request_error">Erreur d\'envoi de la requête</string>
-    <string name="tour_info_members_count">Members (%1$d)</string>
+    <string name="tour_info_members_count">Membres (%1$d)</string>
+    <string name="tour_info_members_add">Inviter un ami</string>
     <string name="tour_info_request_join_title_entourage">On a besoin de vous !</string>
     <string name="tour_info_request_join_title_tour">Maraude voisine ? Coordonnez-vous</string>
     <string name="tour_info_request_join_button_entourage">@string/tour_info_options_join</string>
     <string name="tour_info_request_join_button_tour">@string/tour_info_options_contact</string>
     <string name="tour_info_error_retrieve_entourage">Entourage indisponible</string>
+    <string name="tour_info_metadata_organised_by">organisé\u0020</string>
+    <string name="tour_info_metadata_organiser_format">par %1$s</string>
 
     <!-- TourService -->
     <string name="tour_sent">Maraude sauvegardée</string>
@@ -95,7 +99,7 @@
     <string name="tour_cell_title">%1$s</string>
     <string name="tour_cell_type">Maraude %1$s par\u0020</string>
     <string name="tour_cell_author">%1$s</string>
-    <string name="tour_cell_location">Créée il y a %1$s à %2$s</string>
+    <string name="tour_cell_location">à %1$s</string>
     <string name="tour_cell_location_no_distance">Créée il y a %1$s</string>
     <string name="tour_cell_numberOfPeople">%1$d</string>
     <string name="tour_cell_button_join">Je rejoins</string>
@@ -104,7 +108,7 @@
     <string name="tour_cell_button_pending">En attente</string>
     <string name="tour_cell_button_rejected">Refusé</string>
     <string name="tour_cell_button_freezed">Clôturé</string>
-    <string name="tour_cell_button_view">Voir</string>
+    <string name="tour_cell_button_view">+ VOIR</string>
 
     <!-- Join Request -->
     <string name="tour_join_request_success">Demande acceptée</string>
@@ -134,7 +138,15 @@
     <string name="tour_encounter_too_far">La rencontre est trop éloignée de la maraude</string>
 
     <!-- Report Entourage -->
-    <!-- Parameters: 1 - Entourage title, 2 - Creator's name -->
-    <string name="report_entourage_email_title">Signalement d’un entourage qui pose problème: %1$s créé par %2$s</string>
+    <!-- Parameters: 1 - Entourage title -->
+    <string name="report_entourage_email_title">Signalement d’un problème: %1$s</string>
+
+    <!-- Edit Entourage Email -->
+    <string name="edit_entourage_email_title">Veuillez modifier la description du action "%1$s"</string>
+    <string name="edit_entourage_email_body">Bonjour,\n\nVeuillez mettre à jour la description ainsi :\n%1$s\n\nMerci !</string>
+
+    <!-- Promote Entourage Email -->
+    <string name="promote_entourage_email_title">Veuillez envoyer une notification pour la sortie %1$s</string>
+    <string name="promote_entourage_email_body">Bonjour,\nVeuillez promouvoir la sortie "%1$s" grâce à une notification envoyée aux téléphones des personnes membres des voisinages suivants :\n\nMerci</string>
 
 </resources>

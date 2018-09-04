@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -20,13 +20,12 @@
         android:layout_height="20dp"
         android:background="@color/background_light"
         android:id="@+id/about_separator_top"
-        android:layout_below="@+id/about_title_layout"/>
+        />
 
     <LinearLayout
         android:id="@+id/about_tutorial_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/about_separator_top"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -59,7 +58,6 @@
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/about_tutorial_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
         />
@@ -68,7 +66,6 @@
         android:id="@+id/faq_website_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/about_separator_tutorial"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -102,7 +99,6 @@
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/faq_website_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
         />
@@ -111,7 +107,6 @@
         android:id="@+id/about_conditions_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/faq_separator_website"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -145,7 +140,6 @@
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/about_conditions_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
         />
@@ -154,7 +148,6 @@
         android:id="@+id/about_website_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/about_separator_conditions"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -188,7 +181,6 @@
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/about_website_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
         />
@@ -197,7 +189,6 @@
         android:id="@+id/about_email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/about_website_separator"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -231,20 +222,24 @@
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/about_email_layout"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
         />
 
-    <ImageView
-        android:id="@+id/about_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/about_items_padding"
-        android:contentDescription="@string/empty_description"
-        android:src="@drawable/entourage_logo_grey"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/about_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/about_items_padding"
+            android:contentDescription="@string/empty_description"
+            android:src="@drawable/entourage_logo_grey"/>
+    </LinearLayout>
+
+</LinearLayout>

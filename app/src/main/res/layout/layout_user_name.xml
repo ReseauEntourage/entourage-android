@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/user_name_holder"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/user_name_tags_left_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <social.entourage.android.user.role.RoleView
+            android:id="@+id/user_name_tag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:textColor="@color/profile_role_text"
+            android:textSize="@dimen/entourage_font_medium"
+            tools:text="En attente"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/user_name_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/role_padding_bottom"
+        android:textColor="@color/profile_name"
+        android:textSize="@dimen/entourage_font_big"
+        android:textStyle="bold"
+        tools:text="George"/>
+
+    <LinearLayout
+        android:id="@+id/user_name_tags_right_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    </LinearLayout>
+</LinearLayout>

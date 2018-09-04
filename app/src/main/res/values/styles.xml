@@ -110,6 +110,10 @@
         <item name="android:background">@drawable/bg_button_white_rounded</item>
     </style>
 
+    <style name="WhiteButton.AccentRoundedCorners">
+        <item name="android:background">@drawable/bg_button_white_accent_rounded</item>
+    </style>
+
     <style name="WhiteButton.Straight">
         <item name="android:background">@drawable/bg_button_white_straight</item>
     </style>

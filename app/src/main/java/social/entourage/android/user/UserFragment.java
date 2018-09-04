@@ -1,12 +1,9 @@
 package social.entourage.android.user;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,31 +17,32 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import butterknife.Optional;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.base.ItemClickSupport;
+import social.entourage.android.configuration.Configuration;
+import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
+import social.entourage.android.user.edit.UserEditAboutFragment;
 import social.entourage.android.user.edit.UserEditFragment;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.report.UserReportFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 
@@ -77,11 +75,15 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_photo)
     ImageView userPhoto;
 
+    @Nullable
+    @BindView(R.id.user_photo_button)
+    TextView userPhotoEdit;
+
     @BindView(R.id.user_partner_logo)
     PartnerLogoImageView userPartnerLogo;
 
     @BindView(R.id.user_name)
-    TextView userName;
+    UserNameView userName;
 
     @BindView(R.id.user_role)
     TextView userRole;
@@ -98,6 +100,10 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_profile_about)
     TextView userAboutTextView;
 
+    @Nullable
+    @BindView(R.id.user_about_edit_button)
+    TextView userAboutEditButton;
+
     @BindView(R.id.user_identification_email_check)
     ImageView userEmailVerifiedImage;
 
@@ -107,13 +113,13 @@ public class UserFragment extends EntourageDialogFragment {
     @BindView(R.id.user_tours_count)
     TextView userTourCount;
 
-    @BindView(R.id.user_associations_title)
-    TextView userAssociationsTitle;
+    @Nullable
+    @BindView(R.id.user_profile_associations)
+    UserAssociations userAssociations;
 
-    @BindView(R.id.user_associations_view)
-    RecyclerView userAssociationsView;
-
-    UserOrganizationsAdapter organizationsAdapter;
+    @Nullable
+    @BindView(R.id.user_message_layout)
+    View userMessageLayout;
 
     @BindView(R.id.user_profile_progressBar)
     ProgressBar progressBar;
@@ -180,14 +186,6 @@ public class UserFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.activity_display_user_title);
-        }
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
 
@@ -209,6 +207,7 @@ public class UserFragment extends EntourageDialogFragment {
 
             userEditProfile.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
             userReportButton.setVisibility(isMyProfile ? View.GONE : View.VISIBLE);
+            if (userAboutEditButton != null) userAboutEditButton.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
             if (user.getAvatarURL() != null) {
                 Picasso.with(getActivity()).load(Uri.parse(user.getAvatarURL()))
@@ -236,8 +235,10 @@ public class UserFragment extends EntourageDialogFragment {
             } else {
                 userPartnerLogo.setImageDrawable(null);
             }
+            if (userPhotoEdit != null) userPhotoEdit.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
-            userName.setText(isMyProfile ? user.getFirstName() : user.getDisplayName());
+            userName.setText(user.getDisplayName());
+            userName.setRoles(user.getRoles());
             userTourCount.setText(getString(R.string.user_entourage_count_format, entourageCount));
 
             String userAbout = user.getAbout();
@@ -248,38 +249,20 @@ public class UserFragment extends EntourageDialogFragment {
             userPhoneVerifiedImage.setImageResource(R.drawable.verified);
             userEmailVerifiedImage.setImageResource(userEmailVerified ? R.drawable.verified : R.drawable.not_verified);
 
-            List<BaseOrganization> organizationList = new ArrayList<>();
-            if (user.getPartner() != null) {
-                organizationList.add(user.getPartner());
-            }
-            if (user.getOrganization() != null) {
-                organizationList.add(user.getOrganization());
-            }
-            if (organizationsAdapter == null) {
-                userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-                organizationsAdapter = new UserOrganizationsAdapter(organizationList);
-                userAssociationsView.setAdapter(organizationsAdapter);
-
-                ItemClickSupport.addTo(userAssociationsView)
-                        .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                            @Override
-                            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                                onEditProfileClicked();
-                            }
-                        });
-            } else {
-                organizationsAdapter.setOrganizationList(organizationList);
+            if (userAssociations != null) {
+                userAssociations.initUserAssociations(user, this);
             }
 
-            userAssociationsTitle.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
-            userAssociationsView.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
+            //User message layout is available only for the other users, if the conversation field is set
+            if (userMessageLayout != null) {
+                userMessageLayout.setVisibility(isMyProfile || user.getConversation() == null ? View.GONE : View.VISIBLE);
+            }
         }
     }
 
     private void showUserEditFragment() {
-        // Allow editing only of the logged user
-        if (!isMyProfile) return;
+        // Allow editing only of the logged user and if enabled in configuration
+        if (!(isMyProfile && Configuration.getInstance().showUserEditProfile())) return;
         // Show the edit profile screen
         UserEditFragment fragment = new UserEditFragment();
         fragment.show(getFragmentManager(), UserEditFragment.TAG);
@@ -305,6 +288,13 @@ public class UserFragment extends EntourageDialogFragment {
         if (presenter != null) {
             presenter.updateUser(user);
         }
+    }
+
+    public User getEditedUser() {
+        if (user != null) {
+            return user.clone();
+        }
+        return null;
     }
 
     // ----------------------------------
@@ -394,6 +384,31 @@ public class UserFragment extends EntourageDialogFragment {
 
         UserReportFragment userReportFragment = UserReportFragment.newInstance(user.getId());
         userReportFragment.show(getFragmentManager(), UserReportFragment.TAG);
+    }
+
+    @Optional
+    @OnClick(R.id.user_message_button)
+    protected void onMessageUserClicked() {
+//        UserDiscussionFragment userDiscussionFragment = UserDiscussionFragment.newInstance(user, false);
+//        userDiscussionFragment.show(getFragmentManager(), UserDiscussionFragment.TAG);
+        if (user.getConversation() == null) return;
+        TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(user.getConversation().getUUID(), FeedItem.ENTOURAGE_CARD, 0);
+        tourInformationFragment.setShowInfoButton(false);
+        tourInformationFragment.show(getFragmentManager(), TourInformationFragment.TAG);
+    }
+
+    @Optional
+    @OnClick(R.id.user_photo_button)
+    protected void onPhotoEditClicked() {
+        PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+        fragment.show(getFragmentManager(), PhotoChooseSourceFragment.TAG);
+    }
+
+    @Optional
+    @OnClick(R.id.user_about_edit_button)
+    protected void onAboutEditClicked() {
+        UserEditAboutFragment editAboutFragment = new UserEditAboutFragment();
+        editAboutFragment.show(getFragmentManager(), UserEditAboutFragment.TAG);
     }
 
     // ----------------------------------

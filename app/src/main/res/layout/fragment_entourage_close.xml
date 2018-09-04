@@ -47,25 +47,23 @@
 
     <Button
         android:id="@+id/entourage_close_success_button"
-        style="@style/WhiteButton"
+        style="@style/WhiteButton.RoundedCorners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/ec_award"
         android:drawableStart="@drawable/ec_award"
-        android:text="@string/entourage_close_success_button"
-        />
+        android:text="@string/entourage_close_success_button"/>
 
     <Button
         android:id="@+id/entourage_close_failed_button"
-        style="@style/WhiteButton"
+        style="@style/WhiteButton.RoundedCorners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/ec_no_entry"
         android:drawableStart="@drawable/ec_no_entry"
-        android:text="@string/entourage_close_failed_button"
-        />
+        android:text="@string/entourage_close_failed_button"/>
 
     <TextView
         android:id="@+id/entourage_close_help_text"
@@ -78,14 +76,13 @@
 
     <Button
         android:id="@+id/entourage_close_help_button"
-        style="@style/WhiteButton"
+        style="@style/WhiteButton.RoundedCorners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/ec_rescue"
         android:drawableStart="@drawable/ec_rescue"
-        android:text="@string/entourage_close_help_button"
-        />
+        android:text="@string/entourage_close_help_button"/>
 
     <Button
         android:id="@+id/entourage_close_cancel_button"

@@ -1,21 +1,32 @@
 package social.entourage.android.authentication.login;
 
-import android.content.Context;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +39,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.github.clans.fab.FloatingActionButton;
+import com.squareup.otto.Subscribe;
 
 import java.io.File;
 import java.util.HashSet;
@@ -41,36 +53,46 @@ import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.login.register.OnRegisterUserListener;
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
+import social.entourage.android.authentification.login.LoginPresenter;
 import social.entourage.android.base.AmazonS3Utils;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
-import social.entourage.android.message.push.RegisterGCMService;
+import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
+import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 import social.entourage.android.view.HtmlTextView;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
+
 /**
  * Activity providing the login steps
  */
-public class LoginActivity extends EntourageActivity implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface {
+public class LoginActivity extends EntourageActivity
+        implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
     private static final String VERSION = "Version : ";
 
-    public final static String KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE";
+    private static final int PERMISSIONS_REQUEST_LOCATION = 1;
+
     public final static int LOGIN_ERROR_UNAUTHORIZED = -1;
     public final static int LOGIN_ERROR_INVALID_PHONE_FORMAT = -2;
     public final static int LOGIN_ERROR_UNKNOWN = -9998;
@@ -259,6 +281,16 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
         passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
+        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    onLoginClick();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         LoginTextWatcher ltw = new LoginTextWatcher();
         firstnameEditText.addTextChangedListener(ltw);
@@ -320,6 +352,35 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        BusProvider.getInstance().register(this);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        BusProvider.getInstance().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
+            for (int index = 0; index < permissions.length; index++) {
+                if (permissions[index].equalsIgnoreCase(getUserLocationAccess()) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
+                } else {
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
+                }
+            }
+            // We don't care if the user allowed/denied the location, just show the notifications view
+            hideActionZoneView();
+            showNotificationPermissionView();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     // ----------------------------------
@@ -404,7 +465,6 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
 
     public void launchFillInProfileView(String phoneNumber, User user) {
 
-        //TODO Need a better approach
         DialogFragment fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
         if (fragment != null) {
             fragment.dismiss();
@@ -425,17 +485,21 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
         }
         hideKeyboard();
 
-        loginStartup.setVisibility(View.GONE);
-        loginSignin.setVisibility(View.GONE);
-        loginVerifyCode.setVisibility(View.GONE);
-        if (user.getFirstName() == null || user.getFirstName().length() == 0 || user.getLastName() == null || user.getLastName().length() == 0) {
-            showNameView();
-        } else if (user.getEmail() == null || user.getEmail().length() == 0) {
-            showEmailView();
-        } else if (user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
-            showPhotoChooseSource();
-        } else {
-            showGeolocationView();
+        if (loginPresenter != null) {
+            loginStartup.setVisibility(View.GONE);
+            loginSignin.setVisibility(View.GONE);
+            loginVerifyCode.setVisibility(View.GONE);
+            if (loginPresenter.shouldShowNameView(user)) {
+                showNameView();
+            } else if (loginPresenter.shouldShowEmailView(user)) {
+                showEmailView();
+            } else if (loginPresenter.shouldShowPhotoChooseView(user)) {
+                showPhotoChooseSource();
+            } else if (loginPresenter.shouldShowActionZoneView(user)) {
+                showActionZoneView();
+            } else {
+                showNotificationPermissionView();
+            }
         }
     }
 
@@ -454,13 +518,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @Override
     public void onPhotoBack() {
         EntourageEvents.logEvent(Constants.EVENT_PHOTO_BACK);
-        showGeolocationView();
+        showActionZoneView();
     }
 
     @Override
     public void onPhotoIgnore() {
         EntourageEvents.logEvent(Constants.EVENT_PHOTO_IGNORE);
-        showGeolocationView();
+        showActionZoneView();
     }
 
     @Override
@@ -476,6 +540,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             if (photoEditFragment != null) {
                 photoEditFragment.onPhotoSent(false);
             }
+            return;
         }
 
         //Upload the photo to Amazon S3
@@ -637,7 +702,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 }
             }
         } else {
-            if (isOnboarding) {
+            if (isOnboarding || Configuration.getInstance().showLostCodeErrorToast()) {
                 EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_2);
                 displayToast(R.string.login_text_lost_code_ko);
             } else {
@@ -658,11 +723,22 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     private void showEmailView() {
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_4);
         loginEmail.setVisibility(View.VISIBLE);
+
+        if (loginPresenter != null && loginPresenter.authenticationController != null) {
+            User user = loginPresenter.authenticationController.getUser();
+            if (user != null) {
+                if (user.getEmail() != null) {
+                    profileEmail.setText(user.getEmail());
+                }
+            }
+        }
+
         profileEmail.requestFocus();
     }
 
     @OnClick(R.id.login_email_back_button)
     void onEmailBackClicked() {
+        profileEmail.setText("");
         onBackPressed();
     }
 
@@ -734,7 +810,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             loginPresenter.updateUserName(firstname, lastname);
             User user = loginPresenter.authenticationController.getUser();
             if (user != null) {
-                if (user.getEmail() == null || user.getEmail().length() == 0) {
+                if (loginPresenter.shouldShowEmailView(user)) {
                     loginNameView.setVisibility(View.GONE);
                     showEmailView();
                     return;
@@ -758,7 +834,11 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
                 PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
                 fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
             } else {
-                showGeolocationView();
+                if (loginPresenter.shouldShowActionZoneView()) {
+                    showActionZoneView();
+                } else {
+                    showNotificationPermissionView();
+                }
             }
         } else {
             displayToast(R.string.login_error);
@@ -777,7 +857,7 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
             if (fragment != null && !fragment.isStopped()) {
                 fragment.dismiss();
             }
-            showGeolocationView();
+            showActionZoneView();
         } else {
             displayToast(R.string.user_photo_error_not_saved);
         }
@@ -787,23 +867,27 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      * Private Methods
      ************************/
 
-    private void saveNotifications(boolean enabled) {
+    private void saveNotificationsPreference(boolean enabled) {
         //remember the choice
-        final SharedPreferences notificationsPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+        final SharedPreferences notificationsPreferences = EntourageApplication.get().getSharedPreferences();
         SharedPreferences.Editor editor = notificationsPreferences.edit();
-        editor.putBoolean(RegisterGCMService.KEY_NOTIFICATIONS_ENABLED, enabled);
+        editor.putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, enabled);
         editor.commit();
     }
 
     private void finishTutorial() {
         //set the tutorial as done
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
         loggedNumbers.add(loggedPhoneNumber);
-        sharedPreferences.edit().clear().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
+        sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
 
         startMapActivity();
     }
+
+    /************************
+     * Tutorial View
+     ************************/
 
     /*
     TODO: put this back when the tutorial content is ready
@@ -817,28 +901,18 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     */
 
     /************************
-     * Tutorial View
-     ************************/
-
-    /*
-    TODO: put this back when the tutorial content is ready
-    @OnClick(R.id.login_button_finish_tutorial)
-    void finishTutorial() {
-        EntourageEvents.logEvent(Constants.EVENT_TUTORIAL_END);
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RegisterGCMService.SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean(KEY_TUTORIAL_DONE, true).apply();
-        startActivity(new Intent(this, DrawerActivity.class));
-    }
-    */
-
-    /************************
      * Startup View
      ************************/
 
     @OnClick(R.id.login_button_login)
     void onStartupLoginClicked() {
         EntourageEvents.logEvent(Constants.EVENT_SPLASH_LOGIN);
-        showLoginScreen();
+        if (loginPresenter != null && loginPresenter.shouldShowTC()) {
+            RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
+            registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
+        } else {
+            showLoginScreen();
+        }
     }
 
     void showLoginScreen() {
@@ -937,6 +1011,13 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     }
 
     @Override
+    public boolean registerStart() {
+        if (loginPresenter != null && loginPresenter.shouldContinueWithRegistration()) return true;
+        showLoginScreen();
+        return false;
+    }
+
+    @Override
     public void registerSavePhoneNumber(String phoneNumber) {
         if (loginPresenter != null) {
             EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT);
@@ -982,13 +1063,17 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
      ************************/
 
     public void showNotificationPermissionView() {
+        if (NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled()) {
+            finishTutorial();
+            return;
+        }
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_04_3);
         loginNotificationsView.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.login_notifications_ignore_button)
     protected void onNotificationsIgnore() {
-        saveNotifications(false);
+        //saveNotificationsPreference(false);
         //loginNotificationsView.setVisibility(View.GONE);
         finishTutorial();
     }
@@ -996,9 +1081,25 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_notifications_accept)
     protected void onNotificationsAccept() {
         EntourageEvents.logEvent(Constants.EVENT_NOTIFICATIONS_ACCEPT);
-        saveNotifications(true);
+        //saveNotificationsPreference(true);
         //loginNotificationsView.setVisibility(View.GONE);
         finishTutorial();
+        Intent settingsIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            settingsIntent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        } else {
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            settingsIntent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .setData(uri);
+        }
+        try {
+            startActivity(settingsIntent);
+        } catch (ActivityNotFoundException ex) {
+            Log.d("NOTIFICATIONS", "Failed to start the activity that shows the app settings");
+        }
     }
 
     /************************
@@ -1019,14 +1120,93 @@ public class LoginActivity extends EntourageActivity implements LoginInformation
     @OnClick(R.id.login_geolocation_accept_button)
     protected void onGeolocationAccepted() {
         EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_ACCEPT);
+        saveGeolocationPreference(true);
         loginGeolocationView.setVisibility(View.GONE);
         showNotificationPermissionView();
+    }
+
+    public void saveGeolocationPreference(boolean enabled) {
+        //remember the choice
+        final SharedPreferences notificationsPreferences = EntourageApplication.get().getSharedPreferences();
+        SharedPreferences.Editor editor = notificationsPreferences.edit();
+        editor.putBoolean(EntourageApplication.KEY_GEOLOCATION_ENABLED, enabled);
+        editor.commit();
+    }
+
+    private boolean isGeolocationGranted() {
+        return (PermissionChecker.checkSelfPermission(this, getUserLocationAccess()) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    protected String getUserLocationAccess() {
+        if (loginPresenter == null) return ACCESS_COARSE_LOCATION;
+        User user = loginPresenter.authenticationController.getUser();
+        return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
     }
 
     @OnClick(R.id.login_startup_logo)
     void onEntourageLogoClick() {
         displayToast(VERSION + BuildConfig.VERSION_NAME);
     }
+
+    /************************
+     * Action Zone View
+     ************************/
+
+    private void showActionZoneView() {
+        if (isFinishing()) return;
+        User me = loginPresenter.authenticationController.getUser();
+        UserEditActionZoneFragment actionZoneFragment = UserEditActionZoneFragment.newInstance(me != null ? me.getAddress() : null);
+        actionZoneFragment.setFragmentListener(this);
+        actionZoneFragment.setFromLogin(true);
+        actionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+    }
+
+    private void hideActionZoneView() {
+        if (isFinishing()) return;
+        UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        if (actionZoneFragment != null) {
+            actionZoneFragment.dismiss();
+        }
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentDismiss() {
+        showNameView();
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentIgnore() {
+        onUserEditActionZoneFragmentAddressSaved();
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentAddressSaved() {
+        if (isGeolocationGranted()) {
+            hideActionZoneView();
+            showNotificationPermissionView();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String accessLocation = getUserLocationAccess();
+                requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
+            } else {
+                showNotificationPermissionView();
+            }
+        }
+    }
+
+    /************************
+     * Bus Events
+     ************************/
+
+    @Subscribe
+    public void onShowURLRequested(Events.OnShowURLEvent event) {
+        if (event == null) return;
+        showWebView(event.getUrl());
+    }
+
+    /************************
+     * LoginTextWatcher Class
+     ************************/
 
     class LoginTextWatcher implements TextWatcher {
         private boolean firstEvent = true;

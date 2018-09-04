@@ -2,15 +2,10 @@ package social.entourage.android;
 
 public class Constants {
 
-    //TODO: should be changed after each release
-    // v4.6 API Key
-    public static final String API_KEY = "6fb0d70355e30b640378bf79";
-
     // Announcements version
     public static final String ANNOUNCEMENTS_VERSION = "v1";
 
     // Filenames
-    public static final String SHARED_PREFERENCES_FILE = "entourage_shared_preferences";
     public static final String FILENAME_TAPE_QUEUE = "encounters_queue";
 
     // Request and result codes
@@ -27,9 +22,8 @@ public class Constants {
     public static final String FEEDBACK_ID = "feedback";
     public static final String AMBASSADOR_ID = "volunteering";
     public static final String PROPOSE_POI_ID = "propose-poi";
-
-    // Email Addresses
-    public static final String EMAIL_CONTACT = "contact@entourage.social";
+    public static final String TERMS_LINK_ID = "terms";
+    public static final String PRIVACY_LINK_ID = "privacy-policy";
 
     // Analytics events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";

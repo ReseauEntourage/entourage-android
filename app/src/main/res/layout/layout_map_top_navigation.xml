@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/top_bar_height"
+              android:background="@color/accent"
+              android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/fragment_map_filter_button"
+        style="@style/TransparentButton.White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map_top_navigation_filter"
+        android:textAllCaps="true"/>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/fragment_map_display_toggle"
+        style="@style/TransparentButton.White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:text="@string/map_top_navigation_list"
+        android:textAllCaps="true"
+        android:paddingEnd="10dp"
+        android:paddingStart="5dp"/>
+</LinearLayout>

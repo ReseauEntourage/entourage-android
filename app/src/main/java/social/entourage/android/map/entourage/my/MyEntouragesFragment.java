@@ -2,17 +2,22 @@ package social.entourage.android.map.entourage.my;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -51,6 +56,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.base.EntourageViewHolderListener;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
@@ -70,6 +76,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     private static final int MAX_SCROLL_DELTA_Y = 20;
     private static final long REFRESH_INVITATIONS_INTERVAL = 60000; //1 minute in ms
+
+    private static final int FILTER_TAB_INDEX_ALL = 0;
+    private static final int FILTER_TAB_INDEX_UNREAD = 1;
 
     // ----------------------------------
     // Attributes
@@ -95,6 +104,15 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     RecyclerView entouragesView;
 
     MyEntouragesAdapter entouragesAdapter;
+
+    @BindView(R.id.myentourages_layout_no_items)
+    View noItemsView;
+
+    @BindView(R.id.myentourages_no_items_title)
+    TextView noItemsTitleTextView;
+
+    @BindView(R.id.myentourages_no_items_details)
+    TextView noItemsDetailsTextView;
 
     @BindView(R.id.myentourages_progressBar)
     ProgressBar progressBar;
@@ -148,7 +166,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
         View view = inflater.inflate(R.layout.fragment_my_entourages, container, false);
         ButterKnife.bind(this, view);
-        initializeView();
 
         return view;
     }
@@ -157,8 +174,18 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        initializeView();
 
-        retrieveMyFeeds();
+        // retrieve the feeds if nothing was loaded
+        // the first item in the adapter is the invitations list, so we need to check starting with 1
+        //if (entouragesAdapter != null && entouragesAdapter.getDataItemCount() <= 1) {
+        //    retrieveMyFeeds();
+        //}
+        refreshMyFeeds();
+
+        if (getActivity() != null) {
+            ((DrawerActivity)getActivity()).showEditActionZoneFragment();
+        }
     }
 
     @Override
@@ -190,18 +217,54 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     private void initializeView() {
+        initializeFilterTab();
         initializeEntouragesView();
         initializeFabMenu();
     }
 
+    private void initializeFilterTab() {
+        TabLayout tabLayout = getView().findViewById(R.id.myentourages_tab);
+        if (tabLayout == null) return;
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(final TabLayout.Tab tab) {
+                MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(getContext());
+                switch (tab.getPosition()) {
+                    case FILTER_TAB_INDEX_ALL:
+                        filter.setShowUnreadOnly(false);
+                        refreshMyFeeds();
+                        break;
+                    case FILTER_TAB_INDEX_UNREAD:
+                        filter.setShowUnreadOnly(true);
+                        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_UNREAD);
+                        refreshMyFeeds();
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(final TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(final TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
     private void initializeEntouragesView() {
+        if (entouragesAdapter == null) {
+            entouragesAdapter = new MyEntouragesAdapter();
+        }
         entouragesView.setLayoutManager(new LinearLayoutManager(getContext()));
-        entouragesAdapter = new MyEntouragesAdapter();
         entouragesAdapter.setViewHolderListener(this);
         entouragesView.setAdapter(entouragesAdapter);
     }
 
     private void initializeFabMenu() {
+        fabMenu.setVisibility(Configuration.getInstance().showMyMessagesFAB() ? View.VISIBLE : View.GONE);
         updateFabMenu();
         fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
@@ -220,8 +283,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             isPro = me.isPro();
         }
         boolean isTourRunning = isBound && tourService.isRunning();
-        startTourButton.setVisibility( isPro ? (isTourRunning ? View.GONE : View.VISIBLE) : View.GONE );
-        addEncounterButton.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
+        if (startTourButton != null) startTourButton.setVisibility( isPro ? (isTourRunning ? View.GONE : View.VISIBLE) : View.GONE );
+        if (addEncounterButton != null) addEncounterButton.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
     }
 
     protected void showProgressBar() {
@@ -257,18 +320,14 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // BUTTONS HANDLING
     // ----------------------------------
 
-    @OnClick(R.id.title_close_button)
-    void onBackClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_BACK_CLICK);
-        dismiss();
-    }
-
+    /* Removed in 5.0
     @OnClick(R.id.myentourages_filter_button)
     void onFilterClicked() {
         EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_CLICK);
         MyEntouragesFilterFragment fragment = new MyEntouragesFilterFragment();
         fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
     }
+    */
 
     @OnClick(R.id.button_create_entourage)
     void onCreateEntourageClicked() {
@@ -338,6 +397,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         if (card != null && card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
             entouragesAdapter.updateCard(card);
+
+            // if (presenter != null) presenter.getFeedItem(String.valueOf(joinableId), cardType);
         }
     }
 
@@ -397,19 +458,19 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     protected void onNewsfeedReceived(List<Newsfeed> newsfeedList) {
-        if (!isAdded()) {
-            return;
-        }
         hideProgressBar();
         //reset the loading indicator
         if (entouragesPagination != null) {
             entouragesPagination.isLoading = false;
         }
+        if (!isAdded()) {
+            return;
+        }
         //ignore errors
         if (newsfeedList == null) return;
         //add the feed
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
-        boolean showUnreadOnly = filter.showUnreadOnly;
+        boolean showUnreadOnly = filter.isShowUnreadOnly();
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
 
@@ -440,6 +501,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 entouragesPagination.loadedItems(newsfeedList.size());
             }
         }
+        if (entouragesAdapter.getDataItemCount() == 0) {
+            noItemsView.setVisibility(View.VISIBLE);
+            noItemsTitleTextView.setVisibility(showUnreadOnly ? View.GONE : View.VISIBLE);
+            noItemsDetailsTextView.setText(showUnreadOnly ? R.string.myentourages_no_unread_items_details : R.string.myentourages_no_items_details);
+        } else {
+            noItemsView.setVisibility(View.GONE);
+        }
     }
 
     protected void onInvitationsReceived(List<Invitation> invitationList) {
@@ -454,6 +522,19 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             return;
         }
         entouragesAdapter.setInvitations(invitationList);
+    }
+
+    protected void onFeedItemReceived(FeedItem feedItem) {
+        if (getActivity() == null || !isAdded()) return;
+
+        hideProgressBar();
+        if (feedItem != null) {
+            TimestampedObject card = entouragesAdapter.findCard(feedItem);
+            if (card != null && card instanceof FeedItem) {
+                ((FeedItem)card).increaseBadgeCount();
+                entouragesAdapter.updateCard(feedItem);
+            }
+        }
     }
 
     // ----------------------------------
@@ -480,7 +561,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     @Override
-    public void onTourCreated(final boolean created, final long tourId) {
+    public void onTourCreated(final boolean created, final String tourUUID) {
         if (created) {
             updateFabMenu();
         }

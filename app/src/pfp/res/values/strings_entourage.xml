@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Create Entourage -->
+    <string name="entourage_create_outing_title">SORTIE</string>
+    <string name="entourage_create_action_title">@string/entourage_create_outing_title</string>
+    <string name="entourage_create_privacy_public">Public</string>
+    <string name="entourage_create_privacy_private">Privé</string>
+    <string name="entourage_create_privacy_description_public">Tous peuvent trouver la sortie dans le fil d\'actualités, mais seuls les membres de mon voisinage sont notifiés.</string>
+    <string name="entourage_create_privacy_description_private">Cette option sera bientôt disponible. En attendant, communiquez directement dans une conversation avec les personnes que vous souhaitez inviter.</string>
+
+    <!-- Entourage Title Fragment -->
+    <string name="entourage_title_fragment_hint">Atelier de créativité</string>
+    <string name="entourage_title_fragment_hint_outing">@string/entourage_title_fragment_hint</string>
+    <string name="entourage_title_fragment_info_outing">@string/entourage_title_fragment_info</string>
+
+    <!-- Entourage Description Fragment -->
+    <string name="entourage_description_fragment_hint">Exemple : Je vous propose de nous retrouver pour un atelier de créativité (peinture, collage, ...) ce vendredi.</string>
+    <string name="entourage_description_fragment_hint_outing">@string/entourage_description_fragment_hint</string>
+    <string name="entourage_description_fragment_info_outing">@string/entourage_description_fragment_info</string>
+
+    <!-- Entourage Card -->
+    <string name="entourage_type_private_circle">voisinage</string>
+    <string name="entourage_type_outing">sortie\u0020</string>
+
+    <string name="entourage_info_quit_entourage_title">Quitter la sortie</string>
+    <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter la sortie ?</string>
+
+    <!-- Share Entourage -->
+    <string name="entourage_share_link">@string/contact_email</string>
+    <string name="entourage_share_text_author">Le réseau Voisin-Age est une communauté de voisins qui créent des liens intergénérationnels. Pour rejoindre le réseau, contactez %1$s</string>
+    <string name="entourage_share_text_member">Le réseau Voisin-Age est une communauté de voisins qui créent des liens intergénérationnels. Pour rejoindre le réseau, contactez %1$s</string>
+    <string name="entourage_share_text_non_member">Le réseau Voisin-Age est une communauté de voisins qui créent des liens intergénérationnels. Pour rejoindre le réseau, contactez %1$s</string>
+
+    <!-- Close Entourage Alert -->
+    <string name="entourage_close_alert_description">Supprimer la sortie ?</string>
+
+
+</resources>

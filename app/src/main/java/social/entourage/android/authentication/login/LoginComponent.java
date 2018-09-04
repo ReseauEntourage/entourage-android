@@ -3,12 +3,13 @@ package social.entourage.android.authentication.login;
 import dagger.Component;
 import social.entourage.android.ActivityScope;
 import social.entourage.android.EntourageComponent;
+import social.entourage.android.authentification.login.LoginPresenter;
 
 /**
  * Component linked to LoginActivity lifecycle
- * Provide a LoginPresenter
+ * Provide a BaseLoginPresenter
  * @see LoginActivity
- * @see LoginPresenter
+ * @see BaseLoginPresenter
  */
 @ActivityScope
 @Component(

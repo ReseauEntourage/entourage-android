@@ -2,17 +2,20 @@
 <resources>
     <!-- Create Entourage -->
     <string name="entourage_create_action_title">ACTION</string>
+    <string name="entourage_create_outing_title">ÉVÈNEMENT</string>
     <string name="entourage_create_type_label">Catégorie</string>
     <string name="entourage_create_type_demand">Je cherche : %1$s</string>
     <string name="entourage_create_type_contribution">Je me propose de : %1$s</string>
-    <string name="entourage_create_position_description">Ma position</string>
-    <string name="entourage_create_title_label">Titre</string>
+    <string name="entourage_create_position_description">Adresse *</string>
+    <string name="entourage_create_title_label">Titre *</string>
     <string name="entourage_create_title_hint">Exemple : %1$s</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_label">Description</string>
     <string name="entourage_create_description_demand_hint">J\'habite dans le quartier de République et je souhaiterais savoir si des voisins pourraient me faire faire connaissance avec des personnes de la rue du quartier qu\'ils connaissent déjà. Et si ce n\'est pas encore le cas, allons à leur rencontre ensemble pour leur offrir encore plus de chaleur humaine que n\'en donne la météo !</string>
     <string name="entourage_create_description_contribution_hint">Exemple : Je suis ancien employé de mairie et disponible pour aide administrative pour l’accès au logement.\nSi vous pensez avoir besoin d’aide, nous pouvons nous retrouver dans un café le weekend.</string>
     <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$s\">Besoin d\'idées d\'action?</a>]]></string>
+    <string name="entourage_create_date_label">Date *</string>
+    <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
@@ -20,8 +23,11 @@
     <string name="entourage_create_error_title_empty">Le titre ne peut pas être vide</string>
     <string name="entourage_create_error_title_too_long">Le titre est trop long</string>
     <string name="entourage_create_error_description_empty">La description ne peut pas être vide</string>
+    <string name="entourage_create_error_date_empty">Choisissez une date</string>
+    <string name="entourage_create_error_location_empty">Indiquez une localisation</string>
 
     <string name="entourage_create_menu">Créer une action</string>
+    <string name="outing_create_menu">Créer un évènement</string>
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>
@@ -33,11 +39,15 @@
     <string name="entourage_title_fragment_hint">Exemple : Je suis disponible pour aide administrative pour l’accès au logement </string>
     <string name="entourage_title_fragment_info">Les actions avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
     <string name="entourage_title_fragment_error">Votre titre doit faire moins de 100 caractères. Vous pourrez en dire plus dans la description.</string>
+    <string name="entourage_title_fragment_hint_outing">Exemple : Appel aux bonnes volontés pour la collecte nationale des Restos du cœur</string>
+    <string name="entourage_title_fragment_info_outing">Les évènements avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
 
     <!-- Entourage Description Fragment -->
     <string name="entourage_description_fragment_title">DESCRIPTION</string>
     <string name="entourage_description_fragment_hint">Exemple : Je suis ancien employé de mairie et disponible pour aide administrative pour l’accès au logement.\nSi vous pensez avoir besoin d’aide, nous pouvons nous retrouver dans un café le weekend.</string>
     <string name="entourage_description_fragment_info">Racontez votre histoire. Les actions avec une description claire attirent plus de membres et ont plus de chances d’aboutir !</string>
+    <string name="entourage_description_fragment_hint_outing">Exemple : Besoin de bénévoles pour la collecte nationale des Restos du Cœur dans notre équipe locale</string>
+    <string name="entourage_description_fragment_info_outing">Racontez votre histoire. Les évènements avec une description claire attirent plus de membres et ont plus de chances d’aboutir !</string>
 
     <!-- Edit Entourage -->
     <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
@@ -46,7 +56,10 @@
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
     <string name="entourage_type_contribution">Contribution</string>
+    <string name="entourage_type_neighborhood">voisinage</string>
+    <string name="entourage_type_outing">Évènement\u0020</string>
     <string name="entourage_type_format">%1$s par\u0020</string>
+    <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
     
     <!-- Entourage Location -->
     <string name="entourage_location_title">MA POSITION</string>
@@ -54,10 +67,10 @@
     <string name="entourage_location_address_not_found">L\'adresse n\'a pas été trouvée</string>
 
     <!-- Entourage Notifications -->
-    <string name="entourage_info_text_join_accepted">\u0020a rejoint l\'entourage.</string>
+    <string name="entourage_info_text_join_accepted">\u0020a rejoint le groupe.</string>
     <string name="entourage_join_request_received">%1$s souhaite rejoindre votre action: %2$s</string>
-    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre entourage]]></string>
-    <string name="entourage_join_request_received_message_short">veut rejoindre votre entourage.</string>
+    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre groupe]]></string>
+    <string name="entourage_join_request_received_message_short">veut rejoindre votre groupe.</string>
 
     <string name="entourage_info_quit_entourage_title">Quitter l\'entourage</string>
     <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter l\'entourage ?</string>
@@ -65,6 +78,7 @@
     <string name="entourage_info_text_close">Entourage fermé</string>
 
     <!-- Entourage disclaimer -->
+    <string name="entourage_disclaimer_title">AVANT DE COMMENCER</string>
     <string name="entourage_disclaimer_text_chart1">Je respecte la</string>
     <string name="entourage_disclaimer_text_chart2">Charte d\'Entourage</string>
     <string name="entourage_disclaimer_accord_title">Recueillir l’accord</string>
@@ -76,8 +90,24 @@
     <string name="entourage_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
     <string name="entourage_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
 
+    <!-- Outing disclaimer -->
+    <string name="outing_disclaimer_accord_details">Je demande le consentement d’une personne avant de mentionner de ses informations personnelles</string>
+    <string name="outing_disclaimer_security_details">Je veille à ce qu’on ne puisse pas identifier ou localiser des personnes en me lisant</string>
+    <string name="outing_disclaimer_geolocation_title">Localisation ?</string>
+    <string name="outing_disclaimer_geolocation_details">L’adresse précise des évènements est montrée</string>
+
+    <!-- Outing as chat message card -->
+    <string name="outing_message_card_created_author"><![CDATA[%1$s a créé une <font color=\"%2$s\">sortie</font> :]]></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s a <b>modifié</b> une <font color=\"%2$s\">sortie</font> :]]></string>
+
     <!-- My Entourages -->
     <string name="myentourages_title">MES ENTOURAGES</string>
+    <string name="myentourages_all">Tous les messages</string>
+    <string name="myentourages_unread">Non lus</string>
+
+    <string name="myentourages_no_items_title">Vous n\'avez pas encore de messages…</string>
+    <string name="myentourages_no_items_details">Demandez à rejoindre des sorties, devenez membre validé de Voisin-Age et vous retrouverez alors vos conversations avec les membres du réseau Voisin-Age ici</string>
+    <string name="myentourages_no_unread_items_details">Vous n\'avez pas de messages non lus</string>
 
     <!-- My Entourages Filter -->
     <string name="myentourages_filter_entourages_title">Montrer</string>
@@ -117,6 +147,7 @@
     <string name="entourage_share_text_author">J\'ai créé ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_member">J\'ai rejoint ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_non_member">Ce projet solidaire sur Entourage a besoin de toi. Rejoins-le en téléchargeant l\'app ici %1$s</string>
+
     <!-- Entourage Mini Card -->
     <string name="entourage_mini_card_created">Créé par\u0020</string>
 

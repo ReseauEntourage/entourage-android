@@ -1,6 +1,7 @@
 package social.entourage.android.base;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.map.MapViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
 
@@ -30,6 +32,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     protected boolean needsTopView = false;
     private MapViewHolder mapViewHolder;
     private OnMapReadyCallback onMapReadyCallback;
+    private View.OnClickListener onFollowButtonClickListener;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
@@ -42,6 +45,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewType == TimestampedObject.TOP_VIEW) {
             mapViewHolder = (MapViewHolder)cardViewHolder;
             mapViewHolder.setMapReadyCallback(onMapReadyCallback);
+            mapViewHolder.setFollowButtonOnClickListener(onFollowButtonClickListener);
         }
 
         return cardViewHolder;
@@ -174,6 +178,19 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         return null;
     }
 
+    public TimestampedObject findCard(int type, String uuid) {
+        for (int i = 0; i < items.size(); i++) {
+            TimestampedObject timestampedObject = items.get(i);
+            if (timestampedObject.getType() == type && timestampedObject instanceof FeedItem) {
+                FeedItem feedItem = (FeedItem) timestampedObject;
+                if (feedItem.getUUID().equalsIgnoreCase(uuid)) {
+                    return timestampedObject;
+                }
+            }
+        }
+        return null;
+    }
+
     public void updateCard(TimestampedObject card) {
         if (card == null) {
             return;
@@ -218,6 +235,10 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setOnMapReadyCallback(final OnMapReadyCallback onMapReadyCallback) {
         this.onMapReadyCallback = onMapReadyCallback;
+    }
+
+    public void setOnFollowButtonClickListener(final View.OnClickListener onFollowButtonClickListener) {
+        this.onFollowButtonClickListener = onFollowButtonClickListener;
     }
 
     public void setMapHeight(int height) {

@@ -193,7 +193,7 @@ public class FusedLocationProvider {
 
     private boolean geolocationPermissionIsNotGranted() {
         return checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
-            || checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED;
+            && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED;
     }
 
     public enum UserType {

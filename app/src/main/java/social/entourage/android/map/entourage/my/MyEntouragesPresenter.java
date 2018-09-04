@@ -5,10 +5,15 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.NewsfeedRequest;
+import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
 
@@ -25,6 +30,12 @@ public class MyEntouragesPresenter {
 
     @Inject
     NewsfeedRequest newsfeedRequest;
+
+    @Inject
+    TourRequest tourRequest;
+
+    @Inject
+    EntourageRequest entourageRequest;
 
     @Inject
     InvitationRequest invitationRequest;
@@ -50,9 +61,9 @@ public class MyEntouragesPresenter {
                 filter.getEntourageTypes(),
                 filter.getTourTypes(),
                 filter.getStatus(),
-                filter.showOwnEntouragesOnly,
-                filter.showPartnerEntourages,
-                filter.showJoinedEntourages
+                filter.isShowOwnEntouragesOnly(),
+                filter.isShowPartnerEntourages(),
+                filter.isShowJoinedEntourages()
         );
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
@@ -91,4 +102,48 @@ public class MyEntouragesPresenter {
             }
         });
     }
+
+    public void getFeedItem(String feedItemUUID, int feedItemType) {
+        fragment.showProgressBar();
+        if (feedItemType == TimestampedObject.TOUR_CARD) {
+            Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(feedItemUUID);
+            call.enqueue(new Callback<Tour.TourWrapper>() {
+                @Override
+                public void onResponse(final Call<Tour.TourWrapper> call, final Response<Tour.TourWrapper> response) {
+                    if (response.isSuccessful()) {
+                        if (fragment != null) fragment.onFeedItemReceived(response.body().getTour());
+                    } else {
+                        if (fragment != null) fragment.onFeedItemReceived(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<Tour.TourWrapper> call, final Throwable t) {
+                    if (fragment != null) fragment.onFeedItemReceived(null);
+                }
+            });
+        }
+        else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
+            Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(feedItemUUID, -1, 0);
+            call.enqueue(new Callback<Entourage.EntourageWrapper>() {
+                @Override
+                public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
+                    if (response.isSuccessful()) {
+                        if (fragment != null) fragment.onFeedItemReceived(response.body().getEntourage());
+                    } else {
+                        if (fragment != null) fragment.onFeedItemReceived(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
+                    if (fragment != null) fragment.onFeedItemReceived(null);
+                }
+            });
+        }
+        else {
+            if (fragment != null) fragment.onFeedItemReceived(null);
+        }
+    }
+
 }

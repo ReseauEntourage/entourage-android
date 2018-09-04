@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import social.entourage.android.webview.WebViewFragment;
+
 /**
  * Base activity which set up a scoped graph and inject it
  */
@@ -97,5 +99,19 @@ public abstract class EntourageActivity extends AppCompatActivity {
 
     public boolean isSafeToCommit() {
         return safeToCommit;
+    }
+
+    public void showWebView(String url) {
+        WebViewFragment webViewFragment = WebViewFragment.newInstance(url);
+        webViewFragment.show(getSupportFragmentManager(), WebViewFragment.TAG);
+    }
+
+    public void showWebViewForLinkId(String linkId) {
+        String link = getLink(linkId);
+        showWebView(link);
+    }
+
+    public String getLink(String linkId) {
+        return getString(R.string.redirect_link_no_token_format, BuildConfig.ENTOURAGE_URL, linkId);
     }
 }

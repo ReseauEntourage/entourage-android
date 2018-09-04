@@ -22,7 +22,8 @@ public interface NewsfeedRequest {
             @Query("show_my_entourages_only") boolean onlyMyEntourages,
             @Query("time_range") int timeFrame,
             @Query("show_my_partner_only") boolean onlyMyPartnerEntourages,
-            @Query("announcements") String announcementsVersion
+            @Query("announcements") String announcementsVersion,
+            @Query("show_past_events") boolean showPastEvents
     );
 
     @GET("feeds")

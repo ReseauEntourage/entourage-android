@@ -21,9 +21,6 @@ public class RegisterGCMService extends IntentService {
 
     public static final String GCM_SENDER_ID = "1085027645289"; // to be stored int the shared preferences ?
     private final String GCM_SCOPE = "GCM";
-    public static final String SHARED_PREFERENCES_FILE_GCM = "ENTOURAGE_GCM_DATA";
-    public static final String KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID";
-    public static final String KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED";
 
     public RegisterGCMService() {
         super("RegisterGCMService");
@@ -44,9 +41,9 @@ public class RegisterGCMService extends IntentService {
         }
 
         if (registrationId != null) {
-            final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES_FILE_GCM, Context.MODE_PRIVATE);
+            final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(KEY_REGISTRATION_ID, registrationId);
+            editor.putString(EntourageApplication.KEY_REGISTRATION_ID, registrationId);
             editor.commit();
             EntourageApplication.get().getMixpanel().getPeople().setPushRegistrationId(registrationId);
         }else if (intent!=null && intent.getStringExtra("unregistered") != null) {

@@ -1,14 +1,18 @@
 package social.entourage.android.user.edit.photo;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -27,7 +31,7 @@ import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 
-public class PhotoEditFragment extends EntourageDialogFragment {
+public class PhotoEditFragment extends EntourageDialogFragment implements CropImageView.OnSetImageUriCompleteListener{
 
     // ----------------------------------
     // CONSTANTS
@@ -45,6 +49,9 @@ public class PhotoEditFragment extends EntourageDialogFragment {
     CropImageView cropImageView;
     @BindView(R.id.photo_edit_fab_button)
     FloatingActionButton fabButton;
+    @BindView(R.id.photo_edit_progressBar)
+    ProgressBar progressBar;
+
     private PhotoChooseInterface mListener;
     private Uri photoUri;
     private int photoSource;
@@ -87,7 +94,7 @@ public class PhotoEditFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_9);
@@ -99,11 +106,16 @@ public class PhotoEditFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getContext() != null) {
+            progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(getContext(), R.color.white), PorterDuff.Mode.SRC_ATOP);
+        }
+
+        cropImageView.setOnSetImageUriCompleteListener(this);
         if (photoUri != null) {
-            //cropImageView.setImageBitmap(photo);
+            progressBar.setVisibility(View.VISIBLE);
             cropImageView.setImageUriAsync(photoUri);
         }
         cropImageView.setCropShape(CropImageView.CropShape.OVAL);
@@ -143,16 +155,16 @@ public class PhotoEditFragment extends EntourageDialogFragment {
     @OnClick(R.id.photo_edit_fab_button)
     protected void onOkClicked() {
         fabButton.setEnabled(false);
-        cropImageView.setOnSaveCroppedImageCompleteListener(new CropImageView.OnSaveCroppedImageCompleteListener() {
+        cropImageView.setOnCropImageCompleteListener(new CropImageView.OnCropImageCompleteListener() {
             @Override
-            public void onSaveCroppedImageComplete(final CropImageView view, final Uri uri, final Exception error) {
-                if (error != null) {
-                    Log.d("PhotoEdit", error.getMessage());
+            public void onCropImageComplete(final CropImageView view, final CropImageView.CropResult result) {
+                if (result.isSuccessful()) {
+                    mListener.onPhotoChosen(result.getUri(), photoSource);
+                } else {
+                    Log.d("PhotoEdit", result.getError().getMessage());
                     Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
                     fabButton.setEnabled(true);
-                    return;
                 }
-                mListener.onPhotoChosen(uri, photoSource);
             }
         });
         try {
@@ -161,6 +173,15 @@ public class PhotoEditFragment extends EntourageDialogFragment {
         } catch (IOException e) {
             Toast.makeText(getActivity(), R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // ----------------------------------
+    // CropImageView.OnSetImageUriCompleteListener
+    // ----------------------------------
+
+    @Override
+    public void onSetImageUriComplete(final CropImageView view, final Uri uri, final Exception error) {
+        progressBar.setVisibility(View.GONE);
     }
 
     // ----------------------------------

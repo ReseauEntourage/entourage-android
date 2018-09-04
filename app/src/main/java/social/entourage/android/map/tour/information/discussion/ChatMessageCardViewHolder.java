@@ -1,18 +1,26 @@
 package social.entourage.android.map.tour.information.discussion;
 
 import android.net.Uri;
+import android.support.v4.text.util.LinkifyCompat;
 import android.text.format.DateFormat;
+import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
+import social.entourage.android.base.EntourageLinkMovementMethod;
+import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
@@ -89,6 +97,8 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
 
         // the actual chat
         mMessageView.setText(chatMessage.getContent());
+
+        DeepLinksManager.linkify(mMessageView);
 
         // chat timestamp
         mTimestampView.setText(DateFormat.format("H'h'mm", chatMessage.getTimestamp()));

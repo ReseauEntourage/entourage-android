@@ -2,26 +2,31 @@ package social.entourage.android.newsfeed;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.content.res.AppCompatResources;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.LastMessage;
 import social.entourage.android.api.model.map.Tour;
@@ -29,19 +34,20 @@ import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
-import social.entourage.android.map.entourage.category.EntourageCategory;
-import social.entourage.android.map.entourage.category.EntourageCategoryManager;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
 
+import static social.entourage.android.tools.Utils.getMonthAsString;
+
 /**
- * Created by mihaiionescu on 24/03/2017.
+ * Created by Mihai Ionescu on 24/03/2017.
  */
 
-public class FeedItemViewHolder extends BaseCardViewHolder {
+public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
 
     private TextView tourTitle;
+    private ImageView tourIcon;
     private ImageView photoView;
     private PartnerLogoImageView partnerLogoView;
     private TextView tourTypeTextView;
@@ -53,6 +59,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
     private View dividerLeft;
     private View dividerRight;
     private TextView lastMessageTextView;
+    private TextView lastUpdateDateTextView;
 
     private FeedItem feedItem;
 
@@ -67,18 +74,18 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
 
-        tourTitle = (TextView)itemView.findViewById(R.id.tour_card_title);
-        photoView = (ImageView)itemView.findViewById(R.id.tour_card_photo);
-        partnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tour_card_partner_logo);
-        tourTypeTextView = (TextView)itemView.findViewById(R.id.tour_card_type);
-        tourAuthor = (TextView)itemView.findViewById(R.id.tour_card_author);
-        tourLocation = (TextView)itemView.findViewById(R.id.tour_card_location);
-        badgeCountView = (TextView)itemView.findViewById(R.id.tour_card_badge_count);
-        numberOfPeopleTextView = (TextView)itemView.findViewById(R.id.tour_card_people_count);
-        actButton = (Button)itemView.findViewById(R.id.tour_card_button_act);
-        dividerLeft = itemView.findViewById(R.id.tour_card_divider_left);
-        dividerRight = itemView.findViewById(R.id.tour_card_divider_right);
-        lastMessageTextView = (TextView)itemView.findViewById(R.id.tour_card_last_message);
+        tourTitle = itemView.findViewById(R.id.tour_card_title);
+        tourIcon = itemView.findViewById(R.id.tour_card_icon);
+        photoView = itemView.findViewById(R.id.tour_card_photo);
+        partnerLogoView = itemView.findViewById(R.id.tour_card_partner_logo);
+        tourTypeTextView = itemView.findViewById(R.id.tour_card_type);
+        tourAuthor = itemView.findViewById(R.id.tour_card_author);
+        tourLocation = itemView.findViewById(R.id.tour_card_location);
+        badgeCountView = itemView.findViewById(R.id.tour_card_badge_count);
+        numberOfPeopleTextView = itemView.findViewById(R.id.tour_card_people_count);
+        actButton = itemView.findViewById(R.id.tour_card_button_act);
+        lastMessageTextView = itemView.findViewById(R.id.tour_card_last_message);
+        lastUpdateDateTextView = itemView.findViewById(R.id.tour_card_last_update_date);
 
         onClickListener = new OnClickListener();
 
@@ -109,18 +116,39 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
         //title
         if (tourTitle != null) {
             tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
-            if (showCategoryIcon()) {
+            tourTitle.setTypeface(tourTitle.getTypeface(), feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
+            if (showCategoryIcon() && tourIcon == null) {
                 // add the icon for entourages
-                if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                    EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory((Entourage) feedItem);
-                    Drawable categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.getIconRes()).mutate();
-                    categoryIcon.clearColorFilter();
-                    categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
-                    tourTitle.setCompoundDrawablesWithIntrinsicBounds(categoryIcon, null, null, null);
+                Picasso.with(context)
+                        .cancelRequest(this);
+                String iconURL = feedItem.getIconURL();
+                if (iconURL != null) {
+                    tourTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    Picasso.with(context)
+                            .load(iconURL)
+                            .error(R.drawable.ic_user_photo_small)
+                            .transform(new CropCircleTransformation())
+                            .into(this);
                 } else {
-                    Drawable categoryIcon = AppCompatResources.getDrawable(context, ((Tour) feedItem).getIconRes());
-                    tourTitle.setCompoundDrawablesWithIntrinsicBounds(categoryIcon, null, null, null);
+                    tourTitle.setCompoundDrawablesWithIntrinsicBounds(feedItem.getIconDrawable(context), null, null, null);
                 }
+            }
+        }
+        //icon
+        if (showCategoryIcon() && tourIcon != null) {
+            // add the icon for entourages
+            Picasso.with(context)
+                    .cancelRequest(tourIcon);
+            String iconURL = feedItem.getIconURL();
+            if (iconURL != null) {
+                tourIcon.setImageDrawable(null);
+                Picasso.with(context)
+                        .load(iconURL)
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(new CropCircleTransformation())
+                        .into(tourIcon);
+            } else {
+                tourIcon.setImageDrawable(feedItem.getIconDrawable(context));
             }
         }
 
@@ -168,13 +196,29 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
 
             //author
             if (tourAuthor != null) {
-                tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), feedItem.getAuthor().getUserName()));
+                tourAuthor.setText(String.format(res.getString(R.string.tour_cell_author), author.getUserName()));
+            }
+        }
+        if (!feedItem.showAuthor()) {
+            if (tourAuthor != null) tourAuthor.setText("");
+            if (photoView != null) photoView.setImageDrawable(null);
+            if (partnerLogoView != null) partnerLogoView.setImageDrawable(null);
+        }
+
+        //Metadata
+        if (feedItem instanceof BaseEntourage) {
+            BaseEntourage.Metadata metadata = ((BaseEntourage) feedItem).getMetadata();
+            if (metadata != null) {
+                if (tourAuthor != null && metadata.getStartDate() != null) tourAuthor.setText(metadata.getStartDateAsString(context));
             }
         }
 
         //Feed Item type
         if (tourTypeTextView != null) {
             tourTypeTextView.setText(feedItem.getFeedTypeLong(context));
+            if (feedItem.getFeedTypeColor() != 0) {
+                tourTypeTextView.setTextColor(ContextCompat.getColor(context, feedItem.getFeedTypeColor()));
+            }
         }
 
         if (tourLocation != null) {
@@ -185,9 +229,9 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
             }
 
             if (distanceAsString.equalsIgnoreCase("")) {
-                tourLocation.setText(String.format(res.getString(R.string.tour_cell_location_no_distance), Tour.getStringDiffToNow(feedItem.getStartTime())));
+                tourLocation.setText("");
             } else {
-                tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), Tour.getStringDiffToNow(feedItem.getStartTime()), distanceAsString));
+                tourLocation.setText(String.format(res.getString(R.string.tour_cell_location), distanceAsString));
             }
         }
 
@@ -212,25 +256,29 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
             int dividerColor = R.color.accent;
             int textColor = R.color.accent;
             actButton.setVisibility(View.VISIBLE);
+            /*
             actButton.setPadding(0, 0, 0, 0);
             if (Build.VERSION.SDK_INT >= 16) {
                 actButton.setPaddingRelative(0, 0, 0, 0);
             }
+            */
             if (feedItem.isFreezed()) {
                 actButton.setText(R.string.tour_cell_button_freezed);
-                actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                //actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 dividerColor = R.color.greyish;
                 textColor = R.color.greyish;
             } else {
                 String joinStatus = feedItem.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_pending);
-                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    //actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
+                    /*
                     actButton.setPadding(0, 0, res.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
                     if (Build.VERSION.SDK_INT >= 16) {
                         actButton.setPaddingRelative(0, 0, res.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
                     }
+                    */
                     if (feedItem.getAuthor() != null) {
                         if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
                             actButton.setText(R.string.tour_cell_button_ongoing);
@@ -240,22 +288,21 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
                     } else {
                         actButton.setText(R.string.tour_cell_button_accepted);
                     }
-                    actButton.setCompoundDrawablesWithIntrinsicBounds(res.getDrawable(R.drawable.button_act_accepted), null, null, null);
+                    //actButton.setCompoundDrawablesWithIntrinsicBounds(res.getDrawable(R.drawable.button_act_accepted), null, null, null);
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_rejected);
-                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    //actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     textColor = R.color.tomato;
                 } else {
                     actButton.setText(R.string.tour_cell_button_view);
-                    actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    //actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     dividerColor = R.color.greyish;
-                    textColor = R.color.greyish_brown;
                 }
             }
             actButton.setTextColor(res.getColor(textColor));
 
-            dividerLeft.setBackgroundResource(dividerColor);
-            dividerRight.setBackgroundResource(dividerColor);
+            if (dividerLeft != null) dividerLeft.setBackgroundResource(dividerColor);
+            if (dividerRight != null) dividerRight.setBackgroundResource(dividerColor);
         }
 
         //last message
@@ -266,14 +313,65 @@ public class FeedItemViewHolder extends BaseCardViewHolder {
             } else {
                 lastMessageTextView.setText("");
             }
+            lastMessageTextView.setVisibility(lastMessageTextView.getText().length() == 0 ? View.GONE : View.VISIBLE);
             lastMessageTextView.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
-            lastMessageTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.greyish) : res.getColor(R.color.black));
+            lastMessageTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.feeditem_card_details_normal) : res.getColor(R.color.feeditem_card_details_bold));
+        }
+
+        //last update date
+        if (lastUpdateDateTextView != null) {
+            Date lastUpdateDate = feedItem.getUpdatedTime();
+            lastUpdateDateTextView.setText(formatLastUpdateDate(lastUpdateDate));
+            lastUpdateDateTextView.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
+            lastUpdateDateTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.feeditem_card_details_normal) : res.getColor(R.color.feeditem_card_details_bold));
         }
 
     }
 
     protected boolean showCategoryIcon() {
         return true;
+    }
+
+    private String formatLastUpdateDate(Date date) {
+        if (date == null) return "";
+        Date now = new Date();
+        // for today, return the time part
+        if (now.getYear() == date.getYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
+            return DateFormat.format("H'h'mm", date).toString();
+        }
+        // check for yesterday
+        long sinceMidnight = now.getSeconds() * 1000 + now.getMinutes() * 60 * 1000 + now.getHours() * 60 * 60 * 1000;
+        long oneDay = 86400000L; // 24 hours in millis
+        if ( (now.getTime() - date.getTime()) < (oneDay + sinceMidnight) ) {
+            return context.getString(R.string.date_yesterday);
+        }
+        // other date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        String month = getMonthAsString(calendar.get(Calendar.MONTH), context);
+        return context.getString(R.string.date_format_short, calendar.get(Calendar.DAY_OF_MONTH), month);
+    }
+
+    //--------------------------
+    // PICASSO TARGET IMPLEMENTATION
+    //--------------------------
+
+    @Override
+    public void onBitmapLoaded(final Bitmap bitmap, final Picasso.LoadedFrom from) {
+        int targetWidth = itemView.getResources().getDimensionPixelOffset(R.dimen.feeditem_icon_width);
+        int targetHeight = itemView.getResources().getDimensionPixelOffset(R.dimen.feeditem_icon_height);
+        BitmapDrawable drawable = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false));
+        tourTitle.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+    }
+
+    @Override
+    public void onBitmapFailed(final Drawable errorDrawable) {
+        tourTitle.setCompoundDrawablesWithIntrinsicBounds(errorDrawable, null, null, null);
+    }
+
+    @Override
+    public void onPrepareLoad(final Drawable placeHolderDrawable) {
+
     }
 
     //--------------------------

@@ -5,6 +5,8 @@ import android.location.Location;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import social.entourage.android.api.model.User;
+
 public class EntourageLocation {
 
     private static final double INITIAL_LATITUDE = 48.841636;
@@ -25,6 +27,15 @@ public class EntourageLocation {
     }
 
     private EntourageLocation() {
+        User me = EntourageApplication.get().getEntourageComponent().getAuthenticationController().getUser();
+        if (me != null) {
+            User.Address address = me.getAddress();
+            if (address != null) {
+                lastCameraPosition = new CameraPosition(new LatLng(address.getLatitude(), address.getLongitude()), INITIAL_CAMERA_FACTOR, 0, 0);
+                currentCameraPosition = new CameraPosition(new LatLng(address.getLatitude(), address.getLongitude()), INITIAL_CAMERA_FACTOR, 0, 0);
+                return;
+            }
+        }
         lastCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR, 0, 0);
         currentCameraPosition = new CameraPosition(new LatLng(INITIAL_LATITUDE, INITIAL_LONGITUDE), INITIAL_CAMERA_FACTOR, 0, 0);
     }

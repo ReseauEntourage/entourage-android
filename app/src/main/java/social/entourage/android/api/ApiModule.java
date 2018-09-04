@@ -103,12 +103,6 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    public MapRequest providesMapService(final Retrofit restAdapter) {
-        return restAdapter.create(MapRequest.class);
-    }
-
-    @Provides
-    @Singleton
     public EncounterRequest providesEncounterService(final Retrofit restAdapter) {
         return restAdapter.create(EncounterRequest.class);
     }

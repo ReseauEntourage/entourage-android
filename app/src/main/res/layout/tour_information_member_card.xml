@@ -53,6 +53,7 @@
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/tic_member_photo"
         android:layout_toRightOf="@+id/tic_member_photo"
-        android:background="@color/greyish_brown"/>
+        android:background="@color/greyish_brown"
+        android:visibility="gone"/>
 
 </RelativeLayout>

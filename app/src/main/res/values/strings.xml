@@ -25,6 +25,7 @@
     <string name="close">Fermer</string>
     <string name="edit">Editer</string>
     <string name="activate">Activer</string>
+    <string name="view">Voir</string>
 
     <string name="deeplinks_label">!!Open with Entourage</string>
 
@@ -39,7 +40,6 @@
 
     <string name="empty_description"></string>
 
-    <string name="facebook_app_id">280727035774134</string>
-    <string name="fb_login_protocol_scheme">fb280727035774134</string>
+    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
 
 </resources>

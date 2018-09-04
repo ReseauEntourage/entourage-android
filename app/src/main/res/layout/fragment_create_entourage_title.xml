@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@color/pale_grey"
               android:orientation="vertical"
-              tools:context="social.entourage.android.map.entourage.CreateEntourageTitleFragment">
+              tools:context="social.entourage.android.map.entourage.create.CreateEntourageTitleFragment">
 
     <social.entourage.android.view.EntourageTitleView
         android:layout_width="match_parent"
@@ -67,13 +67,15 @@
         android:paddingRight="10dp"
         android:paddingStart="10dp">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/tip"/>
+            app:srcCompat="@drawable/tip"
+            app:tint="@color/accent"/>
 
         <TextView
+            android:id="@+id/title_entourage_info_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

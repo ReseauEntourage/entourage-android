@@ -9,7 +9,6 @@ import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.Poi;
 
 public class Events {
 
@@ -179,7 +178,7 @@ public class Events {
 
         private FeedItem feedItem;
         private int feedItemType = 0;
-        private long feedItemId = 0;
+        private String feedItemUUID = "";
         private String feedItemShareURL;
         private long invitationId = 0;
         private int feedRank = 0;
@@ -193,19 +192,15 @@ public class Events {
             this.feedRank = feedRank;
         }
 
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId) {
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemUUID, String feedItemShareURL) {
             this.feedItemType = feedItemType;
-            this.feedItemId = feedItemId;
-        }
-
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemShareURL) {
-            this.feedItemType = feedItemType;
+            this.feedItemUUID = feedItemUUID;
             this.feedItemShareURL = feedItemShareURL;
         }
 
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, long feedItemId, long invitationId) {
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemUUID, long invitationId) {
             this.feedItemType = feedItemType;
-            this.feedItemId = feedItemId;
+            this.feedItemUUID = feedItemUUID;
             this.invitationId = invitationId;
         }
 
@@ -213,8 +208,8 @@ public class Events {
             return feedItem;
         }
 
-        public long getFeedItemId() {
-            return feedItemId;
+        public String getFeedItemUUID() {
+            return feedItemUUID;
         }
 
         public int getFeedItemType() {
@@ -257,14 +252,16 @@ public class Events {
 
         private FeedItem feedItem;
         private boolean showUI = true;
+        private boolean success = true;
 
         public OnFeedItemCloseRequestEvent(FeedItem feedItem) {
             this.feedItem = feedItem;
         }
 
-        public OnFeedItemCloseRequestEvent(FeedItem feedItem, boolean showUI) {
+        public OnFeedItemCloseRequestEvent(FeedItem feedItem, boolean showUI, boolean success) {
             this.feedItem = feedItem;
             this.showUI = showUI;
+            this.success = success;
         }
 
         public FeedItem getFeedItem() {
@@ -273,6 +270,10 @@ public class Events {
 
         public boolean isShowUI() {
             return showUI;
+        }
+
+        public boolean isSuccess() {
+            return success;
         }
     }
 
@@ -467,23 +468,6 @@ public class Events {
 
         public Partner getPartner() {
             return partner;
-        }
-    }
-
-    /**
-     * Event signaling that poi view is requested
-     */
-
-    public static class OnPoiViewRequestedEvent {
-
-        private Poi poi;
-
-        public OnPoiViewRequestedEvent(Poi poi) {
-            this.poi = poi;
-        }
-
-        public Poi getPoi() {
-            return poi;
         }
     }
 

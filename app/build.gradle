@@ -1,19 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-//apply plugin: 'com.google.firebase.firebase-perf'
 
-def versionMajor = 4
-def versionMinor = 6
+def versionMajor = 5
+def versionMinor = 3
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
-    def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug;
-    def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken;
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
+    def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug
+    def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken
+    //def MIXPANEL_TOKEN_PFP_DEBUG = System.env.MIXPANEL_TOKEN_PFP_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_PFP_DEBUG + '"' : entourageMixpanelTokenPFPDebug
+    def MIXPANEL_TOKEN_PFP = System.env.MIXPANEL_TOKEN_PFP ? '"' + System.env.MIXPANEL_TOKEN_PFP + '"' : entourageMixpanelTokenPFP
 
-    def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin;
-    def TEST_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_ACCOUNT_PWD + '"' : entourageTestPwd;
+    def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin
+    def TEST_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_ACCOUNT_PWD + '"' : entourageTestPwd
 
     defaultConfig {
         applicationId 'social.entourage.android'
@@ -24,10 +25,13 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        def AWS_KEY = System.env.AWS_KEY ? '"' + System.env.AWS_KEY + '"' : entourageAWSKey;
-        def AWS_SECRET = System.env.AWS_SECRET ? '"' + System.env.AWS_SECRET + '"' : entourageAWSSecret;
+        def AWS_KEY = System.env.AWS_KEY ? '"' + System.env.AWS_KEY + '"' : entourageAWSKey
+        def AWS_SECRET = System.env.AWS_SECRET ? '"' + System.env.AWS_SECRET + '"' : entourageAWSSecret
 
+        buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
         buildConfigField 'String', 'AWS_BUCKET', '"entourage-avatars-production-thumb"'
+        buildConfigField 'String', 'AWS_MAIN_FOLDER', '""'
+        buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
         buildConfigField 'String', 'AWS_KEY', AWS_KEY
         buildConfigField 'String', 'AWS_SECRET', AWS_SECRET
         buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN
@@ -49,14 +53,72 @@ android {
             storePassword "${System.env.KEYSTORE_PASS}"
         }
 
+        googleplay_pfp {
+            keyAlias 'googleplay-pfp'
+            keyPassword "${System.env.KEYSTORE_PASS}"
+            storeFile file('../keystore/googleplay-pfp-keystore.jks')
+            storePassword "${System.env.KEYSTORE_PASS}"
+        }
+
         debug {
             storeFile file('../keystore/debug.keystore')
         }
     }
 
+    flavorDimensions 'app', 'env'
+
+    productFlavors {
+        prod {
+            dimension 'env'
+        }
+        staging {
+            dimension 'env'
+            applicationIdSuffix '.preprod'
+            buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
+            buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
+            /*buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP_DEBUG*/
+            manifestPlaceholders = [
+                    deepLinksHostName       : "entourage-landingpages-preprod.herokuapp.com",
+                    deepLinksEntourageScheme: "entourage-staging"
+            ]
+        }
+        entourage {
+            dimension 'app'
+            buildConfigField 'String', 'API_KEY', '"8f7583e72131416c4ebc1e38"'
+            ext {
+                prod = [
+                        serverURL: "https://api.entourage.social/api/v1/"
+                ]
+                staging = [
+                        serverURL: "https://entourage-back-preprod.herokuapp.com/api/v1/"
+                ]
+            }
+        }
+        pfp {
+            dimension 'app'
+            applicationId 'social.entourage.android.pfp'
+            buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
+            buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
+            buildConfigField 'String', 'API_KEY', '"81054ed8deb402cb0e1162c6"'
+            manifestPlaceholders = [
+                    deepLinksHostName       : "www.entourage.social/pfp",
+                    deepLinksEntourageScheme: "pfp-prod"
+            ]
+            ext {
+                prod = [
+                        serverURL: "https://apiPXTGS.entourage.social/api/v1/"
+                ]
+                staging = [
+                        serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/"
+                ]
+            }
+        }
+    }
+
     buildTypes {
         release {
-            signingConfig signingConfigs.googleplay
+            productFlavors.entourage.signingConfig signingConfigs.googleplay
+            productFlavors.pfp.signingConfig signingConfigs.googleplay_pfp
             debuggable false
         }
 
@@ -66,31 +128,16 @@ android {
         }
     }
 
-    flavorDimensions "entourage"
-
-    productFlavors {
-        preprod {
-            applicationId 'social.entourage.android.preprod'
-            buildConfigField 'String', 'ENTOURAGE_URL', '"https://entourage-back-preprod.herokuapp.com/api/v1/"'
-            buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
-            buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
-            manifestPlaceholders = [
-                    deepLinksHostName       : "entourage-landingpages-preprod.herokuapp.com",
-                    deepLinksEntourageScheme: "entourage-staging"
-            ]
-        }
-
-        prod {
-            applicationId 'social.entourage.android'
-            buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
-            buildConfigField 'String', 'AWS_FOLDER', '"300x300/"'
-        }
-    }
-
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "EntourageApp-${variant.name}-${variant.versionName}.apk"
+            outputFileName = "app-${variant.name}-${variant.versionName}.apk"
         }
+        def flavors = variant.productFlavors
+        // flavorDimensions "app" -> 0, "env" -> 1
+        def app = flavors[0]
+        def environment = flavors[1]
+
+        variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
     }
 
     packagingOptions {
@@ -115,16 +162,15 @@ android {
 }
 
 dependencies {
-    def supportVersion = "27.1.0"
-    def playServicesVersion = "12.0.0"
+    def supportVersion = "27.1.1"
+    def playServicesVersion = "15.0.1"
     def daggerVersion = "2.15"
     def okHttpVersion = "3.9.1"
     def retrofitVersion = "2.4.0"
     def butterKnifeVersion = "8.8.1"
     def awsVersion = "2.6.17"
-
-    implementation "com.android.support:multidex:1.0.3"
-    implementation "com.android.support:support-v4:${supportVersion}"
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:support-annotations:${supportVersion}"
     implementation "com.android.support:cardview-v7:${supportVersion}"
     implementation "com.android.support:recyclerview-v7:${supportVersion}"
@@ -144,42 +190,39 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     implementation "com.amazonaws:aws-android-sdk-core:${awsVersion}"
     implementation "com.amazonaws:aws-android-sdk-s3:${awsVersion}"
-    implementation "com.squareup:tape:1.2.3"
-    implementation "com.squareup:otto:1.3.8"
-    implementation "com.squareup.picasso:picasso:2.5.2"
-    implementation "jp.wasabeef:picasso-transformations:2.1.0"
-    implementation "com.github.clans:fab:1.6.4"
-    implementation "net.danlew:android.joda:2.9.5.1"
-    implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
-    implementation "me.leolin:ShortcutBadger:1.1.13@aar"
-    implementation "com.mixpanel.android:mixpanel-android:5.2.1"
-    implementation "com.facebook.android:facebook-core:4.31.0"
-    implementation 'com.facebook.android:facebook-android-sdk:4.31.0'
-
-    api("com.crashlytics.sdk.android:crashlytics:2.9.1@aar") {
-        transitive = true;
+    implementation 'com.squareup:tape:1.2.3'
+    implementation 'com.squareup:otto:1.3.8'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'jp.wasabeef:picasso-transformations:2.1.0'
+    implementation 'com.github.clans:fab:1.6.4'
+    implementation 'net.danlew:android.joda:2.9.5.1'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
+    implementation 'me.leolin:ShortcutBadger:1.1.13@aar'
+    implementation 'com.mixpanel.android:mixpanel-android:5.3.1'
+    implementation 'com.wdullaer:materialdatetimepicker:3.6.3'
+    entourageImplementation 'com.facebook.android:facebook-core:4.31.0'
+    entourageImplementation 'com.facebook.android:facebook-android-sdk:4.31.0'
+    api('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+        transitive = true
     }
-
-    implementation "com.google.firebase:firebase-core:${playServicesVersion}"
-    implementation "com.google.firebase:firebase-perf:${playServicesVersion}"
+    implementation "com.google.firebase:firebase-core:16.0.3"
+    /*implementation "com.google.firebase:firebase-perf:15.2.0"*/
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
 
     /*androidTestImplementation(
-            "junit:junit:4.12",
-            "org.mockito:mockito-core:1.10.19",
-            "org.assertj:assertj-core:1.7.1",
-            "de.bechte.junit:junit-hierarchicalcontextrunner:4.12.1"
-    )*/
-
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:3.0.1") {
+                "junit:junit:4.12",
+                "org.mockito:mockito-core:1.10.19",
+                "org.assertj:assertj-core:1.7.1",
+                "de.bechte.junit:junit-hierarchicalcontextrunner:4.12.1"
+        )*/
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1') {
         exclude group: 'com.android.support'
     }
-    androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0") {
+    androidTestImplementation('com.jakewharton.espresso:okhttp3-idling-resource:1.0.0') {
         exclude group: 'com.android.support'
         exclude group: 'com.squareup.okhttp3'
     }
-
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 }
 

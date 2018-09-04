@@ -56,7 +56,7 @@
         android:id="@+id/user_profile_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/user_message_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/user_title_layout">
@@ -99,7 +99,7 @@
                     android:layout_alignRight="@+id/user_photo"
                     android:scaleType="fitCenter"/>
 
-                <TextView
+                <social.entourage.android.user.UserNameView
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/greyish_brown"
+                    android:textColor="@color/profile_name"
                     android:textSize="@dimen/entourage_font_big"
                     android:textStyle="bold"/>
 
@@ -183,25 +183,6 @@
                     android:background="@drawable/about_bottomright_corner"/>
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/user_associations_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/pale_grey"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="20dp"
-                android:text="@string/user_associations_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"
-                android:textStyle="bold"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/user_associations_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
 
             <RelativeLayout
                 android:id="@+id/user_number_of_entourages_layout"
@@ -359,6 +340,28 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/user_message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_white_rounded_top"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/user_message_button"
+            style="@style/AccentButton.BigRoundedCorners"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="@string/user_message_button"
+            android:textAllCaps="true"/>
+    </FrameLayout>
 
     <ProgressBar
         android:layout_width="wrap_content"

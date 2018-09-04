@@ -1,5 +1,6 @@
 package social.entourage.android.map.entourage.category;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,13 +20,13 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageLinkMovementMethod;
-import social.entourage.android.map.entourage.CreateEntourageListener;
+import social.entourage.android.map.entourage.create.CreateEntourageListener;
 import social.entourage.android.view.HtmlTextView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link social.entourage.android.map.entourage.CreateEntourageListener} interface
+ * {@link CreateEntourageListener} interface
  * to handle interaction events.
  * Use the {@link EntourageCategoryFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -90,7 +91,10 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
         if (getArguments() != null) {
             category = (EntourageCategory)getArguments().getSerializable(KEY_ENTOURAGE_CATEGORY);
             if (category != null) {
-                category.setDefault(true);
+                category.setSelected(true);
+            } else {
+                category = EntourageCategoryManager.getInstance().getDefaultCategory();
+                category.setSelected(true);
             }
         }
 
@@ -98,12 +102,22 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     }
 
     @Override
+    public void onDismiss(final DialogInterface dialog) {
+        resetSelectedCategory();
+        super.onDismiss(dialog);
+    }
+
+    @Override
     public void dismiss() {
+        resetSelectedCategory();
+        super.dismiss();
+    }
+
+    private void resetSelectedCategory() {
         if (adapter != null && adapter.selectedCategory != null) {
             // Reset the flag so consequent fragment shows will not appear broken
-            adapter.selectedCategory.setDefault(false);
+            adapter.selectedCategory.setSelected(false);
         }
-        super.dismiss();
     }
 
     public void setListener(final CreateEntourageListener mListener) {
