@@ -6,8 +6,8 @@ def versionMinor = 3
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug
     def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken
     //def MIXPANEL_TOKEN_PFP_DEBUG = System.env.MIXPANEL_TOKEN_PFP_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_PFP_DEBUG + '"' : entourageMixpanelTokenPFPDebug
@@ -165,7 +165,7 @@ dependencies {
     def supportVersion = "27.1.1"
     def playServicesVersion = "15.0.1"
     def daggerVersion = "2.15"
-    def okHttpVersion = "3.9.1"
+    def okHttpVersion = "3.10.0"
     def retrofitVersion = "2.4.0"
     def butterKnifeVersion = "8.8.1"
     def awsVersion = "2.6.17"
