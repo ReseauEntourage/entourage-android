@@ -1,6 +1,7 @@
 package social.entourage.android.authentication.login;
 
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import java.io.IOException;
@@ -371,8 +372,8 @@ public abstract class BaseLoginPresenter {
      * @param user the user to check
      * @return
      */
-    public boolean shouldShowActionZoneView(User user) {
-        return (user == null || user.getAddress() == null || user.getAddress().getDisplayAddress() == null || user.getAddress().getDisplayAddress().length() == 0);
+    public boolean shouldShowActionZoneView(@NonNull User user) {
+        return (user.getAddress() == null || user.getAddress().getDisplayAddress() == null || user.getAddress().getDisplayAddress().length() == 0);
     }
 
     /**
