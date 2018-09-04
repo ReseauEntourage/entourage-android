@@ -204,7 +204,7 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:3.6.3'
     entourageImplementation 'com.facebook.android:facebook-core:4.31.0'
     entourageImplementation 'com.facebook.android:facebook-android-sdk:4.31.0'
-    api('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+    api('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true
     }
     implementation "com.google.firebase:firebase-core:16.0.3"
