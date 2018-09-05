@@ -120,8 +120,6 @@ android {
             productFlavors.entourage.signingConfig signingConfigs.googleplay
             productFlavors.pfp.signingConfig signingConfigs.googleplay_pfp
             debuggable false
-            minifyEnabled true
-            shrinkResources true
         }
 
         debug {
