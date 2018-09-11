@@ -3,6 +3,8 @@ package social.entourage.android;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
@@ -109,14 +111,15 @@ public abstract class DrawerBasePresenter {
                 Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
+
                 /*
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("entourage-staging://tutorial"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://profile"));
                         try {
-                            startActivity(intent);
+                            activity.startActivity(intent);
                         } catch (Exception ex) {
                             Log.d("DEEPLINK", ex.toString());
                         }

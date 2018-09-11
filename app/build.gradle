@@ -39,10 +39,12 @@ android {
         buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
         buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
 
+        /*
         manifestPlaceholders = [
                 deepLinksHostName       : "www.entourage.social",
-                deepLinksEntourageScheme: "entourage"
+                deepLinksEntourageScheme: DEEP_LINKS_SCHEME
         ]
+        */
     }
 
     signingConfigs {
@@ -77,20 +79,21 @@ android {
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
             /*buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP_DEBUG*/
-            manifestPlaceholders = [
-                    deepLinksHostName       : "entourage-landingpages-preprod.herokuapp.com",
-                    deepLinksEntourageScheme: "entourage-staging"
-            ]
+
         }
         entourage {
             dimension 'app'
             buildConfigField 'String', 'API_KEY', '"8f7583e72131416c4ebc1e38"'
             ext {
                 prod = [
-                        serverURL: "https://api.entourage.social/api/v1/"
+                        serverURL: "https://api.entourage.social/api/v1/",
+                        deepLinksHostName: "www.entourage.social",
+                        deepLinksScheme: "entourage"
                 ]
                 staging = [
-                        serverURL: "https://entourage-back-preprod.herokuapp.com/api/v1/"
+                        serverURL: "https://entourage-back-preprod.herokuapp.com/api/v1/",
+                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
+                        deepLinksScheme: "entourage-staging"
                 ]
             }
         }
@@ -100,16 +103,17 @@ android {
             buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
             buildConfigField 'String', 'API_KEY', '"81054ed8deb402cb0e1162c6"'
-            manifestPlaceholders = [
-                    deepLinksHostName       : "www.entourage.social/pfp",
-                    deepLinksEntourageScheme: "pfp-prod"
-            ]
+
             ext {
                 prod = [
-                        serverURL: "https://apiPXTGS.entourage.social/api/v1/"
+                        serverURL: "https://apiPXTGS.entourage.social/api/v1/",
+                        deepLinksHostName: "www.entourage.social/pfp",
+                        deepLinksScheme: "pfp-prod"
                 ]
                 staging = [
-                        serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/"
+                        serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/",
+                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
+                        deepLinksScheme: "pfp-staging"
                 ]
             }
         }
@@ -138,6 +142,13 @@ android {
         def environment = flavors[1]
 
         variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
+        variant.buildConfigField "String", "DEEP_LINKS_SCHEME", "\"${app[environment.name]['deepLinksScheme']}\""
+
+        variant.mergedFlavor.manifestPlaceholders = [
+                deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
+                deepLinksEntourageScheme : "${app[environment.name]['deepLinksScheme']}"
+        ]
+
     }
 
     packagingOptions {
