@@ -555,7 +555,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (presenter != null) {
             commentEditText.setEnabled(false);
             commentSendButton.setEnabled(false);
-            
+
             presenter.sendFeedItemMessage(commentEditText.getText().toString());
         }
     }
