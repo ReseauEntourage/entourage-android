@@ -78,12 +78,11 @@
 
         <Button
             android:id="@+id/tour_info_comment_send_button"
+            style="@style/TransparentButton.Accent"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:background="?android:attr/selectableItemBackground"
             android:text="@string/send"
-            android:textColor="@color/accent"
             android:textSize="@dimen/entourage_font_medium"
             android:visibility="gone"/>
 

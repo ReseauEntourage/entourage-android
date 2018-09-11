@@ -31,6 +31,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -552,6 +553,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @OnClick(R.id.tour_info_comment_send_button)
     protected void onAddCommentButton() {
         if (presenter != null) {
+            commentEditText.setEnabled(false);
+            commentSendButton.setEnabled(false);
+            
             presenter.sendFeedItemMessage(commentEditText.getText().toString());
         }
     }
@@ -1889,6 +1893,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     protected void onFeedItemMessageSent(ChatMessage chatMessage) {
         hideProgressBar();
+        commentEditText.setEnabled(true);
+        commentSendButton.setEnabled(true);
 
         if (chatMessage == null) {
             if(getContext()!=null) {
