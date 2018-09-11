@@ -1378,6 +1378,21 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 }
             }
         });
+
+        commentEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (discussionView != null) {
+                    final int lastVisibleItemPosition = ((LinearLayoutManager)discussionView.getLayoutManager()).findLastVisibleItemPosition();
+                    discussionView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            discussionView.scrollToPosition(lastVisibleItemPosition);
+                        }
+                    }, 500);
+                }
+            }
+        });
     }
 
     private void initializeMembersView() {
