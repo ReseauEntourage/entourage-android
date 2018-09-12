@@ -18,6 +18,13 @@
         android:scaleType="centerCrop"
         android:src="@drawable/login_startup_background"/-->
 
+    <fragment
+        android:id="@+id/fragment"
+        android:name="social.entourage.android.authentication.login.slideshow.LoginSlideshowFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/login_slideshow"/>
+
     <ImageView
         android:id="@+id/login_startup_logo"
         android:layout_width="75dp"
@@ -28,7 +35,8 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitCenter"
-        android:src="@drawable/entourage_logo"/>
+        android:src="@drawable/entourage_logo"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/login_startup_slogan"
@@ -40,13 +48,15 @@
         android:text="@string/pfp_slogan"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white"
-        android:textSize="@dimen/entourage_font_big"/>
+        android:textSize="@dimen/entourage_font_big"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_white_rounded_top"
         android:orientation="vertical">
 
         <Button
@@ -63,13 +73,13 @@
 
         <Button
             android:id="@+id/login_button_login"
-            style="@style/AccentButton.BigRoundedCorners"
+            style="@style/WhiteButton.AccentRoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="@string/login_button_login"/>
     </LinearLayout>
 

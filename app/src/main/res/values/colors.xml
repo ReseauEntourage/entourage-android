@@ -112,6 +112,11 @@
     <color name="feeditem_card_details_normal">@color/greyish</color>
     <color name="feeditem_card_details_bold">@color/black</color>
 
+    <!-- Carousel bullet -->
+    <color name="carousel_bullet_filled">@color/accent</color>
+    <color name="carousel_bullet_empty">#00000000</color>
+    <color name="carousel_bullet_empty_stroke">#979797</color>
+
     <!-- Others -->
     <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>

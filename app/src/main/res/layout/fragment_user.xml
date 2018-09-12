@@ -346,7 +346,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_white_rounded_top"
+        android:background="@drawable/bg_transparent_rounded_top"
         android:clickable="true"
         android:focusable="true"
         android:paddingBottom="10dp"

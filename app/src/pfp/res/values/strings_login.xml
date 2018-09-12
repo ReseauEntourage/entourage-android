@@ -28,4 +28,16 @@
     <string name="registration_welcome_start">Commencer</string>
 
     <string name="registration_number_description">Voisinage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
+
+    <!-- Slideshow -->
+
+    <string name="login_slideshow_p1_title">Je tisse des liens</string>
+    <string name="login_slideshow_p1_details">d’amitié avec des personnes senior de mon voisinage</string>
+
+    <string name="login_slideshow_p2_title">Je rencontre</string>
+    <string name="login_slideshow_p2_details">les membres de Voisin-Age de mon quartier dans des groupes conviviaux</string>
+
+    <string name="login_slideshow_p3_title">Je me coordonne</string>
+    <string name="login_slideshow_p3_details">pour veiller sur mes voisins âgés et enrichir leur quotidien : visites, sorties</string>
+
 </resources>
