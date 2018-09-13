@@ -29,10 +29,10 @@
         android:layout_toEndOf="@+id/side_menu_item_icon"
         android:layout_toLeftOf="@+id/side_menu_item_arrow"
         android:layout_toRightOf="@id/side_menu_item_icon"
+        android:layout_toStartOf="@+id/side_menu_item_arrow"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/greyish_brown"
-        android:textSize="@dimen/entourage_font_medium"
-        android:layout_toStartOf="@+id/side_menu_item_arrow"/>
+        android:textSize="@dimen/entourage_font_medium"/>
 
     <ImageView
         android:id="@+id/side_menu_item_arrow"
