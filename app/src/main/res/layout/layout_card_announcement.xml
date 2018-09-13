@@ -9,16 +9,15 @@
     android:background="@color/map_announcement_background"
     android:clipChildren="false"
     android:orientation="vertical"
-    android:paddingEnd="12dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="12dp"
-    android:paddingStart="16dp"
     android:paddingTop="8dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="16dp">
 
         <TextView
             android:id="@+id/announcement_card_title"
@@ -68,19 +67,31 @@
         android:id="@+id/announcement_card_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="5dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white"
         android:textSize="@dimen/entourage_font_medium"/>
 
+    <ImageView
+        android:id="@+id/announcement_card_image"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/empty_description"
+        android:cropToPadding="true"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:srcCompat="@drawable/announcement_image_placeholder"/>
+
     <RelativeLayout
         android:id="@+id/announcement_card_act_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="1dp"
-        >
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="1dp">
 
         <ImageView
             android:id="@+id/announcement_card_divider_left"
