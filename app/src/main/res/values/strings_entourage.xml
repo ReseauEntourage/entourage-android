@@ -19,6 +19,8 @@
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
+    <string name="outing_create_error">L\'évènement n\'a pas pu être créé!</string>
+    <string name="outing_create_ok">Évènement créé.</string>
     <string name="entourage_create_error_category_empty">Renseignez une catégorie pour votre action</string>
     <string name="entourage_create_error_title_empty">Le titre ne peut pas être vide</string>
     <string name="entourage_create_error_title_too_long">Le titre est trop long</string>
