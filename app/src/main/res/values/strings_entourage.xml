@@ -62,6 +62,7 @@
     <string name="entourage_type_outing">Évènement\u0020</string>
     <string name="entourage_type_format">%1$s par\u0020</string>
     <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
+    <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
     
     <!-- Entourage Location -->
     <string name="entourage_location_title">MA POSITION</string>

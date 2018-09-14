@@ -1488,6 +1488,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
         TextView metadataDate = fragmentView.findViewById(R.id.tour_info_metadata_date);
         if (metadataDate != null) metadataDate.setText(metadata.getStartDateAsString(getContext()));
+        TextView metadateTime = fragmentView.findViewById(R.id.tour_info_metadata_time);
+        if (metadateTime != null) metadateTime.setText(metadata.getStartTimeAsString(getContext()));
         TextView metadataAddress = fragmentView.findViewById(R.id.tour_info_metadata_address);
         if (metadataAddress != null) metadataAddress.setText(metadata.getDisplayAddress());
     }

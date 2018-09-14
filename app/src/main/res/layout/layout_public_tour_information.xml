@@ -39,7 +39,7 @@
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,7 +57,7 @@
 
                     <TextView
                         android:id="@+id/tour_info_metadata_organiser"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/dark_grey"/>
@@ -73,6 +73,7 @@
                         android:id="@+id/tour_info_metadata_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/empty_description"
                         app:srcCompat="@drawable/ic_calendar"/>
 
                     <LinearLayout
@@ -83,6 +84,13 @@
 
                         <TextView
                             android:id="@+id/tour_info_metadata_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/entourage_font_medium"/>
+
+                        <TextView
+                            android:id="@+id/tour_info_metadata_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/dark_grey"
