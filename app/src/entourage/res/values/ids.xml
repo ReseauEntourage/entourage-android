@@ -7,7 +7,6 @@
     <item name="side_menu_item_arrow" type="id" />
     <item name="about_version" type="id" />
     <item name="about_version_layout" type="id" />
-    <item name="about_privacy_layout" type="id" />
 
     <item name="user_message_layout" type="id" />
     <item name="user_message_button" type="id" />
