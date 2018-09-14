@@ -853,7 +853,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     protected void onUserAddClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
-        inviteSourceLayout.setVisibility(View.VISIBLE);
+        showInviteSource();
     }
 
     @Optional
@@ -867,6 +867,18 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         else {
             // For non-members, show the share screen
             onShareButton();
+        }
+    }
+
+    private void showInviteSource() {
+        inviteSourceLayout.setVisibility(View.VISIBLE);
+        TextView inviteDescription = inviteSourceLayout.findViewById(R.id.invite_source_description);
+        if (inviteDescription != null) {
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                inviteDescription.setText(Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) ? R.string.invite_source_description_outing : R.string.invite_source_description);
+            } else {
+                inviteDescription.setText(R.string.invite_source_description);
+            }
         }
     }
 
@@ -994,7 +1006,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         // for newly created entourages, open the invite friends screen automatically
         if (feedItem.isNewlyCreated() && feedItem.showInviteViewAfterCreation()) {
-            inviteSourceLayout.setVisibility(View.VISIBLE);
+            showInviteSource();
         }
 
         // check if we need to display the carousel
