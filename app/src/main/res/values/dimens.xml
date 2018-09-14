@@ -25,7 +25,7 @@
     <dimen name="feeditem_icon_width">29dp</dimen>
     <dimen name="feeditem_icon_height">29dp</dimen>
 
-    <dimen name="entourage_map_marker">60dp</dimen>
+    <dimen name="entourage_map_marker">40dp</dimen>
 
     <!-- Entourage padding -->
     <dimen name="entourage_padding_10">10dp</dimen>
