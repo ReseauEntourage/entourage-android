@@ -6,6 +6,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -224,7 +226,7 @@ public class MapPresenter {
     // INNER CLASS
     // ----------------------------------
 
-    public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
+    public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener, ClusterManager.OnClusterItemClickListener<FeedItem> {
         final Map<Marker, Encounter> encounterMarkerHashMap = new HashMap<>();
         final Map<Marker, FeedItem> markerFeedItemHashMap = new HashMap<>();
 
@@ -271,6 +273,19 @@ public class MapPresenter {
                 }
             }
             return false;
+        }
+
+        @Override
+        public boolean onClusterItemClick(final FeedItem feedItem) {
+            if (FeedItem.TOUR_CARD == feedItem.getType()) {
+                openFeedItem(feedItem, 0, 0);
+            }
+            else {
+                if (fragment != null) {
+                    fragment.handleHeatzoneClick(feedItem.getPosition());
+                }
+            }
+            return true;
         }
     }
 

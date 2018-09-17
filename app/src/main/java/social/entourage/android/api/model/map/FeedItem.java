@@ -7,8 +7,10 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,7 +28,7 @@ import social.entourage.android.api.model.User;
 /**
  * Created by mihaiionescu on 18/05/16.
  */
-public abstract class FeedItem extends TimestampedObject implements Serializable {
+public abstract class FeedItem extends TimestampedObject implements Serializable, ClusterItem {
 
     // ----------------------------------
     // CONSTANTS
@@ -244,6 +246,20 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
             }
         }
         return false;
+    }
+
+    // ----------------------------------
+    // ClusterItem METHODS
+    // ----------------------------------
+
+    @Override
+    public LatLng getPosition() {
+        return null;
+    }
+
+    @Override
+    public String getSnippet() {
+        return null;
     }
 
     // ----------------------------------

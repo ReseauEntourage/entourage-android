@@ -8,12 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -59,6 +55,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.ui.IconGenerator;
 import com.squareup.otto.Subscribe;
 
@@ -105,7 +102,6 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
-import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
@@ -126,7 +122,6 @@ import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.tools.Utils;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
 
 import static social.entourage.android.Constants.EVENT_SCREEN_06_1;
@@ -193,12 +188,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private int displayedTourHeads = 0;
 
     private List<Polyline> currentTourLines;
-    private Map<Long, Polyline> drawnToursMap;
+    private List<Polyline> drawnToursMap;
     private Map<Long, Polyline> drawnUserHistory;
     private Map<String, Object> markersMap;
     private Map<Long, Tour> retrievedHistory;
+    private ClusterManager<FeedItem> entourageClusterManager;
+    private FeedItemRenderer feedItemRenderer;
     private boolean initialNewsfeedLoaded = false;
-    private BitmapDescriptor heatmapIcon;
 
     private int originalMapLayoutHeight;
     private boolean isFullMapShown = false;
@@ -297,7 +293,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         BusProvider.getInstance().register(this);
 
         currentTourLines = new ArrayList<>();
-        drawnToursMap = new TreeMap<>();
+        drawnToursMap = new ArrayList<>();
         drawnUserHistory = new TreeMap<>();
         markersMap = new TreeMap<>();
         retrievedHistory = new TreeMap<>();
@@ -466,12 +462,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void dismissAllDialogs() {
         if (fragmentLifecycleCallbacks != null) {
             fragmentLifecycleCallbacks.dismissAllDialogs();
-        }
-    }
-
-    public void setOnMarkerClickListener(MapPresenter.OnEntourageMarkerClickListener onMarkerClickListener) {
-        if (map != null) {
-            map.setOnMarkerClickListener(onMarkerClickListener);
         }
     }
 
@@ -1195,14 +1185,21 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         if (map != null && newsfeeds.size() > 0) {
             // redraw the map
-            map.clear();
-            markersMap.clear();
-            drawnToursMap.clear();
-            if (presenter != null) {
-                presenter.getOnClickListener().clear();
-                presenter.getOnGroundOverlayClickListener().clear();
+//            map.clear();
+//            markersMap.clear();
+//            drawnToursMap.clear();
+//            entourageClusterManager.clearItems();
+//            if (presenter != null) {
+//                presenter.getOnClickListener().clear();
+//                presenter.getOnGroundOverlayClickListener().clear();
+//            }
+//            displayedTourHeads = 0;
+
+            for (Polyline polyline:drawnToursMap) {
+                polyline.remove();
             }
-            displayedTourHeads = 0;
+            drawnToursMap.clear();
+
             //redraw the whole newsfeed
             for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
                 if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
@@ -1215,6 +1212,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     drawNearbyEntourage((Entourage) timestampedObject);
                 }
             }
+            entourageClusterManager.cluster();
             //redraw the current ongoing tour, if any
             if (tourService != null && currentTourUUID != null && currentTourUUID.length() > 0) {
                 PolylineOptions line = new PolylineOptions();
@@ -1224,7 +1222,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 line.zIndex(2f);
                 line.width(15);
                 line.color(color);
-                map.addPolyline(line);
+                drawnToursMap.add(map.addPolyline(line));
 
                 Tour currentTour = tourService.getCurrentTour();
                 if (currentTour != null) {
@@ -1674,6 +1672,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             .show();
     }
 
+    //TODO Make separate class, MapClusterItem that implements ClusterItem and that hides what type of marker it is (entourage, encounter, tour head)
+
     private void initializeMap() {
         if (onMapReadyCallback == null) {
             onMapReadyCallback = new OnMapReadyCallback() {
@@ -1688,8 +1688,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                     googleMap.getUiSettings().setMapToolbarEnabled(false);
 
+                    entourageClusterManager = new ClusterManager<>(getActivity(), map);
+                    feedItemRenderer = new FeedItemRenderer(getActivity(), map, entourageClusterManager);
+                    entourageClusterManager.setRenderer(feedItemRenderer);
+                    entourageClusterManager.setOnClusterItemClickListener(presenter.getOnClickListener());
+
                     initializeMapZoom();
-                    setOnMarkerClickListener(presenter.getOnClickListener());
+                    map.setOnMarkerClickListener(entourageClusterManager);
                     map.setOnGroundOverlayClickListener(presenter.getOnGroundOverlayClickListener());
 
                     googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
@@ -2153,20 +2158,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             for (TourPoint tourPoint : tour.getTourPoints()) {
                 line.add(tourPoint.getLocation());
             }
-            boolean existingTour = drawnToursMap.containsKey(tour.getId());
             if (isHistory) {
                 retrievedHistory.put(tour.getId(), tour);
                 drawnUserHistory.put(tour.getId(), map.addPolyline(line));
             } else {
-                drawnToursMap.put(tour.getId(), map.addPolyline(line));
+                drawnToursMap.add(map.addPolyline(line));
                 //addTourCard(tour);
             }
             if (tour.getTourStatus() == null) {
                 tour.setTourStatus(FeedItem.STATUS_CLOSED);
             }
-            if (!existingTour) {
-                addTourHead(tour);
-            }
+            addTourHead(tour);
         }
     }
 
@@ -2176,7 +2178,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 if (markersMap.get(feedItem.hashString()) == null) {
                     LatLng position = feedItem.getStartPoint().getLocation();
                     if (feedItem.showHeatmapAsOverlay()) {
-                        heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId());
+                        BitmapDescriptor heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId());
                         GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
                                 .image(heatmapIcon)
                                 .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
@@ -2189,6 +2191,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         }
                     } else {
                         // add marker
+                        /*
                         Drawable drawable = getResources().getDrawable(feedItem.getHeatmapResourceId());
                         BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, Entourage.getMarkerSize(getContext()), Entourage.getMarkerSize(getContext()));
                         MarkerOptions markerOptions = new MarkerOptions()
@@ -2200,6 +2203,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                         if (presenter != null) {
                             presenter.getOnClickListener().addTourMarker(marker, feedItem);
                         }
+                        */
+                        entourageClusterManager.addItem(feedItem);
                     }
                 }
             }
@@ -2239,7 +2244,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void addTourHead(Tour tour) {
-        if (displayedTourHeads >= MAX_TOUR_HEADS_DISPLAYED || map == null) {
+        if (displayedTourHeads >= MAX_TOUR_HEADS_DISPLAYED || map == null || markersMap.containsKey(tour.hashString())) {
             return;
         }
         displayedTourHeads++;
@@ -2269,6 +2274,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             map.clear();
         }
 
+        markersMap.clear();
         currentTourLines.clear();
         drawnToursMap.clear();
         drawnUserHistory.clear();
