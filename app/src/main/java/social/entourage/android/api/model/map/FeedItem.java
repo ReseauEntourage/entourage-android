@@ -28,7 +28,7 @@ import social.entourage.android.api.model.User;
 /**
  * Created by mihaiionescu on 18/05/16.
  */
-public abstract class FeedItem extends TimestampedObject implements Serializable, ClusterItem {
+public abstract class FeedItem extends TimestampedObject implements Serializable {
 
     // ----------------------------------
     // CONSTANTS
@@ -246,20 +246,6 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
             }
         }
         return false;
-    }
-
-    // ----------------------------------
-    // ClusterItem METHODS
-    // ----------------------------------
-
-    @Override
-    public LatLng getPosition() {
-        return null;
-    }
-
-    @Override
-    public String getSnippet() {
-        return null;
     }
 
     // ----------------------------------

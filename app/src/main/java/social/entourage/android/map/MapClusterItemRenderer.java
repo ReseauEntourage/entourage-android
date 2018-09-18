@@ -16,19 +16,19 @@ import social.entourage.android.tools.Utils;
 /**
  * Created by Mihai Ionescu on 17/09/2018.
  */
-public class FeedItemRenderer extends DefaultClusterRenderer<FeedItem> {
+public class MapClusterItemRenderer extends DefaultClusterRenderer<MapClusterItem> {
 
     private Context context;
 
-    public FeedItemRenderer(final Context context, final GoogleMap map, final ClusterManager<FeedItem> clusterManager) {
+    public MapClusterItemRenderer(final Context context, final GoogleMap map, final ClusterManager<MapClusterItem> clusterManager) {
         super(context, map, clusterManager);
         this.context = context;
     }
 
     @Override
-    protected void onBeforeClusterItemRendered(final FeedItem item, final MarkerOptions markerOptions) {
-        Drawable drawable = context.getResources().getDrawable(item.getHeatmapResourceId());
-        BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, Entourage.getMarkerSize(context), Entourage.getMarkerSize(context));
-        markerOptions.icon(icon);
+    protected void onBeforeClusterItemRendered(final MapClusterItem item, final MarkerOptions markerOptions) {
+        if (item != null) {
+            item.applyMarkerOptions(context, markerOptions);
+        }
     }
 }

@@ -165,16 +165,6 @@ public class BaseEntourage extends FeedItem implements Serializable {
     }
 
     // ----------------------------------
-    // ClusterItem METHODS
-    // ----------------------------------
-
-    @Override
-    public LatLng getPosition() {
-        if (location == null) return null;
-        return new LatLng(location.getLatitude(), location.getLongitude());
-    }
-
-    // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
 
