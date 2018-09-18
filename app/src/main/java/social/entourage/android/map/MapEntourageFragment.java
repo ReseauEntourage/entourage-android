@@ -1666,7 +1666,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             })
             .show();
     }
-    
+
     private void initializeMap() {
         if (onMapReadyCallback == null) {
             onMapReadyCallback = new OnMapReadyCallback() {

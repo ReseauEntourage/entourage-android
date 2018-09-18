@@ -5,8 +5,6 @@ import android.support.v4.app.FragmentManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.HashMap;

@@ -1,17 +1,12 @@
 package social.entourage.android.map;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
-import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.tools.Utils;
 
 /**
  * Created by Mihai Ionescu on 17/09/2018.
