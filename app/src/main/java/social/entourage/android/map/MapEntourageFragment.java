@@ -1666,9 +1666,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             })
             .show();
     }
-
-    //TODO Make separate class, MapClusterItem that implements ClusterItem and that hides what type of marker it is (entourage, encounter, tour head)
-
+    
     private void initializeMap() {
         if (onMapReadyCallback == null) {
             onMapReadyCallback = new OnMapReadyCallback() {
