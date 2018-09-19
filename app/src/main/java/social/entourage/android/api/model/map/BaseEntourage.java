@@ -328,7 +328,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
             return R.drawable.ic_neighborhood_marker;
         }
         if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
-            return R.drawable.ic_action_outing;
+            return R.drawable.ic_action_outing_marker;
         }
         return super.getHeatmapResourceId();
     }
