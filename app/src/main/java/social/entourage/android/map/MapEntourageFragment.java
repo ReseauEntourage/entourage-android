@@ -503,6 +503,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     public void displayChosenFeedItem(FeedItem feedItem, long invitationId, int feedRank) {
+        if (getContext() == null || isStateSaved()) return;
         // decrease the badge count
         EntourageApplication application = EntourageApplication.get(getContext());
         if (application != null) {
