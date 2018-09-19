@@ -483,14 +483,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     public void displayChosenFeedItem(String feedItemUUID, int feedItemType, long invitationId) {
         //display the feed item
-        FeedItem feedItem = (FeedItem) newsfeedAdapter.findCard(feedItemType, feedItemUUID);
-        if (feedItem != null) {
-            displayChosenFeedItem(feedItem, invitationId);
-        } else {
-            if (presenter != null) {
-                EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
-                presenter.openFeedItem(feedItemUUID, feedItemType, invitationId);
+        if (newsfeedAdapter != null) {
+            FeedItem feedItem = (FeedItem) newsfeedAdapter.findCard(feedItemType, feedItemUUID);
+            if (feedItem != null) {
+                displayChosenFeedItem(feedItem, invitationId);
+                return;
             }
+        }
+        if (presenter != null) {
+            EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
+            presenter.openFeedItem(feedItemUUID, feedItemType, invitationId);
         }
     }
 
