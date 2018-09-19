@@ -121,7 +121,7 @@ public class MapPresenter {
     }
 
     public void createEntourage(LatLng location, String groupType) {
-        if (fragment.getActivity() != null) {
+        if (fragment != null && fragment.getActivity() != null && !fragment.isStateSaved()) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
             CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location, groupType);
             entourageFragment.show(fragmentManager, CreateEntourageFragment.TAG);
@@ -129,7 +129,7 @@ public class MapPresenter {
     }
 
     public void displayEntourageDisclaimer(String groupType) {
-        if (fragment.getActivity() != null) {
+        if (fragment != null && fragment.getActivity() != null && !fragment.isStateSaved()) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
             EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(groupType);
             fragment.show(fragmentManager, EntourageDisclaimerFragment.TAG);
