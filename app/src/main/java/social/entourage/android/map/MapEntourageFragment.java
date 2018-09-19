@@ -424,17 +424,17 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public boolean onBackPressed() {
-        if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
+        if (mapLauncherLayout != null && mapLauncherLayout.getVisibility() == View.VISIBLE) {
             hideTourLauncher();
             return true;
         }
-        if (mapOptionsMenu.isOpened()) {
+        if (mapOptionsMenu != null && mapOptionsMenu.isOpened()) {
             mapOptionsMenu.toggle(true);
             return true;
         }
-        if (mapLongClickView.getVisibility() == View.VISIBLE) {
+        if (mapLongClickView != null && mapLongClickView.getVisibility() == View.VISIBLE) {
             mapLongClickView.setVisibility(View.GONE);
-            mapOptionsMenu.setVisibility(View.VISIBLE);
+            if (mapOptionsMenu != null) mapOptionsMenu.setVisibility(View.VISIBLE);
             if (tourService != null && tourService.isRunning()) {
                 if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
             }
