@@ -16,7 +16,7 @@
     <dimen name="newsfeed_fab_bottowm_view_delta">80dp</dimen>
     <dimen name="newsfeed_longpress_delta_y">20dp</dimen>
 
-    <dimen name="newsfeed_map_height">155dp</dimen>
+    <dimen name="newsfeed_map_height">255dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
 
     <dimen name="announcement_icon_width">29dp</dimen>

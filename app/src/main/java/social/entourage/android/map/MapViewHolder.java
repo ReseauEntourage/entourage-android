@@ -21,6 +21,7 @@ public class MapViewHolder extends BaseCardViewHolder {
 
     private ImageButton mFollowButton;
     private EntourageMapView mMapView;
+    private View mTabView;
 
     public MapViewHolder(View view) {
         super(view);
@@ -30,6 +31,7 @@ public class MapViewHolder extends BaseCardViewHolder {
     protected void bindFields() {
         mFollowButton = itemView.findViewById(R.id.layout_feed_map_card_follow_button);
         mMapView = itemView.findViewById(R.id.layout_feed_map_card_mapview);
+        mTabView = itemView.findViewById(R.id.layout_feed_map_card_tab);
         //Force the map to full height, even if the view holder is smaller
         RelativeLayout.LayoutParams layout = (RelativeLayout.LayoutParams)mMapView.getLayoutParams();
         DisplayMetrics displayMetrics = itemView.getContext().getResources().getDisplayMetrics();
@@ -85,6 +87,10 @@ public class MapViewHolder extends BaseCardViewHolder {
         mMapView.setLayoutParams(layout);
 
         itemView.forceLayout();
+    }
+
+    public void setTabVisibility(int visibility) {
+        if (mTabView != null) mTabView.setVisibility(visibility);
     }
 
 }

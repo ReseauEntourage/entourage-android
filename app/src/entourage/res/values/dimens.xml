@@ -1,0 +1,5 @@
+<resources>
+    <!-- Map tab padding -->
+    <dimen name="map_tab_icon_padding">12dp</dimen>
+
+</resources>

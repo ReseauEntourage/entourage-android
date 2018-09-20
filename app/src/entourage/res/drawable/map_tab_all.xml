@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="@color/accent"/>
+                </shape>
+            </item>
+            <item android:top="@dimen/map_tab_icon_padding"
+                  android:left="@dimen/map_tab_icon_padding"
+                  android:bottom="@dimen/map_tab_icon_padding"
+                  android:right="@dimen/map_tab_icon_padding">
+                <bitmap android:src="@drawable/ic_entourage_disclaimer_hand" android:tint="@color/white"/>
+            </item>
+        </layer-list>
+    </item>
+    <item>
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="@color/greyish"/>
+                </shape>
+            </item>
+            <item android:top="@dimen/map_tab_icon_padding"
+                  android:left="@dimen/map_tab_icon_padding"
+                  android:bottom="@dimen/map_tab_icon_padding"
+                  android:right="@dimen/map_tab_icon_padding">
+                <bitmap android:src="@drawable/ic_entourage_disclaimer_hand" android:tint="@color/white"/>
+            </item>
+        </layer-list>
+    </item>
+</selector>

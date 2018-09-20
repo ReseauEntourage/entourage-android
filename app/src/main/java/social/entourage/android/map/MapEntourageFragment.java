@@ -253,6 +253,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @BindView(R.id.fragment_map_entourage_mini_cards)
     EntourageMiniCardsView miniCardsView;
 
+    @BindView(R.id.fragment_map_filter_button)
+    View filterButton;
+
     Timer refreshToursTimer;
     TimerTask refreshToursTimerTask;
     final Handler refreshToursHandler = new Handler();
@@ -275,6 +278,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     // requested entourage group type
     String entourageGroupType = null;
+
+    // current selected tab
+    MapTabItem selectedTab = MapTabItem.ALL_TAB;
 
     // ----------------------------------
     // LIFECYCLE
@@ -747,7 +753,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         // Update the newsfeed
         clearAll();
-        tourService.updateNewsfeed(pagination);
+        tourService.updateNewsfeed(pagination, selectedTab);
 
     }
 
@@ -771,7 +777,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             clearAll();
             newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
 
-            tourService.updateNewsfeed(pagination);
+            tourService.updateNewsfeed(pagination, selectedTab);
         }
     }
 
@@ -803,8 +809,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
         }
         if (tourService != null) {
-            tourService.updateNewsfeed(pagination);
+            tourService.updateNewsfeed(pagination, selectedTab);
         }
+    }
+
+    @Subscribe
+    public void onMapTabChanged(Events.OnMapTabSelected event) {
+        selectedTab = event.getSelectedTab();
+
+        filterButton.setVisibility(selectedTab == MapTabItem.ALL_TAB ? View.VISIBLE : View.GONE);
     }
 
     // ----------------------------------
@@ -1010,7 +1023,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
 
                 if (tourService != null) {
-                    tourService.updateNewsfeed(pagination);
+                    tourService.updateNewsfeed(pagination, selectedTab);
                     if (userHistory) {
                         tourService.updateUserHistory(userId, 1, 1);
                     }
@@ -1723,7 +1736,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                     newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
                                 }
                                 pagination = new NewsfeedPagination();
-                                tourService.updateNewsfeed(pagination);
+                                tourService.updateNewsfeed(pagination, selectedTab);
                                 if (userHistory) {
                                     tourService.updateUserHistory(userId, 1, 500);
                                 }
@@ -2299,6 +2312,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         ensureMapVisible();
 
+        newsfeedAdapter.setTabVisibility(View.GONE);
         final int targetHeight = layoutMain.getMeasuredHeight();
         newsfeedAdapter.setMapHeight(targetHeight);
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
@@ -2330,6 +2344,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         hideEmptyListPopup();
 
+        newsfeedAdapter.setTabVisibility(View.VISIBLE);
         ValueAnimator anim = ValueAnimator.ofInt(layoutMain.getMeasuredHeight(), originalMapLayoutHeight);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -2403,7 +2418,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //refresh the newsfeed
         if (tourService != null) {
             pagination.isRefreshing = true;
-            tourService.updateNewsfeed(pagination);
+            tourService.updateNewsfeed(pagination, selectedTab);
         }
         //update the badge count on tour card
         PushNotificationContent content = message.getContent();
@@ -2464,7 +2479,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             }
                             */
                             pagination.isRefreshing = true;
-                            tourService.updateNewsfeed(pagination);
+                            tourService.updateNewsfeed(pagination, selectedTab);
                         }
                     }
                 });
@@ -2713,7 +2728,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     addCurrentTourEncounters();
                 }
 
-                tourService.updateNewsfeed(pagination);
+                tourService.updateNewsfeed(pagination, selectedTab);
                 if (userHistory) {
                     tourService.updateUserHistory(userId, 1, 500);
                 }
@@ -2739,7 +2754,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
-                    if ((tourService != null)&&(tourService.updateNewsfeed(pagination))) {
+                    if ((tourService != null)&&(tourService.updateNewsfeed(pagination, selectedTab))) {
                             //if update returns false no need to log this...
                         EntourageEvents.logEvent(Constants.EVENT_FEED_SCROLL_LIST);
                     }

@@ -2,6 +2,7 @@
 <resources>
     <!-- Missing ids from entourage app -->
     <item name="fragment_map_show_guide" type="id" />
+    <item name="layout_feed_map_card_tab" type="id" />
 
     <item name="slideshow_b4" type="id" />
 

@@ -45,6 +45,7 @@ import social.entourage.android.api.tape.EncounterTaskResult;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.map.MapTabItem;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
@@ -388,7 +389,7 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveNewsFeed(Date beforeDate, int distance, int itemsPerPage, Context context) {
+    protected void retrieveNewsFeed(Date beforeDate, int distance, int itemsPerPage, MapTabItem selectedTab, Context context) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
             tourService.notifyListenersNetworkException();
