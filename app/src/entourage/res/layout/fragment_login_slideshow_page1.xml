@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/login_slideshow_p1_bg"
+              android:gravity="bottom"
+              android:orientation="vertical"
+              tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage1Fragment">
+
+    <ImageView
+        android:id="@+id/login_slideshow_p1_logo"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/entourage_logo_grey"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p1_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_p1_title"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:gravity="center_horizontal"
+        android:text="@string/login_slideshow_p1_details"
+        android:textColor="@color/greyish_brown"
+        android:textSize="17sp"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p1_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitXY"
+        android:src="@drawable/login_slideshow_p1_bottom"/>
+</LinearLayout>

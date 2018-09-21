@@ -110,6 +110,9 @@ public class LoginSlideshowFragment extends Fragment {
 
         ImageView dot3 = indicatorLayout.findViewById(R.id.slideshow_b3);
         dots.add(dot3);
+
+        ImageView dot4 = indicatorLayout.findViewById(R.id.slideshow_b4);
+        if (dot4 != null) dots.add(dot4);
     }
 
     public void selectDot(int idx) {

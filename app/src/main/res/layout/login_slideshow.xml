@@ -14,8 +14,9 @@
         android:id="@+id/login_slideshow_indicator_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="220dp"
+        android:layout_marginBottom="150dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -36,6 +37,15 @@
 
         <ImageView
             android:id="@+id/slideshow_b3"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/carousel_bullet_empty"/>
+
+        <ImageView
+            android:id="@+id/slideshow_b4"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginLeft="10dp"

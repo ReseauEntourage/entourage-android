@@ -114,8 +114,8 @@
 
     <!-- Carousel bullet -->
     <color name="carousel_bullet_filled">@color/accent</color>
-    <color name="carousel_bullet_empty">#00000000</color>
-    <color name="carousel_bullet_empty_stroke">#979797</color>
+    <color name="carousel_bullet_empty">#80f26521</color>
+    <color name="carousel_bullet_empty_stroke">#00000000</color>
 
     <!-- Others -->
     <color name="login_view">#333333</color>

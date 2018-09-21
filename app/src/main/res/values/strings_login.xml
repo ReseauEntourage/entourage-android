@@ -54,8 +54,8 @@
     <string name="login_firstname_error">@string/user_edit_profile_invalid_firstname</string>
     <string name="login_lastname_error">@string/user_edit_profile_invalid_lastname</string>
 
-    <string name="login_button_register">S’inscrire sur Entourage</string>
-    <string name="login_button_login">Connexion</string>
+    <string name="login_button_register">Je rejoins le réseau</string>
+    <string name="login_button_login">Déjà membre</string>
 
     <string name="login_permission_notification_title">Ne manquez rien !</string>
     <string name="login_permission_notification_description">Des actions solidaires sont créées tous les jours et n’attendent que vous pour aboutir !\n\nActiver les notifications vous permet d’être informé(e) des nouveautés dans votre quartier.</string>
