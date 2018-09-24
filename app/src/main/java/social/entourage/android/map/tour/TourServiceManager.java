@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationListener;
@@ -401,7 +402,12 @@ public class TourServiceManager {
             LatLng location = currentPosition.target;
             MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
             if (mapFilter == null) return;
-            currentNewsFeedCall = createNewsfeedWrapperCall(beforeDate, location, distance, itemsPerPage, mapFilter);
+            currentNewsFeedCall = createNewsfeedWrapperCall(beforeDate, location, distance, itemsPerPage, mapFilter, selectedTab);
+            if (currentNewsFeedCall == null) {
+                //fail graciously
+                tourService.notifyListenersNewsFeedReceived(null);
+                return;
+            }
             currentNewsFeedCall.enqueue(new NewsFeedCallback(this, tourService));
         } else {
             tourService.notifyListenersCurrentPositionNotRetrieved();
@@ -597,20 +603,31 @@ public class TourServiceManager {
         }
     }
 
-    private Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(Date beforeDate, LatLng location, int distance, int itemsPerPage, MapFilter mapFilter) {
-        return newsfeedRequest.retrieveFeed(
-                (beforeDate == null ? null : new EntourageDate(beforeDate)),
-                location.longitude,
-                location.latitude,
-                distance,
-                itemsPerPage,
-                mapFilter.getTypes(),
-                mapFilter.onlyMyEntourages(),
-                mapFilter.getTimeFrame(),
-                mapFilter.onlyMyPartnerEntourages(),
-                Constants.ANNOUNCEMENTS_VERSION,
-                mapFilter.showPastEvents()
-        );
+    private @Nullable Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(Date beforeDate, LatLng location, int distance, int itemsPerPage, MapFilter mapFilter, MapTabItem selectedTab) {
+        switch (selectedTab) {
+            case ALL_TAB:
+                return newsfeedRequest.retrieveFeed(
+                        (beforeDate == null ? null : new EntourageDate(beforeDate)),
+                        location.longitude,
+                        location.latitude,
+                        distance,
+                        itemsPerPage,
+                        mapFilter.getTypes(),
+                        mapFilter.onlyMyEntourages(),
+                        mapFilter.getTimeFrame(),
+                        mapFilter.onlyMyPartnerEntourages(),
+                        Constants.ANNOUNCEMENTS_VERSION,
+                        mapFilter.showPastEvents()
+                );
+            case EVENTS_TAB:
+                return newsfeedRequest.retrieveOutings(
+                        location.longitude,
+                        location.latitude,
+                        null
+
+                );
+        }
+        return null;
     }
 
     private void initializeTimerFinishTask() {

@@ -775,7 +775,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         // Refresh the newsfeed
         if (tourService != null) {
             clearAll();
-            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
+            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
 
             tourService.updateNewsfeed(pagination, selectedTab);
         }
@@ -806,7 +806,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         pagination.setNextDistance();
 
         if (newsfeedAdapter != null) {
-            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
+            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
         }
         if (tourService != null) {
             tourService.updateNewsfeed(pagination, selectedTab);
@@ -818,6 +818,15 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         selectedTab = event.getSelectedTab();
 
         filterButton.setVisibility(selectedTab == MapTabItem.ALL_TAB ? View.VISIBLE : View.GONE);
+
+        clearAll();
+
+        if (newsfeedAdapter != null) {
+            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
+        }
+        if (tourService != null) {
+            tourService.updateNewsfeed(pagination, selectedTab);
+        }
     }
 
     // ----------------------------------
@@ -1007,7 +1016,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (closed) {
 
                 clearAll();
-                newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
+                newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
 
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                     if (feedItem.getUUID().equalsIgnoreCase(currentTourUUID)) {
@@ -1733,7 +1742,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
                                 if (newsfeedAdapter != null) {
                                     newsfeedAdapter.removeAll();
-                                    newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
+                                    newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
                                 }
                                 pagination = new NewsfeedPagination();
                                 tourService.updateNewsfeed(pagination, selectedTab);
@@ -2473,13 +2482,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     @Override
                     public void run() {
                         if (tourService != null) {
-                            /*
-                            if (!isMapLoaded) {
-                                return; //Don't refresh till the map is loaded
+                            if (selectedTab == MapTabItem.ALL_TAB) {
+                                pagination.isRefreshing = true;
+                                tourService.updateNewsfeed(pagination, selectedTab);
                             }
-                            */
-                            pagination.isRefreshing = true;
-                            tourService.updateNewsfeed(pagination, selectedTab);
                         }
                     }
                 });
@@ -2607,14 +2613,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (newsfeedAdapter == null) return;
         if (pagination.isNextDistanceAvailable()) {
             // we can increase the distance
-            newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE);
+            newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
         } else {
             if (newsfeedAdapter.getDataItemCount() == 0) {
                 // max distance and still no items, show no items info
-                newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS);
+                newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
             } else {
                 // max distance and items, show no more items info
-                newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_MORE_ITEMS);
+                newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_MORE_ITEMS, selectedTab);
             }
         }
     }

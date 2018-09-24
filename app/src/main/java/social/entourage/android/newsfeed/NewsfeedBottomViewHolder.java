@@ -14,9 +14,15 @@ import social.entourage.android.tools.BusProvider;
 
 public class NewsfeedBottomViewHolder extends BottomViewHolder {
 
+    public static final int CONTENT_TYPES = 3;
+
     public static final int CONTENT_TYPE_LOAD_MORE = 0;
     public static final int CONTENT_TYPE_NO_ITEMS = 1;
     public static final int CONTENT_TYPE_NO_MORE_ITEMS = 2;
+
+    public static final int CONTENT_TYPE_LOAD_MORE_EVENTS = CONTENT_TYPE_LOAD_MORE + CONTENT_TYPES;
+    public static final int CONTENT_TYPE_NO_ITEMS_EVENTS = CONTENT_TYPE_NO_ITEMS + CONTENT_TYPES;
+    public static final int CONTENT_TYPE_NO_MORE_EVENTS = CONTENT_TYPE_NO_MORE_ITEMS + CONTENT_TYPES;
 
     private View loadMoreView;
     private TextView loadMoreTextView;
