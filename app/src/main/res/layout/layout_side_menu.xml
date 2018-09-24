@@ -73,7 +73,8 @@
                     android:text="@string/action_edit_profile"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic"
+                    android:focusable="true"/>
 
             </RelativeLayout>
 
@@ -108,6 +109,15 @@
                 android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_map_pin_grey"
                 android:title="@string/action_guide"
+                app:showDivider="true"/>
+
+            <social.entourage.android.sidemenu.SideMenuItemView
+                android:id="@+id/action_ambassador"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/sidemenu_item_background"
+                android:icon="@drawable/ic_ambassador"
+                android:title="@string/action_ambassador"
                 app:showDivider="false"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
