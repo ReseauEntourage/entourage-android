@@ -304,7 +304,7 @@ public class TourService extends Service {
             return false;
         }
         pagination.isLoading = true;
-        tourServiceManager.retrieveNewsFeed(pagination.getBeforeDate(), pagination.distance, pagination.itemsPerPage, selectedTab, getApplicationContext());
+        tourServiceManager.retrieveNewsFeed(pagination, selectedTab);
         return true;
     }
 

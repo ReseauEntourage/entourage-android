@@ -1,5 +1,6 @@
 package social.entourage.android.base;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     protected boolean needsBottomView = false;
     private boolean showBottomView = false;
     private int bottomViewContentType;
-    private MapTabItem selectedTab;
+    private MapTabItem selectedTab = MapTabItem.ALL_TAB;
 
     protected boolean needsTopView = false;
     private MapViewHolder mapViewHolder;

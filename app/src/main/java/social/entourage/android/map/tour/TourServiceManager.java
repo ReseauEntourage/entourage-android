@@ -52,6 +52,7 @@ import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.map.tour.FusedLocationProvider.ProviderStatusListener;
 import social.entourage.android.map.tour.FusedLocationProvider.UserType;
+import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
@@ -390,7 +391,7 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveNewsFeed(Date beforeDate, int distance, int itemsPerPage, MapTabItem selectedTab, Context context) {
+    protected void retrieveNewsFeed(final NewsfeedPagination pagination, MapTabItem selectedTab) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
             tourService.notifyListenersNetworkException();
@@ -400,9 +401,9 @@ public class TourServiceManager {
         CameraPosition currentPosition = entourageLocation.getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
-            MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
+            MapFilter mapFilter = MapFilterFactory.getMapFilter();
             if (mapFilter == null) return;
-            currentNewsFeedCall = createNewsfeedWrapperCall(beforeDate, location, distance, itemsPerPage, mapFilter, selectedTab);
+            currentNewsFeedCall = createNewsfeedWrapperCall(location, pagination, mapFilter, selectedTab);
             if (currentNewsFeedCall == null) {
                 //fail graciously
                 tourService.notifyListenersNewsFeedReceived(null);
@@ -603,15 +604,15 @@ public class TourServiceManager {
         }
     }
 
-    private @Nullable Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(Date beforeDate, LatLng location, int distance, int itemsPerPage, MapFilter mapFilter, MapTabItem selectedTab) {
+    private @Nullable Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(LatLng location, NewsfeedPagination pagination, MapFilter mapFilter, MapTabItem selectedTab) {
         switch (selectedTab) {
             case ALL_TAB:
                 return newsfeedRequest.retrieveFeed(
-                        (beforeDate == null ? null : new EntourageDate(beforeDate)),
+                        (pagination.getBeforeDate() == null ? null : new EntourageDate(pagination.getBeforeDate())),
                         location.longitude,
                         location.latitude,
-                        distance,
-                        itemsPerPage,
+                        pagination.distance,
+                        pagination.itemsPerPage,
                         mapFilter.getTypes(),
                         mapFilter.onlyMyEntourages(),
                         mapFilter.getTimeFrame(),
@@ -623,8 +624,7 @@ public class TourServiceManager {
                 return newsfeedRequest.retrieveOutings(
                         location.longitude,
                         location.latitude,
-                        null
-
+                        pagination.getLastFeedItemUUID()
                 );
         }
         return null;

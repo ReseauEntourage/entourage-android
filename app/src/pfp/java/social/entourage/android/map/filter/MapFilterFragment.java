@@ -53,7 +53,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
     @Override
     protected void loadFilter() {
-        MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
+        MapFilter mapFilter = MapFilterFactory.getMapFilter();
 
         entourageNeighborhoodSwitch.setChecked(mapFilter.entourageTypeNeighborhood);
         entouragePrivateCircleSwitch.setChecked(mapFilter.entourageTypePrivateCircle);
@@ -63,7 +63,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
     @Override
     protected void saveFilter() {
-        MapFilter mapFilter = MapFilterFactory.getMapFilter(getContext());
+        MapFilter mapFilter = MapFilterFactory.getMapFilter();
 
         mapFilter.entourageTypeNeighborhood = entourageNeighborhoodSwitch.isChecked();
         mapFilter.entourageTypePrivateCircle = entouragePrivateCircleSwitch.isChecked();

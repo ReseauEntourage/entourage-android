@@ -15,8 +15,8 @@ public class MapFilterFactory {
         return new MapFilter();
     }
 
-    public static MapFilter getMapFilter(Context context) {
-        EntourageApplication app = EntourageApplication.get(context);
+    public static MapFilter getMapFilter() {
+        EntourageApplication app = EntourageApplication.get();
         if (app != null && app.getEntourageComponent() != null) {
             AuthenticationController authenticationController = app.getEntourageComponent().getAuthenticationController();
             if (authenticationController != null) {

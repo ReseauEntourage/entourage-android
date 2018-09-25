@@ -1,7 +1,5 @@
 package social.entourage.android.map.filter;
 
-import android.content.Context;
-
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.authentication.AuthenticationController;
 
@@ -16,8 +14,8 @@ public class MapFilterFactory {
         return new MapFilterPublic();
     }
 
-    public static MapFilter getMapFilter(Context context) {
-        EntourageApplication app = EntourageApplication.get(context);
+    public static MapFilter getMapFilter() {
+        EntourageApplication app = EntourageApplication.get();
         if (app != null && app.getEntourageComponent() != null) {
             AuthenticationController authenticationController = app.getEntourageComponent().getAuthenticationController();
             if (authenticationController != null) {

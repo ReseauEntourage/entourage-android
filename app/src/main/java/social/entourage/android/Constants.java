@@ -137,6 +137,8 @@ public class Constants {
     public static final String EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR = "ActivateGeolocFromCreateTourPopup";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromRecenterPopup";
+    public static final String EVENT_FEED_TAB_ALL = "ShowAllFeed";
+    public static final String EVENT_FEED_TAB_EVENTS = "ShowEventFeed";
 
     //MAP Events
     public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick";
