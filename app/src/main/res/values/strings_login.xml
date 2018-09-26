@@ -90,11 +90,13 @@
     <string name="registration_number_error_server">Echec de l’envoi du numéro</string>
     <string name="registration_number_error_already_registered">Le numéro est déjà enregistré.</string>
 
-    <string name="registration_smscode_title">Code de vérification</string>
-    <string name="registration_smscode_description">Veuillez saisir le code reçu par SMS.</string>
-    <string name="registration_smscode_hint">Code</string>
+    <string name="registration_smscode_title"><b>Vous avez reçu un code</b> (normalement)</string>
+    <string name="registration_smscode_description">Si vous ne l’avez pas reçu, <u>redemandez un code.</u></string>
+    <string name="registration_smscode_email">Le problème persiste ? écrivez à contact@entourage.social et nous en génèrerons un pour vous.</string>
+    <string name="registration_smscode_hint">Code SMS</string>
     <string name="registration_smscode_validate">Valider</string>
     <string name="registration_smscode_error_code">Veuillez saisir le code !</string>
     <string name="registration_smscode_sent">SMS envoyé</string>
+    <string name="registration_smscode_disclaimer">Votre code est crypté : seul.e vous le connaissez. Vous pouvez le modifier dans votre Profil.</string>
 
 </resources>

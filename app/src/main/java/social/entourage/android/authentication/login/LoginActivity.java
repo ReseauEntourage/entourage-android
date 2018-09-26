@@ -236,7 +236,7 @@ public class LoginActivity extends EntourageActivity
     View loginVerifyCode;
 
     @BindView(R.id.login_button_verify_code)
-    Button verifyCodeButton;
+    FloatingActionButton verifyCodeButton;
 
     @BindView(R.id.login_verify_code_code)
     TextView receivedCode;
@@ -446,7 +446,6 @@ public class LoginActivity extends EntourageActivity
         lostCodePhone.setEnabled(false);
         newsletterButton.setText(R.string.button_loading);
         newsletterButton.setEnabled(false);
-        verifyCodeButton.setText(R.string.button_loading);
         verifyCodeButton.setEnabled(false);
         nameGoButton.setEnabled(false);
     }
@@ -459,7 +458,6 @@ public class LoginActivity extends EntourageActivity
         lostCodePhone.setEnabled(true);
         newsletterButton.setText(R.string.login_button_newsletter);
         newsletterButton.setEnabled(true);
-        verifyCodeButton.setText(R.string.login_button_verify_code);
         verifyCodeButton.setEnabled(true);
         nameGoButton.setEnabled(true);
     }
@@ -985,11 +983,6 @@ public class LoginActivity extends EntourageActivity
         }
     }
 
-    @OnClick(R.id.login_verify_code_resend)
-    void resendCode() {
-        sendNewCode();
-    }
-
     @OnClick(R.id.login_verify_code_back)
     void showLostCodeScreen() {
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_1);
@@ -998,6 +991,12 @@ public class LoginActivity extends EntourageActivity
         loginVerifyCode.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.VISIBLE);
         showKeyboard(lostCodePhone);
+    }
+
+    @OnClick(R.id.login_verify_code_description)
+    void showResendByEmailView() {
+        View verifyCodeByEmailView = findViewById(R.id.login_verify_code_email);
+        if (verifyCodeByEmailView != null) verifyCodeByEmailView.setVisibility(View.VISIBLE);
     }
 
     /************************
