@@ -6,7 +6,8 @@
               android:background="@drawable/login_slideshow_p3_bg"
               android:gravity="bottom"
               android:orientation="vertical"
-              tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage3Fragment">
+              tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage3Fragment"
+              tools:ignore="MissingDefaultResource">
 
     <ImageView
         android:layout_width="match_parent"
@@ -30,7 +31,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-40dp"
+        android:layout_marginBottom="-30dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitXY"
         android:src="@drawable/login_slideshow_p3_bottom"/>

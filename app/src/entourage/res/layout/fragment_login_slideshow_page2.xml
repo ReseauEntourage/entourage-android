@@ -6,7 +6,8 @@
               android:background="@drawable/login_slideshow_p2_bg"
               android:gravity="bottom"
               android:orientation="vertical"
-              tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage2Fragment">
+              tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage2Fragment"
+              tools:ignore="MissingDefaultResource">
 
     <ImageView
         android:layout_width="match_parent"

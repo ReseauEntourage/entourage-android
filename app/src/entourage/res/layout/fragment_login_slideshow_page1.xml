@@ -6,7 +6,8 @@
               android:background="@drawable/login_slideshow_p1_bg"
               android:gravity="bottom"
               android:orientation="vertical"
-              tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage1Fragment">
+              tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage1Fragment"
+              tools:ignore="MissingDefaultResource">
 
     <ImageView
         android:id="@+id/login_slideshow_p1_logo"
@@ -40,6 +41,7 @@
         android:id="@+id/login_slideshow_p1_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="-30dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitXY"
         android:src="@drawable/login_slideshow_p1_bottom"/>
