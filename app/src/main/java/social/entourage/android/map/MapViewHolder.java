@@ -93,4 +93,10 @@ public class MapViewHolder extends BaseCardViewHolder {
         if (mTabView != null) mTabView.setVisibility(visibility);
     }
 
+    public void setSelectedTab(MapTabItem selectedTab) {
+        if (mTabView != null && mTabView instanceof IMapTabView) {
+            ((IMapTabView)mTabView).setSelectedTab(selectedTab);
+        }
+    }
+
 }

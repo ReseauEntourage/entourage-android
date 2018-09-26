@@ -257,6 +257,12 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         mapViewHolder.setTabVisibility(visibility);
     }
 
+    public void setSelectedTab(MapTabItem selectedTab) {
+        this.selectedTab = selectedTab;
+        if (mapViewHolder == null || !needsTopView) return;
+        mapViewHolder.setSelectedTab(selectedTab);
+    }
+
     public void showBottomView(final boolean showBottomView, int bottomViewContentType, MapTabItem selectedTab) {
         this.showBottomView = showBottomView;
         this.bottomViewContentType = bottomViewContentType;

@@ -16,7 +16,7 @@ import social.entourage.android.tools.BusProvider;
 /**
  * Map Tab View
  */
-public class MapTabView extends FrameLayout {
+public class MapTabView extends FrameLayout implements IMapTabView {
 
     @BindView(R.id.map_tab_all_button)
     RadioButton allButton;
@@ -58,5 +58,19 @@ public class MapTabView extends FrameLayout {
     protected void onEventsButtonClicked() {
         allButton.setChecked(false);
         BusProvider.getInstance().post(new Events.OnMapTabSelected(MapTabItem.EVENTS_TAB));
+    }
+
+    @Override
+    public void setSelectedTab(final MapTabItem selectedTab) {
+        switch (selectedTab) {
+            case ALL_TAB:
+                allButton.setChecked(true);
+                eventsButton.setChecked(false);
+                break;
+            case EVENTS_TAB:
+                allButton.setChecked(false);
+                eventsButton.setChecked(true);
+                break;
+        }
     }
 }

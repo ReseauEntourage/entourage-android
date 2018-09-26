@@ -837,7 +837,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         filterButton.setVisibility(selectedTab == MapTabItem.ALL_TAB ? View.VISIBLE : View.GONE);
 
-        clearAll();
+        resetFeed();
 
         if (newsfeedAdapter != null) {
             newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
@@ -1465,6 +1465,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onDisplayToggle() {
         if (!isFullMapShown) {
             EntourageEvents.logEvent(Constants.EVENT_MAP_MAPVIEW_CLICK);
+            if (selectedTab == MapTabItem.EVENTS_TAB && newsfeedAdapter != null) {
+                newsfeedAdapter.setSelectedTab(MapTabItem.ALL_TAB);
+                onMapTabChanged(new Events.OnMapTabSelected(MapTabItem.ALL_TAB));
+            }
         }
         else {
             EntourageEvents.logEvent(Constants.EVENT_MAP_LISTVIEW_CLICK);
@@ -2310,6 +2314,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         displayedTourHeads = 0;
 
+        resetFeed();
+
+        previousCoordinates = null;
+    }
+
+    private void resetFeed() {
         newsfeedAdapter.removeAll();
 
         // check if we need to cancel the current request
@@ -2318,8 +2328,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
 
         pagination.reset();
-
-        previousCoordinates = null;
     }
 
     private void hideToursList() {
