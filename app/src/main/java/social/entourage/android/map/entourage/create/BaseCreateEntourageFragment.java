@@ -334,9 +334,17 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         isSaving = false;
         if (getActivity() != null) {
             if (entourage == null) {
-                Toast.makeText(getActivity(), R.string.entourage_save_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        getActivity(),
+                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_error : R.string.entourage_save_error,
+                        Toast.LENGTH_SHORT
+                ).show();
             } else {
-                Toast.makeText(getActivity(), R.string.entourage_save_ok, Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        getActivity(),
+                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_ok : R.string.entourage_save_ok,
+                        Toast.LENGTH_SHORT
+                ).show();
                 dismiss();
             }
         }

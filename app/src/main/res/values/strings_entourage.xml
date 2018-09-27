@@ -54,6 +54,8 @@
     <!-- Edit Entourage -->
     <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
     <string name="entourage_save_ok">Entourage enregistré.</string>
+    <string name="outing_save_error">L\'évènement n\'a pas pu être mis à jour.</string>
+    <string name="outing_save_ok">Évènement mis à jour</string>
 
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
