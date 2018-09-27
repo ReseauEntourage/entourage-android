@@ -39,8 +39,8 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
     private OnRegisterUserListener mListener;
 
-    @BindView(R.id.register_welcome_description)
-    TextView descriptionTextView;
+    @BindView(R.id.register_welcome_privacy)
+    TextView privacyTextView;
 
     // ----------------------------------
     // LIFECYCLE
@@ -122,10 +122,11 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
         if (getActivity() != null && getActivity() instanceof EntourageActivity) {
             String termsLink = ((EntourageActivity)getActivity()).getLink(Constants.TERMS_LINK_ID);
-            String text = getString(R.string.registration_welcome_description, termsLink);
-            descriptionTextView.setText(Utils.fromHtml(text));
+            String privacyLink = ((EntourageActivity)getActivity()).getLink(Constants.PRIVACY_LINK_ID);
+            String text = getString(R.string.registration_welcome_privacy, termsLink, privacyLink);
+            privacyTextView.setText(Utils.fromHtml(text));
         }
-        descriptionTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
+        privacyTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
 
     }
 

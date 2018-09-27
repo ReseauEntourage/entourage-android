@@ -24,8 +24,7 @@
     <!-- Registration -->
     <string name="registration_welcome_signin">Se connecter</string>
     <string name="registration_welcome_title">Bienvenue\nsur Voisinage.</string>
-    <string name="registration_welcome_description">Voisin-Age est la communauté de voisins qui tissent des liens intergénérationnels.\nEn vous inscrivant, vous acceptez nos &lt;a href=\'%1$s\'>conditions d’utilisation&lt;/a>, vous confirmez avoir plus de 16 ans et avoir lu notre politique de confidentialité.</string>
-    <string name="registration_welcome_start">Commencer</string>
+    <string name="registration_welcome_description">Voisin-Age est la communauté de voisins qui tissent des liens intergénérationnels.\n Proximité, Liberté, Réciprocité : rencontrez des personnes âgées près de chez vous et créez des liens de voisinage et d’amitié.</string>
 
     <string name="registration_number_description">Voisinage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
 

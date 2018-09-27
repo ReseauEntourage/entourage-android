@@ -81,8 +81,9 @@
     <!-- Registration -->
     <string name="registration_welcome_signin">Se connecter</string>
     <string name="registration_welcome_title">Bienvenue\nsur Entourage.</string>
-    <string name="registration_welcome_description">Vous venez de rejoindre la plus grande communauté de citoyens qui collaborent pour lutter contre l’exclusion sociale!\n\nEn vous inscrivant, vous acceptez nos &lt;a href=\'%1$s\'>conditions d’utilisation&lt;/a> et vous reconnaissez avoir lu notre politique de confidentialité.</string>
-    <string name="registration_welcome_start">Commencer</string>
+    <string name="registration_welcome_description">Vous allez rejoindre une communauté de voisins avec et sans abris qui se rassemblent et luttent contre l’exclusion !</string>
+    <string name="registration_welcome_privacy">En vous inscrivant, vous acceptez nos &lt;a href=\'%1$s\'>conditions d’utilisation&lt;/a>, vous confirmez avoir plus de 16 ans et avoir lu notre &lt;a href=\'%2$s\'>politique de confidentialité&lt;/a>.</string>
+    <string name="registration_welcome_start">C\'est parti, je rejoins le réseau</string>
 
     <string name="registration_number_title">Quel est votre numéro de portable ? </string>
     <string name="registration_number_description">Entourage vous envoie un SMS afin de vérifier votre numéro de portable.</string>

@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="social.entourage.android.authentication.login.register.RegisterWelcomeFragment"
-                android:background="@color/accent">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="social.entourage.android.authentication.login.register.RegisterWelcomeFragment"
+              android:background="@color/accent">
 
     <RelativeLayout
         android:id="@+id/register_welcome_title_layout"
@@ -80,6 +80,12 @@
                 android:textColor="@color/white"
                 android:textColorLink="@color/white"
                 android:textSize="@dimen/entourage_font_medium"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty_description"
+                app:srcCompat="@drawable/registration_welcome_group"/>
 
             <Button
                 android:id="@+id/register_welcome_start_button"

@@ -49,6 +49,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
@@ -236,7 +237,7 @@ public class LoginActivity extends EntourageActivity
     View loginVerifyCode;
 
     @BindView(R.id.login_button_verify_code)
-    FloatingActionButton verifyCodeButton;
+    View verifyCodeButton;
 
     @BindView(R.id.login_verify_code_code)
     TextView receivedCode;
@@ -993,6 +994,7 @@ public class LoginActivity extends EntourageActivity
         showKeyboard(lostCodePhone);
     }
 
+    @Optional
     @OnClick(R.id.login_verify_code_description)
     void showResendByEmailView() {
         View verifyCodeByEmailView = findViewById(R.id.login_verify_code_email);
