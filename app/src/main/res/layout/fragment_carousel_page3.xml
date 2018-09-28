@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/accent"
-        android:gravity="bottom|center_horizontal"
+        android:background="@drawable/carousel_p3_top"
+        android:gravity="bottom"
         android:orientation="vertical">
 
         <ImageView
@@ -19,6 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:contentDescription="@string/empty_description"
             android:src="@drawable/carousel_p3_group"/>
     </LinearLayout>
 
@@ -59,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"
+            android:contentDescription="@string/empty_description"
             app:srcCompat="@drawable/carousel_p1_group"/>
 
     </LinearLayout>

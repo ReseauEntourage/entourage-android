@@ -227,8 +227,8 @@ public abstract class DrawerBasePresenter {
         // does nothing
     }
 
-    protected void displayTutorial() {
-        if (!Configuration.getInstance().showTutorial()) return;
+    protected void displayTutorial(boolean forced) {
+        if (!forced && !Configuration.getInstance().showTutorial()) return;
         if (activity != null && activity.isSafeToCommit()) {
             CarouselFragment carouselFragment = new CarouselFragment();
             try {

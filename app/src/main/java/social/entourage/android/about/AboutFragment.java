@@ -147,7 +147,7 @@ public class AboutFragment extends EntourageDialogFragment {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
             EntourageEvents.logEvent(Constants.EVENT_ABOUT_TUTORIAL);
             DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            drawerActivity.showTutorial();
+            drawerActivity.showTutorial(true);
         }
     }
 
