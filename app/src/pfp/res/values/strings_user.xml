@@ -18,5 +18,6 @@
     <string name="user_action_zone_description">Voisin-Age, c’est utile parce que c’est local !\nIndiquez votre adresse pour rencontrer les membres de Voisin-Age les plus proches\n\n<b>Cette information n’est pas affichée sur votre profil.</b></string>
     <string name="user_action_zone_description2">Adresse - peut être approximative</string>
     <string name="user_action_zone_hint">adresse</string>
+    <string name="user_action_zone_disclaimer">Cette information est strictement confidentielle et n’est partagée à personne. Vous pouvez la modifier dans vos réglages.</string>
 
 </resources>

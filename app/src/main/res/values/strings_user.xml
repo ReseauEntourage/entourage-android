@@ -103,8 +103,9 @@
 
     <!-- Action zone -->
     <string name="user_action_zone_title">Définissez votre zone d\'action</string>
-    <string name="user_action_zone_description">Entourage, c’est utile parce que c’est local !\nIndiquez le lieu autour duquel vous souhaitez agir avec d’autres personnes.\n\n<b>Cette information n’est pas affichée.</b> Vous pouvez la modifier dans vos réglages.</string>
+    <string name="user_action_zone_description">Entourage, c’est utile parce que c’est local !\nPour recevoir des recommandations personnalisées à proximité, indiquez le lieu autour duquel vous souhaitez agir.</string>
     <string name="user_action_zone_description2">Adresse - peut être approximative</string>
+    <string name="user_action_zone_disclaimer">Cette information est strictement confidentielle et n’est partagée à personne. Vous pouvez la modifier dans vos réglages.</string>
     <string name="user_action_zone_hint">1 avenue Jean Jaurès...</string>
     <string name="user_action_zone_no_address_error">Veuillez ajouter une adresse</string>
     <string name="user_action_zone_send_ok">Adresse enregistrée</string>
