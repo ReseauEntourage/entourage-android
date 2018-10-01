@@ -1751,7 +1751,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                                         miniCardsView.setVisibility(View.INVISIBLE);
                                     }
                                 } else {
-                                    hideToursList();
+                                    toggleToursList();
                                 }
                             }
                         }
