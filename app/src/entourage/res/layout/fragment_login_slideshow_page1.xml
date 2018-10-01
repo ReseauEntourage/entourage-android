@@ -68,6 +68,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/login_slideshow_p1_personnage"
-        tools:src="@drawable/login_slideshow_p1_personnage"/>
+        app:srcCompat="@drawable/login_slideshow_p1_persons"
+        tools:src="@drawable/login_slideshow_p1_persons"/>
 </android.support.constraint.ConstraintLayout>

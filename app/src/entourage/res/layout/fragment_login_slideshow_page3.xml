@@ -1,38 +1,78 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/login_slideshow_p3_bg"
-              android:gravity="bottom"
-              android:orientation="vertical"
-              tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage3Fragment"
-              tools:ignore="MissingDefaultResource">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@drawable/login_slideshow_p3_bg"
+                                             tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage3Fragment"
+                                             tools:ignore="MissingDefaultResource">
 
     <ImageView
+        android:id="@+id/login_slideshow_p3_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@string/login_slideshow_p3_details"
-        android:src="@drawable/login_slideshow_p3_title"/>
+        android:src="@drawable/login_slideshow_p3_title"
+        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p3_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
+        android:id="@+id/login_slideshow_p3_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:text="@string/login_slideshow_p3_details"
         android:textColor="@color/greyish_brown"
         android:textSize="17sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p3_persons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
+        android:id="@+id/login_slideshow_p3_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-30dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitXY"
-        android:src="@drawable/login_slideshow_p3_bottom"/>
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/login_slideshow_p3_bottom_grey"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p3_persons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="180dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_p3_persons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p3_tree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="274dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_p3_tree"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p3_lamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="216dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_p3_lampadaire"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</android.support.constraint.ConstraintLayout>
