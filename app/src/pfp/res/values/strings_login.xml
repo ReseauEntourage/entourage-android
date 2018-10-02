@@ -26,6 +26,8 @@
     <string name="registration_welcome_title">Bienvenue\nsur Voisinage.</string>
     <string name="registration_welcome_description">Voisin-Age est la communauté de voisins qui tissent des liens intergénérationnels.\n Proximité, Liberté, Réciprocité : rencontrez des personnes âgées près de chez vous et créez des liens de voisinage et d’amitié.</string>
 
+    <string name="registration_smscode_email">Le problème persiste ? écrivez à voisin-age@petitsfreresdespauvres.fr et nous en génèrerons un pour vous.</string>
+
     <string name="registration_number_description">Voisinage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
 
     <!-- Slideshow -->
