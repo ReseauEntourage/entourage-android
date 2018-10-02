@@ -1471,13 +1471,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         View metadataView = fragmentView.findViewById(R.id.tour_info_metadata_layout);
         if (metadataView == null) return;
         // show the view only for outing
-        boolean metadataVisible;
-        BaseEntourage.Metadata metadata;
+        boolean metadataVisible = false;
+        BaseEntourage.Metadata metadata = null;
         if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
             metadata = ((Entourage)feedItem).getMetadata();
             metadataVisible = Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) && (metadata != null);
-        } else {
-            return;
         }
         metadataView.setVisibility(metadataVisible ? View.VISIBLE : View.GONE);
         if (!metadataVisible) return;
