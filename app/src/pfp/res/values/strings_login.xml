@@ -19,7 +19,7 @@
     <string name="login_permission_geolocation_title">En direct de votre quartier !</string>
     <string name="login_permission_geolocation_description">Voisin-Age, c’est utile parce que c’est local !\n\nParticipez à la vie du réseau dans votre quartier. Pour découvrir les nouvelles sorties de votre voisinage, activez la géolocalisation.</string>
 
-    <string name="login_name_description">Si vous êtes voisiné(e), seuls votre prénom et la première lettre de votre nom apparaitront</string>
+    <string name="login_name_description">Seuls votre prénom et la première lettre de votre nom apparaitront.</string>
 
     <!-- Registration -->
     <string name="registration_welcome_signin">Se connecter</string>
