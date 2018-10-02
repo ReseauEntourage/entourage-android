@@ -935,7 +935,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     public void onPOILauncherClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
-            EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_PLUS);
+            EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_MAP);
             // Show the guide screen
             if (presenter != null) presenter.displaySolidarityGuide();
         } else {
