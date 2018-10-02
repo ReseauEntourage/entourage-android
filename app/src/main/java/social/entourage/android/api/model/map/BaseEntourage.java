@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.content.res.AppCompatResources;
@@ -367,6 +368,18 @@ public class BaseEntourage extends FeedItem implements Serializable {
     @Override
     public int getQuitDialogMessage() {
         return R.string.entourage_info_quit_entourage_description;
+    }
+
+    @Override
+    public @StringRes int getFreezedCTAText() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || outcome.success == false) return super.getFreezedCTAText();
+        return R.string.tour_cell_button_freezed_success;
+    }
+
+    @Override
+    public @ColorRes int getFreezedCTAColor() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || outcome.success == false) return super.getFreezedCTAColor();
+        return R.color.accent;
     }
 
     public static int getMarkerSize(Context context) {

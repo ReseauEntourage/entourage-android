@@ -1570,8 +1570,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         if (feedItem.isFreezed()) {
             // MI: Instead of hiding it, display the freezed text
-            actButton.setEnabled(false);
-            actButton.setText(R.string.tour_cell_button_freezed);
+            //actButton.setEnabled(false);
+            actButton.setTextColor(getResources().getColor(feedItem.getFreezedCTAColor()));
+            actButton.setText(feedItem.getFreezedCTAText());
+            actButton.setPadding(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
+            if (Build.VERSION.SDK_INT >= 16) {
+                actButton.setPaddingRelative(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
+            }
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
         else {

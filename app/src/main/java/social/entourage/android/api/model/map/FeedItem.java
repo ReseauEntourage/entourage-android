@@ -294,6 +294,14 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return true;
     }
 
+    public @StringRes int getFreezedCTAText() {
+        return R.string.tour_cell_button_freezed;
+    }
+
+    public @ColorRes int getFreezedCTAColor() {
+        return R.color.greyish;
+    }
+
     // ----------------------------------
     // COPY OBJECT METHODS
     // ----------------------------------
