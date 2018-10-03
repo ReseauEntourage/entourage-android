@@ -58,7 +58,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
                 android:padding="10dp"
-                android:text="@string/registration_smscode_title"
+                android:text="@string/login_text_verify_code_title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/accent"
                 android:textSize="@dimen/entourage_font_big"/>
@@ -75,7 +75,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/registration_smscode_hint"
+                    android:text="@string/login_text_verify_code_hint"
                     android:textColor="@color/white"/>
 
                 <EditText
@@ -100,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/registration_smscode_description"
+                    android:text="@string/login_text_verify_code_description"
                     android:textColor="@color/white"/>
 
                 <TextView
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:autoLink="email"
-                    android:text="@string/registration_smscode_email"
+                    android:text="@string/login_text_verify_code_email"
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
                     android:visibility="invisible"/>
@@ -169,7 +169,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="@string/registration_smscode_disclaimer"
+                android:text="@string/login_text_verify_code_disclaimer"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"/>
         </LinearLayout>

@@ -35,7 +35,7 @@
             android:layout_centerInParent="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:text="@string/login_text_lost_code"
+            android:text="@string/registration_smscode_resend"
             android:textAllCaps="false"
             />
     </RelativeLayout>

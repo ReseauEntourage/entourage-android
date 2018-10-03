@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,6 +38,9 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
 
     @BindView(R.id.register_number_phone_number)
     EditText phoneNumberEditText;
+
+    @BindView(R.id.register_number_next_button)
+    Button nextButton;
 
     private OnRegisterUserListener mListener;
 
@@ -95,9 +99,14 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
             Toast.makeText(getActivity(), R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show();
         }
         else {
+            nextButton.setEnabled(false);
             // Save the phone
             mListener.registerSavePhoneNumber(phoneNumber);
         }
+    }
+
+    public void savedPhoneNumber(boolean success) {
+        nextButton.setEnabled(true);
     }
 
 }

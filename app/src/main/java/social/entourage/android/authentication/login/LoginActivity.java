@@ -908,6 +908,7 @@ public class LoginActivity extends EntourageActivity
     void onStartupLoginClicked() {
         EntourageEvents.logEvent(Constants.EVENT_SPLASH_LOGIN);
         if (loginPresenter != null && loginPresenter.shouldShowTC()) {
+            this.onboardingUser = null;
             RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
             registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
         } else {
@@ -1014,7 +1015,7 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public boolean registerStart() {
-        if (loginPresenter != null && loginPresenter.shouldContinueWithRegistration()) return true;
+        if ( onboardingUser != null || (loginPresenter != null && loginPresenter.shouldContinueWithRegistration()) ) return true;
         showLoginScreen();
         return false;
     }
@@ -1050,8 +1051,14 @@ public class LoginActivity extends EntourageActivity
 
     protected void registerPhoneNumberSent(String phoneNumber, boolean smsSent) {
         if (isFinishing()) return;
+        if (getSupportFragmentManager() != null) {
+            RegisterNumberFragment numberFragment = (RegisterNumberFragment)getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
+            if (numberFragment != null) numberFragment.savedPhoneNumber(smsSent);
+        }
         if (smsSent) {
             displayToast(R.string.registration_smscode_sent);
+        } else {
+            return;
         }
         if (onboardingUser != null) {
             onboardingUser.setPhone(phoneNumber);

@@ -293,33 +293,39 @@ public abstract class BaseLoginPresenter {
                         registerUserWithFacebook();
                     }
                 } else {
-                    if (response.errorBody() != null) {
-                        try {
-                            String errorString = response.errorBody().string();
-                            if (errorString.contains("PHONE_ALREADY_EXIST")) {
-                                // Phone number already registered
-                                EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_2_E);
-                                activity.registerPhoneNumberSent(phoneNumber, false);
-                                activity.displayToast(R.string.registration_number_error_already_registered);
-                            } else if (errorString.contains("INVALID_PHONE_FORMAT")) {
-                                activity.displayToast(R.string.login_text_invalid_format);
-                            } else {
+                    if (activity != null) {
+                        if (response.errorBody() != null) {
+                            try {
+                                String errorString = response.errorBody().string();
+                                if (errorString.contains("PHONE_ALREADY_EXIST")) {
+                                    // Phone number already registered
+                                    EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_2_E);
+                                    activity.registerPhoneNumberSent(phoneNumber, false);
+                                    activity.displayToast(R.string.registration_number_error_already_registered);
+                                } else if (errorString.contains("INVALID_PHONE_FORMAT")) {
+                                    activity.displayToast(R.string.login_text_invalid_format);
+                                } else {
+                                    activity.displayToast(R.string.login_error);
+                                }
+                            } catch (IOException e) {
                                 activity.displayToast(R.string.login_error);
                             }
-                        } catch (IOException e) {
+                        } else {
                             activity.displayToast(R.string.login_error);
                         }
-                    } else {
-                        activity.displayToast(R.string.login_error);
+                        activity.registerPhoneNumberSent(phoneNumber, false);
+                        EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
                     }
-                    EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
                 }
             }
 
             @Override
             public void onFailure(final Call<UserResponse> call, final Throwable t) {
-                activity.displayToast(R.string.login_error_network);
-                EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT_ERROR);
+                if (activity != null) {
+                    activity.displayToast(R.string.login_error_network);
+                    activity.registerPhoneNumberSent(phoneNumber, false);
+                    EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT_ERROR);
+                }
             }
         });
     }

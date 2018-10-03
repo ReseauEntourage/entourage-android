@@ -10,6 +10,8 @@
     <string name="login_text_newsletter_info">Voisinage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
     <string name="login_text_email_details">Nous ne l’utiliserons que pour vous envoyer notre newsletter et les dernières actualités de Voisinage</string>
 
+    <string name="login_text_verify_code_email">Le problème persiste ? écrivez à voisin-age@petitsfreresdespauvres.fr et nous en génèrerons un pour vous.</string>
+
     <string name="login_button_register">S’inscrire sur Voisinage</string>
     <string name="login_button_login">Connexion</string>
 
@@ -26,9 +28,7 @@
     <string name="registration_welcome_title">Bienvenue\nsur Voisinage.</string>
     <string name="registration_welcome_description">Voisin-Age est la communauté de voisins qui tissent des liens intergénérationnels.\n Proximité, Liberté, Réciprocité : rencontrez des personnes âgées près de chez vous et créez des liens de voisinage et d’amitié.</string>
 
-    <string name="registration_smscode_email">Le problème persiste ? écrivez à voisin-age@petitsfreresdespauvres.fr et nous en génèrerons un pour vous.</string>
-
-    <string name="registration_number_description">Voisinage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
+    <string name="registration_number_description">Voisin-Age vous envoie un SMS afin de vérifier votre numéro de portable.</string>
 
     <!-- Slideshow -->
 
