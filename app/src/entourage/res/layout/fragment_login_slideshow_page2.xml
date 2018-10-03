@@ -1,0 +1,79 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@drawable/login_slideshow_p2_bg"
+                                             tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage2Fragment"
+                                             tools:ignore="MissingDefaultResource">
+
+    <ImageView
+        android:id="@+id/login_slideshow_p2_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_p2_title"
+        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p2_description"/>
+
+    <TextView
+        android:id="@+id/login_slideshow_p2_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/login_slideshow_p2_details"
+        android:textColor="@color/greyish_brown"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p2_persons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p2_bush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_p2_bush"
+        app:layout_constraintBottom_toBottomOf="@+id/login_slideshow_p2_bottom"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p2_bottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/login_slideshow_p2_bottom_grey"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p2_persons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="180dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_p2_persons"
+        app:layout_constraintBottom_toBottomOf="@+id/login_slideshow_p2_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/login_slideshow_p2_lamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="216dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_p2_lampadaire"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

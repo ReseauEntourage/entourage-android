@@ -145,6 +145,46 @@
         />
 
     <LinearLayout
+        android:id="@+id/about_privacy_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/about_items_padding"
+        android:paddingEnd="0dp"
+        android:paddingLeft="@dimen/about_items_padding"
+        android:paddingRight="0dp"
+        android:paddingStart="@dimen/about_items_padding"
+        android:paddingTop="@dimen/about_items_padding">
+
+        <TextView
+            android:id="@+id/about_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/about_privacy"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/entourage_font_medium"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/empty_description"
+            android:scaleType="fitEnd"
+            android:src="@drawable/arrow_grey"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/about_separator_privacy"
+        style="@style/SeparatorAlpha"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/about_items_padding"
+        android:layout_marginStart="@dimen/about_items_padding"
+        />
+
+    <LinearLayout
         android:id="@+id/about_website_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

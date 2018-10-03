@@ -329,18 +329,20 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     protected void onShowNotificationsSettingsClicked() {
         try {
             EntourageEvents.logEvent(Constants.EVENT_USER_TONOTIFICATIONS);
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Intent intent = new Intent();
+            Intent intent = new Intent();
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
                 intent.putExtra("app_package", getActivity().getPackageName());
                 intent.putExtra("app_uid", getActivity().getApplicationInfo().uid);
-                startActivity(intent);
             } else {
-                Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
                 intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
-                startActivity(intent);
             }
+            startActivity(intent);
         } catch (ActivityNotFoundException ex) {
             Log.d("Exception", "Cannot open Notifications Settings page");
         } catch (Exception ignored) {

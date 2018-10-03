@@ -95,9 +95,10 @@
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_update_info"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_menu_heart"
+                android:minHeight="50dp"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_update_info"
@@ -107,9 +108,10 @@
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_contact"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_question_chat"
+                android:minHeight="50dp"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_contact"
@@ -118,13 +120,13 @@
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_feedback"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_star"
+                android:minHeight="50dp"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
-                android:title="@string/action_feedback"
-                />
+                android:title="@string/action_feedback"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_propose"
@@ -142,9 +144,10 @@
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_charte"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_charte"
+                android:minHeight="50dp"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_charte"
@@ -154,9 +157,10 @@
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_how_to"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_phone_square"
+                android:minHeight="50dp"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_how_to"
@@ -165,9 +169,10 @@
             <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_about"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_about"
+                android:minHeight="50dp"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
                 android:title="@string/action_about"

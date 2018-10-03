@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-//apply plugin: 'com.google.firebase.firebase-perf'
 
 def versionMajor = 5
-def versionMinor = 3
+def versionMinor = 5
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
@@ -40,10 +39,12 @@ android {
         buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
         buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
 
+        /*
         manifestPlaceholders = [
                 deepLinksHostName       : "www.entourage.social",
-                deepLinksEntourageScheme: "entourage"
+                deepLinksEntourageScheme: DEEP_LINKS_SCHEME
         ]
+        */
     }
 
     signingConfigs {
@@ -78,20 +79,21 @@ android {
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
             /*buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP_DEBUG*/
-            manifestPlaceholders = [
-                    deepLinksHostName       : "entourage-landingpages-preprod.herokuapp.com",
-                    deepLinksEntourageScheme: "entourage-staging"
-            ]
+
         }
         entourage {
             dimension 'app'
-            buildConfigField 'String', 'API_KEY', '"8f7583e72131416c4ebc1e38"'
+            buildConfigField 'String', 'API_KEY', '"f30c711173105ee2dd7289eb"'
             ext {
                 prod = [
-                        serverURL: "https://api.entourage.social/api/v1/"
+                        serverURL: "https://api.entourage.social/api/v1/",
+                        deepLinksHostName: "www.entourage.social",
+                        deepLinksScheme: "entourage"
                 ]
                 staging = [
-                        serverURL: "https://entourage-back-preprod.herokuapp.com/api/v1/"
+                        serverURL: "https://entourage-back-preprod.herokuapp.com/api/v1/",
+                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
+                        deepLinksScheme: "entourage-staging"
                 ]
             }
         }
@@ -100,17 +102,18 @@ android {
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
-            buildConfigField 'String', 'API_KEY', '"81054ed8deb402cb0e1162c6"'
-            manifestPlaceholders = [
-                    deepLinksHostName       : "www.entourage.social/pfp",
-                    deepLinksEntourageScheme: "pfp-prod"
-            ]
+            buildConfigField 'String', 'API_KEY', '"f27ed4fda9a2cbf199046047"'
+
             ext {
                 prod = [
-                        serverURL: "https://apiPXTGS.entourage.social/api/v1/"
+                        serverURL: "https://apiPXTGS.entourage.social/api/v1/",
+                        deepLinksHostName: "www.entourage.social/pfp",
+                        deepLinksScheme: "pfp-prod"
                 ]
                 staging = [
-                        serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/"
+                        serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/",
+                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
+                        deepLinksScheme: "pfp-staging"
                 ]
             }
         }
@@ -139,6 +142,13 @@ android {
         def environment = flavors[1]
 
         variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
+        variant.buildConfigField "String", "DEEP_LINKS_SCHEME", "\"${app[environment.name]['deepLinksScheme']}\""
+
+        variant.mergedFlavor.manifestPlaceholders = [
+                deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
+                deepLinksEntourageScheme : "${app[environment.name]['deepLinksScheme']}"
+        ]
+
     }
 
     packagingOptions {
@@ -166,7 +176,7 @@ dependencies {
     def supportVersion = "27.1.1"
     def playServicesVersion = "15.0.1"
     def daggerVersion = "2.15"
-    def okHttpVersion = "3.9.1"
+    def okHttpVersion = "3.10.0"
     def retrofitVersion = "2.4.0"
     def butterKnifeVersion = "8.8.1"
     def awsVersion = "2.6.17"
@@ -178,6 +188,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${supportVersion}"
     implementation "com.android.support:design:${supportVersion}"
     implementation "com.android.support:customtabs:${supportVersion}"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation "com.google.android.gms:play-services-maps:${playServicesVersion}"
     implementation "com.google.android.gms:play-services-location:${playServicesVersion}"
     implementation "com.google.android.gms:play-services-gcm:${playServicesVersion}"
@@ -203,10 +214,10 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:3.6.3'
     entourageImplementation 'com.facebook.android:facebook-core:4.31.0'
     entourageImplementation 'com.facebook.android:facebook-android-sdk:4.31.0'
-    api('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+    api('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true
     }
-    implementation "com.google.firebase:firebase-core:15.0.2"
+    implementation "com.google.firebase:firebase-core:16.0.3"
     /*implementation "com.google.firebase:firebase-perf:15.2.0"*/
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"

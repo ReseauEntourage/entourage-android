@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- Login slideshow -->
+    <dimen name="login_slideshow_pages_top_padding">90dp</dimen>
+
+</resources>

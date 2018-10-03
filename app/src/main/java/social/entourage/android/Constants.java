@@ -38,6 +38,7 @@ public class Constants {
     public static final String EVENT_TUTORIAL_START = "Log_Tutorial_Start";
     public static final String EVENT_TUTORIAL_END = "Log_Tutorial_End";
     public static final String EVENT_LOGIN_SEND_NEW_CODE = "Login_Send_New_Code";
+    public static final String EVENT_LOGIN_SLIDESHOW = "SwipeTutorial";
     public static final String EVENT_NEWSLETTER_INSCRIPTION_OK = "Newsletter_Inscription_OK";
     public static final String EVENT_NEWSLETTER_INSCRIPTION_FAILED = "Newsletter_Inscription_Failed";
     public static final String EVENT_SPLASH_SIGNUP = "SplashSignUp";

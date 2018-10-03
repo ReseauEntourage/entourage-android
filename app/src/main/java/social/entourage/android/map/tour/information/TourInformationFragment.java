@@ -31,6 +31,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -552,6 +553,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @OnClick(R.id.tour_info_comment_send_button)
     protected void onAddCommentButton() {
         if (presenter != null) {
+            commentEditText.setEnabled(false);
+            commentSendButton.setEnabled(false);
+
             presenter.sendFeedItemMessage(commentEditText.getText().toString());
         }
     }
@@ -849,7 +853,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     protected void onUserAddClicked() {
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
-        inviteSourceLayout.setVisibility(View.VISIBLE);
+        showInviteSource();
     }
 
     @Optional
@@ -863,6 +867,18 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         else {
             // For non-members, show the share screen
             onShareButton();
+        }
+    }
+
+    private void showInviteSource() {
+        inviteSourceLayout.setVisibility(View.VISIBLE);
+        TextView inviteDescription = inviteSourceLayout.findViewById(R.id.invite_source_description);
+        if (inviteDescription != null) {
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                inviteDescription.setText(Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) ? R.string.invite_source_description_outing : R.string.invite_source_description);
+            } else {
+                inviteDescription.setText(R.string.invite_source_description);
+            }
         }
     }
 
@@ -990,7 +1006,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         // for newly created entourages, open the invite friends screen automatically
         if (feedItem.isNewlyCreated() && feedItem.showInviteViewAfterCreation()) {
-            inviteSourceLayout.setVisibility(View.VISIBLE);
+            showInviteSource();
         }
 
         // check if we need to display the carousel
@@ -1378,6 +1394,21 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 }
             }
         });
+
+        commentEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (discussionView != null) {
+                    final int lastVisibleItemPosition = ((LinearLayoutManager)discussionView.getLayoutManager()).findLastVisibleItemPosition();
+                    discussionView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            discussionView.scrollToPosition(lastVisibleItemPosition);
+                        }
+                    }, 500);
+                }
+            }
+        });
     }
 
     private void initializeMembersView() {
@@ -1440,13 +1471,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         View metadataView = fragmentView.findViewById(R.id.tour_info_metadata_layout);
         if (metadataView == null) return;
         // show the view only for outing
-        boolean metadataVisible;
-        BaseEntourage.Metadata metadata;
+        boolean metadataVisible = false;
+        BaseEntourage.Metadata metadata = null;
         if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
             metadata = ((Entourage)feedItem).getMetadata();
             metadataVisible = Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) && (metadata != null);
-        } else {
-            return;
         }
         metadataView.setVisibility(metadataVisible ? View.VISIBLE : View.GONE);
         if (!metadataVisible) return;
@@ -1457,6 +1486,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
         TextView metadataDate = fragmentView.findViewById(R.id.tour_info_metadata_date);
         if (metadataDate != null) metadataDate.setText(metadata.getStartDateAsString(getContext()));
+        TextView metadateTime = fragmentView.findViewById(R.id.tour_info_metadata_time);
+        if (metadateTime != null) metadateTime.setText(metadata.getStartTimeAsString(getContext()));
         TextView metadataAddress = fragmentView.findViewById(R.id.tour_info_metadata_address);
         if (metadataAddress != null) metadataAddress.setText(metadata.getDisplayAddress());
     }
@@ -1874,6 +1905,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     protected void onFeedItemMessageSent(ChatMessage chatMessage) {
         hideProgressBar();
+        commentEditText.setEnabled(true);
+        commentSendButton.setEnabled(true);
 
         if (chatMessage == null) {
             if(getContext()!=null) {

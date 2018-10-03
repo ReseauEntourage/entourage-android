@@ -19,6 +19,8 @@
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
+    <string name="outing_create_error">L\'évènement n\'a pas pu être créé!</string>
+    <string name="outing_create_ok">Évènement créé.</string>
     <string name="entourage_create_error_category_empty">Renseignez une catégorie pour votre action</string>
     <string name="entourage_create_error_title_empty">Le titre ne peut pas être vide</string>
     <string name="entourage_create_error_title_too_long">Le titre est trop long</string>
@@ -40,18 +42,20 @@
     <string name="entourage_title_fragment_info">Les actions avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
     <string name="entourage_title_fragment_error">Votre titre doit faire moins de 100 caractères. Vous pourrez en dire plus dans la description.</string>
     <string name="entourage_title_fragment_hint_outing">Exemple : Appel aux bonnes volontés pour la collecte nationale des Restos du cœur</string>
-    <string name="entourage_title_fragment_info_outing">Les évènements avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
+    <string name="entourage_title_fragment_info_outing">Les évènements avec un titre clair attirent plus de participants.</string>
 
     <!-- Entourage Description Fragment -->
     <string name="entourage_description_fragment_title">DESCRIPTION</string>
     <string name="entourage_description_fragment_hint">Exemple : Je suis ancien employé de mairie et disponible pour aide administrative pour l’accès au logement.\nSi vous pensez avoir besoin d’aide, nous pouvons nous retrouver dans un café le weekend.</string>
     <string name="entourage_description_fragment_info">Racontez votre histoire. Les actions avec une description claire attirent plus de membres et ont plus de chances d’aboutir !</string>
     <string name="entourage_description_fragment_hint_outing">Exemple : Besoin de bénévoles pour la collecte nationale des Restos du Cœur dans notre équipe locale</string>
-    <string name="entourage_description_fragment_info_outing">Racontez votre histoire. Les évènements avec une description claire attirent plus de membres et ont plus de chances d’aboutir !</string>
+    <string name="entourage_description_fragment_info_outing">Vous pourrez modifier cette description et la date de votre évènement à tout moment.</string>
 
     <!-- Edit Entourage -->
     <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
     <string name="entourage_save_ok">Entourage enregistré.</string>
+    <string name="outing_save_error">L\'évènement n\'a pas pu être mis à jour.</string>
+    <string name="outing_save_ok">Évènement mis à jour</string>
 
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
@@ -60,6 +64,7 @@
     <string name="entourage_type_outing">Évènement\u0020</string>
     <string name="entourage_type_format">%1$s par\u0020</string>
     <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
+    <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
     
     <!-- Entourage Location -->
     <string name="entourage_location_title">MA POSITION</string>

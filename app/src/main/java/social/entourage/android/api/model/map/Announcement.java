@@ -40,6 +40,9 @@ public class Announcement extends TimestampedObject {
 
     private TourAuthor author;
 
+    @SerializedName("image_url")
+    private String imageUrl;
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -72,6 +75,9 @@ public class Announcement extends TimestampedObject {
         return author;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     // ----------------------------------
     // TimestampedObject overrides

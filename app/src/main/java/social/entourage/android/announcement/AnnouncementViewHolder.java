@@ -1,5 +1,6 @@
 package social.entourage.android.announcement;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -40,8 +41,11 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
     private ImageView photoView;
     private PartnerLogoImageView partnerLogoView;
     private TextView body;
+    private ImageView imageView;
     private View actLayout;
     private Button actButton;
+    private ImageView actLeftDivider;
+    private ImageView actRightDivider;
 
     //Announcement related attributes
     private String actUrl;
@@ -60,14 +64,17 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
 
     @Override
     protected void bindFields() {
-        title = (TextView)itemView.findViewById(R.id.announcement_card_title);
-        photoView = (ImageView)itemView.findViewById(R.id.announcement_card_photo);
-        partnerLogoView = (PartnerLogoImageView)itemView.findViewById(R.id.announcement_card_partner_logo);
-        body = (TextView)itemView.findViewById(R.id.announcement_card_body);
+        title = itemView.findViewById(R.id.announcement_card_title);
+        photoView = itemView.findViewById(R.id.announcement_card_photo);
+        partnerLogoView = itemView.findViewById(R.id.announcement_card_partner_logo);
+        body = itemView.findViewById(R.id.announcement_card_body);
+        imageView = itemView.findViewById(R.id.announcement_card_image);
         actLayout = itemView.findViewById(R.id.announcement_card_act_layout);
-        actButton = (Button)itemView.findViewById(R.id.announcement_card_button_act);
+        actButton = itemView.findViewById(R.id.announcement_card_button_act);
+        actLeftDivider = itemView.findViewById(R.id.announcement_card_divider_left);
+        actRightDivider = itemView.findViewById(R.id.announcement_card_divider_right);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 if (actUrl == null) return;
@@ -78,20 +85,11 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
                     Toast.makeText(itemView.getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        };
 
-        actButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (actUrl == null) return;
-                Intent actIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(actUrl));
-                try {
-                    itemView.getContext().startActivity(actIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(itemView.getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        itemView.setOnClickListener(onClickListener);
+        imageView.setOnClickListener(onClickListener);
+        actButton.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -101,11 +99,17 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
 
     private void populate(Announcement announcement) {
         if (announcement == null) return;
+        Context context = imageView.getContext();
+        //cancel previous net requests
+        Picasso.with(context).cancelRequest(this);
+        Picasso.with(context).cancelRequest(photoView);
+        Picasso.with(context).cancelRequest(partnerLogoView);
+        Picasso.with(context).cancelRequest(imageView);
         //title
         title.setText(announcement.getTitle());
         String iconUrl = announcement.getIconUrl();
         if (iconUrl != null) {
-            Picasso.with(itemView.getContext())
+            Picasso.with(context)
                     .load(Uri.parse(iconUrl))
                     .noPlaceholder()
                     .into(this);
@@ -127,7 +131,7 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
             if (photoView != null) {
                 String avatarURLAsString = author.getAvatarURLAsString();
                 if (avatarURLAsString != null) {
-                    Picasso.with(itemView.getContext())
+                    Picasso.with(context)
                             .load(Uri.parse(avatarURLAsString))
                             .placeholder(R.drawable.ic_user_photo_small)
                             .transform(new CropCircleTransformation())
@@ -142,7 +146,7 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
                 if (partner != null) {
                     String partnerLogoURL = partner.getSmallLogoUrl();
                     if (partnerLogoURL != null) {
-                        Picasso.with(itemView.getContext())
+                        Picasso.with(context)
                                 .load(Uri.parse(partnerLogoURL))
                                 .placeholder(R.drawable.partner_placeholder)
                                 .transform(new CropCircleTransformation())
@@ -158,6 +162,22 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
 
         //body
         body.setText(announcement.getBody());
+
+        //image
+        String imageUrl = announcement.getImageUrl();
+        if (imageUrl == null || imageUrl.trim().length() == 0) {
+            imageView.setVisibility(View.GONE);
+            actLeftDivider.setVisibility(View.VISIBLE);
+            actRightDivider.setVisibility(View.VISIBLE);
+        } else {
+            imageView.setVisibility(View.VISIBLE);
+            actLeftDivider.setVisibility(View.GONE);
+            actRightDivider.setVisibility(View.GONE);
+            Picasso.with(context)
+                    .load(Uri.parse(imageUrl))
+                    .placeholder(R.drawable.announcement_image_placeholder)
+                    .into(imageView);
+        }
 
         //act button
         String action = announcement.getAction();

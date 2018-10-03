@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +121,7 @@ public class MapPresenter {
     }
 
     public void createEntourage(LatLng location, String groupType) {
-        if (fragment.getActivity() != null) {
+        if (fragment != null && fragment.getActivity() != null && !fragment.isStateSaved()) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
             CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location, groupType);
             entourageFragment.show(fragmentManager, CreateEntourageFragment.TAG);
@@ -129,7 +129,7 @@ public class MapPresenter {
     }
 
     public void displayEntourageDisclaimer(String groupType) {
-        if (fragment.getActivity() != null) {
+        if (fragment != null && fragment.getActivity() != null && !fragment.isStateSaved()) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
             EntourageDisclaimerFragment fragment = EntourageDisclaimerFragment.newInstance(groupType);
             fragment.show(fragmentManager, EntourageDisclaimerFragment.TAG);
@@ -224,53 +224,58 @@ public class MapPresenter {
     // INNER CLASS
     // ----------------------------------
 
-    public class OnEntourageMarkerClickListener implements GoogleMap.OnMarkerClickListener {
-        final Map<Marker, Encounter> encounterMarkerHashMap = new HashMap<>();
-        final Map<Marker, FeedItem> markerFeedItemHashMap = new HashMap<>();
+    public class OnEntourageMarkerClickListener implements ClusterManager.OnClusterItemClickListener<MapClusterItem> {
+        final Map<MapClusterItem, Encounter> encounterMarkerHashMap = new HashMap<>();
 
-        public void addEncounterMarker(Marker marker, Encounter encounter) {
-            encounterMarkerHashMap.put(marker, encounter);
+        public void addEncounterMapClusterItem(MapClusterItem mapClusterItem, Encounter encounter) {
+            encounterMarkerHashMap.put(mapClusterItem, encounter);
         }
 
-        public Marker removeEncounterMarker(long encounterId) {
-            Marker marker = null;
-            for (Marker key :encounterMarkerHashMap.keySet()) {
+        public MapClusterItem getEncounterMapClusterItem(long encounterId) {
+            MapClusterItem mapClusterItem = null;
+            for (MapClusterItem key :encounterMarkerHashMap.keySet()) {
                 Encounter encounter = encounterMarkerHashMap.get(key);
                 if (encounter.getId() == encounterId) {
-                    marker = key;
-                    encounterMarkerHashMap.remove(key);
+                    mapClusterItem = key;
                     break;
                 }
             }
-            return marker;
+            return mapClusterItem;
         }
 
-        public void addTourMarker(Marker marker, FeedItem feedItem) {
-            markerFeedItemHashMap.put(marker, feedItem);
+        public MapClusterItem removeEncounterMapClusterItem(long encounterId) {
+            MapClusterItem mapClusterItem = getEncounterMapClusterItem(encounterId);
+            if (mapClusterItem != null) {
+                    encounterMarkerHashMap.remove(mapClusterItem);
+            }
+            return mapClusterItem;
         }
 
         public void clear() {
             encounterMarkerHashMap.clear();
-            markerFeedItemHashMap.clear();
         }
 
         @Override
-        public boolean onMarkerClick(Marker marker) {
-            LatLng markerPosition = marker.getPosition();
-            if (encounterMarkerHashMap.get(marker) != null) {
-                openEncounter(encounterMarkerHashMap.get(marker));
-            } else if (markerFeedItemHashMap.get(marker) != null) {
-                FeedItem feedItem = markerFeedItemHashMap.get(marker);
-                if (FeedItem.TOUR_CARD == feedItem.getType()) {
-                    openFeedItem(feedItem, 0, 0);
-                }
-                else {
-                    if (fragment != null) {
-                        fragment.handleHeatzoneClick(markerPosition);
+        public boolean onClusterItemClick(final MapClusterItem mapClusterItem) {
+            if (encounterMarkerHashMap.get(mapClusterItem) != null) {
+                openEncounter(encounterMarkerHashMap.get(mapClusterItem));
+            } else {
+                Object mapItem = mapClusterItem.getMapItem();
+                if (mapItem != null) {
+                    if (mapItem instanceof FeedItem) {
+                        FeedItem feedItem = (FeedItem)mapItem;
+                        if (FeedItem.TOUR_CARD == feedItem.getType()) {
+                            openFeedItem(feedItem, 0, 0);
+                        }
+                        else {
+                            if (fragment != null) {
+                                fragment.handleHeatzoneClick(mapClusterItem.getPosition());
+                            }
+                        }
                     }
                 }
             }
-            return false;
+            return true;
         }
     }
 

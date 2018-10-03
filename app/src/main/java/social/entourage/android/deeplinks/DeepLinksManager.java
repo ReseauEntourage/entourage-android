@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import social.entourage.android.BuildConfig;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.FeedItem;
@@ -31,8 +32,6 @@ public class DeepLinksManager {
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
-
-    private static final String SCHEME_ENTOURAGE = "entourage";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -87,7 +86,7 @@ public class DeepLinksManager {
             deepLinkIntent = null;
             return;
         }
-        if (scheme.contains(SCHEME_ENTOURAGE)) {
+        if (scheme.contains(BuildConfig.DEEP_LINKS_SCHEME)) {
             handleEntourageDeepLink(activity);
         } else {
             handleHttpDeepLink(activity);
@@ -253,7 +252,7 @@ public class DeepLinksManager {
      * @param textView textview to be linkified
      */
     public static void linkify(TextView textView) {
-        Pattern pattern = Pattern.compile(SCHEME_ENTOURAGE + "://" + DeepLinksView.ENTOURAGE.view + "/[0-9]+");
+        Pattern pattern = Pattern.compile(BuildConfig.DEEP_LINKS_SCHEME + "://" + DeepLinksView.ENTOURAGE.view + "/[0-9]+");
         Linkify.addLinks(textView, Linkify.ALL); // to add support for standard URLs, emails, phones a.s.o.
         Linkify.addLinks(textView, pattern, null);
     }

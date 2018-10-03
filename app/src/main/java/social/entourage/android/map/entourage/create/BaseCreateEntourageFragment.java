@@ -313,9 +313,17 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         isSaving = false;
         if (getActivity() != null) {
             if (entourage == null) {
-                Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        getActivity(),
+                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_error : R.string.entourage_create_error,
+                        Toast.LENGTH_SHORT
+                ).show();
             } else {
-                Toast.makeText(getActivity(), R.string.entourage_create_ok, Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        getActivity(),
+                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_ok : R.string.entourage_create_ok,
+                        Toast.LENGTH_SHORT
+                ).show();
                 dismiss();
                 BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
             }
@@ -326,9 +334,17 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         isSaving = false;
         if (getActivity() != null) {
             if (entourage == null) {
-                Toast.makeText(getActivity(), R.string.entourage_save_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        getActivity(),
+                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_error : R.string.entourage_save_error,
+                        Toast.LENGTH_SHORT
+                ).show();
             } else {
-                Toast.makeText(getActivity(), R.string.entourage_save_ok, Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        getActivity(),
+                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_ok : R.string.entourage_save_ok,
+                        Toast.LENGTH_SHORT
+                ).show();
                 dismiss();
             }
         }
@@ -432,7 +448,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected void initializeDate() {
         if (editedEntourage != null) {
             BaseEntourage.Metadata metadata = editedEntourage.getMetadata();
-            if (metadata != null) {
+            if (metadata != null && metadata.getStartDate() != null) {
                 entourageDate.setTime(metadata.getStartDate());
             }
             updateDateTextView();

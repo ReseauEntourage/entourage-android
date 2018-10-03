@@ -54,7 +54,7 @@ public class Entourage extends BaseEntourage implements Serializable {
     @Override
     public int getHeatmapResourceId() {
         if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
-            return R.drawable.ic_heart;
+            return R.drawable.ic_heart_marker;
         }
         return super.getHeatmapResourceId();
     }

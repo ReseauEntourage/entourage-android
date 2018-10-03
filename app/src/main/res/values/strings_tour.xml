@@ -70,6 +70,7 @@
     <string name="tour_info_members_add">Inviter un ami</string>
     <string name="tour_info_request_join_title_entourage">On a besoin de vous !</string>
     <string name="tour_info_request_join_title_tour">Maraude voisine ? Coordonnez-vous</string>
+    <string name="tour_info_request_join_title_outing">Participez à cet évènement</string>
     <string name="tour_info_request_join_button_entourage">@string/tour_info_options_join</string>
     <string name="tour_info_request_join_button_tour">@string/tour_info_options_contact</string>
     <string name="tour_info_error_retrieve_entourage">Entourage indisponible</string>

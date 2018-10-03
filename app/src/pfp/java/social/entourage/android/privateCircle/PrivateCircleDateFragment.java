@@ -129,12 +129,9 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
     }
 
     private void configureView() {
-        //initialise the other date with current day - 2 days
+        //initialise the calendar with current day - 2 days
         long now = System.currentTimeMillis();
         long other = now - 2 * 24 * 60 * 60 * 1000;
-        Date date = new Date(other);
-        dateOtherTextView.setText(DateFormat.getDateInstance().format(date));
-        //initialise the calendar
         calendarView.setDate(other);
         calendarView.setOnDateChangeListener(this);
         calendarView.setVisibility(View.GONE);

@@ -377,6 +377,7 @@ public class LoginActivity extends EntourageActivity
                 }
             }
             // We don't care if the user allowed/denied the location, just show the notifications view
+            //TODO to do this in onResume, HOTFIX: dismisAllowingStateLoss in function
             hideActionZoneView();
             showNotificationPermissionView();
         }
@@ -463,7 +464,7 @@ public class LoginActivity extends EntourageActivity
         nameGoButton.setEnabled(true);
     }
 
-    public void launchFillInProfileView(String phoneNumber, User user) {
+    public void launchFillInProfileView(String phoneNumber, @NonNull User user) {
 
         DialogFragment fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
         if (fragment != null) {
@@ -1165,7 +1166,7 @@ public class LoginActivity extends EntourageActivity
         if (isFinishing()) return;
         UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
         if (actionZoneFragment != null) {
-            actionZoneFragment.dismiss();
+            actionZoneFragment.dismissAllowingStateLoss();
         }
     }
 

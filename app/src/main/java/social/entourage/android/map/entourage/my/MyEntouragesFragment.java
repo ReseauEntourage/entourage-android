@@ -669,7 +669,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            tourService.unregisterTourServiceListener(MyEntouragesFragment.this);
+            if (tourService != null) tourService.unregisterTourServiceListener(MyEntouragesFragment.this);
             tourService = null;
             isBound = false;
         }

@@ -14,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -324,10 +325,10 @@ public class BaseEntourage extends FeedItem implements Serializable {
     @Override
     public int getHeatmapResourceId() {
         if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
-            return R.drawable.ic_neighborhood;
+            return R.drawable.ic_neighborhood_marker;
         }
         if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
-            return R.drawable.ic_action_outing;
+            return R.drawable.ic_action_outing_marker;
         }
         return super.getHeatmapResourceId();
     }
@@ -450,6 +451,19 @@ public class BaseEntourage extends FeedItem implements Serializable {
             if (startDate == null) return "";
             DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format), Locale.getDefault());
             return df.format(startDate);
+        }
+
+        public String getStartTimeAsString(Context context) {
+            if (startDate == null) return "";
+            //round the minutes to multiple of 15
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.setTime(startDate);
+            int minutes = calendar.get(Calendar.MINUTE);
+            minutes = (minutes / 15) * 15;
+            calendar.set(Calendar.MINUTE, minutes);
+            //format it
+            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.getDefault());
+            return df.format(calendar.getTime());
         }
 
         public String getDisplayAddress() {

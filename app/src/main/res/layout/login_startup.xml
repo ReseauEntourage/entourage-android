@@ -8,16 +8,12 @@
               tools:context=".authentication.login.LoginActivity"
     >
 
-    <ImageView
-        android:id="@+id/login_startup_background"
+    <fragment
+        android:id="@+id/fragment"
+        android:name="social.entourage.android.authentication.login.slideshow.LoginSlideshowFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:contentDescription="@string/empty_description"
-        android:scaleType="centerCrop"
-        android:src="@drawable/login_startup_background"/>
+        tools:layout="@layout/login_slideshow"/>
 
     <ImageView
         android:id="@+id/login_startup_logo"
@@ -29,7 +25,8 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitCenter"
-        android:src="@drawable/entourage_logo"/>
+        android:src="@drawable/entourage_logo"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/login_startup_slogan"
@@ -42,7 +39,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white"
         android:textSize="@dimen/entourage_font_big"
-        />
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -64,7 +61,7 @@
 
         <Button
             android:id="@+id/login_button_login"
-            style="@style/WhiteButtonTransparent"
+            style="@style/AccentButton.BigRoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"

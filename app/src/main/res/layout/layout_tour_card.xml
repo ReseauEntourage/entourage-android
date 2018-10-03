@@ -88,8 +88,8 @@
 
     <ImageView
         android:id="@+id/tour_card_photo"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tour_card_people_layout"
@@ -103,8 +103,8 @@
 
     <social.entourage.android.view.PartnerLogoImageView
         android:id="@+id/tour_card_partner_logo"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignBottom="@+id/tour_card_photo"
         android:layout_alignEnd="@+id/tour_card_photo"
         android:layout_alignRight="@+id/tour_card_photo"
@@ -131,7 +131,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tour_card_title"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/tour_card_photo"
         android:layout_toRightOf="@+id/tour_card_photo"
         android:orientation="horizontal">
@@ -161,7 +161,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tour_card_type_layout"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="8dp">
 
         <TextView
             android:id="@+id/tour_card_location"

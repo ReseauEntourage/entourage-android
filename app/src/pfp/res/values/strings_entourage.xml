@@ -12,17 +12,19 @@
     <!-- Entourage Title Fragment -->
     <string name="entourage_title_fragment_hint">Atelier de créativité</string>
     <string name="entourage_title_fragment_hint_outing">@string/entourage_title_fragment_hint</string>
-    <string name="entourage_title_fragment_info_outing">@string/entourage_title_fragment_info</string>
+    <string name="entourage_title_fragment_info_outing">Donnez un titre clair et chaleureux à votre sortie pour attirer plus de participants !</string>
 
     <!-- Entourage Description Fragment -->
     <string name="entourage_description_fragment_hint">Exemple : Je vous propose de nous retrouver pour un atelier de créativité (peinture, collage, ...) ce vendredi.</string>
     <string name="entourage_description_fragment_hint_outing">@string/entourage_description_fragment_hint</string>
-    <string name="entourage_description_fragment_info_outing">@string/entourage_description_fragment_info</string>
+    <string name="entourage_description_fragment_info_outing">Donnez une description claire à votre sortie !</string>
 
     <!-- Entourage Card -->
     <string name="entourage_type_private_circle">voisinage</string>
     <string name="entourage_type_outing">sortie\u0020</string>
 
+    <!-- Entourage Notifications -->
+    <string name="entourage_join_request_received">%1$s souhaite rejoindre votre sortie: %2$s</string>
     <string name="entourage_info_quit_entourage_title">Quitter la sortie</string>
     <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter la sortie ?</string>
 
