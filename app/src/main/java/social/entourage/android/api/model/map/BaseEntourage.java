@@ -157,6 +157,10 @@ public class BaseEntourage extends FeedItem implements Serializable {
         return outcome;
     }
 
+    public void setOutcome(final EntourageCloseOutcome outcome) {
+        this.outcome = outcome;
+    }
+
     public Metadata getMetadata() {
         return metadata;
     }

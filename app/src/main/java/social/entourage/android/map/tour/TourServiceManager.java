@@ -35,6 +35,7 @@ import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.EntourageDate;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -532,7 +533,9 @@ public class TourServiceManager {
         final String oldStatus = entourage.getStatus();
         entourage.setStatus(FeedItem.STATUS_CLOSED);
         entourage.setEndTime(new Date());
-        final Entourage.EntourageCloseWrapper entourageWrapper = new Entourage.EntourageCloseWrapper(FeedItem.STATUS_CLOSED, success);
+        entourage.setOutcome(new BaseEntourage.EntourageCloseOutcome(success));
+        final Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
+        entourageWrapper.setEntourage(entourage);
         Call<Entourage.EntourageWrapper> call = entourageRequest.closeEntourage(entourage.getUUID(), entourageWrapper);
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
