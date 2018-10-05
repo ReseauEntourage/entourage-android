@@ -114,9 +114,11 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected String groupType;
     protected Calendar entourageDate = Calendar.getInstance();
     protected BaseEntourage.Metadata entourageMetadata;
+    protected String status = FeedItem.STATUS_OPEN;
 
     protected boolean isSaving = false;
 
+    protected Entourage createdEntourage;
     protected Entourage editedEntourage;
 
     // ----------------------------------
@@ -212,13 +214,13 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (isSaving) return;
         if (isValid()) {
             if (presenter != null) {
-                isSaving = true;
-                TourPoint entourageLocation = new TourPoint(0, 0);
-                if (location != null) {
-                    entourageLocation.setLatitude(location.latitude);
-                    entourageLocation.setLongitude(location.longitude);
-                }
                 if (editedEntourage != null) {
+                    isSaving = true;
+                    TourPoint entourageLocation = new TourPoint(0, 0);
+                    if (location != null) {
+                        entourageLocation.setLatitude(location.latitude);
+                        entourageLocation.setLongitude(location.longitude);
+                    }
                     editedEntourage.setTitle(titleEditText.getText().toString());
                     editedEntourage.setDescription(descriptionEditText.getText().toString());
                     editedEntourage.setLocation(entourageLocation);
@@ -230,14 +232,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                     editedEntourage.setMetadata(entourageMetadata);
                     presenter.editEntourage(editedEntourage);
                 } else {
-                    presenter.createEntourage(
-                            entourageCategory != null ? entourageCategory.getEntourageType() : null,
-                            entourageCategory != null ? entourageCategory.getCategory() : null,
-                            titleEditText.getText().toString(),
-                            descriptionEditText.getText().toString(),
-                            entourageLocation,
-                            groupType,
-                            entourageMetadata);
+                    createEntourage();
                 }
             } else {
                 Toast.makeText(getActivity(), R.string.entourage_create_error, Toast.LENGTH_SHORT).show();
@@ -319,13 +314,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                         Toast.LENGTH_SHORT
                 ).show();
             } else {
-                Toast.makeText(
-                        getActivity(),
-                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_ok : R.string.entourage_create_ok,
-                        Toast.LENGTH_SHORT
-                ).show();
-                dismiss();
-                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
+                postEntourageCreated(entourage);
             }
         }
     }
@@ -348,6 +337,39 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 dismiss();
             }
         }
+    }
+
+    // ----------------------------------
+    // Entourage create methods
+    // ----------------------------------
+
+    protected void createEntourage() {
+        if (isSaving) return;
+        isSaving = true;
+        TourPoint entourageLocation = new TourPoint(0, 0);
+        if (location != null) {
+            entourageLocation.setLatitude(location.latitude);
+            entourageLocation.setLongitude(location.longitude);
+        }
+        presenter.createEntourage(
+                entourageCategory != null ? entourageCategory.getEntourageType() : null,
+                entourageCategory != null ? entourageCategory.getCategory() : null,
+                titleEditText.getText().toString(),
+                descriptionEditText.getText().toString(),
+                entourageLocation,
+                status,
+                groupType,
+                entourageMetadata);
+    }
+
+    protected void postEntourageCreated(Entourage entourage) {
+        Toast.makeText(
+                getActivity(),
+                Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_ok : R.string.entourage_create_ok,
+                Toast.LENGTH_SHORT
+        ).show();
+        dismiss();
+        BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
     }
 
     // ----------------------------------

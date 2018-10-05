@@ -45,6 +45,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     public static final String STATUS_CLOSED = "closed";
     public static final String STATUS_ON_GOING = "ongoing";
     public static final String STATUS_FREEZED = "freezed";
+    public static final String STATUS_SUSPENDED = "suspended";
 
     public static final String JOIN_STATUS_NOT_REQUESTED = "not_requested";
     public static final String JOIN_STATUS_PENDING = "pending";

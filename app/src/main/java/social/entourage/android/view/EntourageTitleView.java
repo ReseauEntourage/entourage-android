@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class EntourageTitleView extends RelativeLayout {
         titleTextView = findViewById(R.id.title_text);
         closeButton = findViewById(R.id.title_close_button);
         actionButton = findViewById(R.id.title_action_button);
+        View separator = findViewById(R.id.title_separator);
 
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
@@ -51,6 +53,10 @@ public class EntourageTitleView extends RelativeLayout {
         mTitle = a.getString(
                 R.styleable.EntourageTitleView_entourageTitle);
         titleTextView.setText(mTitle);
+
+        if (a.hasValue(R.styleable.EntourageTitleView_android_textColor)) {
+            titleTextView.setTextColor(a.getColor(R.styleable.EntourageTitleView_android_textColor, getResources().getColor(R.color.greyish_brown)));
+        }
 
         if (a.hasValue(R.styleable.EntourageTitleView_entourageTitleCloseDrawable)) {
             mCloseButtonDrawable = a.getDrawable(
@@ -61,6 +67,9 @@ public class EntourageTitleView extends RelativeLayout {
         actionButton.setText(a.getString(R.styleable.EntourageTitleView_entourageTitleAction));
 
         setBackgroundResource(a.getResourceId(R.styleable.EntourageTitleView_android_background, R.color.background));
+
+        boolean showSeparator = a.getBoolean(R.styleable.EntourageTitleView_entourageShowSeparator, true);
+        separator.setVisibility(showSeparator ? VISIBLE : GONE);
 
         a.recycle();
     }

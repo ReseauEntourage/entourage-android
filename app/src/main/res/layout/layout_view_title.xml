@@ -19,8 +19,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:src="@drawable/ic_action_back"
-            android:tint="@color/accent"/>
+            android:src="@drawable/ic_action_back_accent"
+            />
 
         <TextView
             android:id="@+id/title_text"
