@@ -69,7 +69,7 @@ public class EntourageTitleView extends RelativeLayout {
         setBackgroundResource(a.getResourceId(R.styleable.EntourageTitleView_android_background, R.color.background));
 
         boolean showSeparator = a.getBoolean(R.styleable.EntourageTitleView_entourageShowSeparator, true);
-        separator.setVisibility(showSeparator ? VISIBLE : GONE);
+        if (separator != null) separator.setVisibility(showSeparator ? VISIBLE : GONE);
 
         a.recycle();
     }

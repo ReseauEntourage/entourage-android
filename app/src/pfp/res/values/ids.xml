@@ -26,4 +26,6 @@
 
     <item name="action_zone_ignore_button" type="id" />
 
+    <item name="title_separator" type="id" />
+
 </resources>
