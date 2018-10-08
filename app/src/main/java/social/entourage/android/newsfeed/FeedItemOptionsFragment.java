@@ -115,7 +115,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
             quitButton.setText(FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? R.string.tour_info_options_cancel_request : R.string.tour_info_options_quit_tour);
         }
         else {
-            stopButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);
+            stopButton.setVisibility(feedItem.isFreezed() || !feedItem.canBeClosed() ? View.GONE : View.VISIBLE);
             if (feedItem.isClosed() && feedItem.getType() == FeedItem.TOUR_CARD) {
                 stopButton.setText(R.string.tour_info_options_freeze_tour);
             } else {
