@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 def versionMajor = 5
-def versionMinor = 5
+def versionMinor = 6
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
@@ -83,7 +83,7 @@ android {
         }
         entourage {
             dimension 'app'
-            buildConfigField 'String', 'API_KEY', '"f30c711173105ee2dd7289eb"'
+            buildConfigField 'String', 'API_KEY', '"b6b94fc66f75b5006cb7214f"'
             ext {
                 prod = [
                         serverURL: "https://api.entourage.social/api/v1/",
@@ -102,7 +102,7 @@ android {
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
-            buildConfigField 'String', 'API_KEY', '"f27ed4fda9a2cbf199046047"'
+            buildConfigField 'String', 'API_KEY', '"b6fce1b1fcd97325791e80bd"'
 
             ext {
                 prod = [
