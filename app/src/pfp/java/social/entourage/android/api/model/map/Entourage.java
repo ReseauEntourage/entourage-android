@@ -76,6 +76,18 @@ public class Entourage extends BaseEntourage implements Serializable {
     }
 
     @Override
+    public int getJoinRequestTitle() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) return R.string.tour_info_request_join_title_outing;
+        return super.getJoinRequestTitle();
+    }
+
+    @Override
+    public int getJoinRequestButton() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) return R.string.tour_info_request_join_button_outing;
+        return super.getJoinRequestButton();
+    }
+
+    @Override
     public String getFeedTypeLong(final Context context) {
         if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
             return context.getString(R.string.entourage_type_private_circle);
