@@ -41,6 +41,7 @@
     <string name="tour_info_text_cancel">Annuler</string>
     <string name="tour_info_button_close">Fermer</string>
     <string name="tour_info_location_card_date_format">c HH:mm</string>
+
     <string name="tour_info_text_join_accepted">\u0020est entré(e) en contact avec\u0020</string>
     <string name="tour_info_text_join_rejected">\u0020 rejeté</string>
     <string name="tour_info_text_join_pending">\u0020 en attente</string>
@@ -49,7 +50,9 @@
     <string name="tour_info_text_join_quited_tour">a quitté la maraude</string>
     <string name="tour_info_text_join_quited_entourage">a quitté le groupe</string>
     <string name="tour_info_text_join_html"><![CDATA[<font color=\"#F26521\">%1$s </font>%2$s]]></string>
+
     <string name="tour_info_error_chat_message">Message non envoyé</string>
+
     <string name="tour_info_options_freeze_tour">Clôturer</string>
     <string name="tour_info_options_stop_tour">@string/tour_stop</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
@@ -60,6 +63,7 @@
     <string name="tour_info_options_contact">Contacter</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>
     <string name="tour_info_options_promote">promouvoir la sortie</string>
+
     <string name="tour_info_encounter_location">&#160;et %1$s se sont rencontrés ici.</string>
     <string name="tour_info_encounter_location_mine">&lt;u>&#160;et %1$s se sont rencontrés ici.&lt;/u></string>
     <string name="tour_info_quit_tour_title">Quitter la maraude</string>

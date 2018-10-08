@@ -5,6 +5,7 @@
     <item name="no_location_ignore_button" type="id" />
 
     <item name="side_menu_item_arrow" type="id" />
+    <item name="action_update_info" type="id" />
     <item name="about_version" type="id" />
     <item name="about_version_layout" type="id" />
 
