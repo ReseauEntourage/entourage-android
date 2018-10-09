@@ -47,15 +47,15 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
 
     @Override
     protected void createEntourage() {
-        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+        if (entourageCategory != null && Entourage.TYPE_DEMAND.equalsIgnoreCase(entourageCategory.getEntourageType())) {
+            // for DEMAND events, we need to show a wizard
+            if (getFragmentManager() != null) {
+                CreateActionWizardPage1Fragment createActionWizardPage1Fragment = new CreateActionWizardPage1Fragment();
+                createActionWizardPage1Fragment.setListener(this);
+                createActionWizardPage1Fragment.show(getFragmentManager(), CreateActionWizardPage1Fragment.TAG);
+            }
+        } else {
             super.createEntourage();
-            return;
-        }
-        // for events, we need to show a wizard
-        if (getFragmentManager() != null) {
-            CreateActionWizardPage1Fragment createActionWizardPage1Fragment = new CreateActionWizardPage1Fragment();
-            createActionWizardPage1Fragment.setListener(this);
-            createActionWizardPage1Fragment.show(getFragmentManager(), CreateActionWizardPage1Fragment.TAG);
         }
     }
 
