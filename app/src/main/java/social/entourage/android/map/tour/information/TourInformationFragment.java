@@ -823,6 +823,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
+    @Optional
     @OnClick(R.id.feeditem_option_promote)
     protected void onPromoteEntourageButton() {
         if (feedItem == null || getActivity() == null) return;
@@ -1042,7 +1043,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         reportEntourageButton.setVisibility(View.GONE);
         joinEntourageButton.setVisibility(View.GONE);
         contactTourButton.setVisibility(View.GONE);
-        promoteEntourageButton.setVisibility(View.GONE);
+        if (promoteEntourageButton != null) promoteEntourageButton.setVisibility(View.GONE);
 
         if (feedItem != null) {
             boolean hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || feedItem.isFreezed();
@@ -1076,7 +1077,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         editEntourageButton.setVisibility(View.VISIBLE);
                     }
                 }
-                if (membersList != null && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+                if (promoteEntourageButton != null && membersList != null && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                     for (TimestampedObject member : membersList) {
                         if (!(member instanceof TourUser)) continue;
                         TourUser tourUser = (TourUser) member;
