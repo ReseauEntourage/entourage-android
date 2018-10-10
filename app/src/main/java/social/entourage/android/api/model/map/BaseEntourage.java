@@ -547,8 +547,10 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     }
 
-    public static class EntourageCloseOutcome {
+    public static class EntourageCloseOutcome implements Serializable {
 
+        private static final long serialVersionUID = 4175678577343446888L;
+        
         private boolean success;
 
         public EntourageCloseOutcome(boolean success) {
