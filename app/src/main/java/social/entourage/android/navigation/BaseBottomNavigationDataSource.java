@@ -28,6 +28,7 @@ public abstract class BaseBottomNavigationDataSource {
     ArrayList<String> navigationFragmentTags = new ArrayList<>();
 
     protected int defaultSelectedTab = 0;
+    protected int feedTabIndex = 0;
     protected int myMessagesTabIndex = 1;
 
     public BaseBottomNavigationDataSource() {
@@ -63,6 +64,10 @@ public abstract class BaseBottomNavigationDataSource {
 
     public int getDefaultSelectedTab() {
         return defaultSelectedTab;
+    }
+
+    public int getFeedTabIndex() {
+        return feedTabIndex;
     }
 
     public int getMyMessagesTabIndex() {

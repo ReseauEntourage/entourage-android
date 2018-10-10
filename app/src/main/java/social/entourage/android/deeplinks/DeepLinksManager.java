@@ -139,7 +139,7 @@ public class DeepLinksManager {
         if (key.equals(DeepLinksView.FEED.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.switchToMapFragment();
+                drawerActivity.showFeed();
                 drawerActivity.popToMapFragment();
                 if (pathSegments != null && pathSegments.size() >= 1) {
                     String requestedView = pathSegments.get(0);
@@ -178,7 +178,7 @@ public class DeepLinksManager {
                     }
                     if (activity instanceof DrawerActivity) {
                         DrawerActivity drawerActivity = (DrawerActivity) activity;
-                        drawerActivity.switchToMapFragment();
+                        drawerActivity.showFeed();
                         drawerActivity.popToMapFragment();
                         drawerActivity.showWebView(urlToOpen);
                     } else {
@@ -198,7 +198,7 @@ public class DeepLinksManager {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
                 if (!drawerActivity.isGuideShown()) {
-                    drawerActivity.switchToMapFragment();
+                    drawerActivity.showFeed();
                     drawerActivity.popToMapFragment();
                     drawerActivity.selectItem(R.id.action_guide);
                 }
@@ -209,7 +209,6 @@ public class DeepLinksManager {
         else if (key.equals(DeepLinksView.MY_CONVERSATIONS.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.switchToMapFragment();
                 drawerActivity.popToMapFragment();
                 drawerActivity.showMyEntourages();
             } else {
@@ -219,7 +218,7 @@ public class DeepLinksManager {
         else if (key.equals(DeepLinksView.CREATE_ACTION.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.switchToMapFragment();
+                drawerActivity.showFeed();
                 drawerActivity.popToMapFragment();
                 drawerActivity.onCreateEntourageClicked();
             } else {
@@ -239,7 +238,7 @@ public class DeepLinksManager {
         else if (key.equals(DeepLinksView.TUTORIAL.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.showTutorial();
+                drawerActivity.showTutorial(true);
             } else {
                 return;
             }

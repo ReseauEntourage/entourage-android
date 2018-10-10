@@ -406,6 +406,14 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
+    protected int getNavigationTab() {
+        TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
+        if (tabLayout != null) {
+            return tabLayout.getSelectedTabPosition();
+        }
+        return -1;
+    }
+
     protected void selectNavigationTab(int tabIndex) {
         TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
         if (tabLayout != null) {
@@ -487,6 +495,10 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
             mapEntourageFragment.onShowFilter();
         }
+    }
+
+    public void showFeed() {
+        selectNavigationTab(navigationDataSource.getFeedTabIndex());
     }
 
     public void showMyEntourages() {
@@ -1108,7 +1120,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public boolean isGuideShown() {
-        return !(mainFragment instanceof MapEntourageFragment);
+        return (getNavigationTab() == navigationDataSource.getFeedTabIndex()) && !(mainFragment instanceof MapEntourageFragment);
     }
 
 }

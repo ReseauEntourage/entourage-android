@@ -117,7 +117,7 @@ public abstract class DrawerBasePresenter {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://profile"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://guide"));
                         try {
                             activity.startActivity(intent);
                         } catch (Exception ex) {
