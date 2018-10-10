@@ -3,6 +3,7 @@ package social.entourage.android.map.entourage.create;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -11,9 +12,11 @@ import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,6 +111,15 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @BindView(R.id.create_entourage_date)
     TextView entourageDateTextView;
+
+    @BindView(R.id.create_entourage_privacy_label)
+    TextView privacyLabel;
+
+    @BindView(R.id.create_entourage_privacy_switch)
+    Switch privacySwitch;
+
+    @BindView(R.id.create_entourage_privacy_description)
+    TextView privacyDescription;
 
     protected EntourageCategory entourageCategory;
     protected LatLng location;
@@ -229,6 +241,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                     }
                     editedEntourage.setGroupType(groupType);
                     editedEntourage.setMetadata(entourageMetadata);
+                    editedEntourage.setJoinRequestPublic(joinRequestTypePublic);
                     presenter.editEntourage(editedEntourage);
                 } else {
                     createEntourage();
@@ -278,6 +291,33 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @OnClick(R.id.create_entourage_date_layout)
     protected void onEditDateClicked() {
         showDatePicker();
+    }
+
+    @OnClick(R.id.create_entourage_privacy_switch)
+    protected void onPrivacySwitchClicked() {
+        if (privacySwitch == null) return;
+        // adjust the labels accordingly
+        if (privacySwitch.isChecked()) {
+            if (privacyLabel != null) {
+                privacyLabel.setText(R.string.entourage_create_privacy_public);
+                privacyLabel.setTypeface(privacyLabel.getTypeface(), Typeface.BOLD);
+                privacyLabel.setTextColor(ResourcesCompat.getColor(getResources(), R.color.create_entourage_privacy_public, null));
+            }
+            if (privacyDescription != null) {
+                privacyDescription.setText(R.string.entourage_create_privacy_description_public);
+                privacyDescription.requestLayout();
+            }
+        } else {
+            if (privacyLabel != null) {
+                privacyLabel.setText(R.string.entourage_create_privacy_private);
+                privacyLabel.setTypeface(privacyLabel.getTypeface(), Typeface.NORMAL);
+                privacyLabel.setTextColor(ResourcesCompat.getColor(getResources(), R.color.create_entourage_privacy_private, null));
+            }
+            if (privacyDescription != null) {
+                privacyDescription.setText(R.string.entourage_create_privacy_description_private);
+                privacyDescription.requestLayout();
+            }
+        }
     }
 
     // ----------------------------------
@@ -358,7 +398,8 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 entourageLocation,
                 recipientConsentObtained,
                 groupType,
-                entourageMetadata);
+                entourageMetadata,
+                joinRequestTypePublic);
     }
 
     protected void postEntourageCreated(Entourage entourage) {
@@ -389,6 +430,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         initializeTitleEditText();
         initializeDescriptionEditText();
         initializeDate();
+        initializeJoinRequestType();
         initializeHelpHtmlView();
     }
 
@@ -475,6 +517,12 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             updateDateTextView();
         }
         entourageDateLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.VISIBLE : View.GONE);
+    }
+
+    protected void initializeJoinRequestType() {
+        if (editedEntourage == null) return;
+        privacySwitch.setChecked(editedEntourage.isJoinRequestPublic());
+        onPrivacySwitchClicked();
     }
 
     private void initializeHelpHtmlView() {

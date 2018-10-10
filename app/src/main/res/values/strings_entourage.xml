@@ -17,6 +17,11 @@
     <string name="entourage_create_date_label">Date *</string>
     <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
 
+    <string name="entourage_create_privacy_public">Public</string>
+    <string name="entourage_create_privacy_private">Privé</string>
+    <string name="entourage_create_privacy_description_public">Tous peuvent trouver la sortie dans le fil d\'actualités, mais seuls les membres de mon voisinage sont notifiés.</string>
+    <string name="entourage_create_privacy_description_private">Cette option sera bientôt disponible. En attendant, communiquez directement dans une conversation avec les personnes que vous souhaitez inviter.</string>
+
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
     <string name="outing_create_error">L\'évènement n\'a pas pu être créé!</string>

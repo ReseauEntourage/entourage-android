@@ -78,6 +78,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
     @SerializedName("recipient_consent_obtained")
     private boolean recipientConsentObtained = true;
 
+    @SerializedName("public")
+    private boolean isJoinRequestPublic;
+
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -178,6 +181,14 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     public void setRecipientConsentObtained(final boolean recipientConsentObtained) {
         this.recipientConsentObtained = recipientConsentObtained;
+    }
+
+    public boolean isJoinRequestPublic() {
+        return isJoinRequestPublic;
+    }
+
+    public void setJoinRequestPublic(final boolean joinRequestPublic) {
+        isJoinRequestPublic = joinRequestPublic;
     }
 
     // ----------------------------------
