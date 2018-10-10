@@ -2302,7 +2302,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             map.clear();
         }
 
-        mapClusterManager.clearItems();
+        if (mapClusterManager != null) mapClusterManager.clearItems();
         markersMap.clear();
         currentTourLines.clear();
         drawnToursMap.clear();
