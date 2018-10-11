@@ -112,6 +112,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @BindView(R.id.create_entourage_date)
     TextView entourageDateTextView;
 
+    @BindView(R.id.create_entourage_privacy_layout)
+    View privacyLayout;
+
     @BindView(R.id.create_entourage_privacy_label)
     TextView privacyLabel;
 
@@ -225,24 +228,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (isSaving) return;
         if (isValid()) {
             if (presenter != null) {
+                joinRequestTypePublic = privacySwitch.isChecked();
                 if (editedEntourage != null) {
-                    isSaving = true;
-                    TourPoint entourageLocation = new TourPoint(0, 0);
-                    if (location != null) {
-                        entourageLocation.setLatitude(location.latitude);
-                        entourageLocation.setLongitude(location.longitude);
-                    }
-                    editedEntourage.setTitle(titleEditText.getText().toString());
-                    editedEntourage.setDescription(descriptionEditText.getText().toString());
-                    editedEntourage.setLocation(entourageLocation);
-                    if (entourageCategory != null) {
-                        editedEntourage.setEntourageType(entourageCategory.getEntourageType());
-                        editedEntourage.setCategory(entourageCategory.getCategory());
-                    }
-                    editedEntourage.setGroupType(groupType);
-                    editedEntourage.setMetadata(entourageMetadata);
-                    editedEntourage.setJoinRequestPublic(joinRequestTypePublic);
-                    presenter.editEntourage(editedEntourage);
+                    saveEditedEntourage();
                 } else {
                     createEntourage();
                 }
@@ -368,18 +356,13 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                         Toast.LENGTH_SHORT
                 ).show();
             } else {
-                Toast.makeText(
-                        getActivity(),
-                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_ok : R.string.entourage_save_ok,
-                        Toast.LENGTH_SHORT
-                ).show();
-                dismiss();
+                postEntourageSaved(entourage);
             }
         }
     }
 
     // ----------------------------------
-    // Entourage create methods
+    // Entourage create/edit methods
     // ----------------------------------
 
     protected void createEntourage() {
@@ -410,6 +393,35 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         ).show();
         dismiss();
         BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
+    }
+
+    protected void saveEditedEntourage() {
+        isSaving = true;
+        TourPoint entourageLocation = new TourPoint(0, 0);
+        if (location != null) {
+            entourageLocation.setLatitude(location.latitude);
+            entourageLocation.setLongitude(location.longitude);
+        }
+        editedEntourage.setTitle(titleEditText.getText().toString());
+        editedEntourage.setDescription(descriptionEditText.getText().toString());
+        editedEntourage.setLocation(entourageLocation);
+        if (entourageCategory != null) {
+            editedEntourage.setEntourageType(entourageCategory.getEntourageType());
+            editedEntourage.setCategory(entourageCategory.getCategory());
+        }
+        editedEntourage.setGroupType(groupType);
+        editedEntourage.setMetadata(entourageMetadata);
+        editedEntourage.setJoinRequestPublic(joinRequestTypePublic);
+        presenter.editEntourage(editedEntourage);
+    }
+
+    protected void postEntourageSaved(Entourage entourage) {
+        Toast.makeText(
+                getActivity(),
+                Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_ok : R.string.entourage_save_ok,
+                Toast.LENGTH_SHORT
+        ).show();
+        dismiss();
     }
 
     // ----------------------------------
@@ -520,9 +532,11 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     }
 
     protected void initializeJoinRequestType() {
-        if (editedEntourage == null) return;
-        privacySwitch.setChecked(editedEntourage.isJoinRequestPublic());
-        onPrivacySwitchClicked();
+        privacyLayout.setVisibility(Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? View.VISIBLE : View.GONE);
+        if (editedEntourage != null) {
+            privacySwitch.setChecked(editedEntourage.isJoinRequestPublic());
+            onPrivacySwitchClicked();
+        }
     }
 
     private void initializeHelpHtmlView() {
