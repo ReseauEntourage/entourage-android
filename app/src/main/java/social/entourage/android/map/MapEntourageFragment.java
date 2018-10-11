@@ -522,11 +522,19 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             application.removePushNotificationsForFeedItem(feedItem);
         }
         //check if we are not already displaying the tour
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
-        if (tourInformationFragment != null && tourInformationFragment.getFeedItemType() == feedItem.getType() && tourInformationFragment.getFeedItemId().equalsIgnoreCase(feedItem.getUUID())) {
-            //TODO refresh the tour info screen
-            return;
+        if (getActivity() != null) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            if (fragmentManager != null) {
+                TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
+                if (tourInformationFragment != null
+                        && tourInformationFragment.getFeedItemType() == feedItem.getType()
+                        && tourInformationFragment.getFeedItemId() != null
+                        && tourInformationFragment.getFeedItemId().equalsIgnoreCase(feedItem.getUUID())
+                        ) {
+                    //TODO refresh the tour info screen
+                    return;
+                }
+            }
         }
         if (presenter != null) {
             EntourageEvents.logEvent(Constants.EVENT_FEED_OPEN_ENTOURAGE);
