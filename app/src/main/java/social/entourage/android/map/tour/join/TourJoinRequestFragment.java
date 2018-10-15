@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +28,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 
@@ -83,10 +85,12 @@ public class TourJoinRequestFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        feedItem = (FeedItem) getArguments().getSerializable(Tour.KEY_TOUR);
+        if (getArguments() != null) {
+            feedItem = (FeedItem) getArguments().getSerializable(Tour.KEY_TOUR);
+        }
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -99,8 +103,9 @@ public class TourJoinRequestFragment extends DialogFragment {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                if (getActivity() == null) return;
                 InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(messageView.getWindowToken(), 0);
+                if (imm != null) imm.hideSoftInputFromWindow(messageView.getWindowToken(), 0);
             }
         });
 
@@ -108,13 +113,18 @@ public class TourJoinRequestFragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
+        setupComponent(EntourageApplication.get().getEntourageComponent());
 
         if (feedItem != null) {
-            descriptionTextView.setText(feedItem.getType() == TimestampedObject.TOUR_CARD ? R.string.tour_join_request_ok_description_tour : R.string.tour_join_request_ok_description_entourage);
+            int descriptionTextId = R.string.tour_join_request_ok_description_tour;
+            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                Entourage entourage = (Entourage)feedItem;
+                descriptionTextId = Entourage.TYPE_OUTING.equalsIgnoreCase(entourage.getGroupType()) ? R.string.tour_join_request_ok_description_outing : R.string.tour_join_request_ok_description_entourage;
+            }
+            descriptionTextView.setText(descriptionTextId);
         }
 
         messageView.addTextChangedListener(new TextWatcher() {

@@ -131,6 +131,7 @@
     <string name="tour_join_request_ok_title">Votre demande est transmise</string>
     <string name="tour_join_request_ok_description_tour">Que souhaitez-vous coordonner avec cette maraude ? Ajoutez un petit mot !</string>
     <string name="tour_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nPourquoi rejoignez-vous cet entourage ? Ajoutez un petit mot !</string>
+    <string name="tour_join_request_ok_description_outing">@string/tour_join_request_ok_description_entourage</string>
     <string name="tour_join_request_ok_message_hint">Votre message…</string>
     <string name="tour_join_request_rejected">Requête envoyée</string>
 
