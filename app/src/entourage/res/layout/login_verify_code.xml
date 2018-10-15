@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="10dp">
+        >
 
         <ImageButton
             android:id="@+id/login_code_sent_close"
@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
+            android:padding="5dp"
             android:tint="@color/accent"
             app:srcCompat="@drawable/ic_action_back"/>
 
@@ -70,7 +71,7 @@
                     android:paddingLeft="0dp"
                     android:paddingRight="10dp"
                     android:paddingStart="0dp"
-                    android:text="@string/registration_smscode_title"
+                    android:text="@string/login_text_verify_code_title"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_big"/>
@@ -118,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/registration_smscode_description"
+                    android:text="@string/login_text_verify_code_description"
                     android:textColor="@color/white"/>
 
                 <TextView

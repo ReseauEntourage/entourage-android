@@ -99,8 +99,10 @@
     <string name="registration_number_error_already_registered">Le numéro est déjà enregistré.</string>
 
     <string name="registration_smscode_resend">@string/login_text_lost_code</string>
-    <string name="registration_smscode_title"><b>Code de vérification</b></string>
-    <string name="registration_smscode_description">Veuillez saisir le code reçu par SMS.</string>
+    <string name="registration_smscode_title">@string/login_text_verify_code_title</string>
+    <string name="registration_smscode_description">@string/login_text_verify_code_description</string>
+    <string name="registration_smscode_email">@string/login_text_verify_code_email</string>
+    <string name="registration_smscode_disclaimer">@string/login_text_verify_code_disclaimer</string>
     <string name="registration_smscode_hint">Code SMS</string>
     <string name="registration_smscode_validate">Valider</string>
     <string name="registration_smscode_error_code">Veuillez saisir le code !</string>
