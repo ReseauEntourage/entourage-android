@@ -75,6 +75,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     private Metadata metadata;
 
+    @SerializedName("recipient_consent_obtained")
+    private boolean recipientConsentObtained = true;
+
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -167,6 +170,14 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     public void setMetadata(final Metadata metadata) {
         this.metadata = metadata;
+    }
+
+    public boolean isRecipientConsentObtained() {
+        return recipientConsentObtained;
+    }
+
+    public void setRecipientConsentObtained(final boolean recipientConsentObtained) {
+        this.recipientConsentObtained = recipientConsentObtained;
     }
 
     // ----------------------------------

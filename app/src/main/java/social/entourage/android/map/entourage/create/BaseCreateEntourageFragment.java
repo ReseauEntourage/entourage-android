@@ -114,11 +114,10 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected String groupType;
     protected Calendar entourageDate = Calendar.getInstance();
     protected BaseEntourage.Metadata entourageMetadata;
-    protected String status = FeedItem.STATUS_OPEN;
+    protected boolean recipientConsentObtained = true;
 
     protected boolean isSaving = false;
 
-    protected Entourage createdEntourage;
     protected Entourage editedEntourage;
 
     // ----------------------------------
@@ -357,7 +356,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 titleEditText.getText().toString(),
                 descriptionEditText.getText().toString(),
                 entourageLocation,
-                status,
+                recipientConsentObtained,
                 groupType,
                 entourageMetadata);
     }

@@ -129,7 +129,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 if (getFragmentManager() != null) {
                     CreateActionWizardPage3Fragment createActionWizardPage3Fragment = new CreateActionWizardPage3Fragment();
                     createActionWizardPage3Fragment.setListener(this);
-                    createActionWizardPage3Fragment.show(getFragmentManager(), CreateActionWizardPage2Fragment.TAG);
+                    createActionWizardPage3Fragment.show(getFragmentManager(), CreateActionWizardPage3Fragment.TAG);
                 }
                 break;
         }
@@ -138,9 +138,9 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     private void handleStep3(int option) {
         switch (option) {
             case 1:
-                status = FeedItem.STATUS_SUSPENDED;
+                recipientConsentObtained = false;
                 super.createEntourage();
-                status = FeedItem.STATUS_OPEN;
+                recipientConsentObtained = true;
                 break;
         }
     }
