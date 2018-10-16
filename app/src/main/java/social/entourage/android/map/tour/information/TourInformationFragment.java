@@ -696,6 +696,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.feeditem_option_quit)
     public void onQuitTourButton() {
+        quitTour();
+        /*
         if (getActivity() == null) return;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         int titleId = feedItem.getQuitDialogTitle();
@@ -705,24 +707,29 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        if (tourService == null) {
-                            Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            User me = EntourageApplication.me(getActivity());
-                            if (me == null) {
-                                Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
-                                showProgressBar();
-                                tourService.removeUserFromFeedItem(feedItem, me.getId());
-                            }
-                        }
+                        quitTour();
                     }
                 })
                 .setNegativeButton(R.string.no, null);
         builder.create().show();
+        */
+    }
+
+    private void quitTour() {
+        if (tourService == null) {
+            Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            User me = EntourageApplication.me(getActivity());
+            if (me == null) {
+                Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+            }
+            else {
+                EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
+                showProgressBar();
+                tourService.removeUserFromFeedItem(feedItem, me.getId());
+            }
+        }
     }
 
     @OnClick({R.id.feeditem_option_join, R.id.feeditem_option_contact, R.id.tour_info_request_join_button})

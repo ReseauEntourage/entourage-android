@@ -673,6 +673,21 @@ public class DrawerActivity extends EntourageSecuredActivity
                 mapEntourageFragment.act(event.getFeedItem());
             }
         } else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
+            if (mapEntourageFragment == null) {
+                Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+            } else {
+                User me = EntourageApplication.me(DrawerActivity.this);
+                if (me == null) {
+                    Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+                } else {
+                    FeedItem item = event.getFeedItem();
+                    if (item != null && FeedItem.JOIN_STATUS_PENDING.equals(item.getJoinStatus())) {
+                        EntourageEvents.logEvent(Constants.EVENT_FEED_CANCEL_JOIN_REQUEST);
+                    }
+                    mapEntourageFragment.removeUserFromNewsfeedCard(item, me.getId());
+                }
+            }
+            /*
             FeedItem feedItem = event.getFeedItem();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             int titleId = R.string.tour_info_quit_tour_title;
@@ -704,6 +719,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 })
                 .setNegativeButton(R.string.no, null);
             builder.create().show();
+            */
         }
     }
 
