@@ -853,6 +853,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     protected void onUserAddClicked() {
+        if (feedItem != null && feedItem.isSuspended()) {
+            Toast.makeText(getContext(), R.string.tour_info_members_add_not_allowed, Toast.LENGTH_SHORT).show();
+            return;
+        }
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
         showInviteSource();
     }
@@ -1005,8 +1009,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // update the scroll list layout
         updatePublicScrollViewLayout();
 
-        // for newly created entourages, open the invite friends screen automatically
-        if (feedItem.isNewlyCreated() && feedItem.showInviteViewAfterCreation()) {
+        // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
+        if (feedItem.isNewlyCreated() && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
             showInviteSource();
         }
 
@@ -1064,7 +1068,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                         reportEntourageButton.setVisibility(View.VISIBLE);
                         // Share button available only for entourages and non-members
-                        shareEntourageButton.setVisibility( feedItem.isPrivate() ? View.GONE : View.VISIBLE );
+                        shareEntourageButton.setVisibility( feedItem.isPrivate() || feedItem.isSuspended() ? View.GONE : View.VISIBLE );
                     }
                 } else {
                     stopTourButton.setVisibility(feedItem.isFreezed() || !feedItem.canBeClosed() ? View.GONE : View.VISIBLE);
