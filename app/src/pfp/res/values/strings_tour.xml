@@ -11,8 +11,8 @@
     <!-- Join Request -->
     <string name="tour_join_request_received_message_short">aimerait participer à la sortie</string>
 
-    <string name="tour_join_request_ok_title">Merci pour votre intérêt</string>
-    <string name="tour_join_request_ok_description_entourage">Ajoutez un mot pour expliquer pourquoi vous voulez faire partie de ce voisinage.</string>
+    <string name="tour_join_request_ok_title">Votre demande est transmise</string>
+    <string name="tour_join_request_ok_description_entourage">Merci pour votre intérêt !\nAjoutez un mot pour expliquer pourquoi vous voulez faire partie de ce voisinage.</string>
     <string name="tour_join_request_ok_description_outing">Merci pour votre participation !\nAjoutez un petit mot pour l\'organisateur et les participants !</string>
 
     <!-- Report Entourage -->
