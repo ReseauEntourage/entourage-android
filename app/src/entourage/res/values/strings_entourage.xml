@@ -18,7 +18,7 @@
 
     <string name="create_action_wizard_p3_title">DERNIÈRE QUESTION</string>
     <string name="create_action_wizard_p3_description">Le consentement est indispensable pour pouvoir diffuser votre action solidaire sur le réseau.\n\nVotre action est actuellement en suspens. Un modérateur va vous répondre très rapidement pour vous aider.</string>
-    <string name="create_action_wizard_p3_option1">J\'échange avec le modérateur</string>
+    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'>Charte éthique d’Entourage&lt;/a> vous explique pourquoi le consentement est indispensable.</string>
 
