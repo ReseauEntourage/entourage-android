@@ -11,23 +11,23 @@
     <ImageView
         android:id="@+id/login_slideshow_p4_title"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="4dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@string/login_slideshow_p4_details"
         android:src="@drawable/login_slideshow_p4_title"
-        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p4_description"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p4_description"/>
 
     <TextView
         android:id="@+id/login_slideshow_p4_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
         android:text="@string/login_slideshow_p4_details"
         android:textColor="@color/greyish_brown"
-        android:textSize="14sp"
+        android:textSize="17sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p4_persons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -41,20 +41,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/login_slideshow_p4_bottom_grey"/>
 
-    <Space
-        android:id="@+id/space"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/login_slideshow_p4_persons"
-        app:layout_constraintTop_toTopOf="@+id/login_slideshow_p4_persons"
-        app:layout_constraintVertical_bias="0.0"/>
-
     <ImageView
         android:id="@+id/login_slideshow_p4_persons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="204dp"
+        android:layout_marginBottom="206dp"
         android:contentDescription="@string/empty_description"
         android:src="@drawable/login_slideshow_p4_persons"
         app:layout_constraintBottom_toBottomOf="parent"
