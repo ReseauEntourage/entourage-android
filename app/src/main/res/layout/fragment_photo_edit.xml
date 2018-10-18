@@ -74,10 +74,22 @@
         <TextView
             android:id="@+id/photo_edit_filler"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
+
+        <ImageButton
+            android:id="@+id/photo_edit_rotate_button"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_photo_rotate"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/photo_edit_fab_button"
@@ -86,6 +98,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="4dp"
             android:src="@drawable/ic_forward_tint"
             app:fab_colorNormal="@color/white"
             app:fab_colorPressed="@color/custom_button_white_pressed"

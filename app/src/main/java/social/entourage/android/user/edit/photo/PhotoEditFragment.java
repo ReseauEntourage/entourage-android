@@ -42,6 +42,8 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
     private static final String PHOTO_PARAM = "social.entourage.android.photo_param";
     private static final String PHOTO_SOURCE = "social.entourage.android.photo_source";
 
+    private static final int ROTATE_DEGREES_STEP = -90;
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -146,6 +148,12 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
     @OnClick(R.id.photo_edit_back_button)
     protected void onBackClicked() {
         dismiss();
+    }
+
+    @OnClick({R.id.photo_edit_rotate_button})
+    protected void onRotateClicked() {
+        cropImageView.rotateImage(ROTATE_DEGREES_STEP);
+        EntourageEvents.logEvent(Constants.EVENT_USER_ROTATE_PHOTO);
     }
 
     // ----------------------------------
