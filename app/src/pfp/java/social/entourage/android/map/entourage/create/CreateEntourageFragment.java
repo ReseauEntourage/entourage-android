@@ -6,6 +6,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
@@ -123,6 +124,10 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     @Override
     protected boolean isValid() {
         joinRequestTypePublic = privacySwitch.isChecked();
+        if (entourageMetadata == null || entourageMetadata.getGooglePlaceId() == null || entourageMetadata.getGooglePlaceId().length() == 0) {
+            Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return super.isValid();
     }
 
@@ -146,7 +151,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 entourageMetadata.setGooglePlaceId(place.getId());
             }
         } else {
-            this.location = null;
+//            this.location = null;
             positionTextView.setText("");
             positionLabel.setVisibility(View.VISIBLE);
         }
