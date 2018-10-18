@@ -1688,7 +1688,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
         TourPoint endPoint = feedItem.getEndPoint();
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            Tour tour = (Tour)feedItem;
+            Tour tour = (Tour) feedItem;
             List<TourPoint> tourPointsList = tour.getTourPoints();
             if (tourPointsList.size() > 1) {
                 TourPoint startPoint = tourPointsList.get(0);
@@ -1699,17 +1699,21 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     startPoint = p;
                 }
             }
+
+            TourTimestamp tourTimestamp = new TourTimestamp(
+                    feedItem.getEndTime(),
+                    feedItem.getEndTime() != null ? feedItem.getEndTime() : now,
+                    feedItem.getType(),
+                    FeedItem.STATUS_CLOSED,
+                    endPoint,
+                    duration,
+                    distance
+            );
+            discussionAdapter.addCardInfoAfterTimestamp(tourTimestamp);
+        } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            // Retrieve the latest chat messages, which should contain the close feed message
+            if (presenter != null) presenter.getFeedItemMessages(oldestChatMessageDate);
         }
-        TourTimestamp tourTimestamp = new TourTimestamp(
-                feedItem.getEndTime(),
-                feedItem.getEndTime() != null ? feedItem.getEndTime() : now,
-                feedItem.getType(),
-                FeedItem.STATUS_CLOSED,
-                endPoint,
-                duration,
-                distance
-        );
-        discussionAdapter.addCardInfoAfterTimestamp(tourTimestamp);
     }
 
     private void scrollToLastCard() {
