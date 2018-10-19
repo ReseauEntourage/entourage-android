@@ -60,6 +60,10 @@ public class SideMenuFragment extends Fragment {
     @BindView(R.id.action_update_info)
     SideMenuItemView updatePrivateCircleInfoItemView;
 
+    @Nullable
+    @BindView(R.id.action_charte)
+    SideMenuItemView charterItemView;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -183,6 +187,10 @@ public class SideMenuFragment extends Fragment {
             // Show Update Private Circle item only if the user is member of any
             if (updatePrivateCircleInfoItemView != null) {
                 updatePrivateCircleInfoItemView.setVisibility( user.getMemberships(Entourage.TYPE_NEIGHBORHOOD).size() > 0 ? View.VISIBLE : View.GONE);
+            }
+            // Changed the ethics charter text depending on signed/unsigned
+            if (charterItemView != null) {
+                charterItemView.setTitle(user.hasSignedEthicsCharter() ? R.string.action_charter_signed : R.string.action_charter_unsigned);
             }
         }
     }

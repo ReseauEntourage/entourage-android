@@ -3,6 +3,7 @@ package social.entourage.android.sidemenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ImageViewCompat;
 import android.util.AttributeSet;
@@ -20,6 +21,7 @@ import social.entourage.android.R;
  */
 public class SideMenuItemView extends RelativeLayout {
 
+    private TextView titleView = null;
 
     public SideMenuItemView(Context context) {
         super(context);
@@ -65,7 +67,7 @@ public class SideMenuItemView extends RelativeLayout {
             }
 
             //Title
-            TextView titleView = findViewById(R.id.side_menu_item_title);
+            titleView = findViewById(R.id.side_menu_item_title);
             String title = styledAttributes.getString(R.styleable.SideMenuItemView_android_title);
             titleView.setText(title);
 
@@ -99,6 +101,12 @@ public class SideMenuItemView extends RelativeLayout {
         }
         finally {
             styledAttributes.recycle();
+        }
+    }
+
+    public void setTitle(@StringRes int resid) {
+        if (titleView != null) {
+            titleView.setText(resid);
         }
     }
 

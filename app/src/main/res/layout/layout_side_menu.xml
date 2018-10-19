@@ -155,7 +155,7 @@
                 android:layout_height="50dp"
                 android:background="@color/sidemenu_item_background"
                 android:icon="@drawable/ic_charte"
-                android:title="@string/action_charte"
+                android:title="@string/action_charter_unsigned"
                 app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
