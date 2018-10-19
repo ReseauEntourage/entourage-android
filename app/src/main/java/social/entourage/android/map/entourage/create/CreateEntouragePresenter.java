@@ -39,13 +39,11 @@ public class CreateEntouragePresenter {
     // Methods
     // ----------------------------------
 
-    protected void createEntourage(String type, String category, String title, String description, TourPoint location, boolean recipientConsentObtained, String groupType, BaseEntourage.Metadata metadata) {
-    protected void createEntourage(String type, String category, String title, String description, TourPoint location, String status, String groupType, BaseEntourage.Metadata metadata, boolean joinRequestTypePublic) {
+    protected void createEntourage(String type, String category, String title, String description, TourPoint location, boolean recipientConsentObtained, String groupType, BaseEntourage.Metadata metadata, boolean joinRequestTypePublic) {
         Entourage entourage = new Entourage(type, category, title, description, location);
         entourage.setGroupType(groupType);
         entourage.setMetadata(metadata);
         entourage.setRecipientConsentObtained(recipientConsentObtained);
-        entourage.setStatus(status);
         entourage.setJoinRequestPublic(joinRequestTypePublic);
         Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
         entourageWrapper.setEntourage(entourage);

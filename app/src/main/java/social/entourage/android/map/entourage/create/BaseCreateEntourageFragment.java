@@ -130,6 +130,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected Calendar entourageDate = Calendar.getInstance();
     protected BaseEntourage.Metadata entourageMetadata;
     protected boolean recipientConsentObtained = true;
+    protected boolean joinRequestTypePublic = true;
 
     protected boolean isSaving = false;
 

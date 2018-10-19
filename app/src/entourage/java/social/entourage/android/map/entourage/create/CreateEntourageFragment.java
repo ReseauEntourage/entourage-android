@@ -190,15 +190,12 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     private void handleStep3(int option) {
         switch (option) {
             case 1:
-                recipientConsentObtained = false;
-                super.createEntourage();
-                recipientConsentObtained = true;
                 if (editedEntourage != null) {
                     super.saveEditedEntourage();
                 } else {
-                    status = FeedItem.STATUS_SUSPENDED;
+                    recipientConsentObtained = false;
                     super.createEntourage();
-                    status = FeedItem.STATUS_OPEN;
+                    recipientConsentObtained = true;
                 }
                 break;
         }
