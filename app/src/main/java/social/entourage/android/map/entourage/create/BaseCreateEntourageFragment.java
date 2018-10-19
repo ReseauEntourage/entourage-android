@@ -557,7 +557,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             Toast.makeText(getActivity(), R.string.entourage_create_error_title_empty, Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) {
+        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
             String dateString = entourageDateTextView.getText().toString().trim();
             if (dateString.length() == 0) {
                 Toast.makeText(getActivity(), R.string.entourage_create_error_date_empty, Toast.LENGTH_SHORT).show();
@@ -569,14 +569,21 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 return false;
             }
         }
-        if (location == null) {
-            Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            String address = positionTextView.getText().toString().trim();
-            if (address.length() == 0) {
+        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            if (entourageMetadata == null || entourageMetadata.getGooglePlaceId() == null || entourageMetadata.getGooglePlaceId().length() == 0) {
                 Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
                 return false;
+            }
+        } else {
+            if (location == null) {
+                Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
+                return false;
+            } else {
+                String address = positionTextView.getText().toString().trim();
+                if (address.length() == 0) {
+                    Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             }
         }
         return true;
@@ -616,20 +623,24 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     // ----------------------------------
 
     public void onEntourageLocationChosen(LatLng location, String address, Place place) {
-        if (location != null) {
-            this.location = location;
-            if (address != null) {
-                positionTextView.setText(address);
-            }
-        }
-        if (place != null) {
-            if (groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) {
+        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            if (place != null) {
                 if (entourageMetadata == null) entourageMetadata = new BaseEntourage.Metadata();
                 entourageMetadata.setPlaceName(place.getName().toString());
                 if (place.getAddress() != null) {
                     entourageMetadata.setStreetAddress(place.getAddress().toString());
+                    positionTextView.setText(place.getAddress().toString());
                 }
                 entourageMetadata.setGooglePlaceId(place.getId());
+            } else {
+                positionTextView.setText("");
+            }
+        } else {
+            if (location != null) {
+                this.location = location;
+                if (address != null) {
+                    positionTextView.setText(address);
+                }
             }
         }
     }

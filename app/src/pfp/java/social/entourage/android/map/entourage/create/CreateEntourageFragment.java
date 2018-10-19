@@ -124,10 +124,6 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     @Override
     protected boolean isValid() {
         joinRequestTypePublic = privacySwitch.isChecked();
-        if (entourageMetadata == null || entourageMetadata.getGooglePlaceId() == null || entourageMetadata.getGooglePlaceId().length() == 0) {
-            Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
-            return false;
-        }
         return super.isValid();
     }
 
