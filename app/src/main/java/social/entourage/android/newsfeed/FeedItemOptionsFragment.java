@@ -1,6 +1,8 @@
 package social.entourage.android.newsfeed;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -115,7 +118,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
             quitButton.setText(FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? R.string.tour_info_options_cancel_request : R.string.tour_info_options_quit_tour);
         }
         else {
-            stopButton.setVisibility(feedItem.isFreezed() ? View.GONE : View.VISIBLE);
+            stopButton.setVisibility(feedItem.isFreezed() || !feedItem.canBeClosed() ? View.GONE : View.VISIBLE);
             if (feedItem.isClosed() && feedItem.getType() == FeedItem.TOUR_CARD) {
                 stopButton.setText(R.string.tour_info_options_freeze_tour);
             } else {
@@ -199,8 +202,36 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
     @OnClick(R.id.feeditem_option_edit)
     protected void onEditClicked() {
         if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
-            CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage) feedItem);
-            fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
+            if (feedItem.showEditEntourageView()) {
+                if (getFragmentManager() != null) {
+                    CreateEntourageFragment fragment = CreateEntourageFragment.newInstance((Entourage) feedItem);
+                    fragment.show(getFragmentManager(), CreateEntourageFragment.TAG);
+                }
+            } else {
+                if (getActivity() == null) return;
+                // just send an email
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                // Set the email to
+                String[] addresses = {getString(R.string.edit_action_email)};
+                intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+                // Set the subject
+                String title = feedItem.getTitle();
+                if (title == null) title = "";
+                String emailSubject = getString(R.string.edit_entourage_email_title, title);
+                intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+                String description = feedItem.getDescription();
+                if (description == null) description = "";
+                String emailBody = getString(R.string.edit_entourage_email_body, description);
+                intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    // Start the intent
+                    startActivity(intent);
+                } else {
+                    // No Email clients
+                    Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
+                }
+            }
 
             dismiss();
         }

@@ -2,6 +2,7 @@ package social.entourage.android.user.edit;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
@@ -284,6 +286,27 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
                 EditText autocompleteEditText = getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input);
                 if (autocompleteEditText != null && getContext() != null) {
                     autocompleteEditText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                }
+            }
+        }
+
+        @Override
+        public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+            super.onActivityResult(requestCode, resultCode, intent);
+            if (requestCode == 30421) {
+                if (resultCode == -1) {
+                    if (this.getActivity() == null) return;
+                    Place place = PlaceAutocomplete.getPlace(this.getActivity(), intent);
+                    if (place == null || place.getAddress() == null) return;
+
+                    String address = place.getAddress().toString();
+                    int lastCommaIndex = address.lastIndexOf(',');
+                    if (lastCommaIndex > 0) {
+                        //remove the last part, which is the country
+                        address = address.substring(0, lastCommaIndex);
+                    }
+
+                    this.setText(address);
                 }
             }
         }

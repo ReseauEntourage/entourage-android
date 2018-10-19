@@ -256,29 +256,15 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
             int dividerColor = R.color.accent;
             int textColor = R.color.accent;
             actButton.setVisibility(View.VISIBLE);
-            /*
-            actButton.setPadding(0, 0, 0, 0);
-            if (Build.VERSION.SDK_INT >= 16) {
-                actButton.setPaddingRelative(0, 0, 0, 0);
-            }
-            */
             if (feedItem.isFreezed()) {
-                actButton.setText(R.string.tour_cell_button_freezed);
-                //actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                actButton.setText(feedItem.getFreezedCTAText());
                 dividerColor = R.color.greyish;
-                textColor = R.color.greyish;
+                textColor = feedItem.getFreezedCTAColor();
             } else {
                 String joinStatus = feedItem.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_pending);
-                    //actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
-                    /*
-                    actButton.setPadding(0, 0, res.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
-                    if (Build.VERSION.SDK_INT >= 16) {
-                        actButton.setPaddingRelative(0, 0, res.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
-                    }
-                    */
                     if (feedItem.getAuthor() != null) {
                         if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
                             actButton.setText(R.string.tour_cell_button_ongoing);
@@ -288,14 +274,11 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                     } else {
                         actButton.setText(R.string.tour_cell_button_accepted);
                     }
-                    //actButton.setCompoundDrawablesWithIntrinsicBounds(res.getDrawable(R.drawable.button_act_accepted), null, null, null);
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     actButton.setText(R.string.tour_cell_button_rejected);
-                    //actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     textColor = R.color.tomato;
                 } else {
                     actButton.setText(R.string.tour_cell_button_view);
-                    //actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     dividerColor = R.color.greyish;
                 }
             }

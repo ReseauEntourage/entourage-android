@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Missing ids from entourage app -->
+    <item name="login_verify_code_description" type="id"/>
+    <item name="login_verify_code_email" type="id" />
+
     <item name="fragment_map_show_guide" type="id" />
+    <item name="layout_feed_map_card_tab" type="id" />
 
     <item name="slideshow_b4" type="id" />
 
@@ -21,5 +25,7 @@
     <item name="button_create_outing" type="id" />
 
     <item name="action_zone_ignore_button" type="id" />
+
+    <item name="title_separator" type="id" />
 
 </resources>

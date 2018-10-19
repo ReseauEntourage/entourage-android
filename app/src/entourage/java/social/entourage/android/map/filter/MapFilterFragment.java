@@ -184,7 +184,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
     @Override
     protected void loadFilter() {
 
-        MapFilter mapFilter = (MapFilter)MapFilterFactory.getMapFilter(getContext());
+        MapFilter mapFilter = (MapFilter)MapFilterFactory.getMapFilter();
 
         User me = EntourageApplication.me();
 
@@ -230,7 +230,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
     @Override
     protected void saveFilter() {
-        MapFilter mapFilter = (MapFilter) MapFilterFactory.getMapFilter(getContext());
+        MapFilter mapFilter = (MapFilter) MapFilterFactory.getMapFilter();
 
         mapFilter.tourTypeMedical = tourMedicalSwitch.isChecked();
         mapFilter.tourTypeSocial = tourSocialSwitch.isChecked();

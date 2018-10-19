@@ -16,6 +16,8 @@ public class NewsfeedPagination extends EntouragePagination {
     public int distance; // kilometers
     private int distanceIndex;
 
+    private String lastFeedItemUUID = null;
+
     public NewsfeedPagination() {
         super();
         this.distance = availableDistances[0];
@@ -27,6 +29,7 @@ public class NewsfeedPagination extends EntouragePagination {
         itemsPerPage = Constants.ITEMS_PER_PAGE;
         beforeDate = new Date();
         newestDate = null;
+        lastFeedItemUUID = null;
         isLoading = false;
         isRefreshing = false;
     }
@@ -39,5 +42,14 @@ public class NewsfeedPagination extends EntouragePagination {
         if (distanceIndex == (availableDistances.length - 1)) return;
         distanceIndex++;
         this.distance = availableDistances[distanceIndex];
+    }
+
+    public String getLastFeedItemUUID() {
+        return lastFeedItemUUID;
+    }
+
+    public void setLastFeedItemUUID(final String lastFeedItemUUID) {
+        this.lastFeedItemUUID = lastFeedItemUUID;
+        newItemsAvailable = true;
     }
 }

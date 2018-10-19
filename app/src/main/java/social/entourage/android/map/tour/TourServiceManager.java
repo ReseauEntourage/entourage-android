@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationListener;
@@ -34,6 +35,7 @@ import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.EntourageDate;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
@@ -45,11 +47,13 @@ import social.entourage.android.api.tape.EncounterTaskResult;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.map.MapTabItem;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.map.tour.FusedLocationProvider.ProviderStatusListener;
 import social.entourage.android.map.tour.FusedLocationProvider.UserType;
+import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
@@ -388,7 +392,7 @@ public class TourServiceManager {
         });
     }
 
-    protected void retrieveNewsFeed(Date beforeDate, int distance, int itemsPerPage, Context context) {
+    protected void retrieveNewsFeed(final NewsfeedPagination pagination, MapTabItem selectedTab) {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
             tourService.notifyListenersNetworkException();
@@ -398,9 +402,14 @@ public class TourServiceManager {
         CameraPosition currentPosition = entourageLocation.getCurrentCameraPosition();
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
-            MapFilter mapFilter = MapFilterFactory.getMapFilter(context);
+            MapFilter mapFilter = MapFilterFactory.getMapFilter();
             if (mapFilter == null) return;
-            currentNewsFeedCall = createNewsfeedWrapperCall(beforeDate, location, distance, itemsPerPage, mapFilter);
+            currentNewsFeedCall = createNewsfeedWrapperCall(location, pagination, mapFilter, selectedTab);
+            if (currentNewsFeedCall == null) {
+                //fail graciously
+                tourService.notifyListenersNewsFeedReceived(null);
+                return;
+            }
             currentNewsFeedCall.enqueue(new NewsFeedCallback(this, tourService));
         } else {
             tourService.notifyListenersCurrentPositionNotRetrieved();
@@ -524,7 +533,9 @@ public class TourServiceManager {
         final String oldStatus = entourage.getStatus();
         entourage.setStatus(FeedItem.STATUS_CLOSED);
         entourage.setEndTime(new Date());
-        final Entourage.EntourageCloseWrapper entourageWrapper = new Entourage.EntourageCloseWrapper(FeedItem.STATUS_CLOSED, success);
+        entourage.setOutcome(new BaseEntourage.EntourageCloseOutcome(success));
+        final Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
+        entourageWrapper.setEntourage(entourage);
         Call<Entourage.EntourageWrapper> call = entourageRequest.closeEntourage(entourage.getUUID(), entourageWrapper);
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
@@ -596,20 +607,30 @@ public class TourServiceManager {
         }
     }
 
-    private Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(Date beforeDate, LatLng location, int distance, int itemsPerPage, MapFilter mapFilter) {
-        return newsfeedRequest.retrieveFeed(
-                (beforeDate == null ? null : new EntourageDate(beforeDate)),
-                location.longitude,
-                location.latitude,
-                distance,
-                itemsPerPage,
-                mapFilter.getTypes(),
-                mapFilter.onlyMyEntourages(),
-                mapFilter.getTimeFrame(),
-                mapFilter.onlyMyPartnerEntourages(),
-                Constants.ANNOUNCEMENTS_VERSION,
-                mapFilter.showPastEvents()
-        );
+    private @Nullable Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(LatLng location, NewsfeedPagination pagination, MapFilter mapFilter, MapTabItem selectedTab) {
+        switch (selectedTab) {
+            case ALL_TAB:
+                return newsfeedRequest.retrieveFeed(
+                        (pagination.getBeforeDate() == null ? null : new EntourageDate(pagination.getBeforeDate())),
+                        location.longitude,
+                        location.latitude,
+                        pagination.distance,
+                        pagination.itemsPerPage,
+                        mapFilter.getTypes(),
+                        mapFilter.onlyMyEntourages(),
+                        mapFilter.getTimeFrame(),
+                        mapFilter.onlyMyPartnerEntourages(),
+                        Constants.ANNOUNCEMENTS_VERSION,
+                        mapFilter.showPastEvents()
+                );
+            case EVENTS_TAB:
+                return newsfeedRequest.retrieveOutings(
+                        location.longitude,
+                        location.latitude,
+                        pagination.getLastFeedItemUUID()
+                );
+        }
+        return null;
     }
 
     private void initializeTimerFinishTask() {

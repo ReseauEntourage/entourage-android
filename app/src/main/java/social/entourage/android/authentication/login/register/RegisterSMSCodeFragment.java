@@ -2,10 +2,12 @@ package social.entourage.android.authentication.login.register;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -33,6 +35,9 @@ public class RegisterSMSCodeFragment extends EntourageDialogFragment {
     @BindView(R.id.register_smscode_code)
     EditText codeEditText;
 
+    @BindView(R.id.register_smscode_email)
+    TextView emailTextView;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -43,7 +48,7 @@ public class RegisterSMSCodeFragment extends EntourageDialogFragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -93,6 +98,11 @@ public class RegisterSMSCodeFragment extends EntourageDialogFragment {
     protected void onLostCodeClicked() {
         // Resend the code
         mListener.registerResendCode();
+    }
+
+    @OnClick(R.id.register_smscode_description)
+    protected void onResendByEmailViewClicked() {
+        emailTextView.setVisibility(View.VISIBLE);
     }
 
     // ----------------------------------

@@ -46,7 +46,7 @@ public interface EntourageRequest {
     @PUT("entourages/{id}")
     Call<Entourage.EntourageWrapper> closeEntourage(
             @Path("id") String entourageUUID,
-            @Body Entourage.EntourageCloseWrapper entourageCloseWrapper
+            @Body Entourage.EntourageWrapper entourageWrapper
     );
 
     @GET("entourages/{entourage_id}/users")

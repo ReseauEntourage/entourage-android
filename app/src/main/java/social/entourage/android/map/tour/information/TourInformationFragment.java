@@ -696,6 +696,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     @OnClick(R.id.feeditem_option_quit)
     public void onQuitTourButton() {
+        quitTour();
+        /*
         if (getActivity() == null) return;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         int titleId = feedItem.getQuitDialogTitle();
@@ -705,24 +707,29 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        if (tourService == null) {
-                            Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            User me = EntourageApplication.me(getActivity());
-                            if (me == null) {
-                                Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
-                                showProgressBar();
-                                tourService.removeUserFromFeedItem(feedItem, me.getId());
-                            }
-                        }
+                        quitTour();
                     }
                 })
                 .setNegativeButton(R.string.no, null);
         builder.create().show();
+        */
+    }
+
+    private void quitTour() {
+        if (tourService == null) {
+            Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            User me = EntourageApplication.me(getActivity());
+            if (me == null) {
+                Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+            }
+            else {
+                EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
+                showProgressBar();
+                tourService.removeUserFromFeedItem(feedItem, me.getId());
+            }
+        }
     }
 
     @OnClick({R.id.feeditem_option_join, R.id.feeditem_option_contact, R.id.tour_info_request_join_button})
@@ -823,6 +830,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
     }
 
+    @Optional
     @OnClick(R.id.feeditem_option_promote)
     protected void onPromoteEntourageButton() {
         if (feedItem == null || getActivity() == null) return;
@@ -852,6 +860,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     protected void onUserAddClicked() {
+        if (feedItem != null && feedItem.isSuspended()) {
+            Toast.makeText(getContext(), R.string.tour_info_members_add_not_allowed, Toast.LENGTH_SHORT).show();
+            return;
+        }
         EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS);
         showInviteSource();
     }
@@ -1004,8 +1016,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // update the scroll list layout
         updatePublicScrollViewLayout();
 
-        // for newly created entourages, open the invite friends screen automatically
-        if (feedItem.isNewlyCreated() && feedItem.showInviteViewAfterCreation()) {
+        // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
+        if (feedItem.isNewlyCreated() && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
             showInviteSource();
         }
 
@@ -1042,7 +1054,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         reportEntourageButton.setVisibility(View.GONE);
         joinEntourageButton.setVisibility(View.GONE);
         contactTourButton.setVisibility(View.GONE);
-        promoteEntourageButton.setVisibility(View.GONE);
+        if (promoteEntourageButton != null) promoteEntourageButton.setVisibility(View.GONE);
 
         if (feedItem != null) {
             boolean hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) || feedItem.isFreezed();
@@ -1063,7 +1075,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                         reportEntourageButton.setVisibility(View.VISIBLE);
                         // Share button available only for entourages and non-members
-                        shareEntourageButton.setVisibility( feedItem.isPrivate() ? View.GONE : View.VISIBLE );
+                        shareEntourageButton.setVisibility( feedItem.isPrivate() || feedItem.isSuspended() ? View.GONE : View.VISIBLE );
                     }
                 } else {
                     stopTourButton.setVisibility(feedItem.isFreezed() || !feedItem.canBeClosed() ? View.GONE : View.VISIBLE);
@@ -1076,7 +1088,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         editEntourageButton.setVisibility(View.VISIBLE);
                     }
                 }
-                if (membersList != null && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+                if (promoteEntourageButton != null && membersList != null && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                     for (TimestampedObject member : membersList) {
                         if (!(member instanceof TourUser)) continue;
                         TourUser tourUser = (TourUser) member;
@@ -1570,8 +1582,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         if (feedItem.isFreezed()) {
             // MI: Instead of hiding it, display the freezed text
-            actButton.setEnabled(false);
-            actButton.setText(R.string.tour_cell_button_freezed);
+            //actButton.setEnabled(false);
+            actButton.setTextColor(getResources().getColor(feedItem.getFreezedCTAColor()));
+            actButton.setText(feedItem.getFreezedCTAText());
+            actButton.setPadding(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
+            if (Build.VERSION.SDK_INT >= 16) {
+                actButton.setPaddingRelative(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
+            }
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
         else {

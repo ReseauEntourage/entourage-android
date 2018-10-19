@@ -9,4 +9,8 @@
     <string name="map_filter_entourage_outing_text">Évènements</string>
     <string name="map_filter_past_events_text">Inclure passés</string>
 
+    <!-- Map Tab -->
+    <string name="map_tab_all">Tous</string>
+    <string name="map_tab_events">Évènements</string>
+
 </resources>

@@ -176,11 +176,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         initializeView();
 
-        // retrieve the feeds if nothing was loaded
-        // the first item in the adapter is the invitations list, so we need to check starting with 1
-        //if (entouragesAdapter != null && entouragesAdapter.getDataItemCount() <= 1) {
-        //    retrieveMyFeeds();
-        //}
         refreshMyFeeds();
 
         if (getActivity() != null) {
@@ -252,6 +247,14 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
             }
         });
+
+        // The tab is initialised ALL
+        // So we need to reset the filter flag and no item view in case the user switched to another screen
+        // while the UNREAD tab was active
+        MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(getContext());
+        filter.setShowUnreadOnly(false);
+
+        noItemsView.setVisibility(View.GONE);
     }
 
     private void initializeEntouragesView() {

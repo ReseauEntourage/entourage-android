@@ -36,7 +36,14 @@
     <string name="login_text_code">Code d\'accès</string>
     <string name="login_text_country_code">Code pays</string>
     <string name="login_text_default_country_code">+33</string>
+
     <string name="login_text_verify_code_back">Modifier le numéro</string>
+    <string name="login_text_verify_code_title"><b>Vous avez reçu un code</b> (normalement)</string>
+    <string name="login_text_verify_code_hint">Code SMS</string>
+    <string name="login_text_verify_code_description">Si vous ne l’avez pas reçu, <u>redemandez un code.</u></string>
+    <string name="login_text_verify_code_email">Le problème persiste ? écrivez à contact@entourage.social et nous en génèrerons un pour vous.</string>
+    <string name="login_text_verify_code_disclaimer">Votre code est crypté : seul.e vous le connaissez. Vous pouvez le modifier dans votre Profil.</string>
+
     <string name="login_hint_name">Saisissez votre prénom et votre nom</string>
     <string name="login_hint_phone">Numéro de téléphone</string>
     <string name="login_hint_code">Code</string>
@@ -81,8 +88,9 @@
     <!-- Registration -->
     <string name="registration_welcome_signin">Se connecter</string>
     <string name="registration_welcome_title">Bienvenue\nsur Entourage.</string>
-    <string name="registration_welcome_description">Vous venez de rejoindre la plus grande communauté de citoyens qui collaborent pour lutter contre l’exclusion sociale!\n\nEn vous inscrivant, vous acceptez nos &lt;a href=\'%1$s\'>conditions d’utilisation&lt;/a> et vous reconnaissez avoir lu notre politique de confidentialité.</string>
-    <string name="registration_welcome_start">Commencer</string>
+    <string name="registration_welcome_description">Vous allez rejoindre une communauté de voisins avec et sans abris qui se rassemblent et luttent contre l’exclusion !</string>
+    <string name="registration_welcome_privacy">En vous inscrivant, vous acceptez nos &lt;a href=\'%1$s\'>conditions d’utilisation&lt;/a>, vous confirmez avoir plus de 16 ans et avoir lu notre &lt;a href=\'%2$s\'>politique de confidentialité&lt;/a>.</string>
+    <string name="registration_welcome_start">C\'est parti, je rejoins le réseau</string>
 
     <string name="registration_number_title">Quel est votre numéro de portable ? </string>
     <string name="registration_number_description">Entourage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
@@ -90,9 +98,12 @@
     <string name="registration_number_error_server">Echec de l’envoi du numéro</string>
     <string name="registration_number_error_already_registered">Le numéro est déjà enregistré.</string>
 
-    <string name="registration_smscode_title">Code de vérification</string>
-    <string name="registration_smscode_description">Veuillez saisir le code reçu par SMS.</string>
-    <string name="registration_smscode_hint">Code</string>
+    <string name="registration_smscode_resend">@string/login_text_lost_code</string>
+    <string name="registration_smscode_title">@string/login_text_verify_code_title</string>
+    <string name="registration_smscode_description">@string/login_text_verify_code_description</string>
+    <string name="registration_smscode_email">@string/login_text_verify_code_email</string>
+    <string name="registration_smscode_disclaimer">@string/login_text_verify_code_disclaimer</string>
+    <string name="registration_smscode_hint">Code SMS</string>
     <string name="registration_smscode_validate">Valider</string>
     <string name="registration_smscode_error_code">Veuillez saisir le code !</string>
     <string name="registration_smscode_sent">SMS envoyé</string>

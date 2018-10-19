@@ -18,6 +18,7 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     public static final String TYPE_TEXT = "text";
     public static final String TYPE_VISIT = "visit";
     public static final String TYPE_OUTING = "outing";
+    public static final String TYPE_STATUS_UPDATE = "status_update";
 
     @Expose(serialize = false)
     @SerializedName("id")
@@ -133,6 +134,7 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     @Override
     public int getType() {
         if (TYPE_OUTING.equalsIgnoreCase(messageType)) return CHAT_MESSAGE_OUTING;
+        if (TYPE_STATUS_UPDATE.equalsIgnoreCase(messageType)) return STATUS_UPDATE_CARD;
         return isMe ? CHAT_MESSAGE_ME : CHAT_MESSAGE_OTHER;
     }
 
@@ -164,6 +166,11 @@ public class ChatMessage extends TimestampedObject implements Serializable {
         @SerializedName("display_address")
         private String displayAddress;
 
+        private String status;
+
+        @SerializedName("outcome_success")
+        private boolean outcomeSuccess;
+
         public String getUUID() {
             return uuid;
         }
@@ -182,6 +189,14 @@ public class ChatMessage extends TimestampedObject implements Serializable {
 
         public String getDisplayAddress() {
             return displayAddress;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public boolean isOutcomeSuccess() {
+            return outcomeSuccess;
         }
     }
 

@@ -105,6 +105,10 @@
     <string name="outing_message_card_created_author"><![CDATA[%1$s a créé une <font color=\"%2$s\">sortie</font> :]]></string>
     <string name="outing_message_card_updated_author"><![CDATA[%1$s a <b>modifié</b> une <font color=\"%2$s\">sortie</font> :]]></string>
 
+    <!-- Status update as chat message card -->
+    <!-- 1 = font color, 2 = author, 3 = message -->
+    <string name="status_message_card_details"><![CDATA[<font color=\"%1$s\">%2$s</font> %3$s]]></string>
+
     <!-- My Entourages -->
     <string name="myentourages_title">MES ENTOURAGES</string>
     <string name="myentourages_all">Tous les messages</string>

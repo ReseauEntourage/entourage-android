@@ -82,7 +82,7 @@ public class DrawerPresenter extends DrawerBasePresenter {
 
     @Override
     protected void displayFeedItemOptions(final FeedItem feedItem) {
-        if (!feedItem.isMine() || feedItem.isFreezed()) {
+        if (!feedItem.isMine() || feedItem.isFreezed() || !feedItem.canBeClosed()) {
             super.displayFeedItemOptions(feedItem);
             return;
         }

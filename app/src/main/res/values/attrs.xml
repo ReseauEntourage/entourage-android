@@ -46,7 +46,9 @@
         <attr name="entourageTitle" format="string"/>
         <attr name="entourageTitleCloseDrawable" format="reference"/>
         <attr name="entourageTitleAction" format="string"/>
+        <attr name="entourageShowSeparator" format="boolean"/>
         <attr name="android:background"/>
+        <attr name="android:textColor"/>
     </declare-styleable>
     <declare-styleable name="HalfCircleView">
         <attr name="shapeColor" format="color"/>

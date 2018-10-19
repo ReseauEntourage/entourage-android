@@ -1,5 +1,6 @@
 package social.entourage.android.base;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import java.util.List;
 
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.map.MapTabItem;
 import social.entourage.android.map.MapViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
+import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 
 /**
  * Created by mihaiionescu on 05/05/16.
@@ -28,6 +31,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     protected boolean needsBottomView = false;
     private boolean showBottomView = false;
     private int bottomViewContentType;
+    private MapTabItem selectedTab = MapTabItem.ALL_TAB;
 
     protected boolean needsTopView = false;
     private MapViewHolder mapViewHolder;
@@ -59,7 +63,9 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
             return;
         }
         if (position == getItemCount() - 1 && needsBottomView) {
-            ((BottomViewHolder)holder).populate(showBottomView, bottomViewContentType);
+            // map the actual content type using the selected tab
+            int contentType = bottomViewContentType + NewsfeedBottomViewHolder.CONTENT_TYPES * selectedTab.getId();
+            ((BottomViewHolder)holder).populate(showBottomView, contentType);
             return;
         }
         ((BaseCardViewHolder)holder).populate(items.get(position - (needsTopView ? 1 : 0)));
@@ -246,9 +252,21 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         mapViewHolder.setHeight(height);
     }
 
-    public void showBottomView(final boolean showBottomView, int bottomViewContentType) {
+    public void setTabVisibility(int visibility) {
+        if (mapViewHolder == null || !needsTopView) return;
+        mapViewHolder.setTabVisibility(visibility);
+    }
+
+    public void setSelectedTab(MapTabItem selectedTab) {
+        this.selectedTab = selectedTab;
+        if (mapViewHolder == null || !needsTopView) return;
+        mapViewHolder.setSelectedTab(selectedTab);
+    }
+
+    public void showBottomView(final boolean showBottomView, int bottomViewContentType, MapTabItem selectedTab) {
         this.showBottomView = showBottomView;
         this.bottomViewContentType = bottomViewContentType;
+        this.selectedTab = selectedTab;
         if (items != null && needsBottomView) {
             notifyItemChanged(items.size() + (needsTopView ? 1 : 0));
         }

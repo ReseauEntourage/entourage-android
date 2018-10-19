@@ -117,7 +117,7 @@ public abstract class DrawerBasePresenter {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://profile"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://guide"));
                         try {
                             activity.startActivity(intent);
                         } catch (Exception ex) {
@@ -227,8 +227,8 @@ public abstract class DrawerBasePresenter {
         // does nothing
     }
 
-    protected void displayTutorial() {
-        if (!Configuration.getInstance().showTutorial()) return;
+    protected void displayTutorial(boolean forced) {
+        if (!forced && !Configuration.getInstance().showTutorial()) return;
         if (activity != null && activity.isSafeToCommit()) {
             CarouselFragment carouselFragment = new CarouselFragment();
             try {

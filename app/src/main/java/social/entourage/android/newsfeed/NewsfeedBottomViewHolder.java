@@ -14,13 +14,24 @@ import social.entourage.android.tools.BusProvider;
 
 public class NewsfeedBottomViewHolder extends BottomViewHolder {
 
+    public static final int CONTENT_TYPES = 3;
+
     public static final int CONTENT_TYPE_LOAD_MORE = 0;
     public static final int CONTENT_TYPE_NO_ITEMS = 1;
     public static final int CONTENT_TYPE_NO_MORE_ITEMS = 2;
 
+    public static final int CONTENT_TYPE_LOAD_MORE_EVENTS = CONTENT_TYPE_LOAD_MORE + CONTENT_TYPES;
+    public static final int CONTENT_TYPE_NO_ITEMS_EVENTS = CONTENT_TYPE_NO_ITEMS + CONTENT_TYPES;
+    public static final int CONTENT_TYPE_NO_MORE_EVENTS = CONTENT_TYPE_NO_MORE_ITEMS + CONTENT_TYPES;
+
+    private View allTabContent;
+    private View eventsTabContent;
+
     private View loadMoreView;
     private TextView loadMoreTextView;
     private TextView noItemsTextView;
+
+    private TextView loadMoreEventsView;
 
     private int contentType = -1;
 
@@ -31,10 +42,22 @@ public class NewsfeedBottomViewHolder extends BottomViewHolder {
     @Override
     protected void bindFields() {
         content = itemView.findViewById(R.id.newsfeed_bottom_content);
+
+        allTabContent = itemView.findViewById(R.id.newsfeed_tab_all_content);
+        eventsTabContent = itemView.findViewById(R.id.newsfeed_tab_events_content);
+
         loadMoreView = itemView.findViewById(R.id.newsfeed_load_more_layout);
-        noItemsTextView = (TextView) itemView.findViewById(R.id.newsfeed_no_items);
-        loadMoreTextView = (TextView) itemView.findViewById(R.id.newsfeed_load_more);
+        noItemsTextView = itemView.findViewById(R.id.newsfeed_no_items);
+        loadMoreTextView = itemView.findViewById(R.id.newsfeed_load_more);
         loadMoreTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                BusProvider.getInstance().post(new Events.OnNewsfeedLoadMoreEvent());
+            }
+        });
+
+        loadMoreEventsView = itemView.findViewById(R.id.newsfeed_tab_events_load_more);
+        loadMoreEventsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 BusProvider.getInstance().post(new Events.OnNewsfeedLoadMoreEvent());
@@ -66,6 +89,9 @@ public class NewsfeedBottomViewHolder extends BottomViewHolder {
                     default:
                         break;
                 }
+                allTabContent.setVisibility(contentType <= CONTENT_TYPE_NO_MORE_ITEMS ? View.VISIBLE : View.GONE);
+                eventsTabContent.setVisibility(contentType <= CONTENT_TYPE_NO_MORE_ITEMS ? View.GONE : View.VISIBLE);
+
                 this.contentType = contentType;
             }
         }

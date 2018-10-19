@@ -49,6 +49,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
@@ -236,7 +237,7 @@ public class LoginActivity extends EntourageActivity
     View loginVerifyCode;
 
     @BindView(R.id.login_button_verify_code)
-    Button verifyCodeButton;
+    View verifyCodeButton;
 
     @BindView(R.id.login_verify_code_code)
     TextView receivedCode;
@@ -446,7 +447,6 @@ public class LoginActivity extends EntourageActivity
         lostCodePhone.setEnabled(false);
         newsletterButton.setText(R.string.button_loading);
         newsletterButton.setEnabled(false);
-        verifyCodeButton.setText(R.string.button_loading);
         verifyCodeButton.setEnabled(false);
         nameGoButton.setEnabled(false);
     }
@@ -459,7 +459,6 @@ public class LoginActivity extends EntourageActivity
         lostCodePhone.setEnabled(true);
         newsletterButton.setText(R.string.login_button_newsletter);
         newsletterButton.setEnabled(true);
-        verifyCodeButton.setText(R.string.login_button_verify_code);
         verifyCodeButton.setEnabled(true);
         nameGoButton.setEnabled(true);
     }
@@ -909,6 +908,7 @@ public class LoginActivity extends EntourageActivity
     void onStartupLoginClicked() {
         EntourageEvents.logEvent(Constants.EVENT_SPLASH_LOGIN);
         if (loginPresenter != null && loginPresenter.shouldShowTC()) {
+            this.onboardingUser = null;
             RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
             registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
         } else {
@@ -985,11 +985,6 @@ public class LoginActivity extends EntourageActivity
         }
     }
 
-    @OnClick(R.id.login_verify_code_resend)
-    void resendCode() {
-        sendNewCode();
-    }
-
     @OnClick(R.id.login_verify_code_back)
     void showLostCodeScreen() {
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_03_1);
@@ -998,6 +993,13 @@ public class LoginActivity extends EntourageActivity
         loginVerifyCode.setVisibility(View.GONE);
         loginLostCode.setVisibility(View.VISIBLE);
         showKeyboard(lostCodePhone);
+    }
+
+    @Optional
+    @OnClick(R.id.login_verify_code_description)
+    void showResendByEmailView() {
+        View verifyCodeByEmailView = findViewById(R.id.login_verify_code_email);
+        if (verifyCodeByEmailView != null) verifyCodeByEmailView.setVisibility(View.VISIBLE);
     }
 
     /************************
@@ -1013,7 +1015,7 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public boolean registerStart() {
-        if (loginPresenter != null && loginPresenter.shouldContinueWithRegistration()) return true;
+        if ( onboardingUser != null || (loginPresenter != null && loginPresenter.shouldContinueWithRegistration()) ) return true;
         showLoginScreen();
         return false;
     }
@@ -1049,8 +1051,14 @@ public class LoginActivity extends EntourageActivity
 
     protected void registerPhoneNumberSent(String phoneNumber, boolean smsSent) {
         if (isFinishing()) return;
+        if (getSupportFragmentManager() != null) {
+            RegisterNumberFragment numberFragment = (RegisterNumberFragment)getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
+            if (numberFragment != null) numberFragment.savedPhoneNumber(smsSent);
+        }
         if (smsSent) {
             displayToast(R.string.registration_smscode_sent);
+        } else {
+            return;
         }
         if (onboardingUser != null) {
             onboardingUser.setPhone(phoneNumber);

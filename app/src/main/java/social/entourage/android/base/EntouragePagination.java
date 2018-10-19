@@ -66,7 +66,6 @@ public class EntouragePagination {
             }
             if (!isRefreshing) {
                 beforeDate = oldestDate;
-
             }
             else {
                 if (this.newestDate.before(newestDate)) {

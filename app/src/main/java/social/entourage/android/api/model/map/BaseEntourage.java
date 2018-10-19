@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.content.res.AppCompatResources;
@@ -73,6 +74,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
     private EntourageCloseOutcome outcome;
 
     private Metadata metadata;
+
+    @SerializedName("recipient_consent_obtained")
+    private boolean recipientConsentObtained = true;
 
 
     // ----------------------------------
@@ -156,12 +160,24 @@ public class BaseEntourage extends FeedItem implements Serializable {
         return outcome;
     }
 
+    public void setOutcome(final EntourageCloseOutcome outcome) {
+        this.outcome = outcome;
+    }
+
     public Metadata getMetadata() {
         return metadata;
     }
 
     public void setMetadata(final Metadata metadata) {
         this.metadata = metadata;
+    }
+
+    public boolean isRecipientConsentObtained() {
+        return recipientConsentObtained;
+    }
+
+    public void setRecipientConsentObtained(final boolean recipientConsentObtained) {
+        this.recipientConsentObtained = recipientConsentObtained;
     }
 
     // ----------------------------------
@@ -369,6 +385,18 @@ public class BaseEntourage extends FeedItem implements Serializable {
         return R.string.entourage_info_quit_entourage_description;
     }
 
+    @Override
+    public @StringRes int getFreezedCTAText() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || outcome.success == false) return super.getFreezedCTAText();
+        return R.string.tour_cell_button_freezed_success;
+    }
+
+    @Override
+    public @ColorRes int getFreezedCTAColor() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || outcome.success == false) return super.getFreezedCTAColor();
+        return R.color.accent;
+    }
+
     public static int getMarkerSize(Context context) {
         if (MARKER_SIZE == 0) {
             MARKER_SIZE = context.getResources().getDimensionPixelOffset(R.dimen.entourage_map_marker);
@@ -530,8 +558,10 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     }
 
-    public static class EntourageCloseOutcome {
+    public static class EntourageCloseOutcome implements Serializable {
 
+        private static final long serialVersionUID = 4175678577343446888L;
+        
         private boolean success;
 
         public EntourageCloseOutcome(boolean success) {

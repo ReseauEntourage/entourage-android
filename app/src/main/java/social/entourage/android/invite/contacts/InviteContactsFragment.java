@@ -221,7 +221,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
 
     @OnClick(R.id.title_close_button)
     protected void onCloseClicked() {
-        dismiss();
+        if (!isStateSaved()) dismiss();
     }
 
     @OnClick(R.id.title_action_button)

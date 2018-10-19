@@ -5,6 +5,7 @@
     <item name="no_location_ignore_button" type="id" />
 
     <item name="side_menu_item_arrow" type="id" />
+    <item name="action_update_info" type="id" />
     <item name="about_version" type="id" />
     <item name="about_version_layout" type="id" />
 
@@ -15,5 +16,7 @@
 
     <item name="tour_card_icon" type="id" />
     <item name="tour_card_last_update_date" type="id" />
+
+    <item name="feeditem_option_promote" type="id" />
 
 </resources>

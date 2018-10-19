@@ -23,6 +23,8 @@
     <string name="newsfeed_load_more_description">C\'est tout pour les activités dans ce rayon !</string>
     <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
     <string name="newsfeed_no_more_items">Aucune activité près de cette position</string>
+    <string name="newsfeed_tab_events_no_items">Aucun évènement à proximité.</string>
+    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'évènements d\'Entourage ici</u></string>
     <string name="map_show_guide_description">Voir les lieux\nsolidaires</string>
 
     <string name="map_top_navigation_filter">Filtrer</string>

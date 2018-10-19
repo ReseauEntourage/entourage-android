@@ -47,13 +47,6 @@
             android:textSize="@dimen/carousel_content"
             app:htmlText="@string/carousel_p2_content"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="14dp"
-            app:srcCompat="@drawable/carousel_p2_tabs"/>
-
     </LinearLayout>
 
 </LinearLayout>

@@ -23,6 +23,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
@@ -55,6 +56,10 @@ public class SideMenuFragment extends Fragment {
     @BindView(R.id.drawer_header_edit_profile)
     TextView userEditProfileTextView;
 
+    @Nullable
+    @BindView(R.id.action_update_info)
+    SideMenuItemView updatePrivateCircleInfoItemView;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -77,7 +82,7 @@ public class SideMenuFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_side_menu, container, false);
         ButterKnife.bind(this, view);
@@ -127,18 +132,20 @@ public class SideMenuFragment extends Fragment {
         });
 
         //add listeners to side menu items
-        LinearLayout sideMenuItemsLayout = getView().findViewById(R.id.sidemenuitems_layout);
-        if (sideMenuItemsLayout != null) {
-            int itemsCount = sideMenuItemsLayout.getChildCount();
-            for (int j = 0; j < itemsCount; j++) {
-                View child = sideMenuItemsLayout.getChildAt(j);
-                if (child instanceof SideMenuItemView) {
-                    child.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectMenuAction(v.getId());
-                        }
-                    });
+        if (getView() != null) {
+            LinearLayout sideMenuItemsLayout = getView().findViewById(R.id.sidemenuitems_layout);
+            if (sideMenuItemsLayout != null) {
+                int itemsCount = sideMenuItemsLayout.getChildCount();
+                for (int j = 0; j < itemsCount; j++) {
+                    View child = sideMenuItemsLayout.getChildAt(j);
+                    if (child instanceof SideMenuItemView) {
+                        child.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                selectMenuAction(v.getId());
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -172,6 +179,10 @@ public class SideMenuFragment extends Fragment {
                         .into(userPartnerLogo);
             } else {
                 userPartnerLogo.setImageDrawable(null);
+            }
+            // Show Update Private Circle item only if the user is member of any
+            if (updatePrivateCircleInfoItemView != null) {
+                updatePrivateCircleInfoItemView.setVisibility( user.getMemberships(Entourage.TYPE_NEIGHBORHOOD).size() > 0 ? View.VISIBLE : View.GONE);
             }
         }
     }

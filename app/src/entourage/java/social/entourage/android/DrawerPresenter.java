@@ -1,5 +1,9 @@
 package social.entourage.android;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.widget.Toast;
+
 import javax.inject.Inject;
 
 import social.entourage.android.api.AppRequest;
@@ -25,6 +29,27 @@ public class DrawerPresenter extends DrawerBasePresenter {
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
+
+
+    @Override
+    protected void handleMenu(final int menuId) {
+        if (activity == null) return;
+        switch (menuId) {
+            case R.id.action_ambassador:
+                EntourageEvents.logEvent(Constants.EVENT_MENU_AMBASSADOR);
+                Intent ambassadorIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.AMBASSADOR_ID)));
+                try {
+                    activity.startActivity(ambassadorIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                super.handleMenu(menuId);
+                break;
+        }
+
+    }
 
     @Override
     protected void displaySolidarityGuide() {

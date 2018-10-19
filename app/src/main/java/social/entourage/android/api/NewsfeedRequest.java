@@ -50,4 +50,11 @@ public interface NewsfeedRequest {
             @Query("show_my_partner_only") boolean showMyPartnerOnly,
             @Query("accepted_invitation") boolean acceptedInvitation
     );
+
+    @GET("feeds/outings")
+    Call<Newsfeed.NewsfeedWrapper> retrieveOutings(
+            @Query("longitude") double longitude,
+            @Query("latitude") double latitude,
+            @Query("starting_after") String startingAfterOutingUUID
+    );
 }

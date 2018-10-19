@@ -20,10 +20,11 @@ public class Constants {
     public static final String CHARTE_LINK_ID = "ethics-charter";
     public static final String FAQ_LINK_ID = "faq";
     public static final String FEEDBACK_ID = "feedback";
-    public static final String AMBASSADOR_ID = "volunteering";
+    public static final String VOLUNTEERING_ID = "volunteering";
     public static final String PROPOSE_POI_ID = "propose-poi";
     public static final String TERMS_LINK_ID = "terms";
     public static final String PRIVACY_LINK_ID = "privacy-policy";
+    public static final String AMBASSADOR_ID = "devenir-ambassadeur";
 
     // Analytics events
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
@@ -110,6 +111,7 @@ public class Constants {
     public static final String EVENT_MENU_CHART = "ViewEthicsChartClick";
     public static final String EVENT_MENU_ATD = "ATDPartnershipView";
     public static final String EVENT_MENU_DONATION = "DonationView";
+    public static final String EVENT_MENU_AMBASSADOR = "AmbassadorProgramClick";
 
     //FEED Events
     public static final String EVENT_FEED_MESSAGES = "GoToMessages"; // No longer used
@@ -135,6 +137,8 @@ public class Constants {
     public static final String EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR = "ActivateGeolocFromCreateTourPopup";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromRecenterPopup";
+    public static final String EVENT_FEED_TAB_ALL = "ShowAllFeed";
+    public static final String EVENT_FEED_TAB_EVENTS = "ShowEventFeed";
 
     //MAP Events
     public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick";
