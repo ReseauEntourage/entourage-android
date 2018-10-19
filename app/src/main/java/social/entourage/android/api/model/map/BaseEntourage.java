@@ -408,6 +408,18 @@ public class BaseEntourage extends FeedItem implements Serializable {
         return R.color.accent;
     }
 
+    @Override
+    public int getClosingLoaderMessage() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) return R.string.loader_title_outing_finish;
+        return R.string.loader_title_action_finish;
+    }
+
+    @Override
+    public int getClosedToastMessage() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) return R.string.outing_info_text_close;
+        return R.string.entourage_info_text_close;
+    }
+
     public static int getMarkerSize(Context context) {
         if (MARKER_SIZE == 0) {
             MARKER_SIZE = context.getResources().getDimensionPixelOffset(R.dimen.entourage_map_marker);

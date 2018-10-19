@@ -1065,15 +1065,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 }
 
                 if (getActivity() != null) {
-                    @StringRes int tourStatusStringId = R.string.local_service_stopped;
-                    if (feedItem.isFreezed()) {
-                        tourStatusStringId = R.string.tour_freezed;
-                    }
-                    if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                        tourStatusStringId = R.string.entourage_info_text_close;
-                    }
-
-                    Toast.makeText(getActivity(), tourStatusStringId, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), feedItem.getClosedToastMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             } else {
@@ -1910,7 +1902,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 if (feedItem != null) {
                     if (!tourService.isRunning()) {
                         // Not ongoing tour, just stop the feed item
-                        loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
+                        loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(feedItem.getClosingLoaderMessage()), getActivity().getString(R.string.button_loading), true);
                         loaderStop.setCancelable(true);
                         EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
                         tourService.stopFeedItem(feedItem, success);
@@ -1923,7 +1915,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
                         } else {
                             // Not ongoing tour, just stop the feed item
-                            loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
+                            loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(feedItem.getClosingLoaderMessage()), getActivity().getString(R.string.button_loading), true);
                             loaderStop.setCancelable(true);
                             EntourageEvents.logEvent(Constants.EVENT_STOP_TOUR);
                             tourService.stopFeedItem(feedItem, success);
