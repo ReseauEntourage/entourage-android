@@ -761,6 +761,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         String joinStatus = feedItem.getJoinStatus();
         if (joinStatus.equals(Tour.JOIN_STATUS_PENDING)) {
             EntourageEvents.logEvent(Constants.EVENT_FEED_PENDING_OVERLAY);
+            onMoreButton();
         }
     }
 
