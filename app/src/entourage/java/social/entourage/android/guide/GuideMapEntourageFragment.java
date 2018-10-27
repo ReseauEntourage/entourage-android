@@ -16,7 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +28,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdate;
@@ -69,7 +67,6 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
-import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
@@ -141,8 +138,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     RecyclerView poisListView;
 
     PoisAdapter poisAdapter;
-
-    private LatLng longTapCoordinates;
 
     // ----------------------------------
     // LIFECYCLE
@@ -229,8 +224,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             mapOptionsMenu.setVisibility(View.VISIBLE);
             return true;
         }
-        // Switch to map view
-        onHideClicked();
         return true;
     }
 
@@ -266,14 +259,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     void onShowFilter() {
         GuideFilterFragment guideFilterFragment = new GuideFilterFragment();
         guideFilterFragment.show(getFragmentManager(), GuideFilterFragment.TAG);
-    }
-
-    @OnClick(R.id.fragment_guide_hide_button)
-    void onHideClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_GUIDE_X_CLICK);
-        DrawerActivity activity = (DrawerActivity) getActivity();
-        if (activity == null) return;
-        activity.hideSolidarityGuide();
     }
 
     @OnClick(R.id.fragment_map_display_toggle)
@@ -603,8 +588,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // ----------------------------------
 
     private void showLongClickOnMapOptions(LatLng latLng) {
-        //save the tap coordinates
-        longTapCoordinates = latLng;
         //for public user, start the create entourage funnel directly
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());

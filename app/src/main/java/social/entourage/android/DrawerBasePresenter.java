@@ -87,10 +87,6 @@ public abstract class DrawerBasePresenter {
             case R.id.action_tours:
                 activity.loadFragmentWithExtras();
                 break;
-            case R.id.action_guide:
-                displaySolidarityGuide();
-                EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
-                break;
             case R.id.action_user:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
                 UserFragment userFragment = (UserFragment) activity.getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
@@ -217,10 +213,6 @@ public abstract class DrawerBasePresenter {
             feedItemOptionsFragment.show(activity.getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
         }
 
-    }
-
-    protected void displaySolidarityGuide() {
-        // does nothing
     }
 
     protected void proposePOI() {

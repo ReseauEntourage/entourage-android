@@ -30,6 +30,8 @@ public abstract class BaseBottomNavigationDataSource {
     protected int defaultSelectedTab = 0;
     protected int feedTabIndex = 0;
     protected int myMessagesTabIndex = 1;
+    //unused tabs
+    protected int guideTabIndex = -1;
 
     public BaseBottomNavigationDataSource() {
 
@@ -72,6 +74,10 @@ public abstract class BaseBottomNavigationDataSource {
 
     public int getMyMessagesTabIndex() {
         return myMessagesTabIndex;
+    }
+
+    public int getGuideTabIndex() {
+        return guideTabIndex;
     }
 
     public static class NavigationItem {

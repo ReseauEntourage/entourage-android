@@ -60,6 +60,7 @@ import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
+import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationFragment;
@@ -468,37 +469,18 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    public void hideSolidarityGuide() {
-        //TODO Fix this
-//        FloatingActionButton button = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_launcher);
-//        button.setLabelText(getString(R.string.map_poi_launcher_button));
-//        // Make the 'Propose POI' button gone
-//        FloatingActionButton proposePOIButton = (FloatingActionButton) mapOptionsMenu.findViewById(R.id.button_poi_propose);
-//        if (proposePOIButton != null) {
-//            proposePOIButton.setVisibility(View.GONE);
-//        }
-//        // Hide the overlay
-//        if (mapOptionsMenu.isOpened()) {
-//            mapOptionsMenu.close(false);
-//        }
-//        // Show the map screen
-//        selectItem(R.id.action_tours);
-        if (mapEntourageFragment != null) {
-            loadFragment(mapEntourageFragment, MapEntourageFragment.TAG);
-        }
-    }
-
     public void showMapFilters() {
         if (mapEntourageFragment != null) {
-            if (isGuideShown()) {
-                hideSolidarityGuide();
-            }
             mapEntourageFragment.onShowFilter();
         }
     }
 
     public void showFeed() {
         selectNavigationTab(navigationDataSource.getFeedTabIndex());
+    }
+
+    public void showGuide() {
+        selectNavigationTab(navigationDataSource.getGuideTabIndex());
     }
 
     public void showMyEntourages() {
@@ -856,9 +838,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         if (mainFragment instanceof MapEntourageFragment) {
             ((MapEntourageFragment) mainFragment).addEncounter();
-        } else {
-            hideSolidarityGuide();
-            ((MapEntourageFragment) mainFragment).addEncounter();
         }
     }
 
@@ -937,17 +916,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onStartTourClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.onStartTourLauncher();
-        } else {
-            hideSolidarityGuide();
-            mapEntourageFragment.onStartTourLauncher();
         }
     }
 
     public void onAddTourEncounterClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.onAddEncounter();
-        } else {
-            hideSolidarityGuide();
             mapEntourageFragment.onAddEncounter();
         }
     }
@@ -955,21 +928,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onCreateEntourageClicked() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntouragePopupWhileTour();
-        } else {
-            hideSolidarityGuide();
-            mapEntourageFragment.displayEntouragePopupWhileTour();
-        }
-    }
-
-    public void onPOILauncherClicked() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_MAP);
-            // Show the guide screen
-            if (presenter != null) presenter.displaySolidarityGuide();
-        } else {
-            EntourageEvents.logEvent(Constants.EVENT_SCREEN_06_1);
-            // Change the Guide Option text
-            hideSolidarityGuide();
         }
     }
 
@@ -979,18 +937,13 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @OnClick(R.id.toolbar_entourage_logo)
     protected void onToolbarLogoClicked() {
-        if (isGuideShown()) {
-            // switch to map mode
-            hideSolidarityGuide();
+        if (mapEntourageFragment.isToursListVisible()) {
+            // make the map visible
+            mapEntourageFragment.ensureMapVisible();
         } else {
-            if (mapEntourageFragment.isToursListVisible()) {
-                // make the map visible
-                mapEntourageFragment.ensureMapVisible();
-            } else {
-                // switch to list view
-                mapEntourageFragment.toggleToursList();
-            }
-        }
+            // switch to list view
+            mapEntourageFragment.toggleToursList();
+    }
     }
 
     // ----------------------------------
@@ -1136,7 +1089,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public boolean isGuideShown() {
-        return (getNavigationTab() == navigationDataSource.getFeedTabIndex()) && !(mainFragment instanceof MapEntourageFragment);
+        return (getNavigationTab() == navigationDataSource.getGuideTabIndex()) && (mainFragment instanceof GuideMapEntourageFragment);
     }
 
 }

@@ -26,24 +26,6 @@
 
     </RelativeLayout>
 
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fragment_guide_hide_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginStart="10dp"
-        android:rotation="45"
-        android:src="@drawable/fab_add"
-        app:fab_colorNormal="@color/warm_grey"
-        app:fab_colorPressed="@color/greyish_brown"
-        app:fab_colorRipple="@color/warm_grey"/>
-
     <LinearLayout
         android:id="@+id/fragment_guide_empty_list_popup"
         android:layout_width="match_parent"

@@ -3,6 +3,7 @@ package social.entourage.android;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
@@ -120,8 +121,8 @@ public class EntourageApplication extends MultiDexApplication {
         return sharedPreferences;
     }
 
-    public static EntourageApplication get(Context context) {
-        return (EntourageApplication) context.getApplicationContext();
+    public static EntourageApplication get(@Nullable Context context) {
+        return context!=null? (EntourageApplication) context.getApplicationContext() : EntourageApplication.get();
     }
 
     public static User me() {

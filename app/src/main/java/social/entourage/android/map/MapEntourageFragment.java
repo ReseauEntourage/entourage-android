@@ -251,9 +251,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @BindView(R.id.fragment_map_empty_list_popup)
     View emptyListPopup;
 
-    @Nullable @BindView(R.id.fragment_map_show_guide)
-    View showGuideView;
-
     @BindView(R.id.fragment_map_entourage_mini_cards)
     EntourageMiniCardsView miniCardsView;
 
@@ -1525,16 +1522,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     if (getActivity() != null) {
                         if (getActivity() instanceof DrawerActivity) {
                             DrawerActivity activity = (DrawerActivity) getActivity();
-                            if (tourService.isRunning()) {
-                                EntourageEvents.logEvent(Constants.EVENT_TOUR_PLUS_CLICK);
-                            } else if (activity.isGuideShown()) {
+                            if (activity.isGuideShown()) {
                                 EntourageEvents.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
+                            } else if (tourService.isRunning()) {
+                                EntourageEvents.logEvent(Constants.EVENT_TOUR_PLUS_CLICK);
+                            } else  if (isToursListVisible()) {
+                                EntourageEvents.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
                             } else {
-                                if (isToursListVisible()) {
-                                    EntourageEvents.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
-                                } else {
-                                    EntourageEvents.logEvent(Constants.EVENT_MAP_PLUS_CLICK);
-                                }
+                                EntourageEvents.logEvent(Constants.EVENT_MAP_PLUS_CLICK);
                             }
                         }
                     }
@@ -1548,25 +1543,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     return;
                 }
                 DrawerActivity drawerActivity = (DrawerActivity)getActivity();
-                if (drawerActivity.isGuideShown()) {
-                    // Let the FAB do it's normal thing
-                    mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
-                } else {
+                //Handling special cases
+                if (!drawerActivity.isGuideShown()) {
                     User me = EntourageApplication.me(getContext());
                     boolean isPro = (me != null) && me.isPro();
                     if (!isPro && !Configuration.getInstance().showMapFABMenu()) {
                         // Show directly the create entourage disclaimer
                         displayEntouragePopupWhileTour();
-                    } else {
-                        if (isBound && tourService != null && tourService.isRunning()) {
-                            // Show directly the create encounter
-                            onAddEncounter();
-                        } else {
-                            // Let the FAB do it's normal thing
-                            mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
-                        }
+                        return;
+                    } else if (isBound && tourService != null && tourService.isRunning()) {
+                        // Show directly the create encounter
+                        onAddEncounter();
+                        return;
                     }
                 }
+                // Let the FAB do it's normal thing
+                mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
             }
         });
 
@@ -2343,7 +2335,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         isFullMapShown = true;
         newEntouragesButton.setVisibility(View.GONE);
         mapDisplayToggle.setText(R.string.map_top_navigation_full_map);
-        if (showGuideView != null) showGuideView.setVisibility(View.VISIBLE);
 
         ensureMapVisible();
 
@@ -2374,8 +2365,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         isFullMapShown = false;
         mapDisplayToggle.setText(R.string.map_top_navigation_list);
-        if (showGuideView != null) showGuideView.setVisibility(View.GONE);
-        miniCardsView.setVisibility(View.INVISIBLE);
+       miniCardsView.setVisibility(View.INVISIBLE);
 
         hideEmptyListPopup();
 
@@ -2663,24 +2653,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 // max distance and items, show no more items info
                 newsfeedAdapter.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_MORE_ITEMS, selectedTab);
             }
-        }
-    }
-
-    // ----------------------------------
-    // Show Guide button on full map screen
-    // ----------------------------------
-
-    @Optional
-    @OnClick(R.id.fragment_map_show_guide)
-    protected void onShowGuideClicked() {
-        if (getActivity() == null) return;
-        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-        drawerActivity.onPOILauncherClicked();
-    }
-
-    public void onGuideWillShow() {
-        if (miniCardsView != null) {
-            miniCardsView.setVisibility(View.GONE);
         }
     }
 

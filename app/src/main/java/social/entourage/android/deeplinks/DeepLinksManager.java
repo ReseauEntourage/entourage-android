@@ -198,9 +198,7 @@ public class DeepLinksManager {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
                 if (!drawerActivity.isGuideShown()) {
-                    drawerActivity.showFeed();
-                    drawerActivity.popToMapFragment();
-                    drawerActivity.selectItem(R.id.action_guide);
+                    drawerActivity.showGuide();
                 }
             } else {
                 return;

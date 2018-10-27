@@ -19,8 +19,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_button_create_maraude"
-            app:srcCompat="@drawable/ic_button_create_maraude"/>
+            android:src="@drawable/ic_solidarity"
+            app:srcCompat="@drawable/ic_solidarity"/>
     </RelativeLayout>
 
 </RelativeLayout>
