@@ -60,7 +60,6 @@ import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
-import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationFragment;
@@ -1089,7 +1088,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public boolean isGuideShown() {
-        return (getNavigationTab() == navigationDataSource.getGuideTabIndex()) && (mainFragment instanceof GuideMapEntourageFragment);
+        return (getNavigationTab() == navigationDataSource.getGuideTabIndex());
     }
 
 }
