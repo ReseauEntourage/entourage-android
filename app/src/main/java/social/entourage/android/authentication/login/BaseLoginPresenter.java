@@ -16,10 +16,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.LoginRequest;
-import social.entourage.android.api.LoginResponse;
-import social.entourage.android.api.UserRequest;
-import social.entourage.android.api.UserResponse;
+import social.entourage.android.api.*;
 import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
@@ -153,7 +150,13 @@ public abstract class BaseLoginPresenter {
                         if (response.isSuccessful()) {
                             activity.newCodeAsked(response.body().getUser(), isOnboarding);
                         } else {
-                            activity.newCodeAsked(null, isOnboarding);
+                            ApiError error = ApiError.fromResponse(response);
+
+                            if (error.code.equals("USER_NOT_FOUND")) {
+                                registerUserPhone(phone);
+                            } else {
+                                activity.newCodeAsked(null, isOnboarding);
+                            }
                         }
                     }
 
