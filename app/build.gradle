@@ -6,8 +6,8 @@ def versionMinor = 7
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug
     def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken
     //def MIXPANEL_TOKEN_PFP_DEBUG = System.env.MIXPANEL_TOKEN_PFP_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_PFP_DEBUG + '"' : entourageMixpanelTokenPFPDebug
@@ -19,7 +19,7 @@ android {
     defaultConfig {
         applicationId 'social.entourage.android'
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode versionMajor * 100000 + versionMinor * 10000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         multiDexEnabled true
