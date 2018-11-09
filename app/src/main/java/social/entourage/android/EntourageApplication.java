@@ -326,4 +326,7 @@ public class EntourageApplication extends MultiDexApplication {
         return isCurrentApp(ENTOURAGE_APP);
     }
 
+    public static boolean isPfpApp() {
+        return isCurrentApp(PFP_APP);
+    }
 }

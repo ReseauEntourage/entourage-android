@@ -11,11 +11,10 @@
         android:id="@+id/login_slideshow_p2_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@string/empty_description"
         android:src="@drawable/login_slideshow_p2_title"
-        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p2_description"
-        />
+        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p2_description"/>
 
     <TextView
         android:id="@+id/login_slideshow_p2_description"
@@ -27,7 +26,7 @@
         android:paddingRight="20dp"
         android:text="@string/login_slideshow_p2_details"
         android:textColor="@color/greyish_brown"
-        android:textSize="14sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p2_persons"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +58,7 @@
         android:id="@+id/login_slideshow_p2_persons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="170dp"
+        android:layout_marginBottom="180dp"
         android:contentDescription="@string/empty_description"
         android:src="@drawable/login_slideshow_p2_persons"
         app:layout_constraintBottom_toBottomOf="@+id/login_slideshow_p2_bottom"

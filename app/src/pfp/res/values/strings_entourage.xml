@@ -6,8 +6,8 @@
     <string name="entourage_create_action_title">@string/entourage_create_outing_title</string>
     <string name="entourage_create_privacy_public">Public</string>
     <string name="entourage_create_privacy_private">Privé</string>
-    <string name="entourage_create_privacy_description_public">Tous peuvent trouver la sortie dans le fil d\'actualités, mais seuls les membres de mon voisinage sont notifiés.</string>
-    <string name="entourage_create_privacy_description_private">Cette option sera bientôt disponible. En attendant, communiquez directement dans une conversation avec les personnes que vous souhaitez inviter.</string>
+    <string name="entourage_create_privacy_description_public">Vous acceptez que toute personne participe à votre sortie, sans vérifier son profil au préalable.</string>
+    <string name="entourage_create_privacy_description_private">Vous validez chaque personne individuellement avant de  lui confirmer qu’elle peut participer.</string>
 
     <!-- Entourage Title Fragment -->
     <string name="entourage_title_fragment_hint">Atelier de créativité</string>
@@ -27,6 +27,8 @@
     <string name="entourage_join_request_received">%1$s souhaite rejoindre votre sortie: %2$s</string>
     <string name="entourage_info_quit_entourage_title">Quitter la sortie</string>
     <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter la sortie ?</string>
+    <string name="entourage_info_text_close">Sortie supprimée</string>
+    <string name="outing_info_text_close">Sortie supprimée</string>
 
     <!-- My Entourages -->
     <string name="myentourages_no_items_details">Demandez à rejoindre les activités des voisinages autour de vous. Vous retrouverez alors vos conversations ici.</string>

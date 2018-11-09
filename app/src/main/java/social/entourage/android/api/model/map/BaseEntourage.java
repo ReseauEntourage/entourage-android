@@ -78,6 +78,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
     @SerializedName("recipient_consent_obtained")
     private boolean recipientConsentObtained = true;
 
+    @SerializedName("public")
+    private boolean isJoinRequestPublic;
+
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -178,6 +181,14 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     public void setRecipientConsentObtained(final boolean recipientConsentObtained) {
         this.recipientConsentObtained = recipientConsentObtained;
+    }
+
+    public boolean isJoinRequestPublic() {
+        return isJoinRequestPublic;
+    }
+
+    public void setJoinRequestPublic(final boolean joinRequestPublic) {
+        isJoinRequestPublic = joinRequestPublic;
     }
 
     // ----------------------------------
@@ -395,6 +406,18 @@ public class BaseEntourage extends FeedItem implements Serializable {
     public @ColorRes int getFreezedCTAColor() {
         if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || outcome.success == false) return super.getFreezedCTAColor();
         return R.color.accent;
+    }
+
+    @Override
+    public int getClosingLoaderMessage() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) return R.string.loader_title_outing_finish;
+        return R.string.loader_title_action_finish;
+    }
+
+    @Override
+    public int getClosedToastMessage() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) return R.string.outing_info_text_close;
+        return R.string.entourage_info_text_close;
     }
 
     public static int getMarkerSize(Context context) {

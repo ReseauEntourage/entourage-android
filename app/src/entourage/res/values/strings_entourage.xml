@@ -22,4 +22,11 @@
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'>Charte éthique d’Entourage&lt;/a> vous explique pourquoi le consentement est indispensable.</string>
 
+    <!-- Entourage Join Type Fragment -->
+    <string name="entourage_join_type_fragment_title">CONFIDENTIALITÉ</string>
+    <string name="entourage_join_type_fragment_description">Souhaitez-vous :\n\nvalider chaque personne avant de l’accepter comme membre\n\nou que ce groupe soit ouvert à tous sans validation ?</string>
+    <string name="entourage_join_type_fragment_option_private">Je préfère valider</string>
+    <string name="entourage_join_type_fragment_option_public">Pas besoin de vérifier</string>
+    <string name="entourage_join_type_fragment_disclaimer">En cas de problème avec un utilisateur, vous pouvez toujours le signaler à notre équipe</string>
+
 </resources>

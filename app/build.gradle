@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 def versionMajor = 5
-def versionMinor = 6
+def versionMinor = 7
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
@@ -83,7 +83,7 @@ android {
         }
         entourage {
             dimension 'app'
-            buildConfigField 'String', 'API_KEY', '"b6b94fc66f75b5006cb7214f"'
+            buildConfigField 'String', 'API_KEY', '"00e04e1ee35565b81fcff4fb"'
             ext {
                 prod = [
                         serverURL: "https://api.entourage.social/api/v1/",
@@ -102,7 +102,7 @@ android {
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'AWS_MAIN_FOLDER', '"pfp/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
-            buildConfigField 'String', 'API_KEY', '"b6fce1b1fcd97325791e80bd"'
+            buildConfigField 'String', 'API_KEY', '"024ffc16d69059521b7b0caa"'
 
             ext {
                 prod = [
@@ -208,7 +208,7 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.1.0'
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'net.danlew:android.joda:2.9.5.1'
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
     implementation 'me.leolin:ShortcutBadger:1.1.13@aar'
     implementation 'com.mixpanel.android:mixpanel-android:5.3.1'
     implementation 'com.wdullaer:materialdatetimepicker:3.6.3'

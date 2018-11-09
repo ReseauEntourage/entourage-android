@@ -307,6 +307,14 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return R.color.greyish;
     }
 
+    public @StringRes int getClosingLoaderMessage() {
+        return R.string.loader_title_tour_finish;
+    }
+
+    public @StringRes int getClosedToastMessage() {
+        return isFreezed() ? R.string.tour_freezed : R.string.local_service_stopped;
+    }
+
     // ----------------------------------
     // COPY OBJECT METHODS
     // ----------------------------------

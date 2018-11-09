@@ -10,14 +10,15 @@
     <ImageView
         android:id="@+id/login_slideshow_p3_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
         android:contentDescription="@string/login_slideshow_p3_details"
         android:src="@drawable/login_slideshow_p3_title"
         app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p3_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/login_slideshow_p3_description"
@@ -29,7 +30,7 @@
         android:paddingRight="20dp"
         android:text="@string/login_slideshow_p3_details"
         android:textColor="@color/greyish_brown"
-        android:textSize="17sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p3_persons"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +50,7 @@
         android:id="@+id/login_slideshow_p3_persons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="180dp"
+        android:layout_marginBottom="170dp"
         android:contentDescription="@string/empty_description"
         android:src="@drawable/login_slideshow_p3_persons"
         app:layout_constraintBottom_toBottomOf="parent"

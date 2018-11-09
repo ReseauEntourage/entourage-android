@@ -98,6 +98,8 @@
     <string name="start_tour_title">Enregistrer maraude</string>
     <string name="stop_tour_title">Stopper maraude</string>
     <string name="loader_title_tour_finish">Arrêt de la maraude</string>
+    <string name="loader_title_outing_finish">Suppression de l\'évènement</string>
+    <string name="loader_title_action_finish">Suppression de l\'action</string>
     <string name="loader_title_tour_search">Recherche de maraudes récentes</string>
 
     <!-- Confirmation -->

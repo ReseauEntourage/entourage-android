@@ -15,5 +15,5 @@
         android:layout_weight="1"
         android:gravity="center_horizontal"
         android:textColor="@color/greyish"
-        android:textSize="@dimen/entourage_font_medium"/>
+        android:textSize="@dimen/entourage_font_small"/>
 </LinearLayout>

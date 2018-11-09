@@ -36,7 +36,7 @@
         android:gravity="center_horizontal"
         android:text="@string/login_slideshow_p1_details"
         android:textColor="@color/greyish_brown"
-        android:textSize="14sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/imageView15"/>
 

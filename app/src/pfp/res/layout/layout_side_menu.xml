@@ -150,7 +150,7 @@
                 android:minHeight="50dp"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"
-                android:title="@string/action_charte"
+                android:title="@string/action_charter_unsigned"
                 app:iconTint="@color/accent"
                 app:showDivider="true"/>
 

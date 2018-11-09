@@ -14,7 +14,7 @@ import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPa
 /**
  *
  */
-public class CreateEntourageFragment extends BaseCreateEntourageFragment implements CreateActionWizardListener {
+public class CreateEntourageFragment extends BaseCreateEntourageFragment implements CreateActionWizardListener, CreateEntourageJoinTypeFragment.CreateEntourageJoinTypeListener {
 
     // ----------------------------------
     // Constants
@@ -42,17 +42,18 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     }
 
     // ----------------------------------
-    // Entourage create methods
+    // Entourage create/edit methods
     // ----------------------------------
 
     @Override
     protected void createEntourage() {
-        if (entourageCategory != null && Entourage.TYPE_DEMAND.equalsIgnoreCase(entourageCategory.getEntourageType())) {
-            // for DEMAND events, we need to show a wizard
-            if (getFragmentManager() != null) {
-                CreateActionWizardPage1Fragment createActionWizardPage1Fragment = new CreateActionWizardPage1Fragment();
-                createActionWizardPage1Fragment.setListener(this);
-                createActionWizardPage1Fragment.show(getFragmentManager(), CreateActionWizardPage1Fragment.TAG);
+        if (entourageCategory != null) {
+            if (Entourage.TYPE_DEMAND.equalsIgnoreCase(entourageCategory.getEntourageType())) {
+                // for DEMAND events, we need to show a wizard
+                showCreateActionWizard();
+            } else {
+                // for CONTRIBUTION events, we need to show the join request type screen
+                showCreateEntourageJoinFragment();
             }
         } else {
             super.createEntourage();
@@ -61,23 +62,62 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
 
     @Override
     protected void postEntourageCreated(final Entourage entourage) {
-        //Hide the wizard pages
+        hideExtraScreens();
+        super.postEntourageCreated(entourage);
+    }
+
+    @Override
+    protected void saveEditedEntourage() {
+        // if the user changed the type, we need to show the wizard or the join type screens
+        if (entourageCategory != null) {
+            if (Entourage.TYPE_CONTRIBUTION.equalsIgnoreCase(entourageCategory.getEntourageType())) {
+                // for CONTRIBUTION events, we need to show the join request type screen
+                showCreateEntourageJoinFragment();
+                return;
+            } else {
+                // for DEMAND, we show the wizard only if the type of the edited action has changed
+                if (!Entourage.TYPE_DEMAND.equalsIgnoreCase(editedEntourage.getEntourageType())) {
+                    showCreateActionWizard();
+                    return;
+                }
+            }
+        }
+        super.saveEditedEntourage();
+    }
+
+    @Override
+    protected void postEntourageSaved(final Entourage entourage) {
+        hideExtraScreens();
+        super.postEntourageSaved(entourage);
+    }
+
+    private void hideExtraScreens() {
         if (getFragmentManager() != null) {
+            //Hide the wizard pages
             DialogFragment fragment1 = (DialogFragment) getFragmentManager().findFragmentByTag(CreateActionWizardPage1Fragment.TAG);
             if (fragment1 != null) fragment1.dismiss();
             DialogFragment fragment2 = (DialogFragment) getFragmentManager().findFragmentByTag(CreateActionWizardPage2Fragment.TAG);
             if (fragment2 != null) fragment2.dismiss();
             DialogFragment fragment3 = (DialogFragment) getFragmentManager().findFragmentByTag(CreateActionWizardPage3Fragment.TAG);
             if (fragment3 != null) fragment3.dismiss();
+            //Hide the join type fragment
+            DialogFragment joinTypeFragment = (DialogFragment) getFragmentManager().findFragmentByTag(CreateEntourageJoinTypeFragment.TAG);
+            if (joinTypeFragment != null) joinTypeFragment.dismiss();
         }
-        //let the super handle the rest
-        super.postEntourageCreated(entourage);
     }
 
     // ----------------------------------
-    // CreateActionWizardListener
+    // CreateActionWizard
     // ----------------------------------
 
+    private void showCreateActionWizard() {
+        joinRequestTypePublic = false;
+        if (getFragmentManager() != null) {
+            CreateActionWizardPage1Fragment createActionWizardPage1Fragment = new CreateActionWizardPage1Fragment();
+            createActionWizardPage1Fragment.setListener(this);
+            createActionWizardPage1Fragment.show(getFragmentManager(), CreateActionWizardPage1Fragment.TAG);
+        }
+    }
 
     @Override
     public void createActionWizardPreviousStep(final int currentStep) {
@@ -112,10 +152,18 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 }
                 break;
             case 2:
-                super.createEntourage();
+                if (editedEntourage != null) {
+                    super.saveEditedEntourage();
+                } else {
+                    super.createEntourage();
+                }
                 break;
             case 3:
-                super.createEntourage();
+                if (editedEntourage != null) {
+                    super.saveEditedEntourage();
+                } else {
+                    super.createEntourage();
+                }
                 break;
         }
     }
@@ -123,7 +171,11 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     private void handleStep2(int option) {
         switch (option) {
             case 1:
-                super.createEntourage();
+                if (editedEntourage != null) {
+                    super.saveEditedEntourage();
+                } else {
+                    super.createEntourage();
+                }
                 break;
             case 2:
                 if (getFragmentManager() != null) {
@@ -138,10 +190,36 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     private void handleStep3(int option) {
         switch (option) {
             case 1:
-                recipientConsentObtained = false;
-                super.createEntourage();
-                recipientConsentObtained = true;
+                if (editedEntourage != null) {
+                    super.saveEditedEntourage();
+                } else {
+                    recipientConsentObtained = false;
+                    super.createEntourage();
+                    recipientConsentObtained = true;
+                }
                 break;
+        }
+    }
+
+    // ----------------------------------
+    // CreateEntourageJoinType
+    // ----------------------------------
+
+    private void showCreateEntourageJoinFragment() {
+        if (getFragmentManager() != null) {
+            CreateEntourageJoinTypeFragment createEntourageJoinTypeFragment = new CreateEntourageJoinTypeFragment();
+            createEntourageJoinTypeFragment.setListener(this);
+            createEntourageJoinTypeFragment.show(getFragmentManager(), CreateEntourageJoinTypeFragment.TAG);
+        }
+    }
+
+    @Override
+    public void createEntourageWithJoinTypePublic(final boolean joinType) {
+        joinRequestTypePublic = joinType;
+        if (editedEntourage != null) {
+            super.saveEditedEntourage();
+        } else {
+            super.createEntourage();
         }
     }
 }

@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
@@ -23,6 +24,8 @@ import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.tools.Utils;
+
+import static social.entourage.android.EntourageApplication.isPfpApp;
 
 
 public class RegisterWelcomeFragment extends EntourageDialogFragment {
@@ -41,6 +44,9 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
     @BindView(R.id.register_welcome_privacy)
     TextView privacyTextView;
+
+    @BindView(R.id.register_welcome_logo)
+    ImageView logoImageView;
 
     // ----------------------------------
     // LIFECYCLE
@@ -126,6 +132,11 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
             String text = getString(R.string.registration_welcome_privacy, termsLink, privacyLink);
             privacyTextView.setText(Utils.fromHtml(text));
         }
+
+        if (isPfpApp()) {
+            logoImageView.setVisibility(View.INVISIBLE);
+        }
+
         privacyTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
 
     }

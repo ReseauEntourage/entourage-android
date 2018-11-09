@@ -6,6 +6,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
@@ -49,15 +50,6 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     @BindView(R.id.create_entourage_date_label)
     TextView dateLabel;
 
-    @BindView(R.id.create_entourage_privacy_label)
-    TextView privacyLabel;
-
-    @BindView(R.id.create_entourage_privacy_switch)
-    Switch privacySwitch;
-
-    @BindView(R.id.create_entourage_privacy_description)
-    TextView privacyDescription;
-
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -77,33 +69,6 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     // ----------------------------------
     // Interactions handling
     // ----------------------------------
-
-    @OnClick(R.id.create_entourage_privacy_switch)
-    protected void onPrivacySwitchClicked() {
-        if (privacySwitch == null) return;
-        // adjust the labels accordingly
-        if (privacySwitch.isChecked()) {
-            if (privacyLabel != null) {
-                privacyLabel.setText(R.string.entourage_create_privacy_public);
-                privacyLabel.setTypeface(privacyLabel.getTypeface(), Typeface.BOLD);
-                privacyLabel.setTextColor(ResourcesCompat.getColor(getResources(), R.color.create_entourage_privacy_public, null));
-            }
-            if (privacyDescription != null) {
-                privacyDescription.setText(R.string.entourage_create_privacy_description_public);
-                privacyDescription.requestLayout();
-            }
-        } else {
-            if (privacyLabel != null) {
-                privacyLabel.setText(R.string.entourage_create_privacy_private);
-                privacyLabel.setTypeface(privacyLabel.getTypeface(), Typeface.NORMAL);
-                privacyLabel.setTextColor(ResourcesCompat.getColor(getResources(), R.color.create_entourage_privacy_private, null));
-            }
-            if (privacyDescription != null) {
-                privacyDescription.setText(R.string.entourage_create_privacy_description_private);
-                privacyDescription.requestLayout();
-            }
-        }
-    }
 
     // ----------------------------------
     // Presenter callbacks
@@ -158,6 +123,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
 
     @Override
     protected boolean isValid() {
+        joinRequestTypePublic = privacySwitch.isChecked();
         return super.isValid();
     }
 
@@ -181,7 +147,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 entourageMetadata.setGooglePlaceId(place.getId());
             }
         } else {
-            this.location = null;
+//            this.location = null;
             positionTextView.setText("");
             positionLabel.setVisibility(View.VISIBLE);
         }

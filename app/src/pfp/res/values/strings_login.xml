@@ -26,7 +26,7 @@
     <!-- Registration -->
     <string name="registration_welcome_signin">Se connecter</string>
     <string name="registration_welcome_title">Bienvenue\nsur Voisin-Age.</string>
-    <string name="registration_welcome_description">Voisin-Age est la communauté de voisins qui tissent des liens intergénérationnels.\n Proximité, Liberté, Réciprocité : rencontrez des personnes âgées près de chez vous et créez des liens de voisinage et d’amitié.</string>
+    <string name="registration_welcome_description">Voisin-Age est la communauté de voisins qui tissent des liens intergénérationnels.\nProximité, Liberté, Réciprocité : rencontrez des personnes âgées près de chez vous et créez des liens de voisinage et d’amitié.</string>
 
     <string name="registration_number_description">Voisin-Age vous envoie un SMS afin de vérifier votre numéro de portable.</string>
 

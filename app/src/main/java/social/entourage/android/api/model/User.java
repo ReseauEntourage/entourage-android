@@ -1,7 +1,6 @@
 package social.entourage.android.api.model;
 
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -34,6 +33,8 @@ public class User implements Serializable {
 
     public static final String TYPE_PUBLIC = "public";
     public static final String TYPE_PRO = "pro";
+
+    private static final String USER_ROLE_ETHICS_CHARTER_SIGNED = "ethics_charter_signed";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -332,6 +333,10 @@ public class User implements Serializable {
             userMap.put("about", about);
         }
         return userMap;
+    }
+
+    public boolean hasSignedEthicsCharter() {
+        return roles != null && roles.contains(USER_ROLE_ETHICS_CHARTER_SIGNED);
     }
 
     // ----------------------------------

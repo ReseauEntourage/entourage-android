@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimerTask;
@@ -261,6 +262,7 @@ public class LocationFragment extends EntourageDialogFragment {
         if (mListener != null) {
             mListener.onEntourageLocationChosen(location, addressTextView.getText().toString(), selectedPlace);
         }
+        cancelTimer();
         dismiss();
     }
 
@@ -353,7 +355,7 @@ public class LocationFragment extends EntourageDialogFragment {
                         if (geocoderAddressTask != null) {
                             geocoderAddressTask.cancel(true);
                         }
-                        geocoderAddressTask = new GeocoderAddressTask(fromPlaceSelected);
+                        geocoderAddressTask = new GeocoderAddressTask(LocationFragment.this, fromPlaceSelected);
                         geocoderAddressTask.execute(location);
                         fromPlaceSelected = false;
 
@@ -474,21 +476,25 @@ public class LocationFragment extends EntourageDialogFragment {
     // INNER CLASSES
     // ----------------------------------
 
-    private class GeocoderAddressTask extends AsyncTask<LatLng, Void, String> {
+    private static class GeocoderAddressTask extends AsyncTask<LatLng, Void, String> {
 
         boolean fromPlaceSelected;
+        WeakReference<LocationFragment> locationFragmentWeakReference;
 
-        private GeocoderAddressTask(boolean fromPlaceSelected) {
+        private GeocoderAddressTask(LocationFragment locationFragment, boolean fromPlaceSelected) {
             this.fromPlaceSelected = fromPlaceSelected;
+            locationFragmentWeakReference = new WeakReference<>(locationFragment);
         }
 
         @Override
         protected String doInBackground(final LatLng... params) {
             try {
-                if (getActivity() == null) {
+                if (locationFragmentWeakReference == null) return null;
+                LocationFragment locationFragment = locationFragmentWeakReference.get();
+                if (locationFragment == null || locationFragment.getActivity() == null) {
                     return null;
                 }
-                Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
+                Geocoder geoCoder = new Geocoder(locationFragment.getActivity(), Locale.getDefault());
                 LatLng location = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
                 String addressLine = "";
@@ -508,9 +514,11 @@ public class LocationFragment extends EntourageDialogFragment {
 
         @Override
         protected void onPostExecute(final String address) {
-            if (address == null || geocoderAddressTask != this) return;
-            LocationFragment.this.setAddress(address, fromPlaceSelected);
-            geocoderAddressTask = null;
+            if (address == null || locationFragmentWeakReference == null) return;
+            LocationFragment locationFragment = locationFragmentWeakReference.get();
+            if (locationFragment == null || locationFragment.geocoderAddressTask != this) return;
+            locationFragment.setAddress(address, fromPlaceSelected);
+            locationFragment.geocoderAddressTask = null;
         }
     }
 
