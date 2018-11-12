@@ -1060,10 +1060,9 @@ public class LoginActivity extends EntourageActivity
         } else {
             return;
         }
-        if (onboardingUser == null) {
-            onboardingUser = new User();
+        if (onboardingUser != null) {
+            onboardingUser.setPhone(phoneNumber);
         }
-        onboardingUser.setPhone(phoneNumber);
 
         RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
         fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
