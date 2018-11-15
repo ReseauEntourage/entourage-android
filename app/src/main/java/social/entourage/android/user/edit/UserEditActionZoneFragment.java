@@ -13,18 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -235,7 +229,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
         Call<User.AddressWrapper> call = userRequest.updateAddress(new User.AddressWrapper(userAddress));
         call.enqueue(new Callback<User.AddressWrapper>() {
             @Override
-            public void onResponse(final Call<User.AddressWrapper> call, final Response<User.AddressWrapper> response) {
+            public void onResponse(@NonNull final Call<User.AddressWrapper> call, @NonNull final Response<User.AddressWrapper> response) {
                 if (response.isSuccessful()) {
                     AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
                     User me = authenticationController.getUser();
@@ -258,7 +252,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<User.AddressWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<User.AddressWrapper> call, @NonNull final Throwable t) {
                 if (getActivity() != null) {
                     Toast.makeText(getActivity(), R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show();
                 }

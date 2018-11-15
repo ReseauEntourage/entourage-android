@@ -339,8 +339,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     hideEmptyListPopup();
                 }
                 if (poisAdapter != null) {
-                    List<TimestampedObject> timestampedObjectList = new ArrayList<>();
-                    timestampedObjectList.addAll(poiCollection);
+                    List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(poiCollection);
                     int previousPoiCount = poisAdapter.getDataItemCount();
                     poisAdapter.addItems(timestampedObjectList);
                     if (previousPoiCount == 0) {

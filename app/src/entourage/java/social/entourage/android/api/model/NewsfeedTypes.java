@@ -10,14 +10,13 @@ import social.entourage.android.api.model.map.Tour;
 public class NewsfeedTypes {
 
     public static Class getNewsfeedClass(String type) {
-        if (type.equals(Tour.NEWSFEED_TYPE)) {
-            return Tour.class;
-        }
-        else if (type.equals(Entourage.NEWSFEED_TYPE)) {
-            return Entourage.class;
-        }
-        else if (type.equals(Announcement.NEWSFEED_TYPE)) {
-            return Announcement.class;
+        switch (type) {
+            case Tour.NEWSFEED_TYPE:
+                return Tour.class;
+            case Entourage.NEWSFEED_TYPE:
+                return Entourage.class;
+            case Announcement.NEWSFEED_TYPE:
+                return Announcement.class;
         }
         return null;
     }

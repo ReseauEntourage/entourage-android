@@ -1,18 +1,10 @@
 package social.entourage.android.map.tour;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import java.util.Collections;
 import java.util.List;
 
-import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import social.entourage.android.api.model.Newsfeed;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static social.entourage.android.map.tour.TourService.NewsFeedListener;
 
 @RunWith(HierarchicalContextRunner.class)

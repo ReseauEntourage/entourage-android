@@ -1,6 +1,7 @@
 package social.entourage.android.map;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,7 +17,7 @@ public class MapEntourageFragmentLifecycleCallbacks extends FragmentManager.Frag
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
 
     @Override
-    public void onFragmentAttached(final FragmentManager fm, final Fragment f, final Context context) {
+    public void onFragmentAttached(@NonNull final FragmentManager fm, @NonNull final Fragment f, @NonNull final Context context) {
         super.onFragmentAttached(fm, f, context);
         if (f != null) {
             fragmentList.add(f);
@@ -24,7 +25,7 @@ public class MapEntourageFragmentLifecycleCallbacks extends FragmentManager.Frag
     }
 
     @Override
-    public void onFragmentDetached(final FragmentManager fm, final Fragment f) {
+    public void onFragmentDetached(@NonNull final FragmentManager fm, @NonNull final Fragment f) {
         super.onFragmentDetached(fm, f);
         if (f != null) {
             fragmentList.remove(f);

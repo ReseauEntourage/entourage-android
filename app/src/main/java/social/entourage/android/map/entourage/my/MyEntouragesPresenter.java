@@ -1,5 +1,7 @@
 package social.entourage.android.map.entourage.my;
 
+import android.support.annotation.NonNull;
+
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -67,7 +69,7 @@ public class MyEntouragesPresenter {
         );
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
-            public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
+            public void onResponse(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Response<Newsfeed.NewsfeedWrapper> response) {
                 if (response.isSuccessful()) {
                     fragment.onNewsfeedReceived(response.body().getNewsfeed());
                 }
@@ -77,7 +79,7 @@ public class MyEntouragesPresenter {
             }
 
             @Override
-            public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Throwable t) {
                 fragment.onNewsfeedReceived(null);
             }
         });
@@ -87,7 +89,7 @@ public class MyEntouragesPresenter {
         Call<Invitation.InvitationsWrapper> call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING);
         call.enqueue(new Callback<Invitation.InvitationsWrapper>() {
             @Override
-            public void onResponse(final Call<Invitation.InvitationsWrapper> call, final Response<Invitation.InvitationsWrapper> response) {
+            public void onResponse(@NonNull final Call<Invitation.InvitationsWrapper> call, @NonNull final Response<Invitation.InvitationsWrapper> response) {
                 if (response.isSuccessful()) {
                     fragment.onInvitationsReceived(response.body().getInvitations());
                 }
@@ -97,7 +99,7 @@ public class MyEntouragesPresenter {
             }
 
             @Override
-            public void onFailure(final Call<Invitation.InvitationsWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Invitation.InvitationsWrapper> call, @NonNull final Throwable t) {
                 fragment.onInvitationsReceived(null);
             }
         });
@@ -109,7 +111,7 @@ public class MyEntouragesPresenter {
             Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(feedItemUUID);
             call.enqueue(new Callback<Tour.TourWrapper>() {
                 @Override
-                public void onResponse(final Call<Tour.TourWrapper> call, final Response<Tour.TourWrapper> response) {
+                public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                     if (response.isSuccessful()) {
                         if (fragment != null) fragment.onFeedItemReceived(response.body().getTour());
                     } else {
@@ -118,7 +120,7 @@ public class MyEntouragesPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<Tour.TourWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                     if (fragment != null) fragment.onFeedItemReceived(null);
                 }
             });
@@ -127,7 +129,7 @@ public class MyEntouragesPresenter {
             Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(feedItemUUID, -1, 0);
             call.enqueue(new Callback<Entourage.EntourageWrapper>() {
                 @Override
-                public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
+                public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
                     if (response.isSuccessful()) {
                         if (fragment != null) fragment.onFeedItemReceived(response.body().getEntourage());
                     } else {
@@ -136,7 +138,7 @@ public class MyEntouragesPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
                     if (fragment != null) fragment.onFeedItemReceived(null);
                 }
             });

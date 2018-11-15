@@ -1,5 +1,6 @@
 package social.entourage.android.map.choice;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,14 +36,15 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
         return tours.size();
     }
 
+    @NonNull
     @Override
-    public ChoiceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChoiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.choice_tour_card, parent, false);
         return new ChoiceViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ChoiceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChoiceViewHolder holder, int position) {
         Tour tour = tours.get(position);
 
         if (tour.getTourType() != null) {

@@ -44,7 +44,7 @@ public class AboutFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View toReturn = inflater.inflate(R.layout.fragment_about, container, false);
         ButterKnife.bind(this, toReturn);

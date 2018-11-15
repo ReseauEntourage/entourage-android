@@ -1,5 +1,6 @@
 package social.entourage.android.view.CountryCodePicker;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,13 +28,14 @@ class CountryCodeAdapter extends RecyclerView.Adapter<CountryCodeAdapter.Country
 	    this.mCallback = callback;
     }
 
-    @Override public CountryCodeViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    @NonNull
+    @Override public CountryCodeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 	    LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 	    View rootView = inflater.inflate(R.layout.layout_code_picker_tile, viewGroup, false);
         return new CountryCodeViewHolder(rootView);
     }
 
-    @Override public void onBindViewHolder(CountryCodeViewHolder viewHolder, final int i) {
+    @Override public void onBindViewHolder(@NonNull CountryCodeViewHolder viewHolder, final int i) {
 	    final int position = viewHolder.getAdapterPosition();
 	    viewHolder.setCountry(mCountries.get(position));
 	    viewHolder.rlyMain.setOnClickListener(new View.OnClickListener() {

@@ -26,8 +26,6 @@ import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.newsfeed.FeedItemsStorage;
 
-import static social.entourage.android.BuildConfig.FLAVOR;
-
 /**
  * Application setup for Analytics, JodaTime and Dagger
  */
@@ -64,7 +62,7 @@ public class EntourageApplication extends MultiDexApplication {
     static public String ENTOURAGE_APP="entourage";
     static public String PFP_APP="pfp";
 
-    public enum WhiteLabelApp {ENTOURAGE_APP, PFP_APP};
+    public enum WhiteLabelApp {ENTOURAGE_APP, PFP_APP}
 
     // ----------------------------------
     // LIFECYCLE

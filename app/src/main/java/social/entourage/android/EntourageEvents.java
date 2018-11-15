@@ -12,7 +12,6 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import java.util.Locale;
 
 import social.entourage.android.api.model.User;
-import social.entourage.android.message.push.RegisterGCMService;
 
 /**
  * Wrapper for sending events to different aggregators

@@ -1,5 +1,7 @@
 package social.entourage.android.user;
 
+import android.support.annotation.NonNull;
+
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -49,7 +51,7 @@ public class UserPresenter {
         Call<UserResponse> call = userRequest.getUser(userId);
         call.enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+            public void onResponse(@NonNull final Call<UserResponse> call, @NonNull final Response<UserResponse> response) {
                 if (response.isSuccessful()) {
                     fragment.onUserReceived(response.body().getUser());
                 }
@@ -59,7 +61,7 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(final Call<UserResponse> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<UserResponse> call, @NonNull final Throwable t) {
                 fragment.onUserReceived(null);
             }
         });
@@ -78,7 +80,7 @@ public class UserPresenter {
             Call<UserResponse> call = userRequest.updateUser(user.getArrayMapForUpdate());
             call.enqueue(new Callback<UserResponse>() {
                 @Override
-                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                     if (response.isSuccessful()) {
                         //update the logged user
                         authenticationController.saveUser(response.body().getUser());
@@ -92,7 +94,7 @@ public class UserPresenter {
                 }
 
                 @Override
-                public void onFailure(Call<UserResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                     fragment.onUserUpdated(null);
                 }
             });

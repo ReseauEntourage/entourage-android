@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.util.Patterns;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -17,7 +16,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Entourage;
 
 /**
  * Created by mihaiionescu on 27/07/16.

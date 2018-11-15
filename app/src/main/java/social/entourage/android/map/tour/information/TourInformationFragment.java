@@ -31,7 +31,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1903,8 +1902,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     }
                 }
 
-                List<TimestampedObject> timestampedObjectList = new ArrayList<>();
-                timestampedObjectList.addAll(chatMessageList);
+                List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(chatMessageList);
                 if (feedItem.addCardInfoList(timestampedObjectList) > 0) {
                     //remember the last chat message
                     ChatMessage chatMessage = (ChatMessage)feedItem.getAddedCardInfoList().get(0);
@@ -1961,8 +1959,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     encounter.setReadOnly(feedItem.isClosed());
                 }
             }
-            List<TimestampedObject> timestampedObjectList = new ArrayList<>();
-            timestampedObjectList.addAll(encounterList);
+            List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(encounterList);
             feedItem.addCardInfoList(timestampedObjectList);
         }
 
@@ -2241,7 +2238,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
-        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
             if (!needsMoreChatMessaged) return;
             scrollDeltaY += dy;
             //check if user is scrolling up and pass the threshold
@@ -2259,7 +2256,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
 
         @Override
-        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
         }
     }
 

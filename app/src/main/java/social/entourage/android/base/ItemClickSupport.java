@@ -1,5 +1,6 @@
 package social.entourage.android.base;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import social.entourage.android.R;
@@ -36,7 +37,7 @@ public class ItemClickSupport {
     private RecyclerView.OnChildAttachStateChangeListener mAttachListener
             = new RecyclerView.OnChildAttachStateChangeListener() {
         @Override
-        public void onChildViewAttachedToWindow(View view) {
+        public void onChildViewAttachedToWindow(@NonNull View view) {
             // every time a new child view is attached add click listeners to it
             if (mOnItemClickListener != null) {
                 view.setOnClickListener(mOnClickListener);
@@ -47,7 +48,7 @@ public class ItemClickSupport {
         }
 
         @Override
-        public void onChildViewDetachedFromWindow(View view) {
+        public void onChildViewDetachedFromWindow(@NonNull View view) {
 
         }
     };

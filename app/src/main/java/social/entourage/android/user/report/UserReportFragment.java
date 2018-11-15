@@ -77,7 +77,7 @@ public class UserReportFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -137,7 +137,7 @@ public class UserReportFragment extends EntourageDialogFragment {
         Call<ResponseBody> call = userRequest.reportUser(userId, new UserReport.UserReportWrapper(new UserReport(reason)));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getActivity(), R.string.user_report_success, Toast.LENGTH_SHORT).show();
                     if (!isStopped()) {
@@ -151,7 +151,7 @@ public class UserReportFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
                 Toast.makeText(getActivity(), R.string.user_report_error_send_failed, Toast.LENGTH_SHORT).show();
                 sending = false;
             }

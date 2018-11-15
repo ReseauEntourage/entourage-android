@@ -589,7 +589,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         return true;
     }
 
-    private class GeocoderTask extends AsyncTask<LatLng, Void, String> {
+    private static class GeocoderTask extends AsyncTask<LatLng, Void, String> {
 
         @Override
         protected String doInBackground(final LatLng... params) {

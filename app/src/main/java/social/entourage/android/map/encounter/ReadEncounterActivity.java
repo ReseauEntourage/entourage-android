@@ -133,7 +133,7 @@ public class ReadEncounterActivity extends EntourageActivity {
         messageEditText.setText(encounter.getMessage());
     }
 
-    private class GeocoderTask extends AsyncTask<Encounter, Void, Encounter> {
+    private static class GeocoderTask extends AsyncTask<Encounter, Void, Encounter> {
 
         @Override
         protected Encounter doInBackground(final Encounter... params) {

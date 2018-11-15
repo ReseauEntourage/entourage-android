@@ -299,7 +299,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     // PRIVATE CLASSES
     // ----------------------------------
     //TODO check if this leaks!
-    private class GeocoderTask extends AsyncTask<LatLng, Void, String> {
+    private static class GeocoderTask extends AsyncTask<LatLng, Void, String> {
 
         @Override
         protected String doInBackground(final LatLng... params) {

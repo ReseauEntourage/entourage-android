@@ -1,5 +1,7 @@
 package social.entourage.android.map.tour.join.received;
 
+import android.support.annotation.NonNull;
+
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -47,7 +49,7 @@ public class TourJoinRequestReceivedPresenter {
         Call<ResponseBody> call = tourRequest.updateUserTourStatus(tourUUID, userId, user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, true);
@@ -59,7 +61,7 @@ public class TourJoinRequestReceivedPresenter {
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, false);
                 }
@@ -71,7 +73,7 @@ public class TourJoinRequestReceivedPresenter {
         Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourUUID, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
-            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+            public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, true);
@@ -82,7 +84,7 @@ public class TourJoinRequestReceivedPresenter {
             }
 
             @Override
-            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, false);
                 }
@@ -98,7 +100,7 @@ public class TourJoinRequestReceivedPresenter {
         Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourageUUID, userId, user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, true);
@@ -110,7 +112,7 @@ public class TourJoinRequestReceivedPresenter {
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(Tour.JOIN_STATUS_ACCEPTED, false);
                 }
@@ -122,7 +124,7 @@ public class TourJoinRequestReceivedPresenter {
         Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageUUID, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
-            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+            public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, true);
@@ -133,7 +135,7 @@ public class TourJoinRequestReceivedPresenter {
             }
 
             @Override
-            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, false);
                 }

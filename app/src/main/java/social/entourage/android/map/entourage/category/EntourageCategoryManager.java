@@ -104,12 +104,10 @@ public class EntourageCategoryManager {
     }
 
     public EntourageCategory getDefaultCategory() {
-        Iterator<String> keyIterator = entourageCategoriesHashMap.keySet().iterator();
-        while (keyIterator.hasNext()) {
-            String key = keyIterator.next();
+        for (String key : entourageCategoriesHashMap.keySet()) {
             List<EntourageCategory> list = entourageCategoriesHashMap.get(key);
             if (list != null) {
-                for (EntourageCategory category:list) {
+                for (EntourageCategory category : list) {
                     if (category.isDefault()) {
                         return category;
                     }

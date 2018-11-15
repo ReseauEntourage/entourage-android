@@ -1,5 +1,7 @@
 package social.entourage.android.invite;
 
+import android.support.annotation.NonNull;
+
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -51,7 +53,7 @@ public class InvitePresenter {
         Call<MultipleInvitations.MultipleInvitationsResponse> call = entourageRequest.inviteBySMS(entourageUUID, wrapper);
         call.enqueue(new Callback<MultipleInvitations.MultipleInvitationsResponse>() {
             @Override
-            public void onResponse(final Call<MultipleInvitations.MultipleInvitationsResponse> call, final Response<MultipleInvitations.MultipleInvitationsResponse> response) {
+            public void onResponse(@NonNull final Call<MultipleInvitations.MultipleInvitationsResponse> call, @NonNull final Response<MultipleInvitations.MultipleInvitationsResponse> response) {
                 if (response.isSuccessful()) {
                     if (fragment != null) {
                         fragment.onInviteSent(true);
@@ -64,7 +66,7 @@ public class InvitePresenter {
             }
 
             @Override
-            public void onFailure(final Call<MultipleInvitations.MultipleInvitationsResponse> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<MultipleInvitations.MultipleInvitationsResponse> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onInviteSent(false);
                 }

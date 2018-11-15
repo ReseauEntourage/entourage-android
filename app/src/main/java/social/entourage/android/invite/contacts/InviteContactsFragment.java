@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -153,7 +154,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -285,6 +286,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     // LoaderManager.LoaderCallbacks<Cursor>
     // ----------------------------------
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
         switch (loaderId) {
@@ -320,7 +322,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         return null;
     }
 
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         switch (loader.getId()) {
             case CONTACTS_LOADER_ID:
                 // Put the result Cursor in the adapter for the ListView
@@ -347,7 +349,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         switch (loader.getId()) {
             case CONTACTS_LOADER_ID:
                 // Delete the reference to the existing Cursor

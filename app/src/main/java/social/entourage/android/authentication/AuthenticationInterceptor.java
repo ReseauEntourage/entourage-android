@@ -1,5 +1,7 @@
 package social.entourage.android.authentication;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 
 import javax.inject.Inject;
@@ -25,7 +27,7 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
     }
 
     @Override
-    public okhttp3.Response intercept(Chain chain) throws IOException {
+    public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
         okhttp3.Request request = chain.request();
         HttpUrl url;
         if (authenticationController.isAuthenticated()) {

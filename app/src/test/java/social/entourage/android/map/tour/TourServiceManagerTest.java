@@ -4,20 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
-import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -28,12 +17,6 @@ import social.entourage.android.api.model.Newsfeed.NewsfeedWrapper;
 import social.entourage.android.map.MapTabItem;
 import social.entourage.android.map.tour.TourServiceManager.NewsFeedCallback;
 import social.entourage.android.newsfeed.NewsfeedPagination;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.mock;
-import static org.mockito.BDDMockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(HierarchicalContextRunner.class)
 public class TourServiceManagerTest {

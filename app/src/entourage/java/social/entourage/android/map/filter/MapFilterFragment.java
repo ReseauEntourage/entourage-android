@@ -245,12 +245,8 @@ public class MapFilterFragment extends BaseMapFilterFragment {
         mapFilter.onlyMyEntourages = onlyMyEntouragesSwitch.isChecked();
         mapFilter.onlyMyPartnerEntourages = onlyMyPartnerEntouragesSwitch.isChecked();
 
-        Iterator<List<Switch>> listIterator =  actionSwitches.values().iterator();
-        while (listIterator.hasNext()) {
-            List<Switch> switchList = listIterator.next();
-            Iterator<Switch> switchIterator = switchList.iterator();
-            while (switchIterator.hasNext()) {
-                Switch categorySwitch = switchIterator.next();
+        for (List<Switch> switchList : actionSwitches.values()) {
+            for (Switch categorySwitch : switchList) {
                 if (categorySwitch.getTag() != null) {
                     String category = (String) categorySwitch.getTag();
                     mapFilter.setCategoryChecked(category, categorySwitch.isChecked());
@@ -279,10 +275,8 @@ public class MapFilterFragment extends BaseMapFilterFragment {
         EntourageCategoryManager categoryManager = EntourageCategoryManager.getInstance();
         List<EntourageCategory> entourageCategoryList = categoryManager.getEntourageCategoriesForType(entourageType);
         if (entourageCategoryList == null) return;
-        Iterator<EntourageCategory> iterator = entourageCategoryList.iterator();
-        while (iterator.hasNext()) {
+        for (EntourageCategory entourageCategory : entourageCategoryList) {
             // inflate and add the view to the layout
-            EntourageCategory entourageCategory = iterator.next();
             View view = getLayoutInflater().inflate(R.layout.layout_filter_item_map, layout, false);
             view.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,

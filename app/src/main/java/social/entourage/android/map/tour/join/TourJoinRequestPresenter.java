@@ -1,5 +1,6 @@
 package social.entourage.android.map.tour.join;
 
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -80,7 +81,7 @@ public class TourJoinRequestPresenter {
         Call<TourUser.TourUserWrapper> call = tourRequest.updateJoinTourMessage(tour.getUUID(), me.getId(), joinMessageWrapper);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
-            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+            public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                 if (response.isSuccessful()) {
                     if (fragment.getActivity() != null) {
                         Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
@@ -95,7 +96,7 @@ public class TourJoinRequestPresenter {
             }
 
             @Override
-            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
                 if (fragment.getActivity() != null) {
                     Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
                 }
@@ -114,7 +115,7 @@ public class TourJoinRequestPresenter {
         Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourage.getUUID(), me.getId(), info);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     if (fragment.getActivity() != null) {
                         Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
@@ -129,7 +130,7 @@ public class TourJoinRequestPresenter {
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
                 if (fragment.getActivity() != null) {
                     Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
                 }

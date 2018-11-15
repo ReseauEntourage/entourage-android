@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.guide.GuideMapEntourageFragment;
-import social.entourage.android.navigation.BottomNavigationDataSource;
 
 /**
  * Presenter controlling the DrawerActivity

@@ -2083,10 +2083,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void showUserHistory() {
-        for (final Object o : drawnUserHistory.entrySet()) {
-            Map.Entry pair = (Map.Entry) o;
+        for (final Map.Entry<Long, Polyline> pair: drawnUserHistory.entrySet()) {
             Tour tour = retrievedHistory.get(pair.getKey());
-            Polyline line = (Polyline) pair.getValue();
+            Polyline line = pair.getValue();
             line.setColor(getTrackColor(true, tour.getTourType(), tour.getStartTime()));
         }
     }
@@ -2673,8 +2672,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     protected void showHeatzoneMiniCardsAtLocation(LatLng location) {
         // get the list of entourages near this location
         ArrayList<TimestampedObject> entourageArrayList = new ArrayList<>();
-        List<TimestampedObject> feedItemsList = new ArrayList<>();
-        feedItemsList.addAll(newsfeedAdapter.getItems());
+        List<TimestampedObject> feedItemsList = new ArrayList<>(newsfeedAdapter.getItems());
         for (TimestampedObject feedItem:feedItemsList
              ) {
             if (feedItem.getType() != TimestampedObject.ENTOURAGE_CARD) continue;
@@ -2765,7 +2763,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
-        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
             if (dy > 0) {
                 // Scrolling down
                 int visibleItemCount = recyclerView.getChildCount();
@@ -2784,7 +2782,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
 
         @Override
-        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
         }
     }
 }
