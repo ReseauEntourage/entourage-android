@@ -66,6 +66,8 @@ import social.entourage.android.guide.poi.ReadPoiFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 
+import static social.entourage.android.Constants.EVENT_OPEN_GUIDE_FROM_TAB;
+
 public class GuideMapEntourageFragment extends Fragment implements BackPressable {
 
     // ----------------------------------
@@ -153,6 +155,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getLastCameraPosition());
         initializeEmptyListPopup();
         initializeMap();
+        initializeFloatingMenu();
         initializePOIList();
         initializeTopNavigationBar();
     }
@@ -175,6 +178,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             }
         }
         showInfoPopup();
+        EntourageEvents.logEvent(EVENT_OPEN_GUIDE_FROM_TAB);
 
         BusProvider.getInstance().register(this);
     }
@@ -270,6 +274,15 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         showPoiDetails(event.getPoi());
     }
 
+    @Subscribe
+    public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
+        if (event != null && event.isPermissionGranted()&& map != null) {
+            try {
+                map.setMyLocationEnabled(true);
+            } catch (SecurityException ignored) {
+            }
+        }
+    }
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -316,6 +329,18 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
     }
 
+    private void initializeFloatingMenu() {
+        guideOptionsMenu.setClosedOnTouchOutside(true);
+        guideOptionsMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(final boolean opened) {
+                if (opened) {
+                    EntourageEvents.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
+                }
+            }
+        });
+    }
+
     private void initializeMap() {
         originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
 
@@ -356,6 +381,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                         @Override
                         public void onMapLongClick(final LatLng latLng) {
                             if (getActivity() != null) {
+                                EntourageEvents.logEvent(Constants.EVENT_GUIDE_LONGPRESS);
                                 showLongClickOnMapOptions(latLng);
                             }
                         }
@@ -392,6 +418,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         onBackPressed();
         // Open the link to propose a POI
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            EntourageEvents.logEvent(Constants.EVENT_GUIDE_PROPOSE_POI);
             ((DrawerActivity)getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
         }
     }
@@ -570,19 +597,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // ----------------------------------
     // FAB HANDLING
     // ----------------------------------
-
-    @OnClick({R.id.button_create_entourage, R.id.guide_longclick_button_entourage_action})
-    protected void onCreateEntourageActionClicked() {
-        if (getActivity() == null) {
-            return;
-        }
-        guideLongClickView.setVisibility(View.GONE);
-        guideOptionsMenu.setVisibility(View.VISIBLE);
-        if (guideOptionsMenu.isOpened()) {
-            guideOptionsMenu.toggle(false);
-        }
-        ((DrawerActivity) getActivity()).onCreateEntourageClicked();
-    }
 
     @OnClick(R.id.button_poi_propose)
     protected void onPOIProposeClicked() {

@@ -136,15 +136,6 @@
             app:fab_label="@string/map_poi_propose_button"
             app:fab_size="mini"/>
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/button_create_entourage"
-            style="@style/MapActionButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_entourage_contribution"
-            app:fab_label="@string/entourage_create_menu"
-            app:fab_size="mini"/>
-
     </com.github.clans.fab.FloatingActionMenu>
 
     <include

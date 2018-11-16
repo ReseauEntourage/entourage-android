@@ -389,6 +389,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
         }
         newsfeedListView.addOnScrollListener(scrollListener);
+        EntourageEvents.logEvent(Constants.EVENT_OPEN_FEED_FROM_TAB);
         isStopped = false;
     }
 

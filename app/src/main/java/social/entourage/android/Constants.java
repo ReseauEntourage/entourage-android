@@ -98,10 +98,9 @@ public class Constants {
 
     //MENU Events
     public static final String EVENT_PROFILE_FROM_MENU = "Open_Profile_From_Menu";
-    public static final String EVENT_OPEN_GUIDE_FROM_PLUS = "Open_Guide_From_Menu";
-    public static final String EVENT_OPEN_GUIDE_FROM_SIDEMENU = "SolidarityGuideFrom07Menu";
-    public static final String EVENT_OPEN_GUIDE_FROM_MAP = "SolidarityGuideFrom06Map";
+    public static final String EVENT_OPEN_GUIDE_FROM_TAB = "Open_Guide_From_Tab";
     public static final String EVENT_OPEN_TOURS_FROM_MENU = "Open_Tours_From_Menu";
+    public static final String EVENT_OPEN_FEED_FROM_TAB = "Open_NewsFeed_From_Tab";
     public static final String EVENT_MENU_TAP_MY_PROFILE = "TapMyProfilePhoto";
     public static final String EVENT_MENU_LOGOUT = "LogOut";
     public static final String EVENT_MENU_ABOUT = "AboutClick";
@@ -151,9 +150,9 @@ public class Constants {
 
     //GUIDE Events
     public static final String EVENT_GUIDE_POI_VIEW = "POIView";
-    public static final String EVENT_GUIDE_PLUS_CLICK = "PlusFromGDSClick";
-    public static final String EVENT_GUIDE_MASK_CLICK = "MaskGDSClick";
-    public static final String EVENT_GUIDE_X_CLICK = "MaskGDSXClick";
+    public static final String EVENT_GUIDE_PLUS_CLICK = "PlusFromGuideClick";
+    public static final String EVENT_GUIDE_LONGPRESS = "LongPressFromGuideClick";
+    public static final String EVENT_GUIDE_PROPOSE_POI = "ProposePOIView";
     public static final String EVENT_GUIDE_LIST_VIEW = "GDSListViewClick";
     public static final String EVENT_GUIDE_MAP_VIEW = "GDSMapViewClick";
 

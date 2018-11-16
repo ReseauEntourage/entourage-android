@@ -34,17 +34,6 @@
             android:layout_alignParentTop="true"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_solidarity"/>
-
-        <ImageView
-            android:id="@+id/guide_longclick_button_entourage_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_toEndOf="@+id/guide_longclick_button_poi_propose"
-            android:layout_toRightOf="@+id/guide_longclick_button_poi_propose"
-            android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_entourage_contribution"/>
     </RelativeLayout>
 
 </RelativeLayout>
