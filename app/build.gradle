@@ -10,7 +10,6 @@ android {
     buildToolsVersion '28.0.3'
     def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug
     def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken
-    //def MIXPANEL_TOKEN_PFP_DEBUG = System.env.MIXPANEL_TOKEN_PFP_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_PFP_DEBUG + '"' : entourageMixpanelTokenPFPDebug
     def MIXPANEL_TOKEN_PFP = System.env.MIXPANEL_TOKEN_PFP ? '"' + System.env.MIXPANEL_TOKEN_PFP + '"' : entourageMixpanelTokenPFP
 
     def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin
@@ -78,7 +77,6 @@ android {
             applicationIdSuffix '.preprod'
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
-            /*buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP_DEBUG*/
 
         }
         entourage {
