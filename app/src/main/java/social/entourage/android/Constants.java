@@ -129,7 +129,6 @@ public class Constants {
     public static final String EVENT_FEED_PLUS_CLICK = "PlusFromFeedClick";
     public static final String EVENT_FEED_TOUR_CREATE_CLICK = "TourCreateClick";
     public static final String EVENT_FEED_ACTION_CREATE_CLICK = "CreateActionClick";
-    public static final String EVENT_FEED_GUIDE_SHOW_CLICK = "GDSViewClick";
     public static final String EVENT_FEED_PENDING_OVERLAY = "PendingRequestOverlay";
     public static final String EVENT_FEED_CANCEL_JOIN_REQUEST = "CancelJoinRequest";
     public static final String EVENT_FEED_OPEN_ACTIVE_OVERLAY = "OpenActiveOverlay";

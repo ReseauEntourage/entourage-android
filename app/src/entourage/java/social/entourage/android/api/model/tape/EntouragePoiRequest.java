@@ -7,7 +7,7 @@ import social.entourage.android.api.tape.Events;
  * Events specific to Entourage app
  * Created by Mihai Ionescu on 16/04/2018.
  */
-public class EntourageEvents extends Events {
+public class EntouragePoiRequest extends Events {
 
     /**
      * Event signaling that poi view is requested

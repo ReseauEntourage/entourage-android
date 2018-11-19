@@ -58,6 +58,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.tape.EntouragePoiRequest;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageLinkMovementMethod;
@@ -268,7 +269,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     }
 
     @Subscribe
-    public void onPoiViewRequested(social.entourage.android.api.model.tape.EntourageEvents.OnPoiViewRequestedEvent event) {
+    public void onPoiViewRequested(EntouragePoiRequest.OnPoiViewRequestedEvent event) {
         if (event == null || event.getPoi() == null) return;
         EntourageEvents.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
         showPoiDetails(event.getPoi());
