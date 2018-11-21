@@ -16,10 +16,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.LoginRequest;
-import social.entourage.android.api.LoginResponse;
-import social.entourage.android.api.UserRequest;
-import social.entourage.android.api.UserResponse;
+import social.entourage.android.api.*;
 import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
@@ -82,7 +79,7 @@ public abstract class BaseLoginPresenter {
                 Call<LoginResponse> call = loginRequest.login(user);
                 call.enqueue(new Callback<LoginResponse>() {
                     @Override
-                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                         if (response.isSuccessful()) {
                             activity.stopLoader();
                             authenticationController.saveUser(response.body().getUser());
@@ -118,7 +115,7 @@ public abstract class BaseLoginPresenter {
                     }
 
                     @Override
-                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
                         activity.loginFail(LoginActivity.LOGIN_ERROR_NETWORK);
                     }
                 });
@@ -149,16 +146,22 @@ public abstract class BaseLoginPresenter {
                 Call<UserResponse> call = userRequest.regenerateSecretCode(request);
                 call.enqueue(new Callback<UserResponse>() {
                     @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                         if (response.isSuccessful()) {
                             activity.newCodeAsked(response.body().getUser(), isOnboarding);
                         } else {
-                            activity.newCodeAsked(null, isOnboarding);
+                            ApiError error = ApiError.fromResponse(response);
+
+                            if (error.code.equals("USER_NOT_FOUND")) {
+                                registerUserPhone(phone);
+                            } else {
+                                activity.newCodeAsked(null, isOnboarding);
+                            }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                         activity.newCodeAsked(null, isOnboarding);
                     }
                 });
@@ -187,7 +190,7 @@ public abstract class BaseLoginPresenter {
             Call<UserResponse> call = userRequest.updateUser(request);
             call.enqueue(new Callback<UserResponse>() {
                 @Override
-                public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+                public void onResponse(@NonNull final Call<UserResponse> call, @NonNull final Response<UserResponse> response) {
                     if (activity != null) activity.stopLoader();
                     if (response.isSuccessful()) {
                         if (authenticationController != null) authenticationController.saveUser(response.body().getUser());
@@ -203,7 +206,7 @@ public abstract class BaseLoginPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<UserResponse> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<UserResponse> call, @NonNull final Throwable t) {
                     if (activity != null) {
                         activity.stopLoader();
                         activity.displayToast(R.string.login_text_profile_update_fail);
@@ -225,7 +228,7 @@ public abstract class BaseLoginPresenter {
             Call<UserResponse> call = userRequest.updateUser(request);
             call.enqueue(new Callback<UserResponse>() {
                 @Override
-                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                     if (response.isSuccessful()) {
                         if (authenticationController.isAuthenticated()) {
                             authenticationController.saveUser(response.body().getUser());
@@ -238,7 +241,7 @@ public abstract class BaseLoginPresenter {
                 }
 
                 @Override
-                public void onFailure(Call<UserResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                     activity.onUserPhotoUpdated(false);
                 }
             });
@@ -254,7 +257,7 @@ public abstract class BaseLoginPresenter {
                 Call<Newsletter.NewsletterWrapper> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
                 call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
                     @Override
-                    public void onResponse(Call<Newsletter.NewsletterWrapper> call, Response<Newsletter.NewsletterWrapper> response) {
+                    public void onResponse(@NonNull Call<Newsletter.NewsletterWrapper> call, @NonNull Response<Newsletter.NewsletterWrapper> response) {
                         if (response.isSuccessful()) {
                             activity.newsletterResult(true);
                         } else {
@@ -263,7 +266,7 @@ public abstract class BaseLoginPresenter {
                     }
 
                     @Override
-                    public void onFailure(Call<Newsletter.NewsletterWrapper> call, Throwable t) {
+                    public void onFailure(@NonNull Call<Newsletter.NewsletterWrapper> call, @NonNull Throwable t) {
                         activity.newsletterResult(false);
                     }
                 });
@@ -284,7 +287,7 @@ public abstract class BaseLoginPresenter {
         Call<UserResponse> call = userRequest.registerUser(request);
         call.enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(final Call<UserResponse> call, final Response<UserResponse> response) {
+            public void onResponse(@NonNull final Call<UserResponse> call, @NonNull final Response<UserResponse> response) {
                 if (response.isSuccessful()) {
                     if (activity != null) {
                         activity.registerPhoneNumberSent(phoneNumber, true);
@@ -320,7 +323,7 @@ public abstract class BaseLoginPresenter {
             }
 
             @Override
-            public void onFailure(final Call<UserResponse> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<UserResponse> call, @NonNull final Throwable t) {
                 if (activity != null) {
                     activity.displayToast(R.string.login_error_network);
                     activity.registerPhoneNumberSent(phoneNumber, false);

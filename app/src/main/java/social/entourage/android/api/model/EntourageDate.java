@@ -1,5 +1,7 @@
 package social.entourage.android.api.model;
 
+import android.support.annotation.NonNull;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +23,7 @@ public class EntourageDate {
         this.date = date;
     }
 
+    @NonNull
     @Override public String toString() {
         return DF.get().format(date);
     }

@@ -6,11 +6,10 @@ def versionMinor = 7
 def versionPatch = 'git rev-list HEAD --count'.execute([], project.rootDir).text.trim().toInteger()
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug
     def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken
-    //def MIXPANEL_TOKEN_PFP_DEBUG = System.env.MIXPANEL_TOKEN_PFP_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_PFP_DEBUG + '"' : entourageMixpanelTokenPFPDebug
     def MIXPANEL_TOKEN_PFP = System.env.MIXPANEL_TOKEN_PFP ? '"' + System.env.MIXPANEL_TOKEN_PFP + '"' : entourageMixpanelTokenPFP
 
     def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin
@@ -18,8 +17,8 @@ android {
 
     defaultConfig {
         applicationId 'social.entourage.android'
-        minSdkVersion 15
-        targetSdkVersion 27
+        minSdkVersion 18
+        targetSdkVersion 28
         versionCode versionMajor * 100000 + versionMinor * 10000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         multiDexEnabled true
@@ -78,7 +77,6 @@ android {
             applicationIdSuffix '.preprod'
             buildConfigField 'String', 'AWS_FOLDER', '"staging/300x300/"'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
-            /*buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP_DEBUG*/
 
         }
         entourage {
@@ -173,13 +171,13 @@ android {
 }
 
 dependencies {
-    def supportVersion = "27.1.1"
-    def playServicesVersion = "15.0.1"
+    def supportVersion = "28.0.0"
+    def playServicesVersion = "16.0.0"
     def daggerVersion = "2.15"
     def okHttpVersion = "3.10.0"
     def retrofitVersion = "2.4.0"
     def butterKnifeVersion = "8.8.1"
-    def awsVersion = "2.6.17"
+    def awsVersion = "2.8.0"
     implementation 'com.android.support:multidex:1.0.3'
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:support-annotations:${supportVersion}"
@@ -207,17 +205,17 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'jp.wasabeef:picasso-transformations:2.1.0'
     implementation 'com.github.clans:fab:1.6.4'
-    implementation 'net.danlew:android.joda:2.9.5.1'
+    implementation 'net.danlew:android.joda:2.10.1'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
     implementation 'me.leolin:ShortcutBadger:1.1.13@aar'
-    implementation 'com.mixpanel.android:mixpanel-android:5.3.1'
+    implementation 'com.mixpanel.android:mixpanel-android:5.4.3'
     implementation 'com.wdullaer:materialdatetimepicker:3.6.3'
-    entourageImplementation 'com.facebook.android:facebook-core:4.31.0'
-    entourageImplementation 'com.facebook.android:facebook-android-sdk:4.31.0'
-    api('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
+    entourageImplementation 'com.facebook.android:facebook-core:4.38.1'
+    entourageImplementation 'com.facebook.android:facebook-android-sdk:4.38.1'
+    api('com.crashlytics.sdk.android:crashlytics:2.9.6@aar') {
         transitive = true
     }
-    implementation "com.google.firebase:firebase-core:16.0.3"
+    implementation "com.google.firebase:firebase-core:16.0.4"
     /*implementation "com.google.firebase:firebase-perf:15.2.0"*/
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"

@@ -1,5 +1,7 @@
 package social.entourage.android.map.entourage.create;
 
+import android.support.annotation.NonNull;
+
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -51,7 +53,7 @@ public class CreateEntouragePresenter {
         Call<Entourage.EntourageWrapper> call = entourageRequest.createEntourage(entourageWrapper);
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
-            public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
+            public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccessful()) {
                     Entourage receivedEntourage = response.body().getEntourage();
                     receivedEntourage.setNewlyCreated(true);
@@ -68,7 +70,7 @@ public class CreateEntouragePresenter {
             }
 
             @Override
-            public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onEntourageCreated(null);
                 }
@@ -83,7 +85,7 @@ public class CreateEntouragePresenter {
         Call<Entourage.EntourageWrapper> call = entourageRequest.editEntourage(entourage.getUUID(), entourageWrapper);
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
-            public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
+            public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccessful()) {
                     Entourage receivedEntourage = response.body().getEntourage();
                     if (fragment != null) {
@@ -98,7 +100,7 @@ public class CreateEntouragePresenter {
             }
 
             @Override
-            public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onEntourageEdited(null);
                 }

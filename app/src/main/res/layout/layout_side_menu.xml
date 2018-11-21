@@ -103,15 +103,6 @@
                 app:showDivider="true"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
-                android:id="@+id/action_guide"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/sidemenu_item_background"
-                android:icon="@drawable/ic_map_pin_grey"
-                android:title="@string/action_guide"
-                app:showDivider="true"/>
-
-            <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_ambassador"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

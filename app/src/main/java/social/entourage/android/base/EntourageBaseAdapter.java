@@ -38,8 +38,9 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     private OnMapReadyCallback onMapReadyCallback;
     private View.OnClickListener onFollowButtonClickListener;
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
 
         BaseCardViewHolder cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType);
         if (cardViewHolder != null) {
@@ -56,7 +57,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         if (position == 0 && needsTopView) {
             MapViewHolder mapViewHolder = ((MapViewHolder)holder);
             mapViewHolder.populate(null);

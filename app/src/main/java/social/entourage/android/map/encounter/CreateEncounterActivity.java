@@ -307,14 +307,12 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
                 Geocoder geoCoder = new Geocoder(CreateEncounterActivity.this, Locale.getDefault());
                 LatLng location = params[0];
                 List<Address> addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1);
-                String addressLine = "";
                 if (addresses != null && addresses.size() > 0) {
                     Address address = addresses.get(0);
                     if (address.getMaxAddressLineIndex() >= 0) {
-                        addressLine = addresses.get(0).getAddressLine(0);
+                        return addresses.get(0).getAddressLine(0);
                     }
                 }
-                return addressLine;
             }
             catch (IOException ignored) {
 

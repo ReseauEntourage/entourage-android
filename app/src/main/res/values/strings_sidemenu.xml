@@ -2,7 +2,6 @@
     <string name="sidemenu_title">Mon Compte</string>
     <string name="action_settings">Paramètres de l’application</string>
     <string name="action_logout">Déconnexion</string>
-    <string name="action_guide">Carte des structures solidaires</string>
     <string name="action_tours">MARAUDES</string>
     <string name="action_profile">PROFIL</string>
     <string name="action_about">Aide &amp; à propos</string>
@@ -17,6 +16,7 @@
     <string name="action_involvement">Suivre Entourage</string>
     <string name="action_ambassador">Devenir Ambassadeur d\'Entourage</string>
     <string name="action_map">à proximité</string>
-    <string name="action_my_messages">messagerie</string>
+    <string name="action_guide">annuaire</string>
+    <string name="action_my_messages">messages</string>
     <string name="action_menu">menu</string>
 </resources>

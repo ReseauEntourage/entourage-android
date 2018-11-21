@@ -3,6 +3,7 @@ package social.entourage.android.user.edit.partner;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +75,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -85,7 +86,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureView();
     }
@@ -177,7 +178,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
         final PartnerRequest request = EntourageApplication.get(getContext()).getEntourageComponent().getPartnerRequest();
         request.getAllPartners().enqueue(new Callback<Partner.PartnersWrapper>() {
             @Override
-            public void onResponse(final Call<Partner.PartnersWrapper> call, final Response<Partner.PartnersWrapper> response) {
+            public void onResponse(@NonNull final Call<Partner.PartnersWrapper> call, @NonNull final Response<Partner.PartnersWrapper> response) {
                 if (response.isSuccessful()) {
                     List<Partner> partnerList = response.body().getPartners();
                     adapter.setPartnerList(partnerList);
@@ -192,7 +193,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<Partner.PartnersWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Partner.PartnersWrapper> call, @NonNull final Throwable t) {
 
             }
         });
@@ -208,7 +209,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
         Partner.PartnerWrapper partnerWrapper = new Partner.PartnerWrapper(partner);
         request.addPartner(user.getId(), partnerWrapper).enqueue(new Callback<Partner.PartnerWrapper>() {
             @Override
-            public void onResponse(final Call<Partner.PartnerWrapper> call, final Response<Partner.PartnerWrapper> response) {
+            public void onResponse(@NonNull final Call<Partner.PartnerWrapper> call, @NonNull final Response<Partner.PartnerWrapper> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
@@ -225,7 +226,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<Partner.PartnerWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Partner.PartnerWrapper> call, @NonNull final Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), R.string.partner_add_error, Toast.LENGTH_SHORT).show();
             }
@@ -240,7 +241,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
         final UserRequest request = EntourageApplication.get(getContext()).getEntourageComponent().getUserRequest();
         request.removePartnerFromUser(user.getId(), oldPartner.getId()).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (currentPartner != null) {
@@ -261,7 +262,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), R.string.partner_remove_error, Toast.LENGTH_SHORT).show();
             }
@@ -277,7 +278,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
         Partner.PartnerWrapper partnerWrapper = new Partner.PartnerWrapper(partner);
         request.updatePartner(user.getId(), partner.getId(), partnerWrapper).enqueue(new Callback<Partner.PartnerWrapper>() {
             @Override
-            public void onResponse(final Call<Partner.PartnerWrapper> call, final Response<Partner.PartnerWrapper> response) {
+            public void onResponse(@NonNull final Call<Partner.PartnerWrapper> call, @NonNull final Response<Partner.PartnerWrapper> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
 
@@ -287,7 +288,7 @@ public class UserEditPartnerFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<Partner.PartnerWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Partner.PartnerWrapper> call, @NonNull final Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), R.string.partner_update_error, Toast.LENGTH_SHORT).show();
             }

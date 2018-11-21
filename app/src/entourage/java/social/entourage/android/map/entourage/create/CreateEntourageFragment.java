@@ -5,7 +5,6 @@ import android.util.Log;
 
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardListener;
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPage1Fragment;
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPage2Fragment;

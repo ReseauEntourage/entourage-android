@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -251,9 +250,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @BindView(R.id.fragment_map_empty_list_popup)
     View emptyListPopup;
 
-    @Nullable @BindView(R.id.fragment_map_show_guide)
-    View showGuideView;
-
     @BindView(R.id.fragment_map_entourage_mini_cards)
     EntourageMiniCardsView miniCardsView;
 
@@ -392,6 +388,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             }
         }
         newsfeedListView.addOnScrollListener(scrollListener);
+        EntourageEvents.logEvent(Constants.EVENT_OPEN_FEED_FROM_TAB);
         isStopped = false;
     }
 
@@ -1097,11 +1094,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } else {
-                            gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        }
+                        gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                         int h = gpsLayout.getHeight();
 
@@ -1118,11 +1111,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } else {
-                            gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        }
+                        gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                         int h = gpsLayout.getHeight();
 
@@ -1525,16 +1514,14 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     if (getActivity() != null) {
                         if (getActivity() instanceof DrawerActivity) {
                             DrawerActivity activity = (DrawerActivity) getActivity();
-                            if (tourService.isRunning()) {
-                                EntourageEvents.logEvent(Constants.EVENT_TOUR_PLUS_CLICK);
-                            } else if (activity.isGuideShown()) {
+                            if (activity.isGuideShown()) {
                                 EntourageEvents.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
+                            } else if (tourService.isRunning()) {
+                                EntourageEvents.logEvent(Constants.EVENT_TOUR_PLUS_CLICK);
+                            } else  if (isToursListVisible()) {
+                                EntourageEvents.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
                             } else {
-                                if (isToursListVisible()) {
-                                    EntourageEvents.logEvent(Constants.EVENT_FEED_PLUS_CLICK);
-                                } else {
-                                    EntourageEvents.logEvent(Constants.EVENT_MAP_PLUS_CLICK);
-                                }
+                                EntourageEvents.logEvent(Constants.EVENT_MAP_PLUS_CLICK);
                             }
                         }
                     }
@@ -1548,25 +1535,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     return;
                 }
                 DrawerActivity drawerActivity = (DrawerActivity)getActivity();
-                if (drawerActivity.isGuideShown()) {
-                    // Let the FAB do it's normal thing
-                    mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
-                } else {
+                //Handling special cases
+                if (!drawerActivity.isGuideShown()) {
                     User me = EntourageApplication.me(getContext());
                     boolean isPro = (me != null) && me.isPro();
                     if (!isPro && !Configuration.getInstance().showMapFABMenu()) {
                         // Show directly the create entourage disclaimer
                         displayEntouragePopupWhileTour();
-                    } else {
-                        if (isBound && tourService != null && tourService.isRunning()) {
-                            // Show directly the create encounter
-                            onAddEncounter();
-                        } else {
-                            // Let the FAB do it's normal thing
-                            mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
-                        }
+                        return;
+                    } else if (isBound && tourService != null && tourService.isRunning()) {
+                        // Show directly the create encounter
+                        onAddEncounter();
+                        return;
                     }
                 }
+                // Let the FAB do it's normal thing
+                mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
             }
         });
 
@@ -2091,10 +2075,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     private void showUserHistory() {
-        for (final Object o : drawnUserHistory.entrySet()) {
-            Map.Entry pair = (Map.Entry) o;
+        for (final Map.Entry<Long, Polyline> pair: drawnUserHistory.entrySet()) {
             Tour tour = retrievedHistory.get(pair.getKey());
-            Polyline line = (Polyline) pair.getValue();
+            Polyline line = pair.getValue();
             line.setColor(getTrackColor(true, tour.getTourType(), tour.getStartTime()));
         }
     }
@@ -2343,7 +2326,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         isFullMapShown = true;
         newEntouragesButton.setVisibility(View.GONE);
         mapDisplayToggle.setText(R.string.map_top_navigation_full_map);
-        if (showGuideView != null) showGuideView.setVisibility(View.VISIBLE);
 
         ensureMapVisible();
 
@@ -2374,8 +2356,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         isFullMapShown = false;
         mapDisplayToggle.setText(R.string.map_top_navigation_list);
-        if (showGuideView != null) showGuideView.setVisibility(View.GONE);
-        miniCardsView.setVisibility(View.INVISIBLE);
+       miniCardsView.setVisibility(View.INVISIBLE);
 
         hideEmptyListPopup();
 
@@ -2667,24 +2648,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     // ----------------------------------
-    // Show Guide button on full map screen
-    // ----------------------------------
-
-    @Optional
-    @OnClick(R.id.fragment_map_show_guide)
-    protected void onShowGuideClicked() {
-        if (getActivity() == null) return;
-        DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-        drawerActivity.onPOILauncherClicked();
-    }
-
-    public void onGuideWillShow() {
-        if (miniCardsView != null) {
-            miniCardsView.setVisibility(View.GONE);
-        }
-    }
-
-    // ----------------------------------
     // Heatzone Tap Handling
     // ----------------------------------
 
@@ -2701,8 +2664,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     protected void showHeatzoneMiniCardsAtLocation(LatLng location) {
         // get the list of entourages near this location
         ArrayList<TimestampedObject> entourageArrayList = new ArrayList<>();
-        List<TimestampedObject> feedItemsList = new ArrayList<>();
-        feedItemsList.addAll(newsfeedAdapter.getItems());
+        List<TimestampedObject> feedItemsList = new ArrayList<>(newsfeedAdapter.getItems());
         for (TimestampedObject feedItem:feedItemsList
              ) {
             if (feedItem.getType() != TimestampedObject.ENTOURAGE_CARD) continue;
@@ -2793,7 +2755,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
-        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
             if (dy > 0) {
                 // Scrolling down
                 int visibleItemCount = recyclerView.getChildCount();
@@ -2812,7 +2774,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
 
         @Override
-        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
         }
     }
 }

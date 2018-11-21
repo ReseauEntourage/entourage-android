@@ -41,8 +41,7 @@ public class InvitationListViewHolder extends BaseCardViewHolder {
 
     private void populate(InvitationList invitationList) {
         if (invitationsAdapter != null) {
-            List<TimestampedObject> list = new ArrayList<>();
-            list.addAll(invitationList.getInvitationList());
+            List<TimestampedObject> list = new ArrayList<TimestampedObject>(invitationList.getInvitationList());
             invitationsAdapter.addItems(list);
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -97,7 +98,7 @@ public class MyToursFragment extends EntourageDialogFragment implements TabHost.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -108,7 +109,7 @@ public class MyToursFragment extends EntourageDialogFragment implements TabHost.
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
 
@@ -371,7 +372,7 @@ public class MyToursFragment extends EntourageDialogFragment implements TabHost.
 
     private class OnScrollListener extends RecyclerView.OnScrollListener {
         @Override
-        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
 
             scrollDeltaY += dy;
             if (dy > 0 && scrollDeltaY > MAX_SCROLL_DELTA_Y) {
@@ -386,7 +387,7 @@ public class MyToursFragment extends EntourageDialogFragment implements TabHost.
             }
         }
         @Override
-        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
         }
     }
 }

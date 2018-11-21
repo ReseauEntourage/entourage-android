@@ -109,7 +109,7 @@ public class MyEntouragesFilter implements Serializable {
     // ----------------------------------
 
     public String getEntourageTypes() {
-        StringBuilder entourageTypes = new StringBuilder("");
+        StringBuilder entourageTypes = new StringBuilder();
 
         entourageTypeDemand = entourageTypeContribution = true; // in 5.0+ force to show all entourages
 

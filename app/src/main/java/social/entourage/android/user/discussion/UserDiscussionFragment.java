@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -112,7 +111,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -213,7 +212,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
         Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveEntourageMessages(userConversation.getUUID());
         call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
             @Override
-            public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
+            public void onResponse(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Response<ChatMessage.ChatMessagesWrapper> response) {
                 if (response.isSuccessful()) {
                     List<ChatMessage> chatMessageList = response.body().getChatMessages();
                     //check who sent the message
@@ -225,8 +224,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
                         }
                     }
                     //add the messages to the adapter
-                    List<TimestampedObject> timestampedObjectList = new ArrayList<>();
-                    timestampedObjectList.addAll(chatMessageList);
+                    List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(chatMessageList);
                     discussionAdapter.addItems(timestampedObjectList);
                 } else {
                     if (getContext() != null) {
@@ -236,7 +234,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<ChatMessage.ChatMessagesWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Throwable t) {
                 if (getContext() != null) {
                     Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                 }
@@ -263,7 +261,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
         Call<ChatMessage.ChatMessageWrapper> call = entourageRequest.chatMessage(userConversation.getUUID(), chatMessageWrapper);
         call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
             @Override
-            public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
+            public void onResponse(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Response<ChatMessage.ChatMessageWrapper> response) {
                 if (response.isSuccessful()) {
                     onChatMessageSent(response.body().getChatMessage());
                 } else {
@@ -272,7 +270,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Throwable t) {
                 onChatMessageSent(null);
             }
         });

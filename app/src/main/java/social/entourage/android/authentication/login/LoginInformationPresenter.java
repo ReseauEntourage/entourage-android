@@ -1,5 +1,7 @@
 package social.entourage.android.authentication.login;
 
+import android.support.annotation.NonNull;
+
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -44,7 +46,7 @@ public class LoginInformationPresenter {
             Call<Newsletter.NewsletterWrapper> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
             call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
                 @Override
-                public void onResponse(Call<Newsletter.NewsletterWrapper> call, Response<Newsletter.NewsletterWrapper> response) {
+                public void onResponse(@NonNull Call<Newsletter.NewsletterWrapper> call, @NonNull Response<Newsletter.NewsletterWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.newsletterResult(true);
                     } else {
@@ -53,7 +55,7 @@ public class LoginInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(Call<Newsletter.NewsletterWrapper> call, Throwable t) {
+                public void onFailure(@NonNull Call<Newsletter.NewsletterWrapper> call, @NonNull Throwable t) {
                     fragment.newsletterResult(false);
                 }
             });

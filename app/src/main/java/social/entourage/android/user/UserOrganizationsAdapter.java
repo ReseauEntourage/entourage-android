@@ -1,6 +1,7 @@
 package social.entourage.android.user;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,14 +60,15 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
         this.organizationList = organizationList;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_user_profile_organization, parent, false);
         return new OrganizationViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         BaseOrganization organization = organizationList.get(position);
         OrganizationViewHolder organizationViewHolder = (OrganizationViewHolder) holder;
 

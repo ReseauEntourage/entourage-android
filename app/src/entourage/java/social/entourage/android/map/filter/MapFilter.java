@@ -64,7 +64,7 @@ public class MapFilter implements MapFilterInterface, Serializable {
 
     @Override
     public String getTypes() {
-        StringBuilder entourageTypes = new StringBuilder("");
+        StringBuilder entourageTypes = new StringBuilder();
 
         if (tourTypeMedical) {
             entourageTypes.append(TourType.MEDICAL.getKey());
@@ -161,10 +161,8 @@ public class MapFilter implements MapFilterInterface, Serializable {
             }
             if (allKeysFalse) {
                 //set all keys to true
-                Iterator<EntourageCategory> iteratorAdd = categoryList.iterator();
                 //search for the keys
-                while (iteratorAdd.hasNext()) {
-                    EntourageCategory category = iteratorAdd.next();
+                for (EntourageCategory category : categoryList) {
                     entourageCategories.add(category.getKey());
                 }
             }

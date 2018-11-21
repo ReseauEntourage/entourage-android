@@ -8,9 +8,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.DrawableUtils;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import social.entourage.android.R;
@@ -23,13 +21,15 @@ import social.entourage.android.R;
  */
 public abstract class BaseBottomNavigationDataSource {
 
-    ArrayList<NavigationItem> navigationItems = new ArrayList();
+    ArrayList<NavigationItem> navigationItems = new ArrayList<>();
     ArrayList<Fragment> navigationFragments = new ArrayList<>();
     ArrayList<String> navigationFragmentTags = new ArrayList<>();
 
     protected int defaultSelectedTab = 0;
     protected int feedTabIndex = 0;
     protected int myMessagesTabIndex = 1;
+    //unused tabs
+    protected int guideTabIndex = -1;
 
     public BaseBottomNavigationDataSource() {
 
@@ -72,6 +72,10 @@ public abstract class BaseBottomNavigationDataSource {
 
     public int getMyMessagesTabIndex() {
         return myMessagesTabIndex;
+    }
+
+    public int getGuideTabIndex() {
+        return guideTabIndex;
     }
 
     public static class NavigationItem {

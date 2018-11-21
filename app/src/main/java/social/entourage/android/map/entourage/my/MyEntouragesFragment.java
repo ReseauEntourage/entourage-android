@@ -2,17 +2,15 @@ package social.entourage.android.map.entourage.my;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +57,6 @@ import social.entourage.android.base.EntourageViewHolderListener;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
-import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 
@@ -160,7 +157,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
@@ -171,7 +168,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         initializeView();
@@ -641,7 +638,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     private class OnScrollListener extends RecyclerView.OnScrollListener {
         @Override
-        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
 
             scrollDeltaY += dy;
             if (dy > 0 && scrollDeltaY > MAX_SCROLL_DELTA_Y) {
@@ -655,7 +652,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             }
         }
         @Override
-        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
         }
     }
 

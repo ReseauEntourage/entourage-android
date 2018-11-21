@@ -1,6 +1,7 @@
 package social.entourage.android.guide;
 
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -74,14 +75,14 @@ public class GuideMapPresenter {
             Call<MapResponse> call = mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance, filter.getRequestedCategories());
             call.enqueue(new Callback<MapResponse>() {
                 @Override
-                public void onResponse(Call<MapResponse> call, Response<MapResponse> response) {
+                public void onResponse(@NonNull Call<MapResponse> call, @NonNull Response<MapResponse> response) {
                     if (response.isSuccessful()) {
                         fragment.putPoiOnMap(response.body().getCategories(), response.body().getPois());
                     }
                 }
 
                 @Override
-                public void onFailure(Call<MapResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<MapResponse> call, @NonNull Throwable t) {
                     Log.d("GuideMapEntourageFrag", "Impossible to retrieve POIs", t);
                 }
             });

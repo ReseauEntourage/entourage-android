@@ -3,6 +3,7 @@ package social.entourage.android;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
@@ -24,8 +25,6 @@ import social.entourage.android.authentication.ComplexPreferences;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.newsfeed.FeedItemsStorage;
-
-import static social.entourage.android.BuildConfig.FLAVOR;
 
 /**
  * Application setup for Analytics, JodaTime and Dagger
@@ -63,7 +62,7 @@ public class EntourageApplication extends MultiDexApplication {
     static public String ENTOURAGE_APP="entourage";
     static public String PFP_APP="pfp";
 
-    public enum WhiteLabelApp {ENTOURAGE_APP, PFP_APP};
+    public enum WhiteLabelApp {ENTOURAGE_APP, PFP_APP}
 
     // ----------------------------------
     // LIFECYCLE
@@ -120,8 +119,8 @@ public class EntourageApplication extends MultiDexApplication {
         return sharedPreferences;
     }
 
-    public static EntourageApplication get(Context context) {
-        return (EntourageApplication) context.getApplicationContext();
+    public static EntourageApplication get(@Nullable Context context) {
+        return context!=null? (EntourageApplication) context.getApplicationContext() : EntourageApplication.get();
     }
 
     public static User me() {

@@ -1,5 +1,6 @@
 package social.entourage.android.map;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -158,7 +159,7 @@ public class MapPresenter {
         Call<Invitation.InvitationsWrapper> call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING);
         call.enqueue(new Callback<Invitation.InvitationsWrapper>() {
             @Override
-            public void onResponse(final Call<Invitation.InvitationsWrapper> call, final Response<Invitation.InvitationsWrapper> response) {
+            public void onResponse(@NonNull final Call<Invitation.InvitationsWrapper> call, @NonNull final Response<Invitation.InvitationsWrapper> response) {
                 if (response.isSuccessful()) {
                     fragment.onInvitationsReceived(response.body().getInvitations());
                 } else {
@@ -167,7 +168,7 @@ public class MapPresenter {
             }
 
             @Override
-            public void onFailure(final Call<Invitation.InvitationsWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Invitation.InvitationsWrapper> call, @NonNull final Throwable t) {
                 fragment.onInvitationsReceived(null);
             }
         });
@@ -177,11 +178,11 @@ public class MapPresenter {
         Call<Invitation.InvitationWrapper> call = invitationRequest.acceptInvitation(invitationId);
         call.enqueue(new Callback<Invitation.InvitationWrapper>() {
             @Override
-            public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
+            public void onResponse(@NonNull final Call<Invitation.InvitationWrapper> call, @NonNull final Response<Invitation.InvitationWrapper> response) {
             }
 
             @Override
-            public void onFailure(final Call<Invitation.InvitationWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Invitation.InvitationWrapper> call, @NonNull final Throwable t) {
             }
         });
     }

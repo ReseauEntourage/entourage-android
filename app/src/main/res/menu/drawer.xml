@@ -13,9 +13,6 @@
             android:icon="@drawable/ic_map"
             android:checked="true"
             android:visible="false"/>
-        <item android:id="@+id/action_guide"
-              android:title="@string/action_guide"
-              android:icon="@drawable/ic_guide"/>
         <item android:id="@+id/action_settings"
               android:title="@string/action_settings"
               android:icon="@drawable/ic_settings" />

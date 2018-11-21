@@ -79,7 +79,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_6);
@@ -111,7 +111,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onSaveInstanceState(final Bundle outState) {
+    public void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save the photo path
         outState.putString(KEY_PHOTO_PATH, mCurrentPhotoPath);

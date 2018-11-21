@@ -1,5 +1,7 @@
 package social.entourage.android.map.tour.my;
 
+import android.support.annotation.NonNull;
+
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -39,7 +41,7 @@ public class MyToursPresenter {
         Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(page, per, "", "", status, true, false, true);
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
-            public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
+            public void onResponse(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Response<Newsfeed.NewsfeedWrapper> response) {
                 if (response.isSuccessful()) {
                     fragment.onNewsfeedReceived(response.body().getNewsfeed(), status);
                 }
@@ -49,7 +51,7 @@ public class MyToursPresenter {
             }
 
             @Override
-            public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Throwable t) {
                 fragment.onNewsfeedReceived(null, status);
             }
         });

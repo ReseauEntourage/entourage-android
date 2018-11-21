@@ -1,5 +1,7 @@
 package social.entourage.android.map.tour.information;
 
+import android.support.annotation.NonNull;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -64,7 +66,7 @@ public class TourInformationPresenter {
             Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(feedItemUUID);
             call.enqueue(new Callback<Tour.TourWrapper>() {
                 @Override
-                public void onResponse(final Call<Tour.TourWrapper> call, final Response<Tour.TourWrapper> response) {
+                public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemReceived(response.body().getTour());
                     } else {
@@ -73,7 +75,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<Tour.TourWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemReceived(null);
                 }
             });
@@ -82,7 +84,7 @@ public class TourInformationPresenter {
             Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(feedItemUUID, distance, feedRank);
             call.enqueue(new Callback<Entourage.EntourageWrapper>() {
                 @Override
-                public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
+                public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemReceived(response.body().getEntourage());
                     } else {
@@ -91,7 +93,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemReceived(null);
                 }
             });
@@ -110,7 +112,7 @@ public class TourInformationPresenter {
             Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL);
             call.enqueue(new Callback<Entourage.EntourageWrapper>() {
                 @Override
-                public void onResponse(final Call<Entourage.EntourageWrapper> call, final Response<Entourage.EntourageWrapper> response) {
+                public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemReceived(response.body().getEntourage());
                     } else {
@@ -119,7 +121,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<Entourage.EntourageWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemReceived(null);
                 }
             });
@@ -148,7 +150,7 @@ public class TourInformationPresenter {
             Call<TourUser.TourUsersWrapper> call = tourRequest.retrieveTourUsers(fragment.feedItem.getUUID());
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
-                public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
+                public void onResponse(@NonNull final Call<TourUser.TourUsersWrapper> call, @NonNull final Response<TourUser.TourUsersWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemUsersReceived(response.body().getUsers(), context);
                     } else {
@@ -157,7 +159,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<TourUser.TourUsersWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<TourUser.TourUsersWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemUsersReceived(null, context);
                 }
             });
@@ -166,7 +168,7 @@ public class TourInformationPresenter {
             Call<TourUser.TourUsersWrapper> call = entourageRequest.retrieveEntourageUsers(fragment.feedItem.getUUID(), context);
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
-                public void onResponse(final Call<TourUser.TourUsersWrapper> call, final Response<TourUser.TourUsersWrapper> response) {
+                public void onResponse(@NonNull final Call<TourUser.TourUsersWrapper> call, @NonNull final Response<TourUser.TourUsersWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemUsersReceived(response.body().getUsers(), context);
                     } else {
@@ -175,7 +177,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<TourUser.TourUsersWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<TourUser.TourUsersWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemUsersReceived(null, context);
                 }
             });
@@ -200,7 +202,7 @@ public class TourInformationPresenter {
             Call<ChatMessage.ChatMessagesWrapper> call = tourRequest.retrieveTourMessages(fragment.feedItem.getUUID(), lastMessageDate);
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
-                public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
+                public void onResponse(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Response<ChatMessage.ChatMessagesWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemMessagesReceived(response.body().getChatMessages());
                     } else {
@@ -209,7 +211,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<ChatMessage.ChatMessagesWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemMessagesReceived(null);
                 }
             });
@@ -218,7 +220,7 @@ public class TourInformationPresenter {
             Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveEntourageMessages(fragment.feedItem.getUUID(), lastMessageDate);
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
-                public void onResponse(final Call<ChatMessage.ChatMessagesWrapper> call, final Response<ChatMessage.ChatMessagesWrapper> response) {
+                public void onResponse(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Response<ChatMessage.ChatMessagesWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemMessagesReceived(response.body().getChatMessages());
                     } else {
@@ -227,7 +229,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<ChatMessage.ChatMessagesWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemMessagesReceived(null);
                 }
             });
@@ -253,7 +255,7 @@ public class TourInformationPresenter {
             Call<ChatMessage.ChatMessageWrapper> call = tourRequest.chatMessage(fragment.feedItem.getUUID(), chatMessageWrapper);
             call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
                 @Override
-                public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
+                public void onResponse(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Response<ChatMessage.ChatMessageWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemMessageSent(response.body().getChatMessage());
                     } else {
@@ -262,7 +264,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemMessageSent(null);
                 }
             });
@@ -271,7 +273,7 @@ public class TourInformationPresenter {
             Call<ChatMessage.ChatMessageWrapper> call = entourageRequest.chatMessage(fragment.feedItem.getUUID(), chatMessageWrapper);
             call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
                 @Override
-                public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
+                public void onResponse(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Response<ChatMessage.ChatMessageWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemMessageSent(response.body().getChatMessage());
                     } else {
@@ -280,7 +282,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemMessageSent(null);
                 }
             });
@@ -301,7 +303,7 @@ public class TourInformationPresenter {
             Call<Encounter.EncountersWrapper> call = tourRequest.retrieveTourEncounters(fragment.feedItem.getUUID());
             call.enqueue(new Callback<Encounter.EncountersWrapper>() {
                 @Override
-                public void onResponse(final Call<Encounter.EncountersWrapper> call, final Response<Encounter.EncountersWrapper> response) {
+                public void onResponse(@NonNull final Call<Encounter.EncountersWrapper> call, @NonNull final Response<Encounter.EncountersWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemEncountersReceived(response.body().getEncounters());
                     } else {
@@ -310,7 +312,7 @@ public class TourInformationPresenter {
                 }
 
                 @Override
-                public void onFailure(final Call<Encounter.EncountersWrapper> call, final Throwable t) {
+                public void onFailure(@NonNull final Call<Encounter.EncountersWrapper> call, @NonNull final Throwable t) {
                     fragment.onFeedItemEncountersReceived(null);
                 }
             });
@@ -369,7 +371,7 @@ public class TourInformationPresenter {
         Call<ResponseBody> call = tourRequest.updateUserTourStatus(tourUUID, userId, user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NONE);
@@ -381,7 +383,7 @@ public class TourInformationPresenter {
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NETWORK);
                 }
@@ -393,7 +395,7 @@ public class TourInformationPresenter {
         Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourUUID, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
-            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+            public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NONE);
@@ -404,7 +406,7 @@ public class TourInformationPresenter {
             }
 
             @Override
-            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NETWORK);
                 }
@@ -420,7 +422,7 @@ public class TourInformationPresenter {
         Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourageUUID, userId, user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NONE);
@@ -432,7 +434,7 @@ public class TourInformationPresenter {
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NETWORK);
                 }
@@ -444,7 +446,7 @@ public class TourInformationPresenter {
         Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageUUID, userId);
         call.enqueue(new Callback<TourUser.TourUserWrapper>() {
             @Override
-            public void onResponse(final Call<TourUser.TourUserWrapper> call, final Response<TourUser.TourUserWrapper> response) {
+            public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
                         fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NONE);
@@ -455,7 +457,7 @@ public class TourInformationPresenter {
             }
 
             @Override
-            public void onFailure(final Call<TourUser.TourUserWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NETWORK);
                 }
@@ -471,7 +473,7 @@ public class TourInformationPresenter {
         Call<Invitation.InvitationWrapper> call = invitationRequest.acceptInvitation(invitationId);
         call.enqueue(new Callback<Invitation.InvitationWrapper>() {
             @Override
-            public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
+            public void onResponse(@NonNull final Call<Invitation.InvitationWrapper> call, @NonNull final Response<Invitation.InvitationWrapper> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
                         fragment.onInvitationStatusUpdated(true, Invitation.STATUS_ACCEPTED);
@@ -482,7 +484,7 @@ public class TourInformationPresenter {
             }
 
             @Override
-            public void onFailure(final Call<Invitation.InvitationWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Invitation.InvitationWrapper> call, @NonNull final Throwable t) {
                 fragment.onInvitationStatusUpdated(false, Invitation.STATUS_ACCEPTED);
             }
         });
@@ -492,7 +494,7 @@ public class TourInformationPresenter {
         Call<Invitation.InvitationWrapper> call = invitationRequest.refuseInvitation(invitationId);
         call.enqueue(new Callback<Invitation.InvitationWrapper>() {
             @Override
-            public void onResponse(final Call<Invitation.InvitationWrapper> call, final Response<Invitation.InvitationWrapper> response) {
+            public void onResponse(@NonNull final Call<Invitation.InvitationWrapper> call, @NonNull final Response<Invitation.InvitationWrapper> response) {
                 if (fragment != null) {
                     if (response.isSuccessful()) {
                         fragment.onInvitationStatusUpdated(true, Invitation.STATUS_REJECTED);
@@ -503,7 +505,7 @@ public class TourInformationPresenter {
             }
 
             @Override
-            public void onFailure(final Call<Invitation.InvitationWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Invitation.InvitationWrapper> call, @NonNull final Throwable t) {
                 fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED);
             }
         });

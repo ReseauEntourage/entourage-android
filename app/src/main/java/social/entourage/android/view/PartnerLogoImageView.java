@@ -33,11 +33,7 @@ public class PartnerLogoImageView extends android.support.v7.widget.AppCompatIma
         if (drawable == null) {
             setBackgroundResource(R.color.partner_logo_transparent);
         } else {
-            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.bg_partner_logo));
-            } else {
-                setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_partner_logo));
-            }
+            setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_partner_logo));
         }
     }
 }

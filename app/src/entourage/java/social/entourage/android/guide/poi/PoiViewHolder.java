@@ -10,8 +10,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.api.model.map.TourPoint;
-import social.entourage.android.api.model.tape.EntourageEvents;
-import social.entourage.android.api.tape.Events;
+import social.entourage.android.api.model.tape.EntouragePoiRequest;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.guide.PoiRenderer;
 import social.entourage.android.tools.BusProvider;
@@ -48,7 +47,7 @@ public class PoiViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (poi == null) return;
-                BusProvider.getInstance().post(new EntourageEvents.OnPoiViewRequestedEvent(poi));
+                BusProvider.getInstance().post(new EntouragePoiRequest.OnPoiViewRequestedEvent(poi));
             }
         });
 

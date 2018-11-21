@@ -2,16 +2,13 @@ package social.entourage.android.authentication.login.register;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.lang.reflect.Constructor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +16,6 @@ import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageEvents;
-import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntourageLinkMovementMethod;
@@ -58,7 +54,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -71,7 +67,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initialiseView();

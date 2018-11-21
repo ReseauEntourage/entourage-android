@@ -3,9 +3,8 @@ package social.entourage.android;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AlertDialog;
@@ -23,13 +22,10 @@ import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
-import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.involvement.GetInvolvedFragment;
-import social.entourage.android.map.MapEntourageFragment;
-import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.user.UserFragment;
@@ -86,10 +82,6 @@ public abstract class DrawerBasePresenter {
         switch (menuId) {
             case R.id.action_tours:
                 activity.loadFragmentWithExtras();
-                break;
-            case R.id.action_guide:
-                displaySolidarityGuide();
-                EntourageEvents.logEvent(Constants.EVENT_OPEN_GUIDE_FROM_SIDEMENU);
                 break;
             case R.id.action_user:
                 EntourageEvents.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
@@ -219,10 +211,6 @@ public abstract class DrawerBasePresenter {
 
     }
 
-    protected void displaySolidarityGuide() {
-        // does nothing
-    }
-
     protected void proposePOI() {
         // does nothing
     }
@@ -259,7 +247,7 @@ public abstract class DrawerBasePresenter {
             Call<ResponseBody> call = appRequest.checkForUpdate();
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                     if (response.code() == 426) {
                         if (!BuildConfig.DEBUG) {
                             displayAppUpdateDialog();
@@ -268,7 +256,7 @@ public abstract class DrawerBasePresenter {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                     Log.e("CheckForUpdate", "Error connecting to API");
                 }
             });
@@ -302,7 +290,7 @@ public abstract class DrawerBasePresenter {
                 Call<UserResponse> call = userRequest.updateUser(user);
                 call.enqueue(new Callback<UserResponse>() {
                     @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                         if (response.isSuccessful()) {
                             if (activity.authenticationController.isAuthenticated()) {
                                 activity.authenticationController.saveUser(response.body().getUser());
@@ -312,7 +300,7 @@ public abstract class DrawerBasePresenter {
                     }
 
                     @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                         Log.d(LOG_TAG, t.getLocalizedMessage());
                     }
                 });
@@ -331,7 +319,7 @@ public abstract class DrawerBasePresenter {
             Call<UserResponse> call = userRequest.updateUser(request);
             call.enqueue(new Callback<UserResponse>() {
                 @Override
-                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                     activity.dismissProgressDialog();
                     if (response.isSuccessful()) {
                         if (activity.authenticationController.isAuthenticated()) {
@@ -358,7 +346,7 @@ public abstract class DrawerBasePresenter {
                 }
 
                 @Override
-                public void onFailure(Call<UserResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                     activity.dismissProgressDialog();
                     Log.d(LOG_TAG, t.getLocalizedMessage());
                     Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
@@ -381,7 +369,7 @@ public abstract class DrawerBasePresenter {
         Call<ResponseBody> call = appRequest.updateApplicationInfo(applicationWrapper);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(final Call<ResponseBody> call, final Response<ResponseBody> response) {
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Log.d(LOG_TAG, "updating application info with success");
                 }
@@ -391,7 +379,7 @@ public abstract class DrawerBasePresenter {
             }
 
             @Override
-            public void onFailure(final Call<ResponseBody> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
                 Log.d(LOG_TAG, t.getLocalizedMessage());
             }
         });

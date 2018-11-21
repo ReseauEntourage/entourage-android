@@ -2,8 +2,6 @@ package social.entourage.android.map.confirmation;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,17 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.DrawerActivity;
-import social.entourage.android.EntourageComponent;
-import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.base.EntourageDialogFragment;
 
 @SuppressWarnings("WeakerAccess")
