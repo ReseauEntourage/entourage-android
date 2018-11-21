@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -1095,11 +1094,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } else {
-                            gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        }
+                        gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                         int h = gpsLayout.getHeight();
 
@@ -1116,11 +1111,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } else {
-                            gpsLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        }
+                        gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                         int h = gpsLayout.getHeight();
 

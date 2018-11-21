@@ -2,6 +2,7 @@ package social.entourage.android.user;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -50,7 +51,7 @@ public class PFPUserProfileAssociationsView extends RelativeLayout implements Us
         init(attrs, defStyleAttr);
     }
 
-    @TargetApi(21)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public PFPUserProfileAssociationsView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs, defStyleAttr);

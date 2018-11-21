@@ -192,11 +192,8 @@ public class LocationFragment extends EntourageDialogFragment {
         toReturn.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    toReturn.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    toReturn.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
+                toReturn.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
                 int h = toReturn.getHeight();
                 if (getDialog() != null) {
                     Window window = getDialog().getWindow();

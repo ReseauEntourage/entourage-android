@@ -61,11 +61,7 @@ public class RoleView extends AppCompatTextView {
         background.setCornerRadius(backgroundCornerRadius);
         setPadding((int)backgroundCornerRadius, (int)getResources().getDimension(R.dimen.role_padding_top), (int)backgroundCornerRadius, (int)getResources().getDimension(R.dimen.role_padding_bottom));
 
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            setBackgroundDrawable(background);
-        } else {
-            setBackground(background);
-        }
+        setBackground(background);
     }
 
 }

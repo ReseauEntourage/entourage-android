@@ -2,7 +2,6 @@ package social.entourage.android.map.choice;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -117,13 +116,8 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
         recyclerView.setAdapter(new ChoiceAdapter(this, tours));
         recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            @TargetApi(16)
             public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    recyclerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
+                recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 if (recyclerView.getChildCount() > 0) {
                     final View lastCell = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
                     if (lastCell.getBottom() < recyclerView.getHeight()) {
