@@ -502,7 +502,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             onSwitchSections();
             return;
         }
-        this.dismiss();
+        this.dismissAllowingStateLoss();
     }
 
     @Optional

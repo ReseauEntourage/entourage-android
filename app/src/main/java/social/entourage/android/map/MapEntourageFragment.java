@@ -1511,18 +1511,16 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             @Override
             public void onMenuToggle(final boolean opened) {
                 if (opened) {
-                    if (getActivity() != null) {
-                        if (getActivity() instanceof DrawerActivity) {
-                            DrawerActivity activity = (DrawerActivity) getActivity();
-                            if (activity.isGuideShown()) {
-                                EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
-                            } else if (tourService.isRunning()) {
-                                EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_PLUS_CLICK);
-                            } else  if (isToursListVisible()) {
-                                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PLUS_CLICK);
-                            } else {
-                                EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_PLUS_CLICK);
-                            }
+                    if ((getActivity() != null) &&(getActivity() instanceof DrawerActivity)) {
+                        DrawerActivity activity = (DrawerActivity) getActivity();
+                        if (activity.isGuideShown()) {
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
+                        } else if (tourService!=null && tourService.isRunning()) {
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_PLUS_CLICK);
+                        } else  if (isToursListVisible()) {
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PLUS_CLICK);
+                        } else {
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_PLUS_CLICK);
                         }
                     }
                 }
