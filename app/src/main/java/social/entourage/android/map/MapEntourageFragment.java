@@ -421,12 +421,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         BusProvider.getInstance().unregister(this);
         if (isBound && tourService != null) {
             tourService.unregisterTourServiceListener(MapEntourageFragment.this);
             doUnbindService();
         }
+        super.onDestroy();
     }
 
     @Override
