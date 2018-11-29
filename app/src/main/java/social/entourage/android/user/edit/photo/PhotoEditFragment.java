@@ -3,6 +3,7 @@ package social.entourage.android.user.edit.photo;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -120,7 +121,8 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
             progressBar.setVisibility(View.VISIBLE);
             cropImageView.setImageUriAsync(photoUri);
         }
-        cropImageView.setCropShape(CropImageView.CropShape.OVAL);
+        //TODO use new lib com.theartofdev.edmodo:android-image-cropper 2.8 when migrating to AndroidX but meanwhile use this trick to avoid a crash
+        cropImageView.setCropShape(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? CropImageView.CropShape.RECTANGLE : CropImageView.CropShape.OVAL);
         cropImageView.setAspectRatio(1, 1);
     }
 
