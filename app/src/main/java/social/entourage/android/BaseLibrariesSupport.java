@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
@@ -47,7 +48,12 @@ public abstract class BaseLibrariesSupport {
     // ----------------------------------
 
     private void setupFabric(Context context) {
-        Fabric.with(context, new Crashlytics());
+        // Set up Crashlytics, disabled for debug builds
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
+
+        Fabric.with(context, crashlyticsKit);
         Fabric.with(context, new Answers());
     }
 

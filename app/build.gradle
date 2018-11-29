@@ -127,6 +127,8 @@ android {
         debug {
             signingConfig signingConfigs.debug
             applicationIdSuffix '.debug'
+            ext.alwaysUpdateBuildId = false
+            ext.enableCrashlytics = false
         }
     }
 
