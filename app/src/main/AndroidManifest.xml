@@ -225,6 +225,10 @@
         <meta-data android:name="com.mixpanel.android.MPConfig.MinimumSessionDuration"
                    android:value="0" />
 
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
     </application>
 
 </manifest>
