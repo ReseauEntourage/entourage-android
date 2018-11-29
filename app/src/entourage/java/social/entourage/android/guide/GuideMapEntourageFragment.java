@@ -337,6 +337,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             public void onMenuToggle(final boolean opened) {
                 if (opened) {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
+                    proposePOI();
                 }
             }
         });
