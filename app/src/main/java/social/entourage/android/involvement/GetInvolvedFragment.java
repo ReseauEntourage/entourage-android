@@ -88,7 +88,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.get_involved_rate_us_layout)
     protected void onRateUsClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_ABOUT_RATING);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_RATING);
 
         Uri uri = Uri.parse(getString(R.string.rate_url) + this.getActivity().getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -107,7 +107,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.get_involved_facebook_layout)
     protected void onFacebookClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_ABOUT_FACEBOOK);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_FACEBOOK);
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.facebook_url)));
         try {

@@ -85,11 +85,11 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         if (content != null) {
                             requestsCount++;
                             if (content.isTourRelated()) {
-                                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
+                                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT);
                                 presenter.acceptTourJoinRequest(content.getJoinableUUID(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
-                                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
+                                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT);
                                 presenter.acceptEntourageJoinRequest(content.getJoinableUUID(), content.getUserId());
                             }
                             else {
@@ -105,11 +105,11 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
                         if (content != null) {
                             requestsCount++;
                             if (content.isTourRelated()) {
-                                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
+                                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT);
                                 presenter.rejectJoinTourRequest(content.getJoinableUUID(), content.getUserId());
                             }
                             else if (content.isEntourageRelated()) {
-                                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
+                                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT);
                                 presenter.rejectJoinEntourageRequest(content.getJoinableUUID(), content.getUserId());
                             }
                             else {

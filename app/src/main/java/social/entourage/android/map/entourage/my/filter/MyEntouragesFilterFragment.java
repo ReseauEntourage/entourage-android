@@ -95,7 +95,7 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.title_close_button)
     void onBackClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_EXIT);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_EXIT);
         dismiss();
     }
 
@@ -118,7 +118,7 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         // inform the app to refrehs the my entourages feed
         BusProvider.getInstance().post(new Events.OnMyEntouragesFilterChanged());
 
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_SAVE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_SAVE);
 
         // dismiss the dialog
         dismiss();
@@ -126,27 +126,27 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.myentourages_filter_unread_switch)
     protected void onOrganizerSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_UNREAD);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_UNREAD);
     }
 
     @OnClick(R.id.myentourages_filter_closed_switch)
     protected void onClosedSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_PAST);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_PAST);
     }
 
     @OnClick(R.id.myentourages_filter_demand_switch)
     protected void onDemandSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_ASK);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_ASK);
     }
 
     @OnClick(R.id.myentourages_filter_contribution_switch)
     protected void onContributionSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_OFFER);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_OFFER);
     }
 
     @OnClick(R.id.myentourages_filter_tours_switch)
     protected void onToursSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_TOUR);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_TOUR);
     }
 
     // ----------------------------------

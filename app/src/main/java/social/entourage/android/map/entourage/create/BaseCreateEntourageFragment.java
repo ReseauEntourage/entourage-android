@@ -252,7 +252,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @OnClick(R.id.create_entourage_position_layout)
     protected void onPositionClicked() {
         if (getFragmentManager() == null) return;
-        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
         LocationFragment fragment = LocationFragment.newInstance(
                 location,
                 positionTextView.getText().toString(),
@@ -320,7 +320,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message));
         try {
-            EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_SPEECH);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_SPEECH);
             startActivityForResult(intent, callbackCode);
         } catch (ActivityNotFoundException e) {
             return false;

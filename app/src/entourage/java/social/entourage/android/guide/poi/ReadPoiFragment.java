@@ -88,7 +88,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View toReturn = inflater.inflate(R.layout.fragment_guide_poi_read, container, false);
         ButterKnife.bind(this, toReturn);
-        EntourageEvents.logEvent(Constants.EVENT_OPEN_POI_FROM_MAP);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_POI_FROM_MAP);
 
         return toReturn;
     }

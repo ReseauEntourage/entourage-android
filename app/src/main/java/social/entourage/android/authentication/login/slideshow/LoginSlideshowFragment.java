@@ -85,7 +85,7 @@ public class LoginSlideshowFragment extends Fragment {
 
             @Override
             public void onPageSelected(final int position) {
-                EntourageEvents.logEvent(Constants.EVENT_LOGIN_SLIDESHOW);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_LOGIN_SLIDESHOW);
                 selectDot(position);
             }
 

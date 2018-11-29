@@ -99,7 +99,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_9);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_9);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_edit, container, false);
         ButterKnife.bind(this, view);
@@ -153,7 +153,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
     @OnClick({R.id.photo_edit_rotate_button})
     protected void onRotateClicked() {
         cropImageView.rotateImage(ROTATE_DEGREES_STEP);
-        EntourageEvents.logEvent(Constants.EVENT_USER_ROTATE_PHOTO);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_ROTATE_PHOTO);
     }
 
     // ----------------------------------

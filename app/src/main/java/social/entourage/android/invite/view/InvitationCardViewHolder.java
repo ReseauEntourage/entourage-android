@@ -36,7 +36,7 @@ public class InvitationCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (entourageUUID == null || entourageUUID.length() == 0 || invitationId == 0) return;
-                EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_BANNER_CLICK);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_BANNER_CLICK);
                 BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, entourageUUID, invitationId));
             }
         });

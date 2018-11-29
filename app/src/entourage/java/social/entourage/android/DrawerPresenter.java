@@ -35,7 +35,7 @@ public class DrawerPresenter extends DrawerBasePresenter {
         if (activity == null) return;
         switch (menuId) {
             case R.id.action_ambassador:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_AMBASSADOR);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_AMBASSADOR);
                 Intent ambassadorIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.AMBASSADOR_ID)));
                 try {
                     activity.startActivity(ambassadorIntent);

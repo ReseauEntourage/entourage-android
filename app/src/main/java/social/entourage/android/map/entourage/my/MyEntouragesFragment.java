@@ -228,7 +228,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                         break;
                     case FILTER_TAB_INDEX_UNREAD:
                         filter.setShowUnreadOnly(true);
-                        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_UNREAD);
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_UNREAD);
                         refreshMyFeeds();
                         break;
                 }
@@ -270,7 +270,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             @Override
             public void onMenuToggle(final boolean opened) {
                 if (opened) {
-                    EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_PLUS_CLICK);
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_PLUS_CLICK);
                 }
             }
         });
@@ -323,7 +323,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     /* Removed in 5.0
     @OnClick(R.id.myentourages_filter_button)
     void onFilterClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_FILTER_CLICK);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_CLICK);
         MyEntouragesFilterFragment fragment = new MyEntouragesFilterFragment();
         fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
     }
@@ -629,7 +629,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     @Override
     public void onViewHolderDetailsClicked(final int detailType) {
-        EntourageEvents.logEvent(Constants.EVENT_MYENTOURAGES_MESSAGE_OPEN);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_MESSAGE_OPEN);
     }
 
     // ----------------------------------

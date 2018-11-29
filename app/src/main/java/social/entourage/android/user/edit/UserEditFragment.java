@@ -135,7 +135,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_user_edit, container, false);
         ButterKnife.bind(this, v);
-        EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_2);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_2);
         return v;
     }
 
@@ -301,7 +301,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @OnClick(R.id.title_action_button)
     protected void onSaveButtonClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_USER_SAVE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_SAVE);
         // If we have an user fragment in the stack, let it handle the update
         UserFragment fragment = (UserFragment)getFragmentManager().findFragmentByTag(UserFragment.TAG);
         if (fragment != null) {
@@ -320,7 +320,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @OnClick(R.id.user_add_association_button)
     public void onAddAssociationClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_USER_TOBADGE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_TOBADGE);
         UserEditPartnerFragment userEditPartnerFragment = new UserEditPartnerFragment();
         userEditPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);
     }
@@ -328,7 +328,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     @OnClick(R.id.user_notifications_layout)
     protected void onShowNotificationsSettingsClicked() {
         try {
-            EntourageEvents.logEvent(Constants.EVENT_USER_TONOTIFICATIONS);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_USER_TONOTIFICATIONS);
             Intent intent = new Intent();
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);

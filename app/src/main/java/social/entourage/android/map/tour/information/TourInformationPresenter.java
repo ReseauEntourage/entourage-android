@@ -245,7 +245,7 @@ public class TourInformationPresenter {
             fragment.onFeedItemMessageSent(null);
             return;
         }
-        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_VIEW_ADD_MESSAGE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ADD_MESSAGE);
         ChatMessage chatMessage = new ChatMessage(message);
         ChatMessage.ChatMessageWrapper chatMessageWrapper = new ChatMessage.ChatMessageWrapper();
         chatMessageWrapper.setChatMessage(chatMessage);

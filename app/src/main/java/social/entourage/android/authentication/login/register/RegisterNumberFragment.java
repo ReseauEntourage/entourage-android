@@ -61,7 +61,7 @@ public class RegisterNumberFragment extends EntourageDialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register_number, container, false);
         ButterKnife.bind(this, view);
-        EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_2);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_30_2);
 
         return view;
     }
