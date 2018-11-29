@@ -61,7 +61,7 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
 
         View toReturn = inflater.inflate(R.layout.fragment_user_edit_password, container, false);
         ButterKnife.bind(this, toReturn);
-        EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_4);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_4);
         configureView();
 
         return toReturn;
@@ -88,7 +88,7 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
     @OnClick(R.id.user_edit_password_save_button)
     protected void onSaveButton() {
         if (validatePassword()) {
-            EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_4_SUBMIT);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_4_SUBMIT);
             UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
             if (userEditFragment != null) {
                 userEditFragment.saveNewPassword(newPasswordEditText.getText().toString().trim());

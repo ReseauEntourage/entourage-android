@@ -84,7 +84,7 @@ public abstract class DrawerBasePresenter {
                 activity.loadFragmentWithExtras();
                 break;
             case R.id.action_user:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_TAP_MY_PROFILE);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_TAP_MY_PROFILE);
                 UserFragment userFragment = (UserFragment) activity.getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
                 if (userFragment == null) {
                     userFragment = UserFragment.newInstance(activity.getAuthenticationController().getUser().getId());
@@ -96,7 +96,7 @@ public abstract class DrawerBasePresenter {
                 fragment.show(activity.getSupportFragmentManager(), UserEditFragment.TAG);
                 break;
             case R.id.action_logout:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_LOGOUT);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_LOGOUT);
                 activity.logout();
                 break;
             case R.id.action_settings:
@@ -119,16 +119,16 @@ public abstract class DrawerBasePresenter {
                 }, 8*1000);
                 */
 
-                EntourageEvents.logEvent(Constants.EVENT_MENU_ABOUT);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_ABOUT);
                 AboutFragment aboutFragment = new AboutFragment();
                 aboutFragment.show(activity.getSupportFragmentManager(), AboutFragment.TAG);
                 break;
             case R.id.action_blog:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_BLOG);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_BLOG);
                 activity.showWebViewForLinkId(Constants.SCB_LINK_ID);
                 break;
             case R.id.action_charte:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_CHART);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_CHART);
                 Intent charteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.CHARTE_LINK_ID)));
                 try {
                     activity.startActivity(charteIntent);
@@ -137,11 +137,11 @@ public abstract class DrawerBasePresenter {
                 }
                 break;
             case R.id.action_goal:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_GOAL);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_GOAL);
                 activity.showWebViewForLinkId(Constants.GOAL_LINK_ID);
                 break;
             case R.id.action_atd:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_ATD);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_ATD);
                 Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.ATD_LINK_ID)));
                 try {
                     activity.startActivity(atdIntent);
@@ -150,7 +150,7 @@ public abstract class DrawerBasePresenter {
                 }
                 break;
             case R.id.action_donation:
-                EntourageEvents.logEvent(Constants.EVENT_MENU_DONATION);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_DONATION);
                 Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.DONATE_LINK_ID)));
                 try {
                     activity.startActivity(donationIntent);
@@ -224,7 +224,7 @@ public abstract class DrawerBasePresenter {
                 carouselFragment.show(fragmentManager, CarouselFragment.TAG);
             } catch (Exception e) {
                 // This is just to see if we still get the Illegal state exception
-                EntourageEvents.logEvent(Constants.EVENT_CAROUSEL_EXCEPTION);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_CAROUSEL_EXCEPTION);
             }
         }
     }

@@ -76,7 +76,7 @@ public abstract class BaseMapFilterFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.title_close_button)
     protected void onCloseClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_CLOSE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_CLOSE);
         dismiss();
     }
 
@@ -88,7 +88,7 @@ public abstract class BaseMapFilterFragment extends EntourageDialogFragment {
         // inform the map screen to refresh the newsfeed
         BusProvider.getInstance().post(new Events.OnMapFilterChanged());
 
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_SUBMIT);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_SUBMIT);
 
         // dismiss the dialog
         dismiss();

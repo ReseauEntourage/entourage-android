@@ -91,7 +91,7 @@ public class NoLocationPermissionFragment extends DialogFragment {
 
     @OnClick(R.id.no_location_activate_button)
     protected void onActivateButton() {
-        EntourageEvents.logEvent(Constants.EVENT_GEOLOCATION_ACTIVATE_04_4A);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_GEOLOCATION_ACTIVATE_04_4A);
         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         showingGeolocationSettings = true;
         enableGeolocation = true;

@@ -61,7 +61,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
         View view = inflater.inflate(R.layout.fragment_register_welcome, container, false);
         ButterKnife.bind(this, view);
 
-        EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_1);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_30_1);
 
         return view;
     }
@@ -107,7 +107,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.register_welcome_start_button)
     protected void onStartClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_WELCOME_CONTINUE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_WELCOME_CONTINUE);
         if (mListener.registerStart()) {
             RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
             registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);

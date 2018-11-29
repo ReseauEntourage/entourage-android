@@ -325,16 +325,17 @@ public class TourService extends Service {
     }
 
     public void pauseTreatment() {
-        if (isRunning()) {
-            if (!isPaused) {
-                Date duration = new Date(SystemClock.elapsedRealtime() - chronometer.getBase());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                tourServiceManager.setTourDuration(dateFormat.format(duration));
-                pauseNotification();
-                isPaused = true;
-            }
+        if (!isRunning() && isPaused)
+            return;
+
+        Date duration = new Date(SystemClock.elapsedRealtime() - chronometer.getBase());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        if(tourServiceManager != null) {
+            tourServiceManager.setTourDuration(dateFormat.format(duration));
         }
+        pauseNotification();
+        isPaused = true;
     }
 
     public void resumeTreatment() {

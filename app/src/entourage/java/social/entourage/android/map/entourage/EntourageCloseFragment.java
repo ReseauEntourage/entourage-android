@@ -104,7 +104,7 @@ public class EntourageCloseFragment extends DialogFragment {
 
     @OnClick({R.id.entourage_close_close_button, R.id.entourage_close_cancel_button})
     protected void onCloseClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL);
         dismiss();
     }
 
@@ -112,7 +112,7 @@ public class EntourageCloseFragment extends DialogFragment {
     protected void onSuccessClicked() {
         BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false, true));
         showEmail(R.string.entourage_close_email_title_success);
-        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS);
         dismiss();
     }
 
@@ -120,14 +120,14 @@ public class EntourageCloseFragment extends DialogFragment {
     protected void onFailedClicked() {
         BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false, false));
         showEmail(R.string.entourage_close_email_title_failed);
-        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE);
         dismiss();
     }
 
     @OnClick(R.id.entourage_close_help_button)
     protected void onHelpClicked() {
         showEmail(R.string.entourage_close_email_title_help);
-        EntourageEvents.logEvent(Constants.EVENT_ENTOURAGE_CLOSE_POPUP_HELP);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_HELP);
         dismiss();
     }
 

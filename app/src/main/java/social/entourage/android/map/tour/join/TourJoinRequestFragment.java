@@ -141,7 +141,7 @@ public class TourJoinRequestFragment extends DialogFragment {
             @Override
             public void afterTextChanged(final Editable s) {
                 if (s.length() > 0 && !startedTyping) {
-                    EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_START);
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_START);
                     startedTyping = true;
                 }
             }
@@ -152,7 +152,7 @@ public class TourJoinRequestFragment extends DialogFragment {
     protected void onMessageSend() {
         if (presenter != null && messageView != null) {
             if ( feedItem != null && (feedItem.getType() == FeedItem.TOUR_CARD || feedItem.getType() == FeedItem.ENTOURAGE_CARD) ) {
-                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_SUBMIT);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT);
                 presenter.sendMessage(messageView.getText().toString(), feedItem);
             }
             else {

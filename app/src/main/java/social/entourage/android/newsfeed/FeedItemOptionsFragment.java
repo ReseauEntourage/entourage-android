@@ -195,7 +195,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.feeditem_option_quit)
     protected void onQuitClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_FEED_QUIT_ENTOURAGE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_QUIT_ENTOURAGE);
         BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, feedItem));
         dismiss();
     }

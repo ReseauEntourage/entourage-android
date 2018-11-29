@@ -201,7 +201,7 @@ public abstract class BaseLoginPresenter {
                     }
                     else {
                         if (activity != null) activity.displayToast(R.string.login_text_profile_update_fail);
-                        EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
+                        EntourageEvents.logEvent(user.getEmail() == null ? EntourageEvents.EVENT_NAME_SUBMIT_ERROR : EntourageEvents.EVENT_EMAIL_SUBMIT_ERROR);
                     }
                 }
 
@@ -211,7 +211,7 @@ public abstract class BaseLoginPresenter {
                         activity.stopLoader();
                         activity.displayToast(R.string.login_text_profile_update_fail);
                     }
-                    EntourageEvents.logEvent(user.getEmail() == null ? Constants.EVENT_NAME_SUBMIT_ERROR : Constants.EVENT_EMAIL_SUBMIT_ERROR);
+                    EntourageEvents.logEvent(user.getEmail() == null ? EntourageEvents.EVENT_NAME_SUBMIT_ERROR : EntourageEvents.EVENT_EMAIL_SUBMIT_ERROR);
                 }
             });
         }
@@ -302,7 +302,7 @@ public abstract class BaseLoginPresenter {
                                 String errorString = response.errorBody().string();
                                 if (errorString.contains("PHONE_ALREADY_EXIST")) {
                                     // Phone number already registered
-                                    EntourageEvents.logEvent(Constants.EVENT_SCREEN_30_2_E);
+                                    EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_30_2_E);
                                     activity.registerPhoneNumberSent(phoneNumber, false);
                                     activity.displayToast(R.string.registration_number_error_already_registered);
                                 } else if (errorString.contains("INVALID_PHONE_FORMAT")) {
@@ -317,7 +317,7 @@ public abstract class BaseLoginPresenter {
                             activity.displayToast(R.string.login_error);
                         }
                         activity.registerPhoneNumberSent(phoneNumber, false);
-                        EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT_FAIL);
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_PHONE_SUBMIT_FAIL);
                     }
                 }
             }
@@ -327,7 +327,7 @@ public abstract class BaseLoginPresenter {
                 if (activity != null) {
                     activity.displayToast(R.string.login_error_network);
                     activity.registerPhoneNumberSent(phoneNumber, false);
-                    EntourageEvents.logEvent(Constants.EVENT_PHONE_SUBMIT_ERROR);
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_PHONE_SUBMIT_ERROR);
                 }
             }
         });

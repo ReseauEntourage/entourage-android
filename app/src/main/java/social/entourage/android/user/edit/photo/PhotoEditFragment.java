@@ -3,6 +3,7 @@ package social.entourage.android.user.edit.photo;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -99,7 +100,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_9);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_9);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_edit, container, false);
         ButterKnife.bind(this, view);
@@ -120,7 +121,8 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
             progressBar.setVisibility(View.VISIBLE);
             cropImageView.setImageUriAsync(photoUri);
         }
-        cropImageView.setCropShape(CropImageView.CropShape.OVAL);
+        //TODO use new lib com.theartofdev.edmodo:android-image-cropper 2.8 when migrating to AndroidX but meanwhile use this trick to avoid a crash
+        cropImageView.setCropShape(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? CropImageView.CropShape.RECTANGLE : CropImageView.CropShape.OVAL);
         cropImageView.setAspectRatio(1, 1);
     }
 
@@ -153,7 +155,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
     @OnClick({R.id.photo_edit_rotate_button})
     protected void onRotateClicked() {
         cropImageView.rotateImage(ROTATE_DEGREES_STEP);
-        EntourageEvents.logEvent(Constants.EVENT_USER_ROTATE_PHOTO);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_ROTATE_PHOTO);
     }
 
     // ----------------------------------

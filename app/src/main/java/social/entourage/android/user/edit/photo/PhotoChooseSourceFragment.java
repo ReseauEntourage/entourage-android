@@ -82,7 +82,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        EntourageEvents.logEvent(Constants.EVENT_SCREEN_09_6);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_6);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_choose_source, container, false);
         ButterKnife.bind(this, view);
@@ -256,7 +256,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     }
 
     private void showChoosePhotoActivity() {
-        EntourageEvents.logEvent(Constants.EVENT_PHOTO_UPLOAD_SUBMIT);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_UPLOAD_SUBMIT);
         if (Build.VERSION.SDK_INT <= 19) {
             // Start a separate activity, to handle the issue with onActivityResult
             Intent intent = new Intent(getContext(), ChoosePhotoActivity.class);
@@ -273,7 +273,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     }
 
     private void showTakePhotoActivity() {
-        EntourageEvents.logEvent(Constants.EVENT_PHOTO_TAKE_SUBMIT);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_TAKE_SUBMIT);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) == null) {

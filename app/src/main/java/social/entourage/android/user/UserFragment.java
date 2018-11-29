@@ -148,7 +148,7 @@ public class UserFragment extends EntourageDialogFragment {
             toReturn = inflater.inflate(R.layout.fragment_user, container, false);
         }
         ButterKnife.bind(this, toReturn);
-        EntourageEvents.logEvent(Constants.EVENT_PROFILE_FROM_MENU);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_PROFILE_FROM_MENU);
         return toReturn;
     }
 
@@ -198,7 +198,7 @@ public class UserFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     private void configureView() {
-        EntourageEvents.logEvent(isMyProfile ? Constants.EVENT_SCREEN_09_1_ME : Constants.EVENT_SCREEN_09_1_OTHER);
+        EntourageEvents.logEvent(isMyProfile ? EntourageEvents.EVENT_SCREEN_09_1_ME : EntourageEvents.EVENT_SCREEN_09_1_OTHER);
         if (getActivity() != null && !getActivity().isFinishing()) {
             Stats stats = user.getStats();
             int entourageCount = 0;
@@ -348,13 +348,13 @@ public class UserFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.user_profile_edit_button)
     protected void onEditButtonClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_USER_EDIT_PROFILE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_EDIT_PROFILE);
         showUserEditFragment();
     }
 
     @OnClick(R.id.user_photo)
     protected void onUserPhotoClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_USER_EDIT_PHOTO);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_EDIT_PHOTO);
         showUserEditFragment();
     }
 

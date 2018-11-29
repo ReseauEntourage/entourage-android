@@ -127,6 +127,8 @@ android {
         debug {
             signingConfig signingConfigs.debug
             applicationIdSuffix '.debug'
+            ext.alwaysUpdateBuildId = false
+            ext.enableCrashlytics = false
         }
     }
 
@@ -206,6 +208,7 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.1.0'
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'net.danlew:android.joda:2.10.1'
+    //TODO use new lib cropper 2.8.0 when migrating to AndroidX
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
     implementation 'me.leolin:ShortcutBadger:1.1.13@aar'
     implementation 'com.mixpanel.android:mixpanel-android:5.4.3'

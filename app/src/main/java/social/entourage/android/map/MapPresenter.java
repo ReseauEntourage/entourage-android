@@ -296,7 +296,7 @@ public class MapPresenter {
         public void onGroundOverlayClick(final GroundOverlay groundOverlay) {
             LatLng markerPosition = groundOverlay.getPosition();
             if (entourageMarkerHashMap.get(markerPosition) != null) {
-                EntourageEvents.logEvent(Constants.EVENT_FEED_HEATZONECLICK);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_HEATZONECLICK);
                 if (fragment != null) {
                     fragment.handleHeatzoneClick(markerPosition);
                 }

@@ -81,8 +81,8 @@ public class SideMenuFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         BusProvider.getInstance().unregister(this);
+        super.onDestroy();
     }
 
     @Override

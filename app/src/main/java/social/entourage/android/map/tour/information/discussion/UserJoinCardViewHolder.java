@@ -110,7 +110,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (userId == 0 || feedItem == null) return;
-                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_ACCEPT);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT);
                 BusProvider.getInstance().post(
                         new Events.OnUserJoinRequestUpdateEvent(
                                 userId,
@@ -124,7 +124,7 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (userId == 0 || feedItem == null) return;
-                EntourageEvents.logEvent(Constants.EVENT_JOIN_REQUEST_REJECT);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT);
                 BusProvider.getInstance().post(
                         new Events.OnUserJoinRequestUpdateEvent(
                                 userId,

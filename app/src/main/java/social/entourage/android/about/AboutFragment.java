@@ -94,7 +94,7 @@ public class AboutFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.about_conditions_layout)
     protected void onTermsClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_ABOUT_CGU);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_CGU);
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_url)));
         try {
@@ -107,7 +107,7 @@ public class AboutFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.about_website_layout)
     protected void onWebsiteClicked() {
-        EntourageEvents.logEvent(Constants.EVENT_ABOUT_WEBSITE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_WEBSITE);
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_url)));
         try {
@@ -135,7 +135,7 @@ public class AboutFragment extends EntourageDialogFragment {
     @OnClick(R.id.faq_website_layout)
     protected void onFAQClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            EntourageEvents.logEvent(Constants.EVENT_MENU_FAQ);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_FAQ);
             DrawerActivity drawerActivity = (DrawerActivity) getActivity();
             drawerActivity.showWebViewForLinkId(Constants.FAQ_LINK_ID);
         }
@@ -145,7 +145,7 @@ public class AboutFragment extends EntourageDialogFragment {
     @OnClick(R.id.about_tutorial_layout)
     protected void onTutorialClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            EntourageEvents.logEvent(Constants.EVENT_ABOUT_TUTORIAL);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_TUTORIAL);
             DrawerActivity drawerActivity = (DrawerActivity) getActivity();
             drawerActivity.showTutorial(true);
         }

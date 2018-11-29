@@ -59,7 +59,7 @@ public class ReadEncounterActivity extends EntourageActivity {
         setContentView(R.layout.activity_encounter_read);
         ButterKnife.bind(this);
 
-        EntourageEvents.logEvent(Constants.EVENT_OPEN_ENCOUNTER_FROM_MAP);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_ENCOUNTER_FROM_MAP);
         Bundle args = getIntent().getExtras();
         if (args != null) {
             encounter = (Encounter) args.get(BUNDLE_KEY_ENCOUNTER);

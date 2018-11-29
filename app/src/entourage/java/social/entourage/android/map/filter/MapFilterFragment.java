@@ -104,21 +104,21 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
     @OnClick(R.id.map_filter_tour_medical_switch)
     protected void onMedicalSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS);
         tourAllSwitch.setChecked(!allToursDisabled());
         tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
     }
 
     @OnClick(R.id.map_filter_tour_social_switch)
     protected void onSocialSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS);
         tourAllSwitch.setChecked(!allToursDisabled());
         tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
     }
 
     @OnClick(R.id.map_filter_tour_distributive_switch)
     protected void onDistributiveSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS);
         tourAllSwitch.setChecked(!allToursDisabled());
         tourDetailsLayout.setVisibility(allToursDisabled() ? View.GONE : View.VISIBLE);
     }
@@ -132,7 +132,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
     @OnClick(R.id.map_filter_entourage_demand_switch)
     protected void onDemandSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_ASK);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_ASK);
         boolean checked = entourageDemandSwitch.isChecked();
         entourageDemandDetailsLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
         List<Switch> switchList = actionSwitches.get(Entourage.TYPE_DEMAND);
@@ -143,7 +143,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
     @OnClick(R.id.map_filter_entourage_contribution_switch)
     protected void onContributionSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_OFFERS);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_OFFERS);
         boolean checked = entourageContributionSwitch.isChecked();
         entourageContributionDetailsLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
         List<Switch> switchList = actionSwitches.get(Entourage.TYPE_CONTRIBUTION);
@@ -154,27 +154,27 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
 //    @OnClick(R.id.map_filter_entourage_tours_switch)
 //    protected void onOnlyToursSwitch() {
-//        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_TOURS);
+//        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_TOURS);
 //    }
 
     @OnClick(R.id.map_filter_entourage_user_only_switch)
     protected void onOnlyMineSwitch() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ONLY_MINE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_MINE);
     }
 
     @OnClick(R.id.map_filter_time_days_1)
     protected void onDays1Click() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_FILTER1);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER1);
     }
 
     @OnClick(R.id.map_filter_time_days_2)
     protected void onDays2Click() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_FILTER2);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER2);
     }
 
     @OnClick(R.id.map_filter_time_days_3)
     protected void onDays3Click() {
-        EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_FILTER3);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER3);
     }
 
     // ----------------------------------
@@ -310,7 +310,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
             if (compoundButton.getTag() == null) {
                 return;
             }
-            EntourageEvents.logEvent(Constants.EVENT_MAP_FILTER_ACTION_CATEGORY);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ACTION_CATEGORY);
             // get the category
             String category = (String) compoundButton.getTag();
         }

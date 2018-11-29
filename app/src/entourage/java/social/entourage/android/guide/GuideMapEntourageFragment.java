@@ -67,7 +67,7 @@ import social.entourage.android.guide.poi.ReadPoiFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 
-import static social.entourage.android.Constants.EVENT_OPEN_GUIDE_FROM_TAB;
+import static social.entourage.android.EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB;
 
 public class GuideMapEntourageFragment extends Fragment implements BackPressable {
 
@@ -242,10 +242,10 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @OnClick(R.id.fragment_map_display_toggle)
     public void onDisplayToggle() {
         if (!isFullMapShown) {
-            EntourageEvents.logEvent(Constants.EVENT_GUIDE_MAP_VIEW);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_MAP_VIEW);
         }
         else {
-            EntourageEvents.logEvent(Constants.EVENT_GUIDE_LIST_VIEW);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_LIST_VIEW);
         }
         togglePOIList();
     }
@@ -271,7 +271,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     @Subscribe
     public void onPoiViewRequested(EntouragePoiRequest.OnPoiViewRequestedEvent event) {
         if (event == null || event.getPoi() == null) return;
-        EntourageEvents.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW);
         showPoiDetails(event.getPoi());
     }
 
@@ -336,7 +336,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             @Override
             public void onMenuToggle(final boolean opened) {
                 if (opened) {
-                    EntourageEvents.logEvent(Constants.EVENT_GUIDE_PLUS_CLICK);
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
+                    proposePOI();
                 }
             }
         });
@@ -382,7 +383,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                         @Override
                         public void onMapLongClick(final LatLng latLng) {
                             if (getActivity() != null) {
-                                EntourageEvents.logEvent(Constants.EVENT_GUIDE_LONGPRESS);
+                                EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_LONGPRESS);
                                 showLongClickOnMapOptions(latLng);
                             }
                         }
@@ -419,7 +420,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         onBackPressed();
         // Open the link to propose a POI
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            EntourageEvents.logEvent(Constants.EVENT_GUIDE_PROPOSE_POI);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI);
             ((DrawerActivity)getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
         }
     }
@@ -462,7 +463,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
 
                         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
@@ -717,7 +718,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     public class OnEntourageMarkerClickListener implements ClusterManager.OnClusterItemClickListener<Poi> {
         @Override
         public boolean onClusterItemClick(Poi poi) {
-            EntourageEvents.logEvent(Constants.EVENT_GUIDE_POI_VIEW);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW);
             saveCameraPosition();
             showPoiDetails(poi);
             return true;

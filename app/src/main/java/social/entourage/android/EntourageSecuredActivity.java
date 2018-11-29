@@ -44,7 +44,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
         if (application != null) {
             application.removeAllPushNotifications();
         }
-        //EntourageEvents.logEvent(Constants.EVENT_LOGOUT);
+        //EntourageEvents.logEvent(EntourageEvents.EVENT_LOGOUT);
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

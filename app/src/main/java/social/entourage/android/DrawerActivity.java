@@ -180,7 +180,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 //TODO Need to handle this event in the new menu fragment
-                EntourageEvents.logEvent(Constants.EVENT_FEED_MENU);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_MENU);
                 //drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -610,7 +610,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void userViewRequested(OnUserViewRequestedEvent event) {
-        EntourageEvents.logEvent(Constants.EVENT_FEED_USERPROFILE);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_USERPROFILE);
         UserFragment fragment = UserFragment.newInstance(event.getUserId());
         fragment.show(getSupportFragmentManager(), UserFragment.TAG);
     }
@@ -663,7 +663,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 } else {
                     FeedItem item = event.getFeedItem();
                     if (item != null && FeedItem.JOIN_STATUS_PENDING.equals(item.getJoinStatus())) {
-                        EntourageEvents.logEvent(Constants.EVENT_FEED_CANCEL_JOIN_REQUEST);
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_CANCEL_JOIN_REQUEST);
                     }
                     mapEntourageFragment.removeUserFromNewsfeedCard(item, me.getId());
                 }
@@ -691,7 +691,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                             } else {
                                 FeedItem item = event.getFeedItem();
                                 if (item != null && FeedItem.JOIN_STATUS_PENDING.equals(item.getJoinStatus())) {
-                                    EntourageEvents.logEvent(Constants.EVENT_FEED_CANCEL_JOIN_REQUEST);
+                                    EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_CANCEL_JOIN_REQUEST);
                                 }
                                 mapEntourageFragment.removeUserFromNewsfeedCard(item, me.getId());
                             }
@@ -733,7 +733,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         if (mapEntourageFragment != null) {
             if (event.isShowUI()) {
-                EntourageEvents.logEvent(Constants.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
                 presenter.displayFeedItemOptions(feedItem);
                 return;
             }
@@ -854,7 +854,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onPhotoChosen(final Uri photoUri, int photoSource) {
 
         if (photoSource == PhotoChooseSourceFragment.TAKE_PHOTO_REQUEST) {
-            EntourageEvents.logEvent(Constants.EVENT_PHOTO_SUBMIT);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_SUBMIT);
         }
 
         //Upload the photo to Amazon S3

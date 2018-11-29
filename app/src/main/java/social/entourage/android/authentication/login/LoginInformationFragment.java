@@ -149,10 +149,10 @@ public class LoginInformationFragment extends EntourageDialogFragment {
         if (getActivity() != null) {
             if (success) {
                 Toast.makeText(getActivity(), R.string.login_text_newsletter_success, Toast.LENGTH_SHORT).show();
-                EntourageEvents.logEvent(Constants.EVENT_NEWSLETTER_INSCRIPTION_OK);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_NEWSLETTER_INSCRIPTION_OK);
             } else {
                 Toast.makeText(getActivity(), R.string.login_text_newsletter_fail, Toast.LENGTH_SHORT).show();
-                EntourageEvents.logEvent(Constants.EVENT_NEWSLETTER_INSCRIPTION_FAILED);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_NEWSLETTER_INSCRIPTION_FAILED);
             }
             OnEntourageInformationFragmentFinish fragmentFinish = getOnInformationFragmentFinish();
             if (fragmentFinish != null) {

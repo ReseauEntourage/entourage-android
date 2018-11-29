@@ -108,7 +108,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             }
         }
         initialiseFields();
-        EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_START);
+        EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_START);
 
     }
 
@@ -148,7 +148,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
                         messageEditText.setText(messageEditText.getText() + " " + textMatchList.get(0));
                     }
                     messageEditText.setSelection(messageEditText.getText().length());
-                    EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK);
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK);
                 }
             }
         }
@@ -218,11 +218,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message));
         try {
-            EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED);
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), getString(R.string.encounter_voice_message_not_supported), Toast.LENGTH_SHORT).show();
-            EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED);
         }
     }
 
@@ -242,11 +242,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             BusProvider.getInstance().post(new Events.OnEncounterCreated(encounterResponse));
 
             finish();
-            EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {
             message = getString(R.string.create_encounter_failure);
             Log.e(logTag, message);
-            EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
@@ -261,11 +261,11 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             BusProvider.getInstance().post(new Events.OnEncounterUpdated(editedEncounter));
 
             finish();
-            //EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_OK);
+            //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {
             message = getString(R.string.update_encounter_failure);
             Log.e(logTag, message);
-            //EntourageEvents.logEvent(Constants.EVENT_CREATE_ENCOUNTER_FAILED);
+            //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
