@@ -163,9 +163,6 @@
             android:name=".message.push.PushNotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false"/>
-        <service
-            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
-            android:enabled="true"/>
 
         <activity
             android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
