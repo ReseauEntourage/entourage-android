@@ -28,6 +28,7 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
+import social.entourage.android.user.AvatarUpdatePresenter;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -38,7 +39,7 @@ import social.entourage.android.user.edit.photo.PhotoEditFragment;
  * The derived classes will be per app
  * Created by Mihai Ionescu on 27/04/2018.
  */
-public abstract class DrawerBasePresenter {
+public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
 
     // ----------------------------------
     // CONSTANTS

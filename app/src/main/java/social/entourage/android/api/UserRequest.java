@@ -14,11 +14,15 @@ import retrofit2.http.Path;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.UserReport;
+import social.entourage.android.user.PrepareAvatarUploadRepository;
 
 public interface UserRequest {
 
     @PATCH("users/me.json")
     Call<UserResponse> updateUser(@Body ArrayMap<String, Object> user);
+
+    @POST("users/me/presigned_avatar_upload.json")
+    Call<PrepareAvatarUploadRepository.Response> prepareAvatarUpload(@Body PrepareAvatarUploadRepository.Request params);
 
     @PATCH("users/me/code.json")
     Call<UserResponse> regenerateSecretCode(@Body ArrayMap<String, Object> userInfo);

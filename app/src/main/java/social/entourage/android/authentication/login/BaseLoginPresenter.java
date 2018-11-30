@@ -21,12 +21,13 @@ import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.tools.Utils;
+import social.entourage.android.user.AvatarUpdatePresenter;
 
 /**
  * Presenter controlling the LoginActivity
  * @see LoginActivity
  */
-public abstract class BaseLoginPresenter {
+public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
 
     // ----------------------------------
     // CONSTANTS

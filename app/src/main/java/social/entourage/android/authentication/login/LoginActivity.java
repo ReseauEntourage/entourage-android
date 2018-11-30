@@ -68,6 +68,8 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
+import social.entourage.android.user.AvatarUploadPresenter;
+import social.entourage.android.user.AvatarUploadView;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
@@ -82,7 +84,7 @@ import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
  * Activity providing the login steps
  */
 public class LoginActivity extends EntourageActivity
-        implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener {
+        implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener, AvatarUploadView {
 
     // ----------------------------------
     // CONSTANTS
@@ -108,6 +110,9 @@ public class LoginActivity extends EntourageActivity
 
     @Inject
     LoginPresenter loginPresenter;
+
+    @Inject
+    AvatarUploadPresenter avatarUploadPresenter;
 
     private User onboardingUser;
 
@@ -547,52 +552,17 @@ public class LoginActivity extends EntourageActivity
         //Upload the photo to Amazon S3
         showProgressDialog(R.string.user_photo_uploading);
 
-        final String objectKey = "user_" + loginPresenter.authenticationController.getUser().getId() + ".jpg";
-        TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
-        TransferObserver transferObserver = transferUtility.upload(
-            BuildConfig.AWS_BUCKET,
-            "300x300/" + objectKey,
-            new File(photoUri.getPath()),
-            CannedAccessControlList.PublicRead
-        );
-        transferObserver.setTransferListener(new TransferListener() {
-            @Override
-            public void onStateChanged(final int id, final TransferState state) {
-                if (state == TransferState.COMPLETED) {
-                    if (loginPresenter != null) {
-                        loginPresenter.updateUserPhoto(objectKey);
-                        // Delete the temporary file
-                        File tmpImageFile = new File(photoUri.getPath());
-                        if (!tmpImageFile.delete()) {
-                            // Failed to delete the file
-                            Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
-                        }
-                    } else {
-                        displayToast(R.string.user_photo_error_not_saved);
-                        dismissProgressDialog();
-                        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-                        if (photoEditFragment != null) {
-                            photoEditFragment.onPhotoSent(false);
-                        }
-                    }
-                }
-            }
+        File file = new File(photoUri.getPath());
+        avatarUploadPresenter.uploadPhoto(file);
+    }
 
-            @Override
-            public void onProgressChanged(final int id, final long bytesCurrent, final long bytesTotal) {
-
-            }
-
-            @Override
-            public void onError(final int id, final Exception ex) {
-                displayToast(R.string.user_photo_error_not_saved);
-                dismissProgressDialog();
-                PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-                if (photoEditFragment != null) {
-                    photoEditFragment.onPhotoSent(false);
-                }
-            }
-        });
+    public void onUploadError() {
+        displayToast(R.string.user_photo_error_not_saved);
+        dismissProgressDialog();
+        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+        if (photoEditFragment != null) {
+            photoEditFragment.onPhotoSent(false);
+        }
     }
 
     // ----------------------------------
