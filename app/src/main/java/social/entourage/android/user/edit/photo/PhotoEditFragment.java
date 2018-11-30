@@ -181,7 +181,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
             File croppedImageFile = createImageFile();
             cropImageView.saveCroppedImageAsync(Uri.fromFile(croppedImageFile));
         } catch (IOException e) {
-            Toast.makeText(getActivity(), R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
         }
     }
 
