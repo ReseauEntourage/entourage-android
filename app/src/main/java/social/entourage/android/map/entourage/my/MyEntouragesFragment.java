@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -304,14 +305,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             showProgressBar();
             entouragesPagination.isLoading = true;
             presenter.getMyFeeds(entouragesPagination.page, entouragesPagination.itemsPerPage);
-        }
-    }
-
-    private void retrieveMyFeedsIfLastItemIsVisible() {
-        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) entouragesView.getLayoutManager();
-        int position = linearLayoutManager.findLastVisibleItemPosition();
-        if (position == entouragesAdapter.getItemCount() - 1) {
-            retrieveMyFeeds();
         }
     }
 
@@ -649,24 +642,17 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
             scrollDeltaY += dy;
             if (dy > 0 && scrollDeltaY > MAX_SCROLL_DELTA_Y) {
-                retrieveMyFeedsIfLastItemIsVisible();
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int position = linearLayoutManager.findLastVisibleItemPosition();
+                if (position == recyclerView.getAdapter().getItemCount()-1) {
+                    retrieveMyFeeds();
+                }
+
                 scrollDeltaY = 0;
             }
         }
         @Override
         public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
-        }
-    }
-
-    private class LinearLayoutManager extends android.support.v7.widget.LinearLayoutManager {
-        LinearLayoutManager(Context context) {
-            super(context);
-        }
-
-        @Override
-        public void onLayoutCompleted(RecyclerView.State state) {
-            super.onLayoutCompleted(state);
-            retrieveMyFeedsIfLastItemIsVisible();
         }
     }
 
