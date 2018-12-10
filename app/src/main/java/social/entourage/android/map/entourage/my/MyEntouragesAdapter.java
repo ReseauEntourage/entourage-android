@@ -2,12 +2,16 @@ package social.entourage.android.map.entourage.my;
 
 import java.util.List;
 
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.InvitationList;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.LoaderCardItem;
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.invite.view.InvitationListViewHolder;
+import social.entourage.android.map.LoaderCardViewHolder;
 import social.entourage.android.map.entourage.EntourageViewHolder;
 import social.entourage.android.map.tour.TourViewHolder;
 import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
@@ -18,6 +22,7 @@ import social.entourage.android.map.tour.information.discussion.ViewHolderFactor
 public class MyEntouragesAdapter extends EntourageBaseAdapter {
 
     private InvitationList invitationList;
+    private LoaderCallback loaderCallback;
 
     public MyEntouragesAdapter() {
 
@@ -36,10 +41,31 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
                 new ViewHolderFactory.ViewHolderType(EntourageViewHolder.class, R.layout.layout_myentourages_card)
         );
 
+        viewHolderFactory.registerViewHolder(
+                TimestampedObject.LOADER_CARD,
+                new ViewHolderFactory.ViewHolderType(LoaderCardViewHolder.class, R.layout.layout_loader_card)
+        );
+
         setHasStableIds(false);
 
         invitationList = new InvitationList();
         items.add(invitationList);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+
+        TimestampedObject item = items.get(position - (needsTopView ? 1 : 0));
+        if (item.getType() == TimestampedObject.LOADER_CARD) {
+            if (loaderCallback != null) {
+                loaderCallback.loadMoreItems();
+            }
+        }
+    }
+
+    void setLoaderCallback(LoaderCallback loaderCallback) {
+        this.loaderCallback = loaderCallback;
     }
 
     public void setInvitations(List<Invitation> invitations) {
@@ -47,4 +73,19 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
         notifyItemChanged(0);
     }
 
+    void addLoader() {
+        addCardInfo(new LoaderCardItem());
+    }
+
+    void removeLoader() {
+        int lastPosition = items.size() - 1;
+        if (!items.isEmpty() && items.get(lastPosition).getType() == TimestampedObject.LOADER_CARD) {
+            items.remove(lastPosition);
+            notifyItemRemoved(lastPosition + (needsTopView ? 1 : 0));
+        }
+    }
+
+    public interface LoaderCallback {
+        void loadMoreItems();
+    }
 }

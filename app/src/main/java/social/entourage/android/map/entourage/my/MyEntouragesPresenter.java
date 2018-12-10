@@ -106,7 +106,6 @@ public class MyEntouragesPresenter {
     }
 
     public void getFeedItem(String feedItemUUID, int feedItemType) {
-        fragment.showProgressBar();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
             Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(feedItemUUID);
             call.enqueue(new Callback<Tour.TourWrapper>() {
