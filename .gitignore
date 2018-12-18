@@ -51,3 +51,4 @@ app/pfp/release/
 .project
 .settings/
 app/.classpath
+*.aab
