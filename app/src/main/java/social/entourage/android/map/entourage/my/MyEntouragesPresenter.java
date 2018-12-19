@@ -57,6 +57,9 @@ public class MyEntouragesPresenter {
 
     protected void getMyFeeds(int page, int per) {
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(fragment.getContext());
+        if(filter==null) {
+            return;
+        }
         Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(
                 page,
                 per,

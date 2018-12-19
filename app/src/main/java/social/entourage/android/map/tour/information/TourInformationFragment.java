@@ -163,7 +163,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @BindView(R.id.tour_info_discussion_view)
     RecyclerView discussionView;
 
-    DiscussionAdapter discussionAdapter;
+    DiscussionAdapter discussionAdapter = new DiscussionAdapter();
 
     @BindView(R.id.tour_info_loading_view)
     View loadingView;
@@ -1143,7 +1143,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
         //init the recycler view
         discussionView.setLayoutManager(new LinearLayoutManager(getContext()));
-        discussionAdapter = new DiscussionAdapter();
+        discussionAdapter.removeAll();
         discussionView.setAdapter(discussionAdapter);
 
         //add the cards
@@ -1638,7 +1638,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     private void updateDiscussionList(boolean scrollToLastCard) {
 
-        if (discussionAdapter == null || feedItem == null) return;
+        if (feedItem == null) return;
 
         List<TimestampedObject> addedCardInfoList = feedItem.getAddedCardInfoList();
         if (addedCardInfoList == null || addedCardInfoList.size() == 0) {
@@ -1717,7 +1717,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void scrollToLastCard() {
-        discussionView.scrollToPosition(discussionAdapter.getItemCount()-1);
+        if(discussionAdapter.getItemCount()>0) {
+            discussionView.scrollToPosition(discussionAdapter.getItemCount()-1);
+        }
     }
 
     private void setEncountersToReadOnly() {
