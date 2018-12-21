@@ -32,6 +32,7 @@ public class NewsfeedPagination extends EntouragePagination {
         lastFeedItemUUID = null;
         isLoading = false;
         isRefreshing = false;
+        nextPageAvailable = false;
     }
 
     public boolean isNextDistanceAvailable() {

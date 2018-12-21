@@ -19,6 +19,7 @@ public class EntouragePagination {
     public boolean isLoading = false;
     public boolean isRefreshing = false;
     public boolean newItemsAvailable = false;
+    public boolean nextPageAvailable = false;
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -50,8 +51,10 @@ public class EntouragePagination {
     // ---------------------------------
 
     public void loadedItems(int loadedItems) {
+        nextPageAvailable = false;
         if (!isRefreshing && loadedItems >= itemsPerPage) {
             page++;
+            nextPageAvailable = true;
         }
         isLoading = false;
     }
