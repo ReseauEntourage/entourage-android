@@ -113,7 +113,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     @BindView(R.id.myentourages_progressBar)
     ProgressBar progressBar;
 
-    private EntouragePagination entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
+    private @NonNull EntouragePagination entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
     // Refresh invitations attributes
     Timer refreshInvitationsTimer;
@@ -281,7 +281,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     private void retrieveMyFeeds() {
-        if (entouragesPagination != null && !entouragesPagination.isLoading) {
+        if (!entouragesPagination.isLoading) {
             entouragesPagination.isLoading = true;
             presenter.getMyFeeds(entouragesPagination.page, entouragesPagination.itemsPerPage);
         }
@@ -373,7 +373,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         long joinableId = content.getJoinableId();
 
         TimestampedObject card = entouragesAdapter.findCard(cardType, joinableId);
-        if (card != null && card instanceof FeedItem) {
+        if (card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
             entouragesAdapter.updateCard(card);
 
@@ -438,9 +438,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     protected void onNewsfeedReceived(List<Newsfeed> newsfeedList) {
         //reset the loading indicator
-        if (entouragesPagination != null) {
-            entouragesPagination.isLoading = false;
-        }
+        entouragesPagination.isLoading = false;
+
         if (!isAdded()) {
             return;
         }
@@ -457,7 +456,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
             for (final Newsfeed newsfeed : newsfeedList) {
                 Object feedData = newsfeed.getData();
-                if (feedData == null || !(feedData instanceof FeedItem)) {
+                if (!(feedData instanceof FeedItem)) {
                     continue;
                 }
                 FeedItem feedItem = (FeedItem) newsfeed.getData();
@@ -477,11 +476,10 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 }
             }
 
-            entouragesAdapter.addLoader();
-
             //increase page and items count
-            if (entouragesPagination != null) {
-                entouragesPagination.loadedItems(newsfeedList.size());
+            entouragesPagination.loadedItems(newsfeedList.size());
+            if(entouragesPagination.nextPageAvailable) {
+                entouragesAdapter.addLoader();
             }
         }
         if (entouragesAdapter.getDataItemCount() == 0) {
@@ -512,7 +510,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
         if (feedItem != null) {
             TimestampedObject card = entouragesAdapter.findCard(feedItem);
-            if (card != null && card instanceof FeedItem) {
+            if (card instanceof FeedItem) {
                 ((FeedItem)card).increaseBadgeCount();
                 entouragesAdapter.updateCard(feedItem);
             }
