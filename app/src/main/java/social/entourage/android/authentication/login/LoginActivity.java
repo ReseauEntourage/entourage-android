@@ -1054,15 +1054,17 @@ public class LoginActivity extends EntourageActivity
         }
         if (smsSent) {
             displayToast(R.string.registration_smscode_sent);
-        } else {
-            return;
-        }
-        if (onboardingUser != null) {
-            onboardingUser.setPhone(phoneNumber);
-        }
+            if (onboardingUser != null) {
+                onboardingUser.setPhone(phoneNumber);
+            }
 
-        RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
-        fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
+            try {
+                RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
+                fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
+            } catch (IllegalStateException e) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            }
+        }
     }
 
     /************************
