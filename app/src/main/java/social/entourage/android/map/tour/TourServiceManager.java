@@ -833,7 +833,7 @@ public class TourServiceManager {
                     service.notifyListenersNewsFeedReceived(newsFeedList);
                 }
             } else {
-                service.notifyListenersServerException(new Throwable(getErrorMessage(response)));
+                service.notifyListenersServerException(new Throwable(getErrorMessage(call, response)));
             }
         }
 
@@ -845,9 +845,13 @@ public class TourServiceManager {
             }
         }
 
-        private String getErrorMessage(Response<Newsfeed.NewsfeedWrapper> response) {
+        @NonNull
+        private String getErrorMessage(@NonNull Call<Newsfeed.NewsfeedWrapper> call, @NonNull Response<Newsfeed.NewsfeedWrapper> response) {
             String errorBody = getErrorBody(response);
             String errorMessage = "Response code = " + response.code();
+            if (call.request()!=null) {
+                errorMessage += " ( " + call.request().toString() + ")";
+            }
             if (!errorBody.isEmpty()) {
                 errorMessage += " : " + errorBody;
             }
