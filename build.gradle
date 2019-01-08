@@ -6,6 +6,7 @@ buildscript {
         google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url 'https://firebase.bintray.com/gradle' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'

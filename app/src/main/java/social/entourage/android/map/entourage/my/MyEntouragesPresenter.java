@@ -57,6 +57,9 @@ public class MyEntouragesPresenter {
 
     protected void getMyFeeds(int page, int per) {
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(fragment.getContext());
+        if(filter==null) {
+            return;
+        }
         Call<Newsfeed.NewsfeedWrapper> call = newsfeedRequest.retrieveMyFeeds(
                 page,
                 per,
@@ -106,7 +109,6 @@ public class MyEntouragesPresenter {
     }
 
     public void getFeedItem(String feedItemUUID, int feedItemType) {
-        fragment.showProgressBar();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
             Call<Tour.TourWrapper> call = tourRequest.retrieveTourById(feedItemUUID);
             call.enqueue(new Callback<Tour.TourWrapper>() {

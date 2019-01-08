@@ -228,8 +228,10 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
     @Override
     public void onSelectedDayChange(@NonNull final CalendarView view, final int year, final int month, final int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
+        calendar.clear();
         calendar.set(year, month, dayOfMonth);
-        dateOtherTextView.setText(DateFormat.getDateInstance().format(new Date(calendar.getTimeInMillis())));
+        view.setDate(calendar.getTimeInMillis());
+        dateOtherTextView.setText(DateFormat.getDateInstance().format(calendar.getTime()));
     }
 
     // ----------------------------------

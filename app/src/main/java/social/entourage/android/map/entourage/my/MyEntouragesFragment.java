@@ -63,7 +63,7 @@ import social.entourage.android.tools.BusProvider;
 /**
  * My Entourages Fragment
  */
-public class MyEntouragesFragment extends EntourageDialogFragment implements TourService.TourServiceListener, EntourageViewHolderListener {
+public class MyEntouragesFragment extends EntourageDialogFragment implements TourService.TourServiceListener, EntourageViewHolderListener, MyEntouragesAdapter.LoaderCallback {
 
     // ----------------------------------
     // Constants
@@ -71,7 +71,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     public static final String TAG = "social.entourage.android.my.entourages";
 
-    private static final int MAX_SCROLL_DELTA_Y = 20;
     private static final long REFRESH_INVITATIONS_INTERVAL = 60000; //1 minute in ms
 
     private static final int FILTER_TAB_INDEX_ALL = 0;
@@ -114,12 +113,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     @BindView(R.id.myentourages_progressBar)
     ProgressBar progressBar;
 
-    private int apiRequestsCount = 0;
-
-    private EntouragePagination entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
-
-    private int scrollDeltaY;
-    private OnScrollListener scrollListener = new OnScrollListener();
+    private @NonNull EntouragePagination entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
     // Refresh invitations attributes
     Timer refreshInvitationsTimer;
@@ -185,7 +179,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         super.onResume();
 
         timerStart();
-        entouragesView.addOnScrollListener(scrollListener);
     }
 
     @Override
@@ -193,7 +186,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         super.onPause();
 
         timerStop();
-        entouragesView.removeOnScrollListener(scrollListener);
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -260,6 +252,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         }
         entouragesView.setLayoutManager(new LinearLayoutManager(getContext()));
         entouragesAdapter.setViewHolderListener(this);
+        entouragesAdapter.setLoaderCallback(this);
         entouragesView.setAdapter(entouragesAdapter);
     }
 
@@ -287,22 +280,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         if (addEncounterButton != null) addEncounterButton.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
     }
 
-    protected void showProgressBar() {
-        apiRequestsCount++;
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    protected void hideProgressBar() {
-        apiRequestsCount--;
-        if (apiRequestsCount <= 0) {
-            progressBar.setVisibility(View.GONE);
-            apiRequestsCount = 0;
-        }
-    }
-
     private void retrieveMyFeeds() {
-        if (entouragesPagination != null && !entouragesPagination.isLoading) {
-            showProgressBar();
+        if (!entouragesPagination.isLoading) {
             entouragesPagination.isLoading = true;
             presenter.getMyFeeds(entouragesPagination.page, entouragesPagination.itemsPerPage);
         }
@@ -394,7 +373,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         long joinableId = content.getJoinableId();
 
         TimestampedObject card = entouragesAdapter.findCard(cardType, joinableId);
-        if (card != null && card instanceof FeedItem) {
+        if (card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
             entouragesAdapter.updateCard(card);
 
@@ -458,11 +437,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     protected void onNewsfeedReceived(List<Newsfeed> newsfeedList) {
-        hideProgressBar();
         //reset the loading indicator
-        if (entouragesPagination != null) {
-            entouragesPagination.isLoading = false;
-        }
+        entouragesPagination.isLoading = false;
+
         if (!isAdded()) {
             return;
         }
@@ -471,12 +448,15 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         //add the feed
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
         boolean showUnreadOnly = filter.isShowUnreadOnly();
+
+        entouragesAdapter.removeLoader();
+
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
 
             for (final Newsfeed newsfeed : newsfeedList) {
                 Object feedData = newsfeed.getData();
-                if (feedData == null || !(feedData instanceof FeedItem)) {
+                if (!(feedData instanceof FeedItem)) {
                     continue;
                 }
                 FeedItem feedItem = (FeedItem) newsfeed.getData();
@@ -497,8 +477,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             }
 
             //increase page and items count
-            if (entouragesPagination != null) {
-                entouragesPagination.loadedItems(newsfeedList.size());
+            entouragesPagination.loadedItems(newsfeedList.size());
+            if(entouragesPagination.nextPageAvailable) {
+                entouragesAdapter.addLoader();
             }
         }
         if (entouragesAdapter.getDataItemCount() == 0) {
@@ -527,10 +508,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     protected void onFeedItemReceived(FeedItem feedItem) {
         if (getActivity() == null || !isAdded()) return;
 
-        hideProgressBar();
         if (feedItem != null) {
             TimestampedObject card = entouragesAdapter.findCard(feedItem);
-            if (card != null && card instanceof FeedItem) {
+            if (card instanceof FeedItem) {
                 ((FeedItem)card).increaseBadgeCount();
                 entouragesAdapter.updateCard(feedItem);
             }
@@ -632,29 +612,14 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_MESSAGE_OPEN);
     }
 
+    @Override
+    public void loadMoreItems() {
+        retrieveMyFeeds();
+    }
+
     // ----------------------------------
     // PRIVATE CLASSES
     // ----------------------------------
-
-    private class OnScrollListener extends RecyclerView.OnScrollListener {
-        @Override
-        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
-
-            scrollDeltaY += dy;
-            if (dy > 0 && scrollDeltaY > MAX_SCROLL_DELTA_Y) {
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int position = linearLayoutManager.findLastVisibleItemPosition();
-                if (position == recyclerView.getAdapter().getItemCount()-1) {
-                    retrieveMyFeeds();
-                }
-
-                scrollDeltaY = 0;
-            }
-        }
-        @Override
-        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
-        }
-    }
 
     private class ServiceConnection implements android.content.ServiceConnection {
         @Override
