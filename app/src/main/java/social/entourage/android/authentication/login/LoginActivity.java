@@ -462,41 +462,45 @@ public class LoginActivity extends EntourageActivity
 
     public void launchFillInProfileView(String phoneNumber, @NonNull User user) {
 
-        DialogFragment fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
-        if (fragment != null) {
-            fragment.dismiss();
-        }
-        fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
-        if (fragment != null) {
-            fragment.dismiss();
-        }
-        fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterWelcomeFragment.TAG);
-        if (fragment != null) {
-            fragment.dismiss();
-        }
-
         loggedPhoneNumber = phoneNumber;
 
         if (this.onboardingUser != null) {
             user.setOnboardingUser(true);
         }
-        hideKeyboard();
-
-        if (loginPresenter != null) {
-            loginStartup.setVisibility(View.GONE);
-            loginSignin.setVisibility(View.GONE);
-            loginVerifyCode.setVisibility(View.GONE);
-            if (loginPresenter.shouldShowNameView(user)) {
-                showNameView();
-            } else if (loginPresenter.shouldShowEmailView(user)) {
-                showEmailView();
-            } else if (loginPresenter.shouldShowPhotoChooseView(user)) {
-                showPhotoChooseSource();
-            } else if (loginPresenter.shouldShowActionZoneView(user)) {
-                showActionZoneView();
-            } else {
-                showNotificationPermissionView();
+        try {
+            DialogFragment fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterSMSCodeFragment.TAG);
+            if (fragment != null) {
+                fragment.dismiss();
             }
+            fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
+            if (fragment != null) {
+                fragment.dismiss();
+            }
+            fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterWelcomeFragment.TAG);
+            if (fragment != null) {
+                fragment.dismiss();
+            }
+
+            hideKeyboard();
+
+            if (loginPresenter != null) {
+                loginStartup.setVisibility(View.GONE);
+                loginSignin.setVisibility(View.GONE);
+                loginVerifyCode.setVisibility(View.GONE);
+                if (loginPresenter.shouldShowNameView(user)) {
+                    showNameView();
+                } else if (loginPresenter.shouldShowEmailView(user)) {
+                    showEmailView();
+                } else if (loginPresenter.shouldShowPhotoChooseView(user)) {
+                    showPhotoChooseSource();
+                } else if (loginPresenter.shouldShowActionZoneView(user)) {
+                    showActionZoneView();
+                } else {
+                    showNotificationPermissionView();
+                }
+            }
+        } catch(IllegalStateException e){
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
         }
     }
 
