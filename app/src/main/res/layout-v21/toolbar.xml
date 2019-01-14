@@ -32,23 +32,6 @@
 
         </android.support.design.widget.TabLayout>
 
-        <ImageView
-            android:id="@+id/toolbar_entourage_logo"
-            android:layout_width="0dp"
-            android:layout_height="33dp"
-            android:layout_marginEnd="12dp"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/entourage_logo_grey"/>
-
-        <social.entourage.android.badge.BadgeView
-            android:id="@+id/toolbar_discussion"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
-            android:gravity="end"
-            android:icon="@drawable/ic_discussion"/>
-
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

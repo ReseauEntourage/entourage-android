@@ -931,21 +931,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
-    // Logo icon click handling
-    // ----------------------------------
-
-    @OnClick(R.id.toolbar_entourage_logo)
-    protected void onToolbarLogoClicked() {
-        if (mapEntourageFragment.isToursListVisible()) {
-            // make the map visible
-            mapEntourageFragment.ensureMapVisible();
-        } else {
-            // switch to list view
-            mapEntourageFragment.toggleToursList();
-    }
-    }
-
-    // ----------------------------------
     // PUSH NOTIFICATION HANDLING
     // ----------------------------------
 
