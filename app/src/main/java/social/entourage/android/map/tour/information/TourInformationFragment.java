@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -111,6 +112,7 @@ import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.OnAddressClickListener;
 import social.entourage.android.map.entourage.create.CreateEntourageFragment;
 import social.entourage.android.map.entourage.EntourageCloseFragment;
 import social.entourage.android.map.tour.TourService;
@@ -1483,23 +1485,38 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // show the view only for outing
         boolean metadataVisible = false;
         BaseEntourage.Metadata metadata = null;
+
         if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
             metadata = ((Entourage)feedItem).getMetadata();
             metadataVisible = Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) && (metadata != null);
         }
+
         metadataView.setVisibility(metadataVisible ? View.VISIBLE : View.GONE);
         if (!metadataVisible) return;
+
         // populate the data
         TextView organiser = fragmentView.findViewById(R.id.tour_info_metadata_organiser);
         if (organiser != null && feedItem.getAuthor() != null) {
             organiser.setText(getString(R.string.tour_info_metadata_organiser_format, feedItem.getAuthor().getUserName()));
         }
+
         TextView metadataDate = fragmentView.findViewById(R.id.tour_info_metadata_date);
         if (metadataDate != null) metadataDate.setText(metadata.getStartDateAsString(getContext()));
+
         TextView metadateTime = fragmentView.findViewById(R.id.tour_info_metadata_time);
         if (metadateTime != null) metadateTime.setText(metadata.getStartTimeAsString(getContext()));
-        TextView metadataAddress = fragmentView.findViewById(R.id.tour_info_metadata_address);
-        if (metadataAddress != null) metadataAddress.setText(metadata.getDisplayAddress());
+
+        setAddressView(fragmentView, metadata);
+    }
+
+    private void setAddressView(View fragmentView, BaseEntourage.Metadata metadata) {
+        TextView address = fragmentView.findViewById(R.id.tour_info_metadata_address);
+        if (address != null) {
+            final String displayAddress = metadata.getDisplayAddress();
+            address.setText(displayAddress);
+            address.setPaintFlags(address.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            address.setOnClickListener(new OnAddressClickListener(getActivity(), displayAddress));
+        }
     }
 
     private void switchToPublicSection() {
