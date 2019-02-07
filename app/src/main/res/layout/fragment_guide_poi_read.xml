@@ -20,7 +20,8 @@
         android:layout_below="@+id/poi_read_toolbar"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        tools:background="@color/dodger_blue">
 
         <ImageView
             android:id="@+id/poi_type_image"
@@ -36,7 +37,9 @@
             android:layout_marginStart="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:textSize="@dimen/entourage_font_large"
+            tools:text="Label"/>
+
     </LinearLayout>
 
     <ScrollView
@@ -63,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/greyish_brown"
                 android:textSize="@dimen/entourage_font_large"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:text="POI NAME"/>
 
             <View
                 android:layout_width="match_parent"
@@ -79,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"/>
+                android:textSize="@dimen/entourage_font_medium"
+                tools:text="Description"/>
 
             <Button
                 android:id="@+id/button_poi_address"
@@ -87,7 +92,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Address"/>
 
             <Button
                 android:id="@+id/button_poi_phone"
@@ -96,7 +103,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:autoLink="phone"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Phone"/>
 
             <Button
                 android:id="@+id/button_poi_mail"
@@ -105,7 +114,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:autoLink="email"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Mail"/>
 
             <Button
                 android:id="@+id/button_poi_web"
@@ -114,7 +125,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:autoLink="web"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Website"/>
 
         </LinearLayout>
 

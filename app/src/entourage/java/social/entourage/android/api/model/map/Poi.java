@@ -26,6 +26,7 @@ public class Poi extends TimestampedObject implements Serializable, ClusterItem 
 
     private String description;
 
+    @SerializedName("adress")
     private String address;
 
     private String phone;
