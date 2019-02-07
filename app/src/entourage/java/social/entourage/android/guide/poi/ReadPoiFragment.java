@@ -1,6 +1,7 @@
 package social.entourage.android.guide.poi;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.guide.PoiRenderer;
+import social.entourage.android.map.OnAddressClickListener;
 
 /**
  * Activity showing the detail of a POI
@@ -122,7 +124,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void displayPoi(Poi poi, final ReadPoiPresenter.OnAddressClickListener onAddressClickListener, final ReadPoiPresenter.OnPhoneClickListener onPhoneClickListener) {
+    public void onDisplayedPoi(Poi poi, final OnAddressClickListener onAddressClickListener, final ReadPoiPresenter.OnPhoneClickListener onPhoneClickListener) {
         txtPoiName.setText(poi.getName());
         txtPoiDesc.setText(poi.getDescription());
         setActionButton(btnPoiPhone, poi.getPhone());
@@ -142,6 +144,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         if(value.length() > 0) {
             btn.setVisibility(View.VISIBLE);
             btn.setText(value);
+            btn.setPaintFlags(btn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
     }
 
