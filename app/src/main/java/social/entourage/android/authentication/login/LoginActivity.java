@@ -832,8 +832,12 @@ public class LoginActivity extends EntourageActivity
 
             User user = loginPresenter.authenticationController.getUser();
             if (user == null || user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
-                PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-                fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
+                try {
+                    PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+                    fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
+                } catch(IllegalStateException e){
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+                }
             } else {
                 if (loginPresenter.shouldShowActionZoneView()) {
                     showActionZoneView();
