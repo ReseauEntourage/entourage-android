@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 def versionMajor = 5
@@ -235,6 +237,10 @@ dependencies {
         exclude group: 'com.squareup.okhttp3'
     }
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
