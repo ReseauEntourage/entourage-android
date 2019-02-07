@@ -87,24 +87,29 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/entourage_font_medium"/>
+                            android:textSize="@dimen/entourage_font_medium"
+                            tools:text="Date"/>
 
                         <TextView
                             android:id="@+id/tour_info_metadata_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/entourage_font_medium"/>
+                            android:textSize="@dimen/entourage_font_medium"
+                            tools:text="Time"/>
 
                         <TextView
                             android:id="@+id/tour_info_metadata_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLines="2"
-                            android:textColor="@color/dark_grey"
+                            android:textColor="@color/accent"
                             android:textSize="@dimen/entourage_font_medium"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            tools:text="Address"/>
+
                     </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
