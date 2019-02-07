@@ -432,17 +432,21 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     protected void loadFragment(Fragment newFragment, String tag) {
-        if (newFragment == null) return;
-        mainFragment = newFragment;
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment = (MapEntourageFragment)newFragment;
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (!fragmentManager.popBackStackImmediate(tag, 0)) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
-            fragmentTransaction.addToBackStack(tag);
-            fragmentTransaction.commitAllowingStateLoss();
+        try {
+            if (newFragment == null) return;
+            mainFragment = newFragment;
+            if (mainFragment instanceof MapEntourageFragment) {
+                mapEntourageFragment = (MapEntourageFragment) newFragment;
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if (!fragmentManager.popBackStackImmediate(tag, 0)) {
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
+                fragmentTransaction.addToBackStack(tag);
+                fragmentTransaction.commitAllowingStateLoss();
+            }
+        } catch(IllegalStateException e){
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
         }
     }
 
