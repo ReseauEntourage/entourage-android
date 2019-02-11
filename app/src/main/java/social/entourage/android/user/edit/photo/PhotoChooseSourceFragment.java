@@ -28,7 +28,6 @@ import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.tape.Events;
@@ -46,7 +45,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     public static final int PICK_IMAGE_REQUEST = 1;
     public static final int TAKE_PHOTO_REQUEST = 2;
 
-    private static final int READ_STORAGE_PERMISSION_CODE = 3;
+    private static final int PICK_AND_CROP_IMAGE_PERMISSION_CODE = 3;
     private static final int WRITE_STORAGE_PERMISSION_CODE = 4;
 
     private static final String KEY_PHOTO_PATH = "social.entourage.android.photo_path";
@@ -126,7 +125,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         if (pickedImageUri != null) {
             // Check if we have reading rights
             if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION_CODE);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_AND_CROP_IMAGE_PERMISSION_CODE);
             } else {
                 // Proceed to next step
                 loadPickedImage(pickedImageUri);
@@ -145,7 +144,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
             if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 pickedImageUri = uri;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION_CODE);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_AND_CROP_IMAGE_PERMISSION_CODE);
             } else {
                 loadPickedImage(uri);
             }
@@ -182,7 +181,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             return;
         }
 
-        if (requestCode == READ_STORAGE_PERMISSION_CODE) {
+        if (requestCode == PICK_AND_CROP_IMAGE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (pickedImageUri != null) {
                     loadPickedImage(pickedImageUri);
@@ -224,8 +223,9 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     @OnClick(R.id.photo_choose_photo_button)
     protected void onChoosePhotoClicked() {
 
-        if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION_CODE);
+        // write permission is used to store the cropped image before upload
+        if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_AND_CROP_IMAGE_PERMISSION_CODE);
         } else {
             showChoosePhotoActivity();
         }
