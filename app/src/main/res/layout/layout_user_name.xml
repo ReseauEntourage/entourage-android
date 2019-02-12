@@ -5,25 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:orientation="horizontal">
-
-    <LinearLayout
-        android:id="@+id/user_name_tags_left_holder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <social.entourage.android.user.role.RoleView
-            android:id="@+id/user_name_tag"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:textColor="@color/profile_role_text"
-            android:textSize="@dimen/entourage_font_medium"
-            tools:text="En attente"/>
-    </LinearLayout>
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/user_name_name"
@@ -36,9 +18,14 @@
         tools:text="George"/>
 
     <LinearLayout
-        android:id="@+id/user_name_tags_right_holder"
+        android:id="@+id/user_name_tags_holder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:divider="@drawable/role_spacer"
+        android:showDividers="middle">
     </LinearLayout>
 </LinearLayout>

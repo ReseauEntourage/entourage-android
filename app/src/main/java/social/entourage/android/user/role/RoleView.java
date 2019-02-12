@@ -43,6 +43,17 @@ public class RoleView extends AppCompatTextView {
         backgroundCornerRadius = getResources().getDimension(R.dimen.role_corner_radius);
         backgroundColor = R.color.white;
         setCustomBackground();
+        setTextColor(ContextCompat.getColor(getContext(), R.color.profile_role_text));
+        setSingleLine();
+    }
+
+    // ----------------------------------
+    // HELPER
+    // ----------------------------------
+
+    public void setRole(UserRole role) {
+        setText(role.getNameResourceId());
+        changeBackgroundColor(role.getColorResourceId());
     }
 
     // ----------------------------------
@@ -59,7 +70,12 @@ public class RoleView extends AppCompatTextView {
 
         background.setColor(ContextCompat.getColor(getContext(), backgroundColor));
         background.setCornerRadius(backgroundCornerRadius);
-        setPadding((int)backgroundCornerRadius, (int)getResources().getDimension(R.dimen.role_padding_top), (int)backgroundCornerRadius, (int)getResources().getDimension(R.dimen.role_padding_bottom));
+        setPadding(
+                (int)(getTextSize() * 2/3.0),
+                (int)(getTextSize() * 1/4.0),
+                (int)(getTextSize() * 2/3.0),
+                (int)(getTextSize() * 1/4.0)
+        );
 
         setBackground(background);
     }

@@ -1091,7 +1091,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         if (!(member instanceof TourUser)) continue;
                         TourUser tourUser = (TourUser) member;
                         if (tourUser.getUserId() != myId) continue;
-                        String role = tourUser.getRole();
+                        String role = tourUser.getGroupRole();
                         if (role != null && role.equalsIgnoreCase("organizer")) {
                             promoteEntourageButton.setVisibility(View.VISIBLE);
                         }

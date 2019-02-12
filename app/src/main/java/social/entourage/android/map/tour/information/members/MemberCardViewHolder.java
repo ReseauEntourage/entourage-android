@@ -3,6 +3,7 @@ package social.entourage.android.map.tour.information.members;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -16,7 +17,12 @@ import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.R;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
+import social.entourage.android.user.role.RoleView;
+import social.entourage.android.user.role.UserRole;
+import social.entourage.android.user.role.UserRolesFactory;
 import social.entourage.android.view.PartnerLogoImageView;
+
+import java.util.ArrayList;
 
 /**
  * Created by mihaiionescu on 23/05/16.
@@ -28,6 +34,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
     private ImageView mMemberPhoto;
     private PartnerLogoImageView mPartnerLogo;
     private TextView mMemberName;
+    private LinearLayout mMemberTags;
 
     public MemberCardViewHolder(final View view) {
         super(view);
@@ -40,6 +47,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
         mMemberPhoto = (ImageView) itemView.findViewById(R.id.tic_member_photo);
         mPartnerLogo = (PartnerLogoImageView) itemView.findViewById(R.id.tic_member_partner_logo);
         mMemberName = (TextView) itemView.findViewById(R.id.tic_member_name);
+        mMemberTags = itemView.findViewById(R.id.tic_member_tags);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +93,27 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
         }
 
         mMemberName.setText(tourUser.getDisplayName());
+
+        ArrayList<String> roles = new ArrayList<>();
+        if (tourUser.getGroupRole() != null) {
+            roles.add(tourUser.getGroupRole());
+        }
+        for (String role: tourUser.getCommunityRoles()) {
+            if (!role.equals(tourUser.getGroupRole())) {
+                roles.add(role);
+            }
+        }
+
+        mMemberTags.removeAllViews();
+        for (String role: roles) {
+            UserRole userRole = UserRolesFactory.getInstance().findByName(role);
+            if (userRole == null || !userRole.isVisible()) {
+                continue;
+            }
+            RoleView roleView = new RoleView(itemView.getContext());
+            roleView.setRole(userRole);
+            mMemberTags.addView(roleView);
+        }
     }
 
     public static int getLayoutResource() {

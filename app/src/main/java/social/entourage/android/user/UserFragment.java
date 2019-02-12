@@ -8,12 +8,7 @@ import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
@@ -85,9 +80,6 @@ public class UserFragment extends EntourageDialogFragment {
 
     @BindView(R.id.user_name)
     UserNameView userName;
-
-    @BindView(R.id.user_role)
-    TextView userRole;
 
     @BindView(R.id.user_member_since)
     TextView userMemberSince;

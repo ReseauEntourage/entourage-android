@@ -46,6 +46,6 @@
     <dimen name="role_corner_radius">5dp</dimen>
     <dimen name="role_padding_top">0dp</dimen>
     <dimen name="role_padding_bottom">2dp</dimen>
-    <dimen name="role_margin">5dp</dimen>
+    <dimen name="role_margin">6dp</dimen>
 
 </resources>
