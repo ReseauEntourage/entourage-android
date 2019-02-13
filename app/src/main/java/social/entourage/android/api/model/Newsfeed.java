@@ -16,6 +16,7 @@ import java.util.List;
 
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
+import timber.log.Timber;
 
 /**
  * Created by mihaiionescu on 05/05/16.
@@ -115,7 +116,7 @@ public class Newsfeed {
                     }
                 }
             } catch (Exception e) {
-                Log.d("NewsfeedAdapter", e.toString());
+                Timber.tag("NewsfeedAdapter").e(e);
             }
 
             return newsfeed;

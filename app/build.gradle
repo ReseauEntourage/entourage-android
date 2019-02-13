@@ -228,6 +228,7 @@ dependencies {
     }
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

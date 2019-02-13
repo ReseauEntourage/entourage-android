@@ -18,6 +18,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.message.push.PushNotificationManager;
+import timber.log.Timber;
 
 public class MessageActivity extends EntourageSecuredActivity {
 
@@ -72,7 +73,7 @@ public class MessageActivity extends EntourageSecuredActivity {
     protected void onNewIntent(Intent intent) {
         Message message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         if (message != null) {
-            Log.d("notification:", message.getAuthor());
+            Timber.tag("notification:").d(message.getAuthor());
             displayMessage(message);
         }
     }

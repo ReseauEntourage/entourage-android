@@ -36,6 +36,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.location.LocationFragment;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 public class CreateEncounterActivity extends EntourageSecuredActivity implements LocationFragment.OnFragmentInteractionListener {
 
@@ -245,7 +246,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {
             message = getString(R.string.create_encounter_failure);
-            Log.e(logTag, message);
+            Timber.tag(logTag).e(message);
             EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }
@@ -264,7 +265,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {
             message = getString(R.string.update_encounter_failure);
-            Log.e(logTag, message);
+            Timber.tag(logTag).e(message);
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }

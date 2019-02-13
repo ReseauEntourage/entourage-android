@@ -18,6 +18,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.guide.filter.GuideFilter;
+import timber.log.Timber;
 
 /**
  * Presenter controlling the GuideMapEntourageFragment
@@ -83,7 +84,7 @@ public class GuideMapPresenter {
 
                 @Override
                 public void onFailure(@NonNull Call<MapResponse> call, @NonNull Throwable t) {
-                    Log.d("GuideMapEntourageFrag", "Impossible to retrieve POIs", t);
+                    Timber.tag("GuideMapEntourageFrag").e(t, "Impossible to retrieve POIs");
                 }
             });
         }

@@ -9,6 +9,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 public class GcmBroadcastReceiver extends FirebaseMessagingService {
 
@@ -36,11 +37,11 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Timber.tag(TAG).d("From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            Timber.tag(TAG).d("Message data payload: " + remoteMessage.getData());
             //if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(gcm.getMessageType(intent)) && extras != null && !extras.isEmpty()) {
             //    if (intent.getExtras().containsKey("mp_message")) {
             if(remoteMessage.getData().containsKey("mp_message")) {
@@ -56,7 +57,7 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            Timber.tag(TAG).d("Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
     }
 

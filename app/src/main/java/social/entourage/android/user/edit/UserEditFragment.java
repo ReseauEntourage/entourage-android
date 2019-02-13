@@ -53,6 +53,7 @@ import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.UserOrganizationsAdapter;
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
+import timber.log.Timber;
 
 public class UserEditFragment extends EntourageDialogFragment implements UserEditActionZoneFragment.FragmentListener {
 
@@ -344,7 +345,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             }
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
-            Log.d("Exception", "Cannot open Notifications Settings page");
+            Timber.e("Cannot open Notifications Settings page");
         } catch (Exception ignored) {
 
         }

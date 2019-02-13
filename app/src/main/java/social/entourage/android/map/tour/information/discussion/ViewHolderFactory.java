@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
 import social.entourage.android.base.BaseCardViewHolder;
+import timber.log.Timber;
 
 /**
  * Created by mihaiionescu on 02/03/16.
@@ -37,7 +38,7 @@ public class ViewHolderFactory {
             ctor = viewHolderType.cardViewHolderClass.getConstructor(View.class);
             cardViewHolder = (BaseCardViewHolder)ctor.newInstance(view);
         } catch (Exception e) {
-            Log.d("Invalid Card", e.getMessage());
+            Timber.tag("Invalid Card").e(e);
         }
 
         return cardViewHolder;

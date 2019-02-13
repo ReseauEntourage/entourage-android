@@ -78,6 +78,7 @@ import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
+import timber.log.Timber;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -190,7 +191,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d("DEEPLINK", "onNewIntent " + intent.toString());
+        Timber.tag("DEEPLINK").d("onNewIntent " + intent.toString());
         this.setIntent(intent);
         if (Intent.ACTION_VIEW.equals(intent.getAction())){
             // Save the deep link intent

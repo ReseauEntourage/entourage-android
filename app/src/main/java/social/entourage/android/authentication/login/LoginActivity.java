@@ -70,6 +70,7 @@ import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 import social.entourage.android.view.HtmlTextView;
+import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
@@ -1079,7 +1080,7 @@ public class LoginActivity extends EntourageActivity
         try {
             startActivity(settingsIntent);
         } catch (ActivityNotFoundException ex) {
-            Log.d("NOTIFICATIONS", "Failed to start the activity that shows the app settings");
+            Timber.tag("NOTIFICATIONS").e("Failed to start the activity that shows the app settings");
         }
     }
 
