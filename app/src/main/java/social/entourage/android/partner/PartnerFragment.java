@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.base.EntourageDialogFragment;
+import timber.log.Timber;
 
 /**
  * Fragment that displays the details of a partner organisation
@@ -155,7 +156,7 @@ public class PartnerFragment extends EntourageDialogFragment {
     private void configureView() {
         // Check for valid activity
         if (getActivity() == null || getActivity().isFinishing()) {
-            Log.i("PartnerFragment", "No activity for this View");
+            Timber.tag("PartnerFragment").i("No activity for this View");
             return;
         }
 

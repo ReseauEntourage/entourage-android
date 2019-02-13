@@ -32,6 +32,6 @@ public class LoggerNewsFeedListener implements TourService.NewsFeedListener {
 
     @Override
     public void onNewsFeedReceived(List<Newsfeed> newsFeeds) {
-        Log.i(TAG, "NewsFeed received, size = " + newsFeeds.size());
+        Log.d(TAG, "NewsFeed received, size = " + newsFeeds.size());
     }
 }

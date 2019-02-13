@@ -33,6 +33,7 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.message.MessageActivity;
+import timber.log.Timber;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -368,7 +369,7 @@ public class PushNotificationManager {
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
-        Log.d("NOTIFICATION", "TAG = " + message.getPushNotificationTag() + " , ID = " + message.getPushNotificationId());
+        Timber.tag("NOTIFICATION").d("TAG = " + message.getPushNotificationTag() + " , ID = " + message.getPushNotificationId());
         notificationManager.notify(message.getPushNotificationTag(), message.getPushNotificationId(), notification);
     }
 
@@ -469,7 +470,7 @@ public class PushNotificationManager {
     public static Message getMessageFromIntent(Intent intent, Context context) {
         Bundle args = intent.getExtras();
         if (args == null) return null;
-        Log.d("notification", KEY_SENDER+"= "+args.getString(KEY_SENDER)+"; "+KEY_OBJECT+"= "+args.getString(KEY_OBJECT)+"; "+KEY_CONTENT+"= "+args.getString(KEY_CONTENT));
+        Timber.tag("notification").d(KEY_SENDER + "= " + args.getString(KEY_SENDER) + "; " + KEY_OBJECT + "= " + args.getString(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + args.getString(KEY_CONTENT));
         Message message = new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), 0);
         message.setPushNotificationId(getNotificationId(context, message));
         message.setPushNotificationTag(getNotificationTag(message));

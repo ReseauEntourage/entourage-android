@@ -25,6 +25,7 @@ import social.entourage.android.authentication.ComplexPreferences;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.newsfeed.FeedItemsStorage;
+import timber.log.Timber;
 
 /**
  * Application setup for Analytics, JodaTime and Dagger
@@ -164,7 +165,7 @@ public class EntourageApplication extends MultiDexApplication {
     public void finishLoginActivity() {
         LoginActivity loginActivity = getLoginActivity();
         if (loginActivity != null) {
-            Log.d(null, "Finishing login activity");
+            Timber.d("Finishing login activity");
             loginActivity.finish();
         }
     }

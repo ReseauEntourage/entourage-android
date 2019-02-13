@@ -57,6 +57,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 /**
  * Fragment to choose the location of an entourage
@@ -234,7 +235,7 @@ public class LocationFragment extends EntourageDialogFragment {
                         try {
                             map.setMyLocationEnabled(true);
                         } catch (SecurityException ex) {
-                            Log.d("LOCATION", ex.getLocalizedMessage());
+                            Timber.tag("LOCATION").e(ex);
                         }
                     } else {
                         BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));

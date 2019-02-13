@@ -33,6 +33,7 @@ import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
+import timber.log.Timber;
 
 /**
  * The base class for DrawerPresenter<br/>
@@ -258,7 +259,7 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
 
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    Log.e("CheckForUpdate", "Error connecting to API");
+                    Timber.e("Error connecting to API");
                 }
             });
             checkForUpdate=false;
@@ -296,13 +297,13 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                             if (activity.authenticationController.isAuthenticated()) {
                                 activity.authenticationController.saveUser(response.body().getUser());
                             }
-                            Log.d(LOG_TAG, "success");
+                            Timber.tag(LOG_TAG).d("success");
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
-                        Log.d(LOG_TAG, t.getLocalizedMessage());
+                        Timber.tag(LOG_TAG).e(t);
                     }
                 });
             }
@@ -335,7 +336,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                                 }
                             }
                         }
-                        Log.d(LOG_TAG, "success");
                     }
                     else {
                         Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
@@ -343,13 +343,14 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                         if (photoEditFragment != null) {
                             photoEditFragment.onPhotoSent(false);
                         }
+                        Timber.tag(LOG_TAG).e(activity.getString(R.string.user_photo_error_not_saved));
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                     activity.dismissProgressDialog();
-                    Log.d(LOG_TAG, t.getLocalizedMessage());
+                    Timber.tag(LOG_TAG).e(t);
                     Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
                     PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                     if (photoEditFragment != null) {
@@ -372,16 +373,16 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
             @Override
             public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Log.d(LOG_TAG, "updating application info with success");
+                    Timber.tag(LOG_TAG).d("updating application info with success");
                 }
                 else {
-                    Log.d(LOG_TAG, "updating application info error");
+                    Timber.tag(LOG_TAG).e("updating application info error");
                 }
             }
 
             @Override
             public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
-                Log.d(LOG_TAG, t.getLocalizedMessage());
+                Timber.tag(LOG_TAG).e(t.getLocalizedMessage());
             }
         });
     }

@@ -19,6 +19,8 @@ import com.google.android.gms.location.LocationSettingsResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -227,7 +229,7 @@ public class FusedLocationProvider {
     private static class FusedLocationConnectionFailedListener implements GoogleApiClient.OnConnectionFailedListener {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            Log.e("Entourage", "Cannot connect to Google API Client " + connectionResult);
+            Timber.e("Cannot connect to Google API Client " + connectionResult);
         }
     }
 }

@@ -9,6 +9,7 @@ import social.entourage.android.map.entourage.create.wizard.CreateActionWizardLi
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPage1Fragment;
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPage2Fragment;
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPage3Fragment;
+import timber.log.Timber;
 
 /**
  *
@@ -136,7 +137,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 handleStep3(option);
                 break;
             default:
-                Log.d("CREATE ACTION WIZARD", "Invalid step "+currentStep);
+                Timber.tag("CREATE ACTION WIZARD").e("Invalid step " + currentStep);
                 break;
         }
     }

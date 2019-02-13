@@ -31,6 +31,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+import timber.log.Timber;
 
 public class PhotoEditFragment extends EntourageDialogFragment implements CropImageView.OnSetImageUriCompleteListener{
 
@@ -171,7 +172,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
                 if (result.isSuccessful()) {
                     mListener.onPhotoChosen(result.getUri(), photoSource);
                 } else {
-                    Log.d("PhotoEdit", result.getError().getMessage());
+                    Timber.tag("PhotoEdit").e(result.getError().getMessage());
                     Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
                     fabButton.setEnabled(true);
                 }
