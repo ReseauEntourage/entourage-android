@@ -3,12 +3,12 @@ package social.entourage.android;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.util.ArrayMap;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.collection.ArrayMap;
+import androidx.appcompat.app.AlertDialog;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;

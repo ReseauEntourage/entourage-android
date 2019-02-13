@@ -3,7 +3,7 @@ package social.entourage.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.support.v4.content.PermissionChecker;
+import androidx.core.content.PermissionChecker;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;

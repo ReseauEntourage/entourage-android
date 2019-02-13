@@ -1,7 +1,7 @@
 package social.entourage.android.user.edit;
 
-import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
+import androidx.annotation.NonNull;
+import androidx.collection.ArrayMap;
 
 import javax.inject.Inject;
 

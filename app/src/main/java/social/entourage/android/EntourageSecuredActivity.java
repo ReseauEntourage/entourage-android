@@ -3,7 +3,7 @@ package social.entourage.android;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.content.PermissionChecker;
+import androidx.core.content.PermissionChecker;
 
 import javax.inject.Inject;
 

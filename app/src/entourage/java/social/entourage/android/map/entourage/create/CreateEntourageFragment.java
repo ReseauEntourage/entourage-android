@@ -1,7 +1,6 @@
 package social.entourage.android.map.entourage.create;
 
-import android.support.v4.app.DialogFragment;
-import android.util.Log;
+import androidx.fragment.app.DialogFragment;
 
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.api.model.map.Entourage;

@@ -1,6 +1,6 @@
 package social.entourage.android.base;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import social.entourage.android.api.model.TimestampedObject;

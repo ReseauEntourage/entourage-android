@@ -2,7 +2,7 @@ package social.entourage.android.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 
 import social.entourage.android.R;
@@ -12,7 +12,7 @@ import social.entourage.android.R;
  * Created by mihaiionescu on 30/01/2017.
  */
 
-public class PartnerLogoImageView extends android.support.v7.widget.AppCompatImageView {
+public class PartnerLogoImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     public PartnerLogoImageView(final Context context) {
         super(context);

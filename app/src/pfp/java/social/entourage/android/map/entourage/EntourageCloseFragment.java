@@ -3,7 +3,7 @@ package social.entourage.android.map.entourage;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.FeedItem;

@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 
 import social.entourage.android.R;
 
-public class FontTextView extends android.support.v7.widget.AppCompatTextView {
+public class FontTextView extends androidx.appcompat.widget.AppCompatTextView {
     public FontTextView(Context context) {
         super(context);
     }

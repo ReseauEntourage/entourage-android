@@ -1,7 +1,7 @@
 package social.entourage.android.user.role;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
 
 /**
  * UI information of an user role

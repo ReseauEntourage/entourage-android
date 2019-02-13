@@ -35,12 +35,12 @@ ext {
     targetSdkVersion = 28
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
-    supportVersion = "28.0.0"
+    supportVersion = '1.0.0'
     playServicesVersion = "16.0.0"
     daggerVersion = "2.21"
     okHttpVersion = "3.13.1"
     retrofitVersion = "2.5.0"
-    butterKnifeVersion = "9.0.0"
+    butterKnifeVersion = "10.0.0"
 
     versionMajor = 5
     versionMinor = 8

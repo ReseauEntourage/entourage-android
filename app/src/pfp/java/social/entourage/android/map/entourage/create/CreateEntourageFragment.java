@@ -2,7 +2,7 @@ package social.entourage.android.map.entourage.create;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.core.content.res.ResourcesCompat;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
