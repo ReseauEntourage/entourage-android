@@ -18,6 +18,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.google.firebase.messaging.RemoteMessage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -445,6 +447,17 @@ public class PushNotificationManager {
     // ----------------------------------
     // STATIC METHODS
     // ----------------------------------
+
+    /**
+     * Creates a {@link Message} from the remoteMessage received from the firebase messaging server
+     * @param remoteMessage remoteMessage from FirebaseMessaging
+     * @return the message
+     */
+    @Nullable
+    public static Message getMessageFromRemoteMessage(RemoteMessage remoteMessage) {
+        if (remoteMessage.getData().size()==0) return null;
+        return null;
+    }
 
     /**
      * Creates a {@link Message} from the Intent received from the server
