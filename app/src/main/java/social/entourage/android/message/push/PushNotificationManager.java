@@ -88,6 +88,7 @@ public class PushNotificationManager {
      * @param context The context into which to add the push notification
      */
     public void handlePushNotification(Message message, Context context) {
+        if (message == null) return;
         PushNotificationContent content = message.getContent();
         EntourageApplication application = EntourageApplication.get();
         if (content == null || application == null) return;

@@ -18,9 +18,6 @@
         <attr name="android:textSize" />
         <attr name="textBackground" format="reference"/>
     </declare-styleable>
-    <declare-styleable name="BadgeView">
-        <attr name="android:icon" />
-    </declare-styleable>
     <declare-styleable name="CountryCodePicker">
         <attr format="integer" name="ccp_defaultCode"/>
         <attr format="color" name="ccp_textColor"/>

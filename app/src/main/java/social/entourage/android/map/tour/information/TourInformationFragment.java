@@ -324,8 +324,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         return toReturn;
     }
 
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -1795,8 +1793,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (feedItem != null) {
             this.feedItem = feedItem;
             initializeView();
+
             if (feedItem.isPrivate()) {
                 loadPrivateCards();
+            } else if (presenter != null) {
+                presenter.getFeedItemMembers();
             }
         } else {
             if (getContext() == null) return;

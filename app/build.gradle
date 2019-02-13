@@ -208,7 +208,7 @@ dependencies {
     implementation 'net.danlew:android.joda:2.10.1'
     //TODO use new lib cropper 2.8.0 when migrating to AndroidX
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
-    implementation 'me.leolin:ShortcutBadger:1.1.13@aar'
+    implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     implementation 'com.mixpanel.android:mixpanel-android:5.4.3'
     implementation 'com.wdullaer:materialdatetimepicker:3.6.3'
     entourageImplementation 'com.facebook.android:facebook-core:4.38.1'

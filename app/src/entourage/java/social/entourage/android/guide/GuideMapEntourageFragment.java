@@ -351,6 +351,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 @Override
                 public void onMapReady(final GoogleMap googleMap) {
                     if (map != null) return;
+                    if (getActivity()== null) return;
                     map = googleMap;
                     clusterManager = new ClusterManager<>(getActivity(), map);
                     poiRenderer = new PoiRenderer(getActivity(), map, clusterManager);
