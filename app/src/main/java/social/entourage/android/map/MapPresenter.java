@@ -1,7 +1,7 @@
 package social.entourage.android.map;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlay;
@@ -16,7 +16,6 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.model.Invitation;

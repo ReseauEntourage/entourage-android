@@ -1,6 +1,6 @@
 package social.entourage.android.map.tour.information;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,7 +11,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageError;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.api.EntourageRequest;

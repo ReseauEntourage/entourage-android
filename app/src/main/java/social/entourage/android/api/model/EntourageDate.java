@@ -1,6 +1,6 @@
 package social.entourage.android.api.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

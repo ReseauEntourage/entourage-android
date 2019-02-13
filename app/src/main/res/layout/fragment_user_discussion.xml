@@ -140,12 +140,12 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_discussion_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/user_discussion_comment_layout"
         android:layout_below="@+id/user_discussion_title_layout">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

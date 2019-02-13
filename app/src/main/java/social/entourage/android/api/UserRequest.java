@@ -1,6 +1,6 @@
 package social.entourage.android.api;
 
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

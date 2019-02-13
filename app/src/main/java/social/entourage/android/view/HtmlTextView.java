@@ -10,7 +10,7 @@ import android.widget.TextView;
 import social.entourage.android.R;
 import social.entourage.android.tools.Utils;
 
-public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
+public class HtmlTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     private String htmlString;
 

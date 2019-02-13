@@ -2,7 +2,7 @@ package social.entourage.android.api.model.map;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.content.res.AppCompatResources;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.gson.annotations.SerializedName;
 

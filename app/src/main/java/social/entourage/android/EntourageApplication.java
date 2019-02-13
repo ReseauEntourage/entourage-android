@@ -3,9 +3,8 @@ package social.entourage.android;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
-import android.support.multidex.MultiDexApplication;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;

@@ -3,7 +3,7 @@ package social.entourage.android.base;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;

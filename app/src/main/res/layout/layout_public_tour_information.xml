@@ -149,7 +149,7 @@
                     android:layout_marginStart="10dp"
                     android:focusable="true">
 
-                    <android.support.v7.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:contentDescription="@string/empty_description"
@@ -168,7 +168,7 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tour_info_members"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

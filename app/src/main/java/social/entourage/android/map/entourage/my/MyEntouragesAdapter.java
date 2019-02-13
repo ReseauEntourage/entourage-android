@@ -2,8 +2,8 @@ package social.entourage.android.map.entourage.my;
 
 import java.util.List;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.InvitationList;

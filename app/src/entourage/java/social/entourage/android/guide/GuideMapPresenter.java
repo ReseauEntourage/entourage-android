@@ -1,8 +1,7 @@
 package social.entourage.android.guide;
 
 import android.location.Location;
-import android.support.annotation.NonNull;
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
