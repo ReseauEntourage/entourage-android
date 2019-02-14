@@ -1,9 +1,8 @@
 package social.entourage.android.authentification.login.slideshow;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage1Fragment;
 import social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage2Fragment;
 import social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage3Fragment;
