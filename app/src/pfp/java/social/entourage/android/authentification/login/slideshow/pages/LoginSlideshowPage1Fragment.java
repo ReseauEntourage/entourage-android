@@ -3,11 +3,11 @@ package social.entourage.android.authentification.login.slideshow.pages;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
 import social.entourage.android.R;
 
 /**
