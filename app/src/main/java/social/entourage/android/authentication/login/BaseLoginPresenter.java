@@ -215,7 +215,7 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
                 }
             });
         } else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_USER_NOT_FOUND);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_USER_SAVE_FAILED);
         }
     }
 

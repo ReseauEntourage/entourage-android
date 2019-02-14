@@ -245,6 +245,7 @@ public class EntourageEvents {
     public static final String EVENT_USER_EDIT_PHOTO = "EditPhoto";
     public static final String EVENT_USER_ROTATE_PHOTO = "RotatePhoto";
     public static final String EVENT_USER_SAVE = "SaveProfileEdits";
+    public static final String EVENT_USER_SAVE_FAILED = "SaveProfileEditFailed";
     public static final String EVENT_USER_TOBADGE = "ToBadgePageFromProfile";
     public static final String EVENT_USER_TONOTIFICATIONS = "ToNotifications";
 
