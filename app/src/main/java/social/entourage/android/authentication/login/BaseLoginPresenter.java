@@ -181,7 +181,7 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
     protected void updateUserToServer() {
         final User user = authenticationController.getUser();
 
-        if (activity != null) {
+        if (activity != null && user !=null) {
             activity.startLoader();
 
             final ArrayMap<String, Object> request = new ArrayMap<>();
@@ -214,6 +214,8 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
                     EntourageEvents.logEvent(user.getEmail() == null ? EntourageEvents.EVENT_NAME_SUBMIT_ERROR : EntourageEvents.EVENT_EMAIL_SUBMIT_ERROR);
                 }
             });
+        } else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_USER_NOT_FOUND);
         }
     }
 
