@@ -121,7 +121,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     protected MapEntourageFragment mapEntourageFragment;
     private UserFragment userFragment;
 
-    private SharedPreferences gcmSharedPreferences;
+    //private SharedPreferences gcmSharedPreferences;
     private String intentAction;
     private Tour intentTour;
 
@@ -142,8 +142,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (isFinishing()) return;
 
         configureToolbar();
-
-        gcmSharedPreferences = EntourageApplication.get().getSharedPreferences();
 
         if (getIntent() != null) {
             intentAction = getIntent().getAction();
@@ -530,10 +528,11 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.saveOngoingTour();
         }
         //remove user phone
-        SharedPreferences.Editor editor = gcmSharedPreferences.edit();
+        final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         User me = EntourageApplication.me(getApplicationContext());
         if(me != null) {
-            HashSet<String> loggedNumbers = (HashSet<String>) gcmSharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
+            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
             loggedNumbers.remove(me.getPhone());
             editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }

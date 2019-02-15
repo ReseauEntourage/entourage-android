@@ -142,6 +142,10 @@
         </activity>
         <activity android:name=".user.edit.photo.TakePhotoActivity">
         </activity>
+        <activity
+            android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
+            android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
+
 
         <service
             android:name=".map.tour.TourService"
@@ -153,37 +157,19 @@
             android:name=".message.push.PushNotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false"/>
-
-        <activity
-            android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
-            android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
-
-        <!-- Receivers -->
-        <receiver
-            android:name=".message.push.GcmBroadcastReceiver">
+        <service android:name=".message.push.GcmBroadcastReceiver">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </receiver>
+        </service>
 
-        <!--
-        TODO reactivate this
+        <!-- Receivers -->
+        <!--@TODO reactivate this
         <receiver android:name=".api.tape.EncounterTapeService$ConnectionChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
-        </receiver
-        -->
-
-        <!-- [START instanceId_listener] -->
-        <service
-            android:name=".message.push.GcmBroadcastReceiver"
-            android:stopWithTask="false" >
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <!-- [END instanceId_listener] -->
+        </receiver-->
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -202,6 +188,10 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/accent" />
         <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notifiation_channel" />
+
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2eca3faf46139913c216b9ee9cf8bee49e70fe20"/>
 
@@ -213,8 +203,9 @@
             android:name="com.mixpanel.android.MPConfig.ResourcePackageName"
             android:value="${applicationId}" />
 
-        <meta-data android:name="com.mixpanel.android.MPConfig.MinimumSessionDuration"
-                   android:value="0" />
+        <meta-data
+            android:name="com.mixpanel.android.MPConfig.MinimumSessionDuration"
+            android:value="0" />
 
         <uses-library
             android:name="org.apache.http.legacy"
