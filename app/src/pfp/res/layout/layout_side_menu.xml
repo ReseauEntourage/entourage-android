@@ -182,7 +182,6 @@
                 android:id="@+id/action_logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="50dp"
                 android:background="@color/sidemenu_item_background"
                 android:textColor="@color/accent"
                 android:textSize="@dimen/entourage_font_large"
@@ -191,6 +190,17 @@
                 app:showDivider="false"
                 app:showRightArrow="false"
                 app:textBackground="@drawable/bg_button_white_accent_rounded"/>
+
+            <TextView
+                android:id="@+id/drawer_footer_app_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/sidemenu_item_background"
+                android:minHeight="50dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/sidemenu_item_text_color"
+                android:layout_marginBottom="50dp"
+                android:textSize="@dimen/entourage_font_small"/>
 
         </LinearLayout>
     </ScrollView>
