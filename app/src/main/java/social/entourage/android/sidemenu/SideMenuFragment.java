@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import social.entourage.android.BuildConfig;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
@@ -46,6 +47,9 @@ public class SideMenuFragment extends Fragment {
 
     @BindView(R.id.drawer_header_user_name)
     TextView userName;
+
+    @BindView(R.id.drawer_footer_app_version)
+    TextView appVersion;
 
     @BindView(R.id.drawer_header_user_photo)
     ImageView userPhoto;
@@ -114,6 +118,12 @@ public class SideMenuFragment extends Fragment {
     // ----------------------------------
 
     private void initialiseView() {
+        if(BuildConfig.FLAVOR_env=="staging") {
+            appVersion.setText(
+                    getString(R.string.about_version_format, BuildConfig.VERSION_NAME)
+                            + "\nbuild: staging/"+BuildConfig.VERSION_DISPLAY_NAME);
+        }
+
         //add listener to user photo and name, that opens the user profile screen
         userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override

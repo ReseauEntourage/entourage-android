@@ -1124,11 +1124,6 @@ public class LoginActivity extends EntourageActivity
         return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
     }
 
-    @OnClick(R.id.login_startup_logo)
-    void onEntourageLogoClick() {
-        displayToast(VERSION + BuildConfig.VERSION_NAME);
-    }
-
     /************************
      * Action Zone View
      ************************/
