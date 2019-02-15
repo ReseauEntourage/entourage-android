@@ -321,7 +321,7 @@ public class EntourageEvents {
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
 
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false);
+        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true);
         people.set("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
         mFirebaseAnalytics.setUserProperty("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
 
