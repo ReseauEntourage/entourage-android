@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
@@ -455,9 +456,14 @@ public class PushNotificationManager {
      * @return the message
      */
     @Nullable
-    public static Message getMessageFromRemoteMessage(RemoteMessage remoteMessage) {
+    public static Message getMessageFromRemoteMessage(RemoteMessage remoteMessage, Context context) {
         if (remoteMessage.getData().size()==0) return null;
-        return null;
+        Map<String,String> msg = remoteMessage.getData();
+        Timber.tag("notification").d(KEY_SENDER + "= " + msg.get(KEY_SENDER) + "; " + KEY_OBJECT + "= " + msg.get(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + msg.get(KEY_CONTENT));
+        Message message = new Message(msg.get(KEY_SENDER), msg.get(KEY_OBJECT), msg.get(KEY_CONTENT), 0);
+        message.setPushNotificationId(getNotificationId(context, message));
+        message.setPushNotificationTag(getNotificationTag(message));
+        return message;
     }
 
     /**

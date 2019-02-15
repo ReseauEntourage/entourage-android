@@ -1,12 +1,12 @@
 package social.entourage.android.message.push;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.api.model.Message;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 import timber.log.Timber;
@@ -33,15 +33,11 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // ...
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Timber.tag(TAG).d("From: " + remoteMessage.getFrom());
+        Timber.tag(TAG).d("From: %s", remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Timber.tag(TAG).d("Message data payload: " + remoteMessage.getData());
+            Timber.tag(TAG).d("Message data payload: %s", remoteMessage.getData());
             //if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(gcm.getMessageType(intent)) && extras != null && !extras.isEmpty()) {
             //    if (intent.getExtras().containsKey("mp_message")) {
             if(remoteMessage.getData().containsKey("mp_message")) {
@@ -52,18 +48,17 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
             } else {
                 handleNow(remoteMessage);
             }
-
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Timber.tag(TAG).d("Message Notification Body: " + remoteMessage.getNotification().getBody());
+            Timber.tag(TAG).d("Message Notification Body: %s", remoteMessage.getNotification().getBody());
         }
     }
 
     private void handleNow(RemoteMessage remoteMessage) {
-        //Message message = PushNotificationManager.getMessageFromRemoteMessage(remoteMessage, getApplicationContext());
-        //PushNotificationManager.getInstance().handlePushNotification(message, this);
-        //BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
+        Message message = PushNotificationManager.getMessageFromRemoteMessage(remoteMessage, EntourageApplication.get());
+        PushNotificationManager.getInstance().handlePushNotification(message, this);
+        BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
     }
 }
