@@ -43,13 +43,12 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
                     Map<String, String> mp_message = remoteMessage.getData();
                     //mp_message now contains the notification's text
                     GCMReceiver mixpanelGCMReceiver = new GCMReceiver();
-                    Intent fakeIntent = new Intent(Intent.ACTION_DEFAULT/*which action to set*/);
+                    Intent fakeIntent = new Intent("com.google.android.c2dm.intent.RECEIVE");
                     for (String key : mp_message.keySet()) {
                         String value = mp_message.get(key);
                         fakeIntent.putExtra(key, value);
                     }
-                    mixpanelGCMReceiver.onReceive(this/*which context*/, fakeIntent);
-                    Timber.tag(TAG).e("MP Message: %s", remoteMessage.getData());
+                    mixpanelGCMReceiver.onReceive(this, fakeIntent);
             } else {
                 handleNow(remoteMessage);
             }
