@@ -1,9 +1,13 @@
 package social.entourage.android.message.push;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.mixpanel.android.mpmetrics.GCMReceiver;
+
+import java.util.Map;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.Message;
@@ -25,6 +29,7 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
             editor.apply();
             EntourageApplication.get().getMixpanel().getPeople().setPushRegistrationId(registrationId);
         } else {//TODO Check unregistration
+            Timber.tag(TAG).e("Cannot read new push token. Clearing existing one");
             EntourageApplication.get().getMixpanel().getPeople().clearPushRegistrationId();
         }
         BusProvider.getInstance().register(this);
@@ -33,18 +38,18 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Timber.tag(TAG).d("From: %s", remoteMessage.getFrom());
-
-        // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Timber.tag(TAG).d("Message data payload: %s", remoteMessage.getData());
-            //if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(gcm.getMessageType(intent)) && extras != null && !extras.isEmpty()) {
-            //    if (intent.getExtras().containsKey("mp_message")) {
-            if(remoteMessage.getData().containsKey("mp_message")) {
-                    String mp_message = remoteMessage.getData().get("mp_message");
+             if(remoteMessage.getData().containsKey("mp_message")) {
+                    Map<String, String> mp_message = remoteMessage.getData();
                     //mp_message now contains the notification's text
-                    //GCMReceiver mixpanelGCMReceiver = new GCMReceiver();
-                    //mixpanelGCMReceiver.onReceive(context, intent);
+                    GCMReceiver mixpanelGCMReceiver = new GCMReceiver();
+                    Intent fakeIntent = new Intent(Intent.ACTION_DEFAULT/*which action to set*/);
+                    for (String key : mp_message.keySet()) {
+                        String value = mp_message.get(key);
+                        fakeIntent.putExtra(key, value);
+                    }
+                    mixpanelGCMReceiver.onReceive(this/*which context*/, fakeIntent);
+                    Timber.tag(TAG).e("MP Message: %s", remoteMessage.getData());
             } else {
                 handleNow(remoteMessage);
             }
@@ -53,11 +58,12 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Timber.tag(TAG).d("Message Notification Body: %s", remoteMessage.getNotification().getBody());
+            //TODO handle this
         }
     }
 
     private void handleNow(RemoteMessage remoteMessage) {
-        Message message = PushNotificationManager.getMessageFromRemoteMessage(remoteMessage, EntourageApplication.get());
+        Message message = PushNotificationManager.getMessageFromRemoteMessage(remoteMessage, this);
         PushNotificationManager.getInstance().handlePushNotification(message, this);
         BusProvider.getInstance().post(new Events.OnPushNotificationReceived(message));
     }
