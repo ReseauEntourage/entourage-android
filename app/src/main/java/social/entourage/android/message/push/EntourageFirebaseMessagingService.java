@@ -15,9 +15,9 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 import timber.log.Timber;
 
-public class GcmBroadcastReceiver extends FirebaseMessagingService {
+public class EntourageFirebaseMessagingService extends FirebaseMessagingService {
 
-    public static final String TAG = "FcmBroadcastReceiver";
+    public static final String TAG = "EntourageFirebaseMessagingService";
 
     @Override
     public void onNewToken(String registrationId) {
@@ -29,7 +29,7 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
             editor.apply();
             EntourageApplication.get().getMixpanel().getPeople().setPushRegistrationId(registrationId);
         } else {//TODO Check unregistration
-            Timber.tag(TAG).e("Cannot read new push token. Clearing existing one");
+            Timber.e("Cannot read new push token. Clearing existing one");
             EntourageApplication.get().getMixpanel().getPeople().clearPushRegistrationId();
         }
         BusProvider.getInstance().register(this);
@@ -56,7 +56,7 @@ public class GcmBroadcastReceiver extends FirebaseMessagingService {
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Timber.tag(TAG).d("Message Notification Body: %s", remoteMessage.getNotification().getBody());
+            Timber.d("Message Notification Body: %s", remoteMessage.getNotification().getBody());
             //TODO handle this
         }
     }

@@ -135,7 +135,7 @@ public class TourServiceManager {
                                                  final EncounterRequest encounterRequest,
                                                  final NewsfeedRequest newsfeedRequest,
                                                  final EntourageRequest entourageRequest) {
-        Timber.tag("TourServiceManager").d("newInstance");
+        Timber.d("newInstance");
         ConnectivityManager connectivityManager = (ConnectivityManager) tourService.getSystemService(CONNECTIVITY_SERVICE);
         EntourageLocation entourageLocation = EntourageLocation.getInstance();
         User user = controller.getUser();
@@ -236,7 +236,7 @@ public class TourServiceManager {
         try {
             BusProvider.getInstance().unregister(this);
         } catch (IllegalArgumentException e) {
-            Timber.tag("TourServiceManager").d("No need to unregister");
+            Timber.d("No need to unregister");
         }
 
     }
@@ -283,7 +283,7 @@ public class TourServiceManager {
                     tourService.notifyListenersFeedItemClosed(false, tour);
                 }
                 isTourClosing = false;
-                Timber.tag(this.getClass().getSimpleName()).e(t);
+                Timber.e(t);
             }
         });
     }
@@ -682,7 +682,7 @@ public class TourServiceManager {
                         updateTourCoordinates();
                         tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
                     } else {
-                        Timber.tag(this.getClass().getSimpleName()).e("no location provided");
+                        Timber.e("no location provided");
                     }
                     provider.setLocationUpdateUserType(UserType.PRO);
 
@@ -881,7 +881,7 @@ public class TourServiceManager {
 
         @Override
         public void onLocationChanged(Location location) {
-            Timber.tag("LOCATION").d("onLocationChanged");
+            Timber.d("onLocationChanged");
             if (manager.entourageLocation.getCurrentLocation() == null) {
                 manager.entourageLocation.setInitialLocation(location);
             }

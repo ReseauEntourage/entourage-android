@@ -73,7 +73,7 @@ public class MessageActivity extends EntourageSecuredActivity {
     protected void onNewIntent(Intent intent) {
         Message message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         if (message != null) {
-            Timber.tag("notification:").d(message.getAuthor());
+            Timber.d(message.getAuthor());
             displayMessage(message);
         }
     }

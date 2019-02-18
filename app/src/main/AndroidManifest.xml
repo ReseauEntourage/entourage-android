@@ -157,7 +157,7 @@
             android:name=".message.push.PushNotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false"/>
-        <service android:name=".message.push.GcmBroadcastReceiver">
+        <service android:name=".message.push.EntourageFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

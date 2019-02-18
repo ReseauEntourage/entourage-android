@@ -30,12 +30,12 @@ allprojects {
 
 ext {
     compileSdkVersion = 28
-    buildToolsVersion = '28.0.3'
+    buildToolsVersion = "28.0.3"
     minSdkVersion = 18
     targetSdkVersion = 28
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
-    supportVersion = '1.0.0'
+    supportVersion = "1.0.0"
     playServicesVersion = "16.0.0"
     daggerVersion = "2.21"
     okHttpVersion = "3.13.1"
@@ -44,8 +44,8 @@ ext {
 
     versionMajor = 5
     versionMinor = 8
-    versionPatch = 'git rev-list HEAD --count'.execute().text.trim().toInteger()
-    versionBranchName = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
+    versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
+    versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = versionMajor * 100000 + versionMinor * 10000 + versionPatch % 10000
     versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
 }

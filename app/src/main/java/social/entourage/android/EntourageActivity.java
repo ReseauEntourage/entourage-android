@@ -14,8 +14,6 @@ import social.entourage.android.webview.WebViewFragment;
  */
 public abstract class EntourageActivity extends AppCompatActivity {
 
-    protected final String logTag = this.getClass().getSimpleName();
-
     private ProgressDialog progressDialog;
 
     private boolean safeToCommit = true;
