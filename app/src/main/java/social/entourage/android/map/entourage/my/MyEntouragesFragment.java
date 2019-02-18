@@ -404,12 +404,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         refreshInvitationsTimerTask = new TimerTask() {
             @Override
             public void run() {
-                refreshInvitationsHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshInvitations();
-                    }
-                });
+                refreshInvitationsHandler.post(MyEntouragesFragment.this::refreshInvitations);
             }
         };
         //schedule the timer

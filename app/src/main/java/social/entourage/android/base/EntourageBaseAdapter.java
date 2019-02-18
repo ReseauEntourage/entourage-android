@@ -43,10 +43,11 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
 
         BaseCardViewHolder cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType);
-        if (cardViewHolder != null) {
-            cardViewHolder.setViewHolderListener(viewHolderListener);
+        if (cardViewHolder == null) {
+            return null;
         }
 
+        cardViewHolder.setViewHolderListener(viewHolderListener);
         if (viewType == TimestampedObject.TOP_VIEW) {
             mapViewHolder = (MapViewHolder)cardViewHolder;
             mapViewHolder.setMapReadyCallback(onMapReadyCallback);

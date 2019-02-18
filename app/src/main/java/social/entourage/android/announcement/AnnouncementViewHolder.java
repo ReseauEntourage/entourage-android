@@ -74,16 +74,13 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
         actLeftDivider = itemView.findViewById(R.id.announcement_card_divider_left);
         actRightDivider = itemView.findViewById(R.id.announcement_card_divider_right);
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (actUrl == null) return;
-                Intent actIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(actUrl));
-                try {
-                    itemView.getContext().startActivity(actIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(itemView.getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
+        View.OnClickListener onClickListener = v -> {
+            if (actUrl == null) return;
+            Intent actIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(actUrl));
+            try {
+                itemView.getContext().startActivity(actIntent);
+            } catch (Exception ex) {
+                Toast.makeText(itemView.getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
             }
         };
 

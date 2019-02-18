@@ -2,6 +2,8 @@ package social.entourage.android.user;
 
 import android.util.Log;
 import com.google.gson.annotations.SerializedName;
+
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import social.entourage.android.api.UserRequest;
 import timber.log.Timber;
@@ -29,7 +31,7 @@ public class PrepareAvatarUploadRepository implements retrofit2.Callback<Prepare
 
 
     @Override
-    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+    public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
         if (response.isSuccessful() && response.body() != null) {
             this.callback.onPrepareUploadSuccess(response.body().avatarKey, response.body().presignedUrl);
         } else {
@@ -38,7 +40,7 @@ public class PrepareAvatarUploadRepository implements retrofit2.Callback<Prepare
     }
 
     @Override
-    public void onFailure(Call<Response> call, Throwable t) {
+    public void onFailure(@NonNull Call<Response> call, @NonNull Throwable t) {
         Timber.d(t);
         this.callback.onRepositoryError();
     }

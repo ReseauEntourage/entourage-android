@@ -26,6 +26,7 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
         this.authenticationController = authenticationController;
     }
 
+    @NonNull
     @Override
     public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
         okhttp3.Request request = chain.request();

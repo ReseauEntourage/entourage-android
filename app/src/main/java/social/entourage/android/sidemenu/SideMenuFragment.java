@@ -118,32 +118,17 @@ public class SideMenuFragment extends Fragment {
     // ----------------------------------
 
     private void initialiseView() {
-        if(BuildConfig.FLAVOR_env=="staging") {
+        if(BuildConfig.FLAVOR_env.equals("staging")) {
             appVersion.setText(
                     getString(R.string.about_version_format, BuildConfig.VERSION_NAME)
                             + "\nbuild: staging/"+BuildConfig.VERSION_DISPLAY_NAME);
         }
 
         //add listener to user photo and name, that opens the user profile screen
-        userPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectMenuAction(R.id.action_user);
-            }
-        });
-        userName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectMenuAction(R.id.action_user);
-            }
-        });
+        userPhoto.setOnClickListener(v -> selectMenuAction(R.id.action_user));
+        userName.setOnClickListener(v -> selectMenuAction(R.id.action_user));
         //add listener to modify profile text view
-        userEditProfileTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                selectMenuAction(R.id.action_edit_user);
-            }
-        });
+        userEditProfileTextView.setOnClickListener(v -> selectMenuAction(R.id.action_edit_user));
 
         //add listeners to side menu items
         if (getView() != null) {
@@ -153,12 +138,7 @@ public class SideMenuFragment extends Fragment {
                 for (int j = 0; j < itemsCount; j++) {
                     View child = sideMenuItemsLayout.getChildAt(j);
                     if (child instanceof SideMenuItemView) {
-                        child.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                selectMenuAction(v.getId());
-                            }
-                        });
+                        child.setOnClickListener(v -> selectMenuAction(v.getId()));
                     }
                 }
             }

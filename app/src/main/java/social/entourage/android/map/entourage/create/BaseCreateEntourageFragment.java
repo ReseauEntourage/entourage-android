@@ -699,12 +699,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @Override
     public void onDateSet(final DatePickerDialog view, final int year, final int monthOfYear, final int dayOfMonth) {
         entourageDate.set(year, monthOfYear, dayOfMonth);
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                showTimePicker();
-            }
-        });
+        new Handler().post(this::showTimePicker);
     }
 
     @Override

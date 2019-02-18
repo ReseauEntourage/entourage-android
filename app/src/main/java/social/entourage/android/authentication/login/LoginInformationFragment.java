@@ -86,7 +86,7 @@ public class LoginInformationFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof OnEntourageInformationFragmentFinish)) {
             throw new ClassCastException(activity.toString()  + " must implement OnEntourageInformationFragmentFinish");

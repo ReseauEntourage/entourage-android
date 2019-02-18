@@ -127,7 +127,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         super.onDismiss(dialog);
         for (FragmentListener fragmentListener: fragmentListeners) {
             fragmentListener.onUserEditActionZoneFragmentDismiss();

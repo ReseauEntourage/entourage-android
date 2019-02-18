@@ -1,5 +1,6 @@
 package social.entourage.android.user;
 
+import androidx.annotation.NonNull;
 import okhttp3.*;
 
 import javax.inject.Inject;
@@ -30,12 +31,12 @@ public class AvatarUploadRepository implements Callback {
     }
 
     @Override
-    public void onFailure(Call call, IOException e) {
+    public void onFailure(@NonNull Call call, @NonNull IOException e) {
         callback.onRepositoryError();
     }
 
     @Override
-    public void onResponse(Call call, Response response) {
+    public void onResponse(@NonNull Call call, @NonNull Response response) {
         if (response.isSuccessful()) {
             callback.onUploadSuccess();
         } else {

@@ -25,8 +25,4 @@ class LoggerNewsFeedListener : TourService.NewsFeedListener {
     override fun onNewsFeedReceived(newsFeeds: List<Newsfeed>) {
         Timber.d("NewsFeed received, size = %d", newsFeeds.size)
     }
-
-    companion object {
-        private val TAG = LoggerNewsFeedListener::class.java.simpleName
-    }
 }

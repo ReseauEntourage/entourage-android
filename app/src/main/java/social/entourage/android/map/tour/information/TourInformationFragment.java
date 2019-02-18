@@ -382,7 +382,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof  OnTourInformationFragmentFinish)) {
             throw new ClassCastException(activity.toString() + " must implement OnTourInformationFragmentFinish");
@@ -430,12 +430,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (requestCode == READ_CONTACTS_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        onInviteContactsClicked();
-                    }
-                });
+                handler.post(this::onInviteContactsClicked);
             } else {
                 Toast.makeText(getActivity(), R.string.invite_contacts_permission_error, Toast.LENGTH_SHORT).show();
             }
@@ -1297,12 +1292,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM));
                 }
 
-                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                    @Override
-                    public void onMapLoaded() {
-                        getMapSnapshot();
-                    }
-                });
+                googleMap.setOnMapLoadedCallback(TourInformationFragment.this::getMapSnapshot);
 
                 googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                     @Override
@@ -1591,9 +1581,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         actLayout.setVisibility(View.VISIBLE);
 
         actButton.setPadding(0, 0, 0, 0);
-        if (Build.VERSION.SDK_INT >= 16) {
-            actButton.setPaddingRelative(0, 0, 0, 0);
-        }
+        actButton.setPaddingRelative(0, 0, 0, 0);
 
         if (feedItem.isFreezed()) {
             // MI: Instead of hiding it, display the freezed text
@@ -1601,9 +1589,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             actButton.setTextColor(getResources().getColor(feedItem.getFreezedCTAColor()));
             actButton.setText(feedItem.getFreezedCTAText());
             actButton.setPadding(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
-            if (Build.VERSION.SDK_INT >= 16) {
-                actButton.setPaddingRelative(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
-            }
+            actButton.setPaddingRelative(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
         else {
