@@ -7,6 +7,8 @@ import android.util.Log;
 import javax.inject.Inject;
 import java.io.File;
 
+import timber.log.Timber;
+
 public class AvatarUploadPresenter implements PrepareAvatarUploadRepository.Callback, AvatarUploadRepository.Callback {
     private final AvatarUpdatePresenter presenter;
     private AvatarUploadView activity;
@@ -44,7 +46,7 @@ public class AvatarUploadPresenter implements PrepareAvatarUploadRepository.Call
         // Delete the temporary file
         if (!file.delete()) {
             // Failed to delete the file
-            Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
+            Timber.d("Failed to delete the temporary photo file");
         }
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override

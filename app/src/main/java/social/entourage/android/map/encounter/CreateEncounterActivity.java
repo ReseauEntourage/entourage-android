@@ -246,7 +246,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {
             message = getString(R.string.create_encounter_failure);
-            Timber.tag(logTag).e(message);
+            Timber.e(message);
             EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }
@@ -265,7 +265,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {
             message = getString(R.string.update_encounter_failure);
-            Timber.tag(logTag).e(message);
+            Timber.e(message);
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED);
 
         }

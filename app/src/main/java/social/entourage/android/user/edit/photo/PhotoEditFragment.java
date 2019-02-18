@@ -171,7 +171,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
                 if (result.isSuccessful()) {
                     mListener.onPhotoChosen(result.getUri(), photoSource);
                 } else {
-                    Timber.tag("PhotoEdit").e(result.getError().getMessage());
+                    Timber.e(result.getError().getMessage());
                     Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
                     fabButton.setEnabled(true);
                 }

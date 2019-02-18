@@ -4,6 +4,7 @@ import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 import retrofit2.Call;
 import social.entourage.android.api.UserRequest;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 
@@ -38,7 +39,7 @@ public class PrepareAvatarUploadRepository implements retrofit2.Callback<Prepare
 
     @Override
     public void onFailure(Call<Response> call, Throwable t) {
-        Log.d("PrepareAvatarUploadRepo", t.getMessage());
+        Timber.d(t);
         this.callback.onRepositoryError();
     }
 

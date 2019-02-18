@@ -370,7 +370,7 @@ public class PushNotificationManager {
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
-        Timber.tag("NOTIFICATION").d("TAG = " + message.getPushNotificationTag() + " , ID = " + message.getPushNotificationId());
+        Timber.d("TAG = " + message.getPushNotificationTag() + " , ID = " + message.getPushNotificationId());
         notificationManager.notify(message.getPushNotificationTag(), message.getPushNotificationId(), notification);
     }
 
@@ -459,7 +459,7 @@ public class PushNotificationManager {
     public static Message getMessageFromRemoteMessage(RemoteMessage remoteMessage, Context context) {
         if (remoteMessage.getData().size()==0) return null;
         Map<String,String> msg = remoteMessage.getData();
-        Timber.tag("notification").d(KEY_SENDER + "= " + msg.get(KEY_SENDER) + "; " + KEY_OBJECT + "= " + msg.get(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + msg.get(KEY_CONTENT));
+        Timber.d(KEY_SENDER + "= " + msg.get(KEY_SENDER) + "; " + KEY_OBJECT + "= " + msg.get(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + msg.get(KEY_CONTENT));
         Message message = new Message(msg.get(KEY_SENDER), msg.get(KEY_OBJECT), msg.get(KEY_CONTENT), 0);
         message.setPushNotificationId(getNotificationId(context, message));
         message.setPushNotificationTag(getNotificationTag(message));
@@ -476,7 +476,7 @@ public class PushNotificationManager {
     public static Message getMessageFromIntent(Intent intent, Context context) {
         Bundle args = intent.getExtras();
         if (args == null) return null;
-        Timber.tag("notification").d(KEY_SENDER + "= " + args.getString(KEY_SENDER) + "; " + KEY_OBJECT + "= " + args.getString(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + args.getString(KEY_CONTENT));
+        Timber.d(KEY_SENDER + "= " + args.getString(KEY_SENDER) + "; " + KEY_OBJECT + "= " + args.getString(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + args.getString(KEY_CONTENT));
         Message message = new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), 0);
         message.setPushNotificationId(getNotificationId(context, message));
         message.setPushNotificationTag(getNotificationTag(message));

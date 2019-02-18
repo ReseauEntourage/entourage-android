@@ -156,7 +156,7 @@ public class PartnerFragment extends EntourageDialogFragment {
     private void configureView() {
         // Check for valid activity
         if (getActivity() == null || getActivity().isFinishing()) {
-            Timber.tag("PartnerFragment").i("No activity for this View");
+            Timber.i("No activity for this View");
             return;
         }
 

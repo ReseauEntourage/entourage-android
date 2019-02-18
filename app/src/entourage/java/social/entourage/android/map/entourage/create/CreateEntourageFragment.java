@@ -136,7 +136,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 handleStep3(option);
                 break;
             default:
-                Timber.tag("CREATE ACTION WIZARD").e("Invalid step " + currentStep);
+                Timber.e("Invalid step " + currentStep);
                 break;
         }
     }

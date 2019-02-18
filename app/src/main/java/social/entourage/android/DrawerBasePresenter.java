@@ -382,7 +382,7 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
 
             @Override
             public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
-                Timber.tag(LOG_TAG).e(t.getLocalizedMessage());
+                Timber.tag(LOG_TAG).e(t);
             }
         });
     }

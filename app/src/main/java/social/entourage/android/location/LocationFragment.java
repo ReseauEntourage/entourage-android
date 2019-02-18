@@ -233,7 +233,7 @@ public class LocationFragment extends EntourageDialogFragment {
                         try {
                             map.setMyLocationEnabled(true);
                         } catch (SecurityException ex) {
-                            Timber.tag("LOCATION").e(ex);
+                            Timber.e(ex);
                         }
                     } else {
                         BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));

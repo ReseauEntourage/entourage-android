@@ -83,7 +83,7 @@ public class GuideMapPresenter {
 
                 @Override
                 public void onFailure(@NonNull Call<MapResponse> call, @NonNull Throwable t) {
-                    Timber.tag("GuideMapEntourageFrag").e(t, "Impossible to retrieve POIs");
+                    Timber.e(t, "Impossible to retrieve POIs");
                 }
             });
         }

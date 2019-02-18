@@ -23,7 +23,6 @@ public class JSONResourceReader {
 
     // Our JSON, in string form.
     private String jsonString;
-    private static final String LOGTAG = JSONResourceReader.class.getSimpleName();
 
     /**
      * Read from a resources file and create a {@link JSONResourceReader} object that will allow the creation of other
@@ -43,12 +42,12 @@ public class JSONResourceReader {
                 line = reader.readLine();
             }
         } catch (Exception e) {
-            Timber.tag(LOGTAG).e(e, "Unhandled exception while using JSONResourceReader");
+            Timber.e(e, "Unhandled exception while using JSONResourceReader");
         } finally {
             try {
                 resourceReader.close();
             } catch (Exception e) {
-                Timber.tag(LOGTAG).e(e, "Unhandled exception while using JSONResourceReader");
+                Timber.e(e, "Unhandled exception while using JSONResourceReader");
             }
         }
 

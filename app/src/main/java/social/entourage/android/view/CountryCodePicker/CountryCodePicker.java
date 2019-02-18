@@ -194,7 +194,7 @@ public class CountryCodePicker extends RelativeLayout {
 
             //default country
             mDefaultCountryNameCode = a.getString(R.styleable.CountryCodePicker_ccp_defaultNameCode);
-            Timber.tag(TAG).d("mDefaultCountryNameCode from attribute = " + mDefaultCountryNameCode);
+            Timber.d("mDefaultCountryNameCode from attribute = " + mDefaultCountryNameCode);
             boolean setUsingNameCode = false;
             if (mDefaultCountryNameCode != null && !mDefaultCountryNameCode.isEmpty()) {
                 String temp = mDefaultCountryNameCode.trim();
@@ -290,7 +290,7 @@ public class CountryCodePicker extends RelativeLayout {
                 setDefaultCountryFlagAndCode();
             }
         } catch (Exception e) {
-            Timber.tag(TAG).e(e);
+            Timber.e(e);
             if (isInEditMode()) {
                 mTvSelectedCountry.setText(getContext().getString(R.string.phone_code,
                         getContext().getString(R.string.country_france_number)));
@@ -810,7 +810,7 @@ public class CountryCodePicker extends RelativeLayout {
                     mSelectedCountry.getPhoneCode() + mRegisteredPhoneNumberTextView.getText().toString();
         } else {
             fullNumber = mSelectedCountry.getPhoneCode();
-            Timber.tag(TAG).w(getContext().getString(R.string.error_unregister_carrier_number));
+            Timber.w(getContext().getString(R.string.error_unregister_carrier_number));
         }
         return fullNumber;
     }
@@ -834,7 +834,7 @@ public class CountryCodePicker extends RelativeLayout {
         if (mRegisteredPhoneNumberTextView != null) {
             mRegisteredPhoneNumberTextView.setText(carrierNumber);
         } else {
-            Timber.tag(TAG).w(getContext().getString(R.string.error_unregister_carrier_number));
+            Timber.w(getContext().getString(R.string.error_unregister_carrier_number));
         }
     }
 
@@ -965,7 +965,7 @@ public class CountryCodePicker extends RelativeLayout {
             mTypeFace = typeFace;
             mTvSelectedCountry.setTypeface(typeFace);
         } catch (Exception e) {
-            Timber.tag(TAG).e("Invalid fontPath. " + e.toString());
+            Timber.e("Invalid fontPath. " + e.toString());
         }
     }
 
