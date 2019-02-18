@@ -103,7 +103,7 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         resetSelectedCategory();
         super.onDismiss(dialog);
     }

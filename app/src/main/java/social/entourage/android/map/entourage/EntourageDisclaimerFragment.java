@@ -106,19 +106,14 @@ public class EntourageDisclaimerFragment extends EntourageDialogFragment {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_DISCLAIMER_ACCEPT);
                     // trigger the accept after a delay
                     Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onOkClicked();
-                        }
-                    }, 1000);
+                    handler.postDelayed(EntourageDisclaimerFragment.this::onOkClicked, 1000);
                 }
             }
         });
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

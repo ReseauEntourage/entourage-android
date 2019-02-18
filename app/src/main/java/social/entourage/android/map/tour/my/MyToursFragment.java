@@ -125,7 +125,7 @@ public class MyToursFragment extends EntourageDialogFragment implements TabHost.
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

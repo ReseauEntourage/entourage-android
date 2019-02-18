@@ -77,7 +77,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof PhotoChooseInterface) {
             mListener = (PhotoChooseInterface) context;
@@ -171,7 +171,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
                 if (result.isSuccessful()) {
                     mListener.onPhotoChosen(result.getUri(), photoSource);
                 } else {
-                    Timber.e(result.getError().getMessage());
+                    Timber.e(result.getError());
                     Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
                     fabButton.setEnabled(true);
                 }

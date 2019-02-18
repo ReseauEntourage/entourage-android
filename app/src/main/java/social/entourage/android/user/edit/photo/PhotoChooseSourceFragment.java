@@ -90,7 +90,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof PhotoChooseInterface) {
             mListener = (PhotoChooseInterface) context;
