@@ -48,4 +48,5 @@ ext {
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = versionMajor * 100000 + versionMinor * 10000 + versionPatch % 10000
     versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
+    appBundleName = System.env.APPBUNDLE_NAME ? System.env.APPBUNDLE_NAME : "app"
 }

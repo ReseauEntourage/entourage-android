@@ -27,7 +27,7 @@ android {
         versionName rootProject.ext.versionNameProd
 
         buildConfigField 'String', 'VERSION_DISPLAY_NAME', '"' + rootProject.ext.versionBranchName +'"'
-        setProperty("archivesBaseName", "app-$versionNameProd")
+        setProperty("archivesBaseName", "$appBundleName-$versionNameProd")
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
