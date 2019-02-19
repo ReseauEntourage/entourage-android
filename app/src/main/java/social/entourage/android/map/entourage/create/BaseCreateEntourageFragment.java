@@ -630,6 +630,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                     positionTextView.setText(place.getAddress().toString());
                 }
                 entourageMetadata.setGooglePlaceId(place.getId());
+                this.location = place.getLatLng();
             } else {
                 positionTextView.setText("");
             }
