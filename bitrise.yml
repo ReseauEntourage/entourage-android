@@ -63,10 +63,6 @@ workflows:
     - install-missing-android-tools: {}
     - gradle-runner:
         inputs:
-        - apk_file_include_filter: "*.aab"
-        - gradle_task: "$GRADLE_TASK_AAB"
-    - gradle-runner:
-        inputs:
         - apk_file_include_filter: "*.apk"
         - gradle_task: "$GRADLE_TASK"
     - deploy-to-bitrise-io: {}
@@ -84,7 +80,7 @@ workflows:
         - message: |-
             New DEV android build is available: $BITRISE_BUILD_NUMBER  here:
             $BITRISE_APP_URL
-        - message_on_error: 'Oups, build has failed for android... @francois @mihai.ionescu '
+        - message_on_error: 'Oups, build has failed for android... @francois @gregoire '
         - icon_url: ''
         - icon_url_on_error: ''
         - pretext_on_error: "*Build Failed!* for *V5.0*"
@@ -100,15 +96,16 @@ workflows:
     - opts:
         is_expand: false
       GRADLE_TASK_AAB: bundleEntourageProdRelease
-  develop-backup:
+  prod_entourage:
     steps:
     - activate-ssh-key:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone: {}
-    - install-missing-android-tools@2.3.3: {}
+    - install-missing-android-tools: {}
     - gradle-runner:
         inputs:
-        - gradle_task: "$GRADLE_TASK"
+        - apk_file_include_filter: "*.aab"
+        - gradle_task: "$GRADLE_TASK_AAB"
     - deploy-to-bitrise-io: {}
     - slack:
         inputs:
@@ -116,16 +113,25 @@ workflows:
         - from_username: Bitrise
         - from_username_on_error: Bitrise
         - message: |-
-            New DEV android build is available: $BITRISE_BUILD_NUMBER  here:
+            New PROD android build is available: $BITRISE_BUILD_NUMBER  here:
             $BITRISE_APP_URL
-        - message_on_error: 'Oups, build has failed for android... @francois @mihai.ionescu '
+        - message_on_error: 'Oups, production build has failed for android... @francois
+            @gregoire '
         - icon_url: ''
         - icon_url_on_error: ''
-        - pretext_on_error: "*Build Failed!* for *V5.0*"
-        - pretext: "*Build Succeeded!* for *V5.0* (dev only)"
+        - pretext_on_error: "*Build Failed!"
+        - pretext: "*Build Succeeded for ENTOURAGE! (production only)"
+        - fields: |
+            App|${BITRISE_APP_TITLE}
+            Branch|${BITRISE_GIT_BRANCH}
+            Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
         - api_token: "$SLACK__BOT_API_TOKEN"
         - channel: "#androiddev"
-  primary:
+    envs:
+    - opts:
+        is_expand: false
+      GRADLE_TASK_AAB: bundleEntourageProdRelease
+  prod_pfp:
     steps:
     - activate-ssh-key:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
@@ -133,7 +139,8 @@ workflows:
     - install-missing-android-tools: {}
     - gradle-runner:
         inputs:
-        - gradle_task: "$GRADLE_TASK"
+        - apk_file_include_filter: "*.aab"
+        - gradle_task: "$GRADLE_TASK_AAB"
     - deploy-to-bitrise-io: {}
     - slack:
         inputs:
@@ -141,36 +148,34 @@ workflows:
         - from_username: Bitrise
         - from_username_on_error: Bitrise
         - message: |-
-            New DEV android build is available: $BITRISE_BUILD_NUMBER  here:
+            New PROD android build is available: $BITRISE_BUILD_NUMBER  here:
             $BITRISE_APP_URL
-        - message_on_error: 'Oups, build has failed for android... @francois @mihai.ionescu '
+        - message_on_error: 'Oups, production build has failed for android... @francois
+            @gregoire '
         - icon_url: ''
         - icon_url_on_error: ''
-        - pretext: "*Build Succeeded!* : ready for *QA*"
+        - pretext_on_error: "*Build Failed!"
+        - pretext: "*Build Succeeded for PFP! (production only)"
+        - fields: |
+            App|${BITRISE_APP_TITLE}
+            Branch|${BITRISE_GIT_BRANCH}
+            Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
+        - api_token: "$SLACK__BOT_API_TOKEN"
         - channel: "#androiddev"
-  NEWwhitelabel:
+    envs:
+    - opts:
+        is_expand: false
+      GRADLE_TASK_AAB: bundlePfpProdRelease
+  prod:
     steps:
-    - activate-ssh-key:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone: {}
-    - install-missing-android-tools: {}
-    - android-build:
+    - trigger-bitrise-workflow:
         inputs:
-        - variant: entourageStagingRelease
-        - module: app
-    - android-build:
+        - workflow_id: prod_entourage
+        - api_token: "$BUILD_TRIGGER"
+    - trigger-bitrise-workflow:
         inputs:
-        - variant: pfpStagingRelease
-        - module: app
-    - android-build:
-        inputs:
-        - variant: entourageProdRelease
-        - module: app
-    - android-build:
-        inputs:
-        - variant: pfpProdRelease
-        - module: app
-    - deploy-to-bitrise-io: {}
+        - workflow_id: prod_pfp
+        - api_token: "$BUILD_TRIGGER"
 app:
   envs:
   - opts:
@@ -187,4 +192,4 @@ app:
     GRADLE_TASK_TEST: 'testPreprodDebugUnitTest '
   - opts:
       is_expand: false
-    GRADLE_TASK_LINT: 'lintEntourageProdProdRelease lintPfpProdProdRelease '
+    GRADLE_TASK_LINT: 'lintEntourageProdRelease lintPfpProdRelease '
