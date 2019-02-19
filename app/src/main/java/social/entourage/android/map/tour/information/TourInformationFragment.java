@@ -1202,11 +1202,24 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commitAllowingStateLoss();
 
+        drawFeedItemOnMap();
+    }
+
+    private void updateMap() {
+        if (mapFragment == null || !mapFragment.isAdded()) {
+            initializeMap();
+        } else {
+            drawFeedItemOnMap();
+        }
+    }
+
+    private void drawFeedItemOnMap() {
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final GoogleMap googleMap) {
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
+                googleMap.clear();
 
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                     Tour tour = (Tour)feedItem;
@@ -1787,6 +1800,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         feedItem = updatedEntourage;
 
         updateFeedItemInfo();
+        updateMap();
     }
 
     @Subscribe
