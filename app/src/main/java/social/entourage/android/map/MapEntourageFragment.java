@@ -1570,7 +1570,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             boolean isPro = (me != null && me.isPro());
 
             if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.GONE);
-            if (startTourButton != null) startTourButton.setVisibility(isPro ? View.INVISIBLE : View.GONE);
+            if (startTourButton != null) startTourButton.setVisibility(isPro ? View.VISIBLE : View.GONE);
             if (tourStopButton != null) tourStopButton.setVisibility(View.GONE);
         }
     }
