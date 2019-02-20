@@ -21,6 +21,7 @@ import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourJoinMessage;
 import social.entourage.android.api.model.map.TourUser;
+import timber.log.Timber;
 
 /**
  * Created by mihaiionescu on 07/03/16.
@@ -116,16 +117,20 @@ public class TourJoinRequestPresenter {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    if (fragment.getActivity() != null) {
-                        Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
+                try {
+                    if (response.isSuccessful()) {
+                        if (fragment.getActivity() != null) {
+                            Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
+                        }
+                        fragment.dismiss();
                     }
-                    fragment.dismiss();
-                }
-                else {
-                    if (fragment.getActivity() != null) {
-                        Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                    else {
+                        if (fragment.getActivity() != null) {
+                            Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
+                        }
                     }
+                } catch(IllegalStateException e) {
+                    Timber.e(e);
                 }
             }
 
