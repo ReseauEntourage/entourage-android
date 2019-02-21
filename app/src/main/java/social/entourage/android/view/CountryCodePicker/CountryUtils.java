@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import social.entourage.android.R;
+import timber.log.Timber;
 
 /**
  * Util related to Country
@@ -761,12 +762,7 @@ class CountryUtils {
                 context.getString(R.string.country_zimbabwe_number),
                 context.getString(R.string.country_zimbabwe_name)));
 
-        Collections.sort(countries, new Comparator<Country>() {
-            @Override
-            public int compare(final Country o1, final Country o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
+        Collections.sort(countries, (o1, o2) -> o1.getName().compareTo(o2.getName()));
 
         return countries;
     }
@@ -895,7 +891,7 @@ class CountryUtils {
     /**
      * Return list of Map for timezone and iso country.
      *
-     * @param context
+     * @param context current context
      * @return List of timezone and country.
      */
     private static Map<String, List<String>> getTimeZoneAndCountryISOs(Context context) {
@@ -931,7 +927,7 @@ class CountryUtils {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
         return timeZoneAndCountryISOs;
     }

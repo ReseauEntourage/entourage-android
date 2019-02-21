@@ -585,7 +585,13 @@ public class DrawerActivity extends EntourageSecuredActivity
             PushNotificationContent content = message.getContent();
             if (content != null) {
                 if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
-                    showMyEntourages();
+                    if (content.isTourRelated()) {
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
+                    } else if (content.isEntourageRelated()) {
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
+                    } else {
+                        showMyEntourages();
+                    }
                 }
                 else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
                     if (content.isTourRelated()) {

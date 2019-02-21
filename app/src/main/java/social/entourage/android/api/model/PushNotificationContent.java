@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import androidx.annotation.Nullable;
+
 /**
  * Created by mihaiionescu on 18/03/16.
  */
@@ -17,6 +19,9 @@ public class PushNotificationContent implements Serializable {
     public static final String TYPE_NEW_JOIN_REQUEST = "NEW_JOIN_REQUEST";
     public static final String TYPE_ENTOURAGE_INVITATION = "ENTOURAGE_INVITATION";
     public static final String TYPE_INVITATION_STATUS = "INVITATION_STATUS";
+
+    private static final String TAG_TOUR= "tour-";
+    private static final String TAG_ENTOURAGE = "entourage-";
 
     public Extra extra;
 
@@ -65,20 +70,37 @@ public class PushNotificationContent implements Serializable {
         return message.substring(index + 2);
     }
 
+    /**
+     * Returns the tag used by the notification (it can be null)
+     * @return the tag
+     */
+    @Nullable
+    public String getNotificationTag() {
+       if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(getType())
+                ||(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(getType()))) {
+            if (isTourRelated()) {
+                return  TAG_TOUR+ String.valueOf(getJoinableId());
+            } else if (isEntourageRelated()) {
+                return TAG_ENTOURAGE + String.valueOf(getJoinableId());
+            }
+        }
+        return null;
+    }
+
     public class Extra implements Serializable {
 
         private static final long serialVersionUID = 9200497161789347105L;
 
-        public static final String JOINABLE_TYPE_TOUR = "Tour";
-        public static final String JOINABLE_TYPE_ENTOURAGE = "Entourage";
+        static final String JOINABLE_TYPE_TOUR = "Tour";
+        static final String JOINABLE_TYPE_ENTOURAGE = "Entourage";
 
         @SerializedName(value = "joinable_id", alternate = {"feed_id"})
-        public long joinableId;
+        long joinableId;
 
         public String joinableUUID = "";
 
         @SerializedName(value = "joinable_type", alternate = {"feed_type"})
-        public String joinableType;
+        String joinableType;
 
         @SerializedName("user_id")
         public int userId;

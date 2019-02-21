@@ -54,9 +54,6 @@ public class PushNotificationManager {
     private static final int MIN_NOTIFICATION_ID = 4;
     private static final String PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID";
 
-    private static final String TOUR_TAG = "tour-";
-    private static final String ENTOURAGE_TAG = "entourage-";
-
     public static final String PUSH_MESSAGE = "social.entourage.android.PUSH_MESSAGE";
 
     public static final String KEY_SENDER = "sender";
@@ -460,9 +457,9 @@ public class PushNotificationManager {
         if (remoteMessage.getData().size()==0) return null;
         Map<String,String> msg = remoteMessage.getData();
         Timber.d(KEY_SENDER + "= " + msg.get(KEY_SENDER) + "; " + KEY_OBJECT + "= " + msg.get(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + msg.get(KEY_CONTENT));
-        Message message = new Message(msg.get(KEY_SENDER), msg.get(KEY_OBJECT), msg.get(KEY_CONTENT), 0);
+        Message message = new Message(msg.get(KEY_SENDER), msg.get(KEY_OBJECT), msg.get(KEY_CONTENT), 0, null);
         message.setPushNotificationId(getNotificationId(context, message));
-        message.setPushNotificationTag(getNotificationTag(message));
+        message.setPushNotificationTag(message.getContent().getNotificationTag());
         return message;
     }
 
@@ -477,9 +474,9 @@ public class PushNotificationManager {
         Bundle args = intent.getExtras();
         if (args == null) return null;
         Timber.d(KEY_SENDER + "= " + args.getString(KEY_SENDER) + "; " + KEY_OBJECT + "= " + args.getString(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + args.getString(KEY_CONTENT));
-        Message message = new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), 0);
+        Message message = new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), 0, null);
         message.setPushNotificationId(getNotificationId(context, message));
-        message.setPushNotificationTag(getNotificationTag(message));
+        message.setPushNotificationTag(message.getContent().getNotificationTag());
         return message;
     }
 
@@ -498,8 +495,7 @@ public class PushNotificationManager {
                 if (notificationType != null) {
                     if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(notificationType)) {
                         return CHAT_MESSAGE_NOTIFICATION_ID;
-                    }
-                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(notificationType)) {
+                    } else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(notificationType)) {
                         return JOIN_REQUEST_NOTIFICATION_ID;
                     }
                 }
@@ -521,29 +517,6 @@ public class PushNotificationManager {
         }
         sharedPreferences.edit().putInt(PREFERENCE_LAST_NOTIFICATION_ID, id).apply();
         return id;
-    }
-
-    /**
-     * Returns the tag used by the notification (it can be null)
-     * @param message the message
-     * @return the tag
-     */
-    @Nullable
-    private static String getNotificationTag(Message message) {
-        if (message != null) {
-            PushNotificationContent content = message.getContent();
-            if (content != null) {
-                if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
-                    if (content.isTourRelated()) {
-                        return TOUR_TAG + String.valueOf(content.getJoinableId());
-                    }
-                    if (content.isEntourageRelated()) {
-                        return ENTOURAGE_TAG + String.valueOf(content.getJoinableId());
-                    }
-                }
-            }
-        }
-        return null;
     }
 
 }

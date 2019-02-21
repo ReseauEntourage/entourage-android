@@ -180,18 +180,15 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                 .setCancelable(false)
                 .create();
         dialog.show();
-        Button updateButton = (Button) dialog.findViewById(R.id.update_dialog_button);
+        Button updateButton = dialog.findViewById(R.id.update_dialog_button);
         if (updateButton != null) {
-            updateButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        Uri uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
-                        activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                    } catch (Exception e) {
-                        Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                    }
+            updateButton.setOnClickListener(v -> {
+                try {
+                    Uri uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                } catch (Exception e) {
+                    Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
                 }
             });
         }
@@ -295,7 +292,9 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                     public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                         if (response.isSuccessful()) {
                             if (activity.authenticationController.isAuthenticated()) {
-                                activity.authenticationController.saveUser(response.body().getUser());
+                                UserResponse responseBody = response.body();
+                                if(responseBody !=null)
+                                    activity.authenticationController.saveUser(responseBody.getUser());
                             }
                             Timber.tag(LOG_TAG).d("success");
                         }
@@ -325,7 +324,9 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                     activity.dismissProgressDialog();
                     if (response.isSuccessful()) {
                         if (activity.authenticationController.isAuthenticated()) {
-                            activity.authenticationController.saveUser(response.body().getUser());
+                            UserResponse responseBody = response.body();
+                            if(responseBody !=null)
+                                activity.authenticationController.saveUser(responseBody.getUser());
                         }
                         PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                         if (photoEditFragment != null) {
