@@ -199,7 +199,6 @@
                 android:minHeight="50dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/sidemenu_item_text_color"
-                android:layout_marginBottom="50dp"
                 android:textSize="@dimen/entourage_font_small"/>
 
         </LinearLayout>

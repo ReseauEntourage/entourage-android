@@ -27,6 +27,7 @@ import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationInterceptor;
 import social.entourage.android.map.encounter.CreateEncounterPresenter;
+import timber.log.Timber;
 
 /**
  * Module related to Application
@@ -155,7 +156,7 @@ public class ApiModule {
         try {
             delegate = new FileObjectQueue<>(queueFile, converter);
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
 
         return new EncounterTapeTaskQueue(delegate, application.getApplicationContext());

@@ -186,6 +186,11 @@ public class EntourageApplication extends MultiDexApplication {
         }
     }
 
+    private void resetBadgeCount(){
+        badgeCount=0;
+        ShortcutBadger.removeCount(getApplicationContext());
+    }
+
     public void addPushNotification(Message message) {
         PushNotificationManager.getInstance().addPushNotification(message);
         updateFeedItemsStorage(message, true);
@@ -241,7 +246,7 @@ public class EntourageApplication extends MultiDexApplication {
     public void removeAllPushNotifications() {
         PushNotificationManager.getInstance().removeAllPushNotifications();
         // reset the badge count
-        decreaseBadgeCount(badgeCount);
+        resetBadgeCount();
     }
 
     public void updateBadgeCountForFeedItem(FeedItem feedItem) {

@@ -117,6 +117,16 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
         }
     }
 
+    @OnClick(R.id.get_involved_instagram_layout)
+    protected void onInstaClicked() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.instagram_url)));
+        try {
+            startActivity(browserIntent);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @OnClick(R.id.get_involved_twitter_layout)
     protected void onTwitterClicked() {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.twitter_url)));

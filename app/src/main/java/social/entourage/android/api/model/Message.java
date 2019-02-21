@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
-
 import social.entourage.android.R;
 
 public class Message implements Serializable {
@@ -35,12 +34,13 @@ public class Message implements Serializable {
     // CONSTRUCTOR
     // ----------------------------------
 
-    public Message(String author, String object, String content, int pushNotificationId) {
+    public Message(String author, String object, String content, int pushNotificationId, String pushNotificationTag) {
         this.author = author;
         this.object = object;
         Gson gson = new Gson();
         this.content = gson.fromJson(content, PushNotificationContent.class);
         this.pushNotificationId = pushNotificationId;
+        this.pushNotificationTag = pushNotificationTag;
         this.visible = true;
     }
 
@@ -98,7 +98,10 @@ public class Message implements Serializable {
     }
 
     public String getHash() {
-        if (pushNotificationTag == null) return String.valueOf(pushNotificationId);
+        if (pushNotificationTag == null) {
+            setPushNotificationTag(content.getNotificationTag());
+            if (pushNotificationTag == null) return String.valueOf(pushNotificationId);
+        }
         return pushNotificationTag + HASH_SEPARATOR + String.valueOf(pushNotificationId);
     }
 
@@ -118,7 +121,7 @@ public class Message implements Serializable {
                 return context.getResources().getQuantityString(R.plurals.notification_text_chat_message, count, count, content.message);
             }
             if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(contentType)) {
-                String notificationText = "";
+                String notificationText;
                 if (count > 1) {
                     if (content.isEntourageRelated()) {
                         notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, count, content.getFeedItemName());
@@ -140,5 +143,4 @@ public class Message implements Serializable {
         }
         return object;
     }
-
 }
