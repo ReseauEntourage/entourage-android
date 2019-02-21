@@ -20,4 +20,6 @@
         <item quantity="one">%1$d personne souhaite rejoindre votre action: %2$s</item>
         <item quantity="other">%1$d personnes souhaitent rejoindre votre action: %2$s</item>
     </plurals>
+
+    <string name="default_notifiation_channel">Invitation</string>
 </resources>

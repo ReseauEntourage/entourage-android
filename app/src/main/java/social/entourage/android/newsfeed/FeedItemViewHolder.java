@@ -7,7 +7,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +20,6 @@ import com.squareup.picasso.Target;
 import java.util.Calendar;
 import java.util.Date;
 
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;

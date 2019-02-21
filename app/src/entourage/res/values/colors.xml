@@ -4,4 +4,6 @@
     <!-- Action details screens -->
     <color name="feeditem_icon_background_stroke">@color/white</color>
 
+    <!-- Profile -->
+    <color name="profile_role_ambassador">@color/accent</color>
 </resources>

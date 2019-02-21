@@ -3,12 +3,12 @@ package social.entourage.android;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.util.ArrayMap;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.collection.ArrayMap;
+import androidx.appcompat.app.AlertDialog;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,17 +28,19 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.involvement.GetInvolvedFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
+import social.entourage.android.user.AvatarUpdatePresenter;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
+import timber.log.Timber;
 
 /**
  * The base class for DrawerPresenter<br/>
  * The derived classes will be per app
  * Created by Mihai Ionescu on 27/04/2018.
  */
-public abstract class DrawerBasePresenter {
+public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
 
     // ----------------------------------
     // CONSTANTS
@@ -178,18 +180,15 @@ public abstract class DrawerBasePresenter {
                 .setCancelable(false)
                 .create();
         dialog.show();
-        Button updateButton = (Button) dialog.findViewById(R.id.update_dialog_button);
+        Button updateButton = dialog.findViewById(R.id.update_dialog_button);
         if (updateButton != null) {
-            updateButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        Uri uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
-                        activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                    } catch (Exception e) {
-                        Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                    }
+            updateButton.setOnClickListener(v -> {
+                try {
+                    Uri uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                } catch (Exception e) {
+                    Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
                 }
             });
         }
@@ -257,7 +256,7 @@ public abstract class DrawerBasePresenter {
 
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    Log.e("CheckForUpdate", "Error connecting to API");
+                    Timber.e("Error connecting to API");
                 }
             });
             checkForUpdate=false;
@@ -293,15 +292,17 @@ public abstract class DrawerBasePresenter {
                     public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                         if (response.isSuccessful()) {
                             if (activity.authenticationController.isAuthenticated()) {
-                                activity.authenticationController.saveUser(response.body().getUser());
+                                UserResponse responseBody = response.body();
+                                if(responseBody !=null)
+                                    activity.authenticationController.saveUser(responseBody.getUser());
                             }
-                            Log.d(LOG_TAG, "success");
+                            Timber.tag(LOG_TAG).d("success");
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
-                        Log.d(LOG_TAG, t.getLocalizedMessage());
+                        Timber.tag(LOG_TAG).e(t);
                     }
                 });
             }
@@ -323,7 +324,9 @@ public abstract class DrawerBasePresenter {
                     activity.dismissProgressDialog();
                     if (response.isSuccessful()) {
                         if (activity.authenticationController.isAuthenticated()) {
-                            activity.authenticationController.saveUser(response.body().getUser());
+                            UserResponse responseBody = response.body();
+                            if(responseBody !=null)
+                                activity.authenticationController.saveUser(responseBody.getUser());
                         }
                         PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                         if (photoEditFragment != null) {
@@ -334,7 +337,6 @@ public abstract class DrawerBasePresenter {
                                 }
                             }
                         }
-                        Log.d(LOG_TAG, "success");
                     }
                     else {
                         Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
@@ -342,13 +344,14 @@ public abstract class DrawerBasePresenter {
                         if (photoEditFragment != null) {
                             photoEditFragment.onPhotoSent(false);
                         }
+                        Timber.tag(LOG_TAG).e(activity.getString(R.string.user_photo_error_not_saved));
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                     activity.dismissProgressDialog();
-                    Log.d(LOG_TAG, t.getLocalizedMessage());
+                    Timber.tag(LOG_TAG).e(t);
                     Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
                     PhotoEditFragment photoEditFragment = (PhotoEditFragment)activity.getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
                     if (photoEditFragment != null) {
@@ -371,16 +374,16 @@ public abstract class DrawerBasePresenter {
             @Override
             public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Log.d(LOG_TAG, "updating application info with success");
+                    Timber.tag(LOG_TAG).d("updating application info with success");
                 }
                 else {
-                    Log.d(LOG_TAG, "updating application info error");
+                    Timber.tag(LOG_TAG).e("updating application info error");
                 }
             }
 
             @Override
             public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
-                Log.d(LOG_TAG, t.getLocalizedMessage());
+                Timber.tag(LOG_TAG).e(t);
             }
         });
     }

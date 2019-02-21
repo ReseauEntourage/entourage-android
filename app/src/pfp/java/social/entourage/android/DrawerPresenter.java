@@ -3,8 +3,8 @@ package social.entourage.android;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.IdRes;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.AlertDialog;
 import android.widget.Toast;
 
 import javax.inject.Inject;

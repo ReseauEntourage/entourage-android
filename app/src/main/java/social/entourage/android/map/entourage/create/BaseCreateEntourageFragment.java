@@ -10,9 +10,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -630,6 +630,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                     positionTextView.setText(place.getAddress().toString());
                 }
                 entourageMetadata.setGooglePlaceId(place.getId());
+                this.location = place.getLatLng();
             } else {
                 positionTextView.setText("");
             }
@@ -699,12 +700,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @Override
     public void onDateSet(final DatePickerDialog view, final int year, final int monthOfYear, final int dayOfMonth) {
         entourageDate.set(year, monthOfYear, dayOfMonth);
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                showTimePicker();
-            }
-        });
+        new Handler().post(this::showTimePicker);
     }
 
     @Override

@@ -1,10 +1,11 @@
 package social.entourage.android.guide.poi;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +21,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
@@ -28,6 +28,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.map.Poi;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.guide.PoiRenderer;
+import social.entourage.android.map.OnAddressClickListener;
 
 /**
  * Activity showing the detail of a POI
@@ -112,7 +113,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_user) {
@@ -122,7 +123,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void displayPoi(Poi poi, final ReadPoiPresenter.OnAddressClickListener onAddressClickListener, final ReadPoiPresenter.OnPhoneClickListener onPhoneClickListener) {
+    public void onDisplayedPoi(Poi poi, final OnAddressClickListener onAddressClickListener, final ReadPoiPresenter.OnPhoneClickListener onPhoneClickListener) {
         txtPoiName.setText(poi.getName());
         txtPoiDesc.setText(poi.getDescription());
         setActionButton(btnPoiPhone, poi.getPhone());
@@ -142,6 +143,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         if(value.length() > 0) {
             btn.setVisibility(View.VISIBLE);
             btn.setText(value);
+            btn.setPaintFlags(btn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
     }
 

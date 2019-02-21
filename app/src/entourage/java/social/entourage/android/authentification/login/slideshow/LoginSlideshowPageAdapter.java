@@ -1,8 +1,9 @@
 package social.entourage.android.authentification.login.slideshow;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage1Fragment;
 import social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage2Fragment;
@@ -20,9 +21,11 @@ public class LoginSlideshowPageAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
+    @NonNull
     @Override
     public Fragment getItem(final int position) {
         switch (position) {
+            default:
             case 0:
                 return new LoginSlideshowPage1Fragment();
             case 1:
@@ -32,7 +35,6 @@ public class LoginSlideshowPageAdapter extends FragmentStatePagerAdapter {
             case 3:
                 return new LoginSlideshowPage4Fragment();
         }
-        return null;
     }
 
     @Override

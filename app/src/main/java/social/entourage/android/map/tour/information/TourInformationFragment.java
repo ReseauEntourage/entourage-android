@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -20,15 +21,15 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.speech.RecognizerIntent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PermissionChecker;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -111,6 +112,7 @@ import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.OnAddressClickListener;
 import social.entourage.android.map.entourage.create.CreateEntourageFragment;
 import social.entourage.android.map.entourage.EntourageCloseFragment;
 import social.entourage.android.map.tour.TourService;
@@ -380,7 +382,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof  OnTourInformationFragmentFinish)) {
             throw new ClassCastException(activity.toString() + " must implement OnTourInformationFragmentFinish");
@@ -428,12 +430,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (requestCode == READ_CONTACTS_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        onInviteContactsClicked();
-                    }
-                });
+                handler.post(this::onInviteContactsClicked);
             } else {
                 Toast.makeText(getActivity(), R.string.invite_contacts_permission_error, Toast.LENGTH_SHORT).show();
             }
@@ -1091,7 +1088,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         if (!(member instanceof TourUser)) continue;
                         TourUser tourUser = (TourUser) member;
                         if (tourUser.getUserId() != myId) continue;
-                        String role = tourUser.getRole();
+                        String role = tourUser.getGroupRole();
                         if (role != null && role.equalsIgnoreCase("organizer")) {
                             promoteEntourageButton.setVisibility(View.VISIBLE);
                         }
@@ -1200,11 +1197,24 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commitAllowingStateLoss();
 
+        drawFeedItemOnMap();
+    }
+
+    private void updateMap() {
+        if (mapFragment == null || !mapFragment.isAdded()) {
+            initializeMap();
+        } else {
+            drawFeedItemOnMap();
+        }
+    }
+
+    private void drawFeedItemOnMap() {
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final GoogleMap googleMap) {
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
+                googleMap.clear();
 
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                     Tour tour = (Tour)feedItem;
@@ -1295,12 +1305,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM));
                 }
 
-                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                    @Override
-                    public void onMapLoaded() {
-                        getMapSnapshot();
-                    }
-                });
+                googleMap.setOnMapLoadedCallback(TourInformationFragment.this::getMapSnapshot);
 
                 googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                     @Override
@@ -1483,23 +1488,38 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // show the view only for outing
         boolean metadataVisible = false;
         BaseEntourage.Metadata metadata = null;
+
         if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
             metadata = ((Entourage)feedItem).getMetadata();
             metadataVisible = Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) && (metadata != null);
         }
+
         metadataView.setVisibility(metadataVisible ? View.VISIBLE : View.GONE);
         if (!metadataVisible) return;
+
         // populate the data
         TextView organiser = fragmentView.findViewById(R.id.tour_info_metadata_organiser);
         if (organiser != null && feedItem.getAuthor() != null) {
             organiser.setText(getString(R.string.tour_info_metadata_organiser_format, feedItem.getAuthor().getUserName()));
         }
+
         TextView metadataDate = fragmentView.findViewById(R.id.tour_info_metadata_date);
         if (metadataDate != null) metadataDate.setText(metadata.getStartDateAsString(getContext()));
+
         TextView metadateTime = fragmentView.findViewById(R.id.tour_info_metadata_time);
         if (metadateTime != null) metadateTime.setText(metadata.getStartTimeAsString(getContext()));
-        TextView metadataAddress = fragmentView.findViewById(R.id.tour_info_metadata_address);
-        if (metadataAddress != null) metadataAddress.setText(metadata.getDisplayAddress());
+
+        setAddressView(fragmentView, metadata);
+    }
+
+    private void setAddressView(View fragmentView, BaseEntourage.Metadata metadata) {
+        TextView address = fragmentView.findViewById(R.id.tour_info_metadata_address);
+        if (address != null) {
+            final String displayAddress = metadata.getDisplayAddress();
+            address.setText(displayAddress);
+            address.setPaintFlags(address.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            address.setOnClickListener(new OnAddressClickListener(getActivity(), displayAddress));
+        }
     }
 
     private void switchToPublicSection() {
@@ -1574,9 +1594,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         actLayout.setVisibility(View.VISIBLE);
 
         actButton.setPadding(0, 0, 0, 0);
-        if (Build.VERSION.SDK_INT >= 16) {
-            actButton.setPaddingRelative(0, 0, 0, 0);
-        }
+        actButton.setPaddingRelative(0, 0, 0, 0);
 
         if (feedItem.isFreezed()) {
             // MI: Instead of hiding it, display the freezed text
@@ -1584,9 +1602,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             actButton.setTextColor(getResources().getColor(feedItem.getFreezedCTAColor()));
             actButton.setText(feedItem.getFreezedCTAText());
             actButton.setPadding(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
-            if (Build.VERSION.SDK_INT >= 16) {
-                actButton.setPaddingRelative(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
-            }
+            actButton.setPaddingRelative(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
         else {
@@ -1770,6 +1786,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         feedItem = updatedEntourage;
 
         updateFeedItemInfo();
+        updateMap();
     }
 
     @Subscribe

@@ -1,6 +1,6 @@
 package social.entourage.android.authentication;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 
@@ -26,10 +26,16 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
         this.authenticationController = authenticationController;
     }
 
+    @NonNull
     @Override
     public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
         okhttp3.Request request = chain.request();
         HttpUrl url;
+
+        if (!request.url().toString().startsWith(BuildConfig.ENTOURAGE_URL)) {
+            return chain.proceed(request);
+        }
+
         if (authenticationController.isAuthenticated()) {
             url = request.url().newBuilder().addQueryParameter("token", authenticationController.getUser().getToken()).build();
         } else {

@@ -87,24 +87,29 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/entourage_font_medium"/>
+                            android:textSize="@dimen/entourage_font_medium"
+                            tools:text="Date"/>
 
                         <TextView
                             android:id="@+id/tour_info_metadata_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/entourage_font_medium"/>
+                            android:textSize="@dimen/entourage_font_medium"
+                            tools:text="Time"/>
 
                         <TextView
                             android:id="@+id/tour_info_metadata_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLines="2"
-                            android:textColor="@color/dark_grey"
+                            android:textColor="@color/accent"
                             android:textSize="@dimen/entourage_font_medium"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            tools:text="Address"/>
+
                     </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -144,7 +149,7 @@
                     android:layout_marginStart="10dp"
                     android:focusable="true">
 
-                    <android.support.v7.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:contentDescription="@string/empty_description"
@@ -163,7 +168,7 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tour_info_members"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

@@ -3,7 +3,9 @@ package social.entourage.android;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -13,8 +15,6 @@ import social.entourage.android.webview.WebViewFragment;
  * Base activity which set up a scoped graph and inject it
  */
 public abstract class EntourageActivity extends AppCompatActivity {
-
-    protected final String logTag = this.getClass().getSimpleName();
 
     private ProgressDialog progressDialog;
 
@@ -37,7 +37,7 @@ public abstract class EntourageActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(final Bundle outState) {
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
         safeToCommit = false;
         super.onSaveInstanceState(outState);
     }

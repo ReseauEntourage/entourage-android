@@ -9,25 +9,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.support.annotation.IdRes;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import androidx.annotation.IdRes;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.appcompat.app.AlertDialog;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
@@ -37,7 +35,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
@@ -57,7 +54,6 @@ import social.entourage.android.api.tape.Events.OnUserActEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.UserPreferences;
-import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.map.MapEntourageFragment;
@@ -72,15 +68,17 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationManager;
-import social.entourage.android.message.push.RegisterGCMService;
 import social.entourage.android.navigation.BaseBottomNavigationDataSource;
 import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.user.AvatarUploadPresenter;
+import social.entourage.android.user.AvatarUploadView;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
+import timber.log.Timber;
 
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
@@ -89,7 +87,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
     PhotoChooseInterface,
-    UserEditActionZoneFragment.FragmentListener {
+    UserEditActionZoneFragment.FragmentListener,
+    AvatarUploadView {
 
     // ----------------------------------
     // CONSTANTS
@@ -101,6 +100,9 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Inject
     DrawerPresenter presenter;
+
+    @Inject
+    AvatarUploadPresenter avatarUploadPresenter;
 
     @BindView(R.id.toolbar)
     View toolbar;
@@ -119,7 +121,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     protected MapEntourageFragment mapEntourageFragment;
     private UserFragment userFragment;
 
-    private SharedPreferences gcmSharedPreferences;
+    //private SharedPreferences gcmSharedPreferences;
     private String intentAction;
     private Tour intentTour;
 
@@ -140,8 +142,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (isFinishing()) return;
 
         configureToolbar();
-
-        gcmSharedPreferences = EntourageApplication.get().getSharedPreferences();
 
         if (getIntent() != null) {
             intentAction = getIntent().getAction();
@@ -189,7 +189,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d("DEEPLINK", "onNewIntent " + intent.toString());
+        Timber.tag("DEEPLINK").d("onNewIntent " + intent.toString());
         this.setIntent(intent);
         if (Intent.ACTION_VIEW.equals(intent.getAction())){
             // Save the deep link intent
@@ -504,7 +504,13 @@ public class DrawerActivity extends EntourageSecuredActivity
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true);
         if (notificationsEnabled) {
-            startService(new Intent(this, RegisterGCMService.class));
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    presenter.updateApplicationInfo(instanceIdResult.getToken());
+
+                }
+            });
         } else {
             presenter.updateApplicationInfo("");
         }
@@ -522,10 +528,11 @@ public class DrawerActivity extends EntourageSecuredActivity
             mapEntourageFragment.saveOngoingTour();
         }
         //remove user phone
-        SharedPreferences.Editor editor = gcmSharedPreferences.edit();
+        final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         User me = EntourageApplication.me(getApplicationContext());
         if(me != null) {
-            HashSet<String> loggedNumbers = (HashSet<String>) gcmSharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
+            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
             loggedNumbers.remove(me.getPhone());
             editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }
@@ -578,7 +585,13 @@ public class DrawerActivity extends EntourageSecuredActivity
             PushNotificationContent content = message.getContent();
             if (content != null) {
                 if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
-                    showMyEntourages();
+                    if (content.isTourRelated()) {
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
+                    } else if (content.isEntourageRelated()) {
+                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
+                    } else {
+                        showMyEntourages();
+                    }
                 }
                 else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
                     if (content.isTourRelated()) {
@@ -864,52 +877,17 @@ public class DrawerActivity extends EntourageSecuredActivity
         //Upload the photo to Amazon S3
         showProgressDialog(R.string.user_photo_uploading);
 
-        final String objectKey = "user_" + authenticationController.getUser().getId() + ".jpg";
-        TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
-        TransferObserver transferObserver = transferUtility.upload(
-            BuildConfig.AWS_BUCKET,
-            BuildConfig.AWS_MAIN_FOLDER + BuildConfig.AWS_FOLDER + objectKey,
-            new File(photoUri.getPath()),
-            CannedAccessControlList.PublicRead
-        );
-        transferObserver.setTransferListener(new TransferListener() {
-            @Override
-            public void onStateChanged(final int id, final TransferState state) {
-                if (state == TransferState.COMPLETED) {
-                    if (presenter != null) {
-                        presenter.updateUserPhoto(objectKey);
-                    } else {
-                        Toast.makeText(DrawerActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
-                        dismissProgressDialog();
-                        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-                        if (photoEditFragment != null) {
-                            photoEditFragment.onPhotoSent(false);
-                        }
-                    }
-                    // Delete the temporary file
-                    File tmpImageFile = new File(photoUri.getPath());
-                    if (!tmpImageFile.delete()) {
-                        // Failed to delete the file
-                        Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
-                    }
-                }
-            }
+        File file = new File(photoUri.getPath());
+        avatarUploadPresenter.uploadPhoto(file);
+    }
 
-            @Override
-            public void onProgressChanged(final int id, final long bytesCurrent, final long bytesTotal) {
-
-            }
-
-            @Override
-            public void onError(final int id, final Exception ex) {
-                Toast.makeText(DrawerActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
-                dismissProgressDialog();
-                PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-                if (photoEditFragment != null) {
-                    photoEditFragment.onPhotoSent(false);
-                }
-            }
-        });
+    public void onUploadError() {
+        Toast.makeText(DrawerActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+        dismissProgressDialog();
+        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+        if (photoEditFragment != null) {
+            photoEditFragment.onPhotoSent(false);
+        }
     }
 
     // ----------------------------------

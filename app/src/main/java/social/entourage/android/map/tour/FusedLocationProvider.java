@@ -3,9 +3,8 @@ package social.entourage.android.map.tour;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,10 +18,12 @@ import com.google.android.gms.location.LocationSettingsResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static android.support.v4.content.PermissionChecker.checkSelfPermission;
+import static androidx.core.content.PermissionChecker.checkSelfPermission;
 import static com.google.android.gms.common.api.CommonStatusCodes.SUCCESS;
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 import static com.google.android.gms.location.LocationServices.SettingsApi;
@@ -227,7 +228,7 @@ public class FusedLocationProvider {
     private static class FusedLocationConnectionFailedListener implements GoogleApiClient.OnConnectionFailedListener {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            Log.e("Entourage", "Cannot connect to Google API Client " + connectionResult);
+            Timber.e("Cannot connect to Google API Client " + connectionResult);
         }
     }
 }

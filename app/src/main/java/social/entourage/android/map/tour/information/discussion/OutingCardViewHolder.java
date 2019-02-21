@@ -1,7 +1,7 @@
 package social.entourage.android.map.tour.information.discussion;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;

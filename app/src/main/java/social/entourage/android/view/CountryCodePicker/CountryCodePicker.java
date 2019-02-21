@@ -7,14 +7,13 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,6 +26,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import social.entourage.android.R;
+import timber.log.Timber;
 
 /**
  * Trimmed down CountryCodePicker from <a href="https://github.com/ReseauEntourage/CountryCodePicker">https://github.com/ReseauEntourage/CountryCodePicker</a><br/>
@@ -34,8 +34,6 @@ import social.entourage.android.R;
  */
 
 public class CountryCodePicker extends RelativeLayout {
-
-    private static String TAG = CountryCodePicker.class.getSimpleName();
 
     private final String DEFAULT_COUNTRY = Locale.getDefault().getCountry();
     private static final int DEFAULT_COUNTRY_CODE = 33; // France
@@ -131,25 +129,22 @@ public class CountryCodePicker extends RelativeLayout {
     private void init(AttributeSet attrs) {
         inflate(getContext(), R.layout.layout_code_picker, this);
 
-        mTvSelectedCountry = (AppCompatTextView) findViewById(R.id.selected_country_tv);
-        mRlyHolder = (RelativeLayout) findViewById(R.id.country_code_holder_rly);
-        mImvArrow = (AppCompatImageView) findViewById(R.id.arrow_imv);
-        mImvFlag = (AppCompatImageView) findViewById(R.id.flag_imv);
-        mLlyFlagHolder = (LinearLayout) findViewById(R.id.flag_holder_lly);
-        mRlyClickConsumer = (RelativeLayout) findViewById(R.id.click_consumer_rly);
+        mTvSelectedCountry = findViewById(R.id.selected_country_tv);
+        mRlyHolder = findViewById(R.id.country_code_holder_rly);
+        mImvArrow = findViewById(R.id.arrow_imv);
+        mImvFlag = findViewById(R.id.flag_imv);
+        mLlyFlagHolder = findViewById(R.id.flag_holder_lly);
+        mRlyClickConsumer = findViewById(R.id.click_consumer_rly);
 
         applyCustomProperty(attrs);
 
-        mCountryCodeHolderClickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isClickable()) {
-                    if (mCountryCodeDialog == null) {
-                        mCountryCodeDialog = new CountryCodeDialog(CountryCodePicker.this);
-                        mCountryCodeDialog.show();
-                    } else {
-                        mCountryCodeDialog.reShow();
-                    }
+        mCountryCodeHolderClickListener = v -> {
+            if (isClickable()) {
+                if (mCountryCodeDialog == null) {
+                    mCountryCodeDialog = new CountryCodeDialog(CountryCodePicker.this);
+                    mCountryCodeDialog.show();
+                } else {
+                    mCountryCodeDialog.reShow();
                 }
             }
         };
@@ -194,7 +189,7 @@ public class CountryCodePicker extends RelativeLayout {
 
             //default country
             mDefaultCountryNameCode = a.getString(R.styleable.CountryCodePicker_ccp_defaultNameCode);
-            Log.d(TAG, "mDefaultCountryNameCode from attribute = " + mDefaultCountryNameCode);
+            Timber.d("mDefaultCountryNameCode from attribute = %s", mDefaultCountryNameCode);
             boolean setUsingNameCode = false;
             if (mDefaultCountryNameCode != null && !mDefaultCountryNameCode.isEmpty()) {
                 String temp = mDefaultCountryNameCode.trim();
@@ -290,7 +285,7 @@ public class CountryCodePicker extends RelativeLayout {
                 setDefaultCountryFlagAndCode();
             }
         } catch (Exception e) {
-            Log.d(TAG, "exception = " + e.toString());
+            Timber.e(e);
             if (isInEditMode()) {
                 mTvSelectedCountry.setText(getContext().getString(R.string.phone_code,
                         getContext().getString(R.string.country_france_number)));
@@ -616,7 +611,7 @@ public class CountryCodePicker extends RelativeLayout {
         try {
             code = Integer.parseInt(getDefaultCountryCode());
         } catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
         return code;
     }
@@ -698,7 +693,7 @@ public class CountryCodePicker extends RelativeLayout {
         try {
             code = Integer.parseInt(getSelectedCountryCode());
         } catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
         return code;
     }
@@ -810,7 +805,7 @@ public class CountryCodePicker extends RelativeLayout {
                     mSelectedCountry.getPhoneCode() + mRegisteredPhoneNumberTextView.getText().toString();
         } else {
             fullNumber = mSelectedCountry.getPhoneCode();
-            Log.w(TAG, getContext().getString(R.string.error_unregister_carrier_number));
+            Timber.w(getContext().getString(R.string.error_unregister_carrier_number));
         }
         return fullNumber;
     }
@@ -834,7 +829,7 @@ public class CountryCodePicker extends RelativeLayout {
         if (mRegisteredPhoneNumberTextView != null) {
             mRegisteredPhoneNumberTextView.setText(carrierNumber);
         } else {
-            Log.w(TAG, getContext().getString(R.string.error_unregister_carrier_number));
+            Timber.w(getContext().getString(R.string.error_unregister_carrier_number));
         }
     }
 
@@ -950,7 +945,7 @@ public class CountryCodePicker extends RelativeLayout {
         try {
             mTvSelectedCountry.setTypeface(typeFace);
         } catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
     }
 
@@ -965,7 +960,7 @@ public class CountryCodePicker extends RelativeLayout {
             mTypeFace = typeFace;
             mTvSelectedCountry.setTypeface(typeFace);
         } catch (Exception e) {
-            Log.d(TAG, "Invalid fontPath. " + e.toString());
+            Timber.e(e);
         }
     }
 
@@ -977,7 +972,7 @@ public class CountryCodePicker extends RelativeLayout {
         try {
             mTvSelectedCountry.setTypeface(typeFace, style);
         } catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
     }
 
@@ -1172,12 +1167,12 @@ public class CountryCodePicker extends RelativeLayout {
         String simCountryIso = telManager.getSimCountryIso();
         if (simCountryIso != null && !simCountryIso.isEmpty()) {
             setEmptyDefault(simCountryIso);
-            Log.d(TAG, "simCountryIso = " + simCountryIso);
+            Timber.d("simCountryIso = %s", simCountryIso);
         } else {
             String iso = telManager.getNetworkCountryIso();
             if (iso != null && !iso.isEmpty()) {
                 setEmptyDefault(iso);
-                Log.d(TAG, "isoNetwork = " + iso);
+                Timber.d("isoNetwork = %s", iso);
             } else {
                 enableSetCountryByTimeZone(true);
             }
@@ -1232,7 +1227,7 @@ public class CountryCodePicker extends RelativeLayout {
             if (mSetCountryByTimeZone) {
                 TimeZone tz = TimeZone.getDefault();
 
-                Log.d(TAG, "tz.getID() = " + tz.getID());
+                Timber.d("tz.getID() = %s", tz.getID());
                 List<String> countryIsos = CountryUtils.getCountryIsoByTimeZone(getContext(), tz.getID());
                 if (countryIsos != null) {
                     setDefaultCountryUsingNameCode(countryIsos.get(0));

@@ -3,7 +3,7 @@ package social.entourage.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.support.v4.content.PermissionChecker;
+import androidx.core.content.PermissionChecker;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -245,6 +245,7 @@ public class EntourageEvents {
     public static final String EVENT_USER_EDIT_PHOTO = "EditPhoto";
     public static final String EVENT_USER_ROTATE_PHOTO = "RotatePhoto";
     public static final String EVENT_USER_SAVE = "SaveProfileEdits";
+    public static final String EVENT_USER_SAVE_FAILED = "SaveProfileEditFailed";
     public static final String EVENT_USER_TOBADGE = "ToBadgePageFromProfile";
     public static final String EVENT_USER_TONOTIFICATIONS = "ToNotifications";
 
@@ -320,7 +321,7 @@ public class EntourageEvents {
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
 
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false);
+        boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true);
         people.set("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
         mFirebaseAnalytics.setUserProperty("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
 

@@ -6,7 +6,7 @@
     android:clickable="true"
     >
 
-  <android.support.v7.widget.AppCompatTextView
+  <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/country_name_tv"
       android:layout_width="match_parent"
       android:layout_height="50dp"
@@ -17,7 +17,7 @@
       android:textColor="@android:color/secondary_text_light"
       />
 
-  <android.support.v7.widget.AppCompatTextView
+  <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/code_tv"
       android:layout_width="wrap_content"
       android:layout_height="50dp"

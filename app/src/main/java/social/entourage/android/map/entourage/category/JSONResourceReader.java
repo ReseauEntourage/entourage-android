@@ -13,6 +13,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Type;
 
+import timber.log.Timber;
+
 /**
  * Created by mihaiionescu on 20/09/2017.
  */
@@ -21,7 +23,6 @@ public class JSONResourceReader {
 
     // Our JSON, in string form.
     private String jsonString;
-    private static final String LOGTAG = JSONResourceReader.class.getSimpleName();
 
     /**
      * Read from a resources file and create a {@link JSONResourceReader} object that will allow the creation of other
@@ -41,12 +42,12 @@ public class JSONResourceReader {
                 line = reader.readLine();
             }
         } catch (Exception e) {
-            Log.e(LOGTAG, "Unhandled exception while using JSONResourceReader", e);
+            Timber.e(e, "Unhandled exception while using JSONResourceReader");
         } finally {
             try {
                 resourceReader.close();
             } catch (Exception e) {
-                Log.e(LOGTAG, "Unhandled exception while using JSONResourceReader", e);
+                Timber.e(e, "Unhandled exception while using JSONResourceReader");
             }
         }
 

@@ -3,9 +3,8 @@ package social.entourage.android;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
-import android.support.multidex.MultiDexApplication;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -25,6 +24,7 @@ import social.entourage.android.authentication.ComplexPreferences;
 import social.entourage.android.authentication.login.LoginActivity;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.newsfeed.FeedItemsStorage;
+import timber.log.Timber;
 
 /**
  * Application setup for Analytics, JodaTime and Dagger
@@ -164,7 +164,7 @@ public class EntourageApplication extends MultiDexApplication {
     public void finishLoginActivity() {
         LoginActivity loginActivity = getLoginActivity();
         if (loginActivity != null) {
-            Log.d(null, "Finishing login activity");
+            Timber.d("Finishing login activity");
             loginActivity.finish();
         }
     }
@@ -184,6 +184,11 @@ public class EntourageApplication extends MultiDexApplication {
         } else {
             ShortcutBadger.applyCount(getApplicationContext(), badgeCount);
         }
+    }
+
+    private void resetBadgeCount(){
+        badgeCount=0;
+        ShortcutBadger.removeCount(getApplicationContext());
     }
 
     public void addPushNotification(Message message) {
@@ -241,7 +246,7 @@ public class EntourageApplication extends MultiDexApplication {
     public void removeAllPushNotifications() {
         PushNotificationManager.getInstance().removeAllPushNotifications();
         // reset the badge count
-        decreaseBadgeCount(badgeCount);
+        resetBadgeCount();
     }
 
     public void updateBadgeCountForFeedItem(FeedItem feedItem) {

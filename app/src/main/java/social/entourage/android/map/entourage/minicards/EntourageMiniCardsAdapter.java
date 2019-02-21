@@ -1,7 +1,7 @@
 package social.entourage.android.map.entourage.minicards;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class EntourageMiniCardsAdapter extends EntourageBaseAdapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
 
         BaseCardViewHolder cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType);
         if (cardViewHolder != null) {

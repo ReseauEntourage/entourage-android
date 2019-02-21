@@ -1,7 +1,6 @@
 package social.entourage.android.map.entourage.create;
 
-import android.support.v4.app.DialogFragment;
-import android.util.Log;
+import androidx.fragment.app.DialogFragment;
 
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.api.model.map.Entourage;
@@ -9,6 +8,7 @@ import social.entourage.android.map.entourage.create.wizard.CreateActionWizardLi
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPage1Fragment;
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPage2Fragment;
 import social.entourage.android.map.entourage.create.wizard.CreateActionWizardPage3Fragment;
+import timber.log.Timber;
 
 /**
  *
@@ -136,7 +136,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 handleStep3(option);
                 break;
             default:
-                Log.d("CREATE ACTION WIZARD", "Invalid step "+currentStep);
+                Timber.e("Invalid step " + currentStep);
                 break;
         }
     }

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.content.res.AppCompatResources;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
@@ -208,7 +208,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
         if (!entourageType.equals(entourage.entourageType)) return false;
         if (category != null && !category.equals(entourage.category)) return false;
         if (getAuthor() != null) {
-            if (!getAuthor().isSame(entourage.getAuthor())) return false;
+            return getAuthor().isSame(entourage.getAuthor());
         }
 
         return true;

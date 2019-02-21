@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,8 +43,11 @@ public class TourUser extends TimestampedObject implements Serializable {
     @SerializedName("partner")
     private Partner partner;
 
-    @SerializedName("role")
-    private String role;
+    @SerializedName("group_role")
+    private String groupRole;
+
+    @SerializedName("community_roles")
+    private List<String> communityRoles;
 
     private boolean isDisplayedAsMember = false;
 
@@ -110,8 +114,16 @@ public class TourUser extends TimestampedObject implements Serializable {
         return partner;
     }
 
-    public String getRole() {
-        return role;
+    public String getGroupRole() {
+        return groupRole;
+    }
+
+    public List<String> getCommunityRoles() {
+        if (communityRoles != null) {
+            return communityRoles;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     public boolean isDisplayedAsMember() {
@@ -168,6 +180,8 @@ public class TourUser extends TimestampedObject implements Serializable {
         clone.message = this.message;
         clone.avatarURLAsString = this.avatarURLAsString;
         clone.partner = this.partner;
+        clone.groupRole = this.groupRole;
+        clone.communityRoles = this.communityRoles;
         clone.isDisplayedAsMember = this.isDisplayedAsMember;
 
         return clone;

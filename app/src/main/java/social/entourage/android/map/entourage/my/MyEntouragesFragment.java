@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.tabs.TabLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -404,12 +404,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         refreshInvitationsTimerTask = new TimerTask() {
             @Override
             public void run() {
-                refreshInvitationsHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshInvitations();
-                    }
-                });
+                refreshInvitationsHandler.post(MyEntouragesFragment.this::refreshInvitations);
             }
         };
         //schedule the timer

@@ -1,6 +1,6 @@
 package social.entourage.android.map.tour.join.received;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.HashMap;
 

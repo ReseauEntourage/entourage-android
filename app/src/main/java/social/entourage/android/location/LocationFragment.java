@@ -6,16 +6,14 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.PermissionChecker;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.PermissionChecker;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +55,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 /**
  * Fragment to choose the location of an entourage
@@ -234,7 +233,7 @@ public class LocationFragment extends EntourageDialogFragment {
                         try {
                             map.setMyLocationEnabled(true);
                         } catch (SecurityException ex) {
-                            Log.d("LOCATION", ex.getLocalizedMessage());
+                            Timber.e(ex);
                         }
                     } else {
                         BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));

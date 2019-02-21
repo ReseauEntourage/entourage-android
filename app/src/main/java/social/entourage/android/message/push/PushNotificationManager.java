@@ -13,15 +13,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import android.widget.RemoteViews;
+
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
@@ -31,6 +34,7 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.message.MessageActivity;
+import timber.log.Timber;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -49,9 +53,6 @@ public class PushNotificationManager {
     private static final int JOIN_REQUEST_NOTIFICATION_ID = 3;
     private static final int MIN_NOTIFICATION_ID = 4;
     private static final String PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID";
-
-    private static final String TOUR_TAG = "tour-";
-    private static final String ENTOURAGE_TAG = "entourage-";
 
     public static final String PUSH_MESSAGE = "social.entourage.android.PUSH_MESSAGE";
 
@@ -366,7 +367,7 @@ public class PushNotificationManager {
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
         notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
-        Log.d("NOTIFICATION", "TAG = " + message.getPushNotificationTag() + " , ID = " + message.getPushNotificationId());
+        Timber.d("TAG = " + message.getPushNotificationTag() + " , ID = " + message.getPushNotificationId());
         notificationManager.notify(message.getPushNotificationTag(), message.getPushNotificationId(), notification);
     }
 
@@ -447,6 +448,22 @@ public class PushNotificationManager {
     // ----------------------------------
 
     /**
+     * Creates a {@link Message} from the remoteMessage received from the firebase messaging server
+     * @param remoteMessage remoteMessage from FirebaseMessaging
+     * @return the message
+     */
+    @Nullable
+    public static Message getMessageFromRemoteMessage(RemoteMessage remoteMessage, Context context) {
+        if (remoteMessage.getData().size()==0) return null;
+        Map<String,String> msg = remoteMessage.getData();
+        Timber.d(KEY_SENDER + "= " + msg.get(KEY_SENDER) + "; " + KEY_OBJECT + "= " + msg.get(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + msg.get(KEY_CONTENT));
+        Message message = new Message(msg.get(KEY_SENDER), msg.get(KEY_OBJECT), msg.get(KEY_CONTENT), 0, null);
+        message.setPushNotificationId(getNotificationId(context, message));
+        message.setPushNotificationTag(message.getContent().getNotificationTag());
+        return message;
+    }
+
+    /**
      * Creates a {@link Message} from the Intent received from the server
      * @param intent the intent with the json from the server
      * @param context the context
@@ -456,10 +473,10 @@ public class PushNotificationManager {
     public static Message getMessageFromIntent(Intent intent, Context context) {
         Bundle args = intent.getExtras();
         if (args == null) return null;
-        Log.d("notification", KEY_SENDER+"= "+args.getString(KEY_SENDER)+"; "+KEY_OBJECT+"= "+args.getString(KEY_OBJECT)+"; "+KEY_CONTENT+"= "+args.getString(KEY_CONTENT));
-        Message message = new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), 0);
+        Timber.d(KEY_SENDER + "= " + args.getString(KEY_SENDER) + "; " + KEY_OBJECT + "= " + args.getString(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + args.getString(KEY_CONTENT));
+        Message message = new Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), 0, null);
         message.setPushNotificationId(getNotificationId(context, message));
-        message.setPushNotificationTag(getNotificationTag(message));
+        message.setPushNotificationTag(message.getContent().getNotificationTag());
         return message;
     }
 
@@ -478,8 +495,7 @@ public class PushNotificationManager {
                 if (notificationType != null) {
                     if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(notificationType)) {
                         return CHAT_MESSAGE_NOTIFICATION_ID;
-                    }
-                    if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(notificationType)) {
+                    } else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(notificationType)) {
                         return JOIN_REQUEST_NOTIFICATION_ID;
                     }
                 }
@@ -501,29 +517,6 @@ public class PushNotificationManager {
         }
         sharedPreferences.edit().putInt(PREFERENCE_LAST_NOTIFICATION_ID, id).apply();
         return id;
-    }
-
-    /**
-     * Returns the tag used by the notification (it can be null)
-     * @param message the message
-     * @return the tag
-     */
-    @Nullable
-    private static String getNotificationTag(Message message) {
-        if (message != null) {
-            PushNotificationContent content = message.getContent();
-            if (content != null) {
-                if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
-                    if (content.isTourRelated()) {
-                        return TOUR_TAG + String.valueOf(content.getJoinableId());
-                    }
-                    if (content.isEntourageRelated()) {
-                        return ENTOURAGE_TAG + String.valueOf(content.getJoinableId());
-                    }
-                }
-            }
-        }
-        return null;
     }
 
 }

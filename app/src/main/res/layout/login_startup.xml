@@ -15,32 +15,6 @@
         android:layout_height="match_parent"
         tools:layout="@layout/login_slideshow"/>
 
-    <ImageView
-        android:id="@+id/login_startup_logo"
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="130dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/empty_description"
-        android:scaleType="fitCenter"
-        android:src="@drawable/entourage_logo"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/login_startup_slogan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_startup_logo"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:text="@string/entourage_slogan"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white"
-        android:textSize="@dimen/entourage_font_big"
-        android:visibility="gone"/>
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"

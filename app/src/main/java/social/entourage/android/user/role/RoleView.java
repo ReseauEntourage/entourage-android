@@ -2,10 +2,10 @@ package social.entourage.android.user.role;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorRes;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.annotation.ColorRes;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 import social.entourage.android.R;
@@ -43,6 +43,17 @@ public class RoleView extends AppCompatTextView {
         backgroundCornerRadius = getResources().getDimension(R.dimen.role_corner_radius);
         backgroundColor = R.color.white;
         setCustomBackground();
+        setTextColor(ContextCompat.getColor(getContext(), R.color.profile_role_text));
+        setSingleLine();
+    }
+
+    // ----------------------------------
+    // HELPER
+    // ----------------------------------
+
+    public void setRole(UserRole role) {
+        setText(role.getNameResourceId());
+        changeBackgroundColor(role.getColorResourceId());
     }
 
     // ----------------------------------
@@ -59,7 +70,12 @@ public class RoleView extends AppCompatTextView {
 
         background.setColor(ContextCompat.getColor(getContext(), backgroundColor));
         background.setCornerRadius(backgroundCornerRadius);
-        setPadding((int)backgroundCornerRadius, (int)getResources().getDimension(R.dimen.role_padding_top), (int)backgroundCornerRadius, (int)getResources().getDimension(R.dimen.role_padding_bottom));
+        setPadding(
+                (int)(getTextSize() * 2/3.0),
+                (int)(getTextSize() * 1/4.0),
+                (int)(getTextSize() * 2/3.0),
+                (int)(getTextSize() * 1/4.0)
+        );
 
         setBackground(background);
     }

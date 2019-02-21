@@ -17,16 +17,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PermissionChecker;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -1570,7 +1570,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             boolean isPro = (me != null && me.isPro());
 
             if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.GONE);
-            if (startTourButton != null) startTourButton.setVisibility(isPro ? View.INVISIBLE : View.GONE);
+            if (startTourButton != null) startTourButton.setVisibility(isPro ? View.VISIBLE : View.GONE);
             if (tourStopButton != null) tourStopButton.setVisibility(View.GONE);
         }
     }

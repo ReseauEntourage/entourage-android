@@ -1,9 +1,10 @@
 package social.entourage.android.carousel;
 
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import social.entourage.android.carousel.pages.CarouselPage1Fragment;
 import social.entourage.android.carousel.pages.CarouselPage2Fragment;
@@ -22,6 +23,7 @@ public class CarouselPageAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
+    @NonNull
     @Override
     public Fragment getItem(final int position) {
         switch (position) {

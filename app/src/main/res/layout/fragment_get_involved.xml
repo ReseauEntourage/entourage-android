@@ -128,6 +128,45 @@
                 />
 
             <LinearLayout
+                android:id="@+id/get_involved_instagram_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/about_items_padding"
+                android:paddingEnd="0dp"
+                android:paddingLeft="@dimen/about_items_padding"
+                android:paddingRight="0dp"
+                android:paddingStart="@dimen/about_items_padding"
+                android:paddingTop="@dimen/about_items_padding">
+
+                <TextView
+                    android:id="@+id/get_involved_instagram"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/get_involved_instagram"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/empty_description"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/arrow_grey"/>
+            </LinearLayout>
+
+            <View
+                style="@style/SeparatorAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/about_items_padding"
+                android:layout_marginStart="@dimen/about_items_padding"
+                />
+
+            <LinearLayout
                 android:id="@+id/get_involved_twitter_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

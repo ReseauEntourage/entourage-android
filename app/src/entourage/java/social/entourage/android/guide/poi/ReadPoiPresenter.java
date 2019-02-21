@@ -7,6 +7,7 @@ import android.view.View;
 import java.util.Locale;
 
 import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.map.OnAddressClickListener;
 
 /**
  * Presenter controlling the ReadPoiFragment
@@ -20,15 +21,8 @@ public class ReadPoiPresenter {
     }
 
     public void displayPoi(Poi poi) {
-        fragment.displayPoi(poi, new OnAddressClickListener(poi.getAddress()), new OnPhoneClickListener(poi.getPhone()));
-    }
-
-    private void openExternalMap(Uri geoLocation) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-        if (intent.resolveActivity(fragment.getActivity().getPackageManager()) != null) {
-            fragment.startActivity(intent);
-        }
+        OnAddressClickListener listener = new OnAddressClickListener(fragment.getActivity(), poi.getAddress());
+        fragment.onDisplayedPoi(poi, listener, new OnPhoneClickListener(poi.getPhone()));
     }
 
     private void dial(Uri phone) {
@@ -38,22 +32,6 @@ public class ReadPoiPresenter {
             if (intent.resolveActivity(fragment.getContext().getPackageManager()) != null) {
                 fragment.startActivity(intent);
             }
-        }
-    }
-
-
-    public class OnAddressClickListener implements View.OnClickListener {
-
-        private final String address;
-
-        public OnAddressClickListener(final String address) {
-            this.address = address;
-        }
-
-        @Override
-        public void onClick(final View v) {
-            Uri uri = Uri.parse(String.format(Locale.FRENCH, "geo:0,0?q=%s", address));
-            openExternalMap(uri);
         }
     }
 

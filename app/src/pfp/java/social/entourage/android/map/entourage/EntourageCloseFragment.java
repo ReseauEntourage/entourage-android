@@ -2,9 +2,9 @@ package social.entourage.android.map.entourage;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
+import androidx.fragment.app.FragmentManager;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;

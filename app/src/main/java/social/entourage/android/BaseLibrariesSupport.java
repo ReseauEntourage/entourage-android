@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.fabric.sdk.android.Fabric;
+import timber.log.Timber;
 
 import static social.entourage.android.BuildConfig.FLAVOR;
 
@@ -63,7 +64,7 @@ public abstract class BaseLibrariesSupport {
         try {
             props.put("Flavor", FLAVOR);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
         mixpanel.registerSuperProperties(props);
     }

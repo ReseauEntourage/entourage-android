@@ -10,17 +10,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.PermissionChecker;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.PermissionChecker;
+import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -30,11 +29,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.github.clans.fab.FloatingActionButton;
 import com.squareup.otto.Subscribe;
 
@@ -48,7 +42,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 import social.entourage.android.BuildConfig;
-import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
@@ -63,17 +56,19 @@ import social.entourage.android.authentication.login.register.RegisterNumberFrag
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
 import social.entourage.android.authentification.login.LoginPresenter;
-import social.entourage.android.base.AmazonS3Utils;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
+import social.entourage.android.user.AvatarUploadPresenter;
+import social.entourage.android.user.AvatarUploadView;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 import social.entourage.android.view.HtmlTextView;
+import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
@@ -82,7 +77,7 @@ import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
  * Activity providing the login steps
  */
 public class LoginActivity extends EntourageActivity
-        implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener {
+        implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener, AvatarUploadView {
 
     // ----------------------------------
     // CONSTANTS
@@ -108,6 +103,9 @@ public class LoginActivity extends EntourageActivity
 
     @Inject
     LoginPresenter loginPresenter;
+
+    @Inject
+    AvatarUploadPresenter avatarUploadPresenter;
 
     private User onboardingUser;
 
@@ -547,52 +545,17 @@ public class LoginActivity extends EntourageActivity
         //Upload the photo to Amazon S3
         showProgressDialog(R.string.user_photo_uploading);
 
-        final String objectKey = "user_" + loginPresenter.authenticationController.getUser().getId() + ".jpg";
-        TransferUtility transferUtility = AmazonS3Utils.getTransferUtility(this);
-        TransferObserver transferObserver = transferUtility.upload(
-            BuildConfig.AWS_BUCKET,
-            "300x300/" + objectKey,
-            new File(photoUri.getPath()),
-            CannedAccessControlList.PublicRead
-        );
-        transferObserver.setTransferListener(new TransferListener() {
-            @Override
-            public void onStateChanged(final int id, final TransferState state) {
-                if (state == TransferState.COMPLETED) {
-                    if (loginPresenter != null) {
-                        loginPresenter.updateUserPhoto(objectKey);
-                        // Delete the temporary file
-                        File tmpImageFile = new File(photoUri.getPath());
-                        if (!tmpImageFile.delete()) {
-                            // Failed to delete the file
-                            Log.d("EntouragePhoto", "Failed to delete the temporary photo file");
-                        }
-                    } else {
-                        displayToast(R.string.user_photo_error_not_saved);
-                        dismissProgressDialog();
-                        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-                        if (photoEditFragment != null) {
-                            photoEditFragment.onPhotoSent(false);
-                        }
-                    }
-                }
-            }
+        File file = new File(photoUri.getPath());
+        avatarUploadPresenter.uploadPhoto(file);
+    }
 
-            @Override
-            public void onProgressChanged(final int id, final long bytesCurrent, final long bytesTotal) {
-
-            }
-
-            @Override
-            public void onError(final int id, final Exception ex) {
-                displayToast(R.string.user_photo_error_not_saved);
-                dismissProgressDialog();
-                PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-                if (photoEditFragment != null) {
-                    photoEditFragment.onPhotoSent(false);
-                }
-            }
-        });
+    public void onUploadError() {
+        displayToast(R.string.user_photo_error_not_saved);
+        dismissProgressDialog();
+        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+        if (photoEditFragment != null) {
+            photoEditFragment.onPhotoSent(false);
+        }
     }
 
     // ----------------------------------
@@ -1115,7 +1078,7 @@ public class LoginActivity extends EntourageActivity
         try {
             startActivity(settingsIntent);
         } catch (ActivityNotFoundException ex) {
-            Log.d("NOTIFICATIONS", "Failed to start the activity that shows the app settings");
+            Timber.tag("NOTIFICATIONS").e("Failed to start the activity that shows the app settings");
         }
     }
 
@@ -1158,11 +1121,6 @@ public class LoginActivity extends EntourageActivity
         if (loginPresenter == null) return ACCESS_COARSE_LOCATION;
         User user = loginPresenter.authenticationController.getUser();
         return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
-    }
-
-    @OnClick(R.id.login_startup_logo)
-    void onEntourageLogoClick() {
-        displayToast(VERSION + BuildConfig.VERSION_NAME);
     }
 
     /************************

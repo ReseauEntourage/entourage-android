@@ -2,7 +2,7 @@ package social.entourage.android.user;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.ViewGroup;
@@ -22,9 +22,8 @@ import social.entourage.android.user.role.UserRolesFactory;
  */
 public class UserNameView extends LinearLayout {
 
-    private LinearLayout tagsLeftHolder;
-    private LinearLayout tagsRightHolder;
     private TextView nameTextView;
+    private LinearLayout tagsHolder;
 
     public UserNameView(final Context context) {
         super(context);
@@ -44,9 +43,8 @@ public class UserNameView extends LinearLayout {
     private void init(AttributeSet attrs, int defStyle) {
         inflate(getContext(), R.layout.layout_user_name, this);
 
-        tagsLeftHolder = findViewById(R.id.user_name_tags_left_holder);
-        tagsRightHolder = findViewById(R.id.user_name_tags_right_holder);
         nameTextView = findViewById(R.id.user_name_name);
+        tagsHolder = findViewById(R.id.user_name_tags_holder);
 
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
@@ -76,9 +74,8 @@ public class UserNameView extends LinearLayout {
 
     public void setRoles(ArrayList<String> roles) {
         removeAllRoleViews();
-        if (roles != null && roles.size() > 0) {
-            //Using only the first role for display
-            String role = roles.get(0);
+        if (roles == null) return;
+        for (String role: roles) {
             UserRole userRole = UserRolesFactory.getInstance().findByName(role);
             if (userRole != null && userRole.isVisible()) {
                 addRoleView(userRole);
@@ -88,24 +85,15 @@ public class UserNameView extends LinearLayout {
 
     public void addRoleView(UserRole role) {
         RoleView roleView = new RoleView(getContext());
-        roleView.setText(role.getNameResourceId());
-        roleView.setTextColor(ContextCompat.getColor(getContext(), R.color.profile_role_text));
+        roleView.setRole(role);
         roleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.entourage_font_medium));
-        roleView.changeBackgroundColor(role.getColorResourceId());
-
-        LinearLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        if (role.getPosition() == UserRole.Position.LEFT) {
-            lp.rightMargin = (int)getResources().getDimension(R.dimen.role_margin);
-            tagsLeftHolder.addView(roleView, lp);
-        } else {
-            lp.leftMargin = (int)getResources().getDimension(R.dimen.role_margin);
-            tagsRightHolder.addView(roleView, lp);
-        }
+        tagsHolder.addView(roleView);
+        tagsHolder.setVisibility(VISIBLE);
     }
 
     private void removeAllRoleViews() {
-        tagsLeftHolder.removeAllViews();
-        tagsRightHolder.removeAllViews();
+        tagsHolder.removeAllViews();
+        tagsHolder.setVisibility(GONE);
     }
 
 }

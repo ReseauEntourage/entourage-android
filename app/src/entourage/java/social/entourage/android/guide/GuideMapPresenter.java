@@ -1,8 +1,7 @@
 package social.entourage.android.guide;
 
 import android.location.Location;
-import android.support.annotation.NonNull;
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -18,6 +17,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.guide.filter.GuideFilter;
+import timber.log.Timber;
 
 /**
  * Presenter controlling the GuideMapEntourageFragment
@@ -83,7 +83,7 @@ public class GuideMapPresenter {
 
                 @Override
                 public void onFailure(@NonNull Call<MapResponse> call, @NonNull Throwable t) {
-                    Log.d("GuideMapEntourageFrag", "Impossible to retrieve POIs", t);
+                    Timber.e(t, "Impossible to retrieve POIs");
                 }
             });
         }

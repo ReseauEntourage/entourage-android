@@ -2,6 +2,8 @@ package social.entourage.android;
 
 import dagger.Module;
 import dagger.Provides;
+import social.entourage.android.user.AvatarUpdatePresenter;
+import social.entourage.android.user.AvatarUploadView;
 
 /**
  * Module related to DrawerActivity
@@ -19,4 +21,10 @@ public class DrawerModule {
     public DrawerActivity providesActivity() {
         return activity;
     }
+
+    @Provides
+    public AvatarUploadView providesAvatarUploadView() { return activity; }
+
+    @Provides
+    public AvatarUpdatePresenter providesAvatarUpdatePresenter(DrawerPresenter presenter) { return presenter; }
 }

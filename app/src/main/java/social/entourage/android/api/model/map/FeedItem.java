@@ -3,8 +3,8 @@ package social.entourage.android.api.model.map;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

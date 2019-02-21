@@ -189,7 +189,7 @@
             android:paddingStart="5dp"
             android:text="@string/entourage_disclaimer_checkbox"/>
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/entourage_disclaimer_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

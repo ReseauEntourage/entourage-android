@@ -6,9 +6,8 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -55,6 +54,7 @@ import social.entourage.android.map.tour.FusedLocationProvider.ProviderStatusLis
 import social.entourage.android.map.tour.FusedLocationProvider.UserType;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
@@ -135,7 +135,7 @@ public class TourServiceManager {
                                                  final EncounterRequest encounterRequest,
                                                  final NewsfeedRequest newsfeedRequest,
                                                  final EntourageRequest entourageRequest) {
-        Log.i("TourServiceManager", "newInstance");
+        Timber.d("newInstance");
         ConnectivityManager connectivityManager = (ConnectivityManager) tourService.getSystemService(CONNECTIVITY_SERVICE);
         EntourageLocation entourageLocation = EntourageLocation.getInstance();
         User user = controller.getUser();
@@ -236,7 +236,7 @@ public class TourServiceManager {
         try {
             BusProvider.getInstance().unregister(this);
         } catch (IllegalArgumentException e) {
-            Log.d("TourServiceManager", "No need to unregister");
+            Timber.d("No need to unregister");
         }
 
     }
@@ -283,7 +283,7 @@ public class TourServiceManager {
                     tourService.notifyListenersFeedItemClosed(false, tour);
                 }
                 isTourClosing = false;
-                Log.e(this.getClass().getSimpleName(), t.getLocalizedMessage());
+                Timber.e(t);
             }
         });
     }
@@ -360,7 +360,7 @@ public class TourServiceManager {
             @Override
             public void onResponse(@NonNull Call<Tour.TourWrapper> call, @NonNull Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Success", response.body().getTour().toString());
+                    Timber.d(response.body().getTour().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);
@@ -369,7 +369,7 @@ public class TourServiceManager {
 
             @Override
             public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
-                Log.e("Error", t.getLocalizedMessage());
+                Timber.e(t);
                 tourService.notifyListenersFeedItemClosed(false, tour);
             }
         });
@@ -387,7 +387,7 @@ public class TourServiceManager {
 
             @Override
             public void onFailure(@NonNull Call<Tour.ToursWrapper> call, @NonNull Throwable t) {
-                Log.e("Error", t.getLocalizedMessage());
+                Timber.e(t);
             }
         });
     }
@@ -433,19 +433,19 @@ public class TourServiceManager {
                 @Override
                 public void onResponse(@NonNull Call<EncounterResponse> call, @NonNull Response<EncounterResponse> response) {
                     if (response.isSuccessful()) {
-                        Log.d("tape:", "success");
+                        Timber.tag("tape:").d("success");
                         BusProvider.getInstance().post(new EncounterTaskResult(true, response.body().getEncounter(), EncounterTaskResult.OperationType.ENCOUNTER_ADD));
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<EncounterResponse> call, @NonNull Throwable t) {
-                    Log.d("tape:", "failure");
+                    Timber.tag("tape:").e("failure");
                     BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
                 }
             });
         } else {
-            Log.d("tape:", "no network");
+            Timber.tag("tape:").d("no network");
             BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
         }
     }
@@ -460,23 +460,23 @@ public class TourServiceManager {
                 @Override
                 public void onResponse(@NonNull Call<EncounterResponse> call, @NonNull Response<EncounterResponse> response) {
                     if (response.isSuccessful()) {
-                        Log.d("tape:", "success");
+                        Timber.tag("tape:").d("success");
                         BusProvider.getInstance().post(new EncounterTaskResult(true, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                     }
                     else {
-                        Log.d("tape:", "not successful");
+                        Timber.tag("tape:").d("not successful");
                         BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<EncounterResponse> call, @NonNull Throwable t) {
-                    Log.d("tape:", "failure");
+                    Timber.tag("tape:").d("failure");
                     BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                 }
             });
         } else {
-            Log.d("tape:", "no network");
+            Timber.tag("tape:").d("no network");
             BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
         }
     }
@@ -541,7 +541,7 @@ public class TourServiceManager {
             @Override
             public void onResponse(@NonNull Call<Entourage.EntourageWrapper> call, @NonNull Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Success", response.body().getEntourage().toString());
+                    Timber.d(response.body().getEntourage().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getEntourage());
                 } else {
                     entourage.setStatus(oldStatus);
@@ -551,7 +551,7 @@ public class TourServiceManager {
 
             @Override
             public void onFailure(@NonNull Call<Entourage.EntourageWrapper> call, @NonNull Throwable t) {
-                Log.e("Error", t.getLocalizedMessage());
+                Timber.e(t);
                 entourage.setStatus(oldStatus);
                 tourService.notifyListenersFeedItemClosed(false, entourage);
             }
@@ -682,7 +682,7 @@ public class TourServiceManager {
                         updateTourCoordinates();
                         tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
                     } else {
-                        Log.e(this.getClass().getSimpleName(), "no location provided");
+                        Timber.e("no location provided");
                     }
                     provider.setLocationUpdateUserType(UserType.PRO);
 
@@ -696,7 +696,7 @@ public class TourServiceManager {
 
             @Override
             public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
-                Log.e("Error", t.getLocalizedMessage());
+                Timber.e(t);
                 tour = null;
                 tourService.notifyListenersTourCreated(false, "");
             }
@@ -713,7 +713,7 @@ public class TourServiceManager {
             @Override
             public void onResponse(@NonNull Call<Tour.TourWrapper> call, @NonNull Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Success", response.body().getTour().toString());
+                    Timber.d(response.body().getTour().toString());
                     tour = null;
                     pointsToSend.clear();
                     pointsToDraw.clear();
@@ -728,7 +728,7 @@ public class TourServiceManager {
 
             @Override
             public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
-                Log.e("Error", t.getLocalizedMessage());
+                Timber.e(t);
                 tourService.notifyListenersFeedItemClosed(false, tour);
             }
         });
@@ -744,7 +744,7 @@ public class TourServiceManager {
             @Override
             public void onResponse(@NonNull Call<Tour.TourWrapper> call, @NonNull Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Success", response.body().getTour().toString());
+                    Timber.d(response.body().getTour().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                     if (tour.getUUID().equalsIgnoreCase(TourServiceManager.this.tourUUID)) {
                         authenticationController.saveTour(null);
@@ -756,7 +756,7 @@ public class TourServiceManager {
 
             @Override
             public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
-                Log.e("Error", t.getLocalizedMessage());
+                Timber.e(t);
                 tourService.notifyListenersFeedItemClosed(false, tour);
             }
         });
@@ -881,7 +881,7 @@ public class TourServiceManager {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.d("LOCATION", "onLocationChanged");
+            Timber.d("onLocationChanged");
             if (manager.entourageLocation.getCurrentLocation() == null) {
                 manager.entourageLocation.setInitialLocation(location);
             }

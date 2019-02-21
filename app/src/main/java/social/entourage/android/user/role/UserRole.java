@@ -1,7 +1,7 @@
 package social.entourage.android.user.role;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
 
 /**
  * UI information of an user role
@@ -10,30 +10,22 @@ import android.support.annotation.StringRes;
 public class UserRole {
 
     // ----------------------------------
-    // CONSTANTS
-    // ----------------------------------
-
-    public enum Position {LEFT, RIGHT}
-
-    // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
     private final String name;
     private final @StringRes int nameResourceId;
     private final @ColorRes int colorResourceId;
-    private final Position position;
     private final boolean visible;
 
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
-    UserRole(String name, @StringRes int nameResourceId, @ColorRes int colorResourceId, Position position, boolean visible) {
+    UserRole(String name, @StringRes int nameResourceId, @ColorRes int colorResourceId, boolean visible) {
         this.name = name;
         this.nameResourceId = nameResourceId;
         this.colorResourceId = colorResourceId;
-        this.position = position;
         this.visible = visible;
     }
 
@@ -51,10 +43,6 @@ public class UserRole {
 
     public int getColorResourceId() {
         return colorResourceId;
-    }
-
-    public Position getPosition() {
-        return position;
     }
 
     public boolean isVisible() {

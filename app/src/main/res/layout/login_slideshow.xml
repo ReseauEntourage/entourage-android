@@ -5,7 +5,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context="social.entourage.android.authentication.login.slideshow.LoginSlideshowFragment">
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/login_slideshow_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

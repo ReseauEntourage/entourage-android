@@ -1,6 +1,6 @@
 package social.entourage.android.map.entourage.my;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import javax.inject.Inject;
 

@@ -6,10 +6,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +27,10 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+import timber.log.Timber;
 
 public class PhotoEditFragment extends EntourageDialogFragment implements CropImageView.OnSetImageUriCompleteListener{
 
@@ -77,7 +77,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof PhotoChooseInterface) {
             mListener = (PhotoChooseInterface) context;
@@ -171,7 +171,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
                 if (result.isSuccessful()) {
                     mListener.onPhotoChosen(result.getUri(), photoSource);
                 } else {
-                    Log.d("PhotoEdit", result.getError().getMessage());
+                    Timber.e(result.getError());
                     Toast.makeText(getActivity(), R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show();
                     fabButton.setEnabled(true);
                 }
