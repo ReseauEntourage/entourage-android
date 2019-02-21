@@ -72,7 +72,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     @BindView(R.id.scrollView)
     ScrollView scrollView;
 
-    int scrollViewY = 0;
+    private int scrollViewY = 0;
 
     @BindView(R.id.user_photo)
     ImageView userPhoto;
@@ -95,17 +95,11 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     @BindView(R.id.user_notifications_image)
     ImageView userNotificationsStatusImage;
 
-    @BindView(R.id.user_associations_title)
-    TextView userAssociationsTitle;
-
-    @BindView(R.id.user_associations_public)
-    TextView userAssociationsPublicInfo;
-
     @BindView(R.id.user_associations_view)
     RecyclerView userAssociationsView;
 
-    @BindView(R.id.user_add_association_separator)
-    View userAddAssociationSeparator;
+    @BindView(R.id.user_associations_layout)
+    View userAssociationLayout;
 
     @BindView(R.id.user_action_zone)
     TextView userActionZone;
@@ -116,7 +110,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     @BindView(R.id.user_edit_progressBar)
     ProgressBar progressBar;
 
-    UserOrganizationsAdapter organizationsAdapter;
+    private UserOrganizationsAdapter organizationsAdapter;
 
     private User editedUser;
 
@@ -204,15 +198,19 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             if (editedUser.getOrganization() != null) {
                 organizationList.add(editedUser.getOrganization());
             }
-            if (organizationsAdapter == null) {
-                userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                organizationsAdapter = new UserOrganizationsAdapter(organizationList);
-                userAssociationsView.setAdapter(organizationsAdapter);
-            } else {
-                organizationsAdapter.setOrganizationList(organizationList);
+
+            if(organizationList.size() > 0) {
+                if (organizationsAdapter == null) {
+                    userAssociationsView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    organizationsAdapter = new UserOrganizationsAdapter(organizationList);
+                    userAssociationsView.setAdapter(organizationsAdapter);
+                } else {
+                    organizationsAdapter.setOrganizationList(organizationList);
+                }
+                userAssociationLayout.setVisibility(View.VISIBLE);
             }
 
-            userAddAssociationSeparator.setVisibility(organizationList.size() > 0 ? View.VISIBLE : View.GONE);
+
 
             User.Address address = editedUser.getAddress();
             if (address == null) {
