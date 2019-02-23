@@ -230,6 +230,8 @@ public class WebViewFragment extends EntourageDialogFragment {
 
     @OnClick(R.id.webview_menu_browser)
     protected void onMenuBrowserClicked() {
+        if(webView.getUrl()==null)
+            return;
         Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getUrl()));
         try {
             startActivity(browseIntent);

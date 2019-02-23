@@ -2354,7 +2354,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         }
         isFullMapShown = false;
         mapDisplayToggle.setText(R.string.map_top_navigation_list);
-       miniCardsView.setVisibility(View.INVISIBLE);
+        miniCardsView.setVisibility(View.INVISIBLE);
 
         hideEmptyListPopup();
 
