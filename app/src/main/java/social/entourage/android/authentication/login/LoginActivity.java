@@ -41,7 +41,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
-import social.entourage.android.BuildConfig;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
@@ -244,13 +243,6 @@ public class LoginActivity extends EntourageActivity
     @BindView(R.id.login_include_notifications)
     View loginNotificationsView;
 
-    /************************
-     * Geolocation view
-     ************************/
-
-    @BindView(R.id.login_include_geolocation)
-    View loginGeolocationView;
-
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -273,7 +265,6 @@ public class LoginActivity extends EntourageActivity
         loginTutorial.setVisibility(View.GONE);
         loginNewsletter.setVisibility(View.GONE);
         loginNotificationsView.setVisibility(View.GONE);
-        loginGeolocationView.setVisibility(View.GONE);
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
         passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
@@ -1089,25 +1080,6 @@ public class LoginActivity extends EntourageActivity
     /************************
      * Geolocation View
      ************************/
-
-    private void showGeolocationView() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_04_2);
-        loginGeolocationView.setVisibility(View.VISIBLE);
-    }
-
-    @OnClick(R.id.login_geolocation_ignore_button)
-    protected void onGeolocationIgnore() {
-        NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
-        noLocationPermissionFragment.show(getSupportFragmentManager(), NoLocationPermissionFragment.TAG);
-    }
-
-    @OnClick(R.id.login_geolocation_accept_button)
-    protected void onGeolocationAccepted() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_GEOLOCATION_ACCEPT);
-        saveGeolocationPreference(true);
-        loginGeolocationView.setVisibility(View.GONE);
-        showNotificationPermissionView();
-    }
 
     public void saveGeolocationPreference(boolean enabled) {
         //remember the choice
