@@ -71,7 +71,6 @@ public class EntourageEvents {
     public static final String EVENT_SCREEN_03_1 = "Screen03_1OnboardingCodeResendView";
     public static final String EVENT_SCREEN_03_2 = "Screen03_2OnboardingPhoneNotFoundView";
     public static final String EVENT_SCREEN_04 = "Screen04_GoEnableGeolocView"; //Not implemented on Android
-    public static final String EVENT_SCREEN_04_2 = "Screen04_2OnboardingGeolocView";
     public static final String EVENT_SCREEN_04_3 = "Screen04_3OnboardingNotificationsView";
     public static final String EVENT_SCREEN_30_1 = "Screen30_1WelcomeView";
     public static final String EVENT_SCREEN_30_2 = "Screen30_2InputPhoneView";
