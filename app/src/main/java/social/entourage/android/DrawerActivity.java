@@ -628,8 +628,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Subscribe
     public void userViewRequested(OnUserViewRequestedEvent event) {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_USERPROFILE);
-        UserFragment fragment = UserFragment.newInstance(event.getUserId());
-        fragment.show(getSupportFragmentManager(), UserFragment.TAG);
+        try {
+            UserFragment fragment = UserFragment.newInstance(event.getUserId());
+            fragment.show(getSupportFragmentManager(), UserFragment.TAG);
+        } catch (IllegalStateException e) {
+            Timber.e(e);
+        }
     }
 
     @Subscribe

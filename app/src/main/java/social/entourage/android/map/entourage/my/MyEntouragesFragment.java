@@ -241,7 +241,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         // So we need to reset the filter flag and no item view in case the user switched to another screen
         // while the UNREAD tab was active
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(getContext());
-        filter.setShowUnreadOnly(false);
+        if(filter!=null)
+            filter.setShowUnreadOnly(false);
 
         noItemsView.setVisibility(View.GONE);
     }

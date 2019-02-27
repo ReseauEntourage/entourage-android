@@ -445,7 +445,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     private void showPoiDetails(Poi poi) {
         ReadPoiFragment readPoiFragment = ReadPoiFragment.newInstance(poi);
-        readPoiFragment.show(getFragmentManager(), ReadPoiFragment.TAG);
+        if(readPoiFragment!=null)
+            readPoiFragment.show(getFragmentManager(), ReadPoiFragment.TAG);
     }
 
     // ----------------------------------

@@ -815,19 +815,23 @@ public class LoginActivity extends EntourageActivity
 
     protected void onUserPhotoUpdated(boolean updated) {
         if (isFinishing()) return;
-        dismissProgressDialog();
-        PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
-        if (photoEditFragment != null) {
-            photoEditFragment.onPhotoSent(updated);
-        }
-        if (updated) {
-            PhotoChooseSourceFragment fragment = (PhotoChooseSourceFragment) getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
-            if (fragment != null && !fragment.isStopped()) {
-                fragment.dismiss();
+        try {
+            dismissProgressDialog();
+            PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
+            if (photoEditFragment != null) {
+                photoEditFragment.onPhotoSent(updated);
             }
-            showActionZoneView();
-        } else {
-            displayToast(R.string.user_photo_error_not_saved);
+            if (updated) {
+                PhotoChooseSourceFragment fragment = (PhotoChooseSourceFragment) getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
+                if (fragment != null && !fragment.isStopped()) {
+                    fragment.dismiss();
+                }
+                showActionZoneView();
+            } else {
+                displayToast(R.string.user_photo_error_not_saved);
+            }
+        } catch(IllegalStateException e) {
+            Timber.e(e);
         }
     }
 

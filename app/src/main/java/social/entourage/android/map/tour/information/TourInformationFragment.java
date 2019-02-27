@@ -1615,9 +1615,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     break;
                 case Tour.JOIN_STATUS_ACCEPTED:
                     actButton.setPadding(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
-                    if (Build.VERSION.SDK_INT >= 16) {
-                        actButton.setPaddingRelative(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
-                    }
+                    actButton.setPaddingRelative(0, 0, getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0);
                     actButton.setEnabled(false);
                     actButton.setText(R.string.tour_cell_button_accepted);
                     actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
