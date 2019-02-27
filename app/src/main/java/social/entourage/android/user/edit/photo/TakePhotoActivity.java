@@ -12,6 +12,7 @@ import java.io.File;
 
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 public class TakePhotoActivity extends AppCompatActivity {
 
@@ -40,21 +41,23 @@ public class TakePhotoActivity extends AppCompatActivity {
         // Create the take photo intent
         Intent intent = getIntent();
         if (intent != null) {
-            Uri photoFileUri = null;
-            if (intent.getData() != null) {
-                photoFileUri = intent.getData();
-            }
-            mCurrentPhotoPath = getIntent().getStringExtra(KEY_PHOTO_PATH);
+            Uri photoFileUri = intent.getData();
 
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            ClipData clip = ClipData.newUri(getContentResolver(), "A photo", photoFileUri);
+            mCurrentPhotoPath = intent.getStringExtra(KEY_PHOTO_PATH);
 
-            takePictureIntent.setClipData(clip);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            if (photoFileUri != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri);
+            try {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                ClipData clip = ClipData.newUri(getContentResolver(), "A photo", photoFileUri);
+
+                takePictureIntent.setClipData(clip);
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                if (photoFileUri != null) {
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri);
+                }
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            } catch(NullPointerException e) {
+                Timber.e(e);
             }
-            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
         }
     }
 

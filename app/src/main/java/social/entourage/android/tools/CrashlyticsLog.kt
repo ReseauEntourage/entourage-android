@@ -6,7 +6,8 @@ import timber.log.Timber
 
 class CrashlyticsLog : Timber.Tree() {
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        if (priority == Log.VERBOSE || priority == Log.INFO) {
+        if (priority <= Log.INFO) {
+            //we don't record anything below Info messages (DEBUG, INFO, VERBOSE)
             return
         }
 

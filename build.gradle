@@ -38,12 +38,13 @@ ext {
     supportVersion = "1.0.0"
     playServicesVersion = "16.0.0"
     daggerVersion = "2.21"
-    okHttpVersion = "3.13.1"
+    //okHttpVersion should stay under 3.13 because it is requiring minSdkVersion 21
+    okHttpVersion = "3.12.1"
     retrofitVersion = "2.5.0"
     butterKnifeVersion = "10.1.0"
 
     versionMajor = 5
-    versionMinor = 8
+    versionMinor = 9
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = versionMajor * 100000 + versionMinor * 10000 + versionPatch % 10000

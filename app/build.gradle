@@ -205,7 +205,7 @@ dependencies {
     entourageImplementation "com.facebook.android:facebook-android-sdk:4.40.0"
     implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
     implementation "com.google.firebase:firebase-core:16.0.7"
-    implementation "com.google.firebase:firebase-messaging:17.3.4"
+    implementation "com.google.firebase:firebase-messaging:17.4.0"
     implementation "com.google.guava:guava:27.0.1-android"
     /*implementation "com.google.firebase:firebase-perf:16.2.3"*/
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
