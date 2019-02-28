@@ -1,5 +1,5 @@
 # Entourage - Android application
-[![bitrise](https://www.bitrise.io/app/b1ff393d94bd02fb/status.svg?token=Yad_992pQH6nGK5trMBgCw&branch=develop)](https://www.bitrise.io/app/b1ff393d94bd02fb)
+[![bitrise](https://app.bitrise.io/app/b1ff393d94bd02fb/status.svg?token=Yad_992pQH6nGK5trMBgCw&branch=develop)](https://www.bitrise.io/app/b1ff393d94bd02fb)
 
 Our goal is to create a local social network on smartphones to help the HOMELESS people fight their loneliness thru collaborative actions with neighbours.
 

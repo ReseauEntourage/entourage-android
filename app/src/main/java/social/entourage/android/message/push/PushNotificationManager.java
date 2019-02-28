@@ -33,7 +33,6 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.message.MessageActivity;
 import timber.log.Timber;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -332,7 +331,10 @@ public class PushNotificationManager {
      */
     private void displayPushNotification(Message message, Context context) {
         List<Message> messageList = pushNotifications.get(message.getHash());
-        int count = messageList.size();
+        int count = 0;
+        if (messageList != null) {
+            count = messageList.size();
+        }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) return;
@@ -422,19 +424,18 @@ public class PushNotificationManager {
         if (message.getContent() != null) {
             messageType = message.getContent().getType();
         }
+        messageIntent = new Intent(context, DrawerActivity.class);
         if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(messageType)) {
-            messageIntent = new Intent(context, DrawerActivity.class);
             // because of the grouping, we need an intent that is specific for each entourage
             messageIntent.setData(Uri.parse("entourage-notif://" + message.getPushNotificationTag()));
         }
-        else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(messageType)) {
-            messageIntent = new Intent(context, DrawerActivity.class);
-        }
-        else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(messageType) || PushNotificationContent.TYPE_INVITATION_STATUS.equals(messageType)) {
-            messageIntent = new Intent(context, DrawerActivity.class);
-        }
-        else {
-            messageIntent = new Intent(context, MessageActivity.class);
+        else if (!PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType)
+                && !PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(messageType)
+                && !PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(messageType)
+                && !PushNotificationContent.TYPE_INVITATION_STATUS.equals(messageType)) {
+            Timber.e("Notif has no pending intent");
+            //TODO Check what to do when we get here
+            //return null;
         }
         if (messageType != null) {
             messageIntent.setAction(messageType);

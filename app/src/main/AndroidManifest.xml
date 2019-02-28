@@ -128,13 +128,6 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".message.MessageActivity"
-            android:label="@string/activity_display_message_title"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".map.tour.join.received.TourJoinRequestReceivedActivity"
             android:screenOrientation="portrait">
         </activity>
