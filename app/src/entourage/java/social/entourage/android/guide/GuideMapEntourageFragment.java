@@ -33,6 +33,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.otto.Subscribe;
 
@@ -353,6 +354,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     if (map != null) return;
                     if (getActivity()== null) return;
                     map = googleMap;
+                    map.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.map_styles_json));
                     clusterManager = new ClusterManager<>(getActivity(), map);
                     poiRenderer = new PoiRenderer(getActivity(), map, clusterManager);
                     clusterManager.setRenderer(poiRenderer);
