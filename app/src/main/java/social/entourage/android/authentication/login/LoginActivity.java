@@ -50,13 +50,13 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.authentication.login.register.OnRegisterUserListener;
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
 import social.entourage.android.authentification.login.LoginPresenter;
 import social.entourage.android.configuration.Configuration;
-import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 import social.entourage.android.user.AvatarUploadPresenter;
@@ -168,9 +168,6 @@ public class LoginActivity extends EntourageActivity
     @BindView(R.id.login_edit_email_profile)
     EditText profileEmail;
 
-    //@BindView(R.id.login_edit_name_profile)
-    //EditText profileName;
-
     @BindView(R.id.login_user_photo)
     ImageView profilePhoto;
 
@@ -243,6 +240,7 @@ public class LoginActivity extends EntourageActivity
     @BindView(R.id.login_include_notifications)
     View loginNotificationsView;
 
+    private boolean goToNextActionAfterActionZone = false;
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -1073,7 +1071,7 @@ public class LoginActivity extends EntourageActivity
         try {
             startActivity(settingsIntent);
         } catch (ActivityNotFoundException ex) {
-            Timber.tag("NOTIFICATIONS").e("Failed to start the activity that shows the app settings");
+            Timber.e("Failed to start the activity that shows the app notification settings");
         }
     }
 
@@ -1105,6 +1103,12 @@ public class LoginActivity extends EntourageActivity
 
     private void showActionZoneView() {
         if (isFinishing()) return;
+        goToNextActionAfterActionZone = false;
+        UserPreferences userPref = loginPresenter.authenticationController.getUserPreferences();
+        if(userPref.isIgnoringActionZone()) {
+            showNotificationPermissionView();
+            return;
+        }
         User me = loginPresenter.authenticationController.getUser();
         UserEditActionZoneFragment actionZoneFragment = UserEditActionZoneFragment.newInstance(me != null ? me.getAddress() : null);
         actionZoneFragment.setFragmentListener(this);
@@ -1126,27 +1130,33 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public void onUserEditActionZoneFragmentDismiss() {
-        showNameView();
+        if(!goToNextActionAfterActionZone) {
+            showNameView();
+        } else {
+            showNotificationPermissionView();
+        }
     }
 
     @Override
     public void onUserEditActionZoneFragmentIgnore() {
-        onUserEditActionZoneFragmentAddressSaved();
+        goToNextActionAfterActionZone(true);
     }
 
     @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
-        if (isGeolocationGranted()) {
-            hideActionZoneView();
-            showNotificationPermissionView();
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                String accessLocation = getUserLocationAccess();
-                requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
-            } else {
-                showNotificationPermissionView();
-            }
-        }
+        goToNextActionAfterActionZone(false);
+    }
+
+    private void goToNextActionAfterActionZone(final boolean ignoreZone) {
+        loginPresenter.authenticationController.getUserPreferences().setIgnoringActionZone(ignoreZone);
+        loginPresenter.authenticationController.saveUserPreferences();
+        goToNextActionAfterActionZone = true;
+        hideActionZoneView();
+        showNotificationPermissionView();
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String accessLocation = getUserLocationAccess();
+            requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
+        }*/
     }
 
     /************************

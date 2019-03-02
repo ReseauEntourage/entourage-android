@@ -1002,15 +1002,15 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (authenticationController.isAuthenticated()) {
             User me = authenticationController.getUser();
             UserPreferences userPreferences = authenticationController.getUserPreferences();
-            if (me != null && userPreferences != null) {
-                boolean noAddress = me.getAddress() == null || me.getAddress().getDisplayAddress() == null || me.getAddress().getDisplayAddress().length() == 0;
-                if ((forced || !userPreferences.isEditActionZoneShown()) && noAddress) {
-                    UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
-                    userEditActionZoneFragment.addFragmentListener(this);
-                    userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
-                    userEditActionZoneFragment.setFromLogin(true);
-                    userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
-                }
+            if (me != null
+                    && userPreferences != null
+                    && !userPreferences.isIgnoringActionZone()
+                    && (me.getAddress() == null || me.getAddress().getDisplayAddress() == null || me.getAddress().getDisplayAddress().length() == 0)) {
+                UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+                userEditActionZoneFragment.addFragmentListener(this);
+                userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
+                userEditActionZoneFragment.setFromLogin(true);
+                userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
             }
         }
         editActionZoneShown = true;
@@ -1023,18 +1023,20 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     public void onUserEditActionZoneFragmentIgnore() {
-        // treat as it saved the address
-        onUserEditActionZoneFragmentAddressSaved();
+        storeActionZone(true);
     }
 
     @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
+        storeActionZone(false);
+    }
+
+    private void storeActionZone(final boolean ignoreZone) {
         AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
         if (authenticationController.isAuthenticated()) {
-            User me = authenticationController.getUser();
             UserPreferences userPreferences = authenticationController.getUserPreferences();
-            if (me != null && userPreferences != null) {
-                userPreferences.setEditActionZoneShown(true);
+            if (userPreferences != null) {
+                userPreferences.setIgnoringActionZone(ignoreZone);
                 authenticationController.saveUserPreferences();
             }
         }

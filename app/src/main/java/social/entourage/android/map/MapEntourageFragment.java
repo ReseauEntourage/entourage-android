@@ -104,6 +104,8 @@ import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
+import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -2703,23 +2705,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
+        storeActionZoneInfo(false);
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentIgnore() {
+        storeActionZoneInfo(true);
+        if (presenter != null) {
+            presenter.handleLocationPermission();
+        }
+    }
+
+    private void storeActionZoneInfo(final boolean ignoreAddress) {
+        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+        authenticationController.getUserPreferences().setIgnoringActionZone(ignoreAddress);
+        authenticationController.saveUserPreferences();
         User me = EntourageApplication.me();
-        if (me != null) {
+        if (me != null && !ignoreAddress) {
             User.Address address = me.getAddress();
             if (address != null) {
                 centerMap(new LatLng(address.getLatitude(), address.getLongitude()));
             }
         }
     }
-
-    @Override
-    public void onUserEditActionZoneFragmentIgnore() {
-        onUserEditActionZoneFragmentAddressSaved();
-        if (presenter != null) {
-            presenter.handleLocationPermission();
-        }
-    }
-
 
     // ----------------------------------
     // INNER CLASSES

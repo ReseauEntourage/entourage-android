@@ -374,8 +374,13 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
         return (user.getEmail() == null || user.getEmail().length() == 0);
     }
 
+    /**
+     * Returns true if we need to show the set action zone view
+     * @return
+     */
     public boolean shouldShowActionZoneView() {
-        return shouldShowActionZoneView(authenticationController.getUser());
+        return !authenticationController.getUserPreferences().isIgnoringActionZone()
+                && shouldShowActionZoneView(authenticationController.getUser());
     }
 
     /**
@@ -383,8 +388,10 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
      * @param user the user to check
      * @return
      */
-    public boolean shouldShowActionZoneView(@NonNull User user) {
-        return (user.getAddress() == null || user.getAddress().getDisplayAddress() == null || user.getAddress().getDisplayAddress().length() == 0);
+    protected boolean shouldShowActionZoneView(@NonNull User user) {
+        return (user.getAddress() == null
+                || user.getAddress().getDisplayAddress() == null
+                || user.getAddress().getDisplayAddress().length() == 0);
     }
 
     /**
