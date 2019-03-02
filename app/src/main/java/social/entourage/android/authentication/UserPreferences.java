@@ -29,7 +29,8 @@ public class UserPreferences implements Serializable {
 
     private Tour ongoingTour;
 
-    private boolean editActionZoneShown = false;
+    @Expose(serialize = false)
+    private boolean ignoreActionZone = false;
 
     public boolean isUserToursOnly() {
         return userToursOnly;
@@ -95,11 +96,11 @@ public class UserPreferences implements Serializable {
         this.ongoingTour = ongoingTour;
     }
 
-    public boolean isEditActionZoneShown() {
-        return editActionZoneShown;
+    public boolean isIgnoringActionZone() {
+        return ignoreActionZone;
     }
 
-    public void setEditActionZoneShown(final boolean editActionZoneShown) {
-        this.editActionZoneShown = editActionZoneShown;
+    public void setIgnoringActionZone(final boolean ignoreAddress) {
+        this.ignoreActionZone = ignoreAddress;
     }
 }

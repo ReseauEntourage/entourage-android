@@ -44,6 +44,8 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
@@ -475,14 +477,24 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
-        UserEditActionZoneFragment userEditActionZoneFragment = (UserEditActionZoneFragment)getFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
-        if (userEditActionZoneFragment != null && !userEditActionZoneFragment.isStateSaved()) {
-            userEditActionZoneFragment.dismiss();
-        }
+        storeActionZone(false);
     }
 
     @Override
     public void onUserEditActionZoneFragmentIgnore() {
-        onUserEditActionZoneFragmentAddressSaved();
+        storeActionZone(true) ;
+    }
+
+    public void storeActionZone(final boolean ignoreActionZone) {
+        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+        UserPreferences userPreferences = authenticationController.getUserPreferences();
+        if (userPreferences != null) {
+            userPreferences.setIgnoringActionZone(ignoreActionZone);
+            authenticationController.saveUserPreferences();
+        }
+        UserEditActionZoneFragment userEditActionZoneFragment = (UserEditActionZoneFragment)getFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        if (userEditActionZoneFragment != null && !userEditActionZoneFragment.isStateSaved()) {
+            userEditActionZoneFragment.dismiss();
+        }
     }
 }
