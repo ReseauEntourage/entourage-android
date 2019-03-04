@@ -425,21 +425,23 @@ public class PushNotificationManager {
             messageType = message.getContent().getType();
         }
         messageIntent = new Intent(context, DrawerActivity.class);
-        if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(messageType)) {
-            // because of the grouping, we need an intent that is specific for each entourage
-            messageIntent.setData(Uri.parse("entourage-notif://" + message.getPushNotificationTag()));
+        switch (messageType) {
+            case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
+                messageIntent = new Intent(context, DrawerActivity.class);
+                // because of the grouping, we need an intent that is specific for each entourage
+                messageIntent.setData(Uri.parse("entourage-notif://" + message.getPushNotificationTag()));
+                break;
+            case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
+            case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+            case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
+            case PushNotificationContent.TYPE_INVITATION_STATUS:
+                break;
+            default:
+                Timber.e("Notif has no pending intent");
+                //TODO Check what to do when we get here
+                //return null;
         }
-        else if (!PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType)
-                && !PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(messageType)
-                && !PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(messageType)
-                && !PushNotificationContent.TYPE_INVITATION_STATUS.equals(messageType)) {
-            Timber.e("Notif has no pending intent");
-            //TODO Check what to do when we get here
-            //return null;
-        }
-        if (messageType != null) {
-            messageIntent.setAction(messageType);
-        }
+        messageIntent.setAction(messageType);
         messageIntent.putExtras(args);
         return PendingIntent.getActivity(context, intentCode, messageIntent, 0);
     }

@@ -1,11 +1,9 @@
 package social.entourage.android.message.push;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 
-import com.google.firebase.messaging.FirebaseMessagingService;
+import android.content.SharedPreferences;
 import com.google.firebase.messaging.RemoteMessage;
-import com.mixpanel.android.mpmetrics.GCMReceiver;
+import com.mixpanel.android.mpmetrics.MixpanelFCMMessagingService;
 
 import java.util.Map;
 
@@ -15,7 +13,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 import timber.log.Timber;
 
-public class EntourageFirebaseMessagingService extends FirebaseMessagingService {
+public class EntourageFirebaseMessagingService extends MixpanelFCMMessagingService {
 
     public static final String TAG = "EntourageFirebaseMessagingService";
 
@@ -40,15 +38,8 @@ public class EntourageFirebaseMessagingService extends FirebaseMessagingService 
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
              if(remoteMessage.getData().containsKey("mp_message")) {
-                    Map<String, String> mp_message = remoteMessage.getData();
-                    //mp_message now contains the notification's text
-                    GCMReceiver mixpanelGCMReceiver = new GCMReceiver();
-                    Intent fakeIntent = new Intent("com.google.android.c2dm.intent.RECEIVE");
-                    for (String key : mp_message.keySet()) {
-                        String value = mp_message.get(key);
-                        fakeIntent.putExtra(key, value);
-                    }
-                    mixpanelGCMReceiver.onReceive(this, fakeIntent);
+                    super.onMessageReceived(remoteMessage);
+                    return;
             } else {
                 handleNow(remoteMessage);
             }
