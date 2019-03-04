@@ -25,6 +25,7 @@
 
     <!-- Entourage Notifications -->
     <string name="entourage_join_request_received">%1$s souhaite rejoindre votre sortie: %2$s</string>
+    <string name="entourage_join_request_received_nomsg">%1$s souhaite rejoindre votre sortie.</string>
     <string name="entourage_info_quit_entourage_title">Quitter la sortie</string>
     <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter la sortie ?</string>
     <string name="entourage_info_text_close">Sortie supprimée</string>

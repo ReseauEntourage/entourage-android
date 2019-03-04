@@ -107,8 +107,11 @@ public class Message implements Serializable {
 
     public String getContentTitleForCount(int count, Context context) {
             if (content != null) {
-                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(content.getType())) {
-                    return context.getResources().getQuantityString(R.plurals.notification_title_chat_message, count, author);
+                switch(content.getType()) {
+                    case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
+                        return context.getResources().getQuantityString(R.plurals.notification_title_chat_message, count, author);
+                    case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
+                        return context.getResources().getQuantityString(R.plurals.notification_title_join_request, count, author);
                 }
             }
             return author;
@@ -124,13 +127,13 @@ public class Message implements Serializable {
                 String notificationText;
                 if (count > 1) {
                     if (content.isEntourageRelated()) {
-                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, count, content.getFeedItemName());
+                        notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, count);
                     } else {
                         notificationText = context.getResources().getQuantityString(R.plurals.notification_text_join_request_tour_multiple, count, count);
                     }
                 } else {
                     if (content.isEntourageRelated()) {
-                        notificationText = context.getString(R.string.notification_text_join_request_entourage_single, author, content.getFeedItemName());
+                        notificationText = context.getString(R.string.notification_text_join_request_entourage_single_nomsg, author);
                     } else {
                         notificationText = context.getString(R.string.notification_text_join_request_tour_single, author);
                     }

@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
@@ -63,6 +64,7 @@ public class PushNotificationContent implements Serializable {
         return extra != null && Extra.JOINABLE_TYPE_ENTOURAGE.equals(extra.joinableType);
     }
 
+    @NonNull
     String getFeedItemName() {
         if (message == null) return "";
         int index = message.lastIndexOf(':');

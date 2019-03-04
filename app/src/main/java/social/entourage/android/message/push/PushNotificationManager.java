@@ -356,15 +356,6 @@ public class PushNotificationManager {
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage));
         builder.setContentTitle(message.getContentTitleForCount(count, context));
         builder.setContentText(message.getContentTextForCount(count, context));
-        //builder.setSubText(message.getMessage());
-
-        PushNotificationContent content = message.getContent();
-        if (content != null && PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
-            RemoteViews remoteViews = new RemoteViews(context.getApplicationContext().getPackageName(), R.layout.push_notification);
-            String notificationText = message.getContentTextForCount(count, context);
-            remoteViews.setTextViewText(R.id.push_notification_text, notificationText);
-            builder.setContent(remoteViews);
-        }
 
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
@@ -427,7 +418,6 @@ public class PushNotificationManager {
         messageIntent = new Intent(context, DrawerActivity.class);
         switch (messageType) {
             case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
-                messageIntent = new Intent(context, DrawerActivity.class);
                 // because of the grouping, we need an intent that is specific for each entourage
                 messageIntent.setData(Uri.parse("entourage-notif://" + message.getPushNotificationTag()));
                 break;
