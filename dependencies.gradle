@@ -1,0 +1,113 @@
+allprojects {
+    repositories {
+        maven { url 'https://maven.google.com' }
+        jcenter()
+    }
+}
+
+ext {
+
+    // SDK versions
+    compileSdkVersion = 28
+    buildToolsVersion = "28.0.3"
+    minSdkVersion = 18
+    targetSdkVersion = 28
+
+    // Java versions
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+    targetCompatibilityVersion = JavaVersion.VERSION_1_8
+
+    // App versions
+    versionMajor = 5
+    versionMinor = 9
+    versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
+    versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+    versionCodeInt = versionMajor * 100000 + versionMinor * 10000 + versionPatch % 10000
+    versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
+    appBundleName = System.env.APPBUNDLE_NAME ? System.env.APPBUNDLE_NAME : "app"
+
+    // Libraries versions
+    appCompatVersion = "1.0.2"
+    butterKnifeVersion = "10.1.0"
+    constraintlayoutVersion = "1.1.3"
+    crashlyticsVersion = "2.9.9"
+    daggerVersion = "2.21"
+    dateTimePickerVersion = "3.6.3"
+    firebaseCoreVersion = "16.0.7"
+    firebaseMessagingVersion = "17.4.0"
+    floatingButtonVersion = "1.6.4"
+    guavaVersion = "27.0.1-android"
+    imageCropperVersion = "2.8.0"
+    jodaVersion = "2.10.1"
+    mapsVersion = "16.1.0"
+    mapsUtilsVersion = "0.5"
+    materialVersion = "1.1.0-alpha03"
+    mixpanelVersion = "5.4.5"
+    multidexVersion = "2.0.1"
+    okHttpVersion = "3.12.1"
+    picassoVersion = "2.5.2"
+    picassoTransformationsVersion = "2.2.1"
+    playServicesVersion = "16.0.0"
+    retrofitVersion = "2.5.0"
+    recyclerViewVersion = "1.1.0-alpha02"
+    shortcutBadgerVersion = "1.1.22"
+    supportVersion = "1.0.0"
+    tapeVersion = "1.2.3"
+    timberVersion = "4.7.1"
+    ottoVersion = "1.3.8"
+
+    androidSupportDependencies = [
+            annotations     : "androidx.annotation:annotation:$supportVersion",
+            appcompat       : "androidx.appcompat:appcompat:$appCompatVersion",
+            browser         : "androidx.browser:browser:$supportVersion",
+            cardview        : "androidx.cardview:cardview:$supportVersion",
+            constraintLayout: "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
+            exifinterface   : "androidx.exifinterface:exifinterface:$supportVersion",
+            legacyV4        : "androidx.legacy:legacy-support-v4:$supportVersion",
+            legacyV13       : "androidx.legacy:legacy-support-v13:$supportVersion",
+            multidex        : "androidx.multidex:multidex:$multidexVersion",
+            recyclerview    : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    ]
+
+    firebaseDependencies = [
+            firebaseCore    : "com.google.firebase:firebase-core:$firebaseCoreVersion",
+            fcm             : "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+    ]
+
+    gmsDependencies = [
+            maps            : "com.google.android.gms:play-services-maps:$mapsVersion",
+            location        : "com.google.android.gms:play-services-location:$playServicesVersion",
+            places          : "com.google.android.gms:play-services-places:$playServicesVersion"
+    ]
+
+    networkDependencies = [
+            okhttp          : "com.squareup.okhttp3:okhttp:$okHttpVersion",
+            retrofitLogger  : "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
+            retrofit        : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            converterGson   : "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    ]
+
+    uiDependencies = [
+            butterknife             : "com.jakewharton:butterknife:$butterKnifeVersion",
+            dateTimePicker          : "com.wdullaer:materialdatetimepicker:$dateTimePickerVersion",
+            floatingButton          : "com.github.clans:fab:$floatingButtonVersion",
+            imageCropper            : "com.theartofdev.edmodo:android-image-cropper:$imageCropperVersion",
+            mapsUtils               : "com.google.maps.android:android-maps-utils:$mapsUtilsVersion",
+            material                : "com.google.android.material:material:$materialVersion",
+            mixpanel                : "com.mixpanel.android:mixpanel-android:$mixpanelVersion",
+            picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
+            picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
+            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
+    ]
+
+    devDependencies = [
+            kotlinSdk       : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+            crashlytics     : "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion",
+            dagger          : "com.google.dagger:dagger:$daggerVersion",
+            guava           : "com.google.guava:guava:$guavaVersion",
+            joda            : "net.danlew:android.joda:$jodaVersion",
+            tape            : "com.squareup:tape:$tapeVersion",
+            timber          : "com.jakewharton.timber:timber:$timberVersion",
+            otto            : "com.squareup:otto:$ottoVersion"
+    ]
+}
