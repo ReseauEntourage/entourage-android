@@ -277,35 +277,34 @@ public class EntourageEvents {
 
     public static void onLocationPermissionGranted(boolean isPermissionGranted) {
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
-        if (mixpanel == null) return;
+        FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
+        if (mixpanel == null || mFirebaseAnalytics== null) return;
         MixpanelAPI.People people = mixpanel.getPeople();
         if (people == null) return;
 
         String geolocStatus = isPermissionGranted? "YES":"NO";
         people.set("EntourageGeolocEnable", geolocStatus);
-        if(EntourageApplication.get().getFirebase()!=null) {
-            EntourageApplication.get().getFirebase().setUserProperty("EntourageGeolocEnable", geolocStatus);
-        }
+        mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
     }
 
     public static void updateMixpanelInfo(User user, Context context, boolean areNotificationsEnabled) {
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
+        MixpanelAPI.People people = mixpanel.getPeople();
 
         mixpanel.identify(String.valueOf(user.getId()));
-        MixpanelAPI.People people = mixpanel.getPeople();
         people.identify(String.valueOf(user.getId()));
         mFirebaseAnalytics.setUserId(String.valueOf(user.getId()));
-
         Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
+
         Crashlytics.setUserEmail(user.getEmail());
-
         people.set("$email", user.getEmail());
-        people.set("EntourageUserType", user.isPro()?"Pro":"Public");
-        people.set("Language", Locale.getDefault().getLanguage());
-
         mFirebaseAnalytics.setUserProperty("Email", user.getEmail());
+
+        people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
+
+        people.set("Language", Locale.getDefault().getLanguage());
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().getLanguage());
 
         if(user.getPartner()!=null) {
