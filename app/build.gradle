@@ -170,28 +170,20 @@ android {
 }
 
 dependencies {
-
     implementation androidSupportDependencies.values()
+    implementation devDependencies.values()
     implementation firebaseDependencies.values()
     implementation gmsDependencies.values()
     implementation networkDependencies.values()
     implementation uiDependencies.values()
-    implementation devDependencies.values()
 
-    entourageImplementation "com.facebook.android:facebook-android-sdk:4.40.0"
-    entourageImplementation "com.facebook.android:facebook-core:4.40.0"
+    entourageImplementation facebookDependencies.values()
 
-    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+    compileOnly javaDependencies.values()
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0-alpha4") {
-        exclude group: "com.android.support"
-    }
-    androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0") {
-        exclude group: "com.android.support"
-        exclude group: "com.squareup.okhttp3"
-    }
-    compileOnly "org.glassfish:javax.annotation:10.0-b28"
+    annotationProcessor annotationDependencies.values()
+
+    androidTestImplementation testDependencies.values()
 }
 
 apply plugin: "com.google.gms.google-services"

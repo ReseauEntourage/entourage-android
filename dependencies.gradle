@@ -33,11 +33,14 @@ ext {
     crashlyticsVersion = "2.9.9"
     daggerVersion = "2.21"
     dateTimePickerVersion = "3.6.3"
+    espressoVersion = "3.1.0-alpha4"
+    facebookVersion = "4.40.0"
     firebaseCoreVersion = "16.0.7"
     firebaseMessagingVersion = "17.4.0"
     floatingButtonVersion = "1.6.4"
     guavaVersion = "27.0.1-android"
     imageCropperVersion = "2.8.0"
+    javaAnnotationVersion = "10.0-b28"
     jodaVersion = "2.10.1"
     mapsVersion = "16.1.0"
     mapsUtilsVersion = "0.5"
@@ -45,6 +48,7 @@ ext {
     mixpanelVersion = "5.4.5"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.1"
+    okHttpIdlingVersion = "1.0.0"
     picassoVersion = "2.5.2"
     picassoTransformationsVersion = "2.2.1"
     playServicesVersion = "16.0.0"
@@ -69,9 +73,30 @@ ext {
             recyclerview    : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     ]
 
+    annotationDependencies = [
+            daggerCompiler      : "com.google.dagger:dagger-compiler:$daggerVersion",
+            butterknifeCompiler : "androidx.recyclerview:recyclerview:$butterKnifeVersion"
+    ]
+
+    devDependencies = [
+            kotlinSdk       : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+            crashlytics     : "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion",
+            dagger          : "com.google.dagger:dagger:$daggerVersion",
+            guava           : "com.google.guava:guava:$guavaVersion",
+            joda            : "net.danlew:android.joda:$jodaVersion",
+            tape            : "com.squareup:tape:$tapeVersion",
+            timber          : "com.jakewharton.timber:timber:$timberVersion",
+            otto            : "com.squareup:otto:$ottoVersion"
+    ]
+
+    facebookDependencies = [
+            facebookAndroid : "com.facebook.android:facebook-android-sdk:$facebookVersion",
+            facebookCore    : "com.facebook.android:facebook-core:$facebookVersion"
+    ]
+
     firebaseDependencies = [
-            firebaseCore    : "com.google.firebase:firebase-core:$firebaseCoreVersion",
-            fcm             : "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+            firebaseCore        : "com.google.firebase:firebase-core:$firebaseCoreVersion",
+            firebaseMessaging   : "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
     ]
 
     gmsDependencies = [
@@ -80,11 +105,35 @@ ext {
             places          : "com.google.android.gms:play-services-places:$playServicesVersion"
     ]
 
+    javaDependencies = [
+            javaAnnotation  : "org.glassfish:javax.annotation:$javaAnnotationVersion"
+    ]
+
     networkDependencies = [
+            converterGson   : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
             okhttp          : "com.squareup.okhttp3:okhttp:$okHttpVersion",
             retrofitLogger  : "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
-            retrofit        : "com.squareup.retrofit2:retrofit:$retrofitVersion",
-            converterGson   : "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+            retrofit        : "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    ]
+
+    testDependencies = [
+            espresso        : [
+                    group: "androidx.test.espresso",
+                    name: "espresso-core",
+                    version: "$espressoVersion",
+                    exclude: [
+                            group: "com.android.support"
+                    ]
+            ],
+            okHttpIdling    : [
+                    group: "com.jakewharton.espresso",
+                    name: "okhttp3-idling-resource",
+                    version: "$okHttpIdlingVersion",
+                    exclude: [
+                            group: "com.android.support",
+                            group: "com.squareup.okhttp3"
+                    ]
+            ]
     ]
 
     uiDependencies = [
@@ -98,16 +147,5 @@ ext {
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
             shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
-    ]
-
-    devDependencies = [
-            kotlinSdk       : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
-            crashlytics     : "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion",
-            dagger          : "com.google.dagger:dagger:$daggerVersion",
-            guava           : "com.google.guava:guava:$guavaVersion",
-            joda            : "net.danlew:android.joda:$jodaVersion",
-            tape            : "com.squareup:tape:$tapeVersion",
-            timber          : "com.jakewharton.timber:timber:$timberVersion",
-            otto            : "com.squareup:otto:$ottoVersion"
     ]
 }
