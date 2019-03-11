@@ -37,6 +37,7 @@ ext {
     facebookVersion = "4.40.0"
     firebaseCoreVersion = "16.0.7"
     firebaseMessagingVersion = "17.4.0"
+    firebaseInappVersion = "17.1.0"
     floatingButtonVersion = "1.6.4"
     guavaVersion = "27.0.1-android"
     imageCropperVersion = "2.8.0"
@@ -96,7 +97,8 @@ ext {
 
     firebaseDependencies = [
             firebaseCore        : "com.google.firebase:firebase-core:$firebaseCoreVersion",
-            firebaseMessaging   : "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+            firebaseMessaging   : "com.google.firebase:firebase-messaging:$firebaseMessagingVersion",
+            firebaseInapp       : "com.google.firebase:firebase-inappmessaging-display:$firebaseInappVersion"
     ]
 
     gmsDependencies = [
