@@ -337,7 +337,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             }
         } else if (intent.getAction() != null) {
-            getIntent().setAction(null);
             switch(intent.getAction()) {
                 case TourService.KEY_LOCATION_PROVIDER_DISABLED:
                 case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
@@ -345,6 +344,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                     intentAction = intent.getAction();
                     break;
             }
+            getIntent().setAction(null);
         }
     }
 
