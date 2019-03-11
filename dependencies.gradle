@@ -45,7 +45,7 @@ ext {
     mapsVersion = "16.1.0"
     mapsUtilsVersion = "0.5"
     materialVersion = "1.1.0-alpha03"
-    mixpanelVersion = "5.4.5"
+    mixpanelVersion = "5.5.0"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.1"
     okHttpIdlingVersion = "1.0.0"
@@ -75,7 +75,7 @@ ext {
 
     annotationDependencies = [
             daggerCompiler      : "com.google.dagger:dagger-compiler:$daggerVersion",
-            butterknifeCompiler : "androidx.recyclerview:recyclerview:$butterKnifeVersion"
+            butterknifeCompiler : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     ]
 
     devDependencies = [
