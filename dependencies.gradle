@@ -75,7 +75,7 @@ ext {
 
     annotationDependencies = [
             daggerCompiler      : "com.google.dagger:dagger-compiler:$daggerVersion",
-            butterknifeCompiler : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+            butterknifeCompiler : "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
     ]
 
     devDependencies = [
