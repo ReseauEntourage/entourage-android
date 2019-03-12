@@ -297,10 +297,6 @@ public class EntourageEvents {
         mFirebaseAnalytics.setUserId(String.valueOf(user.getId()));
         Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
 
-        Crashlytics.setUserEmail(user.getEmail());
-        people.set("$email", user.getEmail());
-        mFirebaseAnalytics.setUserProperty("Email", user.getEmail());
-
         people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
 
