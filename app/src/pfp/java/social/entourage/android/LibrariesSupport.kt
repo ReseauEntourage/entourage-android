@@ -1,5 +1,9 @@
 package social.entourage.android
 
+import android.content.Context
+import social.entourage.android.tools.CrashlyticsLog
+import timber.log.Timber
+
 /**
  * Libraries support class specific to Voisinage
  * Created by Mihai Ionescu on 27/04/2018.
