@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="notification_text_join_request_entourage_multiple">
-        <item quantity="one">%1$d personne souhaite rejoindre votre sortie: %2$s</item>
-        <item quantity="other">%1$d personnes souhaitent rejoindre votre sortie: %2$s</item>
+        <item quantity="one">%1$d personne souhaite rejoindre votre sortie.</item>
+        <item quantity="other">%1$d personnes souhaitent rejoindre votre sortie.</item>
     </plurals>
 </resources>

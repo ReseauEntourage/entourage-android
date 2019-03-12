@@ -33,7 +33,6 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.message.MessageActivity;
 import timber.log.Timber;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -332,7 +331,10 @@ public class PushNotificationManager {
      */
     private void displayPushNotification(Message message, Context context) {
         List<Message> messageList = pushNotifications.get(message.getHash());
-        int count = messageList.size();
+        int count = 0;
+        if (messageList != null) {
+            count = messageList.size();
+        }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) return;
@@ -354,15 +356,6 @@ public class PushNotificationManager {
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage));
         builder.setContentTitle(message.getContentTitleForCount(count, context));
         builder.setContentText(message.getContentTextForCount(count, context));
-        //builder.setSubText(message.getMessage());
-
-        PushNotificationContent content = message.getContent();
-        if (content != null && PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(content.getType())) {
-            RemoteViews remoteViews = new RemoteViews(context.getApplicationContext().getPackageName(), R.layout.push_notification);
-            String notificationText = message.getContentTextForCount(count, context);
-            remoteViews.setTextViewText(R.id.push_notification_text, notificationText);
-            builder.setContent(remoteViews);
-        }
 
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
@@ -422,23 +415,23 @@ public class PushNotificationManager {
         if (message.getContent() != null) {
             messageType = message.getContent().getType();
         }
-        if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(messageType)) {
-            messageIntent = new Intent(context, DrawerActivity.class);
-            // because of the grouping, we need an intent that is specific for each entourage
-            messageIntent.setData(Uri.parse("entourage-notif://" + message.getPushNotificationTag()));
+        messageIntent = new Intent(context, DrawerActivity.class);
+        switch (messageType) {
+            case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
+                // because of the grouping, we need an intent that is specific for each entourage
+                messageIntent.setData(Uri.parse("entourage-notif://" + message.getPushNotificationTag()));
+                break;
+            case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
+            case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+            case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
+            case PushNotificationContent.TYPE_INVITATION_STATUS:
+                break;
+            default:
+                Timber.e("Notif has no pending intent");
+                //TODO Check what to do when we get here
+                //return null;
         }
-        else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(messageType) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(messageType)) {
-            messageIntent = new Intent(context, DrawerActivity.class);
-        }
-        else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(messageType) || PushNotificationContent.TYPE_INVITATION_STATUS.equals(messageType)) {
-            messageIntent = new Intent(context, DrawerActivity.class);
-        }
-        else {
-            messageIntent = new Intent(context, MessageActivity.class);
-        }
-        if (messageType != null) {
-            messageIntent.setAction(messageType);
-        }
+        messageIntent.setAction(messageType);
         messageIntent.putExtras(args);
         return PendingIntent.getActivity(context, intentCode, messageIntent, 0);
     }

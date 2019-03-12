@@ -59,6 +59,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
@@ -1215,6 +1216,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
                 googleMap.clear();
+                googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        getActivity(), R.raw.map_styles_json));
 
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                     Tour tour = (Tour)feedItem;
@@ -1290,6 +1293,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             public void onMapReady(final GoogleMap googleMap) {
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
+                googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        getActivity(), R.raw.map_styles_json));
                 if (tourTimestampList.size() > 0) {
                     TourTimestamp tourTimestamp = tourTimestampList.get(0);
                     if (tourTimestamp.getTourPoint() != null) {

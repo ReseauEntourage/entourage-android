@@ -52,6 +52,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.clustering.ClusterManager;
@@ -1709,6 +1710,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                     googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                     googleMap.getUiSettings().setMapToolbarEnabled(false);
+                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.map_styles_json));
 
                     mapClusterManager = new ClusterManager<>(getActivity(), map);
                     mapClusterItemRenderer = new MapClusterItemRenderer(getActivity(), map, mapClusterManager);

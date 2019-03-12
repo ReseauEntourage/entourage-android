@@ -1,7 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'dependencies.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.3.21'
+    ext.kotlinVersion = '1.3.21'
+
     repositories {
         google()
         maven { url 'https://maven.google.com' }
@@ -10,12 +12,12 @@ buildscript {
         maven { url 'https://firebase.bintray.com/gradle' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath 'io.fabric.tools:gradle:1.26.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -26,28 +28,4 @@ allprojects {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
     }
-}
-
-ext {
-    compileSdkVersion = 28
-    buildToolsVersion = "28.0.3"
-    minSdkVersion = 18
-    targetSdkVersion = 28
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
-    targetCompatibilityVersion = JavaVersion.VERSION_1_8
-    supportVersion = "1.0.0"
-    playServicesVersion = "16.0.0"
-    daggerVersion = "2.21"
-    //okHttpVersion should stay under 3.13 because it is requiring minSdkVersion 21
-    okHttpVersion = "3.12.1"
-    retrofitVersion = "2.5.0"
-    butterKnifeVersion = "10.1.0"
-
-    versionMajor = 5
-    versionMinor = 9
-    versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
-    versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
-    versionCodeInt = versionMajor * 100000 + versionMinor * 10000 + versionPatch % 10000
-    versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
-    appBundleName = System.env.APPBUNDLE_NAME ? System.env.APPBUNDLE_NAME : "app"
 }

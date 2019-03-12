@@ -318,7 +318,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void getIntentAction(Intent intent) {
-        String action = intent.getAction();
         Bundle args = intent.getExtras();
         if (args != null) {
             intentTour = (Tour) args.getSerializable(Tour.KEY_TOUR);
@@ -326,26 +325,26 @@ public class DrawerActivity extends EntourageSecuredActivity
                 intentAction = ConfirmationFragment.KEY_RESUME_TOUR;
             } else if (args.getBoolean(ConfirmationFragment.KEY_END_TOUR, false)) {
                 intentAction = ConfirmationFragment.KEY_END_TOUR;
-            } else if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE;
-            } else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_NEW_JOIN_REQUEST;
-            } else if (PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED;
-            } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_ENTOURAGE_INVITATION;
-            } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(action)) {
-                intentAction = PushNotificationContent.TYPE_INVITATION_STATUS;
+            } else if (intent.getAction() != null) {
+                switch (intent.getAction()) {
+                    case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
+                    case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
+                    case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+                    case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
+                    case PushNotificationContent.TYPE_INVITATION_STATUS:
+                        intentAction = intent.getAction();
+                        break;
+                }
             }
-        } else if (action != null) {
+        } else if (intent.getAction() != null) {
+            switch(intent.getAction()) {
+                case TourService.KEY_LOCATION_PROVIDER_DISABLED:
+                case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
+                case TourService.KEY_NOTIFICATION_STOP_TOUR:
+                    intentAction = intent.getAction();
+                    break;
+            }
             getIntent().setAction(null);
-            if (TourService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
-                intentAction = TourService.KEY_LOCATION_PROVIDER_DISABLED;
-            } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
-                intentAction = TourService.KEY_NOTIFICATION_PAUSE_TOUR;
-            } else if (TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
-                intentAction = TourService.KEY_NOTIFICATION_STOP_TOUR;
-            }
         }
     }
 
@@ -584,31 +583,36 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (message != null) {
             PushNotificationContent content = message.getContent();
             if (content != null) {
-                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intentAction)) {
-                    if (content.isTourRelated()) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
-                    } else if (content.isEntourageRelated()) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
-                    } else {
-                        showMyEntourages();
-                    }
-                }
-                else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(intentAction) || PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED.equals(intentAction)) {
-                    if (content.isTourRelated()) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
-                    } else if (content.isEntourageRelated()) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
-                    }
-                } else if (PushNotificationContent.TYPE_ENTOURAGE_INVITATION.equals(intentAction)) {
-                    PushNotificationContent.Extra extra = content.extra;
-                    if (extra != null) {
-                        mapEntourageFragment.displayChosenFeedItem(String.valueOf(extra.entourageId), TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
-                    }
-                } else if (PushNotificationContent.TYPE_INVITATION_STATUS.equals(intentAction)) {
-                    PushNotificationContent.Extra extra = content.extra;
-                    if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
-                        mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
-                    }
+                PushNotificationContent.Extra extra = content.extra;
+                switch(intentAction) {
+                    case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
+                        if (content.isTourRelated()) {
+                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
+                        } else if (content.isEntourageRelated()) {
+                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
+                        } else {
+                            showMyEntourages();
+                        }
+                        break;
+                    case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
+                    case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+                        if (content.isTourRelated()) {
+                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
+                        } else if (content.isEntourageRelated()) {
+                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
+                        }
+                        break;
+                    case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
+                        if (extra != null) {
+                            mapEntourageFragment.displayChosenFeedItem(String.valueOf(extra.entourageId), TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
+                        }
+                        break;
+                    case PushNotificationContent.TYPE_INVITATION_STATUS:
+                        if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
+                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(),
+                                    content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
+                        }
+                        break;
                 }
             }
             EntourageApplication application = EntourageApplication.get(getApplicationContext());
@@ -959,13 +963,14 @@ public class DrawerActivity extends EntourageSecuredActivity
                                     }
                                 }
                                 break;
+                            case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+                                addPushNotification(message);
+                                if (mapEntourageFragment != null) {
+                                    mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
+                                }
+                                break;
                             default:
                                 addPushNotification(message);
-                                if (contentType.equals(PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED)) {
-                                    if (mapEntourageFragment != null) {
-                                        mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
-                                    }
-                                }
                                 break;
                         }
                     }

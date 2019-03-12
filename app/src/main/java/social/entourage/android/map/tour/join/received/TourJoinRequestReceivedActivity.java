@@ -43,8 +43,6 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
         }
     }
 
-
-
     @Override
     protected void setupComponent(final EntourageComponent entourageComponent) {
         DaggerTourJoinRequestReceivedComponent.builder()
@@ -58,7 +56,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.layout_tour_join_request_received_dialog, null);
         HtmlTextView htmlTextView =  (HtmlTextView)view.findViewById(R.id.tour_join_request_received_text);
-        String alertMessage = getString(R.string.message_unknown);
+        String alertMessage = "";
         PushNotificationContent content = message.getContent();
         if (content != null) {
             if (content.isEntourageRelated()) {

@@ -128,13 +128,6 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".message.MessageActivity"
-            android:label="@string/activity_display_message_title"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".map.tour.join.received.TourJoinRequestReceivedActivity"
             android:screenOrientation="portrait">
         </activity>
@@ -157,7 +150,8 @@
             android:name=".message.push.PushNotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false"/>
-        <service android:name=".message.push.EntourageFirebaseMessagingService">
+        <service android:name=".message.push.EntourageFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
