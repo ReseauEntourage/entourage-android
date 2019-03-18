@@ -452,7 +452,7 @@ public class PushNotificationManager {
         Timber.d(KEY_SENDER + "= " + msg.get(KEY_SENDER) + "; " + KEY_OBJECT + "= " + msg.get(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + msg.get(KEY_CONTENT));
         Message message = new Message(msg.get(KEY_SENDER), msg.get(KEY_OBJECT), msg.get(KEY_CONTENT), 0, null);
         message.setPushNotificationId(getNotificationId(context, message));
-        message.setPushNotificationTag(message.getContent().getNotificationTag());
+        message.setPushNotificationTag(message.getContent()!=null ? message.getContent().getNotificationTag() : "");
         return message;
     }
 
