@@ -221,24 +221,10 @@ public class EntourageApplication extends MultiDexApplication {
         if (feedItem == null) {
             return;
         }
-        long feedId = feedItem.getId();
-        int feedType = feedItem.getType();
-
-        removePushNotification(feedId, feedType, userId, pushType);
+        removePushNotification(feedItem.getId(), feedItem.getType(), userId, pushType);
     }
 
     public void removePushNotification(long feedId, int feedType, int userId, String pushType) {
-        // Sanity checks
-        if (pushType == null) {
-            return;
-        }
-
-        // get the notification manager
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (notificationManager == null) {
-            return;
-        }
-
         int count = PushNotificationManager.getInstance().removePushNotification(feedId, feedType, userId, pushType);
         decreaseBadgeCount(count);
     }

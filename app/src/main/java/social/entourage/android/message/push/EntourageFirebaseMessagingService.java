@@ -37,19 +37,21 @@ public class EntourageFirebaseMessagingService extends MixpanelFCMMessagingServi
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
-             if(remoteMessage.getData().containsKey("mp_message")) {
-                    super.onMessageReceived(remoteMessage);
-                    return;
+            //we always provide some extra data in our push notif
+            if(remoteMessage.getData().containsKey(PushNotificationManager.KEY_MIXPANEL)) {
+                super.onMessageReceived(remoteMessage);
+            } else if(remoteMessage.getData().containsKey(PushNotificationManager.KEY_CTA)) {
+                handleFCM(remoteMessage);
+                //nothing to do right now
             } else {
+                //entourage own notif, need to check the message to see what to do right now
                 handleNow(remoteMessage);
             }
         }
+    }
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Timber.d("Message Notification Body: %s", remoteMessage.getNotification().getBody());
-            //TODO handle this
-        }
+    private void handleFCM(RemoteMessage remoteMessage) {
+        PushNotificationManager.getInstance().displayPushNotification(remoteMessage, this);
     }
 
     private void handleNow(RemoteMessage remoteMessage) {

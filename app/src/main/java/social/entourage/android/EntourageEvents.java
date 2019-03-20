@@ -1,8 +1,11 @@
 package social.entourage.android;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
+
 import androidx.core.content.PermissionChecker;
 
 import com.crashlytics.android.Crashlytics;
@@ -322,6 +325,10 @@ public class EntourageEvents {
 
         if(notificationsEnabled) {
             people.setPushRegistrationId(sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null));
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            mFirebaseAnalytics.setUserProperty("BackgroundRestriction", ((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE)).isBackgroundRestricted()?"YES":"NO");
         }
     }
 }

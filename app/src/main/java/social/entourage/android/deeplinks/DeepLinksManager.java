@@ -117,21 +117,17 @@ public class DeepLinksManager {
             String key = pathSegments.get(1);
             if (requestedView.equalsIgnoreCase(DeepLinksView.ENTOURAGES.getView())) {
                 BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", key));
-                deepLinkIntent = null;
             }
             else if (requestedView.equalsIgnoreCase(DeepLinksView.DEEPLINK.getView())) {
-                //Remove the requestedview and the key from path segments
+                //Remove the requested view and the key from path segments
                 pathSegments.remove(0);
                 pathSegments.remove(0); // zero, because it was shifted when we removed requestedview
                 //Handle the deep link
                 handleDeepLink(activity, key, pathSegments);
+                return; // we don't suppress the intent in this case
             }
-            else {
-                deepLinkIntent = null;
-            }
-        } else {
-            deepLinkIntent = null;
         }
+        deepLinkIntent = null;
     }
 
     private void handleDeepLink(Activity activity, String key, List<String> pathSegments) {
