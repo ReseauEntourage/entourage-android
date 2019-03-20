@@ -135,7 +135,8 @@ ext {
                             group: "com.android.support",
                             group: "com.squareup.okhttp3"
                     ]
-            ]
+            ],
+            rules: "com.android.support.test:rules:1.0.2"
     ]
 
     uiDependencies = [
