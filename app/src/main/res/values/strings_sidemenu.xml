@@ -14,6 +14,7 @@
     <string name="action_ambassador">Devenir Ambassadeur d\'Entourage</string>
     <string name="action_map">à proximité</string>
     <string name="action_guide">annuaire</string>
+    <string name="action_plus">agir</string>
     <string name="action_my_messages">messages</string>
     <string name="action_menu">menu</string>
     <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>
