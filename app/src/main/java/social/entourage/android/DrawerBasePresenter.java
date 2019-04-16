@@ -1,18 +1,17 @@
 package social.entourage.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.collection.ArrayMap;
-import androidx.appcompat.app.AlertDialog;
-
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.collection.ArrayMap;
+import androidx.fragment.app.FragmentManager;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -232,9 +231,16 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
     // HELPER METHODS
     // ----------------------------------
 
-    protected String getDeviceID() {
+    private String getDeviceID() {
         return EntourageApplication.get().getSharedPreferences()
                 .getString(EntourageApplication.KEY_REGISTRATION_ID, null);
+    }
+
+    private void setDeviceID(String pushNotificationToken) {
+        final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(EntourageApplication.KEY_REGISTRATION_ID, pushNotificationToken);
+        editor.apply();
     }
 
     // ----------------------------------
@@ -362,10 +368,45 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
         }
     }
 
-    public void updateApplicationInfo(String pushNotificationToken) {
+    void deleteApplicationInfo() {
+        String previousDeviceID = getDeviceID();
+        if (previousDeviceID == null || previousDeviceID.equals("")) {
+            return;
+        }
+        ApplicationInfo applicationInfo = new ApplicationInfo(previousDeviceID);
+        ApplicationInfo.ApplicationWrapper applicationWrapper = new ApplicationInfo.ApplicationWrapper();
+        applicationWrapper.setApplicationInfo(applicationInfo);
+        Call<ResponseBody> call = appRequest.deleteApplicationInfo(applicationWrapper);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Timber.d("deleting application info with success");
+                }
+                else {
+                    Timber.e("deleting application info error");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
+                Timber.e(t);
+            }
+        });
+        setDeviceID(null);
+    }
+
+
+    void updateApplicationInfo(String pushNotificationToken) {
         if (activity == null) {
             return;
         }
+        //delete old one if existing
+        if(!pushNotificationToken.equals(getDeviceID())){
+            deleteApplicationInfo();
+        }
+        //then add new one
+        setDeviceID(pushNotificationToken);
         ApplicationInfo applicationInfo = new ApplicationInfo(pushNotificationToken);
         ApplicationInfo.ApplicationWrapper applicationWrapper = new ApplicationInfo.ApplicationWrapper();
         applicationWrapper.setApplicationInfo(applicationInfo);
@@ -374,16 +415,16 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
             @Override
             public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Timber.tag(LOG_TAG).d("updating application info with success");
+                    Timber.d("updating application info with success");
                 }
                 else {
-                    Timber.tag(LOG_TAG).e("updating application info error");
+                    Timber.e("updating application info error");
                 }
             }
 
             @Override
             public void onFailure(@NonNull final Call<ResponseBody> call, @NonNull final Throwable t) {
-                Timber.tag(LOG_TAG).e(t);
+                Timber.e(t);
             }
         });
     }

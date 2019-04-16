@@ -515,7 +515,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             });
         } else {
-            presenter.updateApplicationInfo("");
+            presenter.deleteApplicationInfo();
         }
     }
 
@@ -540,9 +540,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }
 
-        //TODO: do a proper DELETE not an UPDATE
-        //presenter.deleteApplicationInfo(getDeviceID());
-        presenter.updateApplicationInfo("");
+        presenter.deleteApplicationInfo();
 
         editor.remove(EntourageApplication.KEY_REGISTRATION_ID);
         editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED);
@@ -558,14 +556,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void GCMTokenObtained(OnGCMTokenObtainedEvent event) {
-        if (event.getRegistrationId() != null) {
-            presenter.updateApplicationInfo(event.getRegistrationId());
-        }
-        /*
-        else {
-            presenter.updateApplicationInfo("");
-        }
-        */
+        presenter.updateApplicationInfo(event.getRegistrationId());
     }
 
     @Subscribe

@@ -21,10 +21,6 @@ public class EntourageFirebaseMessagingService extends MixpanelFCMMessagingServi
     public void onNewToken(String registrationId) {
         super.onNewToken(registrationId);
         if (registrationId != null) {
-            final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EntourageApplication.KEY_REGISTRATION_ID, registrationId);
-            editor.apply();
             EntourageApplication.get().getMixpanel().getPeople().setPushRegistrationId(registrationId);
         } else {//TODO Check unregistration
             Timber.e("Cannot read new push token. Clearing existing one");
