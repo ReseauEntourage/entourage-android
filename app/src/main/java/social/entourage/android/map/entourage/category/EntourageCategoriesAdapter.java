@@ -137,9 +137,9 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
 
             viewHolder.mLabel.setText(category.getTitle());
             if (category.isSelected()) {
-                viewHolder.mLabel.setTypeface(viewHolder.mLabel.getTypeface(), Typeface.BOLD);
+                viewHolder.mLabel.setTypeface(null, Typeface.BOLD);
             } else {
-                viewHolder.mLabel.setTypeface(Typeface.create(viewHolder.mLabel.getTypeface(), Typeface.NORMAL));
+                viewHolder.mLabel.setTypeface(null, Typeface.NORMAL);
             }
 
             // set the tag to null so that oncheckedchangelistener isn't fired when populating the view

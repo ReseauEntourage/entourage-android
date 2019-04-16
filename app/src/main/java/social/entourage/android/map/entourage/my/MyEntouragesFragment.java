@@ -445,7 +445,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
         boolean showUnreadOnly = filter.isShowUnreadOnly();
 
-        entouragesAdapter.removeLoader();
+        //this boolean is used to only remove loader when necessary
+        boolean shouldRemoveLoader = true;
 
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
@@ -466,6 +467,10 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 }
 
                 if (entouragesAdapter.findCard(feedItem) == null) {
+                    if(shouldRemoveLoader) {
+                        entouragesAdapter.removeLoader();
+                        shouldRemoveLoader=false;
+                    }
                     entouragesAdapter.addCardInfo(feedItem);
                 } else {
                     entouragesAdapter.updateCard(feedItem);
@@ -474,9 +479,12 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
             //increase page and items count
             entouragesPagination.loadedItems(newsfeedList.size());
-            if(entouragesPagination.nextPageAvailable) {
+            if(entouragesPagination.nextPageAvailable && !shouldRemoveLoader) {
                 entouragesAdapter.addLoader();
             }
+        }
+        if(shouldRemoveLoader) {
+            entouragesAdapter.removeLoader();
         }
         if (entouragesAdapter.getDataItemCount() == 0) {
             noItemsView.setVisibility(View.VISIBLE);

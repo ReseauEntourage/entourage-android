@@ -114,7 +114,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
         //title
         if (tourTitle != null) {
             tourTitle.setText(String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle()));
-            tourTitle.setTypeface(tourTitle.getTypeface(), feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
+            tourTitle.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
             if (showCategoryIcon() && tourIcon == null) {
                 // add the icon for entourages
                 Picasso.with(context)
