@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -58,6 +60,8 @@ public class PushNotificationManager {
     public static final String KEY_SENDER = "sender";
     public static final String KEY_OBJECT = "object";
     public static final String KEY_CONTENT = "content";
+    public static final String KEY_CTA = "entourage_cta";
+    public static final String KEY_MIXPANEL = "mp_message";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -243,11 +247,6 @@ public class PushNotificationManager {
             return 0;
         }
 
-        // get the notification manager
-        NotificationManager notificationManager = (NotificationManager) application.getSystemService(NOTIFICATION_SERVICE);
-        if (notificationManager == null) {
-            return 0;
-        }
         int count = 0;
         // search for a push notification that matches our parameters
         Iterator<String> keySetIterator = pushNotifications.keySet().iterator();
@@ -364,6 +363,35 @@ public class PushNotificationManager {
         notificationManager.notify(message.getPushNotificationTag(), message.getPushNotificationId(), notification);
     }
 
+    public void displayPushNotification(RemoteMessage fcmMessage, Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        if (notificationManager == null) return;
+
+        String channelId = context.getString(R.string.app_name);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
+
+            // Configure the notification channel.
+            notificationChannel.setDescription(context.getString(R.string.app_name));
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
+        builder.setSmallIcon(R.drawable.ic_notification_small);
+        Intent ctaIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fcmMessage.getData().get(PushNotificationManager.KEY_CTA)));
+        builder.setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage));
+        builder.setContentTitle(fcmMessage.getNotification().getTitle());
+        builder.setContentText(fcmMessage.getNotification().getBody());
+
+        Notification notification = builder.build();
+        notification.defaults = Notification.DEFAULT_LIGHTS;
+        notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
+        notificationManager.notify(0, notification);
+    }
+
     /**
      * Updates a group of notifications. If the group is empty, it removes the notification
      * @param key the key of the group
@@ -446,13 +474,16 @@ public class PushNotificationManager {
      * @return the message
      */
     @Nullable
-    public static Message getMessageFromRemoteMessage(RemoteMessage remoteMessage, Context context) {
-        if (remoteMessage.getData().size()==0) return null;
+    public static Message getMessageFromRemoteMessage(@NonNull RemoteMessage remoteMessage, @NonNull Context context) {
         Map<String,String> msg = remoteMessage.getData();
+        //first checking if content json is present (not here for mixpanel or firebase notification
+        if(/*!msg.containsKey(KEY_SENDER) || !msg.containsKey(KEY_OBJECT) || */!msg.containsKey(KEY_CONTENT))
+            return null;
+
         Timber.d(KEY_SENDER + "= " + msg.get(KEY_SENDER) + "; " + KEY_OBJECT + "= " + msg.get(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + msg.get(KEY_CONTENT));
         Message message = new Message(msg.get(KEY_SENDER), msg.get(KEY_OBJECT), msg.get(KEY_CONTENT), 0, null);
         message.setPushNotificationId(getNotificationId(context, message));
-        message.setPushNotificationTag(message.getContent().getNotificationTag());
+        message.setPushNotificationTag(message.getContent()!=null ? message.getContent().getNotificationTag() : "");
         return message;
     }
 

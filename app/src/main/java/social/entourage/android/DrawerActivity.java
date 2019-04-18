@@ -122,7 +122,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     private UserFragment userFragment;
 
     //private SharedPreferences gcmSharedPreferences;
-    private String intentAction;
+    //private String intentAction;
     private Tour intentTour;
 
     @IdRes int selectedSidemenuAction;
@@ -144,11 +144,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         configureToolbar();
 
         if (getIntent() != null) {
-            intentAction = getIntent().getAction();
-            if (Intent.ACTION_VIEW.equals(intentAction)) {
-                // Save the deep link intent
-                DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
-            }
+            checkDeepLinks();
         }
 
         User user = getAuthenticationController().getUser();
@@ -164,6 +160,18 @@ public class DrawerActivity extends EntourageSecuredActivity
             Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
             Crashlytics.setUserName(user.getDisplayName());
         }
+    }
+
+    private void checkDeepLinks() {
+        String intentAction = getIntent().getAction();
+        Bundle extras = getIntent().getExtras();
+        if (Intent.ACTION_VIEW.equals(intentAction)) {
+            // Save the deep link intent
+            DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
+        } else if(extras !=null && extras.containsKey(PushNotificationManager.KEY_CTA)) {
+            DeepLinksManager.getInstance().setDeepLinkIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(PushNotificationManager.KEY_CTA))));
+        }
+
     }
 
     @Override
@@ -189,17 +197,14 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Timber.tag("DEEPLINK").d("onNewIntent " + intent.toString());
+        Timber.d("onNewIntent " + intent.toString());
+        super.onNewIntent(intent);
         this.setIntent(intent);
-        if (Intent.ACTION_VIEW.equals(intent.getAction())){
-            // Save the deep link intent
-            DeepLinksManager.getInstance().setDeepLinkIntent(intent);
-        }
-        getIntentAction(intent);
+        checkDeepLinks();
+        setIntentAction(intent);
         if (mainFragment != null) {
-//            switchToMapFragment();
-            if (intentAction != null) {
-                switch (intentAction) {
+            if (getIntent()!=null && getIntent().getAction() != null) {
+                switch (getIntent().getAction()) {
                     case ConfirmationFragment.KEY_RESUME_TOUR:
                         BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         break;
@@ -220,7 +225,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             sendMapFragmentExtras();
         }
 
-        if (intentAction == null) {
+        if (getIntent()==null || getIntent().getAction() == null) {
             // user just returns to the app, update mixpanel
             updateMixpanelInfo();
         }
@@ -317,34 +322,33 @@ public class DrawerActivity extends EntourageSecuredActivity
         mapEntourageFragment.onNotificationExtras(userId, choice);
     }
 
-    private void getIntentAction(Intent intent) {
+    private void setIntentAction(Intent intent) {
         Bundle args = intent.getExtras();
         if (args != null) {
             intentTour = (Tour) args.getSerializable(Tour.KEY_TOUR);
             if (args.getBoolean(ConfirmationFragment.KEY_RESUME_TOUR, false)) {
-                intentAction = ConfirmationFragment.KEY_RESUME_TOUR;
+                getIntent().setAction(ConfirmationFragment.KEY_RESUME_TOUR);
+                return;
             } else if (args.getBoolean(ConfirmationFragment.KEY_END_TOUR, false)) {
-                intentAction = ConfirmationFragment.KEY_END_TOUR;
-            } else if (intent.getAction() != null) {
-                switch (intent.getAction()) {
-                    case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
-                    case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
-                    case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
-                    case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
-                    case PushNotificationContent.TYPE_INVITATION_STATUS:
-                        intentAction = intent.getAction();
-                        break;
-                }
+                getIntent().setAction(ConfirmationFragment.KEY_END_TOUR);
+                return;
             }
-        } else if (intent.getAction() != null) {
-            switch(intent.getAction()) {
+        }
+        if (intent.getAction() != null) {
+            switch (intent.getAction()) {
+                case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE :
+                case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
+                case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+                case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
+                case PushNotificationContent.TYPE_INVITATION_STATUS:
                 case TourService.KEY_LOCATION_PROVIDER_DISABLED:
                 case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
                 case TourService.KEY_NOTIFICATION_STOP_TOUR:
-                    intentAction = intent.getAction();
+                    getIntent().setAction(intent.getAction());
                     break;
+                default:
+                    getIntent().setAction(null);
             }
-            getIntent().setAction(null);
         }
     }
 
@@ -511,7 +515,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             });
         } else {
-            presenter.updateApplicationInfo("");
+            presenter.deleteApplicationInfo();
         }
     }
 
@@ -536,9 +540,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }
 
-        //TODO: do a proper DELETE not an UPDATE
-        //presenter.deleteApplicationInfo(getDeviceID());
-        presenter.updateApplicationInfo("");
+        presenter.deleteApplicationInfo();
 
         editor.remove(EntourageApplication.KEY_REGISTRATION_ID);
         editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED);
@@ -554,28 +556,20 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void GCMTokenObtained(OnGCMTokenObtainedEvent event) {
-        if (event.getRegistrationId() != null) {
-            presenter.updateApplicationInfo(event.getRegistrationId());
-        }
-        /*
-        else {
-            presenter.updateApplicationInfo("");
-        }
-        */
+        presenter.updateApplicationInfo(event.getRegistrationId());
     }
 
     @Subscribe
     public void checkIntentAction(OnCheckIntentActionEvent event) {
         if (!isSafeToCommit()) return;
-        //Log.d("DEEPLINK", "checkIntentAction");
-        //switchToMapFragment();
+
         Intent intent = getIntent();
         if (intent == null) {
-            intentAction = null;
             intentTour = null;
             return;
         }
-        mapEntourageFragment.checkAction(intentAction, intentTour);
+
+        mapEntourageFragment.checkAction(intent.getAction(), intentTour);
         Message message = null;
         if (intent.getExtras() != null) {
             message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
@@ -584,7 +578,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             PushNotificationContent content = message.getContent();
             if (content != null) {
                 PushNotificationContent.Extra extra = content.extra;
-                switch(intentAction) {
+                switch(intent.getAction()) {
                     case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
                         if (content.isTourRelated()) {
                             mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
@@ -624,7 +618,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             // Handle the deep link
             DeepLinksManager.getInstance().handleCurrentDeepLink(this);
         }
-        intentAction = null;
         intentTour = null;
         setIntent(null);
     }

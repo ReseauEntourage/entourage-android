@@ -1,13 +1,9 @@
 package social.entourage.android.message.push;
 
-
-import android.content.SharedPreferences;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mixpanel.android.mpmetrics.MixpanelFCMMessagingService;
-
-import java.util.Map;
-
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
@@ -21,10 +17,6 @@ public class EntourageFirebaseMessagingService extends MixpanelFCMMessagingServi
     public void onNewToken(String registrationId) {
         super.onNewToken(registrationId);
         if (registrationId != null) {
-            final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EntourageApplication.KEY_REGISTRATION_ID, registrationId);
-            editor.apply();
             EntourageApplication.get().getMixpanel().getPeople().setPushRegistrationId(registrationId);
         } else {//TODO Check unregistration
             Timber.e("Cannot read new push token. Clearing existing one");
@@ -36,20 +28,26 @@ public class EntourageFirebaseMessagingService extends MixpanelFCMMessagingServi
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_NOTIFICATION_RECEIVED);
         if (remoteMessage.getData().size() > 0) {
-             if(remoteMessage.getData().containsKey("mp_message")) {
-                    super.onMessageReceived(remoteMessage);
-                    return;
+            //we always provide some extra data in our push notif
+            if(remoteMessage.getData().containsKey(PushNotificationManager.KEY_MIXPANEL)) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_NOTIFICATION_MIXPANEL_RECEIVED);
+                super.onMessageReceived(remoteMessage);
+            } else if(remoteMessage.getData().containsKey(PushNotificationManager.KEY_CTA)) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_NOTIFICATION_FCM_RECEIVED);
+                handleFCM(remoteMessage);
+                //nothing to do right now
             } else {
+                //entourage own notif, need to check the message to see what to do right now
+                EntourageEvents.logEvent(EntourageEvents.EVENT_NOTIFICATION_ENTOURAGE_RECEIVED);
                 handleNow(remoteMessage);
             }
         }
+    }
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Timber.d("Message Notification Body: %s", remoteMessage.getNotification().getBody());
-            //TODO handle this
-        }
+    private void handleFCM(RemoteMessage remoteMessage) {
+        PushNotificationManager.getInstance().displayPushNotification(remoteMessage, this);
     }
 
     private void handleNow(RemoteMessage remoteMessage) {

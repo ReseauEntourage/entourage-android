@@ -289,7 +289,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (privacySwitch.isChecked()) {
             if (privacyLabel != null) {
                 privacyLabel.setText(R.string.entourage_create_privacy_public);
-                privacyLabel.setTypeface(privacyLabel.getTypeface(), Typeface.BOLD);
+                privacyLabel.setTypeface(null, Typeface.BOLD);
                 privacyLabel.setTextColor(ResourcesCompat.getColor(getResources(), R.color.create_entourage_privacy_public, null));
             }
             if (privacyDescription != null) {
@@ -299,7 +299,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         } else {
             if (privacyLabel != null) {
                 privacyLabel.setText(R.string.entourage_create_privacy_private);
-                privacyLabel.setTypeface(privacyLabel.getTypeface(), Typeface.NORMAL);
+                privacyLabel.setTypeface(null, Typeface.NORMAL);
                 privacyLabel.setTextColor(ResourcesCompat.getColor(getResources(), R.color.create_entourage_privacy_private, null));
             }
             if (privacyDescription != null) {

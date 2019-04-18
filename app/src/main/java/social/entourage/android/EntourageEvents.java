@@ -1,8 +1,11 @@
 package social.entourage.android;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
+
 import androidx.core.content.PermissionChecker;
 
 import com.crashlytics.android.Crashlytics;
@@ -264,6 +267,12 @@ public class EntourageEvents {
     public static final String EVENT_CAROUSEL_EXCEPTION = "CarouselException";
     public static final String EVENT_ILLEGAL_STATE = "CatchedExceptionIllegalStateAppIsGone";
 
+    //Notifications
+    public static final String EVENT_NOTIFICATION_RECEIVED="NotificationReceived";
+    public static final String EVENT_NOTIFICATION_FCM_RECEIVED="NotificationReceivedFromFCM";
+    public static final String EVENT_NOTIFICATION_MIXPANEL_RECEIVED="NotificationReceivedFromMixpanel";
+    public static final String EVENT_NOTIFICATION_ENTOURAGE_RECEIVED="NotificationReceivedFromEntourage";
+
     private static String TAG = EntourageEvents.class.getSimpleName();
 
     public static void logEvent(String event) {
@@ -322,6 +331,10 @@ public class EntourageEvents {
 
         if(notificationsEnabled) {
             people.setPushRegistrationId(sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null));
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            mFirebaseAnalytics.setUserProperty("BackgroundRestriction", ((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE)).isBackgroundRestricted()?"YES":"NO");
         }
     }
 }

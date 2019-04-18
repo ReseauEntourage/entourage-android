@@ -30,7 +30,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LoginTest {
-    @Rule public ActivityTestRule<LoginActivity> activityRule = new ActivityTestRule<>(LoginActivity.class);
+    @Rule
+    public ActivityTestRule<LoginActivity> activityRule = new ActivityTestRule<>(LoginActivity.class);
+
     private IdlingResource resource;
 
     @Before
@@ -57,10 +59,6 @@ public class LoginTest {
 
     @Test
     public void loginOK() {
-        //first we try with wrong input
-        loginFailureWrongPassword();
-        loginFailureWrongPhoneNumberFormat();
-
         checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
 
@@ -69,24 +67,23 @@ public class LoginTest {
         onView(withId(R.id.login_button_signup)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(doesNotExist());
+        //checkNoUserIsLoggedIn();
     }
 
-    /*@Test
-    @TODO fix this because of unexpected errors in OkHttp3IdlingResource
-    public void loginOKwithCountryCode() {
-        checkNoUserIsLoggedIn();
+    @Test
+    public void loginOKwithoutCountryCode() {
         onView(withId(R.id.login_button_login)).perform(click());
 
-        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("0", "+33")));
+        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33", "0")));
         onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
         onView(withId(R.id.login_button_signup)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(doesNotExist());
-    }*/
+        //checkNoUserIsLoggedIn();
+    }
 
-    //Test
+    @Test
     public void loginFailureWrongPassword() {
-        checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
 
         onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
@@ -98,9 +95,8 @@ public class LoginTest {
         onView(withId(R.id.login_back_button)).perform(click());
     }
 
-    //Test
+    @Test
     public void loginFailureWrongPhoneNumberFormat() {
-        checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
 
         onView(withId(R.id.login_edit_phone)).perform(typeText("012345678"));
