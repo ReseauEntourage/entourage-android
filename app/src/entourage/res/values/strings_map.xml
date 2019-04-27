@@ -11,6 +11,6 @@
 
     <!-- Map Tab -->
     <string name="map_tab_all">Tous</string>
-    <string name="map_tab_events">Évènements</string>
+    <string name="map_tab_events">Calendrier</string>
 
 </resources>
