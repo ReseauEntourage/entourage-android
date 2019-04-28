@@ -58,7 +58,7 @@
     <string name="tour_info_options_quit_tour">Quitter</string>
     <string name="tour_info_options_report">Signaler un problème</string>
     <string name="tour_info_options_share">Partager</string>
-    <string name="tour_info_options_join">Rejoindre</string>
+    <string name="tour_info_options_join">Participer</string>
     <string name="tour_info_options_close">Annuler</string>
     <string name="tour_info_options_contact">Contacter</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>
@@ -76,7 +76,7 @@
     <string name="tour_info_members_add">Inviter un ami</string>
     <string name="tour_info_members_add_not_allowed">Invitation impossible</string>
     
-    <string name="tour_info_request_join_title_entourage">On a besoin de vous !</string>
+    <string name="tour_info_request_join_title_entourage">Rejoindre la discussion</string>
     <string name="tour_info_request_join_title_tour">Maraude voisine ? Coordonnez-vous</string>
     <string name="tour_info_request_join_title_outing">Participez à cet évènement</string>
     <string name="tour_info_request_join_button_entourage">@string/tour_info_options_join</string>
