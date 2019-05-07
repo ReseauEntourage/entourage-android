@@ -152,7 +152,7 @@
                 android:orientation="horizontal">
 
                 <View
-                    android:id="@+id/view3"
+                    android:id="@+id/login_edit_cc_lost_code"
                     android:layout_width="50dp"
                     android:layout_height="1dp"
                     android:alpha=".5"
@@ -164,7 +164,7 @@
                     />
 
                 <View
-                    android:id="@+id/view4"
+                    android:id="@+id/login_edit_phone_number_lost_code"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha=".5"
