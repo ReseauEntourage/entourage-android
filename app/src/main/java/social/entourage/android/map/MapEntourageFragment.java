@@ -122,6 +122,7 @@ import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
+import timber.log.Timber;
 
 import static social.entourage.android.EntourageEvents.EVENT_FEED_TAB_ALL;
 import static social.entourage.android.EntourageEvents.EVENT_FEED_TAB_EVENTS;
@@ -864,9 +865,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 // Don't start the service
                 return;
             }
-            Intent intent = new Intent(getActivity(), TourService.class);
-            getActivity().startService(intent);
-            getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            try{
+                Intent intent = new Intent(getActivity(), TourService.class);
+                getActivity().startService(intent);
+                getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            } catch(IllegalStateException e) {
+                Timber.e(e);
+            }
         }
     }
 
