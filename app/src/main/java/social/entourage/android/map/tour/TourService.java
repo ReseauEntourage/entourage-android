@@ -279,7 +279,6 @@ public class TourService extends Service {
         if (chronometer != null) {
             chronometer.stop();
         }
-        chronometer = null;
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
