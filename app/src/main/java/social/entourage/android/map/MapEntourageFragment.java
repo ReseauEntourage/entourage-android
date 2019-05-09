@@ -388,7 +388,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //presenter.handleLocationPermission();
         if (!isGeolocationGranted()) {
             if (getActivity() != null) {
-                ((DrawerActivity)getActivity()).showEditActionZoneFragment(true, this);
+                ((DrawerActivity)getActivity()).showEditActionZoneFragment(this);
             }
         }
         newsfeedListView.addOnScrollListener(scrollListener);
