@@ -993,11 +993,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     public void showEditActionZoneFragment() {
-        showEditActionZoneFragment(false, null);
+        showEditActionZoneFragment( null);
     }
 
-    public void showEditActionZoneFragment(boolean forced, UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
-        if (editActionZoneShown && !forced) return;
+    public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
+        if (editActionZoneShown) return;
         AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
         if (authenticationController.isAuthenticated()) {
             User me = authenticationController.getUser();

@@ -212,8 +212,6 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
                 userAssociationLayout.setVisibility(View.VISIBLE);
             }
 
-
-
             User.Address address = editedUser.getAddress();
             if (address == null) {
                 userActionZone.setText("");
@@ -227,7 +225,6 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
                 }
                 userActionZoneButton.setText(R.string.user_edit_action_zone_button);
             }
-
         }
     }
 
