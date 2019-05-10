@@ -1668,7 +1668,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    String accessLocation = Manifest.permission.ACCESS_FINE_LOCATION;
+                    String accessLocation = presenter.getUserLocationAccess();
                     switch (source) {
                         case GEOLOCATION_POPUP_RECENTER:
                             EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
