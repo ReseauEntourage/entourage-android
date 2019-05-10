@@ -997,23 +997,25 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
-        if (editActionZoneShown) return;
         AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
-        if (authenticationController.isAuthenticated()) {
+        if (!authenticationController.isAuthenticated()) return;
             User me = authenticationController.getUser();
+        if(me==null) return;
+
             UserPreferences userPreferences = authenticationController.getUserPreferences();
-            if (me != null
-                    && userPreferences != null
-                    && !userPreferences.isIgnoringActionZone()
-                    && (me.getAddress() == null || me.getAddress().getDisplayAddress() == null || me.getAddress().getDisplayAddress().length() == 0)) {
+        if(userPreferences== null) return;
+
+        if (me.isEditActionZoneShown()
+            || userPreferences.isIgnoringActionZone()
+            || (me.getAddress().getDisplayAddress() != null && me.getAddress().getDisplayAddress().length() > 0))
+            return;
+
                 UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
                 userEditActionZoneFragment.addFragmentListener(this);
                 userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
                 userEditActionZoneFragment.setFromLogin(true);
                 userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
-            }
-        }
-        editActionZoneShown = true;
+        me.setEditActionZoneShown(true);
     }
 
     @Override
