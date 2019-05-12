@@ -10,7 +10,7 @@
 
     <string name="map_gps_unavailable">Aucun signal de localisation</string>
     <string name="map_permission_title">Entourage doit accéder à la géolocalisation</string>
-    <string name="map_permission_description">Sans géolocalisation Entourage ne peut pas fonctionner.</string>
+    <string name="map_permission_description">Sans géolocalisation Entourage ne peut pas fonctionner. Souhaitez-vous l\'activer ?</string>
     <string name="map_permission_refuse">Refuser</string>
     <string name="map_permission_explanation">Pour vous faire découvrir les actions solidaires autour de vous,\nEntourage doit connaître votre position.</string>
     <string name="map_permission_activate_button">Activez la géolocalisation</string>
