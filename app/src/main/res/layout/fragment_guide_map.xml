@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent" android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <include
         android:id="@+id/fragment_guide_top_navigation"
@@ -9,17 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar_height"/>
 
+    <LinearLayout
+        android:id="@+id/fragment_map_gps_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_guide_top_navigation"
+        android:background="@drawable/bg_clickable_layout_gps"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/map_gps_unavailable"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/entourage_font_small"/>
+
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/fragment_guide_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/fragment_guide_top_navigation">
+        android:layout_below="@+id/fragment_map_gps_layout">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_guide_pois_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:visibility="visible"/>
@@ -39,13 +63,12 @@
         android:background="@drawable/rounded_dialog"
         android:orientation="vertical"
         android:visibility="gone"
-        >
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/fragment_guide_empty_list_popup_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
             android:layout_marginStart="3dp"
             android:layout_marginTop="3dp"
             android:contentDescription="@string/empty_description"
@@ -82,7 +105,8 @@
         android:background="@drawable/rounded_dialog"
         android:orientation="vertical"
         android:padding="10dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageButton
             android:id="@+id/fragment_guide_info_popup_close"
@@ -109,7 +133,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_gravity="end"
         android:paddingBottom="5dp"
         android:paddingEnd="10dp"

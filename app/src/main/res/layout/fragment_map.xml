@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,13 +17,35 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/top_bar_height"/>
 
+        <LinearLayout
+            android:id="@+id/fragment_map_gps_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_map_top_navigation"
+            android:background="@drawable/bg_clickable_layout_gps"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/map_gps_unavailable"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/entourage_font_small"/>
+
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/fragment_map_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/fragment_map_top_navigation"
+            android:layout_below="@+id/fragment_map_gps_layout"
             android:orientation="vertical"
             android:weightSum="8">
 
@@ -39,7 +62,6 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/new_entourages"
-                android:drawableLeft="@drawable/arrow_new_entourages"
                 android:drawableStart="@drawable/arrow_new_entourages"
                 android:paddingEnd="10dp"
                 android:paddingLeft="10dp"
@@ -68,10 +90,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_marginEnd="10dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="10dp"
                 android:background="?android:attr/selectableItemBackground"
@@ -87,33 +106,10 @@
             class="social.entourage.android.map.entourage.minicards.EntourageMiniCardsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="10dp"
             android:visibility="invisible"/>
-
-        <LinearLayout
-            android:id="@+id/fragment_map_gps_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_map_top_navigation"
-            android:background="@drawable/bg_clickable_layout_gps"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="@string/map_gps_unavailable"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/entourage_font_small"/>
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/fragment_map_empty_list_popup"
@@ -135,8 +131,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="0dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="0dp"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="3dp"
                 android:contentDescription="@string/empty_description"
@@ -165,7 +159,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_gravity="end"
             android:paddingBottom="5dp"
             android:paddingEnd="10dp"
