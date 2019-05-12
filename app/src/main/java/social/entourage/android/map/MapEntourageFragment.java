@@ -1085,44 +1085,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     }
 
     @Override
-    public void onLocationProviderStatusChanged(boolean active) {
-        if (gpsLayout == null) {
-            return;
-        }
-        if (active) {
-            if (gpsLayout.getVisibility() == View.VISIBLE) {
-                // Move filter and center buttons up
-                gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                        int h = gpsLayout.getHeight();
-
-                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMain.getLayoutParams();
-                        lp.topMargin -= h;
-                        layoutMain.setLayoutParams(lp);
-                    }
-                });
-            }
-            gpsLayout.setVisibility(View.GONE);
-        } else {
-            if (gpsLayout.getVisibility() == View.GONE) {
-                // Move filter and center buttons down, so they are not covered by the gps layout
-                gpsLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        gpsLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                        int h = gpsLayout.getHeight();
-
-                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) layoutMain.getLayoutParams();
-                        lp.topMargin += h;
-                        layoutMain.setLayoutParams(lp);
-                    }
-                });
-            }
-            gpsLayout.setVisibility(View.VISIBLE);
+    public void onLocationStatusChanged(boolean active) {
+        if (gpsLayout != null) {
+            int visibility = active ? View.GONE : View.VISIBLE;
+            gpsLayout.setVisibility(visibility);
         }
     }
 
@@ -1306,19 +1272,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.map_permission_title)
                 .setMessage(R.string.map_permission_description)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        requestPermissions(new String[]{permission}, PERMISSIONS_REQUEST_LOCATION);
-                    }
-                })
-                .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int i) {
-                        NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
-                        noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), NoLocationPermissionFragment.TAG);
-                        BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
-                    }
+                .setPositiveButton(getString(R.string.activate), (dialogInterface, i) ->
+                        requestPermissions(new String[]{permission}, PERMISSIONS_REQUEST_LOCATION))
+                .setNegativeButton(R.string.map_permission_refuse, (dialog, i) -> {
+                    NoLocationPermissionFragment noLocationPermissionFragment = new NoLocationPermissionFragment();
+                    noLocationPermissionFragment.show(getActivity().getSupportFragmentManager(), NoLocationPermissionFragment.TAG);
+                    BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
                 })
                 .show();
         } else {
