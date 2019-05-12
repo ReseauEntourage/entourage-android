@@ -1,10 +1,10 @@
-package social.entourage.android.tools
+package social.entourage.android.tools.log
 
 import social.entourage.android.api.model.Newsfeed
-import social.entourage.android.map.tour.TourService
+import social.entourage.android.map.tour.NewsFeedListener
 import timber.log.Timber
 
-class LoggerNewsFeedListener : TourService.NewsFeedListener {
+class LoggerNewsFeedLogger : NewsFeedListener {
 
     override fun onNetworkException() {
         Timber.e("Network exception")
