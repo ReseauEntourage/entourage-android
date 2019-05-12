@@ -1,4 +1,4 @@
-package social.entourage.android.tools
+package social.entourage.android.tools.log
 
 import android.util.Log
 import com.crashlytics.android.Crashlytics
