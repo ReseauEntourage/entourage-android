@@ -257,7 +257,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
     private void showChoosePhotoActivity() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_UPLOAD_SUBMIT);
-        if (Build.VERSION.SDK_INT <= 19) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             // Start a separate activity, to handle the issue with onActivityResult
             Intent intent = new Intent(getContext(), ChoosePhotoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -289,7 +289,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             }
             // Continue only if the File was successfully created
             if (photoFileUri != null) {
-                if (Build.VERSION.SDK_INT <= 19) {
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
                     // Start a separate activity, to handle the issue with onActivityResult
                     Intent intent = new Intent(getContext(), TakePhotoActivity.class);
                     intent.setData(photoFileUri);
@@ -322,9 +322,6 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         // Return the URI
-//        if (Build.VERSION.SDK_INT <= 19) {
-//            return Uri.fromFile(image);
-//        }
         return FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".fileprovider", image);
     }
 

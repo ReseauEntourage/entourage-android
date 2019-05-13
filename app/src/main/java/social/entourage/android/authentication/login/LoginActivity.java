@@ -1153,10 +1153,6 @@ public class LoginActivity extends EntourageActivity
         goToNextActionAfterActionZone = true;
         hideActionZoneView();
         showNotificationPermissionView();
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String accessLocation = getUserLocationAccess();
-            requestPermissions(new String[]{accessLocation}, PERMISSIONS_REQUEST_LOCATION);
-        }*/
     }
 
     /************************
