@@ -998,17 +998,25 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
         AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
-        if (!authenticationController.isAuthenticated()) return;
+        if (!authenticationController.isAuthenticated()) {
+            return;
+        }
             User me = authenticationController.getUser();
-        if(me==null) return;
+        if(me==null) {
+            return;
+        }
 
             UserPreferences userPreferences = authenticationController.getUserPreferences();
-        if(userPreferences== null) return;
-
-        if (me.isEditActionZoneShown()
-            || userPreferences.isIgnoringActionZone()
-            || (me.getAddress().getDisplayAddress() != null && me.getAddress().getDisplayAddress().length() > 0))
+        if(userPreferences== null) {
             return;
+        }
+
+        boolean noNeedToShowEditScreen = me.isEditActionZoneShown()
+            || userPreferences.isIgnoringActionZone()
+                || (me.getAddress().getDisplayAddress() != null && me.getAddress().getDisplayAddress().length() > 0);
+        if (noNeedToShowEditScreen) {
+            return;
+        }
 
                 UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
                 userEditActionZoneFragment.addFragmentListener(this);
