@@ -5,7 +5,7 @@ import android.content.Context
 import com.facebook.FacebookSdk
 import com.facebook.LoggingBehavior
 
-import social.entourage.android.tools.CrashlyticsLog
+import social.entourage.android.tools.log.CrashlyticsLog
 import timber.log.Timber
 
 /**
