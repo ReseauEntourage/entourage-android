@@ -1,24 +1,33 @@
 package social.entourage.android.location
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.os.Bundle
-import androidx.core.content.PermissionChecker.checkSelfPermission
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import social.entourage.android.location.LocationPermissionUtils.isGeolocationPermissionGranted
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.MINUTES
 import java.util.concurrent.TimeUnit.SECONDS
 
 class LocationProvider(context: Context,
-                       private var userType: UserType = UserType.PUBLIC) {
+                       private var userType: UserType = UserType.PUBLIC)
+    : GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+
+    companion object {
+        const val DURATION_INTERVAL_PUBLIC = 5L
+        const val DURATION_INTERVAL_PRO = 20L
+        const val DURATION_FAST_INTERVAL_PUBLIC = 1L
+        const val DURATION_FAST_INTERVAL_PRO = 10L
+    }
+
+    enum class UserType {
+        PUBLIC, PRO
+    }
 
     private val context: Context = context.applicationContext
     private val googleApiClient: GoogleApiClient
@@ -37,6 +46,14 @@ class LocationProvider(context: Context,
 
     init {
         googleApiClient = initializeGoogleApiClient(context.applicationContext)
+    }
+
+    private fun initializeGoogleApiClient(context: Context): GoogleApiClient {
+        return GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build()
     }
 
     fun start() {
@@ -65,28 +82,21 @@ class LocationProvider(context: Context,
         }
     }
 
-    private fun removeLocationUpdates() {
-        if (geolocationPermissionIsGranted() && googleApiClient.isConnected) {
-            LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(locationListener)
-        }
-    }
-
-    private fun initializeGoogleApiClient(context: Context): GoogleApiClient {
-        return GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(FusedLocationConnectionCallbacks(this))
-                .addOnConnectionFailedListener(FusedLocationConnectionFailedListener())
-                .addApi(LocationServices.API)
-                .build()
-    }
-
-    private fun onFusedLocationConnected() {
+    override fun onConnected(bundle: Bundle?) {
         lastKnownLocation?.let { locationListener?.onLocationChanged(it) }
         requestLocationUpdates()
     }
 
+    override fun onConnectionSuspended(i: Int) {
+    }
+
+    override fun onConnectionFailed(connectionResult: ConnectionResult) {
+        Timber.e("Cannot connect to Google API Client $connectionResult")
+    }
+
     @SuppressLint("MissingPermission")
     fun requestLastKnownLocation() {
-        if (geolocationPermissionIsGranted()) {
+        if (isGeolocationPermissionGranted()) {
             LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener {
                 lastKnownLocation = it
             }
@@ -95,47 +105,28 @@ class LocationProvider(context: Context,
 
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
-        if (geolocationPermissionIsGranted() && googleApiClient.isConnected) {
+        if (isGeolocationPermissionGranted() && googleApiClient.isConnected) {
             LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationListener, null)
+        }
+    }
+
+    private fun removeLocationUpdates() {
+        if (isGeolocationPermissionGranted() && googleApiClient.isConnected) {
+            LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(locationListener)
         }
     }
 
     private fun createLocationRequestForPublicUsage(): LocationRequest {
         return LocationRequest.create()
-                .setInterval(MINUTES.toMillis(5))
-                .setFastestInterval(MINUTES.toMillis(1))
+                .setInterval(MINUTES.toMillis(DURATION_INTERVAL_PUBLIC))
+                .setFastestInterval(MINUTES.toMillis(DURATION_FAST_INTERVAL_PUBLIC))
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
     }
 
     private fun createLocationRequestForProUsage(): LocationRequest {
         return LocationRequest.create()
-                .setInterval(SECONDS.toMillis(20))
-                .setFastestInterval(SECONDS.toMillis(10))
+                .setInterval(SECONDS.toMillis(DURATION_INTERVAL_PRO))
+                .setFastestInterval(SECONDS.toMillis(DURATION_FAST_INTERVAL_PRO))
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-    }
-
-    private fun geolocationPermissionIsGranted(): Boolean {
-        return checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
-                && checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
-    }
-
-    enum class UserType {
-        PUBLIC, PRO
-    }
-
-    private class FusedLocationConnectionCallbacks(private val provider: LocationProvider) : GoogleApiClient.ConnectionCallbacks {
-
-        override fun onConnected(bundle: Bundle?) {
-            provider.onFusedLocationConnected()
-        }
-
-        override fun onConnectionSuspended(i: Int) {
-        }
-    }
-
-    private class FusedLocationConnectionFailedListener : GoogleApiClient.OnConnectionFailedListener {
-        override fun onConnectionFailed(connectionResult: ConnectionResult) {
-            Timber.e("Cannot connect to Google API Client $connectionResult")
-        }
     }
 }

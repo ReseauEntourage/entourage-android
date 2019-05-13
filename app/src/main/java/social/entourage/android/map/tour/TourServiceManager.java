@@ -90,7 +90,7 @@ public class TourServiceManager {
     private final NewsfeedRequest newsfeedRequest;
     private final EntourageRequest entourageRequest;
     private final ConnectivityManager connectivityManager;
-    private final LocationProvider provider;
+    private final LocationProvider locationProvider;
     public final EntourageLocation entourageLocation;
 
     private Tour tour;
@@ -113,14 +113,14 @@ public class TourServiceManager {
                                final EntourageRequest entourageRequest,
                                final ConnectivityManager connectivityManager,
                                final EntourageLocation entourageLocation,
-                               final LocationProvider provider) {
+                               final LocationProvider locationProvider) {
         this.tourService = tourService;
         this.authenticationController = authenticationController;
         this.tourRequest = tourRequest;
         this.encounterRequest = encounterRequest;
         this.newsfeedRequest = newsfeedRequest;
         this.entourageRequest = entourageRequest;
-        this.provider = provider;
+        this.locationProvider = locationProvider;
         pointsNeededForNextRequest = 1;
         pointsToSend = new ArrayList<>();
         pointsToDraw = new ArrayList<>();
@@ -199,7 +199,7 @@ public class TourServiceManager {
     // ----------------------------------
 
     void stopLocationService() {
-        provider.stop();
+        locationProvider.stop();
     }
 
     void startTour(final String type) {
@@ -327,7 +327,7 @@ public class TourServiceManager {
     @Subscribe
     public void onLocationPermissionGranted(final OnLocationPermissionGranted event) {
         if (event.isPermissionGranted()) {
-            provider.start();
+            locationProvider.start();
         }
     }
 
@@ -672,7 +672,7 @@ public class TourServiceManager {
                     tour = response.body().getTour();
                     tourService.notifyListenersTourCreated(true, tourUUID);
 
-                    provider.requestLastKnownLocation();
+                    locationProvider.requestLastKnownLocation();
                 } else {
                     tour = null;
                     tourService.notifyListenersTourCreated(false, "");
@@ -704,7 +704,7 @@ public class TourServiceManager {
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
-                    provider.setUserType(UserType.PUBLIC);
+                    locationProvider.setUserType(UserType.PUBLIC);
                     authenticationController.saveTour(tour);
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);
@@ -852,9 +852,8 @@ public class TourServiceManager {
         private String getErrorMessage(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Response<Newsfeed.NewsfeedWrapper> response) {
             final String errorBody = getErrorBody(response);
             String errorMessage = "Response code = " + response.code();
-            if (call.request() != null) {
-                errorMessage += " ( " + call.request().toString() + ")";
-            }
+            call.request();
+            errorMessage += " ( " + call.request().toString() + ")";
             if (!errorBody.isEmpty()) {
                 errorMessage += " : " + errorBody;
             }
