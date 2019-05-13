@@ -327,7 +327,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
         try {
             EntourageEvents.logEvent(EntourageEvents.EVENT_USER_TONOTIFICATIONS);
             Intent intent = new Intent();
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
                 intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
