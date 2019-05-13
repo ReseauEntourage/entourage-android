@@ -6,21 +6,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.tabs.TabLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.otto.Subscribe;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -58,12 +61,13 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
 import social.entourage.android.map.tour.TourService;
+import social.entourage.android.map.tour.TourServiceListener;
 import social.entourage.android.tools.BusProvider;
 
 /**
  * My Entourages Fragment
  */
-public class MyEntouragesFragment extends EntourageDialogFragment implements TourService.TourServiceListener, EntourageViewHolderListener, MyEntouragesAdapter.LoaderCallback {
+public class MyEntouragesFragment extends EntourageDialogFragment implements TourServiceListener, EntourageViewHolderListener, MyEntouragesAdapter.LoaderCallback {
 
     // ----------------------------------
     // Constants
@@ -83,7 +87,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     @Inject
     MyEntouragesPresenter presenter;
 
-    TourService tourService;
+    private TourService tourService;
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = false;
 
@@ -552,37 +556,31 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     @Override
-    public void onTourUpdated(final LatLng newPoint) {
-
+    public void onTourUpdated(@NotNull LatLng newPoint) {
     }
 
     @Override
-    public void onTourResumed(final List<TourPoint> pointsToDraw, final String tourType, final Date startDate) {
-
+    public void onTourResumed(@NotNull List<? extends TourPoint> pointsToDraw, @NotNull String tourType, @NotNull Date startDate) {
     }
 
     @Override
-    public void onLocationUpdated(final LatLng location) {
-
+    public void onLocationUpdated(@NotNull LatLng location) {
     }
 
     @Override
-    public void onRetrieveToursNearby(final List<Tour> tours) {
+    public void onRetrieveToursNearby(@NotNull List<? extends Tour> tours) {
     }
 
     @Override
-    public void onRetrieveToursByUserId(final List<Tour> tours) {
-
+    public void onRetrieveToursByUserId(@NotNull List<? extends Tour> tours) {
     }
 
     @Override
-    public void onUserToursFound(final Map<Long, Tour> tours) {
-
+    public void onUserToursFound(@NotNull Map<Long, ? extends Tour> tours) {
     }
 
     @Override
-    public void onToursFound(final Map<Long, Tour> tours) {
-
+    public void onToursFound(@NotNull Map<Long, ? extends Tour> tours) {
     }
 
     @Override
@@ -593,8 +591,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     @Override
-    public void onLocationProviderStatusChanged(final boolean active) {
-
+    public void onLocationStatusUpdated(final boolean active) {
     }
 
     @Override
@@ -643,5 +640,4 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
             isBound = false;
         }
     }
-
 }
