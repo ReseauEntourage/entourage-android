@@ -1030,7 +1030,8 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public void onUserEditActionZoneFragmentDismiss() {
-        displayToast(R.string.user_action_zone_ignore_hint);
+        Snackbar.make(findViewById(R.id.activity_login), R.string.user_setting_ignore_hint, Snackbar.LENGTH_LONG)
+                .show();
         if(!goToNextActionAfterActionZone) {
             showNameView();
         } else {
