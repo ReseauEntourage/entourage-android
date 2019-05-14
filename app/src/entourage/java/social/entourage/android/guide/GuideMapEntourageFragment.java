@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -72,8 +71,8 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
-import social.entourage.android.location.LocationPermissionUtils;
 import social.entourage.android.location.LocationUpdateListener;
+import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
@@ -110,8 +109,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     private ClusterManager<Poi> clusterManager;
     private Map<Long, Poi> poisMap;
     private PoiRenderer poiRenderer;
-    @BindView(R.id.fragment_map_gps_layout)
-    LinearLayout gpsLayout;
     private TourService tourService;
     private ServiceConnection connection = new ServiceConnection();
 
@@ -120,6 +117,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     private Location previousEmptyListPopupLocation = null;
     private boolean isBound = false;
     private PoisAdapter poisAdapter;
+
+    @BindView(R.id.fragment_map_gps)
+    TextView gpsLayout;
 
     @BindView(R.id.map_fab_menu)
     FloatingActionMenu guideOptionsMenu;
@@ -218,7 +218,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     public void onResume() {
         super.onResume();
 
-        boolean isLocationGranted = LocationPermissionUtils.INSTANCE.isGeolocationPermissionGranted();
+        boolean isLocationGranted = LocationUtils.INSTANCE.isLocationPermissionGranted();
         BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(isLocationGranted));
     }
 
@@ -315,15 +315,21 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     @Subscribe
     public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
-        if (event != null) {
-            if (event.isPermissionGranted() && map != null) {
-                try {
-                    onLocationStatusUpdated(true);
-                    map.setMyLocationEnabled(true);
-                } catch (SecurityException ignored) {
+        if (event != null && event.isPermissionGranted()) {
+            boolean isLocationEnabled = LocationUtils.INSTANCE.isLocationEnabled();
+            if (isLocationEnabled) {
+                if (map != null) {
+                    try {
+                        map.setMyLocationEnabled(true);
+                    } catch (SecurityException ignored) {
+                    }
                 }
-            } else {
-                onLocationStatusUpdated(false);
+            }
+            onLocationStatusUpdated(isLocationEnabled);
+        } else {
+            if (gpsLayout != null) {
+                gpsLayout.setText(getString(R.string.map_gps_no_permission));
+                gpsLayout.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -753,6 +759,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     public void onLocationStatusUpdated(boolean active) {
         if (gpsLayout != null) {
             int visibility = active ? View.GONE : View.VISIBLE;
+            gpsLayout.setText(getString(R.string.map_gps_unavailable));
             gpsLayout.setVisibility(visibility);
         }
     }

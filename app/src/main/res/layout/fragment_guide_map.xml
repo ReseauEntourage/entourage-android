@@ -1,44 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/fragment_guide_top_navigation"
         layout="@layout/layout_map_top_navigation"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_bar_height"/>
+        android:layout_height="@dimen/top_bar_height" />
 
-    <LinearLayout
-        android:id="@+id/fragment_map_gps_layout"
+    <TextView
+        android:id="@+id/fragment_map_gps"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_below="@+id/fragment_guide_top_navigation"
         android:background="@drawable/bg_clickable_layout_gps"
         android:gravity="center"
-        android:orientation="vertical"
+        android:text="@string/map_gps_unavailable"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/entourage_font_small"
         android:visibility="gone"
-        tools:visibility="visible">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="@string/map_gps_unavailable"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/entourage_font_small"/>
-
-    </LinearLayout>
+        tools:visibility="visible" />
 
     <RelativeLayout
         android:id="@+id/fragment_guide_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/fragment_map_gps_layout">
+        android:layout_below="@+id/fragment_map_gps">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_guide_pois_view"
@@ -46,7 +36,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
     </RelativeLayout>
 
@@ -55,11 +45,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
         android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
         android:background="@drawable/rounded_dialog"
         android:orientation="vertical"
         android:visibility="gone"
@@ -73,24 +63,24 @@
             android:layout_marginTop="3dp"
             android:contentDescription="@string/empty_description"
             android:padding="3dp"
-            android:src="@drawable/ic_close_white"/>
+            android:src="@drawable/ic_close_white" />
 
         <TextView
             android:id="@+id/fragment_guide_empty_list_popup_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:paddingBottom="15dp"
-            android:paddingEnd="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:paddingStart="10dp"
+            android:paddingLeft="10dp"
             android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="15dp"
             android:text="@string/map_poi_empty_popup"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textColorLink="@color/white"
-            android:textSize="@dimen/entourage_font_medium"/>
+            android:textSize="@dimen/entourage_font_medium" />
     </LinearLayout>
 
     <LinearLayout
@@ -98,10 +88,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginEnd="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
         android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
         android:background="@drawable/rounded_dialog"
         android:orientation="vertical"
         android:padding="10dp"
@@ -114,31 +104,31 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/ic_close_white"/>
+            app:srcCompat="@drawable/ic_close_white" />
 
         <TextView
             android:id="@+id/fragment_guide_info_popup_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/map_poi_info_popup"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_medium"/>
+            android:textSize="@dimen/entourage_font_medium" />
     </LinearLayout>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/map_fab_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="end"
-        android:paddingBottom="5dp"
-        android:paddingEnd="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
         app:menu_backgroundColor="@color/white_88"
         app:menu_colorNormal="@color/accent"
         app:menu_colorPressed="@color/accent"
@@ -157,7 +147,7 @@
             android:src="@drawable/ic_solidarity"
             android:visibility="visible"
             app:fab_label="@string/map_poi_propose_button"
-            app:fab_size="mini"/>
+            app:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
 
@@ -166,6 +156,6 @@
         layout="@layout/layout_guide_longclick"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>
