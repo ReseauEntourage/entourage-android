@@ -27,34 +27,24 @@
             android:visibility="invisible"
             tools:visibility="visible" />
 
-        <LinearLayout
-            android:id="@+id/fragment_map_gps_layout"
+        <TextView
+            android:id="@+id/fragment_map_gps"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_below="@+id/fragment_map_top_navigation"
             android:background="@drawable/bg_clickable_layout_gps"
             android:gravity="center"
-            android:orientation="vertical"
+            android:text="@string/map_gps_unavailable"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/entourage_font_small"
             android:visibility="gone"
-            tools:visibility="visible">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:text="@string/map_gps_unavailable"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/entourage_font_small" />
-
-        </LinearLayout>
+            tools:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/fragment_map_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/fragment_map_gps_layout"
+            android:layout_below="@+id/fragment_map_gps"
             android:layout_alignParentStart="true"
             android:orientation="vertical"
             android:weightSum="8">

@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -110,7 +109,7 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.configuration.Configuration;
-import social.entourage.android.location.LocationPermissionUtils;
+import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.choice.ChoiceFragment;
 import social.entourage.android.map.confirmation.ConfirmationFragment;
 import social.entourage.android.map.encounter.CreateEncounterActivity;
@@ -213,8 +212,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     private boolean isStopped = false;
     private final Handler refreshToursHandler = new Handler();
 
-    @BindView(R.id.fragment_map_gps_layout)
-    LinearLayout gpsLayout;
+    @BindView(R.id.fragment_map_gps)
+    TextView gpsLayout;
 
     @BindView(R.id.layout_map_launcher)
     View mapLauncherLayout;
@@ -362,7 +361,6 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             if (presenter != null) {
                 for (int index = 0; index < permissions.length; index++) {
                     if (permissions[index].equalsIgnoreCase(presenter.getUserLocationAccess()) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-                        //checkPermission();
                         EntourageEvents.logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_REFUSE);
                         BusProvider.getInstance().post(new OnLocationPermissionGranted(false));
                     } else {
@@ -404,7 +402,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         super.onResume();
         timerStart();
 
-        boolean isLocationGranted = LocationPermissionUtils.INSTANCE.isGeolocationPermissionGranted();
+        boolean isLocationGranted = LocationUtils.INSTANCE.isLocationPermissionGranted();
         BusProvider.getInstance().post(new OnLocationPermissionGranted(isLocationGranted));
     }
 
@@ -788,19 +786,22 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Subscribe
     public void onLocationPermissionGranted(OnLocationPermissionGranted event) {
-        if (event == null) {
-            return;
-        }
-        if (event.isPermissionGranted()) {
-            onLocationStatusUpdated(true);
-            if (map != null) {
-                try {
-                    map.setMyLocationEnabled(true);
-                } catch (SecurityException ignored) {
+        if (event != null && event.isPermissionGranted()) {
+            boolean isLocationEnabled = LocationUtils.INSTANCE.isLocationEnabled();
+            if (isLocationEnabled) {
+                if (map != null) {
+                    try {
+                        map.setMyLocationEnabled(true);
+                    } catch (SecurityException ignored) {
+                    }
                 }
             }
+            onLocationStatusUpdated(isLocationEnabled);
         } else {
-            onLocationStatusUpdated(false);
+            if (gpsLayout != null) {
+                gpsLayout.setText(getString(R.string.map_gps_no_permission));
+                gpsLayout.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -1087,6 +1088,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onLocationStatusUpdated(boolean active) {
         if (gpsLayout != null) {
             int visibility = active ? View.GONE : View.VISIBLE;
+            gpsLayout.setText(getString(R.string.map_gps_unavailable));
             gpsLayout.setVisibility(visibility);
         }
     }
@@ -1277,7 +1279,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // CLICK CALLBACKS
     // ----------------------------------
 
-    @OnClick(R.id.fragment_map_gps_layout)
+    @OnClick(R.id.fragment_map_gps)
     void displayGeolocationPreferences() {
         if (getActivity() != null) {
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));

@@ -8,7 +8,8 @@
     <string name="activity_map_tab_liste">Liste</string>
     <string name="activity_map_new_entourages">\u0020Nouveaux entourages</string>
 
-    <string name="map_gps_unavailable">Aucun signal de localisation</string>
+    <string name="map_gps_unavailable">Veuillez activer la géolocalisation de votre appareil</string>
+    <string name="map_gps_no_permission">Veuillez autoriser Entourage à accéder à votre position</string>
     <string name="map_permission_title">Entourage doit accéder à la géolocalisation</string>
     <string name="map_permission_description">Sans géolocalisation Entourage ne peut pas fonctionner. Souhaitez-vous l\'activer ?</string>
     <string name="map_permission_refuse">Refuser</string>

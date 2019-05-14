@@ -9,7 +9,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import social.entourage.android.location.LocationPermissionUtils.isGeolocationPermissionGranted
+import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.MINUTES
 import java.util.concurrent.TimeUnit.SECONDS
@@ -96,7 +96,7 @@ class LocationProvider(context: Context,
 
     @SuppressLint("MissingPermission")
     fun requestLastKnownLocation() {
-        if (isGeolocationPermissionGranted()) {
+        if (isLocationPermissionGranted()) {
             LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener {
                 lastKnownLocation = it
             }
@@ -105,13 +105,13 @@ class LocationProvider(context: Context,
 
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
-        if (isGeolocationPermissionGranted() && googleApiClient.isConnected) {
+        if (isLocationPermissionGranted() && googleApiClient.isConnected) {
             LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationListener, null)
         }
     }
 
     private fun removeLocationUpdates() {
-        if (isGeolocationPermissionGranted() && googleApiClient.isConnected) {
+        if (isLocationPermissionGranted() && googleApiClient.isConnected) {
             LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(locationListener)
         }
     }
