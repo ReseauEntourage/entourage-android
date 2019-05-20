@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
@@ -121,7 +122,8 @@ public class SideMenuFragment extends Fragment {
         if(BuildConfig.FLAVOR_env.equals("staging")) {
             appVersion.setText(
                     getString(R.string.about_version_format, BuildConfig.VERSION_NAME)
-                            + "\nbuild: staging/"+BuildConfig.VERSION_DISPLAY_NAME);
+                            + "\nbuild: staging/"+BuildConfig.VERSION_DISPLAY_NAME
+                            + "\nFIId: "+ FirebaseInstanceId.getInstance().getId());
         }
 
         //add listener to user photo and name, that opens the user profile screen
