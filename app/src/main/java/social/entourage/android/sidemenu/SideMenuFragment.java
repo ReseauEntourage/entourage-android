@@ -52,6 +52,9 @@ public class SideMenuFragment extends Fragment {
     @BindView(R.id.drawer_footer_app_version)
     TextView appVersion;
 
+    @BindView(R.id.drawer_footer_app_debug_info)
+    TextView appDebugInfo;
+
     @BindView(R.id.drawer_header_user_photo)
     ImageView userPhoto;
 
@@ -119,12 +122,9 @@ public class SideMenuFragment extends Fragment {
     // ----------------------------------
 
     private void initialiseView() {
-        if(BuildConfig.FLAVOR_env.equals("staging")) {
-            appVersion.setText(
-                    getString(R.string.about_version_format, BuildConfig.VERSION_NAME)
-                            + "\nbuild: staging/"+BuildConfig.VERSION_DISPLAY_NAME
-                            + "\nFIId: "+ FirebaseInstanceId.getInstance().getId());
-        }
+        appVersion.setText(getString(R.string.about_version_format, BuildConfig.VERSION_NAME));
+        appDebugInfo.setText("build: staging/"+BuildConfig.VERSION_DISPLAY_NAME
+                + "\nFIId: "+ FirebaseInstanceId.getInstance().getId());
 
         //add listener to user photo and name, that opens the user profile screen
         userPhoto.setOnClickListener(v -> selectMenuAction(R.id.action_user));

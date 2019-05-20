@@ -191,15 +191,7 @@
                 app:showRightArrow="false"
                 app:textBackground="@drawable/bg_button_white_accent_rounded"/>
 
-            <TextView
-                android:id="@+id/drawer_footer_app_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/sidemenu_item_background"
-                android:minHeight="50dp"
-                android:gravity="center_horizontal"
-                android:textColor="@color/sidemenu_item_text_color"
-                android:textSize="@dimen/entourage_font_small"/>
+            <include layout="@layout/layout_side_menu_appversion" />
 
         </LinearLayout>
     </ScrollView>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/sidemenu_background"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/drawer_footer_app_version"
+        android:title="@string/action_logout"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/greyish" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/drawer_footer_app_debug_info"
+        android:visibility="invisible"
+        android:title="@string/action_logout"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/greyish" />
+
+</LinearLayout>
