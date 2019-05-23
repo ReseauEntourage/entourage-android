@@ -61,7 +61,7 @@ public class SideMenuFragment extends Fragment {
     @BindView(R.id.drawer_header_user_partner_logo)
     PartnerLogoImageView userPartnerLogo;
 
-    @BindView(R.id.drawer_header_edit_profile)
+    @BindView(R.id.action_edit_profile)
     TextView userEditProfileTextView;
 
     @Nullable
@@ -130,7 +130,7 @@ public class SideMenuFragment extends Fragment {
         userPhoto.setOnClickListener(v -> selectMenuAction(R.id.action_user));
         userName.setOnClickListener(v -> selectMenuAction(R.id.action_user));
         //add listener to modify profile text view
-        userEditProfileTextView.setOnClickListener(v -> selectMenuAction(R.id.action_edit_user));
+        userEditProfileTextView.setOnClickListener(v -> selectMenuAction(R.id.action_edit_profile));
 
         //add listeners to side menu items
         if (getView() != null) {

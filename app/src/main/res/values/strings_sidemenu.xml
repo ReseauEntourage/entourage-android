@@ -3,7 +3,7 @@
     <string name="action_settings">Paramètres de l’application</string>
     <string name="action_logout">Déconnexion</string>
     <string name="action_tours">MARAUDES</string>
-    <string name="action_profile">PROFIL</string>
+    <string name="action_profile">profil</string>
     <string name="action_about">Aide &amp; à propos</string>
     <string name="action_edit_profile"><u>Modifier mon profil</u></string>
     <string name="action_blog">Conseils pour oser la rencontre</string>

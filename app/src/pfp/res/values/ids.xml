@@ -12,6 +12,7 @@
     <item name="action_goal" type="id" />
     <item name="action_donation" type="id" />
     <item name="action_atd" type="id" />
+    <item name="action_tours" type="id" />
     <item name="action_involvement" type="id" />
 
     <item name="about_website_layout" type="id" />

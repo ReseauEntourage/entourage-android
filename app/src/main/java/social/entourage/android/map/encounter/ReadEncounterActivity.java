@@ -76,12 +76,6 @@ public class ReadEncounterActivity extends EntourageActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.drawer, menu);
-        return true;
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         /*

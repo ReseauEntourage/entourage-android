@@ -63,7 +63,7 @@
                     android:textSize="@dimen/entourage_font_big"/>
 
                 <TextView
-                    android:id="@+id/drawer_header_edit_profile"
+                    android:id="@+id/action_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/drawer_header_user_name"
