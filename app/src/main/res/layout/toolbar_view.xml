@@ -7,18 +7,26 @@
               android:gravity="center_horizontal"
               android:orientation="vertical">
 
-    <ImageView
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
             android:id="@android:id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/empty_description"
             app:srcCompat="@drawable/ic_navigation_my_messages"/>
 
+    </RelativeLayout>
+
     <TextView
         android:id="@android:id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/navigation_icons_state_list"
-        android:textSize="@dimen/entourage_font_small"/>
+        android:textSize="12sp"
+        android:text="agir"/>
 
 </LinearLayout>

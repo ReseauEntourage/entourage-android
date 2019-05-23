@@ -18,4 +18,5 @@
     <string name="action_my_messages">messages</string>
     <string name="action_menu">menu</string>
     <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>
+    <string name="action_empty"></string>
 </resources>
