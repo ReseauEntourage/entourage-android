@@ -59,6 +59,7 @@ import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 /**
  * My Entourages Fragment
@@ -527,9 +528,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
 
     void doBindService() {
         if (getActivity() != null) {
-            Intent intent = new Intent(getActivity(), TourService.class);
-            getActivity().startService(intent);
-            getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            try{
+                Intent intent = new Intent(getActivity(), TourService.class);
+                getActivity().startService(intent);
+                getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            } catch(IllegalStateException e) {
+                Timber.e(e);
+            }
         }
     }
 
