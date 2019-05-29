@@ -197,7 +197,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Timber.d("onNewIntent " + intent.toString());
+        Timber.d("onNewIntent %s", intent.toString());
         super.onNewIntent(intent);
         this.setIntent(intent);
         checkDeepLinks();

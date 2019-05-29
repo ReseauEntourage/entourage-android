@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:id="@+id/drawer_footer_app_version"
-        android:title="@string/action_logout"
+        android:id="@+id/sidemenu_app_version"
+        android:title="@string/empty_description"
         android:layout_marginTop="5dp"
         android:textColor="@color/greyish" />
 
@@ -20,9 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:id="@+id/drawer_footer_app_debug_info"
+        android:id="@+id/sidemenu_app_debug_info"
         android:visibility="invisible"
-        android:title="@string/action_logout"
+        android:title="@string/empty_description"
         android:layout_marginTop="5dp"
         android:textColor="@color/greyish" />
 

@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
@@ -49,10 +51,10 @@ public class SideMenuFragment extends Fragment {
     @BindView(R.id.drawer_header_user_name)
     TextView userName;
 
-    @BindView(R.id.drawer_footer_app_version)
+    @BindView(R.id.sidemenu_app_version)
     TextView appVersion;
 
-    @BindView(R.id.drawer_footer_app_debug_info)
+    @BindView(R.id.sidemenu_app_debug_info)
     TextView appDebugInfo;
 
     @BindView(R.id.drawer_header_user_photo)
@@ -126,6 +128,9 @@ public class SideMenuFragment extends Fragment {
         appDebugInfo.setText("build: staging/"+BuildConfig.VERSION_DISPLAY_NAME
                 + "\nFIId: "+ FirebaseInstanceId.getInstance().getId());
 
+        appVersion.setOnLongClickListener(v -> handleLongPress());
+        appDebugInfo.setOnLongClickListener(v -> handleLongPress());
+
         //add listener to user photo and name, that opens the user profile screen
         userPhoto.setOnClickListener(v -> selectMenuAction(R.id.action_user));
         userName.setOnClickListener(v -> selectMenuAction(R.id.action_user));
@@ -191,6 +196,16 @@ public class SideMenuFragment extends Fragment {
         if (getActivity() == null || !(getActivity() instanceof DrawerActivity)) return;
         DrawerActivity drawerActivity = (DrawerActivity)getActivity();
         drawerActivity.selectItem(action);
+    }
+
+    private boolean handleLongPress() {
+        selectMenuAction(R.id.sidemenu_app_version);
+        Snackbar.make(
+                getView().findViewById(R.id.sideMenuCoordinatorLayout),
+                R.string.debug_info_clipboard,
+                Snackbar.LENGTH_SHORT
+        ).show();
+        return true;
     }
 
 }

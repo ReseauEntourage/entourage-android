@@ -136,7 +136,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 handleStep3(option);
                 break;
             default:
-                Timber.e("Invalid step " + currentStep);
+                Timber.e("Invalid step %s", currentStep);
                 break;
         }
     }

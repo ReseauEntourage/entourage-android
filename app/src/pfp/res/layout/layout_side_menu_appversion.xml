@@ -8,7 +8,7 @@
               android:orientation="vertical">
 
     <TextView
-        android:id="@+id/drawer_footer_app_version"
+        android:id="@+id/sidemenu_app_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/sidemenu_item_background"
@@ -18,7 +18,7 @@
         android:textSize="@dimen/entourage_font_small"/>
 
     <TextView
-        android:id="@+id/drawer_footer_app_debug_info"
+        android:id="@+id/sidemenu_app_debug_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Application -->
     <color name="primary">#ffffff</color>
@@ -127,5 +127,7 @@
     <color name="badge_background">#ee3e3a</color>
     <color name="white_88">#ccffffff</color>
     <color name="dark_grey">#333333</color>
+
+    <color name="design_snackbar_background_color" tools:override="true">@color/accent_dark</color>
 
 </resources>
