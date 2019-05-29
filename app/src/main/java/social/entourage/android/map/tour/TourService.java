@@ -92,7 +92,7 @@ public class TourService extends Service {
     private Notification notification;
     private RemoteViews notificationRemoteView;
     private long timeBase;
-    private Chronometer chronometer;
+    private Chronometer chronometer = new Chronometer(this);;
 
     private boolean isPaused;
 
@@ -263,7 +263,9 @@ public class TourService extends Service {
     }
 
     private void startNotification() {
-        chronometer = new Chronometer(this);
+        if(chronometer==null) {
+            chronometer = new Chronometer(this);
+        }
         showNotification(0);
     }
 
