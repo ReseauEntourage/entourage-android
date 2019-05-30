@@ -64,6 +64,7 @@ public class AuthenticationController {
                 user.setEntourageDisclaimerShown(loggedUser.isEntourageDisclaimerShown());
                 user.setEncounterDisclaimerShown(loggedUser.isEncounterDisclaimerShown());
                 user.setOnboardingUser(loggedUser.isOnboardingUser());
+                user.setEditActionZoneShown(loggedUser.isEditActionZoneShown());
             }
             shouldLoadUserPreferences = false;
         }

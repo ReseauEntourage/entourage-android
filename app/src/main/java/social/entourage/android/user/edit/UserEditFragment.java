@@ -44,6 +44,8 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
@@ -210,8 +212,6 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
                 userAssociationLayout.setVisibility(View.VISIBLE);
             }
 
-
-
             User.Address address = editedUser.getAddress();
             if (address == null) {
                 userActionZone.setText("");
@@ -225,7 +225,6 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
                 }
                 userActionZoneButton.setText(R.string.user_edit_action_zone_button);
             }
-
         }
     }
 
@@ -328,7 +327,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
         try {
             EntourageEvents.logEvent(EntourageEvents.EVENT_USER_TONOTIFICATIONS);
             Intent intent = new Intent();
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
                 intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -475,14 +474,24 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
-        UserEditActionZoneFragment userEditActionZoneFragment = (UserEditActionZoneFragment)getFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
-        if (userEditActionZoneFragment != null && !userEditActionZoneFragment.isStateSaved()) {
-            userEditActionZoneFragment.dismiss();
-        }
+        storeActionZone(false);
     }
 
     @Override
     public void onUserEditActionZoneFragmentIgnore() {
-        onUserEditActionZoneFragmentAddressSaved();
+        storeActionZone(true) ;
+    }
+
+    public void storeActionZone(final boolean ignoreActionZone) {
+        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+        UserPreferences userPreferences = authenticationController.getUserPreferences();
+        if (userPreferences != null) {
+            userPreferences.setIgnoringActionZone(ignoreActionZone);
+            authenticationController.saveUserPreferences();
+        }
+        UserEditActionZoneFragment userEditActionZoneFragment = (UserEditActionZoneFragment)getFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        if (userEditActionZoneFragment != null && !userEditActionZoneFragment.isStateSaved()) {
+            userEditActionZoneFragment.dismiss();
+        }
     }
 }

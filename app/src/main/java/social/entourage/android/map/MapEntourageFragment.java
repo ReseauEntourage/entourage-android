@@ -104,6 +104,8 @@ import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
+import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.choice.ChoiceFragment;
@@ -122,6 +124,7 @@ import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
+import timber.log.Timber;
 
 import static social.entourage.android.EntourageEvents.EVENT_FEED_TAB_ALL;
 import static social.entourage.android.EntourageEvents.EVENT_FEED_TAB_EVENTS;
@@ -385,7 +388,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         //presenter.handleLocationPermission();
         if (!isGeolocationGranted()) {
             if (getActivity() != null) {
-                ((DrawerActivity)getActivity()).showEditActionZoneFragment(true, this);
+                ((DrawerActivity)getActivity()).showEditActionZoneFragment(this);
             }
         }
         newsfeedListView.addOnScrollListener(scrollListener);
@@ -864,9 +867,13 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 // Don't start the service
                 return;
             }
-            Intent intent = new Intent(getActivity(), TourService.class);
-            getActivity().startService(intent);
-            getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            try{
+                Intent intent = new Intent(getActivity(), TourService.class);
+                getActivity().startService(intent);
+                getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            } catch(IllegalStateException e) {
+                Timber.e(e);
+            }
         }
     }
 
@@ -1661,7 +1668,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    String accessLocation = Manifest.permission.ACCESS_FINE_LOCATION;
+                    String accessLocation = presenter.getUserLocationAccess();
                     switch (source) {
                         case GEOLOCATION_POPUP_RECENTER:
                             EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
@@ -2698,23 +2705,29 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
+        storeActionZoneInfo(false);
+    }
+
+    @Override
+    public void onUserEditActionZoneFragmentIgnore() {
+        storeActionZoneInfo(true);
+        if (presenter != null) {
+            presenter.handleLocationPermission();
+        }
+    }
+
+    private void storeActionZoneInfo(final boolean ignoreAddress) {
+        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
+        authenticationController.getUserPreferences().setIgnoringActionZone(ignoreAddress);
+        authenticationController.saveUserPreferences();
         User me = EntourageApplication.me();
-        if (me != null) {
+        if (me != null && !ignoreAddress) {
             User.Address address = me.getAddress();
             if (address != null) {
                 centerMap(new LatLng(address.getLatitude(), address.getLongitude()));
             }
         }
     }
-
-    @Override
-    public void onUserEditActionZoneFragmentIgnore() {
-        onUserEditActionZoneFragmentAddressSaved();
-        if (presenter != null) {
-            presenter.handleLocationPermission();
-        }
-    }
-
 
     // ----------------------------------
     // INNER CLASSES

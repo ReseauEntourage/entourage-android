@@ -92,16 +92,13 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                 }
                 userFragment.show(activity.getSupportFragmentManager(), UserFragment.TAG);
                 break;
-            case R.id.action_edit_user:
+            case R.id.action_edit_profile:
                 UserEditFragment fragment = new UserEditFragment();
                 fragment.show(activity.getSupportFragmentManager(), UserEditFragment.TAG);
                 break;
             case R.id.action_logout:
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_LOGOUT);
                 activity.logout();
-                break;
-            case R.id.action_settings:
-                Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
 

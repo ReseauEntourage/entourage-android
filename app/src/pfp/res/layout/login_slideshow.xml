@@ -34,7 +34,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"/>
 
-    <androidx.core.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/login_slideshow_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

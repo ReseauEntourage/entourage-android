@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
@@ -48,8 +51,11 @@ public class SideMenuFragment extends Fragment {
     @BindView(R.id.drawer_header_user_name)
     TextView userName;
 
-    @BindView(R.id.drawer_footer_app_version)
+    @BindView(R.id.sidemenu_app_version)
     TextView appVersion;
+
+    @BindView(R.id.sidemenu_app_debug_info)
+    TextView appDebugInfo;
 
     @BindView(R.id.drawer_header_user_photo)
     ImageView userPhoto;
@@ -57,7 +63,7 @@ public class SideMenuFragment extends Fragment {
     @BindView(R.id.drawer_header_user_partner_logo)
     PartnerLogoImageView userPartnerLogo;
 
-    @BindView(R.id.drawer_header_edit_profile)
+    @BindView(R.id.action_edit_profile)
     TextView userEditProfileTextView;
 
     @Nullable
@@ -118,17 +124,18 @@ public class SideMenuFragment extends Fragment {
     // ----------------------------------
 
     private void initialiseView() {
-        if(BuildConfig.FLAVOR_env.equals("staging")) {
-            appVersion.setText(
-                    getString(R.string.about_version_format, BuildConfig.VERSION_NAME)
-                            + "\nbuild: staging/"+BuildConfig.VERSION_DISPLAY_NAME);
-        }
+        appVersion.setText(getString(R.string.about_version_format, BuildConfig.VERSION_NAME));
+        appDebugInfo.setText("build: staging/"+BuildConfig.VERSION_DISPLAY_NAME
+                + "\nFIId: "+ FirebaseInstanceId.getInstance().getId());
+
+        appVersion.setOnLongClickListener(v -> handleLongPress());
+        appDebugInfo.setOnLongClickListener(v -> handleLongPress());
 
         //add listener to user photo and name, that opens the user profile screen
         userPhoto.setOnClickListener(v -> selectMenuAction(R.id.action_user));
         userName.setOnClickListener(v -> selectMenuAction(R.id.action_user));
         //add listener to modify profile text view
-        userEditProfileTextView.setOnClickListener(v -> selectMenuAction(R.id.action_edit_user));
+        userEditProfileTextView.setOnClickListener(v -> selectMenuAction(R.id.action_edit_profile));
 
         //add listeners to side menu items
         if (getView() != null) {
@@ -189,6 +196,16 @@ public class SideMenuFragment extends Fragment {
         if (getActivity() == null || !(getActivity() instanceof DrawerActivity)) return;
         DrawerActivity drawerActivity = (DrawerActivity)getActivity();
         drawerActivity.selectItem(action);
+    }
+
+    private boolean handleLongPress() {
+        selectMenuAction(R.id.sidemenu_app_version);
+        Snackbar.make(
+                getView().findViewById(R.id.sideMenuCoordinatorLayout),
+                R.string.debug_info_clipboard,
+                Snackbar.LENGTH_SHORT
+        ).show();
+        return true;
     }
 
 }

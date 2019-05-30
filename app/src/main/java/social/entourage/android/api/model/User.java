@@ -95,6 +95,9 @@ public class User implements Serializable {
     @Expose(serialize = false, deserialize = false)
     private boolean isOnboardingUser = false;
 
+    @Expose(serialize = false, deserialize = false)
+    public boolean editActionZoneShown = false;
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -286,6 +289,14 @@ public class User implements Serializable {
 
     public void setOnboardingUser(final boolean onboardingUser) {
         isOnboardingUser = onboardingUser;
+    }
+
+    public boolean isEditActionZoneShown() {
+        return editActionZoneShown;
+    }
+
+    public void setEditActionZoneShown(final boolean isEditActionZoneShown) {
+        editActionZoneShown = isEditActionZoneShown;
     }
 
     public void incrementTours() {

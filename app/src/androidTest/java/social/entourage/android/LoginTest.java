@@ -5,7 +5,7 @@ import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.jakewharton.espresso.OkHttp3IdlingResource;
 
@@ -52,7 +52,7 @@ public class LoginTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         IdlingRegistry.getInstance().unregister(resource);
         checkNoUserIsLoggedIn();
     }

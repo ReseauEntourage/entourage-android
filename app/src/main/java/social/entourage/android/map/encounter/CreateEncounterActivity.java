@@ -132,12 +132,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.drawer, menu);
-        return true;
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {

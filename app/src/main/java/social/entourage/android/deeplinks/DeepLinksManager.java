@@ -19,7 +19,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditFragment;
 
-import static social.entourage.android.R.id.action_edit_user;
+import static social.entourage.android.R.id.action_edit_profile;
 
 /**
  * Handles the deep links received by the app
@@ -160,7 +160,7 @@ public class DeepLinksManager {
                 }
             }
             if (activity instanceof DrawerActivity) {
-                ((DrawerActivity)activity).selectItem(action_edit_user);
+                ((DrawerActivity)activity).selectItem(action_edit_profile);
                 return;
             }
         }
@@ -184,7 +184,7 @@ public class DeepLinksManager {
         }
         else if (key.equals(DeepLinksView.PROFILE.getView())) {
             if (activity instanceof DrawerActivity) {
-                ((DrawerActivity)activity).selectItem(action_edit_user);
+                ((DrawerActivity)activity).selectItem(action_edit_profile);
             } else {
                 return;
             }

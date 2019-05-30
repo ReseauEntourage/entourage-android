@@ -243,6 +243,9 @@ public class TourService extends Service {
     }
 
     private void configureRemoteView(int action) {
+        if(chronometer==null) {
+            chronometer = new Chronometer(this);
+        }
         switch (action) {
             case 0:
                 timeBase = 0;
@@ -263,7 +266,9 @@ public class TourService extends Service {
     }
 
     private void startNotification() {
-        chronometer = new Chronometer(this);
+        if(chronometer==null) {
+            chronometer = new Chronometer(this);
+        }
         showNotification(0);
     }
 
@@ -279,7 +284,6 @@ public class TourService extends Service {
         if (chronometer != null) {
             chronometer.stop();
         }
-        chronometer = null;
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
@@ -324,9 +328,12 @@ public class TourService extends Service {
     }
 
     public void pauseTreatment() {
-        if (!isRunning() && isPaused)
+        if (!isRunning() || isPaused)
             return;
 
+        if(chronometer==null) {
+            chronometer = new Chronometer(this);
+        }
         Date duration = new Date(SystemClock.elapsedRealtime() - chronometer.getBase());
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

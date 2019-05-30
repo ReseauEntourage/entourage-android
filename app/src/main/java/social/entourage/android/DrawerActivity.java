@@ -197,7 +197,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Timber.d("onNewIntent " + intent.toString());
+        Timber.d("onNewIntent %s", intent.toString());
         super.onNewIntent(intent);
         this.setIntent(intent);
         checkDeepLinks();
@@ -993,27 +993,40 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     public void showEditActionZoneFragment() {
-        showEditActionZoneFragment(false, null);
+        showEditActionZoneFragment( null);
     }
 
-    public void showEditActionZoneFragment(boolean forced, UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
-        if (editActionZoneShown && !forced) return;
+    public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
         AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
-        if (authenticationController.isAuthenticated()) {
-            User me = authenticationController.getUser();
-            UserPreferences userPreferences = authenticationController.getUserPreferences();
-            if (me != null && userPreferences != null) {
-                boolean noAddress = me.getAddress() == null || me.getAddress().getDisplayAddress() == null || me.getAddress().getDisplayAddress().length() == 0;
-                if ((forced || !userPreferences.isEditActionZoneShown()) && noAddress) {
-                    UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
-                    userEditActionZoneFragment.addFragmentListener(this);
-                    userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
-                    userEditActionZoneFragment.setFromLogin(true);
-                    userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
-                }
-            }
+        if (!authenticationController.isAuthenticated()) {
+            return;
         }
-        editActionZoneShown = true;
+        User me = authenticationController.getUser();
+        if(me==null) {
+            return;
+        }
+
+            UserPreferences userPreferences = authenticationController.getUserPreferences();
+        if(userPreferences== null) {
+            return;
+        }
+
+        boolean noNeedToShowEditScreen = me.isEditActionZoneShown()
+                || userPreferences.isIgnoringActionZone()
+                || (me.getAddress()!=null
+                    && me.getAddress().getDisplayAddress() != null
+                    && me.getAddress().getDisplayAddress().length() > 0
+        );
+        if (noNeedToShowEditScreen) {
+            return;
+        }
+
+        UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+        userEditActionZoneFragment.addFragmentListener(this);
+        userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
+        userEditActionZoneFragment.setFromLogin(true);
+        userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+        me.setEditActionZoneShown(true);
     }
 
     @Override
@@ -1023,18 +1036,20 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     public void onUserEditActionZoneFragmentIgnore() {
-        // treat as it saved the address
-        onUserEditActionZoneFragmentAddressSaved();
+        storeActionZone(true);
     }
 
     @Override
     public void onUserEditActionZoneFragmentAddressSaved() {
+        storeActionZone(false);
+    }
+
+    private void storeActionZone(final boolean ignoreZone) {
         AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
         if (authenticationController.isAuthenticated()) {
-            User me = authenticationController.getUser();
             UserPreferences userPreferences = authenticationController.getUserPreferences();
-            if (me != null && userPreferences != null) {
-                userPreferences.setEditActionZoneShown(true);
+            if (userPreferences != null) {
+                userPreferences.setIgnoringActionZone(ignoreZone);
                 authenticationController.saveUserPreferences();
             }
         }

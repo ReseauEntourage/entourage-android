@@ -1,14 +1,20 @@
 package social.entourage.android;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import javax.inject.Inject;
 
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.guide.GuideMapEntourageFragment;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
  * Presenter controlling the DrawerActivity
@@ -42,6 +48,11 @@ public class DrawerPresenter extends DrawerBasePresenter {
                 } catch (Exception ex) {
                     Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.sidemenu_app_version:
+                final android.content.ClipboardManager clipboardManager = (ClipboardManager)EntourageApplication.get().getSystemService(CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("FirebaseID", FirebaseInstanceId.getInstance().getId());
+                clipboardManager.setPrimaryClip(clipData);
                 break;
             default:
                 super.handleMenu(menuId);

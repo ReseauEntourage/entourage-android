@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/sidemenu_background"
-              android:orientation="vertical">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sidemenu_background"
+    android:orientation="vertical"
+    android:id="@+id/sideMenuCoordinatorLayout">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,7 +64,7 @@
                     android:textSize="@dimen/entourage_font_big"/>
 
                 <TextView
-                    android:id="@+id/drawer_header_edit_profile"
+                    android:id="@+id/action_edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/drawer_header_user_name"
@@ -191,16 +192,8 @@
                 app:showRightArrow="false"
                 app:textBackground="@drawable/bg_button_white_accent_rounded"/>
 
-            <TextView
-                android:id="@+id/drawer_footer_app_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/sidemenu_item_background"
-                android:minHeight="50dp"
-                android:gravity="center_horizontal"
-                android:textColor="@color/sidemenu_item_text_color"
-                android:textSize="@dimen/entourage_font_small"/>
+            <include layout="@layout/layout_side_menu_appversion" />
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -20,6 +20,7 @@ import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.tools.Utils;
+import timber.log.Timber;
 
 import static social.entourage.android.EntourageApplication.isPfpApp;
 
@@ -109,8 +110,12 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
     protected void onStartClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_WELCOME_CONTINUE);
         if (mListener.registerStart()) {
-            RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
-            registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);
+            try {
+                RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
+                registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);
+            } catch(IllegalStateException e) {
+                Timber.e(e);
+            }
         } else {
             dismiss();
         }

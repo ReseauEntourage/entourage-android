@@ -63,6 +63,7 @@ public class EntourageEvents {
     public static final String EVENT_GEOLOCATION_POPUP_ACCEPT = "AcceptGeolocFromPopup";
     public static final String EVENT_GEOLOCATION_POPUP_REFUSE = "RefuseGeolocFromPopup";
     public static final String EVENT_GEOLOCATION_ACTIVATE_04_4A = "ActivateGeolocFromScreen04_4UserBlocked";
+    public static final String EVENT_GEOLOCATION_ACTION_ZONE_04_4A = "ActionZoneFromScreen04_4UserBlocked";
     public static final String EVENT_WELCOME_CONTINUE = "WelcomeScreenContinue";
 
     // SCREEN Events
@@ -71,7 +72,6 @@ public class EntourageEvents {
     public static final String EVENT_SCREEN_03_1 = "Screen03_1OnboardingCodeResendView";
     public static final String EVENT_SCREEN_03_2 = "Screen03_2OnboardingPhoneNotFoundView";
     public static final String EVENT_SCREEN_04 = "Screen04_GoEnableGeolocView"; //Not implemented on Android
-    public static final String EVENT_SCREEN_04_2 = "Screen04_2OnboardingGeolocView";
     public static final String EVENT_SCREEN_04_3 = "Screen04_3OnboardingNotificationsView";
     public static final String EVENT_SCREEN_30_1 = "Screen30_1WelcomeView";
     public static final String EVENT_SCREEN_30_2 = "Screen30_2InputPhoneView";

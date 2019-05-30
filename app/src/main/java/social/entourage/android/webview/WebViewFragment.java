@@ -29,11 +29,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.InvocationTargetException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+import timber.log.Timber;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -119,8 +122,13 @@ public class WebViewFragment extends EntourageDialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_webview, container, false);
-        ButterKnife.bind(this, view);
+        View view = null;
+        try {
+            view = inflater.inflate(R.layout.fragment_webview, container, false);
+            ButterKnife.bind(this, view);
+        } catch ( Exception e) {
+            Timber.e(e);
+        }
 
         return view;
     }
