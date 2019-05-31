@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
@@ -1130,6 +1131,8 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public void onUserEditActionZoneFragmentDismiss() {
+        Snackbar.make(findViewById(R.id.activity_login), R.string.user_setting_ignore_hint, Snackbar.LENGTH_LONG)
+                .show();
         if(!goToNextActionAfterActionZone) {
             showNameView();
         } else {

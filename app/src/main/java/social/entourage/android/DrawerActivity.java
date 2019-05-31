@@ -1006,7 +1006,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             return;
         }
 
-            UserPreferences userPreferences = authenticationController.getUserPreferences();
+        UserPreferences userPreferences = authenticationController.getUserPreferences();
         if(userPreferences== null) {
             return;
         }
