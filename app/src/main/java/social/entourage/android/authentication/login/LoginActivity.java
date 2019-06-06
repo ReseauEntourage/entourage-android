@@ -403,6 +403,7 @@ public class LoginActivity extends EntourageActivity
                 EntourageEvents.logEvent(EntourageEvents.EVENT_LOGIN_ERROR);
                 break;
         }
+        if(!isFinishing()) {
         new AlertDialog.Builder(this)
             .setTitle(R.string.login_error_title)
             .setMessage(errorMessage)
@@ -414,6 +415,7 @@ public class LoginActivity extends EntourageActivity
             })
             .create()
             .show();
+    }
     }
 
     public void displayToast(@StringRes int messageId) {
