@@ -343,7 +343,7 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
      * Method that shows if we need to show Terms and conditions screen when user presses login button at startup
      * @return true if we need to show the screen, false otherwise
      */
-    public boolean shouldShowTC() {
+    public boolean shouldShowTermsAndConditions() {
         return false;
     }
 

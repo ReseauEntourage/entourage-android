@@ -125,7 +125,7 @@ public class LoginActivity extends EntourageActivity
     @BindView(R.id.login_edit_code)
     EditText passwordEditText;
 
-    @BindView(R.id.login_button_signup)
+    @BindView(R.id.login_button_signin)
     Button loginButton;
 
     @BindView(R.id.login_text_lost_code)
@@ -439,7 +439,7 @@ public class LoginActivity extends EntourageActivity
     }
 
     public void stopLoader() {
-        loginButton.setText(R.string.login_button_signup);
+        loginButton.setText(R.string.login_button_signin);
         loginButton.setEnabled(true);
         receiveCodeButton.setText(R.string.login_button_ask_code);
         receiveCodeButton.setEnabled(true);
@@ -557,21 +557,12 @@ public class LoginActivity extends EntourageActivity
     /************************
      * Signin View
      ************************/
-
-    /*
-    @OnClick(R.id.login_text_more)
-    void onAskMore() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        informationFragment = new LoginInformationFragment();
-        informationFragment.show(fragmentManager, "fragment_login_information");
-    }
-    */
     @OnClick(R.id.login_back_button)
     void onLoginBackClick() {
         onBackPressed();
     }
 
-    @OnClick(R.id.login_button_signup)
+    @OnClick(R.id.login_button_signin)
     void onLoginClick() {
         if (loginPresenter != null) {
             loginPresenter.login(
@@ -871,7 +862,7 @@ public class LoginActivity extends EntourageActivity
     @OnClick(R.id.login_button_login)
     void onStartupLoginClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_SPLASH_LOGIN);
-        if (loginPresenter != null && loginPresenter.shouldShowTC()) {
+        if (loginPresenter != null && loginPresenter.shouldShowTermsAndConditions()) {
             this.onboardingUser = null;
             RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
             registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);

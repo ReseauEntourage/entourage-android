@@ -50,7 +50,7 @@
     <string name="login_hint_phone_long">Numéro de téléphone</string>
     <string name="login_hint_email">Saisir votre adresse email</string>
     <string name="login_hint_code_resent">Saisir le code de vérification reçu par SMS</string>
-    <string name="login_button_signup">Se connecter</string>
+    <string name="login_button_signin">Se connecter</string>
     <string name="login_button_newsletter">Me tenir informé !</string>
     <string name="login_button_ask_code">Recevoir mon code</string>
     <string name="login_button_go">Valider</string>

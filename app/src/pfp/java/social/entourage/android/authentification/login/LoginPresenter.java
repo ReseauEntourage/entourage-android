@@ -31,7 +31,7 @@ public class LoginPresenter extends BaseLoginPresenter {
     }
 
     @Override
-    public boolean shouldShowTC() {
+    public boolean shouldShowTermsAndConditions() {
         return true;
     }
 
