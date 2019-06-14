@@ -9,23 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import social.entourage.android.R;
+import social.entourage.android.authentication.login.slideshow.LoginSlideshowPageFragment;
 
 /**
- * Login slideshow page 2 {@link Fragment}.
+ * Login slideshow page 2 {@link LoginSlideshowPageFragment}.
  */
-public class LoginSlideshowPage2Fragment extends Fragment {
-
-
+public class LoginSlideshowPage2Fragment  extends LoginSlideshowPageFragment {
     public LoginSlideshowPage2Fragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_slideshow_page2, container, false);
+        super(R.layout.fragment_login_slideshow_page2);
     }
 
 }

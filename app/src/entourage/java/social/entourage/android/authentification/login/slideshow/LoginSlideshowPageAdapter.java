@@ -18,7 +18,7 @@ public class LoginSlideshowPageAdapter extends FragmentStatePagerAdapter {
     public static final int NUM_PAGES = 4;
 
     public LoginSlideshowPageAdapter(final FragmentManager fm) {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
     @NonNull
