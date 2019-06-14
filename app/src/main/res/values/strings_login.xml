@@ -12,7 +12,6 @@
     <string name="login_title_tutorial"><![CDATA[<font color=\"#FF6907\">T</font>UTORIEL DE <font color=\"#FF6907\">B</font>IENVENUE]]></string>
     <string name="login_title_newsletter">DÉCOUVREZ ENTOURAGE</string>
     <string name="login_text_info">Version réservée\nà un usage associatif</string>
-    <string name="login_text_more">En savoir plus</string>
     <string name="login_text_description">Entourage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
     <string name="login_text_enter_code">Entrez votre numéro de téléphone</string>
     <string name="login_text_lost_code_description">Afin de recevoir votre nouveau code, saisissez votre numéro de portable.</string>

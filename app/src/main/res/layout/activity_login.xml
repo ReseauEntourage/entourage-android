@@ -47,14 +47,6 @@
         layout="@layout/login_tutorial"/>
 
     <include
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/login_newsletter"
-        android:id="@+id/login_include_newsletter"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"/>
-
-    <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         layout="@layout/login_startup"

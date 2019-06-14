@@ -1,7 +1,6 @@
 package social.entourage.android.authentication.login;
 
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,7 +19,6 @@ import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -77,7 +75,7 @@ import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
  * Activity providing the login steps
  */
 public class LoginActivity extends EntourageActivity
-        implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener, AvatarUploadView {
+        implements OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener, AvatarUploadView {
 
     // ----------------------------------
     // CONSTANTS
@@ -96,8 +94,6 @@ public class LoginActivity extends EntourageActivity
     // ----------------------------------
 
     private String loggedPhoneNumber;
-
-    LoginInformationFragment informationFragment;
 
     private View previousView = null;
 
@@ -209,19 +205,6 @@ public class LoginActivity extends EntourageActivity
     View loginStartup;
 
     /************************
-     * Newsletter subscription View
-     ************************/
-
-    @BindView(R.id.login_include_newsletter)
-    View loginNewsletter;
-
-    @BindView(R.id.login_newsletter_button)
-    Button newsletterButton;
-
-    @BindView(R.id.login_newsletter_email)
-    TextView newsletterEmail;
-
-    /************************
      * Verify Code view
      ************************/
 
@@ -262,20 +245,16 @@ public class LoginActivity extends EntourageActivity
         loginEmail.setVisibility(View.GONE);
         loginNameView.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
-        loginNewsletter.setVisibility(View.GONE);
         loginNotificationsView.setVisibility(View.GONE);
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
         passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
+        passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     onLoginClick();
                     return true;
                 }
                 return false;
-            }
         });
 
         LoginTextWatcher ltw = new LoginTextWatcher();
@@ -326,13 +305,6 @@ public class LoginActivity extends EntourageActivity
             loginNameView.setVisibility(View.GONE);
             loginSignin.setVisibility(View.VISIBLE);
             showKeyboard(phoneEditText);
-        } else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
-            newsletterEmail.setText("");
-            loginNewsletter.setVisibility(View.GONE);
-            previousView.setVisibility(View.VISIBLE);
-            if (previousView == loginSignin) {
-                showKeyboard(phoneEditText);
-            }
         } else if (loginVerifyCode.getVisibility() == View.VISIBLE) {
             showLostCodeScreen();
         } else {
@@ -407,11 +379,8 @@ public class LoginActivity extends EntourageActivity
         new AlertDialog.Builder(this)
             .setTitle(R.string.login_error_title)
             .setMessage(errorMessage)
-            .setPositiveButton(R.string.login_retry_label, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(final DialogInterface dialog, final int which) {
-
-                }
+            .setPositiveButton(R.string.login_retry_label, (dialog, which) -> {
+                //TODO Implement Retry
             })
             .create()
             .show();
@@ -422,18 +391,12 @@ public class LoginActivity extends EntourageActivity
         Toast.makeText(this, messageId, Toast.LENGTH_LONG).show();
     }
 
-    private void displayToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
     public void startLoader() {
         loginButton.setText(R.string.button_loading);
         loginButton.setEnabled(false);
         receiveCodeButton.setText(R.string.button_loading);
         receiveCodeButton.setEnabled(false);
         lostCodePhone.setEnabled(false);
-        newsletterButton.setText(R.string.button_loading);
-        newsletterButton.setEnabled(false);
         verifyCodeButton.setEnabled(false);
         nameGoButton.setEnabled(false);
     }
@@ -444,8 +407,6 @@ public class LoginActivity extends EntourageActivity
         receiveCodeButton.setText(R.string.login_button_ask_code);
         receiveCodeButton.setEnabled(true);
         lostCodePhone.setEnabled(true);
-        newsletterButton.setText(R.string.login_button_newsletter);
-        newsletterButton.setEnabled(true);
         verifyCodeButton.setEnabled(true);
         nameGoButton.setEnabled(true);
     }
@@ -497,14 +458,6 @@ public class LoginActivity extends EntourageActivity
     // ----------------------------------
     // INTERFACES CALLBACKS
     // ----------------------------------
-
-    @Override
-    public void closeEntourageInformationFragment() {
-        if (informationFragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().remove(informationFragment).commit();
-        }
-    }
 
     @Override
     public void onPhotoBack() {
@@ -588,16 +541,6 @@ public class LoginActivity extends EntourageActivity
 
         showKeyboard(lostCodePhone);
     }
-
-    /*
-    @OnClick(R.id.login_welcome_more)
-    void onMoreClick() {
-        loginSignin.setVisibility(View.GONE);
-        loginNewsletter.setVisibility(View.VISIBLE);
-        previousView = loginSignin;
-        showKeyboard(newsletterEmail);
-    }
-    */
 
     /************************
      * Lost Code View
@@ -833,9 +776,11 @@ public class LoginActivity extends EntourageActivity
     private void finishTutorial() {
         //set the tutorial as done
         SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
+        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<>());
+        if (loggedNumbers != null) {
         loggedNumbers.add(loggedPhoneNumber);
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
+        }
 
         startMapActivity();
     }
@@ -885,37 +830,6 @@ public class LoginActivity extends EntourageActivity
         this.onboardingUser = new User();
         RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
         registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
-    }
-
-    /************************
-     * Newsletter View
-     ************************/
-
-    @OnClick(R.id.login_newsletter_close)
-    void newsletterClose() {
-        hideKeyboard();
-        onBackPressed();
-    }
-
-    @OnClick(R.id.login_newsletter_button)
-    void newsletterSubscribe() {
-        if (loginPresenter != null) {
-            hideKeyboard();
-            startLoader();
-            loginPresenter.subscribeToNewsletter(newsletterEmail.getText().toString());
-        } else {
-            displayToast(R.string.login_error);
-        }
-    }
-
-    void newsletterResult(boolean success) {
-        stopLoader();
-        if (success) {
-            displayToast(R.string.login_text_newsletter_success);
-            onBackPressed();
-        } else {
-            displayToast(R.string.login_text_newsletter_fail);
-        }
     }
 
     /************************

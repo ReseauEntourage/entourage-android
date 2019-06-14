@@ -16,7 +16,6 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.*;
-import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.tools.Utils;
@@ -247,35 +246,6 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
                     activity.onUserPhotoUpdated(false);
                 }
             });
-        }
-    }
-
-    public void subscribeToNewsletter(final String email) {
-        if (activity != null) {
-            String checkedEmail = Utils.checkEmailFormat(email);
-            if (checkedEmail != null) {
-                Newsletter newsletter = new Newsletter(email, true);
-                Newsletter.NewsletterWrapper newsletterWrapper = new Newsletter.NewsletterWrapper(newsletter);
-                Call<Newsletter.NewsletterWrapper> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
-                call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Newsletter.NewsletterWrapper> call, @NonNull Response<Newsletter.NewsletterWrapper> response) {
-                        if (response.isSuccessful()) {
-                            activity.newsletterResult(true);
-                        } else {
-                            activity.newsletterResult(false);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<Newsletter.NewsletterWrapper> call, @NonNull Throwable t) {
-                        activity.newsletterResult(false);
-                    }
-                });
-            } else {
-                activity.stopLoader();
-                activity.displayToast(R.string.login_text_invalid_email);
-            }
         }
     }
 
