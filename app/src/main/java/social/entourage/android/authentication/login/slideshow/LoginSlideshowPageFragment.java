@@ -26,7 +26,7 @@ public class LoginSlideshowPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_slideshow_page1, container, false);
+        return inflater.inflate(layout, container, false);
     }
 
 }
