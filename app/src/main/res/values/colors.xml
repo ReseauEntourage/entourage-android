@@ -5,8 +5,8 @@
     <color name="primary">#ffffff</color>
     <color name="primary_dark">#717171</color>
     <color name="primary_light">#efeff4</color>
-    <color name="accent">#f26521</color>
-    <color name="accent_dark">#f26521</color>
+    <color name="accent">#F55F24</color>
+    <color name="accent_dark">#F55F24</color>
     <color name="toolbar">@color/primary</color>
     <color name="warm_grey">#999999</color>
     <color name="greyish_brown">#4a4a4a</color>
@@ -59,7 +59,7 @@
     <color name="custom_button_accent_focused">#e25e06</color>
     <color name="custom_button_accent_pressed">#D05706</color>
     <color name="custom_button_accent_disabled">#813619</color>
-    <color name="custom_button_accent_disabled_alpha">#55f26521</color>
+    <color name="custom_button_accent_disabled_alpha">#55F55F24</color>
     <color name="custom_button_white_enabled">#FFFFFF</color>
     <color name="custom_button_white_focused">#D4D4D4</color>
     <color name="custom_button_white_pressed">#F4F4F4</color>
@@ -114,7 +114,7 @@
 
     <!-- Carousel bullet -->
     <color name="carousel_bullet_filled">@color/accent</color>
-    <color name="carousel_bullet_empty">#80f26521</color>
+    <color name="carousel_bullet_empty">#80F55F24</color>
     <color name="carousel_bullet_empty_stroke">#00000000</color>
 
     <!-- Others -->

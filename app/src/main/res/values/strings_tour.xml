@@ -49,7 +49,7 @@
     <string name="tour_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
     <string name="tour_info_text_join_quited_tour">a quitté la maraude</string>
     <string name="tour_info_text_join_quited_entourage">a quitté le groupe</string>
-    <string name="tour_info_text_join_html"><![CDATA[<font color=\"#F26521\">%1$s </font>%2$s]]></string>
+    <string name="tour_info_text_join_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>%2$s]]></string>
 
     <string name="tour_info_error_chat_message">Message non envoyé</string>
 
@@ -135,7 +135,7 @@
     <string name="tour_join_request_message_error">Erreur d\'envoi du message</string>
     <string name="tour_join_request_received_message">%1$s veut entrer en contact avec vous.</string>
     <string name="tour_join_request_received_message_short">veut entrer en contact avec vous.</string>
-    <string name="tour_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre maraude]]></string>
+    <string name="tour_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre maraude]]></string>
     <string name="tour_join_request_ok_title">Votre demande est transmise</string>
     <string name="tour_join_request_ok_description_tour">Que souhaitez-vous coordonner avec cette maraude ? Ajoutez un petit mot !</string>
     <string name="tour_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nPourquoi rejoignez-vous cet entourage ? Ajoutez un petit mot !</string>
