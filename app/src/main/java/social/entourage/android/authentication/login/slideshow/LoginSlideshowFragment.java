@@ -23,7 +23,6 @@ import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.authentification.login.slideshow.LoginSlideshowPageAdapter;
 
-import static social.entourage.android.authentification.login.slideshow.LoginSlideshowPageAdapter.NUM_PAGES;
 
 /**
  * Login slideshow {@link Fragment} subclass.
@@ -47,7 +46,7 @@ public class LoginSlideshowFragment extends Fragment {
     @BindView(R.id.login_slideshow_indicator_layout)
     LinearLayout indicatorLayout;
 
-    List<ImageView> dots;
+    private List<ImageView> dots;
 
     // ----------------------------------
     // LIFECYCLE
@@ -114,10 +113,10 @@ public class LoginSlideshowFragment extends Fragment {
         if (dot4 != null) dots.add(dot4);
     }
 
-    public void selectDot(int idx) {
+    private void selectDot(int idx) {
         if (dots == null || dots.size() <= idx) return;
         Resources res = getResources();
-        for(int i = 0; i < NUM_PAGES; i++) {
+        for(int i = 0; i < LoginSlideshowPageAdapter.Companion.getNUM_PAGES(); i++) {
             int drawableId = (i==idx)?(R.drawable.carousel_bullet_filled):(R.drawable.carousel_bullet_empty);
             Drawable drawable = res.getDrawable(drawableId);
             dots.get(i).setImageDrawable(drawable);
