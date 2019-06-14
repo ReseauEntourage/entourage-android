@@ -30,8 +30,6 @@ import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.map.tour.information.TourInformationFragment;
 import social.entourage.android.tools.BusProvider;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-
 /**
  * Presenter controlling the MapEntourageFragment
  *
@@ -184,15 +182,6 @@ public class MapPresenter {
             public void onFailure(@NonNull final Call<Invitation.InvitationWrapper> call, @NonNull final Throwable t) {
             }
         });
-    }
-
-    public void handleLocationPermission() {
-        fragment.checkPermission(getUserLocationAccess());
-    }
-
-    protected String getUserLocationAccess() {
-        User user = authenticationController.getUser();
-        return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
     }
 
     public void resetUserOnboardingFlag() {

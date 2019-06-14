@@ -1,6 +1,7 @@
 package social.entourage.android.location;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,10 +10,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.content.PermissionChecker;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +60,8 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.BusProvider;
 import timber.log.Timber;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 /**
  * Fragment to choose the location of an entourage
@@ -226,18 +231,16 @@ public class LocationFragment extends EntourageDialogFragment {
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
-            EntourageSecuredActivity activity = (EntourageSecuredActivity) getActivity();
-            if (activity != null && map != null) {
                 for (int index = 0; index < permissions.length; index++) {
-                    if (permissions[index].equalsIgnoreCase(activity.getUserLocationAccess()) && grantResults[index] == PackageManager.PERMISSION_GRANTED) {
-                        BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
+                if (permissions[index].equalsIgnoreCase(ACCESS_FINE_LOCATION)) {
+                    boolean isGranted = grantResults[index] == PackageManager.PERMISSION_GRANTED;
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(isGranted));
+                    if (map != null) {
                         try {
-                            map.setMyLocationEnabled(true);
+                            map.setMyLocationEnabled(isGranted);
                         } catch (SecurityException ex) {
                             Timber.e(ex);
                         }
-                    } else {
-                        BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
                     }
                 }
             }
@@ -268,14 +271,14 @@ public class LocationFragment extends EntourageDialogFragment {
         if (map != null) {
             EntourageSecuredActivity activity = (EntourageSecuredActivity) getActivity();
             if (activity != null) {
-                if (activity.isGeolocationGranted()) {
+                if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
                     Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
                     if (currentLocation != null) {
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
                         map.moveCamera(cameraUpdate);
                     }
                 } else {
-                    requestPermissions(new String[]{activity.getUserLocationAccess()}, PERMISSIONS_REQUEST_LOCATION);
+                    requestPermissions(new String[]{ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
             }
         }
@@ -308,10 +311,10 @@ public class LocationFragment extends EntourageDialogFragment {
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
+            @SuppressLint("MissingPermission")
             public void onMapReady(final GoogleMap googleMap) {
                 if (getActivity() != null) {
-                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                            || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                    if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
                         googleMap.setMyLocationEnabled(true);
                     }
                 }

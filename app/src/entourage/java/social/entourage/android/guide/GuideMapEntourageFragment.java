@@ -2,6 +2,7 @@ package social.entourage.android.guide;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -77,6 +78,7 @@ import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static social.entourage.android.EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB;
 
 public class GuideMapEntourageFragment extends Fragment implements BackPressable, LocationUpdateListener {
@@ -247,11 +249,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
-                if (permissions[index].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                if (permissions[index].equalsIgnoreCase(ACCESS_FINE_LOCATION) ) {
                     //checkPermission();
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
-                } else {
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED));
                 }
             }
         }
@@ -260,7 +260,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     private void onFollowGeolocation() {
         // Check if geolocation is permitted
-        if (!isGeolocationPermitted()) {
+        if (!LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             showAllowGeolocationDialog();
             return;
         }
@@ -392,6 +392,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         });
     }
 
+    @SuppressLint("MissingPermission")
     private void initializeMap() {
         originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
 
@@ -407,8 +408,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 clusterManager.setRenderer(poiRenderer);
                 clusterManager.setOnClusterItemClickListener(new OnEntourageMarkerClickListener());
                 map.setOnMarkerClickListener(clusterManager);
-                if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                        || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
                     map.setMyLocationEnabled(true);
                 }
                 map.getUiSettings().setMyLocationButtonEnabled(false);
@@ -495,11 +495,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // GEOLOCATION PERMISSIONS HANDLING
     // ----------------------------------
 
-    private boolean isGeolocationPermitted() {
-        return (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-    }
-
     private void showAllowGeolocationDialog() {
         @StringRes int messagedId = R.string.map_error_geolocation_disabled_recenter;
         new AlertDialog.Builder(getActivity())
@@ -509,8 +504,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                     public void onClick(DialogInterface dialogInterface, int i) {
                         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
 
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                        if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                            requestPermissions(new String[]{ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                         } else {
                             // User selected "Never ask again", so show the settings page
                             displayGeolocationPreferences();

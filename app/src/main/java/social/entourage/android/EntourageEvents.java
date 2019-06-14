@@ -15,6 +15,7 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import java.util.Locale;
 
 import social.entourage.android.api.model.User;
+import social.entourage.android.location.LocationUtils;
 
 /**
  * Wrapper for sending events to different aggregators
@@ -297,6 +298,11 @@ public class EntourageEvents {
     }
 
     public static void updateMixpanelInfo(User user, Context context, boolean areNotificationsEnabled) {
+        if (areNotificationsEnabled) {
+            logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_REFUSE);
+        } else {
+            logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_ACCEPT);
+        }
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         MixpanelAPI.People people = mixpanel.getPeople();
@@ -318,7 +324,7 @@ public class EntourageEvents {
         }
 
         String geolocStatus="NO";
-        if (PermissionChecker.checkSelfPermission(context, user.getLocationAccessString()) == PackageManager.PERMISSION_GRANTED) {
+        if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             geolocStatus = "YES";
         }
         people.set("EntourageGeolocEnable", geolocStatus);

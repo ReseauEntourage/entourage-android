@@ -68,7 +68,7 @@ import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 import social.entourage.android.view.HtmlTextView;
 import timber.log.Timber;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
 
 /**
@@ -328,10 +328,8 @@ public class LoginActivity extends EntourageActivity
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
-                if (permissions[index].equalsIgnoreCase(getUserLocationAccess()) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
-                } else {
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
+                if (permissions[index].equalsIgnoreCase(ACCESS_FINE_LOCATION)) {
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED));
                 }
             }
             // We don't care if the user allowed/denied the location, just show the notifications view
@@ -993,16 +991,6 @@ public class LoginActivity extends EntourageActivity
         SharedPreferences.Editor editor = notificationsPreferences.edit();
         editor.putBoolean(EntourageApplication.KEY_GEOLOCATION_ENABLED, enabled);
         editor.commit();
-    }
-
-    private boolean isGeolocationGranted() {
-        return (PermissionChecker.checkSelfPermission(this, getUserLocationAccess()) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    protected String getUserLocationAccess() {
-        if (loginPresenter == null) return ACCESS_COARSE_LOCATION;
-        User user = loginPresenter.authenticationController.getUser();
-        return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
     }
 
     /************************

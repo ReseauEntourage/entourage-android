@@ -12,7 +12,7 @@ object LocationUtils {
 
     private val locationManager = EntourageApplication.get().applicationContext.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
 
-    fun isLocationPermissionGranted() = isFineLocationPermissionGranted() && isCoarseLocationPermissionGranted()
+    fun isLocationPermissionGranted() = isFineLocationPermissionGranted() || isCoarseLocationPermissionGranted()
 
     private fun isFineLocationPermissionGranted() = checkSelfPermission(EntourageApplication.get().applicationContext, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
     private fun isCoarseLocationPermissionGranted() = checkSelfPermission(EntourageApplication.get().applicationContext, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
