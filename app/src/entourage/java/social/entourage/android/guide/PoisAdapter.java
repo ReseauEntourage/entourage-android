@@ -5,7 +5,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.guide.poi.PoiViewHolder;
 import social.entourage.android.map.MapViewHolder;
-import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
+import social.entourage.android.base.ViewHolderFactory;
 
 /**
  * Point of interest adapter

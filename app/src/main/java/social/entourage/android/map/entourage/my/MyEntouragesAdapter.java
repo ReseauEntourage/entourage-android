@@ -14,7 +14,7 @@ import social.entourage.android.invite.view.InvitationListViewHolder;
 import social.entourage.android.map.LoaderCardViewHolder;
 import social.entourage.android.map.entourage.EntourageViewHolder;
 import social.entourage.android.map.tour.TourViewHolder;
-import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
+import social.entourage.android.base.ViewHolderFactory;
 
 /**
  * Created by mihaiionescu on 09/08/16.

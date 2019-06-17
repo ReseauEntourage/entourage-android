@@ -10,7 +10,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.base.EntourageBaseAdapter;
-import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
+import social.entourage.android.base.ViewHolderFactory;
 
 /**
  * Adapter to be used with Entourage Mini Cards RecyclerView<br/>

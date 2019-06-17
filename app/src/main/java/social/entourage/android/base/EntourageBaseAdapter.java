@@ -14,7 +14,6 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.map.MapTabItem;
 import social.entourage.android.map.MapViewHolder;
-import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
 import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 
 /**
