@@ -1,6 +1,5 @@
 package social.entourage.android.map;
 
-import android.Manifest;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -36,7 +35,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -84,7 +82,6 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageLocation;
-import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
@@ -107,7 +104,6 @@ import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.api.tape.Events.OnUserChoiceEvent;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.location.LocationUtils;
@@ -890,7 +886,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                 presenter.incrementUserToursCount();
                 mapLauncherLayout.setVisibility(View.GONE);
                 if (newsfeedListView.getVisibility() == View.VISIBLE) {
-                    hideToursList();
+                    displayFullMap();
                 }
                 addTourCard(tourService.getCurrentTour());
 
@@ -979,9 +975,9 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         //show the map if no tours
         if (newsfeedAdapter.getDataItemCount() == 0) {
-            hideToursList();
+            displayFullMap();
         } else if (previousToursCount == 0) {
-            showToursList();
+            displayListWithMapHeader();
         }
         //scroll to latest
         if (newsfeedAdapter.getDataItemCount() > 0) {
@@ -1226,11 +1222,11 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
         if (newsfeedAdapter.getDataItemCount() == 0) {
             if (!pagination.isRefreshing) {
-                hideToursList();
+                displayFullMap();
             }
         } else {
             if (!initialNewsfeedLoaded) {
-                showToursList();
+                displayListWithMapHeader();
                 initialNewsfeedLoaded = true;
             }
             if (!pagination.isRefreshing && previousItemCount == 0) {
@@ -2217,7 +2213,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         pagination.reset();
     }
 
-    private void hideToursList() {
+    private void displayFullMap() {
 
         // show the empty list popup if necessary
         if (newsfeedAdapter.getDataItemCount() == 0) {
@@ -2245,7 +2241,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         anim.start();
     }
 
-    protected void showToursList() {
+    protected void displayListWithMapHeader() {
         if (newsfeedListView == null || mapDisplayToggle == null) {
             return;
         }
@@ -2271,10 +2267,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     public void toggleToursList() {
         if (!isFullMapShown) {
-            hideToursList();
+            displayFullMap();
             EntourageEvents.logEvent(EVENT_SCREEN_06_2);
         } else {
-            showToursList();
+            displayListWithMapHeader();
             EntourageEvents.logEvent(EVENT_SCREEN_06_1);
         }
     }

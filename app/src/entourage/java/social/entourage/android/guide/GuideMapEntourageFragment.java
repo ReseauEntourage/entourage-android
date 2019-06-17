@@ -1,9 +1,7 @@
 package social.entourage.android.guide;
 
-import android.Manifest;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.provider.Settings;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -23,10 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,8 +36,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.otto.Subscribe;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -72,16 +65,14 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
-import social.entourage.android.location.LocationUpdateListener;
 import social.entourage.android.location.LocationUtils;
-import social.entourage.android.map.tour.TourService;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static social.entourage.android.EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB;
 
-public class GuideMapEntourageFragment extends Fragment implements BackPressable, LocationUpdateListener {
+public class GuideMapEntourageFragment extends Fragment implements BackPressable {
 
     // ----------------------------------
     // CONSTANTS
@@ -111,13 +102,11 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     private ClusterManager<Poi> clusterManager;
     private Map<Long, Poi> poisMap;
     private PoiRenderer poiRenderer;
-    private TourService tourService;
-    private ServiceConnection connection = new ServiceConnection();
 
     private int originalMapLayoutHeight;
 
     private Location previousEmptyListPopupLocation = null;
-    private boolean isBound = false;
+    //private boolean isBound = false;
     private PoisAdapter poisAdapter;
 
     @BindView(R.id.fragment_map_gps)
@@ -153,21 +142,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        doBindService();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (isBound) {
-            tourService.unregisterLocationUpdateListener(this);
-        }
-        doUnbindService();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -750,7 +724,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         guideDisplayToggle.setText(R.string.map_top_navigation_full_map);
     }
 
-    @Override
     public void onLocationStatusUpdated(boolean active) {
         if (gpsLayout != null) {
             int visibility = active ? View.GONE : View.VISIBLE;
@@ -759,14 +732,9 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
         }
     }
 
-    @Override
-    public void onLocationUpdated(@NotNull LatLng location) {
-        centerMap(EntourageLocation.getInstance().getLastCameraPosition());
-    }
-
-// ----------------------------------
-// INNER CLASSES
-// ----------------------------------
+    // ----------------------------------
+    // INNER CLASSES
+    // ----------------------------------
 
     public class OnEntourageMarkerClickListener implements ClusterManager.OnClusterItemClickListener<Poi> {
         @Override
@@ -775,44 +743,6 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
             saveCameraPosition();
             showPoiDetails(poi);
             return true;
-        }
-    }
-
-    // ----------------------------------
-    // SERVICE BINDING METHODS
-    // ----------------------------------
-
-    private void doBindService() {
-        if (getActivity() != null) {
-            Intent intent = new Intent(getActivity(), TourService.class);
-            getActivity().startService(intent);
-            getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        }
-    }
-
-    private void doUnbindService() {
-        if (getActivity() != null && isBound) {
-            getActivity().unbindService(connection);
-            isBound = false;
-        }
-    }
-
-    private class ServiceConnection implements android.content.ServiceConnection {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            if (getActivity() != null) {
-                tourService = ((TourService.LocalBinder) service).getService();
-                tourService.registerLocationUpdateListener(GuideMapEntourageFragment.this);
-                isBound = true;
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            if (tourService != null)
-                tourService.unregisterLocationUpdateListener(GuideMapEntourageFragment.this);
-            tourService = null;
-            isBound = false;
         }
     }
 }
