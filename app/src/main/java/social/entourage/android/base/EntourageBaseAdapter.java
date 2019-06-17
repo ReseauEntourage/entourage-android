@@ -2,19 +2,13 @@ package social.entourage.android.base;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.map.MapTabItem;
-import social.entourage.android.map.MapViewHolder;
-import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 
 /**
  * Created by mihaiionescu on 05/05/16.
@@ -27,16 +21,6 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     protected EntourageViewHolderListener viewHolderListener;
 
-    protected boolean needsBottomView = false;
-    private boolean showBottomView = false;
-    private int bottomViewContentType;
-    private MapTabItem selectedTab = MapTabItem.ALL_TAB;
-
-    protected boolean needsTopView = false;
-    private MapViewHolder mapViewHolder;
-    private OnMapReadyCallback onMapReadyCallback;
-    private View.OnClickListener onFollowButtonClickListener;
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
@@ -47,29 +31,12 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         cardViewHolder.setViewHolderListener(viewHolderListener);
-        if (viewType == TimestampedObject.TOP_VIEW) {
-            mapViewHolder = (MapViewHolder)cardViewHolder;
-            mapViewHolder.setMapReadyCallback(onMapReadyCallback);
-            mapViewHolder.setFollowButtonOnClickListener(onFollowButtonClickListener);
-        }
-
         return cardViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        if (position == 0 && needsTopView) {
-            MapViewHolder mapViewHolder = ((MapViewHolder)holder);
-            mapViewHolder.populate(null);
-            return;
-        }
-        if (position == getItemCount() - 1 && needsBottomView) {
-            // map the actual content type using the selected tab
-            int contentType = bottomViewContentType + NewsfeedBottomViewHolder.CONTENT_TYPES * selectedTab.getId();
-            ((BottomViewHolder)holder).populate(showBottomView, contentType);
-            return;
-        }
-        ((BaseCardViewHolder)holder).populate(items.get(position - (needsTopView ? 1 : 0)));
+        ((BaseCardViewHolder)holder).populate(items.get(position - getPositionOffset()));
     }
 
     @Override
@@ -77,7 +44,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (items == null) {
             return 0;
         }
-        return items.size() + (needsTopView ? 1 : 0) + (needsBottomView ? 1 : 0); // +1 for the loader
+        return items.size() + getPositionOffset();
     }
 
     public int getDataItemCount() {
@@ -87,13 +54,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemViewType(final int position) {
-        if (position == 0 && needsTopView) {
-            return TimestampedObject.TOP_VIEW;
-        }
-        if (position == getItemCount() - 1 && needsBottomView) {
-            return TimestampedObject.BOTTOM_VIEW;
-        }
-        return items.get(position - (needsTopView ? 1 : 0)).getType();
+        return items.get(position - getPositionOffset()).getType();
     }
 
     public List<TimestampedObject> getItems() {
@@ -101,7 +62,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public void addItems(List<TimestampedObject> addItems) {
-        int positionStart = items.size() == 0 ? (needsTopView ? 1 : 0 ) : items.size()-1 + (needsTopView ? 1 : 0);
+        int positionStart = (items.size() == 0 ? 0 : items.size()-1) + getPositionOffset();
         for (int i = 0; i < addItems.size(); i++) {
             addCardInfo(addItems.get(i), false);
         }
@@ -115,14 +76,14 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void addCardInfo(TimestampedObject cardInfo, boolean notifyView) {
         items.add(cardInfo);
         if (notifyView) {
-            notifyItemInserted(items.size()-1 + (needsTopView ? 1 : 0));
+            notifyItemInserted(items.size()-1 + getPositionOffset());
         }
     }
 
     public void insertCardInfo(TimestampedObject cardInfo, int position) {
         //add the card
         items.add(position, cardInfo);
-        notifyItemInserted(position + (needsTopView ? 1 : 0));
+        notifyItemInserted(position + getPositionOffset());
     }
 
     public synchronized void addCardInfoAfterTimestamp(TimestampedObject cardInfo) {
@@ -208,7 +169,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
                 card.copyLocalFields(timestampedObject);
                 items.remove(i);
                 items.add(i, card);
-                notifyItemChanged(i + (needsTopView ? 1 : 0));
+                notifyItemChanged(i + getPositionOffset());
                 return;
             }
         }
@@ -222,7 +183,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
             TimestampedObject timestampedObject = items.get(i);
             if (timestampedObject.equals(card)) {
                 items.remove(i);
-                notifyItemRangeRemoved(i + (needsTopView ? 1 : 0), 1);
+                notifyItemRangeRemoved(i + getPositionOffset(), 1);
                 return;
             }
         }
@@ -233,49 +194,10 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         int oldCount = getDataItemCount();
         if (oldCount == 0) return;
         items.clear();
-        notifyItemRangeRemoved(needsTopView ? 1 : 0, oldCount);
+        notifyItemRangeRemoved(getPositionOffset(), oldCount);
     }
 
-    public MapViewHolder getMapViewHolder() {
-        return mapViewHolder;
-    }
-
-    public void setOnMapReadyCallback(final OnMapReadyCallback onMapReadyCallback) {
-        this.onMapReadyCallback = onMapReadyCallback;
-    }
-
-    public void setOnFollowButtonClickListener(final View.OnClickListener onFollowButtonClickListener) {
-        this.onFollowButtonClickListener = onFollowButtonClickListener;
-    }
-
-    public void setMapHeight(int height) {
-        if (mapViewHolder == null || !needsTopView) return;
-        mapViewHolder.setHeight(height);
-    }
-
-    public void setTabVisibility(int visibility) {
-        if (mapViewHolder == null || !needsTopView) return;
-        mapViewHolder.setTabVisibility(visibility);
-    }
-
-    public void setSelectedTab(MapTabItem selectedTab) {
-        this.selectedTab = selectedTab;
-        if (mapViewHolder == null || !needsTopView) return;
-        mapViewHolder.setSelectedTab(selectedTab);
-    }
-
-    public void showBottomView(final boolean showBottomView, int bottomViewContentType, MapTabItem selectedTab) {
-        this.showBottomView = showBottomView;
-        this.bottomViewContentType = bottomViewContentType;
-        this.selectedTab = selectedTab;
-        if (items != null && needsBottomView) {
-            notifyItemChanged(items.size() + (needsTopView ? 1 : 0));
-        }
-    }
-
-    public boolean isShowBottomView() {
-        return showBottomView;
-    }
+    public void setTabVisibility(int visibility) {}
 
     public EntourageViewHolderListener getViewHolderListener() {
         return viewHolderListener;
@@ -283,6 +205,10 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setViewHolderListener(final EntourageViewHolderListener viewHolderListener) {
         this.viewHolderListener = viewHolderListener;
+    }
+
+    protected int getPositionOffset() {
+        return 0;
     }
 
 }

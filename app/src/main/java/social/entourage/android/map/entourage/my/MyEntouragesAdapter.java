@@ -56,7 +56,7 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
 
-        TimestampedObject item = items.get(position - (needsTopView ? 1 : 0));
+        TimestampedObject item = items.get(position - getPositionOffset());
         if (item.getType() == TimestampedObject.LOADER_CARD) {
             if (loaderCallback != null) {
                 loaderCallback.loadMoreItems();
@@ -81,7 +81,7 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
         int lastPosition = items.size() - 1;
         if (!items.isEmpty() && items.get(lastPosition).getType() == TimestampedObject.LOADER_CARD) {
             items.remove(lastPosition);
-            notifyItemRemoved(lastPosition + (needsTopView ? 1 : 0));
+            notifyItemRemoved(lastPosition + getPositionOffset());
         }
     }
 

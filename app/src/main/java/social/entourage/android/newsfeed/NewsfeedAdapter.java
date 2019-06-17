@@ -1,8 +1,8 @@
 package social.entourage.android.newsfeed;
 
 import social.entourage.android.announcement.AnnouncementViewHolder;
-import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.base.HeaderFooterBaseAdapter;
 import social.entourage.android.map.MapViewHolder;
 import social.entourage.android.map.entourage.EntourageViewHolder;
 import social.entourage.android.map.tour.TourViewHolder;
@@ -11,9 +11,10 @@ import social.entourage.android.base.ViewHolderFactory;
 /**
  * Created by mihaiionescu on 05/05/16.
  */
-public class NewsfeedAdapter extends EntourageBaseAdapter {
+public class NewsfeedAdapter extends HeaderFooterBaseAdapter {
 
     public NewsfeedAdapter() {
+        super();
 
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOUR_CARD,
@@ -41,7 +42,5 @@ public class NewsfeedAdapter extends EntourageBaseAdapter {
         );
 
         setHasStableIds(false);
-        needsTopView = true;
-        needsBottomView = true;
     }
 }
