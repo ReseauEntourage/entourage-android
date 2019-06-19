@@ -27,9 +27,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+import com.google.android.libraries.places.compat.Place;
+import com.google.android.libraries.places.compat.ui.PlaceSelectionListener;
+import com.google.android.libraries.places.compat.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -445,9 +445,9 @@ public class LocationFragment extends EntourageDialogFragment {
                 if (autocompleteFragment == null) return;
                 View autocompleteView = autocompleteFragment.getView();
                 if (autocompleteView == null) return;
-                TextView autocompleteEditText = autocompleteView.findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input);
+                TextView autocompleteEditText = autocompleteView.findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input);
                 if (autocompleteEditText == null || TextUtils.isEmpty(autocompleteEditText.getText())) return;
-                View autocompleteSearchView = autocompleteView.findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_button);
+                View autocompleteSearchView = autocompleteView.findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_button);
                 if (autocompleteSearchView != null) {
                     autocompleteSearchView.performClick();
                 }
@@ -464,7 +464,7 @@ public class LocationFragment extends EntourageDialogFragment {
         if (useGooglePlacesOnly && autocompleteFragment != null && !fromPlaceSelected) {
             View autocompleteView = autocompleteFragment.getView();
             if (autocompleteView != null) {
-                TextView autocompleteEditText = autocompleteView.findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input);
+                TextView autocompleteEditText = autocompleteView.findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input);
                 if (autocompleteEditText != null) {
                     cancelTimer();
                     handler.postDelayed(timerTask, SEARCH_DELAY);

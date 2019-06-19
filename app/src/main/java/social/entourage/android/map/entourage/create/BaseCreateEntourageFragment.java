@@ -20,7 +20,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.places.Place;
+import com.google.android.libraries.places.compat.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;

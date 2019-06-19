@@ -106,7 +106,7 @@ ext {
     gmsDependencies = [
             maps            : "com.google.android.gms:play-services-maps:$mapsVersion",
             location        : "com.google.android.gms:play-services-location:$playServicesVersion",
-            places          : "com.google.android.gms:play-services-places:$playServicesVersion"
+            places          : "com.google.android.libraries.places:places-compat:1.1.0"
     ]
 
     javaDependencies = [
