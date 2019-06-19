@@ -55,7 +55,7 @@
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/create_entourage_title_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/create_entourage_description_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/create_entourage_position_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/create_entourage_date_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
