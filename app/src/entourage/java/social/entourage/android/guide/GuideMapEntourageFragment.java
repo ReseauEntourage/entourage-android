@@ -234,7 +234,7 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
 
     private void onFollowGeolocation() {
         // Check if geolocation is permitted
-        if (!LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+        if (!LocationUtils.INSTANCE.isLocationEnabled() || !LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             showAllowGeolocationDialog();
             return;
         }
@@ -494,7 +494,8 @@ public class GuideMapEntourageFragment extends Fragment implements BackPressable
                 .show();
     }
 
-    private void displayGeolocationPreferences() {
+    @OnClick(R.id.fragment_map_gps)
+    protected void displayGeolocationPreferences() {
         if (getActivity() != null) {
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }

@@ -17,7 +17,7 @@ object LocationUtils {
     private fun isFineLocationPermissionGranted() = checkSelfPermission(EntourageApplication.get().applicationContext, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
     private fun isCoarseLocationPermissionGranted() = checkSelfPermission(EntourageApplication.get().applicationContext, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
 
-    fun isLocationEnabled() = isFineLocationEnabled() && isCoarseLocationEnabled()
+    fun isLocationEnabled() = isFineLocationEnabled() || isCoarseLocationEnabled()
 
     private fun isFineLocationEnabled(): Boolean {
         locationManager?.let {

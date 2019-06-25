@@ -370,7 +370,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Override
     public void onStart() {
         super.onStart();
-        if (!LocationUtils.INSTANCE.isLocationPermissionGranted() && getActivity() != null) {
+        if (!LocationUtils.INSTANCE.isLocationEnabled() && !LocationUtils.INSTANCE.isLocationPermissionGranted() && getActivity() != null) {
             ((DrawerActivity) getActivity()).showEditActionZoneFragment(this);
         }
         newsfeedListView.addOnScrollListener(scrollListener);
@@ -1286,7 +1286,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     void onFollowGeolocation() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_RECENTERCLICK);
         // Check if geolocation is enabled
-        if (!LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+        if (!LocationUtils.INSTANCE.isLocationEnabled() || !LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER);
             return;
         }
@@ -1304,7 +1304,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
         if (tourService != null) {
             if (!tourService.isRunning()) {
                 // Check if the geolocation is permitted
-                if (!LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+                if (!LocationUtils.INSTANCE.isLocationEnabled() || !LocationUtils.INSTANCE.isLocationPermissionGranted()) {
                     showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR);
                     return;
                 }
@@ -1612,8 +1612,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                             break;
                     }
 
+                    if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
                     requestPermissions(new String[]{ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
-
+                    } else {
+                        // User selected "Never ask again", so show the settings page
+                        displayGeolocationPreferences();
+                    }
                 }
             })
             .setNegativeButton(R.string.map_permission_refuse, new DialogInterface.OnClickListener() {
@@ -1633,7 +1637,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
             onMapReadyCallback = googleMap -> {
                 if (getActivity() == null) return;
                 map = googleMap;
-                if ((LocationUtils.INSTANCE.isLocationPermissionGranted())) {
+                if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
                     googleMap.setMyLocationEnabled(true);
                 }
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
