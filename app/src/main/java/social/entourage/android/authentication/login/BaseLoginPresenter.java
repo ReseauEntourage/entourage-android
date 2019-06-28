@@ -28,13 +28,6 @@ import social.entourage.android.user.AvatarUpdatePresenter;
 public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
 
     // ----------------------------------
-    // CONSTANTS
-    // ----------------------------------
-
-    private final static String COUNTRY_CODE_FR = "FR";
-    private final static String COUNTRY_CODE_CA = "CA";
-
-    // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
@@ -43,7 +36,7 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
     private final UserRequest userRequest;
     protected final AuthenticationController authenticationController;
 
-    protected boolean isTutorialDone = false;
+    private boolean isTutorialDone = false;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -93,14 +86,10 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
                             if (response.errorBody() != null) {
                                 try {
                                     String errorBody = response.errorBody().string();
-                                    if (errorBody != null) {
-                                        if (errorBody.contains("INVALID_PHONE_FORMAT")) {
-                                            activity.loginFail(LoginActivity.LOGIN_ERROR_INVALID_PHONE_FORMAT);
-                                        } else if (errorBody.contains("UNAUTHORIZED")) {
-                                            activity.loginFail(LoginActivity.LOGIN_ERROR_UNAUTHORIZED);
-                                        } else {
-                                            activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
-                                        }
+                                    if (errorBody.contains("INVALID_PHONE_FORMAT")) {
+                                        activity.loginFail(LoginActivity.LOGIN_ERROR_INVALID_PHONE_FORMAT);
+                                    } else if (errorBody.contains("UNAUTHORIZED")) {
+                                        activity.loginFail(LoginActivity.LOGIN_ERROR_UNAUTHORIZED);
                                     } else {
                                         activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
                                     }

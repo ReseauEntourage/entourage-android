@@ -128,10 +128,6 @@ import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static social.entourage.android.EntourageEvents.EVENT_FEED_TAB_ALL;
-import static social.entourage.android.EntourageEvents.EVENT_FEED_TAB_EVENTS;
-import static social.entourage.android.EntourageEvents.EVENT_SCREEN_06_1;
-import static social.entourage.android.EntourageEvents.EVENT_SCREEN_06_2;
 
 public class MapEntourageFragment extends Fragment implements BackPressable, TourServiceListener, NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
 
@@ -152,6 +148,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // Constants used to track the source call of the geolocation popup
     private static final int GEOLOCATION_POPUP_TOUR = 0;
     private static final int GEOLOCATION_POPUP_RECENTER = 1;
+    private static final int GEOLOCATION_POPUP_BANNER = 2;
 
     // Radius of the circle where to search for entourages when user taps a heatzone
     private static final int HEATZONE_SEARCH_RADIUS = (int)Entourage.HEATMAP_SIZE / 2; // meters
@@ -781,8 +778,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     @Subscribe
     public void onLocationPermissionGranted(OnLocationPermissionGranted event) {
         if (event != null && event.isPermissionGranted()) {
-            boolean isLocationEnabled = LocationUtils.INSTANCE.isLocationEnabled();
-            if (isLocationEnabled) {
+            if (LocationUtils.INSTANCE.isLocationEnabled()) {
                 if (map != null) {
                     try {
                         map.setMyLocationEnabled(true);
@@ -790,13 +786,8 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
                     }
                 }
             }
-            onLocationStatusUpdated(isLocationEnabled);
-        } else {
-            if (gpsLayout != null) {
-                gpsLayout.setText(getString(R.string.map_gps_no_permission));
-                gpsLayout.setVisibility(View.VISIBLE);
-            }
         }
+        updateGeolocBanner(event != null && event.isPermissionGranted());
     }
 
     @Subscribe
@@ -829,7 +820,7 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void onMapTabChanged(Events.OnMapTabSelected event) {
         selectedTab = event.getSelectedTab();
 
-        EntourageEvents.logEvent(selectedTab == MapTabItem.ALL_TAB ? EVENT_FEED_TAB_ALL : EVENT_FEED_TAB_EVENTS);
+        EntourageEvents.logEvent(selectedTab == MapTabItem.ALL_TAB ? EntourageEvents.EVENT_FEED_TAB_ALL : EntourageEvents.EVENT_FEED_TAB_EVENTS);
 
         filterButton.setVisibility(selectedTab == MapTabItem.ALL_TAB ? View.VISIBLE : View.GONE);
 
@@ -1080,13 +1071,24 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @Override
     public void onLocationStatusUpdated(boolean active) {
-        if (gpsLayout != null) {
-            if(LocationUtils.INSTANCE.isLocationPermissionGranted()) {
-            int visibility = active ? View.GONE : View.VISIBLE;
-            gpsLayout.setText(getString(R.string.map_gps_unavailable));
-            gpsLayout.setVisibility(visibility);
-        }
+        updateGeolocBanner(active);
     }
+
+    private void updateGeolocBanner(boolean active) {
+        if (gpsLayout != null) {
+            boolean visibility = true;
+            User me = EntourageApplication.me(getActivity());
+            if (active && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+                visibility = false;
+            }
+            //we force it because we don't need geoloc when Action zone is set
+            if((me != null) && !me.isPro() && (me.getAddress() != null)) {
+                visibility = false;
+            }
+
+            gpsLayout.setText(active? getString(R.string.map_gps_no_permission):getString(R.string.map_gps_unavailable));
+            gpsLayout.setVisibility(visibility? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -1276,8 +1278,12 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
 
     @OnClick(R.id.fragment_map_gps)
     void displayGeolocationPreferences() {
-        if (getActivity() != null) {
-            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        if (!LocationUtils.INSTANCE.isLocationEnabled()) {
+            if (getActivity() != null) {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        } else if(!LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+            showAllowGeolocationDialog(GEOLOCATION_POPUP_BANNER);
         }
     }
 
@@ -1587,30 +1593,28 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     // ----------------------------------
 
     private void showAllowGeolocationDialog(final int source) {
-        @StringRes int messagedId = R.string.map_error_geolocation_disabled_create_entourage;
+        @StringRes int messagedId = R.string.map_error_geolocation_disabled_use_entourage;
+        String eventName = EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER;
         switch (source) {
             case GEOLOCATION_POPUP_RECENTER:
                 messagedId = R.string.map_error_geolocation_disabled_recenter;
+                eventName = EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER;
                 break;
             case GEOLOCATION_POPUP_TOUR:
+                messagedId = R.string.map_error_geolocation_disabled_create_tour;
+                eventName = EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR;
+                break;
+            case GEOLOCATION_POPUP_BANNER:
             default:
                 break;
         }
+        String finalEventName = eventName; // needs to be final for later functions
         new AlertDialog.Builder(getActivity())
             .setMessage(messagedId)
             .setPositiveButton(R.string.activate, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    switch (source) {
-                        case GEOLOCATION_POPUP_RECENTER:
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER);
-                            break;
-                        case GEOLOCATION_POPUP_TOUR:
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR);
-                            break;
-                        default:
-                            break;
-                    }
+                    EntourageEvents.logEvent(finalEventName);
 
                     if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
                     requestPermissions(new String[]{ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
@@ -2272,10 +2276,10 @@ public class MapEntourageFragment extends Fragment implements BackPressable, Tou
     public void toggleToursList() {
         if (!isFullMapShown) {
             displayFullMap();
-            EntourageEvents.logEvent(EVENT_SCREEN_06_2);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_06_2);
         } else {
             displayListWithMapHeader();
-            EntourageEvents.logEvent(EVENT_SCREEN_06_1);
+            EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_06_1);
         }
     }
 

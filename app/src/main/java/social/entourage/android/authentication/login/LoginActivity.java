@@ -9,13 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.PermissionChecker;
-import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -26,6 +19,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.DialogFragment;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -80,7 +79,6 @@ public class LoginActivity extends EntourageActivity
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
-    private static final String VERSION = "Version : ";
 
     private static final int PERMISSIONS_REQUEST_LOCATION = 1;
 
@@ -105,6 +103,7 @@ public class LoginActivity extends EntourageActivity
 
     private User onboardingUser;
 
+    private boolean goToNextActionAfterActionZone = false;
     /************************
      * Signin View
      ************************/
@@ -224,7 +223,6 @@ public class LoginActivity extends EntourageActivity
     @BindView(R.id.login_include_notifications)
     View loginNotificationsView;
 
-    private boolean goToNextActionAfterActionZone = false;
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -712,28 +710,26 @@ public class LoginActivity extends EntourageActivity
 
     protected void showPhotoChooseSource() {
         if (isFinishing()) return;
-        if (loginPresenter != null && loginPresenter.authenticationController != null) {
-            hideKeyboard();
-            loginEmail.setVisibility(View.GONE);
-            loginNameView.setVisibility(View.GONE);
+        try {
+            if (loginPresenter != null && loginPresenter.authenticationController != null) {
+                hideKeyboard();
+                loginEmail.setVisibility(View.GONE);
+                loginNameView.setVisibility(View.GONE);
 
-            User user = loginPresenter.authenticationController.getUser();
-            if (user == null || user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
-                try {
+                User user = loginPresenter.authenticationController.getUser();
+                if (user == null || user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
                     PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
                     fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
-                } catch(IllegalStateException e){
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-                }
-            } else {
-                if (loginPresenter.shouldShowActionZoneView()) {
+                } else if (loginPresenter.shouldShowActionZoneView()) {
                     showActionZoneView();
                 } else {
                     showNotificationPermissionView();
                 }
+            } else {
+                displayToast(R.string.login_error);
             }
-        } else {
-            displayToast(R.string.login_error);
+        } catch(IllegalStateException e){
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
         }
     }
 
@@ -1026,8 +1022,7 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public void onUserEditActionZoneFragmentDismiss() {
-        Snackbar.make(findViewById(R.id.activity_login), R.string.user_setting_ignore_hint, Snackbar.LENGTH_LONG)
-                .show();
+        displayToast(R.string.user_action_zone_ignore_hint);
         if(!goToNextActionAfterActionZone) {
             showNameView();
         } else {

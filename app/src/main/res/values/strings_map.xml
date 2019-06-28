@@ -17,7 +17,8 @@
     <string name="map_permission_activate_button">Activez la géolocalisation</string>
     <string name="map_permission_extra">Nous concoctons une alternative qui sera disponible prochainement !</string>
     <string name="error_dialog_disabled">La géolocalisation doit être activée pour utiliser Entourage. Voulez-vous l\'activer ?</string>
-    <string name="map_error_geolocation_disabled_create_entourage">Pour créer une maraude, vous devez activer la géolocalisation</string>
+    <string name="map_error_geolocation_disabled_use_entourage">Pour découvrir les actions solidaires autour de vous, vous devez activer la géolocalisation</string>
+    <string name="map_error_geolocation_disabled_create_tour">Pour créer une maraude, vous devez activer la géolocalisation</string>
     <string name="map_error_geolocation_disabled_recenter">Pour recentrer autour de vous, vous devez activer la géolocalisation</string>
     <string name="map_empty_newsfeed">C\'est plutôt calme par ici !\n\nOn dirait bien qu\'il n\'y a aucune activité à proximité… pour l\'instant !\n\nVous aussi, vous pouvez créer une activité solidaire : appuyez sur + en bas à droite</string>
     <string name="map_empty_newsfeed_popup">On dirait que c\'est calme ici !\n\nDéplacez la carte pour trouver des activités du réseau.\n\nVous aussi, vous pouvez créer une activité solidaire : appuyez sur + en bas à droite</string>
