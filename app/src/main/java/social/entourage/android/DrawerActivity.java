@@ -112,9 +112,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     TextView discussionBadgeView;
 
-//    @BindView(R.id.map_fab_menu)
-//    public FloatingActionMenu mapOptionsMenu;
-
     private BottomNavigationDataSource navigationDataSource = new BottomNavigationDataSource();
 
     protected Fragment mainFragment;

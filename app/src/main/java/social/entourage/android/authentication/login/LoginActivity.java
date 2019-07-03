@@ -372,15 +372,20 @@ public class LoginActivity extends EntourageActivity
                 break;
         }
         if(!isFinishing()) {
-        new AlertDialog.Builder(this)
-            .setTitle(R.string.login_error_title)
-            .setMessage(errorMessage)
-            .setPositiveButton(R.string.login_retry_label, (dialog, which) -> {
-                //TODO Implement Retry
-            })
-            .create()
-            .show();
-    }
+            try {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.login_error_title)
+                        .setMessage(errorMessage)
+                        .setPositiveButton(R.string.login_retry_label, (dialog, which) -> {
+                            //TODO Implement Retry
+                        })
+                        .create()
+                        .show();
+            } catch(Exception e) {
+                Timber.e(e);
+            }
+
+        }
     }
 
     public void displayToast(@StringRes int messageId) {
