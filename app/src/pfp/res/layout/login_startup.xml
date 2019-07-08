@@ -24,7 +24,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitCenter"
-        android:src="@drawable/entourage_logo"
+        android:src="@drawable/entourage_logo_white"
         android:visibility="gone"/>
 
     <TextView
