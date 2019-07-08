@@ -124,6 +124,7 @@ import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.tools.Utils;
+import timber.log.Timber;
 
 public class TourInformationFragment extends EntourageDialogFragment implements TourServiceListener, InviteFriendsListener {
 
@@ -2105,9 +2106,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     void doBindService() {
         if (getActivity() != null) {
+            try {
             Intent intent = new Intent(getActivity(), TourService.class);
             getActivity().startService(intent);
             getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            } catch (IllegalStateException e) {
+                Timber.e(e);
+            }
         }
     }
 
