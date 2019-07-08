@@ -152,7 +152,7 @@
     </com.github.clans.fab.FloatingActionMenu>
 
     <include
-        android:id="@+id/fragment_guide_longclick"
+        android:id="@+id/fragment_map_longclick"
         layout="@layout/layout_guide_longclick"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

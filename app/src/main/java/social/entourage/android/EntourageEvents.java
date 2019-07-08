@@ -3,10 +3,7 @@ package social.entourage.android;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Build;
-
-import androidx.core.content.PermissionChecker;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -133,7 +130,9 @@ public class EntourageEvents {
     public static final String EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR = "ActivateGeolocFromCreateTourPopup";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromRecenterPopup";
+    public static final String EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromGuideRecenterPopup";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromBanner";
+    public static final String EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromGuideBanner";
     public static final String EVENT_FEED_TAB_ALL = "ShowAllFeed";
     public static final String EVENT_FEED_TAB_EVENTS = "ShowEventFeed";
 
