@@ -278,7 +278,7 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
                         requestPermissions(new String[]{ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                     } else {
                         // User selected "Never ask again", so show the settings page
-                        displayGeolocationPreferences();
+                        displayGeolocationPreferences(true);
                     }
                 })
                 .setNegativeButton(R.string.map_permission_refuse, (dialog, i) -> {
@@ -292,7 +292,11 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
 
     @OnClick(R.id.fragment_map_gps)
     void displayGeolocationPreferences() {
-        if (!LocationUtils.INSTANCE.isLocationEnabled()) {
+        displayGeolocationPreferences(false);
+    }
+
+    void displayGeolocationPreferences(boolean forceDisplaySettings) {
+        if (forceDisplaySettings || !LocationUtils.INSTANCE.isLocationEnabled()) {
             if (getActivity() != null) {
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
