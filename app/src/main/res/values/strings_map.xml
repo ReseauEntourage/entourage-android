@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="map_api_key">AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk</string>
     <string name="activity_map_title">MARAUDES</string>
     <string name="activity_map_title_small">Entourages</string>
     <string name="activity_map_tab_map">Carte</string>
