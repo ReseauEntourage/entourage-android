@@ -157,7 +157,9 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
 
     @SuppressLint("MissingPermission")
     protected void onMapReady(GoogleMap googleMap, ClusterManager.OnClusterItemClickListener onClickListener, GoogleMap.OnGroundOverlayClickListener onGroundOverlayClickListener) {
-        if (getActivity() == null) return;
+        if (getActivity() == null) {
+            return;
+        }
         map = googleMap;
         map.setMyLocationEnabled(LocationUtils.INSTANCE.isLocationPermissionGranted());
 
@@ -174,7 +176,7 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
 
         initializeMapZoom();
         map.setOnMarkerClickListener(mapClusterManager);
-        if(onGroundOverlayClickListener!=null) {
+        if (onGroundOverlayClickListener != null) {
             map.setOnGroundOverlayClickListener(onGroundOverlayClickListener);
         }
 
@@ -231,13 +233,17 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
         int bW = mapLongClickButtonsView.getMeasuredWidth();
         int bH = mapLongClickButtonsView.getMeasuredHeight();
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mapLongClickButtonsView.getLayoutParams();
-        int marginLeft = clickPoint.x - bW/2;
+        int marginLeft = clickPoint.x - bW / 2;
         if (marginLeft + bW > screenSize.x) {
-            marginLeft -= bW/2;
+            marginLeft -= bW / 2;
         }
-        if (marginLeft < 0) marginLeft = 0;
-        int marginTop = clickPoint.y - bH /2;
-        if (marginTop < 0) marginTop = clickPoint.y;
+        if (marginLeft < 0) {
+            marginLeft = 0;
+        }
+        int marginTop = clickPoint.y - bH / 2;
+        if (marginTop < 0) {
+            marginTop = clickPoint.y;
+        }
         lp.setMargins(marginLeft, marginTop, 0, 0);
         mapLongClickButtonsView.setLayoutParams(lp);
         //show the view
@@ -250,7 +256,9 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
     }
 
     void showAllowGeolocationDialog(final int source) {
-        if(getActivity() ==null) return;
+        if (getActivity() == null) {
+            return;
+        }
 
         @StringRes int messagedId = R.string.map_error_geolocation_disabled_use_entourage;
         String eventName = EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER;
@@ -305,12 +313,12 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
         displayGeolocationPreferences(false);
     }
 
-    void displayGeolocationPreferences(boolean forceDisplaySettings) {
+    private void displayGeolocationPreferences(boolean forceDisplaySettings) {
         if (forceDisplaySettings || !LocationUtils.INSTANCE.isLocationEnabled()) {
             if (getActivity() != null) {
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
-        } else if(!LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+        } else if (!LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_BANNER);
         }
     }
@@ -334,7 +342,7 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
                 visibility = false;
             }
             //we force it because we don't need geoloc when Action zone is set
-            if((me != null) && !me.isPro() && (me.getAddress() != null)) {
+            if ((me != null) && !me.isPro() && (me.getAddress() != null)) {
                 visibility = false;
             }
 

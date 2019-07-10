@@ -102,7 +102,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(presenter== null) {
+        if (presenter == null) {
             setupComponent(EntourageApplication.get(getActivity()).getEntourageComponent());
         }
         poisMap = new TreeMap<>();
@@ -167,7 +167,9 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     @OnClick(R.id.fragment_map_filter_button)
     void onShowFilter() {
-        if(getFragmentManager()==null) return;
+        if (getFragmentManager() == null) {
+            return;
+        }
         GuideFilterFragment guideFilterFragment = new GuideFilterFragment();
         guideFilterFragment.show(getFragmentManager(), GuideFilterFragment.TAG);
     }
@@ -176,8 +178,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     void onDisplayToggle() {
         if (!isFullMapShown) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_MAP_VIEW);
-        }
-        else {
+        } else {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_LIST_VIEW);
         }
         togglePOIList();
@@ -190,11 +191,11 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     @Subscribe
     public void onSolidarityGuideFilterChanged(Events.OnSolidarityGuideFilterChanged event) {
         if (presenter != null) {
-            if(mapClusterManager!=null) {
+            if (mapClusterManager != null) {
                 mapClusterManager.clearItems();
             }
             poisMap.clear();
-            if(poisAdapter!=null) {
+            if (poisAdapter != null) {
                 poisAdapter.removeAll();
             }
             presenter.updatePoisNearby(map);
@@ -203,7 +204,9 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     @Subscribe
     public void onPoiViewRequested(EntouragePoiRequest.OnPoiViewRequestedEvent event) {
-        if (event == null || event.getPoi() == null) return;
+        if (event == null || event.getPoi() == null) {
+            return;
+        }
         EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW);
         showPoiDetails(event.getPoi());
     }
@@ -215,7 +218,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     void putPoiOnMap(List<Category> categories, List<Poi> pois) {
         if (getActivity() != null) {
             if (categories != null) {
-                ((PoiRenderer)mapClusterItemRenderer).setCategories(categories);
+                ((PoiRenderer) mapClusterItemRenderer).setCategories(categories);
             }
             clearOldPois();
             if (pois != null && pois.size() > 0) {
@@ -255,12 +258,9 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     }
 
     private void initializeFloatingMenu() {
-        mapOptionsMenu.setClosedOnTouchOutside(true);
-        mapOptionsMenu.setOnMenuToggleListener(opened -> {
-            if (opened) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
-                proposePOI();
-            }
+        mapOptionsMenu.setOnMenuButtonClickListener(view -> {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
+            proposePOI();
         });
     }
 
@@ -293,7 +293,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
             CameraPosition position = map.getCameraPosition();
             Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
             float newZoom = position.zoom;
-            if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+            if (newZoom / previousCameraZoom >= BaseMapEntourageFragment.ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= BaseMapEntourageFragment.REDRAW_LIMIT) {
                 previousCameraZoom = newZoom;
                 previousCameraLocation = newLocation;
                 presenter.updatePoisNearby(map);
@@ -312,7 +312,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         // Open the link to propose a POI
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI);
-            ((DrawerActivity)getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
+            ((DrawerActivity) getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
         }
     }
 
@@ -335,7 +335,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     private void showPoiDetails(Poi poi) {
         ReadPoiFragment readPoiFragment = ReadPoiFragment.newInstance(poi);
-        if(readPoiFragment!=null && getFragmentManager()!=null) {
+        if (readPoiFragment != null && getFragmentManager() != null) {
             readPoiFragment.show(getFragmentManager(), ReadPoiFragment.TAG);
         }
     }
@@ -347,7 +347,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     private void initializeEmptyListPopup() {
         String proposePOIUrl = "";
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            proposePOIUrl = ((DrawerActivity)getActivity()).getLink(Constants.PROPOSE_POI_ID);
+            proposePOIUrl = ((DrawerActivity) getActivity()).getLink(Constants.PROPOSE_POI_ID);
         }
         emptyListTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
         emptyListTextView.setText(Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl)));
@@ -463,14 +463,10 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         final int targetHeight = layoutMain.getMeasuredHeight();
         if (animated) {
             ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
-            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    int val = (Integer) valueAnimator.getAnimatedValue();
-                    poisAdapter.setMapHeight(val);
-                    poisListView.getLayoutManager().requestLayout();
-                }
-
+            anim.addUpdateListener(valueAnimator -> {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                poisAdapter.setMapHeight(val);
+                poisListView.getLayoutManager().requestLayout();
             });
             anim.start();
         } else {
