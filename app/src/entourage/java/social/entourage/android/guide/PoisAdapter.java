@@ -3,9 +3,10 @@ package social.entourage.android.guide;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.base.EntourageBaseAdapter;
+import social.entourage.android.base.HeaderBaseAdapter;
 import social.entourage.android.guide.poi.PoiViewHolder;
 import social.entourage.android.map.MapViewHolder;
-import social.entourage.android.map.tour.information.discussion.ViewHolderFactory;
+import social.entourage.android.base.ViewHolderFactory;
 
 /**
  * Point of interest adapter
@@ -13,7 +14,7 @@ import social.entourage.android.map.tour.information.discussion.ViewHolderFactor
  * Created by mihaiionescu on 26/04/2017.
  */
 
-public class PoisAdapter extends EntourageBaseAdapter {
+public class PoisAdapter extends HeaderBaseAdapter {
 
     public PoisAdapter() {
 
@@ -28,6 +29,5 @@ public class PoisAdapter extends EntourageBaseAdapter {
         );
 
         setHasStableIds(false);
-        needsTopView = true;
     }
 }

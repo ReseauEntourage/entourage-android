@@ -147,13 +147,13 @@
             android:background="@color/login_edittext_hint_alpha"/>
 
         <Button
-            android:id="@+id/login_button_signup"
+            android:id="@+id/login_button_signin"
             style="@style/WhiteButton.RoundedCorners"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:text="@string/login_button_signup"
+            android:text="@string/login_button_signin"
             android:textAllCaps="false"
             />
 

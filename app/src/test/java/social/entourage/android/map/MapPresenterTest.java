@@ -3,7 +3,6 @@ package social.entourage.android.map;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MapPresenterTest {
@@ -19,7 +18,7 @@ public class MapPresenterTest {
 
         presenter.handleLocationPermission();
 
-        verify(fragment).checkPermission(ACCESS_COARSE_LOCATION);
+        verify(fragment).checkPermission(ACCESS_FINE_LOCATION);
     }
 
     @Test
@@ -29,7 +28,7 @@ public class MapPresenterTest {
 
         presenter.handleLocationPermission();
 
-        verify(fragment).checkPermission(ACCESS_COARSE_LOCATION);
+        verify(fragment).checkPermission(ACCESS_FINE_LOCATION);
     }
 
     @Test

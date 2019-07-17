@@ -1,15 +1,14 @@
 package social.entourage.android.map.tour;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Vibrator;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.otto.Subscribe;
@@ -46,20 +45,21 @@ import social.entourage.android.api.tape.EncounterTaskResult;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.location.LocationListener;
+import social.entourage.android.location.LocationProvider;
+import social.entourage.android.location.LocationProvider.UserType;
 import social.entourage.android.map.MapTabItem;
 import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
-import social.entourage.android.map.tour.FusedLocationProvider.ProviderStatusListener;
-import social.entourage.android.map.tour.FusedLocationProvider.UserType;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 import timber.log.Timber;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
-import static social.entourage.android.map.tour.FusedLocationProvider.UserType.PRO;
-import static social.entourage.android.map.tour.FusedLocationProvider.UserType.PUBLIC;
+import static social.entourage.android.location.LocationProvider.UserType.PRO;
+import static social.entourage.android.location.LocationProvider.UserType.PUBLIC;
 
 /**
  * Manager is like a presenter but for a service
@@ -83,48 +83,48 @@ public class TourServiceManager {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final TourService tourService;
+    public final TourService tourService;
     private final TourRequest tourRequest;
     private final AuthenticationController authenticationController;
     private final EncounterRequest encounterRequest;
     private final NewsfeedRequest newsfeedRequest;
     private final EntourageRequest entourageRequest;
     private final ConnectivityManager connectivityManager;
-    private final EntourageLocation entourageLocation;
-    private final FusedLocationProvider provider;
+    private final LocationProvider locationProvider;
+    public final EntourageLocation entourageLocation;
 
     private Tour tour;
     private Location previousLocation;
     private String tourUUID;
     private int pointsNeededForNextRequest;
-    private List<TourPoint> pointsToSend;
-    private List<TourPoint> pointsToDraw;
+    private final List<TourPoint> pointsToSend;
+    private final List<TourPoint> pointsToDraw;
     private Timer timerFinish;
     private boolean isTourClosing;
     private Call<Newsfeed.NewsfeedWrapper> currentNewsFeedCall;
 
     private boolean isBetterLocationUpdated;
 
-    TourServiceManager(final TourService tourService,
-                       final AuthenticationController authenticationController,
-                       final TourRequest tourRequest,
-                       final EncounterRequest encounterRequest,
-                       final NewsfeedRequest newsfeedRequest,
-                       final EntourageRequest entourageRequest,
-                       final ConnectivityManager connectivityManager,
-                       final EntourageLocation entourageLocation,
-                       final FusedLocationProvider provider) {
+    private TourServiceManager(final TourService tourService,
+                               final AuthenticationController authenticationController,
+                               final TourRequest tourRequest,
+                               final EncounterRequest encounterRequest,
+                               final NewsfeedRequest newsfeedRequest,
+                               final EntourageRequest entourageRequest,
+                               final ConnectivityManager connectivityManager,
+                               final EntourageLocation entourageLocation,
+                               final LocationProvider locationProvider) {
         this.tourService = tourService;
         this.authenticationController = authenticationController;
         this.tourRequest = tourRequest;
         this.encounterRequest = encounterRequest;
         this.newsfeedRequest = newsfeedRequest;
         this.entourageRequest = entourageRequest;
-        this.provider = provider;
-        this.pointsNeededForNextRequest = 1;
-        this.pointsToSend = new ArrayList<>();
-        this.pointsToDraw = new ArrayList<>();
-        this.isTourClosing = false;
+        this.locationProvider = locationProvider;
+        pointsNeededForNextRequest = 1;
+        pointsToSend = new ArrayList<>();
+        pointsToDraw = new ArrayList<>();
+        isTourClosing = false;
         this.connectivityManager = connectivityManager;
         this.entourageLocation = entourageLocation;
     }
@@ -136,27 +136,27 @@ public class TourServiceManager {
                                                  final NewsfeedRequest newsfeedRequest,
                                                  final EntourageRequest entourageRequest) {
         Timber.d("newInstance");
-        ConnectivityManager connectivityManager = (ConnectivityManager) tourService.getSystemService(CONNECTIVITY_SERVICE);
-        EntourageLocation entourageLocation = EntourageLocation.getInstance();
-        User user = controller.getUser();
-        UserType type = user != null && user.isPro() ? PRO : PUBLIC;
-        FusedLocationProvider provider = new FusedLocationProvider(tourService, type);
-        TourServiceManager tourServiceManager = new TourServiceManager(
-            tourService,
-            controller,
-            tourRequest,
-            encounterRequest,
-            newsfeedRequest,
-            entourageRequest,
-            connectivityManager,
-            entourageLocation,
-            provider);
-        provider.setLocationListener(new FusedLocationListener(tourServiceManager));
-        provider.setStatusListener(new FusedLocationStatusListener(tourService));
+        final ConnectivityManager connectivityManager = (ConnectivityManager) tourService.getSystemService(CONNECTIVITY_SERVICE);
+        final EntourageLocation entourageLocation = EntourageLocation.getInstance();
+        final User user = controller.getUser();
+        final UserType type = user != null && user.isPro() ? PRO : PUBLIC;
+        final LocationProvider provider = new LocationProvider(tourService, type);
+        final TourServiceManager tourServiceManager = new TourServiceManager(
+                tourService,
+                controller,
+                tourRequest,
+                encounterRequest,
+                newsfeedRequest,
+                entourageRequest,
+                connectivityManager,
+                entourageLocation,
+                provider);
+
+        provider.setLocationListener(new LocationListener(tourServiceManager, tourService));
         provider.start();
-        Tour savedTour = controller.getSavedTour();
+        final Tour savedTour = controller.getSavedTour();
         if (savedTour != null && user != null) {
-            TourAuthor author = savedTour.getAuthor();
+            final TourAuthor author = savedTour.getAuthor();
             if (author == null || author.getUserID() != user.getId()) {
                 // it's not the user's tour, so remove it from preferences
                 controller.saveTour(null);
@@ -164,7 +164,7 @@ public class TourServiceManager {
                 tourServiceManager.tour = savedTour;
                 tourServiceManager.tourUUID = savedTour.getUUID();
                 tourService.notifyListenersTourCreated(true, savedTour.getUUID());
-                provider.setLocationUpdateUserType(UserType.PRO);
+                provider.setUserType(UserType.PRO);
             }
         }
         BusProvider.getInstance().register(tourServiceManager);
@@ -176,21 +176,21 @@ public class TourServiceManager {
     // ----------------------------------
 
     public Tour getTour() {
-        return this.tour;
+        return tour;
     }
 
-    public String getTourUUID() {
-        if (this.tour != null) {
-            return this.tour.getUUID();
+    String getTourUUID() {
+        if (tour != null) {
+            return tour.getUUID();
         }
         return tourUUID == null ? "" : tourUUID;
     }
 
-    public List<TourPoint> getPointsToDraw() {
+    List<TourPoint> getPointsToDraw() {
         return pointsToDraw;
     }
 
-    public void setTourDuration(String duration) {
+    void setTourDuration(final String duration) {
         tour.setDuration(duration);
     }
 
@@ -198,50 +198,50 @@ public class TourServiceManager {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public void stopLocationService() {
-        provider.stop();
+    void stopLocationService() {
+        locationProvider.stop();
     }
 
-    public void startTour(String type) {
+    void startTour(final String type) {
         tour = new Tour(type);
         sendTour();
     }
 
-    public void finishTour() {
+    void finishTour() {
         isTourClosing = true;
         updateTourCoordinates();
     }
 
-    public void finishTour(Tour tour) {
+    void finishTour(final Tour tour) {
         closeTour(tour);
     }
 
-    public boolean isRunning() {
+    boolean isRunning() {
         return tour != null;
     }
 
-    public void addEncounter(Encounter encounter) {
+    void addEncounter(final Encounter encounter) {
         if (tour != null) {
             tour.addEncounter(encounter);
         }
     }
 
-    public void updateEncounter(Encounter encounter) {
+    void updateEncounter(final Encounter encounter) {
         if (tour != null) {
             tour.updateEncounter(encounter);
         }
     }
 
-    public void unregisterFromBus() {
+    void unregisterFromBus() {
         try {
             BusProvider.getInstance().unregister(this);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             Timber.d("No need to unregister");
         }
 
     }
 
-    void resetCurrentNewsfeedCall() {
+    private void resetCurrentNewsfeedCall() {
         currentNewsFeedCall = null;
     }
 
@@ -249,7 +249,7 @@ public class TourServiceManager {
     // PRIVATE METHODS
     // ----------------------------------
 
-    public void updateTourCoordinates() {
+    void updateTourCoordinates() {
         if (pointsToSend.isEmpty()) {
             if (isTourClosing) {
                 closeTour();
@@ -260,10 +260,10 @@ public class TourServiceManager {
         final TourPoint.TourPointWrapper tourPointWrapper = new TourPoint.TourPointWrapper();
         tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
         tourPointWrapper.setDistance(tour.getDistance());
-        Call<Tour.TourWrapper> call = tourRequest.tourPoints(tourUUID, tourPointWrapper);
+        final Call<Tour.TourWrapper> call = tourRequest.tourPoints(tourUUID, tourPointWrapper);
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
-            public void onResponse(@NonNull Call<Tour.TourWrapper> call, @NonNull Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
                     pointsToSend.removeAll(tourPointWrapper.getTourPoints());
                     if (isTourClosing) {
@@ -278,7 +278,7 @@ public class TourServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 if (isTourClosing) {
                     tourService.notifyListenersFeedItemClosed(false, tour);
                 }
@@ -288,34 +288,34 @@ public class TourServiceManager {
         });
     }
 
-    public void cancelFinishTimer() {
+    private void cancelFinishTimer() {
         if (timerFinish != null) {
             timerFinish.cancel();
             timerFinish = null;
         }
     }
 
-    public boolean isLocationInTour(LatLng latLng) {
+    boolean isLocationInTour(final LatLng latLng) {
         if (tour == null) {
             return false;
         }
-        List<TourPoint> tourPoints = tour.getTourPoints();
+        final List<TourPoint> tourPoints = tour.getTourPoints();
         if (tourPoints.isEmpty()) {
             return false;
         }
         if (tourPoints.size() == 1) {
-            TourPoint p = tourPoints.get(0);
-            float[] distance = {0};
+            final TourPoint p = tourPoints.get(0);
+            final float[] distance = {0};
             Location.distanceBetween(p.getLatitude(), p.getLongitude(), latLng.latitude, latLng.longitude, distance);
             if (distance[0] <= MAX_DISTANCE_BETWEEN_TWO_POINTS) {
                 return true;
             }
         } else {
-            TourPoint targetPoint = new TourPoint(latLng.latitude, latLng.longitude);
+            final TourPoint targetPoint = new TourPoint(latLng.latitude, latLng.longitude);
             for (int i = 1; i < tourPoints.size(); i++) {
-                TourPoint p1 = tourPoints.get(i - 1);
-                TourPoint p2 = tourPoints.get(i);
-                double d = distanceToLine(p1, targetPoint, p2);
+                final TourPoint p1 = tourPoints.get(i - 1);
+                final TourPoint p2 = tourPoints.get(i);
+                final double d = distanceToLine(p1, targetPoint, p2);
                 if (d <= MAX_DISTANCE_TO_LINE) {
                     return true;
                 }
@@ -324,18 +324,16 @@ public class TourServiceManager {
         return false;
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
-    public void onLocationPermissionGranted(OnLocationPermissionGranted event) {
+    public void onLocationPermissionGranted(final OnLocationPermissionGranted event) {
         if (event.isPermissionGranted()) {
-            provider.start();
+            locationProvider.start();
         }
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
-    public void encounterToSend(EncounterUploadTask task) {
-        Encounter encounter = task.getEncounter();
+    public void encounterToSend(final EncounterUploadTask task) {
+        final Encounter encounter = task.getEncounter();
         if (encounter == null) {
             return;
         }
@@ -348,17 +346,17 @@ public class TourServiceManager {
         }
     }
 
-    protected void freezeTour(final Tour tour) {
+    void freezeTour(final Tour tour) {
         if (tour == null) {
             return;
         }
         tour.setTourStatus(FeedItem.STATUS_FREEZED);
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
-        Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getUUID(), tourWrapper);
+        final Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getUUID(), tourWrapper);
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
-            public void onResponse(@NonNull Call<Tour.TourWrapper> call, @NonNull Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().getTour().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
@@ -368,42 +366,44 @@ public class TourServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 tourService.notifyListenersFeedItemClosed(false, tour);
             }
         });
     }
 
-    protected void retrieveToursByUserId(int userId, int page, int per) {
-        Call<Tour.ToursWrapper> call = tourRequest.retrieveToursByUserId(userId, page, per);
+    void retrieveToursByUserId(final int userId, final int page, final int per) {
+        final Call<Tour.ToursWrapper> call = tourRequest.retrieveToursByUserId(userId, page, per);
         call.enqueue(new Callback<Tour.ToursWrapper>() {
             @Override
-            public void onResponse(@NonNull Call<Tour.ToursWrapper> call, @NonNull Response<Tour.ToursWrapper> response) {
+            public void onResponse(@NonNull final Call<Tour.ToursWrapper> call, @NonNull final Response<Tour.ToursWrapper> response) {
                 if (response.isSuccessful()) {
                     tourService.notifyListenersUserToursFound(response.body().getTours());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<Tour.ToursWrapper> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull final Call<Tour.ToursWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
             }
         });
     }
 
-    protected void retrieveNewsFeed(final NewsfeedPagination pagination, MapTabItem selectedTab) {
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+    void retrieveNewsFeed(final NewsfeedPagination pagination, final MapTabItem selectedTab) {
+        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
             tourService.notifyListenersNetworkException();
             return;
         }
 
-        CameraPosition currentPosition = entourageLocation.getCurrentCameraPosition();
+        final CameraPosition currentPosition = entourageLocation.getCurrentCameraPosition();
         if (currentPosition != null) {
-            LatLng location = currentPosition.target;
-            MapFilter mapFilter = MapFilterFactory.getMapFilter();
-            if (mapFilter == null) return;
+            final LatLng location = currentPosition.target;
+            final MapFilter mapFilter = MapFilterFactory.getMapFilter();
+            if (mapFilter == null) {
+                return;
+            }
             currentNewsFeedCall = createNewsfeedWrapperCall(location, pagination, mapFilter, selectedTab);
             if (currentNewsFeedCall == null) {
                 //fail graciously
@@ -416,22 +416,22 @@ public class TourServiceManager {
         }
     }
 
-    protected void cancelNewsFeedRetrieval() {
+    void cancelNewsFeedRetrieval() {
         if (currentNewsFeedCall == null || currentNewsFeedCall.isCanceled()) {
             return;
         }
         currentNewsFeedCall.cancel();
     }
 
-    protected void sendEncounter(final Encounter encounter) {
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+    private void sendEncounter(final Encounter encounter) {
+        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
+            final Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
             encounterWrapper.setEncounter(encounter);
-            Call<EncounterResponse> call = encounterRequest.create(encounter.getTourId(), encounterWrapper);
+            final Call<EncounterResponse> call = encounterRequest.create(encounter.getTourId(), encounterWrapper);
             call.enqueue(new Callback<EncounterResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<EncounterResponse> call, @NonNull Response<EncounterResponse> response) {
+                public void onResponse(@NonNull final Call<EncounterResponse> call, @NonNull final Response<EncounterResponse> response) {
                     if (response.isSuccessful()) {
                         Timber.tag("tape:").d("success");
                         BusProvider.getInstance().post(new EncounterTaskResult(true, response.body().getEncounter(), EncounterTaskResult.OperationType.ENCOUNTER_ADD));
@@ -439,7 +439,7 @@ public class TourServiceManager {
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<EncounterResponse> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull final Call<EncounterResponse> call, @NonNull final Throwable t) {
                     Timber.tag("tape:").e("failure");
                     BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
                 }
@@ -450,27 +450,26 @@ public class TourServiceManager {
         }
     }
 
-    protected void updateEncounterToServer(final Encounter encounter) {
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+    private void updateEncounterToServer(final Encounter encounter) {
+        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
+            final Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
             encounterWrapper.setEncounter(encounter);
-            Call<EncounterResponse> call = encounterRequest.update(encounter.getId(), encounterWrapper);
+            final Call<EncounterResponse> call = encounterRequest.update(encounter.getId(), encounterWrapper);
             call.enqueue(new Callback<EncounterResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<EncounterResponse> call, @NonNull Response<EncounterResponse> response) {
+                public void onResponse(@NonNull final Call<EncounterResponse> call, @NonNull final Response<EncounterResponse> response) {
                     if (response.isSuccessful()) {
                         Timber.tag("tape:").d("success");
                         BusProvider.getInstance().post(new EncounterTaskResult(true, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
-                    }
-                    else {
+                    } else {
                         Timber.tag("tape:").d("not successful");
                         BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<EncounterResponse> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull final Call<EncounterResponse> call, @NonNull final Throwable t) {
                     Timber.tag("tape:").d("failure");
                     BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                 }
@@ -481,10 +480,10 @@ public class TourServiceManager {
         }
     }
 
-    protected void requestToJoinTour(final Tour tour) {
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+    void requestToJoinTour(final Tour tour) {
+        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            Call<TourUser.TourUserWrapper> call = tourRequest.requestToJoinTour(tour.getUUID());
+            final Call<TourUser.TourUserWrapper> call = tourRequest.requestToJoinTour(tour.getUUID());
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
@@ -505,10 +504,10 @@ public class TourServiceManager {
         }
     }
 
-    protected void removeUserFromTour(final Tour tour, int userId) {
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+    void removeUserFromTour(final Tour tour, final int userId) {
+        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tour.getUUID(), userId);
+            final Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tour.getUUID(), userId);
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
@@ -529,17 +528,17 @@ public class TourServiceManager {
         }
     }
 
-    protected void closeEntourage(final Entourage entourage, boolean success) {
+    void closeEntourage(final Entourage entourage, final boolean success) {
         final String oldStatus = entourage.getStatus();
         entourage.setStatus(FeedItem.STATUS_CLOSED);
         entourage.setEndTime(new Date());
         entourage.setOutcome(new BaseEntourage.EntourageCloseOutcome(success));
         final Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
         entourageWrapper.setEntourage(entourage);
-        Call<Entourage.EntourageWrapper> call = entourageRequest.closeEntourage(entourage.getUUID(), entourageWrapper);
+        final Call<Entourage.EntourageWrapper> call = entourageRequest.closeEntourage(entourage.getUUID(), entourageWrapper);
         call.enqueue(new Callback<Entourage.EntourageWrapper>() {
             @Override
-            public void onResponse(@NonNull Call<Entourage.EntourageWrapper> call, @NonNull Response<Entourage.EntourageWrapper> response) {
+            public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().getEntourage().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getEntourage());
@@ -550,7 +549,7 @@ public class TourServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Entourage.EntourageWrapper> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 entourage.setStatus(oldStatus);
                 tourService.notifyListenersFeedItemClosed(false, entourage);
@@ -558,11 +557,11 @@ public class TourServiceManager {
         });
     }
 
-    protected void requestToJoinEntourage(final Entourage entourage) {
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+    void requestToJoinEntourage(final Entourage entourage) {
+        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            Entourage.EntourageJoinInfo joinInfo = new Entourage.EntourageJoinInfo(entourage.distanceToCurrentLocation());
-            Call<TourUser.TourUserWrapper> call = entourageRequest.requestToJoinEntourage(entourage.getUUID(), joinInfo);
+            final Entourage.EntourageJoinInfo joinInfo = new Entourage.EntourageJoinInfo(entourage.distanceToCurrentLocation());
+            final Call<TourUser.TourUserWrapper> call = entourageRequest.requestToJoinEntourage(entourage.getUUID(), joinInfo);
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
@@ -583,10 +582,10 @@ public class TourServiceManager {
         }
     }
 
-    protected void removeUserFromEntourage(final Entourage entourage, int userId) {
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+    void removeUserFromEntourage(final Entourage entourage, final int userId) {
+        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourage.getUUID(), userId);
+            final Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourage.getUUID(), userId);
             call.enqueue(new Callback<TourUser.TourUserWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
@@ -607,7 +606,8 @@ public class TourServiceManager {
         }
     }
 
-    private @Nullable Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(LatLng location, NewsfeedPagination pagination, MapFilter mapFilter, MapTabItem selectedTab) {
+    private @Nullable
+    Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(final LatLng location, final NewsfeedPagination pagination, final MapFilter mapFilter, final MapTabItem selectedTab) {
         switch (selectedTab) {
             case ALL_TAB:
                 return newsfeedRequest.retrieveFeed(
@@ -634,7 +634,7 @@ public class TourServiceManager {
     }
 
     private void initializeTimerFinishTask() {
-        long duration = 1000 * 60 * 60 * 5;
+        final long duration = 1000 * 60 * 60 * 5;
         timerFinish = new Timer();
         timerFinish.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -645,7 +645,7 @@ public class TourServiceManager {
     }
 
     private void timeOut() {
-        Vibrator vibrator = (Vibrator) tourService.getSystemService(VIBRATOR_SERVICE);
+        final Vibrator vibrator = (Vibrator) tourService.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(VIBRATION_DURATION);
         tourService.sendBroadcast(new Intent(TourService.KEY_NOTIFICATION_PAUSE_TOUR));
     }
@@ -655,16 +655,16 @@ public class TourServiceManager {
     // ----------------------------------
 
     private void sendTour() {
-        Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
+        final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
-        Call<Tour.TourWrapper> call = tourRequest.tour(tourWrapper);
+        final Call<Tour.TourWrapper> call = tourRequest.tour(tourWrapper);
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
-            public void onResponse(@NonNull Call<Tour.TourWrapper> call, @NonNull Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
-                    Location currentLocation = entourageLocation.getCurrentLocation();
+                    final Location currentLocation = entourageLocation.getCurrentLocation();
                     if (currentLocation != null) {
-                        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                        final LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                         BusProvider.getInstance().post(new OnBetterLocationEvent(latLng));
                     }
                     initializeTimerFinishTask();
@@ -672,22 +672,7 @@ public class TourServiceManager {
                     tour = response.body().getTour();
                     tourService.notifyListenersTourCreated(true, tourUUID);
 
-                    Location location = provider.getLastKnownLocation();
-                    if (location != null) {
-                        TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), location.getAccuracy());
-                        tour.addCoordinate(point);
-                        pointsToDraw.add(point);
-                        pointsToSend.add(point);
-                        previousLocation = location;
-                        updateTourCoordinates();
-                        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
-                    } else {
-                        Timber.e("no location provided");
-                    }
-                    provider.setLocationUpdateUserType(UserType.PRO);
-
-                    authenticationController.saveTour(tour);
-
+                    locationProvider.requestLastKnownLocation();
                 } else {
                     tour = null;
                     tourService.notifyListenersTourCreated(false, "");
@@ -695,7 +680,7 @@ public class TourServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 tour = null;
                 tourService.notifyListenersTourCreated(false, "");
@@ -708,10 +693,10 @@ public class TourServiceManager {
         tour.setEndTime(new Date());
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
-        Call<Tour.TourWrapper> call = tourRequest.closeTour(tourUUID, tourWrapper);
+        final Call<Tour.TourWrapper> call = tourRequest.closeTour(tourUUID, tourWrapper);
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
-            public void onResponse(@NonNull Call<Tour.TourWrapper> call, @NonNull Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().getTour().toString());
                     tour = null;
@@ -719,7 +704,7 @@ public class TourServiceManager {
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
-                    provider.setLocationUpdateUserType(UserType.PUBLIC);
+                    locationProvider.setUserType(UserType.PUBLIC);
                     authenticationController.saveTour(tour);
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);
@@ -727,7 +712,7 @@ public class TourServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 tourService.notifyListenersFeedItemClosed(false, tour);
             }
@@ -739,14 +724,14 @@ public class TourServiceManager {
         tour.setEndTime(new Date());
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
         tourWrapper.setTour(tour);
-        Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getUUID(), tourWrapper);
+        final Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getUUID(), tourWrapper);
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
-            public void onResponse(@NonNull Call<Tour.TourWrapper> call, @NonNull Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().getTour().toString());
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
-                    if (tour.getUUID().equalsIgnoreCase(TourServiceManager.this.tourUUID)) {
+                    if (tour.getUUID().equalsIgnoreCase(tourUUID)) {
                         authenticationController.saveTour(null);
                     }
                 } else {
@@ -755,20 +740,20 @@ public class TourServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Tour.TourWrapper> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 tourService.notifyListenersFeedItemClosed(false, tour);
             }
         });
     }
 
-    private void onLocationChanged(Location location, TourPoint point) {
+    public void onLocationChanged(final Location location, final TourPoint point) {
         pointsToDraw.add(point);
         pointsToSend.add(point);
         if (pointsToSend.size() >= 3) {
-            TourPoint a = pointsToSend.get(pointsToSend.size() - 3);
-            TourPoint b = pointsToSend.get(pointsToSend.size() - 2);
-            TourPoint c = pointsToSend.get(pointsToSend.size() - 1);
+            final TourPoint a = pointsToSend.get(pointsToSend.size() - 3);
+            final TourPoint b = pointsToSend.get(pointsToSend.size() - 2);
+            final TourPoint c = pointsToSend.get(pointsToSend.size() - 1);
             if (distanceToLine(a, b, c) < ALIGNMENT_PRECISION) {
                 pointsToSend.remove(b);
             }
@@ -785,9 +770,27 @@ public class TourServiceManager {
             pointsNeededForNextRequest = POINT_PER_REQUEST;
             updateTourCoordinates();
         }
-        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
 
+        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
         authenticationController.saveTour(tour);
+    }
+
+    public void updateLocation(final Location location) {
+        entourageLocation.saveCurrentLocation(location);
+        final Location bestLocation = entourageLocation.getLocation();
+        boolean shouldCenterMap = false;
+        if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
+            entourageLocation.saveLocation(location);
+            isBetterLocationUpdated = true;
+            shouldCenterMap = true;
+        }
+
+        if (isBetterLocationUpdated) {
+            isBetterLocationUpdated = false;
+            if (shouldCenterMap) {
+                BusProvider.getInstance().post(new OnBetterLocationEvent(entourageLocation.getLatLng()));
+            }
+        }
     }
 
     // ----------------------------------
@@ -798,10 +801,10 @@ public class TourServiceManager {
         return pointsNeededForNextRequest <= 0;
     }
 
-    private double distanceToLine(TourPoint startPoint, TourPoint middlePoint, TourPoint endPoint) {
-        double scalarProduct = (middlePoint.getLatitude() - startPoint.getLatitude()) * (endPoint.getLatitude() - startPoint.getLatitude()) + (middlePoint.getLongitude() - startPoint.getLongitude()) * (endPoint.getLongitude() - startPoint.getLongitude());
-        double distanceProjection = scalarProduct / Math.sqrt(Math.pow(endPoint.getLatitude() - startPoint.getLatitude(), 2) + Math.pow(endPoint.getLongitude() - startPoint.getLongitude(), 2));
-        double distanceToMiddle = Math.sqrt(Math.pow(middlePoint.getLatitude() - startPoint.getLatitude(), 2) + Math.pow(middlePoint.getLongitude() - startPoint.getLongitude(), 2));
+    private double distanceToLine(final TourPoint startPoint, final TourPoint middlePoint, final TourPoint endPoint) {
+        final double scalarProduct = (middlePoint.getLatitude() - startPoint.getLatitude()) * (endPoint.getLatitude() - startPoint.getLatitude()) + (middlePoint.getLongitude() - startPoint.getLongitude()) * (endPoint.getLongitude() - startPoint.getLongitude());
+        final double distanceProjection = scalarProduct / Math.sqrt(Math.pow(endPoint.getLatitude() - startPoint.getLatitude(), 2) + Math.pow(endPoint.getLongitude() - startPoint.getLongitude(), 2));
+        final double distanceToMiddle = Math.sqrt(Math.pow(middlePoint.getLatitude() - startPoint.getLatitude(), 2) + Math.pow(middlePoint.getLongitude() - startPoint.getLongitude(), 2));
         return Math.sqrt(Math.pow(distanceToMiddle, 2) - Math.pow(distanceProjection, 2));
     }
 
@@ -814,19 +817,19 @@ public class TourServiceManager {
         private final TourServiceManager manager;
         private final TourService service;
 
-        NewsFeedCallback(TourServiceManager manager, TourService service) {
+        NewsFeedCallback(final TourServiceManager manager, final TourService service) {
             this.manager = manager;
             this.service = service;
         }
 
         @Override
-        public void onResponse(@NonNull Call<Newsfeed.NewsfeedWrapper> call, @NonNull Response<Newsfeed.NewsfeedWrapper> response) {
+        public void onResponse(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Response<Newsfeed.NewsfeedWrapper> response) {
             manager.resetCurrentNewsfeedCall();
             if (call.isCanceled()) {
                 return;
             }
             if (response.isSuccessful()) {
-                List<Newsfeed> newsFeedList = response.body().getNewsfeed();
+                final List<Newsfeed> newsFeedList = response.body().getNewsfeed();
                 if (newsFeedList == null) {
                     service.notifyListenersTechnicalException(new Throwable("Null newsfeed list"));
                 } else {
@@ -838,7 +841,7 @@ public class TourServiceManager {
         }
 
         @Override
-        public void onFailure(@NonNull Call<Newsfeed.NewsfeedWrapper> call, @NonNull Throwable t) {
+        public void onFailure(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Throwable t) {
             manager.resetCurrentNewsfeedCall();
             if (!call.isCanceled()) {
                 service.notifyListenersTechnicalException(t);
@@ -846,12 +849,11 @@ public class TourServiceManager {
         }
 
         @NonNull
-        private String getErrorMessage(@NonNull Call<Newsfeed.NewsfeedWrapper> call, @NonNull Response<Newsfeed.NewsfeedWrapper> response) {
-            String errorBody = getErrorBody(response);
+        private String getErrorMessage(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Response<Newsfeed.NewsfeedWrapper> response) {
+            final String errorBody = getErrorBody(response);
             String errorMessage = "Response code = " + response.code();
-            if (call.request()!=null) {
-                errorMessage += " ( " + call.request().toString() + ")";
-            }
+            call.request();
+            errorMessage += " ( " + call.request().toString() + ")";
             if (!errorBody.isEmpty()) {
                 errorMessage += " : " + errorBody;
             }
@@ -859,75 +861,15 @@ public class TourServiceManager {
         }
 
         @NonNull
-        private String getErrorBody(Response<Newsfeed.NewsfeedWrapper> response) {
+        private String getErrorBody(final Response<Newsfeed.NewsfeedWrapper> response) {
             try {
                 if (response.errorBody() != null) {
                     return response.errorBody().string();
                 } else {
                     return EMPTY_STRING;
                 }
-            } catch (IOException ignored) {
+            } catch (final IOException ignored) {
                 return EMPTY_STRING;
-            }
-        }
-    }
-
-    private static class FusedLocationListener implements LocationListener {
-        private final TourServiceManager manager;
-
-        private FusedLocationListener(TourServiceManager manager) {
-            this.manager = manager;
-        }
-
-        @Override
-        public void onLocationChanged(Location location) {
-            Timber.d("onLocationChanged");
-            if (manager.entourageLocation.getCurrentLocation() == null) {
-                manager.entourageLocation.setInitialLocation(location);
-            }
-
-            manager.updateLocation(location);
-            manager.tourService.notifyListenersPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-
-            if (manager.tour != null && !manager.tourService.isPaused()) {
-                TourPoint point = new TourPoint(location.getLatitude(), location.getLongitude(), location.getAccuracy());
-                manager.onLocationChanged(location, point);
-            }
-        }
-    }
-
-    private static class FusedLocationStatusListener implements ProviderStatusListener {
-        private final Context context;
-
-        private FusedLocationStatusListener(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public void onProviderEnabled() {
-            context.sendBroadcast(new Intent(TourService.KEY_LOCATION_PROVIDER_ENABLED));
-        }
-
-        @Override
-        public void onProviderDisabled() {
-            context.sendBroadcast(new Intent(TourService.KEY_LOCATION_PROVIDER_DISABLED));
-        }
-    }
-
-    private void updateLocation(Location location) {
-        entourageLocation.saveCurrentLocation(location);
-        Location bestLocation = entourageLocation.getLocation();
-        boolean shouldCenterMap = false;
-        if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
-            entourageLocation.saveLocation(location);
-            isBetterLocationUpdated = true;
-            shouldCenterMap = true;
-        }
-
-        if (isBetterLocationUpdated) {
-            isBetterLocationUpdated = false;
-            if (shouldCenterMap) {
-                BusProvider.getInstance().post(new OnBetterLocationEvent(entourageLocation.getLatLng()));
             }
         }
     }

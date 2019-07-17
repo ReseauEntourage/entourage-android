@@ -1,6 +1,7 @@
 package social.entourage.android.location;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,10 +10,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.content.PermissionChecker;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +27,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+import com.google.android.libraries.places.compat.Place;
+import com.google.android.libraries.places.compat.ui.PlaceSelectionListener;
+import com.google.android.libraries.places.compat.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -57,6 +60,8 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.tools.BusProvider;
 import timber.log.Timber;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 /**
  * Fragment to choose the location of an entourage
@@ -226,18 +231,16 @@ public class LocationFragment extends EntourageDialogFragment {
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
-            EntourageSecuredActivity activity = (EntourageSecuredActivity) getActivity();
-            if (activity != null && map != null) {
                 for (int index = 0; index < permissions.length; index++) {
-                    if (permissions[index].equalsIgnoreCase(activity.getUserLocationAccess()) && grantResults[index] == PackageManager.PERMISSION_GRANTED) {
-                        BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
+                if (permissions[index].equalsIgnoreCase(ACCESS_FINE_LOCATION)) {
+                    boolean isGranted = grantResults[index] == PackageManager.PERMISSION_GRANTED;
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(isGranted));
+                    if (map != null) {
                         try {
-                            map.setMyLocationEnabled(true);
+                            map.setMyLocationEnabled(isGranted);
                         } catch (SecurityException ex) {
                             Timber.e(ex);
                         }
-                    } else {
-                        BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
                     }
                 }
             }
@@ -268,14 +271,14 @@ public class LocationFragment extends EntourageDialogFragment {
         if (map != null) {
             EntourageSecuredActivity activity = (EntourageSecuredActivity) getActivity();
             if (activity != null) {
-                if (activity.isGeolocationGranted()) {
+                if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
                     Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
                     if (currentLocation != null) {
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
                         map.moveCamera(cameraUpdate);
                     }
                 } else {
-                    requestPermissions(new String[]{activity.getUserLocationAccess()}, PERMISSIONS_REQUEST_LOCATION);
+                    requestPermissions(new String[]{ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
             }
         }
@@ -308,10 +311,10 @@ public class LocationFragment extends EntourageDialogFragment {
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
+            @SuppressLint("MissingPermission")
             public void onMapReady(final GoogleMap googleMap) {
                 if (getActivity() != null) {
-                    if ((PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                            || (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                    if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
                         googleMap.setMyLocationEnabled(true);
                     }
                 }
@@ -442,9 +445,9 @@ public class LocationFragment extends EntourageDialogFragment {
                 if (autocompleteFragment == null) return;
                 View autocompleteView = autocompleteFragment.getView();
                 if (autocompleteView == null) return;
-                TextView autocompleteEditText = autocompleteView.findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input);
+                TextView autocompleteEditText = autocompleteView.findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input);
                 if (autocompleteEditText == null || TextUtils.isEmpty(autocompleteEditText.getText())) return;
-                View autocompleteSearchView = autocompleteView.findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_button);
+                View autocompleteSearchView = autocompleteView.findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_button);
                 if (autocompleteSearchView != null) {
                     autocompleteSearchView.performClick();
                 }
@@ -461,7 +464,7 @@ public class LocationFragment extends EntourageDialogFragment {
         if (useGooglePlacesOnly && autocompleteFragment != null && !fromPlaceSelected) {
             View autocompleteView = autocompleteFragment.getView();
             if (autocompleteView != null) {
-                TextView autocompleteEditText = autocompleteView.findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input);
+                TextView autocompleteEditText = autocompleteView.findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input);
                 if (autocompleteEditText != null) {
                     cancelTimer();
                     handler.postDelayed(timerTask, SEARCH_DELAY);

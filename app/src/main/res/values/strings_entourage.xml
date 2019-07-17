@@ -80,7 +80,7 @@
     <string name="entourage_info_text_join_accepted">\u0020a rejoint le groupe.</string>
     <string name="entourage_join_request_received">%1$s souhaite rejoindre votre action: %2$s</string>
     <string name="entourage_join_request_received_nomsg">%1$s souhaite rejoindre votre action.</string>
-    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F26521\">%1$s </font>souhaite rejoindre votre groupe]]></string>
+    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre groupe]]></string>
     <string name="entourage_join_request_received_message_short">veut rejoindre votre groupe.</string>
 
     <string name="entourage_info_quit_entourage_title">Quitter l\'entourage</string>

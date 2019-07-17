@@ -9,7 +9,7 @@ ext {
 
     // SDK versions
     compileSdkVersion = 28
-    buildToolsVersion = "28.0.3"
+    buildToolsVersion = "29.0.0"
     minSdkVersion = 18 /*July 2013 Android 4.3 JELLY_BEAN_MR2*/
     targetSdkVersion = 28
 
@@ -27,35 +27,36 @@ ext {
     appBundleName = System.env.APPBUNDLE_NAME ? System.env.APPBUNDLE_NAME : "app"
 
     // Libraries versions
+    annotationVersion = "1.1.0"
     appCompatVersion = "1.0.2"
     butterKnifeVersion = "10.1.0"
     constraintlayoutVersion = "1.1.3"
     coordinatorlayoutVersion="1.0.0"
-    crashlyticsVersion = "2.10.0"
-    daggerVersion = "2.22.1"
+    crashlyticsVersion = "2.10.1"
+    daggerVersion = "2.23.1"
     dateTimePickerVersion = "3.6.3"
-    espressoVersion = "3.1.0"
-    facebookVersion = "5.0.1"
-    firebaseCoreVersion = "16.0.9"
-    firebaseMessagingVersion = "18.0.0"
-    firebaseInappVersion = "17.1.1"
+    espressoVersion = "3.2.0"
+    facebookVersion = "5.0.3"
+    firebaseCoreVersion = "17.0.0"
+    firebaseMessagingVersion = "19.0.0"
+    firebaseInappVersion = "18.0.0"
     floatingButtonVersion = "1.6.4"
     guavaVersion = "27.0.1-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
     jodaVersion = "2.10.1.2"
-    mapsVersion = "16.1.0"
+    mapsVersion = "17.0.0"
     mapsUtilsVersion = "0.5"
-    materialVersion = "1.1.0-alpha06"
-    mixpanelVersion = "5.6.1"
+    materialVersion = "1.1.0-alpha07"
+    mixpanelVersion = "5.6.3"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.2" //version 3.14+ needs API 21+
     okHttpIdlingVersion = "1.0.0"
     picassoVersion = "2.5.2"
     picassoTransformationsVersion = "2.2.1"
-    playServicesVersion = "16.0.0"
-    retrofitVersion = "2.5.0"
-    recyclerViewVersion = "1.1.0-alpha04"
+    playServicesVersion = "17.0.0"
+    retrofitVersion = "2.6.0"
+    recyclerViewVersion = "1.1.0-alpha06"
     shortcutBadgerVersion = "1.1.22"
     supportVersion = "1.0.0"
     tapeVersion = "1.2.3"
@@ -63,7 +64,7 @@ ext {
     ottoVersion = "1.3.8"
 
     androidSupportDependencies = [
-            annotations     : "androidx.annotation:annotation:$supportVersion",
+            annotations      : "androidx.annotation:annotation:$annotationVersion",
             appcompat       : "androidx.appcompat:appcompat:$appCompatVersion",
             browser         : "androidx.browser:browser:$supportVersion",
             cardview        : "androidx.cardview:cardview:$supportVersion",
@@ -106,7 +107,7 @@ ext {
     gmsDependencies = [
             maps            : "com.google.android.gms:play-services-maps:$mapsVersion",
             location        : "com.google.android.gms:play-services-location:$playServicesVersion",
-            places          : "com.google.android.gms:play-services-places:$playServicesVersion"
+            places          : "com.google.android.libraries.places:places-compat:1.1.0"
     ]
 
     javaDependencies = [
@@ -139,7 +140,7 @@ ext {
                     ]
             ],
             rules           : "com.android.support.test:rules:1.0.2",
-            junit           : "androidx.test.ext:junit:1.1.0"
+            junit           : "androidx.test.ext:junit:1.1.1"
     ]
 
     uiDependencies = [

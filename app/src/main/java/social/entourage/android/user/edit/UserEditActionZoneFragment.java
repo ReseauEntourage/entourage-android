@@ -16,11 +16,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.libraries.places.compat.Place;
+import com.google.android.libraries.places.compat.ui.PlaceAutocomplete;
+import com.google.android.libraries.places.compat.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
+import timber.log.Timber;
 
 /**
  * A {@link EntourageDialogFragment} subclass, used to edit the action zone for an user
@@ -62,11 +64,11 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     @BindView(R.id.action_zone_ignore_button)
     Button ignoreButton;
 
-    protected User.Address userAddress;
+    private User.Address userAddress;
 
     private boolean saving = false;
 
-    SupportPlaceAutocompleteFragment autocompleteFragment = null;
+    private SupportPlaceAutocompleteFragment autocompleteFragment = null;
 
     private List<FragmentListener> fragmentListeners = new ArrayList<>();
 
@@ -197,9 +199,10 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
             args.putString(KEY_USER_ADDRESS, userAddress.getDisplayAddress());
             autocompleteFragment.setArguments(args);
         }
-        FragmentManager fragmentManager = getChildFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.place_autocomplete_fragment, autocompleteFragment).commit();
 
+        getChildFragmentManager().beginTransaction().replace(R.id.place_autocomplete_fragment, autocompleteFragment).commit();
+
+        //TODO be more precise about Bouns EN-432
         autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(42, -5), new LatLng(51, 9)));
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -265,7 +268,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
     // Inner classes
     // ----------------------------------
 
-    public static class SupportPlaceAutocompleteFragment extends com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment {
+    public static class SupportPlaceAutocompleteFragment extends com.google.android.libraries.places.compat.ui.SupportPlaceAutocompleteFragment {
 
         @Override
         public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
@@ -277,7 +280,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
                 setText(address);
             }
             if (getView() != null) {
-                EditText autocompleteEditText = getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input);
+                EditText autocompleteEditText = getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input);
                 if (autocompleteEditText != null && getContext() != null) {
                     autocompleteEditText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 }
@@ -287,8 +290,8 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
         @Override
         public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
             super.onActivityResult(requestCode, resultCode, intent);
-            if (requestCode == 30421) {
-                if (resultCode == -1) {
+            if (requestCode == 30421/*AUTOCOMPLETE_REQUEST_CODE*/) {
+                if (resultCode == AutocompleteActivity.RESULT_OK) {
                     if (this.getActivity() == null) return;
                     Place place = PlaceAutocomplete.getPlace(this.getActivity(), intent);
                     if (place == null || place.getAddress() == null) return;
@@ -301,6 +304,9 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
                     }
 
                     this.setText(address);
+                } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                    if (this.getActivity() == null) return;
+                    Timber.e(PlaceAutocomplete.getStatus(getActivity(), intent).getStatusMessage());
                 }
             }
         }

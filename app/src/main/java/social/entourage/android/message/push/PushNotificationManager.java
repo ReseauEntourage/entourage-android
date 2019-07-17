@@ -340,10 +340,10 @@ public class PushNotificationManager {
 
         String channelId = context.getString(R.string.app_name);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT);
 
             // Configure the notification channel.
-            notificationChannel.setDescription(context.getString(R.string.app_name));
+            notificationChannel.setDescription(channelId);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationManager.createNotificationChannel(notificationChannel);
@@ -352,7 +352,7 @@ public class PushNotificationManager {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
         builder.setSmallIcon(R.drawable.ic_notification_small);
         builder.setContentIntent(createMessagePendingIntent(message, context));
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.entourage_logo_grey));
         builder.setContentTitle(message.getContentTitleForCount(count, context));
         builder.setContentText(message.getContentTextForCount(count, context));
 
@@ -369,10 +369,10 @@ public class PushNotificationManager {
 
         String channelId = context.getString(R.string.app_name);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, context.getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT);
 
             // Configure the notification channel.
-            notificationChannel.setDescription(context.getString(R.string.app_name));
+            notificationChannel.setDescription(channelId);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationManager.createNotificationChannel(notificationChannel);
@@ -382,7 +382,7 @@ public class PushNotificationManager {
         builder.setSmallIcon(R.drawable.ic_notification_small);
         Intent ctaIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fcmMessage.getData().get(PushNotificationManager.KEY_CTA)));
         builder.setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.entourage_logo_grey));
         builder.setContentTitle(fcmMessage.getNotification().getTitle());
         builder.setContentText(fcmMessage.getNotification().getBody());
 

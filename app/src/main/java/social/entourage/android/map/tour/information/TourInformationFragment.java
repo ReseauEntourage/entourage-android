@@ -15,21 +15,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.speech.RecognizerIntent;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.PermissionChecker;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -47,6 +37,16 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PermissionChecker;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -66,6 +66,8 @@ import com.google.android.gms.maps.model.VisibleRegion;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,7 +81,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import butterknife.Optional;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageApplication;
@@ -114,16 +115,18 @@ import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.OnAddressClickListener;
-import social.entourage.android.map.entourage.create.CreateEntourageFragment;
 import social.entourage.android.map.entourage.EntourageCloseFragment;
+import social.entourage.android.map.entourage.create.CreateEntourageFragment;
 import social.entourage.android.map.tour.TourService;
+import social.entourage.android.map.tour.TourServiceListener;
 import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
 import social.entourage.android.map.tour.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.tools.Utils;
+import timber.log.Timber;
 
-public class TourInformationFragment extends EntourageDialogFragment implements TourService.TourServiceListener, InviteFriendsListener {
+public class TourInformationFragment extends EntourageDialogFragment implements TourServiceListener, InviteFriendsListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -385,10 +388,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @Override
     public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
-        if (!(activity instanceof  OnTourInformationFragmentFinish)) {
+        if (!(activity instanceof OnTourInformationFragmentFinish)) {
             throw new ClassCastException(activity.toString() + " must implement OnTourInformationFragmentFinish");
         }
-        mListener = (OnTourInformationFragmentFinish)activity;
+        mListener = (OnTourInformationFragmentFinish) activity;
         doBindService();
 
         BusProvider.getInstance().register(this);
@@ -505,8 +508,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @OnClick({R.id.tour_info_icon, R.id.tour_info_title, R.id.tour_card_arrow, R.id.tour_info_description_button})
     protected void onSwitchSections() {
         // Ignore if the entourage is not loaded or is public
-        if (feedItem == null || !feedItem.isPrivate())
-        {
+        if (feedItem == null || !feedItem.isPrivate()) {
             return;
         }
 
@@ -521,7 +523,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
 
         // For conversation, open the author profile
-        if (FeedItem.ENTOURAGE_CARD == feedItem.getType() && Entourage.TYPE_CONVERSATION.equalsIgnoreCase(((Entourage)feedItem).getGroupType())) {
+        if (FeedItem.ENTOURAGE_CARD == feedItem.getType() && Entourage.TYPE_CONVERSATION.equalsIgnoreCase(((Entourage) feedItem).getGroupType())) {
             if (showInfoButton) {
                 // only if this screen wasn't shown from the profile page
                 BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(feedItem.getAuthor().getUserID()));
@@ -532,7 +534,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         // Switch sections
         boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
         publicSection.setVisibility(isPublicSectionVisible ? View.GONE : View.VISIBLE);
-        privateSection.setVisibility(isPublicSectionVisible ?  View.VISIBLE : View.GONE);
+        privateSection.setVisibility(isPublicSectionVisible ? View.VISIBLE : View.GONE);
 
         updateHeaderButtons();
 
@@ -638,11 +640,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     public void onStopTourButton() {
         if (feedItem.getStatus().equals(FeedItem.STATUS_ON_GOING) || feedItem.getStatus().equals(FeedItem.STATUS_OPEN)) {
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                Tour tour = (Tour)feedItem;
+                Tour tour = (Tour) feedItem;
                 //compute distance
                 float distance = 0.0f;
                 List<TourPoint> tourPointsList = tour.getTourPoints();
-                if(tourPointsList.size()>1) {
+                if (tourPointsList.size() > 1) {
                     TourPoint startPoint = tourPointsList.get(0);
                     for (int i = 1; i < tourPointsList.size(); i++) {
                         TourPoint p = tourPointsList.get(i);
@@ -667,8 +669,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
                     mListener.showStopTourActivity(tour);
                 }
-            }
-            else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+            } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
                 //tourService.stopFeedItem(feedItem);
                 //hide the options
@@ -680,11 +681,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
                 }
             }
-        }
-        else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
+        } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
             if (tourService != null) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
-                tourService.freezeTour((Tour)feedItem);
+                tourService.freezeTour((Tour) feedItem);
             }
         }
     }
@@ -713,13 +713,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private void quitTour() {
         if (tourService == null) {
             Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             User me = EntourageApplication.me(getActivity());
             if (me == null) {
                 Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
                 showProgressBar();
                 tourService.removeUserFromFeedItem(feedItem, me.getId());
@@ -733,17 +731,14 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             showProgressBar();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
-                tourService.requestToJoinTour((Tour)feedItem);
-            }
-            else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                tourService.requestToJoinTour((Tour) feedItem);
+            } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
                 tourService.requestToJoinEntourage((Entourage) feedItem);
-            }
-            else {
+            } else {
                 hideProgressBar();
             }
-        }
-        else {
+        } else {
             Toast.makeText(getActivity(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
         }
     }
@@ -871,8 +866,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (feedItem.isPrivate() && Configuration.getInstance().showInviteView()) {
             // For members show the invite screen
             onUserAddClicked();
-        }
-        else {
+        } else {
             // For non-members, show the share screen
             onShareButton();
         }
@@ -883,7 +877,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         TextView inviteDescription = inviteSourceLayout.findViewById(R.id.invite_source_description);
         if (inviteDescription != null) {
             if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                inviteDescription.setText(Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) ? R.string.invite_source_description_outing : R.string.invite_source_description);
+                inviteDescription.setText(Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage) feedItem).getGroupType()) ? R.string.invite_source_description_outing : R.string.invite_source_description);
             } else {
                 inviteDescription.setText(R.string.invite_source_description);
             }
@@ -1001,8 +995,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (feedItem.isPrivate()) {
             updateJoinStatus();
             switchToPrivateSection();
-        }
-        else {
+        } else {
             switchToPublicSection();
         }
 
@@ -1071,7 +1064,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                         reportEntourageButton.setVisibility(View.VISIBLE);
                         // Share button available only for entourages and non-members
-                        shareEntourageButton.setVisibility( feedItem.isPrivate() || feedItem.isSuspended() ? View.GONE : View.VISIBLE );
+                        shareEntourageButton.setVisibility(feedItem.isPrivate() || feedItem.isSuspended() ? View.GONE : View.VISIBLE);
                     }
                 } else {
                     stopTourButton.setVisibility(feedItem.isFreezed() || !feedItem.canBeClosed() ? View.GONE : View.VISIBLE);
@@ -1106,9 +1099,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         }
         boolean isPublicSectionVisible = (publicSection.getVisibility() == View.VISIBLE);
 
-        if (moreButton != null) moreButton.setVisibility(isPublicSectionVisible ? View.VISIBLE : View.GONE);
+        if (moreButton != null)
+            moreButton.setVisibility(isPublicSectionVisible ? View.VISIBLE : View.GONE);
 
-        if (descriptionButton != null) descriptionButton.setVisibility(isPublicSectionVisible || !showInfoButton ? View.GONE : View.VISIBLE);
+        if (descriptionButton != null)
+            descriptionButton.setVisibility(isPublicSectionVisible || !showInfoButton ? View.GONE : View.VISIBLE);
 
         if (invitationId > 0) {
             if (moreButton != null) moreButton.setVisibility(View.GONE);
@@ -1119,13 +1114,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (getView() == null) return;
         ScrollView scrollView = getView().findViewById(R.id.tour_info_public_scrollview);
         if (scrollView == null) return;
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
         int oldRule = lp.getRules()[RelativeLayout.ABOVE];
         int newRule = actLayout.getId();
         if (invitedLayout.getVisibility() == View.VISIBLE) {
             newRule = invitedLayout.getId();
-        }
-        else if (requestJoinLayout.getVisibility() == View.VISIBLE) {
+        } else if (requestJoinLayout.getVisibility() == View.VISIBLE) {
             newRule = requestJoinLayout.getId();
         }
         if (oldRule != newRule) {
@@ -1220,7 +1214,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         getActivity(), R.raw.map_styles_json));
 
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                    Tour tour = (Tour)feedItem;
+                    Tour tour = (Tour) feedItem;
                     List<TourPoint> tourPoints = tour.getTourPoints();
                     if (tourPoints != null && tourPoints.size() > 0) {
                         //setup the camera position to starting point
@@ -1242,8 +1236,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         }
                         googleMap.addPolyline(line);
                     }
-                }
-                else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
+                } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                     TourPoint startPoint = feedItem.getStartPoint();
                     if (startPoint != null) {
                         LatLng position = startPoint.getLocation();
@@ -1302,12 +1295,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         MarkerOptions pin = new MarkerOptions().position(tourTimestamp.getTourPoint().getLocation());
                         googleMap.addMarker(pin);
                         //move the camera
-                        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
+                        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), TourInformationFragment.MAP_SNAPSHOT_ZOOM);
                         googleMap.moveCamera(camera);
                     }
-                }
-                else {
-                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM));
+                } else {
+                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(TourInformationFragment.MAP_SNAPSHOT_ZOOM));
                 }
 
                 googleMap.setOnMapLoadedCallback(TourInformationFragment.this::getMapSnapshot);
@@ -1361,7 +1353,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                         MarkerOptions pin = new MarkerOptions().position(nextTourTimestamp.getTourPoint().getLocation());
                         hiddenGoogleMap.addMarker(pin);
                         //move the camera
-                        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.getTourPoint().getLocation(), MAP_SNAPSHOT_ZOOM);
+                        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.getTourPoint().getLocation(), TourInformationFragment.MAP_SNAPSHOT_ZOOM);
                         hiddenGoogleMap.moveCamera(camera);
                     }
                 } else {
@@ -1393,10 +1385,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         commentEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {}
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+            }
 
             @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {}
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+            }
 
             @Override
             public void afterTextChanged(final Editable s) {
@@ -1419,7 +1413,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             @Override
             public void onClick(final View v) {
                 if (discussionView != null) {
-                    final int lastVisibleItemPosition = ((LinearLayoutManager)discussionView.getLayoutManager()).findLastVisibleItemPosition();
+                    final int lastVisibleItemPosition = ((LinearLayoutManager) discussionView.getLayoutManager()).findLastVisibleItemPosition();
                     discussionView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -1495,8 +1489,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         BaseEntourage.Metadata metadata = null;
 
         if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            metadata = ((Entourage)feedItem).getMetadata();
-            metadataVisible = Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage)feedItem).getGroupType()) && (metadata != null);
+            metadata = ((Entourage) feedItem).getMetadata();
+            metadataVisible = Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage) feedItem).getGroupType()) && (metadata != null);
         }
 
         metadataView.setVisibility(metadataVisible ? View.VISIBLE : View.GONE);
@@ -1566,8 +1560,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (!feedItem.getJoinStatus().equals(FeedItem.JOIN_STATUS_ACCEPTED) || feedItem.isFreezed()) {
             commentLayout.setVisibility(View.GONE);
             discussionView.setBackgroundResource(R.color.background_login_grey);
-        }
-        else {
+        } else {
             commentLayout.setVisibility(View.VISIBLE);
             discussionView.setBackgroundResource(R.color.background);
         }
@@ -1609,8 +1602,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             actButton.setPadding(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
             actButton.setPaddingRelative(getResources().getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0);
             actButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        }
-        else {
+        } else {
             String joinStatus = feedItem.getJoinStatus();
             switch (joinStatus) {
                 case Tour.JOIN_STATUS_PENDING:
@@ -1734,8 +1726,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     private void scrollToLastCard() {
-        if(discussionAdapter.getItemCount()>0) {
-            discussionView.scrollToPosition(discussionAdapter.getItemCount()-1);
+        if (discussionAdapter.getItemCount() > 0) {
+            discussionView.scrollToPosition(discussionAdapter.getItemCount() - 1);
         }
     }
 
@@ -1743,7 +1735,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (feedItem == null) return;
         List<TimestampedObject> encounters = feedItem.getTypedCardInfoList(TimestampedObject.ENCOUNTER);
         if (encounters == null || encounters.size() == 0) return;
-        for (TimestampedObject timestampedObject: encounters) {
+        for (TimestampedObject timestampedObject : encounters) {
             Encounter encounter = (Encounter) timestampedObject;
             encounter.setReadOnly(true);
             discussionAdapter.updateCard(encounter);
@@ -1784,7 +1776,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         Entourage updatedEntourage = event.getEntourage();
         if (updatedEntourage == null) return;
         // Check if it is our displayed entourage
-        if (feedItem.getType() != updatedEntourage.getType() || feedItem.getId() != updatedEntourage.getId()) return;
+        if (feedItem.getType() != updatedEntourage.getType() || feedItem.getId() != updatedEntourage.getId())
+            return;
         // Update the UI
         feedItem = updatedEntourage;
 
@@ -1928,11 +1921,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(chatMessageList);
                 if (feedItem.addCardInfoList(timestampedObjectList) > 0) {
                     //remember the last chat message
-                    ChatMessage chatMessage = (ChatMessage)feedItem.getAddedCardInfoList().get(0);
+                    ChatMessage chatMessage = (ChatMessage) feedItem.getAddedCardInfoList().get(0);
                     oldestChatMessageDate = chatMessage.getCreationDate();
                 }
-            }
-            else {
+            } else {
                 //no need to ask for more messages
                 needsMoreChatMessaged = false;
             }
@@ -1952,7 +1944,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         commentSendButton.setEnabled(true);
 
         if (chatMessage == null) {
-            if(getContext()!=null) {
+            if (getContext() != null) {
                 Toast.makeText(getContext(), R.string.tour_info_error_chat_message, Toast.LENGTH_SHORT).show();
             }
             return;
@@ -1960,8 +1952,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         commentEditText.setText("");
 
         //hide the keyboard
-        if (commentEditText.hasFocus() && getActivity()!=null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (commentEditText.hasFocus() && getActivity() != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) imm.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
         }
 
@@ -2019,8 +2011,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     TourUser clone = card.clone();
                     clone.setDisplayedAsMember(true);
                     membersAdapter.addCardInfo(clone);
-                }
-                else {
+                } else {
                     // remove from the adapter
                     discussionAdapter.removeCard(card);
                     // remove from cached cards
@@ -2034,8 +2025,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     application.removePushNotification(feedItem, userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
                 }
             }
-        }
-        else if (error == EntourageError.ERROR_BAD_REQUEST) {
+        } else if (error == EntourageError.ERROR_BAD_REQUEST) {
             // Assume that the other user cancelled the request
             // Get the card
             TourUser card = (TourUser) discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId);
@@ -2050,8 +2040,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     discussionAdapter.addCardInfoAfterTimestamp(clone);
                     // remove from cached cards
                     feedItem.removeCardInfo(card);
-                }
-                else if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
+                } else if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
                     // Mark the user as cancelled
                     card.setStatus(FeedItem.JOIN_STATUS_CANCELLED);
                     // Remove the message
@@ -2059,16 +2048,14 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     discussionAdapter.updateCard(card);
                     // remove from cached cards
                     feedItem.removeCardInfo(card);
-                }
-                else {
+                } else {
                     // remove from the adapter
                     discussionAdapter.removeCard(card);
                     // remove from cached cards
                     feedItem.removeCardInfo(card);
                 }
             }
-        }
-        else if(getActivity()!=null){
+        } else if (getActivity() != null) {
             // Error
             Toast.makeText(getActivity(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
         }
@@ -2119,9 +2106,13 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
 
     void doBindService() {
         if (getActivity() != null) {
+            try {
             Intent intent = new Intent(getActivity(), TourService.class);
             getActivity().startService(intent);
             getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            } catch (IllegalStateException e) {
+                Timber.e(e);
+            }
         }
     }
 
@@ -2147,17 +2138,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     @Override
-    public void onTourResumed(final List<TourPoint> pointsToDraw, final String tourType, final Date startDate) {
-
+    public void onTourResumed(@NotNull List<? extends TourPoint> pointsToDraw, @NotNull String tourType, @NotNull Date startDate) {
     }
 
     @Override
-    public void onLocationUpdated(final LatLng location) {
-
-    }
-
-    @Override
-    public void onRetrieveToursNearby(final List<Tour> tours) {
+    public void onRetrieveToursNearby(@NotNull List<? extends Tour> tours) {
         if (feedItem.getType() != TimestampedObject.TOUR_CARD) return;
         for (Tour receivedTour:tours) {
             if (receivedTour.getId() == this.feedItem.getId()) {
@@ -2169,18 +2154,15 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     @Override
-    public void onRetrieveToursByUserId(final List<Tour> tours) {
-
+    public void onRetrieveToursByUserId(@NotNull List<? extends Tour> tours) {
     }
 
     @Override
-    public void onUserToursFound(final Map<Long, Tour> tours) {
-
+    public void onUserToursFound(@NotNull Map<Long, ? extends Tour> tours) {
     }
 
     @Override
-    public void onToursFound(final Map<Long, Tour> tours) {
-
+    public void onToursFound(@NotNull Map<Long, ? extends Tour> tours) {
     }
 
     @Override
@@ -2197,22 +2179,24 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 updateDiscussionList();
                 setEncountersToReadOnly();
             }
-            if (feedItem.isFreezed()){
+            if (feedItem.isFreezed()) {
                 commentLayout.setVisibility(View.GONE);
             }
             optionsLayout.setVisibility(View.GONE);
             initializeOptionsView();
             updateHeaderButtons();
             updateJoinStatus();
-        }
-        else {
+        } else {
             Toast.makeText(getActivity(), R.string.tour_close_fail, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void onLocationProviderStatusChanged(final boolean active) {
+    public void onLocationUpdated(@NonNull final LatLng location) {
+    }
 
+    @Override
+    public void onLocationStatusUpdated(final boolean active) {
     }
 
     @Override
@@ -2242,12 +2226,10 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             if (feedItem.isPrivate()) {
                 switchToPrivateSection();
                 loadPrivateCards();
-            }
-            else {
+            } else {
                 switchToPublicSection();
             }
-        }
-        else {
+        } else {
             updateHeaderButtons();
             initializeOptionsView();
             updateJoinStatus();
@@ -2258,29 +2240,21 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     // RecyclerView.OnScrollListener
     // ----------------------------------
 
-    private class OnScrollListener extends RecyclerView.OnScrollListener {
-
-        @Override
-        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
-            if (!needsMoreChatMessaged) return;
-            scrollDeltaY += dy;
-            //check if user is scrolling up and pass the threshold
-            if (dy < 0 && Math.abs(scrollDeltaY) >= SCROLL_DELTA_Y_THRESHOLD) {
-                LinearLayoutManager layoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                int adapterPosition = recyclerView.findViewHolderForLayoutPosition(firstVisibleItemPosition).getAdapterPosition();
-                TimestampedObject timestampedObject = discussionAdapter.getCardAt(adapterPosition);
-                Date timestamp = timestampedObject.getTimestamp();
-                if (timestamp != null && oldestChatMessageDate != null && timestamp.before(oldestChatMessageDate)) {
-                    presenter.getFeedItemMessages(oldestChatMessageDate);
-                }
-                scrollDeltaY = 0;
+    private void showCarousel() {
+        Handler h = new Handler();
+        h.postDelayed(() -> {
+            // Check if the activity is still running
+            if (getActivity() == null || getActivity().isFinishing()) {
+                return;
             }
-        }
-
-        @Override
-        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
-        }
+            if (!isVisible()) {
+                return;
+            }
+            if (getFragmentManager() != null) {
+                CarouselFragment carouselFragment = new CarouselFragment();
+                carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
+            }
+        }, Constants.CAROUSEL_DELAY_MILLIS);
     }
 
     // ----------------------------------
@@ -2299,24 +2273,29 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     // CAROUSEL
     // ----------------------------------
 
-    private void showCarousel() {
-        Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Check if the activity is still running
-                if (getActivity() == null || getActivity().isFinishing()) {
-                    return;
+    private class OnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
+            if (!needsMoreChatMessaged) return;
+            scrollDeltaY += dy;
+            //check if user is scrolling up and pass the threshold
+            if (dy < 0 && Math.abs(scrollDeltaY) >= TourInformationFragment.SCROLL_DELTA_Y_THRESHOLD) {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                int adapterPosition = recyclerView.findViewHolderForLayoutPosition(firstVisibleItemPosition).getAdapterPosition();
+                TimestampedObject timestampedObject = discussionAdapter.getCardAt(adapterPosition);
+                Date timestamp = timestampedObject.getTimestamp();
+                if (timestamp != null && oldestChatMessageDate != null && timestamp.before(oldestChatMessageDate)) {
+                    presenter.getFeedItemMessages(oldestChatMessageDate);
                 }
-                if (!isVisible()) {
-                    return;
-                }
-                if (getFragmentManager() != null) {
-                    CarouselFragment carouselFragment = new CarouselFragment();
-                    carouselFragment.show(getFragmentManager(), CarouselFragment.TAG);
-                }
+                scrollDeltaY = 0;
             }
-        }, Constants.CAROUSEL_DELAY_MILLIS);
+        }
+
+        @Override
+        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
+        }
     }
 
     // ----------------------------------

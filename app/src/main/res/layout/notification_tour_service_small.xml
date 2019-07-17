@@ -14,7 +14,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_notification"/>
+        android:src="@drawable/ic_notification_small"/>
 
     <LinearLayout
         android:id="@+id/notification_tour_infos"

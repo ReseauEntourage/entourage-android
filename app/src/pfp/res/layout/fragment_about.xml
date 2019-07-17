@@ -172,7 +172,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/about_items_padding"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/entourage_logo"/>
+            android:src="@drawable/entourage_logo_grey"/>
     </LinearLayout>
 
 </LinearLayout>

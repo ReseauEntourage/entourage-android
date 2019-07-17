@@ -64,7 +64,7 @@ public class LoginTest {
 
         onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
         onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
-        onView(withId(R.id.login_button_signup)).perform(click());
+        onView(withId(R.id.login_button_signin)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(doesNotExist());
         //checkNoUserIsLoggedIn();
@@ -76,7 +76,7 @@ public class LoginTest {
 
         onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33", "0")));
         onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
-        onView(withId(R.id.login_button_signup)).perform(click());
+        onView(withId(R.id.login_button_signin)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(doesNotExist());
         //checkNoUserIsLoggedIn();
@@ -88,7 +88,7 @@ public class LoginTest {
 
         onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
         onView(withId(R.id.login_edit_code)).perform(typeText("999999"));
-        onView(withId(R.id.login_button_signup)).perform(click());
+        onView(withId(R.id.login_button_signin)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(matches(isDisplayed()));
         onView(withText(R.string.login_retry_label)).perform(click());
@@ -101,7 +101,7 @@ public class LoginTest {
 
         onView(withId(R.id.login_edit_phone)).perform(typeText("012345678"));
         onView(withId(R.id.login_edit_code)).perform(typeText("000000"));
-        onView(withId(R.id.login_button_signup)).perform(click());
+        onView(withId(R.id.login_button_signin)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(matches(isDisplayed()));
         onView(withText(R.string.login_retry_label)).perform(click());

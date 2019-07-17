@@ -16,14 +16,14 @@
 
     </social.entourage.android.view.EntourageTitleView>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.appcompat.widget.RecyclerView
         android:id="@+id/privatecircle_choose_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/privatecircle_choose_title_view"
         android:visibility="visible">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.appcompat.widget.RecyclerView>
 
     <ProgressBar
         android:id="@+id/progressBar"

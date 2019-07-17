@@ -1,7 +1,6 @@
 package social.entourage.android.authentication.login;
 
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,17 +9,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.PermissionChecker;
-import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -29,7 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.DialogFragment;
+
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
@@ -69,19 +67,18 @@ import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
 import social.entourage.android.view.HtmlTextView;
 import timber.log.Timber;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
 
 /**
  * Activity providing the login steps
  */
 public class LoginActivity extends EntourageActivity
-        implements LoginInformationFragment.OnEntourageInformationFragmentFinish, OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener, AvatarUploadView {
+        implements OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener, AvatarUploadView {
 
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
-    private static final String VERSION = "Version : ";
 
     private static final int PERMISSIONS_REQUEST_LOCATION = 1;
 
@@ -96,8 +93,6 @@ public class LoginActivity extends EntourageActivity
 
     private String loggedPhoneNumber;
 
-    LoginInformationFragment informationFragment;
-
     private View previousView = null;
 
     @Inject
@@ -108,6 +103,7 @@ public class LoginActivity extends EntourageActivity
 
     private User onboardingUser;
 
+    private boolean goToNextActionAfterActionZone = false;
     /************************
      * Signin View
      ************************/
@@ -124,7 +120,7 @@ public class LoginActivity extends EntourageActivity
     @BindView(R.id.login_edit_code)
     EditText passwordEditText;
 
-    @BindView(R.id.login_button_signup)
+    @BindView(R.id.login_button_signin)
     Button loginButton;
 
     @BindView(R.id.login_text_lost_code)
@@ -208,19 +204,6 @@ public class LoginActivity extends EntourageActivity
     View loginStartup;
 
     /************************
-     * Newsletter subscription View
-     ************************/
-
-    @BindView(R.id.login_include_newsletter)
-    View loginNewsletter;
-
-    @BindView(R.id.login_newsletter_button)
-    Button newsletterButton;
-
-    @BindView(R.id.login_newsletter_email)
-    TextView newsletterEmail;
-
-    /************************
      * Verify Code view
      ************************/
 
@@ -240,7 +223,6 @@ public class LoginActivity extends EntourageActivity
     @BindView(R.id.login_include_notifications)
     View loginNotificationsView;
 
-    private boolean goToNextActionAfterActionZone = false;
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -261,20 +243,16 @@ public class LoginActivity extends EntourageActivity
         loginEmail.setVisibility(View.GONE);
         loginNameView.setVisibility(View.GONE);
         loginTutorial.setVisibility(View.GONE);
-        loginNewsletter.setVisibility(View.GONE);
         loginNotificationsView.setVisibility(View.GONE);
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
         passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
+        passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     onLoginClick();
                     return true;
                 }
                 return false;
-            }
         });
 
         LoginTextWatcher ltw = new LoginTextWatcher();
@@ -325,13 +303,6 @@ public class LoginActivity extends EntourageActivity
             loginNameView.setVisibility(View.GONE);
             loginSignin.setVisibility(View.VISIBLE);
             showKeyboard(phoneEditText);
-        } else if (loginNewsletter.getVisibility() == View.VISIBLE && previousView != null) {
-            newsletterEmail.setText("");
-            loginNewsletter.setVisibility(View.GONE);
-            previousView.setVisibility(View.VISIBLE);
-            if (previousView == loginSignin) {
-                showKeyboard(phoneEditText);
-            }
         } else if (loginVerifyCode.getVisibility() == View.VISIBLE) {
             showLostCodeScreen();
         } else {
@@ -355,10 +326,8 @@ public class LoginActivity extends EntourageActivity
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
-                if (permissions[index].equalsIgnoreCase(getUserLocationAccess()) && grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(false));
-                } else {
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(true));
+                if (permissions[index].equalsIgnoreCase(ACCESS_FINE_LOCATION)) {
+                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED));
                 }
             }
             // We don't care if the user allowed/denied the location, just show the notifications view
@@ -402,25 +371,25 @@ public class LoginActivity extends EntourageActivity
                 EntourageEvents.logEvent(EntourageEvents.EVENT_LOGIN_ERROR);
                 break;
         }
-        new AlertDialog.Builder(this)
-            .setTitle(R.string.login_error_title)
-            .setMessage(errorMessage)
-            .setPositiveButton(R.string.login_retry_label, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(final DialogInterface dialog, final int which) {
+        if(!isFinishing()) {
+            try {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.login_error_title)
+                        .setMessage(errorMessage)
+                        .setPositiveButton(R.string.login_retry_label, (dialog, which) -> {
+                            //TODO Implement Retry
+                        })
+                        .create()
+                        .show();
+            } catch(Exception e) {
+                Timber.e(e);
+            }
 
-                }
-            })
-            .create()
-            .show();
+        }
     }
 
     public void displayToast(@StringRes int messageId) {
         Toast.makeText(this, messageId, Toast.LENGTH_LONG).show();
-    }
-
-    private void displayToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     public void startLoader() {
@@ -429,20 +398,16 @@ public class LoginActivity extends EntourageActivity
         receiveCodeButton.setText(R.string.button_loading);
         receiveCodeButton.setEnabled(false);
         lostCodePhone.setEnabled(false);
-        newsletterButton.setText(R.string.button_loading);
-        newsletterButton.setEnabled(false);
         verifyCodeButton.setEnabled(false);
         nameGoButton.setEnabled(false);
     }
 
     public void stopLoader() {
-        loginButton.setText(R.string.login_button_signup);
+        loginButton.setText(R.string.login_button_signin);
         loginButton.setEnabled(true);
         receiveCodeButton.setText(R.string.login_button_ask_code);
         receiveCodeButton.setEnabled(true);
         lostCodePhone.setEnabled(true);
-        newsletterButton.setText(R.string.login_button_newsletter);
-        newsletterButton.setEnabled(true);
         verifyCodeButton.setEnabled(true);
         nameGoButton.setEnabled(true);
     }
@@ -496,14 +461,6 @@ public class LoginActivity extends EntourageActivity
     // ----------------------------------
 
     @Override
-    public void closeEntourageInformationFragment() {
-        if (informationFragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().remove(informationFragment).commit();
-        }
-    }
-
-    @Override
     public void onPhotoBack() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_BACK);
         showActionZoneView();
@@ -554,21 +511,12 @@ public class LoginActivity extends EntourageActivity
     /************************
      * Signin View
      ************************/
-
-    /*
-    @OnClick(R.id.login_text_more)
-    void onAskMore() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        informationFragment = new LoginInformationFragment();
-        informationFragment.show(fragmentManager, "fragment_login_information");
-    }
-    */
     @OnClick(R.id.login_back_button)
     void onLoginBackClick() {
         onBackPressed();
     }
 
-    @OnClick(R.id.login_button_signup)
+    @OnClick(R.id.login_button_signin)
     void onLoginClick() {
         if (loginPresenter != null) {
             loginPresenter.login(
@@ -594,16 +542,6 @@ public class LoginActivity extends EntourageActivity
 
         showKeyboard(lostCodePhone);
     }
-
-    /*
-    @OnClick(R.id.login_welcome_more)
-    void onMoreClick() {
-        loginSignin.setVisibility(View.GONE);
-        loginNewsletter.setVisibility(View.VISIBLE);
-        previousView = loginSignin;
-        showKeyboard(newsletterEmail);
-    }
-    */
 
     /************************
      * Lost Code View
@@ -777,28 +715,26 @@ public class LoginActivity extends EntourageActivity
 
     protected void showPhotoChooseSource() {
         if (isFinishing()) return;
-        if (loginPresenter != null && loginPresenter.authenticationController != null) {
-            hideKeyboard();
-            loginEmail.setVisibility(View.GONE);
-            loginNameView.setVisibility(View.GONE);
+        try {
+            if (loginPresenter != null && loginPresenter.authenticationController != null) {
+                hideKeyboard();
+                loginEmail.setVisibility(View.GONE);
+                loginNameView.setVisibility(View.GONE);
 
-            User user = loginPresenter.authenticationController.getUser();
-            if (user == null || user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
-                try {
+                User user = loginPresenter.authenticationController.getUser();
+                if (user == null || user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
                     PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
                     fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
-                } catch(IllegalStateException e){
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-                }
-            } else {
-                if (loginPresenter.shouldShowActionZoneView()) {
+                } else if (loginPresenter.shouldShowActionZoneView()) {
                     showActionZoneView();
                 } else {
                     showNotificationPermissionView();
                 }
+            } else {
+                displayToast(R.string.login_error);
             }
-        } else {
-            displayToast(R.string.login_error);
+        } catch(IllegalStateException e){
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
         }
     }
 
@@ -839,9 +775,11 @@ public class LoginActivity extends EntourageActivity
     private void finishTutorial() {
         //set the tutorial as done
         SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
+        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<>());
+        if (loggedNumbers != null) {
         loggedNumbers.add(loggedPhoneNumber);
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
+        }
 
         startMapActivity();
     }
@@ -868,7 +806,7 @@ public class LoginActivity extends EntourageActivity
     @OnClick(R.id.login_button_login)
     void onStartupLoginClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_SPLASH_LOGIN);
-        if (loginPresenter != null && loginPresenter.shouldShowTC()) {
+        if (loginPresenter != null && loginPresenter.shouldShowTermsAndConditions()) {
             this.onboardingUser = null;
             RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
             registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
@@ -891,37 +829,6 @@ public class LoginActivity extends EntourageActivity
         this.onboardingUser = new User();
         RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
         registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
-    }
-
-    /************************
-     * Newsletter View
-     ************************/
-
-    @OnClick(R.id.login_newsletter_close)
-    void newsletterClose() {
-        hideKeyboard();
-        onBackPressed();
-    }
-
-    @OnClick(R.id.login_newsletter_button)
-    void newsletterSubscribe() {
-        if (loginPresenter != null) {
-            hideKeyboard();
-            startLoader();
-            loginPresenter.subscribeToNewsletter(newsletterEmail.getText().toString());
-        } else {
-            displayToast(R.string.login_error);
-        }
-    }
-
-    void newsletterResult(boolean success) {
-        stopLoader();
-        if (success) {
-            displayToast(R.string.login_text_newsletter_success);
-            onBackPressed();
-        } else {
-            displayToast(R.string.login_text_newsletter_fail);
-        }
     }
 
     /************************
@@ -1087,16 +994,6 @@ public class LoginActivity extends EntourageActivity
         editor.commit();
     }
 
-    private boolean isGeolocationGranted() {
-        return (PermissionChecker.checkSelfPermission(this, getUserLocationAccess()) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    protected String getUserLocationAccess() {
-        if (loginPresenter == null) return ACCESS_COARSE_LOCATION;
-        User user = loginPresenter.authenticationController.getUser();
-        return user != null ? user.getLocationAccessString() : ACCESS_COARSE_LOCATION;
-    }
-
     /************************
      * Action Zone View
      ************************/
@@ -1130,6 +1027,7 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public void onUserEditActionZoneFragmentDismiss() {
+        displayToast(R.string.user_action_zone_ignore_hint);
         if(!goToNextActionAfterActionZone) {
             showNameView();
         } else {

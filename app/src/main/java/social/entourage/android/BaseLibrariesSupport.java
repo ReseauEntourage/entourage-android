@@ -3,7 +3,6 @@ package social.entourage.android;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -55,7 +54,6 @@ public abstract class BaseLibrariesSupport {
                 .build();
 
         Fabric.with(context, crashlyticsKit);
-        Fabric.with(context, new Answers());
     }
 
     private void setupMixpanel(Context context) {

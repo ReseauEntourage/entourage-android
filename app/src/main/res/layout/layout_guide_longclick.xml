@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guide_longclick_buttons">
+        android:id="@+id/map_longclick_buttons">
 
         <ImageView
             android:id="@+id/guide_longclick_heatzone"

@@ -202,13 +202,13 @@
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.appcompat.widget.RecyclerView
                     android:id="@+id/user_associations_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     >
 
-                </android.support.v7.widget.RecyclerView>
+                </androidx.appcompat.widget.RecyclerView>
 
                 <View
                     android:id="@+id/user_add_association_separator"

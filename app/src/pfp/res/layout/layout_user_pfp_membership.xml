@@ -20,7 +20,7 @@
         android:textSize="@dimen/entourage_font_medium"
         android:textStyle="bold"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.appcompat.widget.RecyclerView
         android:id="@+id/user_private_circles_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -41,7 +41,7 @@
         android:textSize="@dimen/entourage_font_medium"
         android:textStyle="bold"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.appcompat.widget.RecyclerView
         android:id="@+id/user_neighborhoods_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

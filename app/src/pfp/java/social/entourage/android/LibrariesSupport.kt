@@ -1,7 +1,7 @@
 package social.entourage.android
 
 import android.content.Context
-import social.entourage.android.tools.CrashlyticsLog
+import social.entourage.android.tools.log.CrashlyticsLog
 import timber.log.Timber
 
 /**

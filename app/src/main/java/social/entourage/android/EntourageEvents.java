@@ -3,10 +3,7 @@ package social.entourage.android;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Build;
-
-import androidx.core.content.PermissionChecker;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -15,6 +12,7 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import java.util.Locale;
 
 import social.entourage.android.api.model.User;
+import social.entourage.android.location.LocationUtils;
 
 /**
  * Wrapper for sending events to different aggregators
@@ -132,6 +130,9 @@ public class EntourageEvents {
     public static final String EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR = "ActivateGeolocFromCreateTourPopup";
     public static final String EVENT_FEED_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromRecenterPopup";
+    public static final String EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromGuideRecenterPopup";
+    public static final String EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromBanner";
+    public static final String EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromGuideBanner";
     public static final String EVENT_FEED_TAB_ALL = "ShowAllFeed";
     public static final String EVENT_FEED_TAB_EVENTS = "ShowEventFeed";
 
@@ -297,6 +298,11 @@ public class EntourageEvents {
     }
 
     public static void updateMixpanelInfo(User user, Context context, boolean areNotificationsEnabled) {
+        if (areNotificationsEnabled) {
+            logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_REFUSE);
+        } else {
+            logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_ACCEPT);
+        }
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         MixpanelAPI.People people = mixpanel.getPeople();
@@ -318,7 +324,7 @@ public class EntourageEvents {
         }
 
         String geolocStatus="NO";
-        if (PermissionChecker.checkSelfPermission(context, user.getLocationAccessString()) == PackageManager.PERMISSION_GRANTED) {
+        if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             geolocStatus = "YES";
         }
         people.set("EntourageGeolocEnable", geolocStatus);

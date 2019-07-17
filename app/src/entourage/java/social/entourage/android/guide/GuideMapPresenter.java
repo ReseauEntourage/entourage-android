@@ -47,7 +47,6 @@ public class GuideMapPresenter {
     // ----------------------------------
 
     public void start() {
-        fragment.initializeMapZoom();
         //updatePoisNearby();
     }
 
@@ -58,16 +57,17 @@ public class GuideMapPresenter {
             float[] result = {0};
             Location.distanceBetween(region.farLeft.latitude, region.farLeft.longitude, region.nearLeft.latitude, region.nearLeft.longitude, result);
             distance = result[0] / 1000.0f;
+        } else {
+            Timber.d("distance set to 0");
         }
-        retrievePoisNearby(distance);
+        retrievePoisNearby(map.getCameraPosition(), distance);
     }
 
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
 
-    private void retrievePoisNearby(float distance) {
-        CameraPosition currentPosition = EntourageLocation.getInstance().getCurrentCameraPosition();
+    private void retrievePoisNearby(CameraPosition currentPosition, float distance) {
         if (currentPosition != null) {
             LatLng location = currentPosition.target;
             distance = Math.max(1, distance);

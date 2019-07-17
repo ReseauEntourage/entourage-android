@@ -16,7 +16,6 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.*;
-import social.entourage.android.api.model.Newsletter;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.tools.Utils;
@@ -29,13 +28,6 @@ import social.entourage.android.user.AvatarUpdatePresenter;
 public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
 
     // ----------------------------------
-    // CONSTANTS
-    // ----------------------------------
-
-    private final static String COUNTRY_CODE_FR = "FR";
-    private final static String COUNTRY_CODE_CA = "CA";
-
-    // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
 
@@ -44,7 +36,7 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
     private final UserRequest userRequest;
     protected final AuthenticationController authenticationController;
 
-    protected boolean isTutorialDone = false;
+    private boolean isTutorialDone = false;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -94,14 +86,10 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
                             if (response.errorBody() != null) {
                                 try {
                                     String errorBody = response.errorBody().string();
-                                    if (errorBody != null) {
-                                        if (errorBody.contains("INVALID_PHONE_FORMAT")) {
-                                            activity.loginFail(LoginActivity.LOGIN_ERROR_INVALID_PHONE_FORMAT);
-                                        } else if (errorBody.contains("UNAUTHORIZED")) {
-                                            activity.loginFail(LoginActivity.LOGIN_ERROR_UNAUTHORIZED);
-                                        } else {
-                                            activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
-                                        }
+                                    if (errorBody.contains("INVALID_PHONE_FORMAT")) {
+                                        activity.loginFail(LoginActivity.LOGIN_ERROR_INVALID_PHONE_FORMAT);
+                                    } else if (errorBody.contains("UNAUTHORIZED")) {
+                                        activity.loginFail(LoginActivity.LOGIN_ERROR_UNAUTHORIZED);
                                     } else {
                                         activity.loginFail(LoginActivity.LOGIN_ERROR_UNKNOWN);
                                     }
@@ -250,35 +238,6 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
         }
     }
 
-    public void subscribeToNewsletter(final String email) {
-        if (activity != null) {
-            String checkedEmail = Utils.checkEmailFormat(email);
-            if (checkedEmail != null) {
-                Newsletter newsletter = new Newsletter(email, true);
-                Newsletter.NewsletterWrapper newsletterWrapper = new Newsletter.NewsletterWrapper(newsletter);
-                Call<Newsletter.NewsletterWrapper> call = loginRequest.subscribeToNewsletter(newsletterWrapper);
-                call.enqueue(new Callback<Newsletter.NewsletterWrapper>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Newsletter.NewsletterWrapper> call, @NonNull Response<Newsletter.NewsletterWrapper> response) {
-                        if (response.isSuccessful()) {
-                            activity.newsletterResult(true);
-                        } else {
-                            activity.newsletterResult(false);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<Newsletter.NewsletterWrapper> call, @NonNull Throwable t) {
-                        activity.newsletterResult(false);
-                    }
-                });
-            } else {
-                activity.stopLoader();
-                activity.displayToast(R.string.login_text_invalid_email);
-            }
-        }
-    }
-
     public void registerUserPhone(final String phoneNumber) {
         Map<String, String> user = new ArrayMap<>();
         user.put("phone", phoneNumber);
@@ -343,7 +302,7 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
      * Method that shows if we need to show Terms and conditions screen when user presses login button at startup
      * @return true if we need to show the screen, false otherwise
      */
-    public boolean shouldShowTC() {
+    public boolean shouldShowTermsAndConditions() {
         return false;
     }
 
