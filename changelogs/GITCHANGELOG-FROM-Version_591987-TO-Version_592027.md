@@ -6,7 +6,6 @@
 * fix(geoloc) click on recenter (2019-07-10) by <Francois Pellissier>
 * feature(logo) new logos EN-1283 (2019-07-10) by <Francois Pellissier>
 * fix(api key) remove duplicate API key (2019-07-10) by <Francois Pellissier>
-* feature(logo) new preprod logo EN-1283 (wrong commit) (2019-07-10) by <Francois Pellissier>
 * feature(logo) new preprod logo EN-1283 (2019-07-10) by <Francois Pellissier>
 * chore(crash) fix crash when starting tour service EN-1269 (2019-07-08) by <Francois Pellissier>
 * feature(logo) new logo in all screens EN-1263 (2019-07-08) by <Francois Pellissier>
@@ -42,4 +41,3 @@
 * chore(login) fix crash EN-1185 (2019-06-07) by <Francois Pellissier>
 * feature(actionzone) add snackbar when ignoring action zone screen (2019-05-31) by <Francois Pellissier>
 * chore(libs) update libs (2019-05-31) by <Francois Pellissier>
-* chore(release) add automatic changelog (2019-05-31) by <Francois Pellissier>
