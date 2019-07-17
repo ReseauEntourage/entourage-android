@@ -324,12 +324,12 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
     }
 
     public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
-                if (map != null) {
-                    try {
+        if (map != null) {
+            try {
                 map.setMyLocationEnabled(LocationUtils.INSTANCE.isLocationEnabled());
-                    } catch (SecurityException ignored) {
-                    }
-                }
+            } catch (SecurityException ignored) {
+            }
+        }
         updateGeolocBanner(event != null && event.isPermissionGranted());
     }
 
