@@ -43,12 +43,14 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.location.LocationUpdateListener;
 import social.entourage.android.location.LocationUtils;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class BaseMapEntourageFragment extends Fragment implements BackPressable {
+public class BaseMapEntourageFragment extends Fragment implements BackPressable, LocationUpdateListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -81,18 +83,13 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
     private View toReturn;
 
     @BindView(R.id.map_fab_menu)
-    protected
-    FloatingActionMenu mapOptionsMenu;
+    protected FloatingActionMenu mapOptionsMenu;
 
     @BindView(R.id.fragment_map_longclick)
-    protected
-    RelativeLayout mapLongClickView;
+    protected RelativeLayout mapLongClickView;
 
     @BindView(R.id.map_longclick_buttons)
     RelativeLayout mapLongClickButtonsView;
-
-    @BindView(R.id.fragment_map_gps)
-    TextView gpsLayout;
 
     @Override
     public boolean onBackPressed() {
@@ -111,6 +108,18 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
         centerMap(cameraPosition);
     }
 
+    protected void centerMapAndZoom(LatLng latLng, float zoom, boolean animated) {
+        CameraPosition cameraPosition = new CameraPosition(latLng, zoom, 0, 0);
+        if (map != null) {
+            if (animated) {
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 300, null);
+            } else {
+                map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+            saveCameraPosition();
+        }
+    }
+
     private void centerMap(CameraPosition cameraPosition) {
         if (map != null && isFollowing) {
             map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -118,10 +127,7 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
         }
     }
 
-    public void saveCameraPosition() {
-        if (map != null) {
-            EntourageLocation.getInstance().saveLastCameraPosition(map.getCameraPosition());
-        }
+    protected void saveCameraPosition() {
     }
 
     public void initializeMapZoom() {
@@ -153,13 +159,13 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
     protected void onMapReady(GoogleMap googleMap, ClusterManager.OnClusterItemClickListener onClickListener, GoogleMap.OnGroundOverlayClickListener onGroundOverlayClickListener) {
         if (getActivity() == null) return;
         map = googleMap;
-        if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
-            googleMap.setMyLocationEnabled(true);
-        }
-        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-        googleMap.getUiSettings().setMapToolbarEnabled(false);
-        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                getActivity(), R.raw.map_styles_json));
+        map.setMyLocationEnabled(LocationUtils.INSTANCE.isLocationPermissionGranted());
+
+        //mylocation is handled in MapViewHolder
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(false);
+
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_styles_json));
 
         mapClusterManager = new ClusterManager<>(getActivity(), map);
         mapClusterItemRenderer = getRenderer();
@@ -172,7 +178,7 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
             map.setOnGroundOverlayClickListener(onGroundOverlayClickListener);
         }
 
-        googleMap.setOnMapLongClickListener(latLng -> {
+        map.setOnMapLongClickListener(latLng -> {
             //only show when map is in full screen and not visible
             if (!isFullMapShown || mapLongClickView.getVisibility() == View.VISIBLE) {
                 return;
@@ -274,11 +280,15 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
                 .setPositiveButton(R.string.activate, (dialogInterface, i) -> {
                     EntourageEvents.logEvent(finalEventName);
 
-                    if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
-                        requestPermissions(new String[]{ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
-                    } else {
-                        // User selected "Never ask again", so show the settings page
-                        displayGeolocationPreferences(true);
+                    try {
+                        if (LocationUtils.INSTANCE.isLocationEnabled() || shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                            requestPermissions(new String[]{ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                        } else {
+                            // User selected "Never ask again", so show the settings page
+                            displayGeolocationPreferences(true);
+                        }
+                    } catch(IllegalStateException e) {
+                        Timber.e(e);
                     }
                 })
                 .setNegativeButton(R.string.map_permission_refuse, (dialog, i) -> {
@@ -305,26 +315,22 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
         }
     }
 
-    @Subscribe
     public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
-        if (event != null && event.isPermissionGranted()) {
-            if (LocationUtils.INSTANCE.isLocationEnabled()) {
                 if (map != null) {
                     try {
-                        map.setMyLocationEnabled(true);
+                map.setMyLocationEnabled(LocationUtils.INSTANCE.isLocationEnabled());
                     } catch (SecurityException ignored) {
                     }
                 }
-            }
-        }
         updateGeolocBanner(event != null && event.isPermissionGranted());
     }
 
     private void updateGeolocBanner(boolean active) {
+        TextView gpsLayout = getActivity().findViewById(R.id.fragment_map_gps);
         if (gpsLayout != null) {
             boolean visibility = true;
             User me = EntourageApplication.me(getActivity());
-            if (active && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+            if (LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
                 visibility = false;
             }
             //we force it because we don't need geoloc when Action zone is set
@@ -332,13 +338,11 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
                 visibility = false;
             }
 
-            gpsLayout.setText(active? getString(R.string.map_gps_no_permission):getString(R.string.map_gps_unavailable));
+            gpsLayout.setText(LocationUtils.INSTANCE.isLocationEnabled()? getString(R.string.map_gps_no_permission):getString(R.string.map_gps_unavailable));
             gpsLayout.setVisibility(visibility? View.VISIBLE : View.GONE);
         }
     }
 
-    //    @Optional
-    //    @OnClick(R.id.fragment_map_follow_button)
     protected void onFollowGeolocation() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_RECENTERCLICK);
         // Check if geolocation is enabled
@@ -353,8 +357,10 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable 
         }
     }
 
+    @Override
     public void onLocationUpdated(@NotNull LatLng location) {}
 
+    @Override
     public void onLocationStatusUpdated(boolean active) {
         updateGeolocBanner(active);
     }

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -46,13 +45,12 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
-import social.entourage.android.location.LocationUpdateListener;
 import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.BaseMapEntourageFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 
-public class GuideMapEntourageFragment extends BaseMapEntourageFragment implements LocationUpdateListener {
+public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -222,7 +220,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment implemen
             clearOldPois();
             if (pois != null && pois.size() > 0) {
                 List<Poi> poiCollection = removeRedundantPois(pois);
-                if (map != null) {
+                if (map !=null && mapClusterManager != null) {
                     mapClusterManager.addItems(poiCollection);
                     mapClusterManager.cluster();
                     hideEmptyListPopup();
@@ -274,6 +272,12 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment implemen
         }
     }
 
+    @Subscribe
+    @Override
+    public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
+        super.onLocationPermissionGranted(event);
+    }
+
     @Override
     protected DefaultClusterRenderer getRenderer() {
         return new PoiRenderer(getActivity(), map, mapClusterManager);
@@ -287,7 +291,6 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment implemen
 
         map.setOnCameraIdleListener(() -> {
             CameraPosition position = map.getCameraPosition();
-            EntourageLocation.getInstance().saveCurrentCameraPosition(position);
             Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
             float newZoom = position.zoom;
             if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
@@ -353,6 +356,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment implemen
     @OnClick(R.id.fragment_guide_empty_list_popup)
     void onEmptyListPopupClose() {
         AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
+        //TODO add an "never display" button
         if (authenticationController != null) {
             authenticationController.setShowNoPOIsPopup(false);
         }
@@ -360,15 +364,17 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment implemen
     }
 
     private void showEmptyListPopup() {
+        if(map!=null) {
         if (previousEmptyListPopupLocation == null) {
-            previousEmptyListPopupLocation = EntourageLocation.getInstance().getCurrentLocation();
+                previousEmptyListPopupLocation = EntourageLocation.cameraPositionToLocation(null, map.getCameraPosition());
         } else {
             // Show the popup only we moved from the last position we show it
-            Location currentLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().getCurrentCameraPosition());
+                Location currentLocation = EntourageLocation.cameraPositionToLocation(null, map.getCameraPosition());
             if (previousEmptyListPopupLocation.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
                 return;
             }
             previousEmptyListPopupLocation = currentLocation;
+        }
         }
         AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
         if (authenticationController != null && !authenticationController.isShowNoPOIsPopup()) {
@@ -524,7 +530,6 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment implemen
         @Override
         public boolean onClusterItemClick(Poi poi) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW);
-            saveCameraPosition();
             showPoiDetails(poi);
             return true;
         }

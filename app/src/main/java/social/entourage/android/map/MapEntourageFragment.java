@@ -214,6 +214,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
 
     @BindView(R.id.fragment_map_filter_button)
     View filterButton;
+
     private NewsfeedAdapter newsfeedAdapter;
     private Timer refreshToursTimer;
 
@@ -395,6 +396,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
         }
         MapClusterItem mapClusterItem = presenter.getOnClickListener().getEncounterMapClusterItem(encounter.getId());
         if (mapClusterItem != null) {
+            //the item aalready exists
             return;
         }
         mapClusterItem = new MapClusterItem(encounter);
@@ -831,8 +833,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
 
     @Override
     public void onLocationUpdated(@NonNull LatLng location) {
-        //TODO: really ? for all users ?
-        centerMap(location);
+        if(tourService.isRunning()) {
+            centerMap(location);
+        }
     }
 
     @Override
@@ -1374,6 +1377,12 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
         updateFloatingMenuOptions();
     }
 
+    @Subscribe
+    @Override
+    public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
+        super.onLocationPermissionGranted(event);
+    }
+
     private void updateFloatingMenuOptions() {
         View addTourEncounterButton = mapOptionsMenu.findViewById(R.id.button_add_tour_encounter);
         View startTourButton = mapOptionsMenu.findViewById(R.id.button_start_tour_launcher);
@@ -1426,6 +1435,13 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
         originalMapLayoutHeight = getResources().getDimensionPixelOffset(R.dimen.newsfeed_map_height);
         if (onMapReadyCallback == null) {
             onMapReadyCallback = this::onMapReady;
+        }
+    }
+
+    @Override
+    protected void saveCameraPosition() {
+        if (map != null) {
+            EntourageLocation.getInstance().saveLastCameraPosition(map.getCameraPosition());
         }
     }
 
@@ -1769,25 +1785,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
         return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
             cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
             cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR));
-    }
-
-    protected void centerMapAndZoom(LatLng latLng) {
-        CameraPosition cameraPosition = EntourageLocation.getInstance().getLastCameraPosition();
-        if (cameraPosition != null) {
-            centerMapAndZoom(latLng, cameraPosition.zoom, false);
-        }
-    }
-
-    private void centerMapAndZoom(LatLng latLng, float zoom, boolean animated) {
-        CameraPosition cameraPosition = new CameraPosition(latLng, zoom, 0, 0);
-        if (map != null) {
-            if (animated) {
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 300, null);
-            } else {
-                map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-            saveCameraPosition();
-        }
     }
 
     private void addCurrentTourEncounters() {
