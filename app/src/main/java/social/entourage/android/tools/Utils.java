@@ -117,13 +117,11 @@ public class Utils {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public static Spanned fromHtml(String html){
         Spanned result;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
         } else {
-            //noinspection deprecation
             result = Html.fromHtml(html);
         }
         return result;

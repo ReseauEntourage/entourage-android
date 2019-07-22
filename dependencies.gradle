@@ -10,7 +10,7 @@ ext {
     // SDK versions
     compileSdkVersion = 28
     buildToolsVersion = "29.0.0"
-    minSdkVersion = 18 /*July 2013 Android 4.3 JELLY_BEAN_MR2*/
+    minSdkVersion = 19 /*October 2013: Android 4.4, KitKat*/
     targetSdkVersion = 28
 
     // Java versions
@@ -48,7 +48,7 @@ ext {
     mapsVersion = "17.0.0"
     mapsUtilsVersion = "0.5"
     materialVersion = "1.1.0-alpha07"
-    mixpanelVersion = "5.6.3"
+    mixpanelVersion = "5.6.4"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.2" //version 3.14+ needs API 21+
     okHttpIdlingVersion = "1.0.0"
