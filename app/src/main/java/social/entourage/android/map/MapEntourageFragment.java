@@ -212,9 +212,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
     @BindView(R.id.fragment_map_entourage_mini_cards)
     EntourageMiniCardsView miniCardsView;
 
-    @BindView(R.id.fragment_map_filter_button)
-    View filterButton;
-
     private NewsfeedAdapter newsfeedAdapter;
     private Timer refreshToursTimer;
 
@@ -737,7 +734,12 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
 
         EntourageEvents.logEvent(selectedTab == MapTabItem.ALL_TAB ? EntourageEvents.EVENT_FEED_TAB_ALL : EntourageEvents.EVENT_FEED_TAB_EVENTS);
 
-        filterButton.setVisibility(selectedTab == MapTabItem.ALL_TAB ? View.VISIBLE : View.GONE);
+        if(getActivity()!= null) {
+            View filterButton = getActivity().findViewById(R.id.fragment_map_filter_button);
+            if(filterButton!= null) {
+                filterButton.setVisibility(selectedTab == MapTabItem.ALL_TAB ? View.VISIBLE : View.GONE);
+            }
+        }
 
         resetFeed();
 
