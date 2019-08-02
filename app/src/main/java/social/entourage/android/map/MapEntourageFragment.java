@@ -1501,7 +1501,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
             hideEmptyListPopup();
         });
 
-        googleMap.setOnMapClickListener(latLng -> {
+        map.setOnMapClickListener(latLng -> {
             if (getActivity() != null) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_MAPCLICK);
                 hideTourLauncher();

@@ -157,10 +157,11 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
 
     @SuppressLint("MissingPermission")
     protected void onMapReady(GoogleMap googleMap, ClusterManager.OnClusterItemClickListener onClickListener, GoogleMap.OnGroundOverlayClickListener onGroundOverlayClickListener) {
+        map = googleMap;//we forced the settng of the map anyway
         if (getActivity() == null) {
+            Timber.e("No activity found");
             return;
         }
-        map = googleMap;
         map.setMyLocationEnabled(LocationUtils.INSTANCE.isLocationPermissionGranted());
 
         //mylocation is handled in MapViewHolder
