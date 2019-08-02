@@ -1945,7 +1945,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
     }
 
     private void resetFeed() {
-        newsfeedAdapter.removeAll();
+        if(newsfeedAdapter!=null) {
+            newsfeedAdapter.removeAll();
+        }
 
         // check if we need to cancel the current request
         if (pagination.isLoading && tourService != null) {
