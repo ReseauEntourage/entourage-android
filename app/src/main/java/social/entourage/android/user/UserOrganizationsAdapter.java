@@ -78,7 +78,7 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
 
         String organizationLogo = organization.getLargeLogoUrl();
         if (organizationLogo != null) {
-            Picasso.with(holder.itemView.getContext())
+            Picasso.get()
                     .load(Uri.parse(organizationLogo))
                     .placeholder(null)
                     .into(organizationViewHolder.mOrganizationLogo);

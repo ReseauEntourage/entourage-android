@@ -176,13 +176,13 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             }
 
             if (editedUser.getAvatarURL() != null) {
-                Picasso.with(getActivity()).load(Uri.parse(editedUser.getAvatarURL()))
+                Picasso.get().load(Uri.parse(editedUser.getAvatarURL()))
                         .placeholder(R.drawable.ic_user_photo)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }
             else {
-                Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
+                Picasso.get().load(R.drawable.ic_user_photo)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }

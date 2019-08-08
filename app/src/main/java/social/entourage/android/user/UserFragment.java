@@ -202,13 +202,13 @@ public class UserFragment extends EntourageDialogFragment {
             if (userAboutEditButton != null) userAboutEditButton.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
 
             if (user.getAvatarURL() != null) {
-                Picasso.with(getActivity()).load(Uri.parse(user.getAvatarURL()))
+                Picasso.get().load(Uri.parse(user.getAvatarURL()))
                         .placeholder(R.drawable.ic_user_photo)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }
             else {
-                Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
+                Picasso.get().load(R.drawable.ic_user_photo)
                         .transform(new CropCircleTransformation())
                         .into(userPhoto);
             }
@@ -219,7 +219,7 @@ public class UserFragment extends EntourageDialogFragment {
                 partnerURL = partner.getSmallLogoUrl();
             }
             if (partnerURL != null) {
-                Picasso.with(getActivity())
+                Picasso.get()
                         .load(Uri.parse(partnerURL))
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
