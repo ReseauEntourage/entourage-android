@@ -24,6 +24,7 @@ import social.entourage.android.api.model.map.TourAuthor;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.view.PartnerLogoImageView;
+import timber.log.Timber;
 
 /**
  * View Holder for the announcement card
@@ -98,15 +99,15 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
         if (announcement == null) return;
         Context context = imageView.getContext();
         //cancel previous net requests
-        Picasso.with(context).cancelRequest(this);
-        Picasso.with(context).cancelRequest(photoView);
-        Picasso.with(context).cancelRequest(partnerLogoView);
-        Picasso.with(context).cancelRequest(imageView);
+        Picasso.get().cancelRequest(this);
+        Picasso.get().cancelRequest(photoView);
+        Picasso.get().cancelRequest(partnerLogoView);
+        Picasso.get().cancelRequest(imageView);
         //title
         title.setText(announcement.getTitle());
         String iconUrl = announcement.getIconUrl();
         if (iconUrl != null) {
-            Picasso.with(context)
+            Picasso.get()
                     .load(Uri.parse(iconUrl))
                     .noPlaceholder()
                     .into(this);
@@ -128,7 +129,7 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
             if (photoView != null) {
                 String avatarURLAsString = author.getAvatarURLAsString();
                 if (avatarURLAsString != null) {
-                    Picasso.with(context)
+                    Picasso.get()
                             .load(Uri.parse(avatarURLAsString))
                             .placeholder(R.drawable.ic_user_photo_small)
                             .transform(new CropCircleTransformation())
@@ -143,7 +144,7 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
                 if (partner != null) {
                     String partnerLogoURL = partner.getSmallLogoUrl();
                     if (partnerLogoURL != null) {
-                        Picasso.with(context)
+                        Picasso.get()
                                 .load(Uri.parse(partnerLogoURL))
                                 .placeholder(R.drawable.partner_placeholder)
                                 .transform(new CropCircleTransformation())
@@ -170,7 +171,7 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
             imageView.setVisibility(View.VISIBLE);
             actLeftDivider.setVisibility(View.GONE);
             actRightDivider.setVisibility(View.GONE);
-            Picasso.with(context)
+            Picasso.get()
                     .load(Uri.parse(imageUrl))
                     .placeholder(R.drawable.announcement_image_placeholder)
                     .into(imageView);
@@ -200,8 +201,8 @@ public class AnnouncementViewHolder extends BaseCardViewHolder implements Target
     }
 
     @Override
-    public void onBitmapFailed(final Drawable errorDrawable) {
-
+    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+        Timber.e(e);
     }
 
     @Override

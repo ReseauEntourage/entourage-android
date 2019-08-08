@@ -158,7 +158,7 @@ public class SideMenuFragment extends Fragment {
             userName.setText(user.getDisplayName());
             String avatarURL = user.getAvatarURL();
             if (avatarURL != null) {
-                Picasso.with(getContext())
+                Picasso.get()
                         .load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
@@ -173,7 +173,7 @@ public class SideMenuFragment extends Fragment {
                 partnerURL = partner.getSmallLogoUrl();
             }
             if (partnerURL != null) {
-                Picasso.with(getContext())
+                Picasso.get()
                         .load(Uri.parse(partnerURL))
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())

@@ -39,7 +39,7 @@ ext {
     facebookVersion = "5.2.0"
     firebaseCoreVersion = "17.0.1"
     firebaseMessagingVersion = "19.0.1"
-    firebaseInappVersion = "18.0.0" //In-App Messaging-display version 18.0.2 : Updated to support Picasso version 2.71828.
+    firebaseInappVersion = "18.0.2"
     floatingButtonVersion = "1.6.4"
     guavaVersion = "27.0.1-android"
     imageCropperVersion = "2.8.0"
@@ -52,7 +52,7 @@ ext {
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.2" //version 3.14+ needs API 21+
     okHttpIdlingVersion = "1.0.0"
-    picassoVersion = "2.5.2"
+    picassoVersion = "2.71828"
     picassoTransformationsVersion = "2.2.1"
     playServicesVersion = "17.0.0"
     retrofitVersion = "2.6.1"

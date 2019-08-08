@@ -117,12 +117,12 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
             tourTitle.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
             if (showCategoryIcon() && tourIcon == null) {
                 // add the icon for entourages
-                Picasso.with(context)
+                Picasso.get()
                         .cancelRequest(this);
                 String iconURL = feedItem.getIconURL();
                 if (iconURL != null) {
                     tourTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                    Picasso.with(context)
+                    Picasso.get()
                             .load(iconURL)
                             .error(R.drawable.ic_user_photo_small)
                             .transform(new CropCircleTransformation())
@@ -135,12 +135,12 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
         //icon
         if (showCategoryIcon() && tourIcon != null) {
             // add the icon for entourages
-            Picasso.with(context)
+            Picasso.get()
                     .cancelRequest(tourIcon);
             String iconURL = feedItem.getIconURL();
             if (iconURL != null) {
                 tourIcon.setImageDrawable(null);
-                Picasso.with(context)
+                Picasso.get()
                         .load(iconURL)
                         .placeholder(R.drawable.ic_user_photo_small)
                         .transform(new CropCircleTransformation())
@@ -164,7 +164,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
             if (photoView != null) {
                 String avatarURLAsString = author.getAvatarURLAsString();
                 if (avatarURLAsString != null) {
-                    Picasso.with(itemView.getContext())
+                    Picasso.get()
                             .load(Uri.parse(avatarURLAsString))
                             .placeholder(R.drawable.ic_user_photo_small)
                             .transform(new CropCircleTransformation())
@@ -179,7 +179,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                 if (partner != null) {
                     String partnerLogoURL = partner.getSmallLogoUrl();
                     if (partnerLogoURL != null) {
-                        Picasso.with(itemView.getContext())
+                        Picasso.get()
                                 .load(Uri.parse(partnerLogoURL))
                                 .placeholder(R.drawable.partner_placeholder)
                                 .transform(new CropCircleTransformation())
@@ -346,7 +346,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
     }
 
     @Override
-    public void onBitmapFailed(final Drawable errorDrawable) {
+    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
         tourTitle.setCompoundDrawablesWithIntrinsicBounds(errorDrawable, null, null, null);
     }
 

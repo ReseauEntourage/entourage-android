@@ -1454,8 +1454,8 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (fragmentTitle != null) fragmentTitle.setText(feedItem.getTitle());
         String iconURL = feedItem.getIconURL();
         if (iconURL != null) {
-            Picasso.with(getContext()).cancelRequest(tourIcon);
-            Picasso.with(getContext())
+            Picasso.get().cancelRequest(tourIcon);
+            Picasso.get()
                     .load(iconURL)
                     .placeholder(R.drawable.ic_user_photo_small)
                     .transform(new CropCircleTransformation())

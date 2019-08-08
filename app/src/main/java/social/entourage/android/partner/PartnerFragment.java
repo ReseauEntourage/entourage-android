@@ -161,7 +161,7 @@ public class PartnerFragment extends EntourageDialogFragment {
         }
 
         // url
-        Picasso.with(getContext())
+        Picasso.get()
                 .load(Uri.parse(partner.getLargeLogoUrl()))
                 .placeholder(R.drawable.partner_placeholder)
                 .into(partnerLogoImageView);

@@ -108,7 +108,7 @@ public class UserEditPartnerAdapter extends BaseAdapter {
 
             String partnerLogo = partner.getLargeLogoUrl();
             if (partnerLogo != null) {
-                Picasso.with(viewGroup.getContext())
+                Picasso.get()
                         .load(Uri.parse(partnerLogo))
                         .placeholder(R.drawable.partner_placeholder)
                         .into(viewHolder.mPartnerLogo);
