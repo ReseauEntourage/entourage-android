@@ -24,7 +24,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:src="@drawable/ic_action_back"/>
+            app:srcCompat="@drawable/ic_action_back"/>
 
     </RelativeLayout>
 
@@ -89,7 +89,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_photo_rotate"/>
+            app:srcCompat="@drawable/ic_photo_rotate"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/photo_edit_fab_button"

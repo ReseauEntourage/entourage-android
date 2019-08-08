@@ -75,7 +75,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_info"
+            app:srcCompat="@drawable/ic_info"
             android:tint="@color/feeditem_details_topbar_tint"/>
 
     </RelativeLayout>
@@ -101,7 +101,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_take_photo"
+            app:srcCompat="@drawable/ic_take_photo"
             android:visibility="visible"/>
 
         <EditText
@@ -124,7 +124,7 @@
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/encounter_voice_message_button"
-            android:src="@drawable/ic_action_record_sound"
+            app:srcCompat="@drawable/ic_action_record_sound"
             android:visibility="gone"/>
 
         <Button

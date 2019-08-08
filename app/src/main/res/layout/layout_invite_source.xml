@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/background_transparent"
                 android:orientation="vertical">
 
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_close_white"/>
+            app:srcCompat="@drawable/ic_close_white"/>
 
         <TextView
             android:id="@+id/invite_source_title"

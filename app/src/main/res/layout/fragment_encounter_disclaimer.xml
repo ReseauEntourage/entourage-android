@@ -23,7 +23,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:src="@drawable/ic_close"/>
+            app:srcCompat="@drawable/ic_close"/>
 
     </RelativeLayout>
 

@@ -58,7 +58,7 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:contentDescription="@string/empty_description"
                     android:scaleType="centerInside"
-                    android:src="@drawable/camera_square"/>
+                    app:srcCompat="@drawable/camera_square"/>
 
             </RelativeLayout>
 
