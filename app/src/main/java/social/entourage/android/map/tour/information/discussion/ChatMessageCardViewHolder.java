@@ -63,7 +63,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         // user avatar
         String avatarURL = chatMessage.getUserAvatarURL();
         if (avatarURL != null) {
-            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+            Picasso.get().load(Uri.parse(avatarURL))
                     .placeholder(R.drawable.ic_user_photo_small)
                     .transform(new CropCircleTransformation())
                     .into(mUserPhotoView);
@@ -74,7 +74,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         if (mPartnerLogoView != null) {
             String partnerLogoURL = chatMessage.getPartnerLogoSmall();
             if (partnerLogoURL != null) {
-                Picasso.with(itemView.getContext()).load(Uri.parse(partnerLogoURL))
+                Picasso.get().load(Uri.parse(partnerLogoURL))
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())
                         .into(mPartnerLogoView);

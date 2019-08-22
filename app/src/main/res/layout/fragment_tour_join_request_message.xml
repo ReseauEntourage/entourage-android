@@ -2,8 +2,8 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="social.entourage.android.map.tour.join.TourJoinRequestFragment"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="social.entourage.android.map.tour.join.TourJoinRequestFragment">
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,7 +27,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/empty_description"
                 android:padding="5dp"
-                android:src="@drawable/ic_close"/>
+                app:srcCompat="@drawable/ic_close"/>
 
             <TextView
                 android:layout_width="wrap_content"

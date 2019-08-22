@@ -365,16 +365,16 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     private void showEmptyListPopup() {
         if(map!=null) {
-        if (previousEmptyListPopupLocation == null) {
+            if (previousEmptyListPopupLocation == null) {
                 previousEmptyListPopupLocation = EntourageLocation.cameraPositionToLocation(null, map.getCameraPosition());
-        } else {
-            // Show the popup only we moved from the last position we show it
+            } else {
+                // Show the popup only we moved from the last position we show it
                 Location currentLocation = EntourageLocation.cameraPositionToLocation(null, map.getCameraPosition());
-            if (previousEmptyListPopupLocation.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
-                return;
+                if (previousEmptyListPopupLocation.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
+                    return;
+                }
+                previousEmptyListPopupLocation = currentLocation;
             }
-            previousEmptyListPopupLocation = currentLocation;
-        }
         }
         AuthenticationController authenticationController = EntourageApplication.get(getContext()).getEntourageComponent().getAuthenticationController();
         if (authenticationController != null && !authenticationController.isShowNoPOIsPopup()) {

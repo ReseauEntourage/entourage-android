@@ -166,7 +166,6 @@
                     android:layout_marginTop="10dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:contentDescription="@string/encounter_voice_message_button"
-                    android:src="@drawable/ic_action_record_sound"
                     app:srcCompat="@drawable/ic_action_record_sound"/>
 
                 <View

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -52,7 +53,7 @@
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_plus"
+            app:srcCompat="@drawable/ic_plus"
             android:visibility="gone"/>
 
         <EditText
@@ -74,7 +75,7 @@
             android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/encounter_voice_message_button"
-            android:src="@drawable/ic_action_record_sound"/>
+            app:srcCompat="@drawable/ic_action_record_sound"/>
 
         <Button
             android:id="@+id/tour_info_comment_send_button"

@@ -30,7 +30,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:src="@drawable/ic_action_back"/>
+            app:srcCompat="@drawable/ic_action_back"/>
 
     </RelativeLayout>
 
@@ -164,6 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:clickable="true"
+            android:focusable="true"
             android:gravity="center_horizontal"
             android:padding="10dp"
             android:text="@string/login_text_lost_code"

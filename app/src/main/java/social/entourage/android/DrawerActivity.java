@@ -292,23 +292,27 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     private void displayLocationProviderDisabledAlert() {
-        new AlertDialog.Builder(this)
-            .setMessage(getString(R.string.error_dialog_disabled))
-            .setCancelable(false)
-            .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                }
-            })
-            .setNegativeButton("Non", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            })
-            .create()
-            .show();
+        try {
+            new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.error_dialog_disabled))
+                    .setCancelable(false)
+                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    })
+                    .create()
+                    .show();
+        } catch(Exception e) {
+            Timber.e(e);
+        }
     }
 
     private void sendMapFragmentExtras() {

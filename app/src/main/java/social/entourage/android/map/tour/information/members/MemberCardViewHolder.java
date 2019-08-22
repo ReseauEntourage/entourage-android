@@ -67,7 +67,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
         this.userId = tourUser.getUserId();
         String avatarURL = tourUser.getAvatarURLAsString();
         if (avatarURL != null) {
-            Picasso.with(itemView.getContext()).load(Uri.parse(avatarURL))
+            Picasso.get().load(Uri.parse(avatarURL))
                     .placeholder(R.drawable.ic_user_photo_small)
                     .transform(new CropCircleTransformation())
                     .into(mMemberPhoto);
@@ -79,7 +79,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
         if (partner != null) {
             String partnerLogoURL = partner.getSmallLogoUrl();
             if (partnerLogoURL != null) {
-                Picasso.with(itemView.getContext())
+                Picasso.get()
                         .load(Uri.parse(partnerLogoURL))
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(new CropCircleTransformation())

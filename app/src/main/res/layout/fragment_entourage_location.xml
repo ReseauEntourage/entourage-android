@@ -31,7 +31,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="10dp"
-            android:src="@drawable/ic_geoloc"/>
+            app:srcCompat="@drawable/ic_geoloc"/>
 
         <TextView
             android:id="@+id/entourage_location_address"

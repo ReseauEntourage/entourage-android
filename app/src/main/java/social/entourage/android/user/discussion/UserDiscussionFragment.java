@@ -137,13 +137,13 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
 
         //photo
         if (otherUser.getAvatarURL() != null) {
-            Picasso.with(getActivity()).load(Uri.parse(otherUser.getAvatarURL()))
+            Picasso.get().load(Uri.parse(otherUser.getAvatarURL()))
                     .placeholder(R.drawable.ic_user_photo)
                     .transform(new CropCircleTransformation())
                     .into(userPhoto);
         }
         else {
-            Picasso.with(getActivity()).load(R.drawable.ic_user_photo)
+            Picasso.get().load(R.drawable.ic_user_photo)
                     .transform(new CropCircleTransformation())
                     .into(userPhoto);
         }

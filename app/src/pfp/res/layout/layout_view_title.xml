@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/accent"
     android:orientation="vertical">
 
@@ -20,7 +20,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            android:src="@drawable/ic_action_back"
+            app:srcCompat="@drawable/ic_action_back"
             android:tint="@color/white"/>
 
         <TextView

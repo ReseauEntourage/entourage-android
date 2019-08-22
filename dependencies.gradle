@@ -9,8 +9,8 @@ ext {
 
     // SDK versions
     compileSdkVersion = 28
-    buildToolsVersion = "29.0.0"
-    minSdkVersion = 18 /*July 2013 Android 4.3 JELLY_BEAN_MR2*/
+    buildToolsVersion = "29.0.2"
+    minSdkVersion = 19 /*October 2013: Android 4.4, KitKat*/
     targetSdkVersion = 28
 
     // Java versions
@@ -33,30 +33,30 @@ ext {
     constraintlayoutVersion = "1.1.3"
     coordinatorlayoutVersion="1.0.0"
     crashlyticsVersion = "2.10.1"
-    daggerVersion = "2.23.1"
+    daggerVersion = "2.24"
     dateTimePickerVersion = "3.6.3"
     espressoVersion = "3.2.0"
-    facebookVersion = "5.0.3"
-    firebaseCoreVersion = "17.0.0"
-    firebaseMessagingVersion = "19.0.0"
-    firebaseInappVersion = "18.0.0"
+    facebookVersion = "5.2.0"
+    firebaseCoreVersion = "17.0.1"
+    firebaseMessagingVersion = "19.0.1"
+    firebaseInappVersion = "18.0.2"
     floatingButtonVersion = "1.6.4"
     guavaVersion = "27.0.1-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
-    jodaVersion = "2.10.1.2"
+    jodaVersion = "2.10.2"
     mapsVersion = "17.0.0"
     mapsUtilsVersion = "0.5"
-    materialVersion = "1.1.0-alpha07"
-    mixpanelVersion = "5.6.3"
+    materialVersion = "1.1.0-alpha09"
+    mixpanelVersion = "5.6.4"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.2" //version 3.14+ needs API 21+
     okHttpIdlingVersion = "1.0.0"
-    picassoVersion = "2.5.2"
+    picassoVersion = "2.71828"
     picassoTransformationsVersion = "2.2.1"
     playServicesVersion = "17.0.0"
-    retrofitVersion = "2.6.0"
-    recyclerViewVersion = "1.1.0-alpha06"
+    retrofitVersion = "2.6.1"
+    recyclerViewVersion = "1.1.0-beta02"
     shortcutBadgerVersion = "1.1.22"
     supportVersion = "1.0.0"
     tapeVersion = "1.2.3"
