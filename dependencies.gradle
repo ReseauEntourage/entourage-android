@@ -19,10 +19,10 @@ ext {
 
     // App versions
     versionMajor = 5
-    versionMinor = 9
+    versionMinor = 10
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
-    versionCodeInt = versionMajor * 100000 + versionMinor * 10000 + versionPatch % 10000
+    versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
     versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
     appBundleName = System.env.APPBUNDLE_NAME ? System.env.APPBUNDLE_NAME : "app"
 
@@ -135,7 +135,6 @@ ext {
                     name: "okhttp3-idling-resource",
                     version: "$okHttpIdlingVersion",
                     exclude: [
-                            group: "com.android.support",
                             group: "com.squareup.okhttp3"
                     ]
             ],

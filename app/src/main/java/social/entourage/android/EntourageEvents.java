@@ -323,6 +323,11 @@ public class EntourageEvents {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", user.getPartner().getName());
         }
 
+        if(user.getFirebaseProperties()!=null) {
+            mFirebaseAnalytics.setUserProperty(User.UserFirebaseProperties.actionZoneCPName, user.getFirebaseProperties().getActionZoneCP());
+            mFirebaseAnalytics.setUserProperty(User.UserFirebaseProperties.actionZoneDepName, user.getFirebaseProperties().getActionZoneDep());
+        }
+
         String geolocStatus="NO";
         if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             geolocStatus = "YES";
