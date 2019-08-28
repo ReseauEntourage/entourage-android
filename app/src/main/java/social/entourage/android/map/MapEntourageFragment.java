@@ -2364,7 +2364,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
 
                 boolean isRunning = tourService != null && tourService.isRunning();
                 if (isRunning) {
-                    updateFloatingMenuOptions();
+                    if(mapOptionsMenu!=null) {
+                        updateFloatingMenuOptions();
+                    }
 
                     currentTourUUID = tourService.getCurrentTourId();
                     //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
