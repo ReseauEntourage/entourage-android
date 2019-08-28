@@ -124,7 +124,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         // i.e. the pickedImageUri is set
         if (pickedImageUri != null) {
             // Check if we have reading rights
-            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_AND_CROP_IMAGE_PERMISSION_CODE);
             } else {
                 // Proceed to next step
@@ -142,7 +142,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
             Uri uri = intent.getData();
 
-            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                 pickedImageUri = uri;
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_AND_CROP_IMAGE_PERMISSION_CODE);
             } else {
@@ -169,8 +169,8 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+                if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_STORAGE_PERMISSION_CODE);
                 } else {
                     showTakePhotoActivity();
@@ -224,7 +224,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     protected void onChoosePhotoClicked() {
 
         // write permission is used to store the cropped image before upload
-        if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_AND_CROP_IMAGE_PERMISSION_CODE);
         } else {
             showChoosePhotoActivity();
@@ -237,7 +237,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         if (CropImage.isExplicitCameraPermissionRequired(getActivity())) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
         } else {
-            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (PermissionChecker.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_STORAGE_PERMISSION_CODE);
             } else {
                 showTakePhotoActivity();

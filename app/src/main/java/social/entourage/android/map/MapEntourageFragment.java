@@ -1907,7 +1907,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
     }
 
     private void updateNewsfeedJoinStatus(TimestampedObject timestampedObject) {
-        newsfeedAdapter.updateCard(timestampedObject);
+        if(newsfeedAdapter!=null) {
+            newsfeedAdapter.updateCard(timestampedObject);
+        }
     }
 
     private void addTourHead(Tour tour) {
