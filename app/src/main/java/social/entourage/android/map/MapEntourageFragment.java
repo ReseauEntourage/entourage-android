@@ -872,14 +872,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
                 line.color(color);
                 map.addPolyline(line);
 
-                Tour currentTour = tourService.getCurrentTour();
-                if (currentTour != null) {
-                    if (currentTour.getEncounters() != null) {
-                        for (Encounter encounter : currentTour.getEncounters()) {
-                            presenter.loadEncounterOnMap(encounter);
-                        }
-                    }
-                }
+                addCurrentTourEncounters();
             }
         }
 
@@ -1103,14 +1096,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
                 line.color(color);
                 drawnToursMap.add(map.addPolyline(line));
 
-                Tour currentTour = tourService.getCurrentTour();
-                if (currentTour != null) {
-                    if (currentTour.getEncounters() != null) {
-                        for (Encounter encounter : currentTour.getEncounters()) {
-                            presenter.loadEncounterOnMap(encounter);
-                        }
-                    }
-                }
+                addCurrentTourEncounters();
             }
         }
 
@@ -1790,6 +1776,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
     }
 
     private void addCurrentTourEncounters() {
+        if(presenter==null) {
+            Timber.e("MapPresenter not ready");
+            return;
+        }
+
         List<Encounter> encounters = tourService.getCurrentTour().getEncounters();
         if (!encounters.isEmpty()) {
             for (Encounter encounter : encounters) {
@@ -2357,27 +2348,31 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
     private class ServiceConnection implements android.content.ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            if (getActivity() != null) {
-                tourService = ((TourService.LocalBinder) service).getService();
-                tourService.registerTourServiceListener(MapEntourageFragment.this);
-                tourService.registerNewsFeedListener(MapEntourageFragment.this);
-
-                boolean isRunning = tourService != null && tourService.isRunning();
-                if (isRunning) {
-                    if(mapOptionsMenu!=null) {
-                        updateFloatingMenuOptions();
-                    }
-
-                    currentTourUUID = tourService.getCurrentTourId();
-                    //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
-
-                    addCurrentTourEncounters();
+            if (getActivity() == null) {
+                Timber.e("No activity for service");
+                return;
+            }
+            tourService = ((TourService.LocalBinder) service).getService();
+            if(tourService==null) {
+                Timber.e("Tour service not found");
+                return;
+            }
+            tourService.registerTourServiceListener(MapEntourageFragment.this);
+            tourService.registerNewsFeedListener(MapEntourageFragment.this);
+            if (tourService.isRunning()) {
+                if(mapOptionsMenu!=null) {
+                    updateFloatingMenuOptions();
                 }
 
-                tourService.updateNewsfeed(pagination, selectedTab);
-                if (userHistory) {
-                    tourService.updateUserHistory(userId, 1, 500);
-                }
+                currentTourUUID = tourService.getCurrentTourId();
+                //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
+
+                addCurrentTourEncounters();
+            }
+
+            tourService.updateNewsfeed(pagination, selectedTab);
+            if (userHistory) {
+                tourService.updateUserHistory(userId, 1, 500);
             }
             isBound = true;
         }
