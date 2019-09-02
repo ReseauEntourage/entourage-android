@@ -44,10 +44,17 @@ public class LoginTest {
         IdlingRegistry.getInstance().register(resource);
     }
 
+    private void checkTCDisplay() {
+        //PFP we have a TC validation screen
+        if(EntourageApplication.isPfpApp()) {
+            onView(withId(R.id.register_welcome_start_button)).perform(click());
+        }
+    }
+
     private void checkNoUserIsLoggedIn() {
-        if(EntourageApplication.me() != null) {
-            Context context = activityRule.getActivity();
-            EntourageApplication.get(context).getEntourageComponent().getAuthenticationController().logOutUser();
+        Context context = activityRule.getActivity();
+        if(EntourageApplication.get(context).getEntourageComponent().getAuthenticationController().getUser() != null) {
+           EntourageApplication.get(context).getEntourageComponent().getAuthenticationController().logOutUser();
         }
     }
 
@@ -61,6 +68,7 @@ public class LoginTest {
     public void loginOK() {
         checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
+        checkTCDisplay();
 
         onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
         onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
@@ -73,6 +81,7 @@ public class LoginTest {
     @Test
     public void loginOKwithoutCountryCode() {
         onView(withId(R.id.login_button_login)).perform(click());
+        checkTCDisplay();
 
         onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33", "0")));
         onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
@@ -84,7 +93,9 @@ public class LoginTest {
 
     @Test
     public void loginFailureWrongPassword() {
+        checkNoUserIsLoggedIn();
         onView(withId(R.id.login_button_login)).perform(click());
+        checkTCDisplay();
 
         onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
         onView(withId(R.id.login_edit_code)).perform(typeText("999999"));
@@ -98,6 +109,7 @@ public class LoginTest {
     @Test
     public void loginFailureWrongPhoneNumberFormat() {
         onView(withId(R.id.login_button_login)).perform(click());
+        checkTCDisplay();
 
         onView(withId(R.id.login_edit_phone)).perform(typeText("012345678"));
         onView(withId(R.id.login_edit_code)).perform(typeText("000000"));

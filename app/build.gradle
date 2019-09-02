@@ -14,6 +14,8 @@ android {
 
     def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin
     def TEST_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_ACCOUNT_PWD + '"' : entourageTestPwd
+    def TEST_PFP_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_PFP_ACCOUNT_LOGIN + '"' : pfpTestLogin
+    def TEST_PFP_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_PFP_ACCOUNT_PWD + '"' : pfpTestPwd
 
     defaultConfig {
         applicationId 'social.entourage.android'
@@ -93,9 +95,12 @@ android {
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
             buildConfigField 'String', 'API_KEY', '"9ebf2b47e35046e43dae5e31"'
 
+            buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN
+            buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_PFP_ACCOUNT_PWD
+
             ext {
                 prod = [
-                        serverURL: "https://apiPXTGS.entourage.social/api/v1/",
+                        serverURL: "https://apipxtgs.entourage.social/api/v1/",
                         deepLinksHostName: "www.entourage.social/pfp",
                         deepLinksScheme: "pfp-prod"
                 ]
