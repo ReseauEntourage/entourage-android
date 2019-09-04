@@ -598,9 +598,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
 
     @Subscribe
     public void onUserInfoUpdated(Events.OnUserInfoUpdatedEvent event) {
-        User user = EntourageApplication.me(getContext());
-        if (user == null || newsfeedAdapter == null) return;
-        TourAuthor userAsAuthor = user.asTourAuthor();
+        User me = EntourageApplication.me(getContext());
+        if (me == null || newsfeedAdapter == null) return;
+        TourAuthor meAsAuthor = me.asTourAuthor();
         List<TimestampedObject> dirtyList = new ArrayList<>();
         // See which cards needs updating
         for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
@@ -610,12 +610,12 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
             // Skip null author
             if (author == null) continue;
             // Skip not same author id
-            if (author.getUserID() != userAsAuthor.getUserID()) continue;
+            if (author.getUserID() != meAsAuthor.getUserID()) continue;
             // Skip if nothing changed
-            if (author.isSame(userAsAuthor)) continue;
+            if (author.isSame(meAsAuthor)) continue;
             // Update the tour author
-            userAsAuthor.setUserName(author.getUserName());
-            feedItem.setAuthor(userAsAuthor);
+            meAsAuthor.setUserName(author.getUserName());
+            feedItem.setAuthor(meAsAuthor);
             // Mark as dirty
             dirtyList.add(feedItem);
         }
@@ -982,7 +982,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements To
     }
 
     @Override
-    public void onUserStatusChanged(TourUser user, @NonNull FeedItem feedItem) {
+    public void onUserStatusChanged(@NonNull TourUser user, @NonNull FeedItem feedItem) {
         if (getActivity() == null || getActivity().isFinishing()) return;
         if (user == null) {
             //error changing the status

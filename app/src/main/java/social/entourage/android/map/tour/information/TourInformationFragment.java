@@ -2128,12 +2128,12 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     // ----------------------------------
 
     @Override
-    public void onTourCreated(final boolean created, final String tourUUID) {
+    public void onTourCreated(final boolean created, @NonNull final String tourUUID) {
 
     }
 
     @Override
-    public void onTourUpdated(final LatLng newPoint) {
+    public void onTourUpdated(@NonNull final LatLng newPoint) {
 
     }
 
@@ -2200,7 +2200,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     }
 
     @Override
-    public void onUserStatusChanged(final TourUser user, final FeedItem feedItem) {
+    public void onUserStatusChanged(@NonNull final TourUser user, @NonNull final FeedItem feedItem) {
         //ignore requests that are not related to our feed item
         if (feedItem == null || this.feedItem == null) return;
         if (feedItem.getType() != this.feedItem.getType()) return;

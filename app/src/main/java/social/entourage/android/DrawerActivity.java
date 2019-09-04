@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -152,10 +151,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             //initialize the push notifications
             initializePushNotifications();
 
-            updateMixpanelInfo();
-
-            Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
-            Crashlytics.setUserName(user.getDisplayName());
+            updateAnalyticsInfo();
         }
     }
 
@@ -223,8 +219,8 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
 
         if (getIntent()==null || getIntent().getAction() == null) {
-            // user just returns to the app, update mixpanel
-            updateMixpanelInfo();
+            // user just returns to the app, update analytics
+            updateAnalyticsInfo();
         }
     }
 
@@ -520,10 +516,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void updateMixpanelInfo() {
+    private void updateAnalyticsInfo() {
         User user = getAuthenticationController().getUser();
         if (user == null) return;
-        EntourageEvents.updateMixpanelInfo(user, getApplicationContext(), NotificationManagerCompat.from(this).areNotificationsEnabled());
+        EntourageEvents.updateUserInfo(user, getApplicationContext(), NotificationManagerCompat.from(this).areNotificationsEnabled());
     }
 
     @Override
@@ -795,6 +791,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onShowURLRequested(Events.OnShowURLEvent event) {
         if (event == null) return;
         showWebView(event.getUrl());
+    }
+
+    @Subscribe
+    public void onUserUpdateEvent(Events.OnUserInfoUpdatedEvent event) {
+        updateAnalyticsInfo();
     }
 
     @Override

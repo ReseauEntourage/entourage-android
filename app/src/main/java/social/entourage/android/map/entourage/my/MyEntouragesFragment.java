@@ -554,7 +554,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     @Override
-    public void onTourCreated(final boolean created, final String tourUUID) {
+    public void onTourCreated(final boolean created, @NonNull final String tourUUID) {
         if (created) {
             updateFabMenu();
         }
@@ -589,7 +589,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     @Override
-    public void onFeedItemClosed(final boolean closed, final FeedItem feedItem) {
+    public void onFeedItemClosed(final boolean closed, @NonNull final FeedItem feedItem) {
         if (closed) {
             updateFabMenu();
         }
@@ -600,7 +600,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     @Override
-    public void onUserStatusChanged(final TourUser user, final FeedItem feedItem) {
+    public void onUserStatusChanged(@NonNull final TourUser user, @NonNull final FeedItem feedItem) {
         if (feedItem == null || user == null) return;
         // if the user was rejected or canceled the request
         if ( FeedItem.JOIN_STATUS_REJECTED.equals(user.getStatus()) || FeedItem.JOIN_STATUS_CANCELLED.equals(user.getStatus()) ) {

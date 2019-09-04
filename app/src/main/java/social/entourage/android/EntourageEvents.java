@@ -285,7 +285,7 @@ public class EntourageEvents {
         }
     }
 
-    public static void onLocationPermissionGranted(boolean isPermissionGranted) {
+    static void onLocationPermissionGranted(boolean isPermissionGranted) {
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
         if (mixpanel == null || mFirebaseAnalytics== null) return;
@@ -297,7 +297,7 @@ public class EntourageEvents {
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
     }
 
-    public static void updateMixpanelInfo(User user, Context context, boolean areNotificationsEnabled) {
+    static void updateUserInfo(User user, Context context, boolean areNotificationsEnabled) {
         if (areNotificationsEnabled) {
             logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_REFUSE);
         } else {
@@ -310,7 +310,9 @@ public class EntourageEvents {
         mixpanel.identify(String.valueOf(user.getId()));
         people.identify(String.valueOf(user.getId()));
         mFirebaseAnalytics.setUserId(String.valueOf(user.getId()));
+
         Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
+        Crashlytics.setUserName(user.getDisplayName());
 
         people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
