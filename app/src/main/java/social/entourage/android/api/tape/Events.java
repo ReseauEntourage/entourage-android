@@ -401,10 +401,15 @@ public class Events {
     /**
      * Event signaling that the map filter was changed
      */
-    public static class OnMyEntouragesFilterChanged {
+    public static class OnMyEntouragesForceRefresh {
 
-        public OnMyEntouragesFilterChanged() {
+        private FeedItem item;
+
+        public OnMyEntouragesForceRefresh(FeedItem item) {
+            this.item = item;
         }
+
+        public FeedItem getFeedItem() { return item;}
 
     }
 

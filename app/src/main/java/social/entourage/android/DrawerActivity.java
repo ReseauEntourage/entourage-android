@@ -11,6 +11,8 @@ import android.os.Looper;
 import android.provider.Settings;
 import androidx.annotation.IdRes;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -922,33 +924,34 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
-        if (message != null && message.getContent() != null && message.getContent().getJoinableId() != 0) {
+        if (message == null || message.getContent() == null || message.getContent().getJoinableId() == 0) {
+            return;
+        }
             Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
+        handler.post(() -> {
                     PushNotificationContent content = message.getContent();
-                    if (content != null) {
-                        String contentType = content.getType();
-                        if (contentType == null) {
+            if (content == null  || content.getType()==null) {
                             return;
                         }
+            String contentType = content.getType();
                         switch (contentType) {
                             case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
-                                if (!onPushNotificationChatMessageReceived(message)) {
-                                    addPushNotification(message);
-                                } else {
+                    if (displayMessageOnCurrentTourInfoFragment(message)) {
+                        //already displayed
                                     EntourageApplication application = EntourageApplication.get(getApplicationContext());
                                     if (application != null) {
                                         if (content.isTourRelated()) {
-                                            application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_CHAT_MESSAGE);
+                                application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), contentType);
                                         } else if (content.isEntourageRelated()) {
-                                            application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_CHAT_MESSAGE);
+                                application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), contentType);
                                         }
                                     }
+                    } else {
+                        addPushNotification(message);
                                 }
                                 break;
                             case PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED:
+                    //@todo should we update current tour info fragment ?
                                 EntourageApplication application = EntourageApplication.get(getApplicationContext());
                                 if (application != null) {
                                     if (content.isTourRelated()) {
@@ -968,13 +971,10 @@ public class DrawerActivity extends EntourageSecuredActivity
                                 addPushNotification(message);
                                 break;
                         }
-                    }
-                }
             });
         }
-    }
 
-    private boolean onPushNotificationChatMessageReceived(Message message) {
+    private boolean displayMessageOnCurrentTourInfoFragment(@NonNull Message message) {
         TourInformationFragment fragment = (TourInformationFragment) getSupportFragmentManager().findFragmentByTag(TourInformationFragment.TAG);
         return fragment != null && fragment.onPushNotificationChatMessageReceived(message);
     }

@@ -47,8 +47,15 @@ public class LastMessage implements Serializable {
         return fulltext.toString();
     }
 
-    public void setText(final String text) {
+    public void setMessage(final String text, final String author_first_name, final String author_last_name) {
         this.text = text;
+        this.author.setFirstName(author_first_name);
+        this.author.setLastName(author_first_name);
+    }
+
+    public void setMessage(final String text, final String author_display_name) {
+        this.text = author_display_name+ ": "+ text;
+        this.author = null;
     }
 
 }

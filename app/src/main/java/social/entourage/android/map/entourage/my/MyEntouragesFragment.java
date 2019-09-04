@@ -339,8 +339,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // ----------------------------------
 
     @Subscribe
-    public void onMyEntouragesFilterChanged(Events.OnMyEntouragesFilterChanged event) {
+    public void onMyEntouragesFilterChanged(Events.OnMyEntouragesForceRefresh event) {
+        FeedItem item = event.getFeedItem();
+        if(item==null) {
         refreshMyFeeds();
+        } else {
+            entouragesAdapter.updateCard(item);
+        }
     }
 
     @Subscribe
@@ -381,9 +386,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         TimestampedObject card = entouragesAdapter.findCard(cardType, joinableId);
         if (card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
+            ((FeedItem)card).getLastMessage().setMessage(content.message, message.getAuthor());
             entouragesAdapter.updateCard(card);
-
-            // if (presenter != null) presenter.getFeedItem(String.valueOf(joinableId), cardType);
         }
     }
 

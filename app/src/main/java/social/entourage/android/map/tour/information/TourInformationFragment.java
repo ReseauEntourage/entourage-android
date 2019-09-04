@@ -501,6 +501,9 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
             onSwitchSections();
             return;
         }
+        // inform the app to refrehs the my entourages feed
+        BusProvider.getInstance().post(new Events.OnMyEntouragesForceRefresh(feedItem));
+
         this.dismissAllowingStateLoss();
     }
 
@@ -943,7 +946,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     // Chat push notification
     // ----------------------------------
 
-    public boolean onPushNotificationChatMessageReceived(Message message) {
+    /**
+     * @param message
+     * @return true if pushNotif has been displayed on this fragment
+     */
+    public boolean onPushNotificationChatMessageReceived(@NonNull Message message) {
         //we received a chat notification
         //check if it is referring to this feed item
         PushNotificationContent content = message.getContent();
@@ -1921,8 +1928,11 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(chatMessageList);
                 if (feedItem.addCardInfoList(timestampedObjectList) > 0) {
                     //remember the last chat message
-                    ChatMessage chatMessage = (ChatMessage) feedItem.getAddedCardInfoList().get(0);
-                    oldestChatMessageDate = chatMessage.getCreationDate();
+                    ChatMessage lastChatMessage = (ChatMessage) feedItem.getAddedCardInfoList().get(feedItem.getAddedCardInfoList().size()-1);
+                    feedItem.getLastMessage().setMessage(lastChatMessage.getContent(), lastChatMessage.getUserName());
+
+                    //remember oldest chat message
+                    oldestChatMessageDate = ((ChatMessage) feedItem.getAddedCardInfoList().get(0)).getCreationDate();
                 }
             } else {
                 //no need to ask for more messages
