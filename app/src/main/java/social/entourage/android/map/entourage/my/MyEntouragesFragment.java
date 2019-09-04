@@ -342,7 +342,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     public void onMyEntouragesFilterChanged(Events.OnMyEntouragesForceRefresh event) {
         FeedItem item = event.getFeedItem();
         if(item==null) {
-        refreshMyFeeds();
+            refreshMyFeeds();
         } else {
             entouragesAdapter.updateCard(item);
         }

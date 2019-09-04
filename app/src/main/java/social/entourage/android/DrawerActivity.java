@@ -927,52 +927,52 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (message == null || message.getContent() == null || message.getContent().getJoinableId() == 0) {
             return;
         }
-            Handler handler = new Handler(Looper.getMainLooper());
+        Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> {
-                    PushNotificationContent content = message.getContent();
+            PushNotificationContent content = message.getContent();
             if (content == null  || content.getType()==null) {
-                            return;
-                        }
+                return;
+            }
             String contentType = content.getType();
-                        switch (contentType) {
-                            case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
+            switch (contentType) {
+                case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
                     if (displayMessageOnCurrentTourInfoFragment(message)) {
                         //already displayed
-                                    EntourageApplication application = EntourageApplication.get(getApplicationContext());
-                                    if (application != null) {
-                                        if (content.isTourRelated()) {
+                        EntourageApplication application = EntourageApplication.get(getApplicationContext());
+                        if (application != null) {
+                            if (content.isTourRelated()) {
                                 application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), contentType);
-                                        } else if (content.isEntourageRelated()) {
+                            } else if (content.isEntourageRelated()) {
                                 application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), contentType);
-                                        }
-                                    }
+                            }
+                        }
                     } else {
                         addPushNotification(message);
-                                }
-                                break;
-                            case PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED:
+                    }
+                    break;
+                case PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED:
                     //@todo should we update current tour info fragment ?
-                                EntourageApplication application = EntourageApplication.get(getApplicationContext());
-                                if (application != null) {
-                                    if (content.isTourRelated()) {
-                                        application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
-                                    } else if (content.isEntourageRelated()) {
-                                        application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
-                                    }
-                                }
-                                break;
-                            case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
-                                addPushNotification(message);
-                                if (mapEntourageFragment != null) {
-                                    mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
-                                }
-                                break;
-                            default:
-                                addPushNotification(message);
-                                break;
+                    EntourageApplication application = EntourageApplication.get(getApplicationContext());
+                    if (application != null) {
+                        if (content.isTourRelated()) {
+                            application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
+                        } else if (content.isEntourageRelated()) {
+                            application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
                         }
-            });
-        }
+                    }
+                    break;
+                case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+                    addPushNotification(message);
+                    if (mapEntourageFragment != null) {
+                        mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
+                    }
+                    break;
+                default:
+                    addPushNotification(message);
+                    break;
+            }
+        });
+    }
 
     private boolean displayMessageOnCurrentTourInfoFragment(@NonNull Message message) {
         TourInformationFragment fragment = (TourInformationFragment) getSupportFragmentManager().findFragmentByTag(TourInformationFragment.TAG);
