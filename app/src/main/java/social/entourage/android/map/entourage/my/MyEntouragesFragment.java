@@ -386,7 +386,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         TimestampedObject card = entouragesAdapter.findCard(cardType, joinableId);
         if (card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
-            ((FeedItem)card).getLastMessage().setMessage(content.message, message.getAuthor());
+            ((FeedItem)card).setLastMessage(content.message, message.getAuthor());
             entouragesAdapter.updateCard(card);
         }
     }

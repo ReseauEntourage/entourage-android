@@ -968,6 +968,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                     }
                     break;
                 default:
+                    /*TYPE_NEW_JOIN_REQUEST,TYPE_ENTOURAGE_INVITATION,TYPE_INVITATION_STATUS*/
                     addPushNotification(message);
                     break;
             }

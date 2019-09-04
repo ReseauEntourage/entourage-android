@@ -1929,7 +1929,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                 if (feedItem.addCardInfoList(timestampedObjectList) > 0) {
                     //remember the last chat message
                     ChatMessage lastChatMessage = (ChatMessage) feedItem.getAddedCardInfoList().get(feedItem.getAddedCardInfoList().size()-1);
-                    feedItem.getLastMessage().setMessage(lastChatMessage.getContent(), lastChatMessage.getUserName());
+                    feedItem.setLastMessage(lastChatMessage.getContent(), lastChatMessage.getUserName());
 
                     //remember oldest chat message
                     oldestChatMessageDate = ((ChatMessage) feedItem.getAddedCardInfoList().get(0)).getCreationDate();

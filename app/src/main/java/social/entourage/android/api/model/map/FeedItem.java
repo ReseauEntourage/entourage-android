@@ -196,6 +196,13 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         this.lastMessage = lastMessage;
     }
 
+    public void setLastMessage(final String text, final String author) {
+        if(lastMessage == null) {
+            lastMessage = new LastMessage();
+        }
+        lastMessage.setMessage(text, author);
+    }
+
     public String getShareURL() {
         return shareURL;
     }
