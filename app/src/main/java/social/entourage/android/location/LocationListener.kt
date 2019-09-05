@@ -56,7 +56,8 @@ class LocationListener(private val manager: TourServiceManager,
     override fun onLocationAvailability(result: LocationAvailability?) {
         super.onLocationAvailability(result)
         val isLocationAvailable = result?.isLocationAvailable == true
-        val intent = if (isLocationAvailable) Intent(TourService.KEY_LOCATION_PROVIDER_ENABLED) else Intent(TourService.KEY_LOCATION_PROVIDER_DISABLED)
-        context.sendBroadcast(intent)
+        Timber.d("LocationAvailability changed to %s", isLocationAvailable)
+        //val intent = if (isLocationAvailable) Intent(TourService.KEY_LOCATION_PROVIDER_ENABLED) else Intent(TourService.KEY_LOCATION_PROVIDER_DISABLED)
+        //context.sendBroadcast(intent)
     }
 }
