@@ -201,8 +201,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (getIntent()!=null && getIntent().getAction() != null) {
                 switch (getIntent().getAction()) {
                     case ConfirmationFragment.KEY_RESUME_TOUR:
-                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
-                        break;
                     case ConfirmationFragment.KEY_END_TOUR:
                         BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         break;

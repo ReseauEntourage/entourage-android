@@ -1,6 +1,7 @@
 package social.entourage.android.webview;
 
 
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -319,8 +320,16 @@ public class WebViewFragment extends EntourageDialogFragment {
         }
 
         @Override
+        @TargetApi(android.os.Build.VERSION_CODES.M)
         public void onReceivedError(final WebView view, final WebResourceRequest request, final WebResourceError error) {
             super.onReceivedError(view, request, error);
+            progressBar.setVisibility(View.GONE);
+        }
+
+        //@SuppressWarnings("deprecation")
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            super.onReceivedError(view, errorCode, description, failingUrl);
             progressBar.setVisibility(View.GONE);
         }
 

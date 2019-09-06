@@ -151,12 +151,6 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 }
                 break;
             case 2:
-                if (editedEntourage != null) {
-                    super.saveEditedEntourage();
-                } else {
-                    super.createEntourage();
-                }
-                break;
             case 3:
                 if (editedEntourage != null) {
                     super.saveEditedEntourage();
