@@ -90,10 +90,6 @@ public class MapPresenter {
         authenticationController.setShowNoEntouragesPopup(show);
     }
 
-    public void loadEncounterOnMap(Encounter encounter) {
-        fragment.putEncounterOnMap(encounter, onClickListener);
-    }
-
     public void openFeedItem(FeedItem feedItem, long invitationId, int feedRank) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();

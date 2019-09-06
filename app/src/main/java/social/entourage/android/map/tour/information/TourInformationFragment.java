@@ -114,6 +114,7 @@ import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
 import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.MapEntourageWithTourFragment;
 import social.entourage.android.map.OnAddressClickListener;
 import social.entourage.android.map.entourage.EntourageCloseFragment;
 import social.entourage.android.map.entourage.create.CreateEntourageFragment;
@@ -1382,7 +1383,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
         if (getContext() == null) return color;
         color = ContextCompat.getColor(getContext(), Tour.getTypeColorRes(type));
         if (!MapEntourageFragment.isToday(date)) {
-            return MapEntourageFragment.getTransparentColor(color);
+            return MapEntourageWithTourFragment.getTransparentColor(color);
         }
 
         return color;

@@ -765,12 +765,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (!feedItem.isClosed()) {
                 // close
                 mapEntourageFragment.stopFeedItem(feedItem, event.isSuccess());
-            } else {
-                if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
-                    // freeze
-                    Tour tour = (Tour) feedItem;
-                    mapEntourageFragment.freezeTour(tour);
-                }
+            } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
+                // freeze
+                mapEntourageFragment.freezeTour((Tour) feedItem);
             }
         }
     }
@@ -897,21 +894,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     // Floating Actions handling
     // ----------------------------------
 
-    public void onStartTourClicked() {
+    public void onCreateEntourageDeepLink() {
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.onStartTourLauncher();
-        }
-    }
-
-    public void onAddTourEncounterClicked() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.onAddEncounter();
-        }
-    }
-
-    public void onCreateEntourageClicked() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.displayEntouragePopupWhileTour();
+            mapEntourageFragment.displayEntourageDisclaimer();
         }
     }
 
