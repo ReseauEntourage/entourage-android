@@ -391,7 +391,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             for (int i = 0; i < tabCount; i++) {
                 BaseBottomNavigationDataSource.NavigationItem navigationItem = navigationDataSource.getNavigationItemAtIndex(i);
                 TabLayout.Tab tab = tabLayout.newTab();
-                tab.setCustomView(R.layout.toolbar_view);
+                tab.setCustomView(i == navigationDataSource.getMyMessagesTabIndex()?R.layout.toolbar_view_with_badge: R.layout.toolbar_view);
                 tab.setText(navigationItem.getText());
                 tab.setIcon(navigationItem.getIcon(getApplicationContext()));
                 tabLayout.addTab(tab);
