@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -975,6 +976,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             tourService.removeUserFromFeedItem(card, userId);
         }
     }
+
+    public static int getTransparentColor(int color) {
+        return Color.argb(200, Color.red(color), Color.green(color), Color.blue(color));
+    }
+
     // ----------------------------------
     // PRIVATE METHODS (views)
     // ----------------------------------

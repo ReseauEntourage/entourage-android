@@ -1017,10 +1017,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         return color;
     }
 
-    public static int getTransparentColor(int color) {
-        return Color.argb(200, Color.red(color), Color.green(color), Color.blue(color));
-    }
-
     @Override
     protected void updateUserHistory() {
         if (userHistory) {
