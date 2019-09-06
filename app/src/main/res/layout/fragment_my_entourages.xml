@@ -28,60 +28,18 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myentourages_list_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/myentourages_swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/myentourages_tab" />
+        android:layout_below="@+id/myentourages_tab">
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/myentourages_fab_menu"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myentourages_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="end"
-        android:paddingBottom="15dp"
-        android:paddingEnd="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingStart="10dp"
-        app:menu_backgroundColor="#ccffffff"
-        app:menu_colorNormal="@color/accent"
-        app:menu_colorPressed="@color/accent"
-        app:menu_colorRipple="@color/accent"
-        app:menu_labels_singleLine="true"
-        app:menu_labels_style="@style/MapActionLabelStyle">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/button_create_entourage"
-            style="@style/MapActionButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_entourage_contribution"
-            app:fab_label="@string/entourage_create_menu"
-            app:fab_size="mini"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/button_start_tour_launcher"
-            style="@style/MapActionButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_button_create_maraude"
-            app:fab_label="@string/tour_create"
-            app:fab_size="mini"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/button_add_tour_encounter"
-            style="@style/MapActionButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_encounter"
-            android:visibility="gone"
-            app:fab_label="@string/tour_create_encounter_button"
-            app:fab_size="mini"/>
-
-    </com.github.clans.fab.FloatingActionMenu>
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/myentourages_layout_no_items"

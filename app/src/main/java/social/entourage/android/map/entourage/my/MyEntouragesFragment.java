@@ -1,11 +1,7 @@
 package social.entourage.android.map.entourage.my;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.otto.Subscribe;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,7 +25,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
@@ -47,28 +36,20 @@ import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.model.map.TourPoint;
-import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.base.EntourageViewHolderListener;
-import social.entourage.android.configuration.Configuration;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
-import social.entourage.android.map.tour.TourService;
-import social.entourage.android.map.tour.TourServiceListener;
 import social.entourage.android.tools.BusProvider;
-import timber.log.Timber;
 
 /**
  * My Entourages Fragment
  */
-public class MyEntouragesFragment extends EntourageDialogFragment implements TourServiceListener, EntourageViewHolderListener, MyEntouragesAdapter.LoaderCallback {
+public class MyEntouragesFragment extends EntourageDialogFragment implements EntourageViewHolderListener, MyEntouragesAdapter.LoaderCallback {
 
     // ----------------------------------
     // Constants
@@ -88,23 +69,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     @Inject
     MyEntouragesPresenter presenter;
 
-    private TourService tourService;
-    private ServiceConnection connection = new ServiceConnection();
-    private boolean isBound = false;
-
-    @BindView(R.id.myentourages_fab_menu)
-    FloatingActionMenu fabMenu;
-
-    @BindView(R.id.button_start_tour_launcher)
-    FloatingActionButton startTourButton;
-
-    @BindView(R.id.button_add_tour_encounter)
-    FloatingActionButton addEncounterButton;
-
     @BindView(R.id.myentourages_list_view)
     RecyclerView entouragesView;
 
-    MyEntouragesAdapter entouragesAdapter;
+    @BindView(R.id.myentourages_swipeRefreshLayout)
+    SwipeRefreshLayout entouragesRefresh;
+
+    private MyEntouragesAdapter entouragesAdapter;
 
     @BindView(R.id.myentourages_layout_no_items)
     View noItemsView;
@@ -121,10 +92,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     private @NonNull EntouragePagination entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
     // Refresh invitations attributes
-    Timer refreshInvitationsTimer;
-    TimerTask refreshInvitationsTimerTask;
-    final Handler refreshInvitationsHandler = new Handler();
-    boolean isRefreshingInvitations = false;
+    private Timer refreshInvitationsTimer;
+    private final Handler refreshInvitationsHandler = new Handler();
+    private boolean isRefreshingInvitations = false;
 
     // ----------------------------------
     // Lifecycle
@@ -138,19 +108,12 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        doBindService();
-
         BusProvider.getInstance().register(this);
     }
 
     @Override
     public void onDestroy() {
         BusProvider.getInstance().unregister(this);
-
-        if (isBound) {
-            tourService.unregisterTourServiceListener(this);
-        }
-        doUnbindService();
 
         super.onDestroy();
     }
@@ -208,7 +171,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     private void initializeView() {
         initializeFilterTab();
         initializeEntouragesView();
-        initializeFabMenu();
     }
 
     private void initializeFilterTab() {
@@ -260,30 +222,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         entouragesAdapter.setViewHolderListener(this);
         entouragesAdapter.setLoaderCallback(this);
         entouragesView.setAdapter(entouragesAdapter);
-    }
-
-    private void initializeFabMenu() {
-        fabMenu.setVisibility(Configuration.getInstance().showMyMessagesFAB() ? View.VISIBLE : View.GONE);
-        updateFabMenu();
-        fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
-            @Override
-            public void onMenuToggle(final boolean opened) {
-                if (opened) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_PLUS_CLICK);
-                }
-            }
-        });
-    }
-
-    private void updateFabMenu() {
-        User me = EntourageApplication.me(getActivity());
-        boolean isPro = false;
-        if (me != null) {
-            isPro = me.isPro();
-        }
-        boolean isTourRunning = isBound && tourService.isRunning();
-        if (startTourButton != null) startTourButton.setVisibility( isPro ? (isTourRunning ? View.GONE : View.VISIBLE) : View.GONE );
-        if (addEncounterButton != null) addEncounterButton.setVisibility(isTourRunning ? View.VISIBLE : View.GONE);
+        entouragesRefresh.setOnRefreshListener(this::refreshMyFeeds);
     }
 
     private void retrieveMyFeeds() {
@@ -294,44 +233,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     }
 
     private void refreshMyFeeds() {
+        entouragesRefresh.setRefreshing(true);
         // remove the current feed
         entouragesAdapter.removeAll();
         entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
         // request a new feed
         retrieveMyFeeds();
-    }
-
-    // ----------------------------------
-    // BUTTONS HANDLING
-    // ----------------------------------
-
-    /* Removed in 5.0
-    @OnClick(R.id.myentourages_filter_button)
-    void onFilterClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_CLICK);
-        MyEntouragesFilterFragment fragment = new MyEntouragesFilterFragment();
-        fragment.show(getFragmentManager(), MyEntouragesFilterFragment.TAG);
-    }
-    */
-
-    @OnClick(R.id.button_create_entourage)
-    void onCreateEntourageClicked() {
-        if (getActivity() instanceof DrawerActivity) {
-            fabMenu.close(false);
-            DrawerActivity activity = (DrawerActivity)getActivity();
-            activity.onCreateEntourageClicked();
-        }
-    }
-
-    @OnClick(R.id.button_start_tour_launcher)
-    void onStartTourClicked() {
-        if (getActivity() instanceof DrawerActivity) {
-            fabMenu.close(false);
-            DrawerActivity activity = (DrawerActivity)getActivity();
-            activity.onStartTourClicked();
-
-            dismiss();
-        }
+        entouragesRefresh.setRefreshing(false);
     }
 
     // ----------------------------------
@@ -411,7 +319,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         //create the timer
         refreshInvitationsTimer = new Timer();
         //create the task
-        refreshInvitationsTimerTask = new TimerTask() {
+        TimerTask refreshInvitationsTimerTask = new TimerTask() {
             @Override
             public void run() {
                 refreshInvitationsHandler.post(MyEntouragesFragment.this::refreshInvitations);
@@ -441,7 +349,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     // Presenter callbacks
     // ----------------------------------
 
-    protected void onNewsfeedReceived(List<Newsfeed> newsfeedList) {
+    void onNewsfeedReceived(List<Newsfeed> newsfeedList) {
         //reset the loading indicator
         entouragesPagination.isLoading = false;
 
@@ -504,7 +412,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         }
     }
 
-    protected void onInvitationsReceived(List<Invitation> invitationList) {
+    void onInvitationsReceived(List<Invitation> invitationList) {
         // reset the semaphore
         isRefreshingInvitations = false;
         // check if the fragment is still attached
@@ -518,7 +426,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
         entouragesAdapter.setInvitations(invitationList);
     }
 
-    protected void onFeedItemReceived(FeedItem feedItem) {
+    void onFeedItemReceived(FeedItem feedItem) {
         if (getActivity() == null || !isAdded()) return;
 
         if (feedItem != null) {
@@ -527,89 +435,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
                 ((FeedItem)card).increaseBadgeCount();
                 entouragesAdapter.updateCard(feedItem);
             }
-        }
-    }
-
-    // ----------------------------------
-    // SERVICE BINDING METHODS
-    // ----------------------------------
-
-    void doBindService() {
-        if (getActivity() != null) {
-            try{
-                Intent intent = new Intent(getActivity(), TourService.class);
-                getActivity().startService(intent);
-                getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
-            } catch(IllegalStateException e) {
-                Timber.e(e);
-            }
-        }
-    }
-
-    void doUnbindService() {
-        if (getActivity() != null && isBound) {
-            getActivity().unbindService(connection);
-            isBound = false;
-        }
-    }
-
-    // ----------------------------------
-    // Tour Service listener implementation
-    // ----------------------------------
-
-    @Override
-    public void onTourCreated(final boolean created, @NonNull final String tourUUID) {
-        if (created) {
-            updateFabMenu();
-        }
-    }
-
-    @Override
-    public void onTourUpdated(@NotNull LatLng newPoint) {
-    }
-
-    @Override
-    public void onTourResumed(@NotNull List<? extends TourPoint> pointsToDraw, @NotNull String tourType, @NotNull Date startDate) {
-    }
-
-    @Override
-    public void onLocationUpdated(@NotNull LatLng location) {
-    }
-
-    @Override
-    public void onRetrieveToursNearby(@NotNull List<? extends Tour> tours) {
-    }
-
-    @Override
-    public void onRetrieveToursByUserId(@NotNull List<? extends Tour> tours) {
-    }
-
-    @Override
-    public void onUserToursFound(@NotNull Map<Long, ? extends Tour> tours) {
-    }
-
-    @Override
-    public void onToursFound(@NotNull Map<Long, ? extends Tour> tours) {
-    }
-
-    @Override
-    public void onFeedItemClosed(final boolean closed, @NonNull final FeedItem feedItem) {
-        if (closed) {
-            updateFabMenu();
-        }
-    }
-
-    @Override
-    public void onLocationStatusUpdated(final boolean active) {
-    }
-
-    @Override
-    public void onUserStatusChanged(@NonNull final TourUser user, @NonNull final FeedItem feedItem) {
-        if (feedItem == null || user == null) return;
-        // if the user was rejected or canceled the request
-        if ( FeedItem.JOIN_STATUS_REJECTED.equals(user.getStatus()) || FeedItem.JOIN_STATUS_CANCELLED.equals(user.getStatus()) ) {
-            // remove the feed item
-            entouragesAdapter.removeCard(feedItem);
         }
     }
 
@@ -625,28 +450,5 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Tou
     @Override
     public void loadMoreItems() {
         retrieveMyFeeds();
-    }
-
-    // ----------------------------------
-    // PRIVATE CLASSES
-    // ----------------------------------
-
-    private class ServiceConnection implements android.content.ServiceConnection {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            if (getActivity() != null) {
-                tourService = ((TourService.LocalBinder) service).getService();
-                tourService.registerTourServiceListener(MyEntouragesFragment.this);
-                isBound = true;
-                updateFabMenu();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            if (tourService != null) tourService.unregisterTourServiceListener(MyEntouragesFragment.this);
-            tourService = null;
-            isBound = false;
-        }
     }
 }

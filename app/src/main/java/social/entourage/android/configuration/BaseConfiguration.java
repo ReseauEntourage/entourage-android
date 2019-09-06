@@ -10,8 +10,6 @@ public abstract class BaseConfiguration {
     boolean showLostCodeErrorToast = true;
     // Show the tutorial for the first time users
     boolean showTutorial = false;
-    // Show + button in My Messages screen
-    boolean showMyMessagesFAB = false;
     // Show the user edit screen
     boolean showUserEditProfile = true;
     // Show the edit entourage screen from 14.2 .If false, send an email
@@ -27,10 +25,6 @@ public abstract class BaseConfiguration {
 
     public boolean showLostCodeErrorToast() {
         return showLostCodeErrorToast;
-    }
-
-    public boolean showMyMessagesFAB() {
-        return showMyMessagesFAB;
     }
 
     public boolean showTutorial() {

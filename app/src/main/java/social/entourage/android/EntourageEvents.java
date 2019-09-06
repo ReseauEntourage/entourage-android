@@ -187,7 +187,6 @@ public class EntourageEvents {
     //MY ENTOURAGES Events
     public static final String EVENT_MYENTOURAGES_BANNER_CLICK = "BannerMessageClick";
     public static final String EVENT_MYENTOURAGES_MESSAGE_OPEN = "MessageOpen";
-    public static final String EVENT_MYENTOURAGES_PLUS_CLICK = "PlusOnMessagesPageClick";
     public static final String EVENT_MYENTOURAGES_FILTER_CLICK = "MessagesFilterClick";
     public static final String EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick"; //A lot of code needs to be written to detect this
     public static final String EVENT_MYENTOURAGES_BACK_CLICK = "BackToFeedClick";

@@ -938,28 +938,15 @@ public class DrawerActivity extends EntourageSecuredActivity
                 case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
                     if (displayMessageOnCurrentTourInfoFragment(message)) {
                         //already displayed
-                        EntourageApplication application = EntourageApplication.get(getApplicationContext());
-                        if (application != null) {
-                            if (content.isTourRelated()) {
-                                application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), contentType);
-                            } else if (content.isEntourageRelated()) {
-                                application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), contentType);
-                            }
-                        }
+                        removePushNotification(content, contentType);
+
                     } else {
                         addPushNotification(message);
                     }
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED:
                     //@todo should we update current tour info fragment ?
-                    EntourageApplication application = EntourageApplication.get(getApplicationContext());
-                    if (application != null) {
-                        if (content.isTourRelated()) {
-                            application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
-                        } else if (content.isEntourageRelated()) {
-                            application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
-                        }
-                    }
+                    removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
                     addPushNotification(message);
@@ -973,6 +960,17 @@ public class DrawerActivity extends EntourageSecuredActivity
                     break;
             }
         });
+    }
+
+    private void removePushNotification(PushNotificationContent content, String contentType) {
+        EntourageApplication application = EntourageApplication.get(getApplicationContext());
+        if (application != null) {
+            if (content.isTourRelated()) {
+                application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), contentType);
+            } else if (content.isEntourageRelated()) {
+                application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), contentType);
+            }
+        }
     }
 
     private boolean displayMessageOnCurrentTourInfoFragment(@NonNull Message message) {
