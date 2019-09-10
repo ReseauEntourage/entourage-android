@@ -10,8 +10,8 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.api.model.map.TourPoint
-import social.entourage.android.map.tour.TourService
-import social.entourage.android.map.tour.TourServiceManager
+import social.entourage.android.tour.TourService
+import social.entourage.android.tour.TourServiceManager
 import timber.log.Timber
 
 class LocationListener(private val manager: TourServiceManager,

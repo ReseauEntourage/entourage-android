@@ -3,7 +3,7 @@ package social.entourage.android.navigation;
 import social.entourage.android.R;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageWithTourFragment;
-import social.entourage.android.map.entourage.my.MyEntouragesFragment;
+import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.sidemenu.SideMenuFragment;
 
 /**

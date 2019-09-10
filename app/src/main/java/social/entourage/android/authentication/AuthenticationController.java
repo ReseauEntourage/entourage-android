@@ -14,7 +14,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
+import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.tools.BusProvider;

@@ -75,14 +75,14 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.location.LocationUtils;
-import social.entourage.android.map.entourage.minicards.EntourageMiniCardsView;
+import social.entourage.android.entourage.minicards.EntourageMiniCardsView;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.map.filter.MapFilterFragment;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
-import social.entourage.android.map.tour.NewsFeedListener;
-import social.entourage.android.map.tour.TourService;
-import social.entourage.android.map.tour.information.TourInformationFragment;
+import social.entourage.android.tour.NewsFeedListener;
+import social.entourage.android.tour.TourService;
+import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import social.entourage.android.newsfeed.NewsfeedPagination;
@@ -337,11 +337,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         //check if we are not already displaying the tour
         if (getActivity() != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = (TourInformationFragment) fragmentManager.findFragmentByTag(TourInformationFragment.TAG);
-            if (tourInformationFragment != null
-                    && tourInformationFragment.getFeedItemType() == feedItem.getType()
-                    && tourInformationFragment.getFeedItemId() != null
-                    && tourInformationFragment.getFeedItemId().equalsIgnoreCase(feedItem.getUUID())
+            EntourageInformationFragment entourageInformationFragment = (EntourageInformationFragment) fragmentManager.findFragmentByTag(EntourageInformationFragment.TAG);
+            if (entourageInformationFragment != null
+                    && entourageInformationFragment.getFeedItemType() == feedItem.getType()
+                    && entourageInformationFragment.getFeedItemId() != null
+                    && entourageInformationFragment.getFeedItemId().equalsIgnoreCase(feedItem.getUUID())
                     ) {
                 //TODO refresh the tour info screen
                 return;

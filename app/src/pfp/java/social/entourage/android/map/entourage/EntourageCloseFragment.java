@@ -1,4 +1,4 @@
-package social.entourage.android.map.entourage;
+package social.entourage.android.entourage;
 
 import android.content.Context;
 import android.content.DialogInterface;

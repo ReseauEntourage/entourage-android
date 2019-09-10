@@ -21,8 +21,8 @@ import java.util.Locale;
 
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
-import social.entourage.android.map.entourage.category.EntourageCategory;
-import social.entourage.android.map.entourage.category.EntourageCategoryManager;
+import social.entourage.android.entourage.category.EntourageCategory;
+import social.entourage.android.entourage.category.EntourageCategoryManager;
 
 /**
  * Created by Mihai Ionescu on 06/07/2018.

@@ -6,7 +6,7 @@
               android:background="@drawable/rounded_dialog"
               android:orientation="vertical"
               android:padding="10dp"
-              tools:context="social.entourage.android.map.entourage.EntourageCloseFragment">
+              tools:context=".entourage.EntourageCloseFragment">
 
     <RelativeLayout
         android:id="@+id/hack_for_proper_width"

@@ -15,8 +15,8 @@ import javax.inject.Inject;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.tape.Events.*;
-import social.entourage.android.map.encounter.EncounterUploadCallback;
-import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
+import social.entourage.android.tour.encounter.EncounterUploadCallback;
+import social.entourage.android.tour.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.tools.BusProvider;
 
 public class EncounterTapeService extends Service implements EncounterUploadCallback {

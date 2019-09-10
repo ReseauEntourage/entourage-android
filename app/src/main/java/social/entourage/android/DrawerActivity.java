@@ -58,15 +58,15 @@ import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.map.MapEntourageFragment;
-import social.entourage.android.map.choice.ChoiceFragment;
-import social.entourage.android.map.confirmation.ConfirmationFragment;
-import social.entourage.android.map.encounter.CreateEncounterActivity;
-import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
-import social.entourage.android.map.encounter.ReadEncounterActivity;
-import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
-import social.entourage.android.map.entourage.my.MyEntouragesFragment;
-import social.entourage.android.map.tour.TourService;
-import social.entourage.android.map.tour.information.TourInformationFragment;
+import social.entourage.android.tour.choice.ChoiceFragment;
+import social.entourage.android.tour.confirmation.ConfirmationFragment;
+import social.entourage.android.tour.encounter.CreateEncounterActivity;
+import social.entourage.android.tour.encounter.EncounterDisclaimerFragment;
+import social.entourage.android.tour.encounter.ReadEncounterActivity;
+import social.entourage.android.entourage.EntourageDisclaimerFragment;
+import social.entourage.android.entourage.my.MyEntouragesFragment;
+import social.entourage.android.tour.TourService;
+import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.navigation.BaseBottomNavigationDataSource;
 import social.entourage.android.navigation.BottomNavigationDataSource;
@@ -81,7 +81,7 @@ import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import timber.log.Timber;
 
 public class DrawerActivity extends EntourageSecuredActivity
-    implements TourInformationFragment.OnTourInformationFragmentFinish,
+    implements EntourageInformationFragment.OnEntourageInformationFragmentFinish,
     ChoiceFragment.OnChoiceFragmentFinish,
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
@@ -794,7 +794,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    public void closeTourInformationFragment(TourInformationFragment fragment) {
+    public void closeEntourageInformationFragment(EntourageInformationFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
     }
@@ -949,7 +949,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private boolean displayMessageOnCurrentTourInfoFragment(@NonNull Message message) {
-        TourInformationFragment fragment = (TourInformationFragment) getSupportFragmentManager().findFragmentByTag(TourInformationFragment.TAG);
+        EntourageInformationFragment fragment = (EntourageInformationFragment) getSupportFragmentManager().findFragmentByTag(EntourageInformationFragment.TAG);
         return fragment != null && fragment.onPushNotificationChatMessageReceived(message);
     }
 

@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:windowSoftInputMode="adjustPan"
-    tools:context="social.entourage.android.map.entourage.create.CreateEntourageFragment">
+    tools:context="social.entourage.android.entourage.create.CreateEntourageFragment">
 
     <social.entourage.android.view.EntourageTitleView
         android:id="@+id/create_entourage_fragment_title"

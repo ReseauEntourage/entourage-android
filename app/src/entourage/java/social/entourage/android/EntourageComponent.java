@@ -23,7 +23,7 @@ import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.AuthenticationModule;
 import social.entourage.android.authentication.ComplexPreferences;
-import social.entourage.android.map.tour.TourService;
+import social.entourage.android.tour.TourService;
 
 /**
  * Dagger component on Application Level

@@ -62,12 +62,12 @@ import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
 import social.entourage.android.location.LocationUtils;
-import social.entourage.android.map.choice.ChoiceFragment;
-import social.entourage.android.map.confirmation.ConfirmationFragment;
-import social.entourage.android.map.encounter.CreateEncounterActivity;
-import social.entourage.android.map.tour.TourService;
-import social.entourage.android.map.tour.TourServiceListener;
-import social.entourage.android.map.tour.join.TourJoinRequestFragment;
+import social.entourage.android.tour.choice.ChoiceFragment;
+import social.entourage.android.tour.confirmation.ConfirmationFragment;
+import social.entourage.android.tour.encounter.CreateEncounterActivity;
+import social.entourage.android.tour.TourService;
+import social.entourage.android.tour.TourServiceListener;
+import social.entourage.android.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import timber.log.Timber;
 

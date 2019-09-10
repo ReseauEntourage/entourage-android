@@ -3,7 +3,7 @@ package social.entourage.android.tools.log
 import com.crashlytics.android.Crashlytics
 
 import social.entourage.android.api.model.Newsfeed
-import social.entourage.android.map.tour.NewsFeedListener
+import social.entourage.android.tour.NewsFeedListener
 
 class CrashlyticsNewsFeedLogger : NewsFeedListener {
 

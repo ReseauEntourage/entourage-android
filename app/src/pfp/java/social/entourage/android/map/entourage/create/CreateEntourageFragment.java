@@ -1,4 +1,4 @@
-package social.entourage.android.map.entourage.create;
+package social.entourage.android.entourage.create;
 
 import android.graphics.Typeface;
 import android.os.Bundle;

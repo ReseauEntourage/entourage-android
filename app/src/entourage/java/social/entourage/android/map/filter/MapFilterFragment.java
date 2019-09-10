@@ -22,8 +22,8 @@ import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.map.entourage.category.EntourageCategory;
-import social.entourage.android.map.entourage.category.EntourageCategoryManager;
+import social.entourage.android.entourage.category.EntourageCategory;
+import social.entourage.android.entourage.category.EntourageCategoryManager;
 
 public class MapFilterFragment extends BaseMapFilterFragment {
 
