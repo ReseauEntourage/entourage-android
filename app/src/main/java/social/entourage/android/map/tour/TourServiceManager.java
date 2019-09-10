@@ -489,18 +489,14 @@ public class TourServiceManager {
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                     if (response.isSuccessful()) {
                         tourService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
-                    } else {
-                        tourService.notifyListenersUserStatusChanged(null, tour);
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
-                    tourService.notifyListenersUserStatusChanged(null, tour);
+                    Timber.e(t);
                 }
             });
-        } else {
-            tourService.notifyListenersUserStatusChanged(null, tour);
         }
     }
 
@@ -513,18 +509,14 @@ public class TourServiceManager {
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                     if (response.isSuccessful()) {
                         tourService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
-                    } else {
-                        tourService.notifyListenersUserStatusChanged(null, tour);
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call call, @NonNull final Throwable t) {
-                    tourService.notifyListenersUserStatusChanged(null, tour);
+                    Timber.e(t);
                 }
             });
-        } else {
-            tourService.notifyListenersUserStatusChanged(null, tour);
         }
     }
 
@@ -567,18 +559,14 @@ public class TourServiceManager {
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                     if (response.isSuccessful()) {
                         tourService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
-                    } else {
-                        tourService.notifyListenersUserStatusChanged(null, entourage);
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
-                    tourService.notifyListenersUserStatusChanged(null, tour);
+                    Timber.e(t);
                 }
             });
-        } else {
-            tourService.notifyListenersUserStatusChanged(null, tour);
         }
     }
 
@@ -591,18 +579,14 @@ public class TourServiceManager {
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                     if (response.isSuccessful()) {
                         tourService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
-                    } else {
-                        tourService.notifyListenersUserStatusChanged(null, entourage);
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call call, @NonNull final Throwable t) {
-                    tourService.notifyListenersUserStatusChanged(null, entourage);
+                    Timber.e(t);
                 }
             });
-        } else {
-            tourService.notifyListenersUserStatusChanged(null, entourage);
         }
     }
 

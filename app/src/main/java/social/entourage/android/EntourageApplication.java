@@ -1,6 +1,5 @@
 package social.entourage.android;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
@@ -51,7 +50,7 @@ public class EntourageApplication extends MultiDexApplication {
 
     private ArrayList<EntourageActivity> activities;
 
-    public int badgeCount = 0;
+    private int badgeCount = 0;
 
     private FeedItemsStorage feedItemsStorage;
 
@@ -79,9 +78,9 @@ public class EntourageApplication extends MultiDexApplication {
 
         JodaTimeAndroid.init(this);
         setupDagger();
-        setupBadgeCount();
         setupFeedItemsStorage();
         setupSharedPreferences();
+        setupBadgeCount();
     }
 
 
@@ -100,7 +99,7 @@ public class EntourageApplication extends MultiDexApplication {
     }
 
     private void setupBadgeCount() {
-        decreaseBadgeCount(0);
+        updateBadgeCount();
     }
 
     public EntourageComponent getEntourageComponent() {
@@ -117,6 +116,10 @@ public class EntourageApplication extends MultiDexApplication {
 
     public SharedPreferences getSharedPreferences() {
         return sharedPreferences;
+    }
+
+    public int getBadgeCount() {
+        return badgeCount;
     }
 
     public static EntourageApplication get(@Nullable Context context) {
@@ -173,12 +176,11 @@ public class EntourageApplication extends MultiDexApplication {
     // Push notifications and badge handling
     // ----------------------------------
 
-    private void decreaseBadgeCount(int amount) {
-        badgeCount -= amount;
-        if (badgeCount < 0) {
-            badgeCount = 0;
+    private void updateBadgeCount() {
+        if(badgeCount == feedItemsStorage.getBadgeCount(me().getId())) {
+            return;
         }
-
+        badgeCount = feedItemsStorage.getBadgeCount(me().getId());
         if (badgeCount == 0) {
             ShortcutBadger.removeCount(getApplicationContext());
         } else {
@@ -186,24 +188,20 @@ public class EntourageApplication extends MultiDexApplication {
         }
     }
 
-    private void resetBadgeCount(){
-        badgeCount=0;
-        ShortcutBadger.removeCount(getApplicationContext());
-    }
-
     public void addPushNotification(Message message) {
         PushNotificationManager.getInstance().addPushNotification(message);
-        updateFeedItemsStorage(message, true);
-        badgeCount++;
-        ShortcutBadger.applyCount(getApplicationContext(), badgeCount);
+        if(storeNewPushNotification(message, true)>1) {
+            //feedItem badge was already set
+            return;
+        }
+        updateBadgeCount();
     }
 
     public void removePushNotificationsForFeedItem(FeedItem feedItem) {
         int count = PushNotificationManager.getInstance().removePushNotificationsForFeedItem(feedItem);
-        feedItem.setBadgeCount(0);
-        updateFeedItemsStorage(feedItem);
-
-        decreaseBadgeCount(count);
+        if(count>0) {
+            updateStorageFeedItem(feedItem);
+        }
     }
 
     public void removePushNotification(Message message) {
@@ -212,8 +210,10 @@ public class EntourageApplication extends MultiDexApplication {
         }
         int count = PushNotificationManager.getInstance().removePushNotification(message);
         if (count > 0) {
-            updateFeedItemsStorage(message, false);
-            decreaseBadgeCount(count);
+            if(storeNewPushNotification(message, false)==0) {
+                //feedItem badge was set to 0
+                updateBadgeCount();
+            }
         }
     }
 
@@ -226,17 +226,20 @@ public class EntourageApplication extends MultiDexApplication {
 
     public void removePushNotification(long feedId, int feedType, int userId, String pushType) {
         int count = PushNotificationManager.getInstance().removePushNotification(feedId, feedType, userId, pushType);
-        decreaseBadgeCount(count);
+        if(count>0) {
+            updateBadgeCount();
+        }
     }
 
     public void removeAllPushNotifications() {
         PushNotificationManager.getInstance().removeAllPushNotifications();
         // reset the badge count
-        resetBadgeCount();
+        updateBadgeCount();
     }
 
     public void updateBadgeCountForFeedItem(FeedItem feedItem) {
-        updateFeedItemFromStorage(feedItem);
+        updateStorageFeedItem(feedItem);
+        updateBadgeCount();
     }
 
     // ----------------------------------
@@ -262,7 +265,7 @@ public class EntourageApplication extends MultiDexApplication {
         preferences.commit();
     }
 
-    public void updateFeedItemsStorage(FeedItem feedItem) {
+    private void storeFeedItem(FeedItem feedItem) {
         if (feedItemsStorage == null) {
             return;
         }
@@ -273,24 +276,24 @@ public class EntourageApplication extends MultiDexApplication {
         if (me == null) {
             return;
         }
-        feedItemsStorage.updateFeedItemStorage(me.getId(), feedItem);
+        feedItemsStorage.saveFeedItem(me.getId(), feedItem);
     }
 
-    public void updateFeedItemsStorage(Message message, boolean isAdded) {
+    public int storeNewPushNotification(Message message, boolean isAdded) {
         if (feedItemsStorage == null) {
-            return;
+            return -1;
         }
         if (component.getAuthenticationController() == null) {
-            return;
+            return -1;
         }
         User me = component.getAuthenticationController().getUser();
         if (me == null) {
-            return;
+            return -1;
         }
-        feedItemsStorage.updateFeedItemStorage(me.getId(), message, isAdded);
+        return feedItemsStorage.saveFeedItem(me.getId(), message, isAdded);
     }
 
-    public void updateFeedItemFromStorage(FeedItem feedItem) {
+    public void updateStorageFeedItem(FeedItem feedItem) {
         if (feedItemsStorage == null) {
             return;
         }
@@ -301,7 +304,18 @@ public class EntourageApplication extends MultiDexApplication {
         if (me == null) {
             return;
         }
-        feedItemsStorage.updateFeedItemFromStorage(me.getId(), feedItem);
+        feedItemsStorage.updateFeedItem(me.getId(), feedItem);
+    }
+
+    public boolean clearFeedStorage() {
+        User me = component.getAuthenticationController().getUser();
+        if (me == null) {
+            return false ;
+        }
+        if(feedItemsStorage!=null) {
+            return feedItemsStorage.clear(me.getId());
+        }
+        return false;
     }
 
     // ----------------------------------

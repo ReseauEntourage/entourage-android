@@ -205,6 +205,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
         if (!status.equals(entourage.status)) return false;
         if (!joinStatus.equals(entourage.joinStatus)) return false;
         if (numberOfPeople != entourage.numberOfPeople) return false;
+        if(numberOfUnreadMessages != entourage.numberOfUnreadMessages) return false;
         if (!entourageType.equals(entourage.entourageType)) return false;
         if (category != null && !category.equals(entourage.category)) return false;
         if (getAuthor() != null) {

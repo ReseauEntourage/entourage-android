@@ -143,12 +143,6 @@
     <string name="tour_join_request_ok_message_hint">Votre message…</string>
     <string name="tour_join_request_rejected">Requête envoyée</string>
 
-    <!-- My tours -->
-    <string name="mytours_title">MES ENTOURAGES</string>
-    <string name="mytours_ongoing">En cours</string>
-    <string name="mytours_recorded">Actifs</string>
-    <string name="mytours_frozen">Clôturés</string>
-
     <!-- Encounter -->
     <string name="tour_encounter_too_far">La rencontre est trop éloignée de la maraude</string>
 

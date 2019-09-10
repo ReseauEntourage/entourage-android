@@ -67,7 +67,6 @@ import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.map.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.tour.TourService;
 import social.entourage.android.map.tour.information.TourInformationFragment;
-import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.navigation.BaseBottomNavigationDataSource;
 import social.entourage.android.navigation.BottomNavigationDataSource;
@@ -84,7 +83,6 @@ import timber.log.Timber;
 public class DrawerActivity extends EntourageSecuredActivity
     implements TourInformationFragment.OnTourInformationFragmentFinish,
     ChoiceFragment.OnChoiceFragmentFinish,
-    MyToursFragment.OnFragmentInteractionListener,
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
     PhotoChooseInterface,
@@ -606,7 +604,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                         break;
                 }
             }
-            EntourageApplication application = EntourageApplication.get(getApplicationContext());
+            EntourageApplication application = EntourageApplication.get();
             if (application != null) {
                 application.removePushNotification(message);
             }
@@ -822,11 +820,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Override
-    public void onShowTourInfo(final Tour tour) {
-
-    }
-
-    @Override
     public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
         User me = EntourageApplication.me(this);
@@ -922,7 +915,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                     if (displayMessageOnCurrentTourInfoFragment(message)) {
                         //already displayed
                         removePushNotification(content, contentType);
-
                     } else {
                         addPushNotification(message);
                     }
@@ -946,7 +938,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void removePushNotification(PushNotificationContent content, String contentType) {
-        EntourageApplication application = EntourageApplication.get(getApplicationContext());
+        EntourageApplication application = EntourageApplication.get();
         if (application != null) {
             if (content.isTourRelated()) {
                 application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), contentType);
@@ -962,7 +954,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void addPushNotification(Message message) {
-        refreshBadgeCount();
         if (mapEntourageFragment != null) {
             mapEntourageFragment.onPushNotificationReceived(message);
         }
@@ -970,6 +961,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (myEntouragesFragment != null) {
             myEntouragesFragment.onPushNotificationReceived(message);
         }
+        refreshBadgeCount();
     }
 
     // ----------------------------------
@@ -1044,14 +1036,30 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
+    // BUS LISTENERS
+    // ----------------------------------
+
+    @Subscribe
+    public void onMyEntouragesForceRefresh(Events.OnMyEntouragesForceRefresh event) {
+        FeedItem item = event.getFeedItem();
+        if(item!=null) {
+            EntourageApplication application = EntourageApplication.get();
+            if (application != null) {
+                application.updateBadgeCountForFeedItem(item);
+            }
+            refreshBadgeCount();
+        }
+    }
+
+    // ----------------------------------
     // Helper functions
     // ----------------------------------
 
     private void refreshBadgeCount() {
-        EntourageApplication application = EntourageApplication.get(getApplicationContext());
         if (discussionBadgeView != null) {
-            discussionBadgeView.setVisibility(application.badgeCount > 0 ? View.VISIBLE : View.INVISIBLE);
-            discussionBadgeView.setText(String.valueOf(application.badgeCount));
+            int badgeCount = EntourageApplication.get().getBadgeCount();
+            discussionBadgeView.setVisibility(badgeCount > 0 ? View.VISIBLE : View.INVISIBLE);
+            discussionBadgeView.setText(String.valueOf(badgeCount));
         }
     }
 

@@ -493,6 +493,9 @@ public class TourService extends Service {
     }
 
     public void notifyListenersUserStatusChanged(final TourUser user, final FeedItem feedItem) {
+        if(user==null || feedItem==null) {
+            return;
+        }
         for (final TourServiceListener listener : tourServiceListeners) {
             listener.onUserStatusChanged(user, feedItem);
         }

@@ -25,7 +25,6 @@ import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.involvement.GetInvolvedFragment;
-import social.entourage.android.map.tour.my.MyToursFragment;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.user.AvatarUpdatePresenter;
 import social.entourage.android.user.UserFragment;
@@ -187,14 +186,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                     dialog.cancel();
                 }
             });
-        }
-    }
-
-    protected void displayMyTours() {
-        if (activity != null) {
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            MyToursFragment fragment = new MyToursFragment();
-            fragment.show(fragmentManager, MyToursFragment.TAG);
         }
     }
 

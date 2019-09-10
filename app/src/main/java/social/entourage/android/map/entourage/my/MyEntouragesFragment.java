@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.otto.Subscribe;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -247,7 +248,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
     // ----------------------------------
 
     @Subscribe
-    public void onMyEntouragesFilterChanged(Events.OnMyEntouragesForceRefresh event) {
+    public void onMyEntouragesForceRefresh(Events.OnMyEntouragesForceRefresh event) {
         FeedItem item = event.getFeedItem();
         if(item==null) {
             refreshMyFeeds();
@@ -295,7 +296,11 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
         if (card instanceof FeedItem) {
             ((FeedItem)card).increaseBadgeCount();
             ((FeedItem)card).setLastMessage(content.message, message.getAuthor());
+            //approximate message time with Now //TODO get proper time
+            ((FeedItem)card).setUpdatedTime(new Date());
             entouragesAdapter.updateCard(card);
+        } else {
+            refreshMyFeeds();
         }
     }
 
@@ -307,7 +312,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
         if (feedItemCard == null) {
             return;
         }
-        feedItemCard.setBadgeCount(0);
+        feedItemCard.decreaseBadgeCount();
         entouragesAdapter.updateCard(feedItemCard);
     }
 
@@ -352,7 +357,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
     void onNewsfeedReceived(List<Newsfeed> newsfeedList) {
         //reset the loading indicator
         entouragesPagination.isLoading = false;
-
         if (!isAdded()) {
             return;
         }
@@ -362,8 +366,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
         MyEntouragesFilter filter = MyEntouragesFilterFactory.getMyEntouragesFilter(this.getContext());
         boolean showUnreadOnly = filter.isShowUnreadOnly();
 
-        //this boolean is used to only remove loader when necessary
-        boolean shouldRemoveLoader = true;
+        entouragesAdapter.removeLoader();
 
         if (newsfeedList.size() > 0) {
             EntourageApplication application = EntourageApplication.get(getContext());
@@ -374,35 +377,23 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
                     continue;
                 }
                 FeedItem feedItem = (FeedItem) newsfeed.getData();
-                if (application != null) {
-                    application.updateBadgeCountForFeedItem(feedItem);
-                }
 
                 // show only the unread ones if filter is set
-                if (showUnreadOnly && feedItem.getBadgeCount() <= 0) {
-                    continue;
-                }
-
-                if (entouragesAdapter.findCard(feedItem) == null) {
-                    if(shouldRemoveLoader) {
-                        entouragesAdapter.removeLoader();
-                        shouldRemoveLoader=false;
+                if (!showUnreadOnly || feedItem.getBadgeCount() > 0) {
+                    if (entouragesAdapter.findCard(feedItem) == null) {
+                        entouragesAdapter.addCardInfo(feedItem);
                     }
-                    entouragesAdapter.addCardInfo(feedItem);
-                } else {
-                    entouragesAdapter.updateCard(feedItem);
                 }
+                BusProvider.getInstance().post(new Events.OnMyEntouragesForceRefresh(feedItem));
             }
 
             //increase page and items count
             entouragesPagination.loadedItems(newsfeedList.size());
-            if(entouragesPagination.nextPageAvailable && !shouldRemoveLoader) {
+            if(entouragesPagination.nextPageAvailable) {
                 entouragesAdapter.addLoader();
             }
         }
-        if(shouldRemoveLoader) {
-            entouragesAdapter.removeLoader();
-        }
+
         if (entouragesAdapter.getDataItemCount() == 0) {
             noItemsView.setVisibility(View.VISIBLE);
             noItemsTitleTextView.setVisibility(showUnreadOnly ? View.GONE : View.VISIBLE);
@@ -432,7 +423,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
         if (feedItem != null) {
             TimestampedObject card = entouragesAdapter.findCard(feedItem);
             if (card instanceof FeedItem) {
-                ((FeedItem)card).increaseBadgeCount();
                 entouragesAdapter.updateCard(feedItem);
             }
         }

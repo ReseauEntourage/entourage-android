@@ -1269,7 +1269,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         if (feedItemCard == null) {
             return;
         }
-        feedItemCard.setBadgeCount(0);
+        feedItemCard.decreaseBadgeCount();
         newsfeedAdapter.updateCard(feedItemCard);
     }
 

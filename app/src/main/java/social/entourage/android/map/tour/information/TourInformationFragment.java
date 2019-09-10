@@ -695,22 +695,6 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     @OnClick(R.id.feeditem_option_quit)
     public void onQuitTourButton() {
         quitTour();
-        /*
-        if (getActivity() == null) return;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        int titleId = feedItem.getQuitDialogTitle();
-        int messageId = feedItem.getQuitDialogMessage();
-        builder.setTitle(titleId)
-                .setMessage(messageId)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        quitTour();
-                    }
-                })
-                .setNegativeButton(R.string.no, null);
-        builder.create().show();
-        */
     }
 
     private void quitTour() {
@@ -1735,6 +1719,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
     private void scrollToLastCard() {
         if (discussionAdapter.getItemCount() > 0) {
             discussionView.scrollToPosition(discussionAdapter.getItemCount() - 1);
+            feedItem.setNumberOfUnreadMessages(0);
         }
     }
 
@@ -1930,6 +1915,7 @@ public class TourInformationFragment extends EntourageDialogFragment implements 
                     //remember the last chat message
                     ChatMessage lastChatMessage = (ChatMessage) feedItem.getAddedCardInfoList().get(feedItem.getAddedCardInfoList().size()-1);
                     feedItem.setLastMessage(lastChatMessage.getContent(), lastChatMessage.getUserName());
+                    feedItem.setUpdatedTime(lastChatMessage.getTimestamp());
 
                     //remember oldest chat message
                     oldestChatMessageDate = ((ChatMessage) feedItem.getAddedCardInfoList().get(0)).getCreationDate();

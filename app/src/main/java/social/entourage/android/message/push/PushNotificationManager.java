@@ -261,21 +261,12 @@ public class PushNotificationManager {
                     }
                     PushNotificationContent content = message.getContent();
                     if (content != null && content.getJoinableId() == feedId && content.getType() != null && content.getType().equals(pushType)) {
-                        if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
-                            // remove the notification from our internal list
+                        if((FeedItem.TOUR_CARD == feedType && content.isTourRelated())
+                        ||(FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated())) {
                             messageIterator.remove();
                             messageListChanged = true;
                             if (message.isVisible()) {
-                                application.updateFeedItemsStorage(message, false);
-                                count++;
-                            }
-                            break;
-                        }
-                        if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
-                            messageIterator.remove();
-                            messageListChanged = true;
-                            if (message.isVisible()) {
-                                application.updateFeedItemsStorage(message, false);
+                                application.storeNewPushNotification(message, false);
                                 count++;
                             }
                             break;

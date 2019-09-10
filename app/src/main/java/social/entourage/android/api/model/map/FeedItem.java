@@ -76,6 +76,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     protected int numberOfPeople;
 
     @Expose(serialize = false)
+    @SerializedName("number_of_unread_messages")
+    protected int numberOfUnreadMessages;
+
+    @Expose(serialize = false)
     @SerializedName("join_status")
     protected String joinStatus;
 
@@ -87,6 +91,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     @SerializedName("share_url")
     protected String shareURL;
 
+    //number of notifs received that should be added to nuber of unread messages
     @Expose(serialize = false, deserialize = false)
     protected int badgeCount = 0;
 
@@ -124,15 +129,17 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     }
 
     public int getBadgeCount() {
-        return badgeCount;
-    }
-
-    public void setBadgeCount(final int badgeCount) {
-        this.badgeCount = badgeCount;
+        return badgeCount+numberOfUnreadMessages;
     }
 
     public void increaseBadgeCount() {
         badgeCount++;
+    }
+
+    public void decreaseBadgeCount() {
+        if(badgeCount>0) {
+            badgeCount--;
+        }
     }
 
     @Override
@@ -162,6 +169,14 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public void setNumberOfPeople(final int numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
+    }
+
+    public int getNumberOfUnreadMessages() {
+        return numberOfUnreadMessages;
+    }
+
+    public void setNumberOfUnreadMessages(final int numberOfUnreadMessages) {
+        this.numberOfUnreadMessages = numberOfUnreadMessages;
     }
 
     public Address getStartAddress() {
