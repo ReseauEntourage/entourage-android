@@ -291,10 +291,11 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
         else if (content.isEntourageRelated()) cardType = TimestampedObject.ENTOURAGE_CARD;
         else return;
         long joinableId = content.getJoinableId();
+        boolean isChatMesssage = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(content.getType());
 
         TimestampedObject card = entouragesAdapter.findCard(cardType, joinableId);
         if (card instanceof FeedItem) {
-            ((FeedItem)card).increaseBadgeCount();
+            ((FeedItem)card).increaseBadgeCount(isChatMesssage);
             ((FeedItem)card).setLastMessage(content.message, message.getAuthor());
             //approximate message time with Now //TODO get proper time
             ((FeedItem)card).setUpdatedTime(new Date());

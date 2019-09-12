@@ -430,6 +430,16 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     // ----------------------------------
 
     @Subscribe
+    public void onMyEntouragesForceRefresh(Events.OnMyEntouragesForceRefresh event) {
+        FeedItem item = event.getFeedItem();
+        if(item==null) {
+            refreshFeed();
+        } else {
+            newsfeedAdapter.updateCard(item);
+        }
+    }
+
+    @Subscribe
     public void onBetterLocation(OnBetterLocationEvent event) {
         if (event.getLocation() != null) {
             centerMap(event.getLocation());
@@ -472,10 +482,14 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             presenter.saveMapFilter();
         }
         // Refresh the newsfeed
-        if (tourService != null) {
-            clearAll();
-            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
+        refreshFeed();
+    }
 
+    protected void refreshFeed() {
+        clearAll();
+        newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
+
+        if (tourService != null) {
             tourService.updateNewsfeed(pagination, selectedTab);
         }
     }
@@ -484,16 +498,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
         switch (selectedTab) {
             case ALL_TAB:
-                clearAll();
                 ensureMapVisible();
                 pagination.setNextDistance();
-
-                if (newsfeedAdapter != null) {
-                    newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
-                }
-                if (tourService != null) {
-                    tourService.updateNewsfeed(pagination, selectedTab);
-                }
+                refreshFeed();
                 break;
             case EVENTS_TAB:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.more_events_url)));
@@ -1244,19 +1251,20 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             return;
         }
         long joinableId = content.getJoinableId();
+        boolean isChatMessage = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(content.getType());
         if (content.isTourRelated()) {
             Tour tour = (Tour) newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, joinableId);
             if (tour == null) {
                 return;
             }
-            tour.increaseBadgeCount();
+            tour.increaseBadgeCount(isChatMessage);
             newsfeedAdapter.updateCard(tour);
         } else if (content.isEntourageRelated()) {
             Entourage entourage = (Entourage) newsfeedAdapter.findCard(TimestampedObject.ENTOURAGE_CARD, joinableId);
             if (entourage == null) {
                 return;
             }
-            entourage.increaseBadgeCount();
+            entourage.increaseBadgeCount(isChatMessage);
             newsfeedAdapter.updateCard(entourage);
         }
     }

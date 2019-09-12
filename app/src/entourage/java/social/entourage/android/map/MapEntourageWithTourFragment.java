@@ -631,10 +631,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     public void onFeedItemClosed(boolean closed, @NonNull FeedItem feedItem) {
         if (getActivity() != null) {
             if (closed) {
-
-                clearAll();
-                newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
-
+                refreshFeed();
                 if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                     if (feedItem.getUUID().equalsIgnoreCase(currentTourUUID)) {
                         mapOptionsMenu.setVisibility(View.VISIBLE);
@@ -649,7 +646,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 }
 
                 if (tourService != null) {
-                    tourService.updateNewsfeed(pagination, selectedTab);
                     if (userHistory) {
                         tourService.updateUserHistory(userId, 1, 1);
                     }
