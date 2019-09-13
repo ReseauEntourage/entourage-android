@@ -177,7 +177,7 @@ public class EntourageApplication extends MultiDexApplication {
     // ----------------------------------
 
     private void updateBadgeCount() {
-        if(badgeCount == feedItemsStorage.getBadgeCount(me().getId())) {
+        if(me()==null || badgeCount == feedItemsStorage.getBadgeCount(me().getId())) {
             return;
         }
         badgeCount = feedItemsStorage.getBadgeCount(me().getId());
