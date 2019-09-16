@@ -468,6 +468,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     @Subscribe
     public void onEntourageUpdated(Events.OnEntourageUpdated event) {
+        if (event == null) {
+            return;
+        }
         Entourage entourage = event.getEntourage();
         if (entourage == null) {
             return;
