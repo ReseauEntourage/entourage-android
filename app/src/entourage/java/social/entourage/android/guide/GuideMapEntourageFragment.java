@@ -217,7 +217,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     void putPoiOnMap(List<Category> categories, List<Poi> pois) {
         if (getActivity() != null) {
-            if (categories != null) {
+            if (categories != null && mapClusterItemRenderer instanceof PoiRenderer) {
                 ((PoiRenderer) mapClusterItemRenderer).setCategories(categories);
             }
             clearOldPois();
