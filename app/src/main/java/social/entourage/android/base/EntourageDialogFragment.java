@@ -50,12 +50,11 @@ public class EntourageDialogFragment extends DialogFragment {
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
-        if (getDialog() == null ) {  // Returns mDialog
-            // Tells DialogFragment to not use the fragment as a dialog, and so won't try to use mDialog
-            setShowsDialog( false );
-            //TODO check if this is working and how often
-            Timber.e("Quickfix to avoid crash in DialogFragment.onActivityCreated");
+        if (getDialog() == null) {
+            //TODO should we use setShowsDialog(false) here
+            Timber.e("No dialog before onActivityCreated for this DialogFragment: %s", this.getClass().getName());
         }
+
         super.onActivityCreated(savedInstanceState);
         Dialog dialog = getDialog();
         if (dialog != null) {
@@ -63,6 +62,8 @@ public class EntourageDialogFragment extends DialogFragment {
             if (window != null && window.getAttributes() != null) {
                 window.getAttributes().windowAnimations = getSlideStyle();
             }
+        } else {
+            Timber.e("No dialog after onActivityCreated for this DialogFragment: %s", this.getClass().getName());
         }
     }
 
@@ -75,6 +76,9 @@ public class EntourageDialogFragment extends DialogFragment {
             if (window != null) {
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 window.setBackgroundDrawable(getBackgroundDrawable());
+                if (window.getAttributes() != null) {
+                    window.getAttributes().windowAnimations = getSlideStyle();
+                }
             }
         }
         isStopped = false;
