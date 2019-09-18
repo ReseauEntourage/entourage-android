@@ -490,7 +490,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     protected void refreshFeed() {
         clearAll();
-        newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
+        if(newsfeedAdapter!=null) {
+            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
+        }
 
         if (tourService != null) {
             tourService.updateNewsfeed(pagination, selectedTab);
