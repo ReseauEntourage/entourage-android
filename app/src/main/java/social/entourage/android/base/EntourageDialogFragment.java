@@ -52,7 +52,8 @@ public class EntourageDialogFragment extends DialogFragment {
     public void onActivityCreated(final Bundle savedInstanceState) {
         if (getDialog() == null) {
             //TODO should we use setShowsDialog(false) here
-            Timber.e("No dialog before onActivityCreated for this DialogFragment: %s", this.getClass().getName());
+            setShowsDialog(false);
+            Timber.w("No dialog before onActivityCreated for this DialogFragment: %s", this.getClass().getName());
         }
 
         super.onActivityCreated(savedInstanceState);
