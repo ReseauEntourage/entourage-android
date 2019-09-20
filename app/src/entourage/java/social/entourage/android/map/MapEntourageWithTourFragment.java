@@ -460,6 +460,45 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         super.showLongClickOnMapOptions(latLng);
     }
 
+    // ----------------------------------
+    // BUS LISTENERS
+    // ----------------------------------
+    @Subscribe
+    @Override
+    public void onMyEntouragesForceRefresh(Events.OnMyEntouragesForceRefresh event) {
+        super.onMyEntouragesForceRefresh(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onEntourageCreated(Events.OnEntourageCreated event) {
+        super.onEntourageCreated(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onEntourageUpdated(Events.OnEntourageUpdated event) {
+        super.onEntourageUpdated(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
+        super.onNewsfeedLoadMoreRequested(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onMapFilterChanged(Events.OnMapFilterChanged event) {
+        super.onMapFilterChanged(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onBetterLocation(Events.OnBetterLocationEvent event) {
+        super.onBetterLocation(event);
+    }
+
     @Subscribe
     public void onEncounterCreated(OnEncounterCreated event) {
         Encounter encounter = event.getEncounter();
@@ -938,6 +977,20 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             mapClusterManager.addItem(mapClusterItem);
         }
     }
+
+    @Subscribe
+    @Override
+    public void onMapTabChanged(Events.OnMapTabSelected event) {
+        super.onMapTabChanged(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
+        super.onLocationPermissionGranted(event);
+    }
+
+
 
     @Override
     void clearAll() {
