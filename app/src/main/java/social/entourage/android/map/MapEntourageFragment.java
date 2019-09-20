@@ -462,7 +462,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
         // Update the newsfeed
         clearAll();
-        tourService.updateNewsfeed(pagination, selectedTab);
+        if(tourService!=null) {
+            tourService.updateNewsfeed(pagination, selectedTab);
+        }
 
     }
 
